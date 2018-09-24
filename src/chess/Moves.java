@@ -28,53 +28,63 @@ class Moves {
 
     Moves(){
 
+
         long bishopPseudoMoves = bishopPseudoMoves(3, 3);
 
         printLong(bishopPseudoMoves);
 
+        System.out.println("---");
+
+        printLong(BitBoards.CASTLE_WHITE_QUEEN_SQUARES);
+
     }
 
-    static long pawnLegalMoves(int rank, int file, boolean white){
-        long knightPseudoMoves = pawnPseudoMoves(rank, file, white);
-        long allPieces = BitBoards.ALL_WHITE_PIECES() | BitBoards.ALL_BLACK_PIECES();
-        return (knightPseudoMoves | allPieces) ^ allPieces;
-    }
-
-    static long pawnPseudoMoves(int rank, int file, boolean white){
-        long pawn = RANKS[rank] & FILES[file];
-        long ans = 0;
-        if (white){
-            if (rank == 1){
-                ans |= RANKS[rank+2];
-            }
-            ans |= RANKS[rank+1];
-        }
-        if (!white){
-            if (rank == 6){
-                ans |= RANKS[rank-2];
-            }
-            ans |= RANKS[rank-1];
-        }
-        ans &= FILES[file];
-        return ans;
-    }
-
-    static long pawnLegalCaptures(int rank, int file, boolean white){
-        long ans = 0;
-        long pawnPseudoCaptures = pawnPseudoCaptures(rank, file, white);
-        long enemies = (white) ? BitBoards.ALL_BLACK_PIECES() : BitBoards.ALL_WHITE_PIECES();
-        return pawnPseudoCaptures & enemies;
-    }
-
-    static long pawnPseudoCaptures(int rank, int file, boolean white){
-        long pawn = RANKS[rank] & FILES[file];
-        if (rank == 0 | rank == 7) System.out.println("Pawn on Final Rank Error?");
-        long ans, r = 0;
-        if (file >= 1) r |= FILES[file-1];
-        if (file <= 6) r |= FILES[file+1];
-        long l = (white) ? r & RANKS[rank+1] : r & RANKS[rank-1];
-        return l;
-    }
+//    static long pawnLegalMoves(int rank, int file, boolean white){ // en passant block
+//        long pawnPseudoMoves = pawnPseudoMoves(rank, file, white);
+//        long allPieces = BitBoards.ALL_WHITE_PIECES() | BitBoards.ALL_BLACK_PIECES();
+//        return (pawnPseudoMoves | allPieces) ^ allPieces;
+//    }
+//
+//    static long pawnPseudoMoves(int rank, int file, boolean white){
+//        long pawn = RANKS[rank] & FILES[file];
+//        long ans = 0;
+//        if (white){
+//            if (rank == 1){
+//                ans |= RANKS[rank+2];
+//            }
+//            ans |= RANKS[rank+1];
+//        }
+//        if (!white){
+//            if (rank == 6){
+//                ans |= RANKS[rank-2];
+//            }
+//            ans |= RANKS[rank-1];
+//        }
+//        ans &= FILES[file];
+//        return ans;
+//    }
+//
+//
+//
+//
+//
+//
+//    static long pawnLegalCaptures(int rank, int file, boolean white){
+//        long ans = 0;
+//        long pawnPseudoCaptures = pawnPseudoCaptures(rank, file, white);
+//        long enemies = (white) ? BitBoards.ALL_BLACK_PIECES() : BitBoards.ALL_WHITE_PIECES();
+//        return pawnPseudoCaptures & enemies;
+//    }
+//
+//    static long pawnPseudoCaptures(int rank, int file, boolean white){
+//        long pawn = RANKS[rank] & FILES[file];
+//        if (rank == 0 | rank == 7) System.out.println("Pawn on Final Rank Error?");
+//        long ans, r = 0;
+//        if (file >= 1) r |= FILES[file-1];
+//        if (file <= 6) r |= FILES[file+1];
+//        long l = (white) ? r & RANKS[rank+1] : r & RANKS[rank-1];
+//        return l;
+//    }
 
 
     static long knightLegalMoves(int rank, int file, boolean white){
@@ -162,16 +172,16 @@ class Moves {
         return 0;
     }
 
-    static long kingPseudoMoves(int rank, int file){
-        long ans, r = RANKS[rank], c = FILES[file];
-        if (rank >= 1) r |= RANKS[rank-1];
-        if (rank <= 6) r |= RANKS[rank+1];
-        if (file >= 1) c |= FILES[file-1];
-        if (file <= 6) c |= FILES[file+1];
-        ans = r & c;
-        ans ^= RANKS[rank] & FILES[file];
-        return ans;
-    }
+//    static long kingPseudoMoves(int rank, int file){
+//        long ans, r = RANKS[rank], c = FILES[file];
+//        if (rank >= 1) r |= RANKS[rank-1];
+//        if (rank <= 6) r |= RANKS[rank+1];
+//        if (file >= 1) c |= FILES[file-1];
+//        if (file <= 6) c |= FILES[file+1];
+//        ans = r & c;
+//        ans ^= RANKS[rank] & FILES[file];
+//        return ans;
+//    }
 
 
 }

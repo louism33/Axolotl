@@ -1,12 +1,5 @@
 package chess;
 
-
-import javafx.util.Pair;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Random;
-
 public class Main {
 
 
@@ -17,22 +10,8 @@ public class Main {
     }
 
 
-
-
-
-
     Main(){
 
-
-        Moves m = new Moves();
-
-
-//        long attackTables = allPieceAttackTables(BLACK_PIECES);
-//        printLong(attackTables);
-
-//        long pawnsAttackTables = allPawnsAttackTables(WHITE_PIECES, true);
-//        long pawnsAttackTables = allPawnsAttackTables(BLACK_PIECES, false);
-//        printLong(pawnsAttackTables);
 
     }
 

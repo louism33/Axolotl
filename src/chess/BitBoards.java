@@ -1,6 +1,6 @@
 package chess;
 
-class BitBoards {
+public class BitBoards {
 
     static long ALL_WHITE_PIECES (){
         long ans = 0;
@@ -13,6 +13,16 @@ class BitBoards {
         for (long l : BLACK_PIECES) ans |= l;
         return ans;
     }
+
+    static long northOne (long l){
+        return l << 8;
+    }
+
+    static long southOne (long l){
+        return l >> 8;
+    }
+
+
 
     static long[] WHITE_PIECES = {
             0x000000000000FF00L, //Pawns
@@ -34,6 +44,11 @@ class BitBoards {
 
     static long WHITE_SQUARES = 0x5555555555555555L;
     static long BLACK_SQUARES = 0xAAAAAAAAAAAAAAAAL;
+
+    static long CASTLE_WHITE_KING_SQUARES = 0x0000000000000006L;
+    static long CASTLE_WHITE_QUEEN_SQUARES = 0x0000000000000070L;
+    static long CASTLE_BLACK_KING_SQUARES = 0x0600000000000000L;
+    static long CASTLE_BLACK_QUEEN_SQUARES = 0x7000000000000000L;
 
     static long[] RANKS = {
             0x00000000000000FFL, // 1
