@@ -1,7 +1,7 @@
 package chess;
 
-import static chess.BitBoards.FILES;
-import static chess.BitBoards.RANKS;
+import static bitboards.BitBoards.FILES;
+import static bitboards.BitBoards.RANKS;
 
 class Pawn {
 

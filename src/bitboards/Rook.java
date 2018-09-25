@@ -1,6 +1,6 @@
 package bitboards;
 
-class Rook {
+public class Rook {
 
     static long A1 = 0x808080808080807fL;
     static long B1 = 0x40404040404040bfL;
@@ -67,7 +67,7 @@ class Rook {
     static long G8 = 0xfd02020202020202L;
     static long H8 = 0xfe01010101010101L;
 
-    static long[] ROOK_MOVE_TABLE = {
+    public static long[] ROOK_MOVE_TABLE = {
             0x808080808080807fL,
             0x40404040404040bfL,
             0x20202020202020dfL,

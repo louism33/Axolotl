@@ -1,6 +1,6 @@
 package bitboards;
 
-class Bishop {
+public class Bishop {
 
     static long A1 = 0x102040810204000L;
     static long B1 = 0x102040810a000L;
@@ -67,7 +67,7 @@ class Bishop {
     static long G8 = 0x5081020408000L;
     static long H8 = 0x2040810204080L;
 
-    static long[] BISHOP_MOVE_TABLE = {
+    public static long[] BISHOP_MOVE_TABLE = {
             0x102040810204000L,
             0x102040810a000L,
             0x10204885000L,

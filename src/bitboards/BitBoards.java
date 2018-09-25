@@ -1,4 +1,4 @@
-package chess;
+package bitboards;
 
 public class BitBoards {
 
@@ -14,17 +14,22 @@ public class BitBoards {
         return ans;
     }
 
-    static long northOne (long l){
-        return l << 8;
-    }
 
-    static long southOne (long l){
-        return l >> 8;
-    }
+    public static long WHITE_PAWNS = 0x000000000000FF00L;
+    public static long WHITE_KNIGHTS = 0x0000000000000042L;
+    public static long WHITE_BISHOPS = 0x0000000000000024L;
+    public static long WHITE_ROOKS = 0x0000000000000081L;
+    public static long WHITE_QUEEN = 0x0000000000000010L;
+    public static long WHITE_KING = 0x0000000000000008L;
 
+    public static long BLACK_PAWNS = 0x00FF000000000000L;
+    public static long BLACK_KNIGHTS = 0x4200000000000000L;
+    public static long BLACK_BISHOPS = 0x2400000000000000L;
+    public static long BLACK_ROOKS = 0x8100000000000000L;
+    public static long BLACK_QUEEN = 0x1000000000000000L;
+    public static long BLACK_KING = 0x0800000000000000L;
 
-
-    static long[] WHITE_PIECES = {
+    public static long[] WHITE_PIECES = {
             0x000000000000FF00L, //Pawns
             0x0000000000000042L, //Knights
             0x0000000000000024L, //Bishops
@@ -33,7 +38,7 @@ public class BitBoards {
             0x0000000000000008L, //King
     };
 
-    static long[] BLACK_PIECES = {
+    public static long[] BLACK_PIECES = {
             0x00FF000000000000L, //Pawns
             0x4200000000000000L, //Knights
             0x2400000000000000L, //Bishops
@@ -50,7 +55,7 @@ public class BitBoards {
     static long CASTLE_BLACK_KING_SQUARES = 0x0600000000000000L;
     static long CASTLE_BLACK_QUEEN_SQUARES = 0x7000000000000000L;
 
-    static long[] RANKS = {
+    public static long[] RANKS = {
             0x00000000000000FFL, // 1
             0x000000000000FF00L, // 2
             0x0000000000FF0000L, // 3
@@ -61,7 +66,7 @@ public class BitBoards {
             0xFF00000000000000L, // 8
     };
 
-    static long[] FILES = {
+    public static long[] FILES = {
             0x8080808080808080L, // A
             0x4040404040404040L, // B
             0x2020202020202020L, // C

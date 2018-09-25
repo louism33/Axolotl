@@ -1,17 +1,29 @@
 package chess;
 
+import bitboards.Bishop;
+import bitboards.BitBoards;
+
 public class Main {
-
-
-
 
     public static void main(String[] args) {
         new Main();
     }
 
+    /*
+
+
+
+
+
+    15 14 13 12 11 10 9  8
+    7  6  5  4  3  2  1  0
+     */
 
     Main(){
 
+        int indexOfFirstPiece = BitManipulations.extractPieceIndexOrganiser(BitBoards.WHITE_ROOKS);
+
+        System.out.println(indexOfFirstPiece);
 
     }
 

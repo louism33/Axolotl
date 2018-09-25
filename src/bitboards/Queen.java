@@ -1,6 +1,6 @@
 package bitboards;
 
-class Queen {
+public class Queen {
 
     static long A1 = 0x8182848890a0c07fL;
     static long B1 = 0x404142444850e0bfL;
@@ -67,7 +67,7 @@ class Queen {
     static long G8 = 0xfd070a1222428202L;
     static long H8 = 0xfe03050911214181L;
 
-    static long[] QUEEN_MOVE_TABLE = {
+    public static long[] QUEEN_MOVE_TABLE = {
             0x8182848890a0c07fL,
             0x404142444850e0bfL,
             0x2020212224a870dfL,

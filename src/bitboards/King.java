@@ -1,7 +1,7 @@
 package bitboards;
 
 
-class King {
+public class King {
 
     static long A1 = 0xc040L;
     static long B1 = 0xe0a0L;
@@ -68,7 +68,7 @@ class King {
     static long G8 = 0x507000000000000L;
     static long H8 = 0x203000000000000L;
 
-    static long[] KING_MOVE_TABLE = {
+    public static long[] KING_MOVE_TABLE = {
             0xc040L,
             0xe0a0L,
             0x7050L,

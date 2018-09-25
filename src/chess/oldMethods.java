@@ -1,7 +1,7 @@
 package chess;
 
-import static chess.BitBoards.FILES;
-import static chess.BitBoards.RANKS;
+import static bitboards.BitBoards.FILES;
+import static bitboards.BitBoards.RANKS;
 
 class oldMethods {
 
@@ -95,7 +95,34 @@ class oldMethods {
         return ans;
     }
 
+    static long pawnPseudoMoves(int rank, int file, boolean white){
+        long pawn = RANKS[rank] & FILES[file];
+        long ans = 0;
+        if (white){
+            if (rank == 1){
+                ans |= RANKS[rank+2];
+            }
+            ans |= RANKS[rank+1];
+        }
+        if (!white){
+            if (rank == 6){
+                ans |= RANKS[rank-2];
+            }
+            ans |= RANKS[rank-1];
+        }
+        ans &= FILES[file];
+        return ans;
+    }
 
+    static long pawnPseudoCaptures(int rank, int file, boolean white){
+        long pawn = RANKS[rank] & FILES[file];
+        if (rank == 0 | rank == 7) System.out.println("PawnMoves on Final Rank Error?");
+        long ans, r = 0;
+        if (file >= 1) r |= FILES[file-1];
+        if (file <= 6) r |= FILES[file+1];
+        long l = (white) ? r & RANKS[rank+1] : r & RANKS[rank-1];
+        return l;
+    }
 
     static void printLong(long l){
         for (int y = 0; y < 8; y++) {

@@ -1,6 +1,6 @@
 package bitboards;
 
-public class Pawn {
+public class PawnMoves {
 
     static long WHITE_A2 = 0x80800000L;
     static long WHITE_B2 = 0x40400000L;
@@ -51,7 +51,7 @@ public class Pawn {
     static long WHITE_G7 = 0x200000000000000L;
     static long WHITE_H7 = 0x100000000000000L;
 
-    static long[] PAWN_MOVE_TABLE_WHITE = {
+    public static long[] PAWN_MOVE_TABLE_WHITE = {
             0x80800000L,
             0x40400000L,
             0x20200000L,
@@ -155,7 +155,7 @@ public class Pawn {
     static long BLACK_H7 = 0x10100000000L;
 
 
-    static long[] PAWN_MOVE_TABLE_BLACK = {
+    public static long[] PAWN_MOVE_TABLE_BLACK = {
             0x80L,
             0x40L,
             0x20L,

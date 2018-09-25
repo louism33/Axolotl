@@ -1,6 +1,6 @@
 package bitboards;
 
-class Knight {
+public class Knight {
 
     static long A1 = 0x402000L;
     static long B1 = 0xa01000L;
@@ -67,7 +67,7 @@ class Knight {
     static long G8 = 0x8050000000000L;
     static long H8 = 0x4020000000000L;
 
-    static long[] KNIGHT_MOVE_TABLE = {
+    public static long[] KNIGHT_MOVE_TABLE = {
             0x402000L,
             0xa01000L,
             0x508800L,
