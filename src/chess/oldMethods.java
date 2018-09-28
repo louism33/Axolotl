@@ -7,19 +7,28 @@ class oldMethods {
 
 
 
+
+
+    public static void main (String[] args ){
+        System.out.println("FILES HAVE CHANGED; this may now all be wrong");
+        lazywriter();
+    }
+
     static void lazywriter(){
-        System.out.print("static long[] ROOK_MOVE_TABLE = {\n");
+//        System.out.print("public static long[] ROOK_MOVE_TABLE = {\n");
 
         for (int r = 1; r < 9; r ++){
             for (int c = 1; c < 9; c++){
-                long l = rookPseudoMoves(r - 1, c - 1);
-//                System.out.println(
-//                        "static long "+((char)('A'-1+c)) +""+r+""+" = 0x" + Long.toHexString(l) +"L;"
-//                );
-
+                long l = rookPseudoMoves(r - 1, 7 - c + 1);
                 System.out.println(
-                        "0x" + Long.toHexString(l) +"L,"
+                        "static long "+((char)('A'-1+c)) +""+r+""+" = 0x" + Long.toHexString(l) +"L;"
                 );
+
+
+//                Art.printLong(l);
+//                System.out.println(
+//                        "0x" + Long.toHexString(l) +"L,"
+//                );
 
             }
         }
@@ -143,4 +152,6 @@ class oldMethods {
             System.out.println("---");
         }
     }
+
+
 }

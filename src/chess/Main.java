@@ -1,51 +1,33 @@
 package chess;
 
-import bitboards.Bishop;
-import bitboards.BitBoards;
+import java.util.List;
 
 public class Main {
+
+
+    public Chessboard board = new Chessboard();
 
     public static void main(String[] args) {
         new Main();
     }
 
-    /*
-
-
-
-
-
-    15 14 13 12 11 10 9  8
-    7  6  5  4  3  2  1  0
-     */
-
     Main(){
 
-        int indexOfFirstPiece = BitManipulations.extractPieceIndexOrganiser(BitBoards.WHITE_ROOKS);
+        SlidingPieceMove s = new SlidingPieceMove();
 
-        System.out.println(indexOfFirstPiece);
+        long l = s.attackTable(board, board.WHITE_ROOKS, true);
+        List<Move> moves = s.moveListForPieces(board, board.WHITE_ROOKS, true);
 
+        System.out.println("-----moves:");
+        Art.printLong(l);
+
+        System.out.println(moves);
     }
 
+    void plop (){
 
-    static void printLong(long l){
-        for (int y = 0; y < 8; y++) {
-            for (int i = 0; i < 8; i++) {
-                String s = Long.toBinaryString(l);
-                while (s.length() < 64) {
-                    s = "0"+s;
-                }
-                System.out.print(s.charAt(y * 8 + i));
-            }
-            System.out.println();
-        }
-    }
 
-    static void printArrayOfLongs(long[] board){
-        for (long l : board){
-            printLong(l);
-            System.out.println("---");
-        }
+
     }
 
 

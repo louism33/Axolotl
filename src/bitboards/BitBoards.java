@@ -14,7 +14,6 @@ public class BitBoards {
         return ans;
     }
 
-
     public static long WHITE_PAWNS = 0x000000000000FF00L;
     public static long WHITE_KNIGHTS = 0x0000000000000042L;
     public static long WHITE_BISHOPS = 0x0000000000000024L;
@@ -55,6 +54,24 @@ public class BitBoards {
     static long CASTLE_BLACK_KING_SQUARES = 0x0600000000000000L;
     static long CASTLE_BLACK_QUEEN_SQUARES = 0x7000000000000000L;
 
+    public static long RANK_ONE = 0x00000000000000FFL;
+    public static long RANK_TWO = 0x000000000000FF00L;
+    public static long RANK_THREE = 0x0000000000FF0000L;
+    public static long RANK_FOUR = 0x00000000FF000000L;
+    public static long RANK_FIVE = 0x000000FF00000000L;
+    public static long RANK_SIX = 0x0000FF0000000000L;
+    public static long RANK_SEVEN = 0x00FF000000000000L;
+    public static long RANK_EIGHT = 0xFF00000000000000L;
+
+    public static long FILE_H = 0x0101010101010101L;
+    public static long FILE_G = 0x0202020202020202L;
+    public static long FILE_F = 0x0404040404040404L;
+    public static long FILE_E = 0x0808080808080808L;
+    public static long FILE_D = 0x1010101010101010L;
+    public static long FILE_C = 0x2020202020202020L;
+    public static long FILE_B = 0x4040404040404040L;
+    public static long FILE_A = 0x8080808080808080L;
+
     public static long[] RANKS = {
             0x00000000000000FFL, // 1
             0x000000000000FF00L, // 2
@@ -67,14 +84,14 @@ public class BitBoards {
     };
 
     public static long[] FILES = {
-            0x8080808080808080L, // A
-            0x4040404040404040L, // B
-            0x2020202020202020L, // C
-            0x1010101010101010L, // D
-            0x0808080808080808L, // E
-            0x0404040404040404L, // F
-            0x0202020202020202L, // G
             0x0101010101010101L, // H
+            0x0202020202020202L, // G
+            0x0404040404040404L, // F
+            0x0808080808080808L, // E
+            0x1010101010101010L, // D
+            0x2020202020202020L, // C
+            0x4040404040404040L, // B
+            0x8080808080808080L, // A
     };
 
     static long centreFourSquares = (RANKS[3]^RANKS[4]) & (FILES[3]^FILES[4]);
