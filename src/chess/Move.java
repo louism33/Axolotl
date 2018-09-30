@@ -1,69 +1,81 @@
 package chess;
 
+import chess.Art;
 import javafx.util.Pair;
 
 public class Move {
-    int move;
-    int source, destination;
+
+
+    public int move;
+    public int source, destination;
     final private static int
-            SOURCE_MASK = 0x0000fc00,
-            DESTINATION_MASK = 0x000003f0,
-            QUEEN_PROMOTION_MASK = 0x0000000c,
-            ROOK_PROMOTION_MASK = 0x00000008,
-            BISHOP_PROMOTION_MASK = 0x00000004,
+            sourceOffset = 6,
+            SOURCE_MASK = 0x00000fc0,
+            DESTINATION_MASK = 0x0000003f,
+
+            SPECIAL_MOVE_MASK = 0x00003000,
+            CASTLING_MASK = 0x00001000,
+            ENPASSANT_MASK = 0x00002000,
+            PROMOTION_MASK = 0x00003000,
+
+            WHICH_PROMOTION = 0x0000c000,
             KNIGHT_PROMOTION_MASK = 0x00000000,
-            PROMOTION_MASK = 0x00000003,
-            ENPASSANT_MASK = 0x00000002,
-            CASTLING_MASK = 0x00000001;
+            BISHOP_PROMOTION_MASK = 0x00004000,
+            ROOK_PROMOTION_MASK = 0x00008000,
+            QUEEN_PROMOTION_MASK = 0x0000c000;
 
-    Move(int source, int destination){
-        if (source >= 64 | source < 0 | destination >= 64 | destination < 0){
-            throw new RuntimeException("False Move " + source+" "+ destination);
-        }
-        this.source = source << 10;
-        this.destination = destination << 5;
-
-        this.move |= (this.source & SOURCE_MASK);  //just in case there is a problem
-        this.move |= (this.destination & DESTINATION_MASK);
+    public Move(int source, int destination){
+        makeSourceAndDest(source, destination);
     }
 
-    Move(int source, int destination,
-         boolean promoteToKnight, boolean promoteToBishop, boolean promoteToRook, boolean promoteToQueen,
-         boolean promotion, boolean enPassant, boolean castling){
+    public Move(int source, int destination, boolean castling, boolean enPassant, boolean promotion,
+         boolean promoteToKnight, boolean promoteToBishop, boolean promoteToRook, boolean promoteToQueen){
 
-        if (source >= 64 | source < 0 | destination >= 64 | destination < 0){
-            throw new RuntimeException("False Move " + source+" "+ destination);
-        }
+        makeSourceAndDest(source, destination);
 
-        this.source = source << 10;
-        this.destination = destination << 5;
-
-        this.move |= (this.source & SOURCE_MASK);  //just in case there is a problem
-        this.move |= (this.destination & DESTINATION_MASK);
-
+        if (castling) this.move |= CASTLING_MASK;
+        if (enPassant) this.move |= ENPASSANT_MASK;
         if (promotion) {
             if (promoteToKnight) this.move |= KNIGHT_PROMOTION_MASK;
             else if (promoteToBishop) this.move |= BISHOP_PROMOTION_MASK;
             else if (promoteToRook) this.move |= ROOK_PROMOTION_MASK;
             else if (promoteToQueen) this.move |= QUEEN_PROMOTION_MASK;
         }
-
-        if (enPassant) this.move |= ENPASSANT_MASK;
-        if (castling) this.move |= CASTLING_MASK;
-
     }
+
+
+    private void makeSourceAndDest(int s, int d){
+        if (s >= 64 | s < 0 | d >= 64 | d < 0){
+            throw new RuntimeException("False Move " + s+" "+ d);
+        }
+        this.source = (s << sourceOffset) & SOURCE_MASK;
+        this.destination = d & DESTINATION_MASK;
+        this.move |= this.source;
+        this.move |= this.destination;
+    }
+
 
     Pair parseMove(){
         String s = Integer.toBinaryString(move);
         var moveSourceAndDest = new Pair(
-                Integer.toBinaryString((move & SOURCE_MASK) >> 10),
-                Integer.toBinaryString((move & DESTINATION_MASK) >> 5)
+                Integer.toBinaryString((move & SOURCE_MASK) >> sourceOffset),
+                Integer.toBinaryString((move & DESTINATION_MASK))
         );
         return moveSourceAndDest;
     }
-    
+
     @Override
     public String toString() {
+        return (getSourceAsPiece() +" " +destination);
+
+    }
+
+
+    public String toComplicatedString(){
         return Art.makeMoveToString(this.move);
+    }
+
+    public int getSourceAsPiece() {
+        return source >>> sourceOffset;
     }
 }

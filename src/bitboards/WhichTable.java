@@ -5,7 +5,6 @@ import chess.Chessboard;
 public class WhichTable {
 
     public static long[] whichTable(Chessboard board, long piece){
-        // todo, no pawn captures
 
         if (piece == board.WHITE_PAWNS) return PawnMoves.PAWN_MOVE_TABLE_WHITE;
         if (piece == board.BLACK_PAWNS) return PawnMoves.PAWN_MOVE_TABLE_BLACK;

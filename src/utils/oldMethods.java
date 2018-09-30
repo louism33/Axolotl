@@ -1,18 +1,62 @@
-package chess;
+package utils;
+
+import bitboards.WhichTable;
+import chess.BitIndexing;
+import chess.Chessboard;
+
+import java.util.List;
 
 import static bitboards.BitBoards.FILES;
 import static bitboards.BitBoards.RANKS;
 
 class oldMethods {
 
-
-
-
-
-    public static void main (String[] args ){
-        System.out.println("FILES HAVE CHANGED; this may now all be wrong");
-        lazywriter();
+    long allMovesPieces(Chessboard board, long[] pieces, boolean white){
+        long table = 0;
+        for (long piece : pieces) {
+            long table1 = tableForPiece(board, piece);
+            table |= table1;
+        }
+        return table;
     }
+
+
+    long tableForPiece(Chessboard board, long pieces){
+        long table = 0;
+        List<Integer> allPieces = BitIndexing.getIndexOfAllPieces(pieces);
+        for (Integer piece : allPieces) {
+            long l1 = WhichTable.whichTable(board, pieces)[piece];
+            table |= l1;
+        }
+        return table;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//    public static void main (String[] args ){
+//        System.out.println("FILES HAVE CHANGED; this may now all be wrong");
+//        lazywriter();
+//    }
 
     static void lazywriter(){
 //        System.out.print("public static long[] ROOK_MOVE_TABLE = {\n");

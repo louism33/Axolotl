@@ -4,8 +4,6 @@ import static chess.BitIndexing.pieceOnSquare;
 
 public class Art {
 
-
-
     static void printPieceOnSquare(Chessboard board, int s){
         printPieceByNumber(pieceOnSquare(board, s));
     }
@@ -28,7 +26,7 @@ public class Art {
         if (s == 12) System.out.println("Black King at "+s);
     }
 
-    static String printPieceByNumberASCII (int s){
+    static String pieceByNumberASCII(int s){
 
         if (s == 1) return ("P");
         if (s == 2) return ("N");
@@ -50,17 +48,19 @@ public class Art {
         String s = "";
         s += "   a b c d e f g h\n";
         s += "  +---------------+\n";
-        for (int y=7; y>=0; y--) {
+        for (int y = 7; y >= 0; y--) {
             s += (y+1) + " |";
-            for (int x=0; x<8; x++) {
-                s += printPieceByNumberASCII( pieceOnSquare(board, x + y*8) );
-                if (x<7) s += " ";
+            for (int x = 7; x >= 0; x--) {
+                s += pieceByNumberASCII( pieceOnSquare(board, x + y*8) );
+                if (x>0) s += " ";
             }
             s += "| " + (y+1);
             s += "\n";
         }
         s += "  +---------------+\n";
         s += "   a b c d e f g h\n";
+
+
         return s;
     }
 

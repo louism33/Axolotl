@@ -4,7 +4,7 @@ public class BitManipulations {
 
     private static long EMPTY = 0x0000000000000000L;
 
-    static long newPieceOnSquare (int x){
+    public static long newPieceOnSquare (int x){
         return 0x0000000000000001L << x;
     }
 

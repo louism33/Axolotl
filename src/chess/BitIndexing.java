@@ -6,15 +6,8 @@ import java.util.List;
 
 public class BitIndexing {
 
-    static long getValueOfFirstPiece(long l){
-        return Long.highestOneBit(l);
-    }
 
-    static long getValueOfLastPiece(long l){
-        return Long.lowestOneBit(l);
-    }
-
-    static int getIndexOfFirstPiece (long pieces) {
+    public static int getIndexOfFirstPiece (long pieces) {
         if (pieces == 0) return -1;
         long finder = pieces;
         int i = 0;
@@ -25,7 +18,7 @@ public class BitIndexing {
         return i;
     }
 
-    static int getIndexOfLastPiece (long pieces) {
+    public static int getIndexOfLastPiece (long pieces) {
         long finder = pieces;
         int i = 63;
         while (finder > 0){
@@ -35,7 +28,7 @@ public class BitIndexing {
         return i;
     }
 
-    static List<Integer> getIndexOfAllPieces(long pieces){
+    public static List<Integer> getIndexOfAllPieces(long pieces){
         List<Integer> indexes = new ArrayList<>();
         long temp = pieces;
         long endSquareMask = 0x0000000000000001L;
@@ -67,6 +60,7 @@ public class BitIndexing {
 
     static int pieceOnSquare(Chessboard board, int s){
         long square = BitManipulations.newPieceOnSquare(s);
+
         if ((square & board.WHITE_PAWNS) != 0) return 1;
         if ((square & board.WHITE_KNIGHTS) != 0) return 2;
         if ((square & board.WHITE_BISHOPS) != 0) return 3;
@@ -83,7 +77,6 @@ public class BitIndexing {
 
         else return 0;
     }
-
 
     static int populationCount (long pieces) {
         return Long.bitCount(pieces);
