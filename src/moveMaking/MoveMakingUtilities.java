@@ -2,7 +2,7 @@ package moveMaking;
 
 import chess.Chessboard;
 
-class MoveUtils {
+class MoveMakingUtilities {
 
     static void removePieces (Chessboard board, long sourceSquare, long destinationSquare){
         long mask = ~(sourceSquare | destinationSquare);

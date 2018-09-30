@@ -1,7 +1,7 @@
 package chess;
 
+import check.CheckMoveOrganiser;
 import moveGeneration.MoveGeneratorMaster;
-import moveMaking.MoveOrganiser;
 
 import java.util.List;
 
@@ -21,21 +21,34 @@ public class Main {
 
     Main(){
 
-        List<Move> moves = MoveGeneratorMaster.generateMoves(board, true);
+        plop(board);
 
-        for (int m = 0; m < moves.size(); m++){
-            System.out.println(moves.get(m));
-        }
 
-        Move move = moves.get(0);
-        System.out.println(move);
-        MoveOrganiser.moveOrganiserMaster(board, move);
+        System.out.println(Art.boardArt(board));
 
 
 
-        String s = Art.boardArt(board);
-        System.out.println(s);
+        List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, true);
+
+        System.out.println(moves);
+
+//        Move move = moves.get(0);
+//        System.out.println(move);
+////        MoveOrganiser.makeMoveMaster(board, move);
+//        String s = Art.boardArt(board);
+//        System.out.println(Art.boardArt(board));
+//
+//        List<Move> movesW = CheckMoveOrganiser.kingLegalMovesOnly(board, true);
+//        System.out.println(movesW);
+//
+
+//        String ss = Art.boardArt(board);
+//        System.out.println(ss);
     }
 
+    void plop(Chessboard board){
+
+
+    }
 
 }

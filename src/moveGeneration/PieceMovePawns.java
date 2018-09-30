@@ -5,10 +5,13 @@ import bitboards.PawnCaptures;
 import chess.BitIndexing;
 import chess.Chessboard;
 
-class PieceMovePawns {
+import java.util.List;
 
+import static chess.BitExtractor.getAllPieces;
 
-    static long pawnPushes(Chessboard board, long piece, boolean white) {
+public class PieceMovePawns {
+
+    public static long pawnPushes(Chessboard board, long piece, boolean white) {
         long allPieces = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
         long HOME_RANK = (white) ? BitBoards.RANK_TWO : BitBoards.RANK_SEVEN;
         long answer = 0;
@@ -33,21 +36,20 @@ class PieceMovePawns {
         return answer;
     }
 
-    static long pawnCaptures(Chessboard board, long piece, boolean white) {
+    public static long pawnCaptures(Chessboard board, long piece, boolean white) {
         long allPieces = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
-        long HOME_RANK = (white) ? BitBoards.RANK_TWO : BitBoards.RANK_SEVEN;
         long answer = 0;
         long temp = piece;
 
         if (white){
             int index = BitIndexing.getIndexOfFirstPiece(piece);
-            long l = PawnCaptures.PAWN_ATTACK_TABLE_WHITE[index];
+            long l = PawnCaptures.PAWN_CAPTURE_TABLE_WHITE[index];
             answer |= l;
         }
         else{
             long table = 0;
             int index = BitIndexing.getIndexOfFirstPiece(piece);
-            long l = PawnCaptures.PAWN_ATTACK_TABLE_BLACK[index];
+            long l = PawnCaptures.PAWN_CAPTURE_TABLE_BLACK[index];
             answer |= l;
         }
 
@@ -55,10 +57,35 @@ class PieceMovePawns {
         return answer & enemyPieces;
     }
 
+    public static long masterPawnPushesTable(Chessboard board, boolean white){
+        long ans = 0, pawns;
+        if (white){
+            pawns = board.WHITE_PAWNS;
+        }
+        else {
+            pawns = board.BLACK_PAWNS;
+        }
+        List<Long> allPawns = getAllPieces(pawns);
+        for (Long piece : allPawns){
+            ans |= pawnPushes(board, piece, white);
 
+        }
+        return ans;
+    }
 
-
-
-
+    public static long masterPawnCapturesTable(Chessboard board, boolean white){
+        long ans = 0, pawns;
+        if (white){
+            pawns = board.WHITE_PAWNS;
+        }
+        else {
+            pawns = board.BLACK_PAWNS;
+        }
+        List<Long> allPawns = getAllPieces(pawns);
+        for (Long piece : allPawns){
+            ans |= pawnCaptures(board, piece, white);
+        }
+        return ans;
+    }
 
 }

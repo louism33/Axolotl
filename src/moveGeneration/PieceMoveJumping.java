@@ -2,15 +2,16 @@ package moveGeneration;
 
 import bitboards.King;
 import bitboards.Knight;
-import chess.BitExtractor;
 import chess.BitIndexing;
 import chess.Chessboard;
 
 import java.util.List;
 
-class PieceMoveJumping {
+import static chess.BitExtractor.getAllPieces;
 
-    static long knightMove(Chessboard board, long piece, boolean white){
+public class PieceMoveJumping {
+
+    public static long knightMove(Chessboard board, long piece, boolean white){
         long table = 0;
         int index = BitIndexing.getIndexOfFirstPiece(piece);
         long l = Knight.KNIGHT_MOVE_TABLE[index];
@@ -19,7 +20,7 @@ class PieceMoveJumping {
         return table & emptyOfMyPieces;
     }
 
-    static long kingMove(Chessboard board, long piece, boolean white){
+    public static long kingMove(Chessboard board, long piece, boolean white){
         long table = 0;
         int index = BitIndexing.getIndexOfFirstPiece(piece);
 
@@ -29,7 +30,7 @@ class PieceMoveJumping {
         return table & emptyOfMyPieces;
     }
 
-    static long masterAttackTable(Chessboard board, boolean white){
+    public static long masterAttackTableJumping(Chessboard board, boolean white){
         long ans = 0, knights, king;
         if (white){
             knights = board.WHITE_KNIGHTS;
@@ -40,19 +41,16 @@ class PieceMoveJumping {
             king = board.BLACK_KING;
         }
 
-        List<Long> allKnights = BitExtractor.getAllPieces(knights);
+        List<Long> allKnights = getAllPieces(knights);
         for (Long piece : allKnights){
-            long jumpingMoves = knightMove(board, piece, white);
-            ans |= jumpingMoves;
+            ans |= knightMove(board, piece, white);
         }
 
-        List<Long> allKings = BitExtractor.getAllPieces(king);
+        List<Long> allKings = getAllPieces(king);
         for (Long piece : allKings){
-            long jumpingMoves = kingMove(board, piece, white);
-            ans |= jumpingMoves;
+            ans |= PieceMoveJumping.kingMove(board, piece, white);
         }
-
-
         return ans;
     }
+
 }

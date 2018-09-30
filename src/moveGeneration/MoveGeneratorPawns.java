@@ -9,9 +9,9 @@ import java.util.List;
 
 import static chess.BitExtractor.getAllPieces;
 
-class MoveGeneratorPawns {
+public class MoveGeneratorPawns {
 
-    static List<Move> masterMovePawns(Chessboard board, boolean white){
+    public static List<Move> masterMovePawns(Chessboard board, boolean white){
         long ans = 0, pawns;
         List<Move> moves = new ArrayList<>();
         if (white){
@@ -25,26 +25,17 @@ class MoveGeneratorPawns {
         for (Long piece : allPawns){
             long pawnMoves = PieceMovePawns.pawnPushes(board, piece, white);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
-            moves.addAll(movesFromAttackBoard(pawnMoves, indexOfPiece));
+            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece));
         }
 
         for (Long piece : allPawns){
             long pawnMoves = PieceMovePawns.pawnCaptures(board, piece, white);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
-            moves.addAll(movesFromAttackBoard(pawnMoves, indexOfPiece));
-        }
-
-
-        return moves;
-    }
-
-
-    static List<Move> movesFromAttackBoard (long attackBoard, int source) {
-        List<Move> moves = new ArrayList<>();
-        List<Integer> indexOfAllPieces = BitIndexing.getIndexOfAllPieces(attackBoard);
-        for (int i : indexOfAllPieces){
-            moves.add(new Move(source, i));
+            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece));
         }
         return moves;
     }
+
+
+
 }

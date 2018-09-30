@@ -6,9 +6,9 @@ import chess.Chessboard;
 
 import java.util.List;
 
-class PieceMoveSliding {
+public class PieceMoveSliding {
 
-    static long bishopSlidingMove(Chessboard board, long piece, boolean white){
+    public static long bishopSlidingMove(Chessboard board, long piece, boolean white){
         long ALL_PIECES = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES(),
                 NORTH_WEST = BitBoards.FILE_A | BitBoards.RANK_EIGHT,
                 NORTH_EAST = BitBoards.FILE_H | BitBoards.RANK_EIGHT,
@@ -47,7 +47,7 @@ class PieceMoveSliding {
         return answer & emptyOfMyPieces;
     }
 
-    static long rookSlidingMove(Chessboard board, long piece, boolean white){
+    public static long rookSlidingMove(Chessboard board, long piece, boolean white){
         long allPieces = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
         long answer = 0;
         long temp = piece;
@@ -82,12 +82,12 @@ class PieceMoveSliding {
         return answer & emptyOfMyPieces;
     }
 
-    static long queenSlidingMove(Chessboard board, long piece, boolean white){
+    public static long queenSlidingMove(Chessboard board, long piece, boolean white){
         return bishopSlidingMove(board, piece, white) | rookSlidingMove(board, piece, white);
     }
 
 
-    static long masterAttackTable(Chessboard board, boolean white){
+    public static long masterAttackTableSliding(Chessboard board, boolean white){
         long ans = 0, bishops, rooks, queens;
         if (white){
             bishops = board.WHITE_BISHOPS;
@@ -102,20 +102,17 @@ class PieceMoveSliding {
 
         List<Long> allBishops = BitExtractor.getAllPieces(bishops);
         for (Long piece : allBishops){
-            long slidingMoves = bishopSlidingMove(board, piece, white);
-            ans |= slidingMoves;
+            ans |= bishopSlidingMove(board, piece, white);;
         }
 
         List<Long> allRooks = BitExtractor.getAllPieces(rooks);
         for (Long piece : allRooks){
-            long slidingMoves = rookSlidingMove(board, piece, white);
-            ans |= slidingMoves;
+            ans |= rookSlidingMove(board, piece, white);;
         }
 
         List<Long> allQueens = BitExtractor.getAllPieces(queens);
         for (Long piece : allQueens){
-            long slidingMoves = queenSlidingMove(board, piece, white);
-            ans |= slidingMoves;
+            ans |= queenSlidingMove(board, piece, white);;
         }
         return ans;
     }

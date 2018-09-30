@@ -9,7 +9,7 @@ import java.util.List;
 
 import static chess.BitExtractor.getAllPieces;
 
-class MoveGeneratorSliding {
+public class MoveGeneratorSliding {
 
     static List<Move> masterMoveSliding (Chessboard board, boolean white){
         long ans = 0, bishops, rooks, queens;
@@ -29,28 +29,19 @@ class MoveGeneratorSliding {
         for (Long piece : allBishops){
             long slidingMoves = PieceMoveSliding.bishopSlidingMove(board, piece, white);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
-            moves.addAll(movesFromAttackBoard(slidingMoves, indexOfPiece));
+            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingMoves, indexOfPiece));
         }
         List<Long> allRooks = getAllPieces(rooks);
         for (Long piece : allRooks){
             long slidingMoves = PieceMoveSliding.rookSlidingMove(board, piece, white);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
-            moves.addAll(movesFromAttackBoard(slidingMoves, indexOfPiece));
+            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingMoves, indexOfPiece));
         }
         List<Long> allQueens = getAllPieces(queens);
         for (Long piece : allQueens){
             long slidingMoves = PieceMoveSliding.queenSlidingMove(board, piece, white);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
-            moves.addAll(movesFromAttackBoard(slidingMoves, indexOfPiece));
-        }
-        return moves;
-    }
-
-    static List<Move> movesFromAttackBoard (long attackBoard, int source) {
-        List<Move> moves = new ArrayList<>();
-        List<Integer> indexOfAllPieces = BitIndexing.getIndexOfAllPieces(attackBoard);
-        for (int i : indexOfAllPieces){
-            moves.add(new Move(source, i));
+            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingMoves, indexOfPiece));
         }
         return moves;
     }

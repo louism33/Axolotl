@@ -1,7 +1,7 @@
 package moveMaking;
 
-import javafx.util.Pair;
 import chess.Move;
+import javafx.util.Pair;
 
 public class MoveParser {
 
@@ -22,7 +22,7 @@ public class MoveParser {
             QUEEN_PROMOTION_MASK = 0x0000c000;
 
 
-
+//del
     static Pair parseMove(Move move){
         String s = Integer.toBinaryString(move.move);
         var moveSourceAndDest = new Pair(
@@ -32,7 +32,7 @@ public class MoveParser {
         return moveSourceAndDest;
     }
 
-
+    //del
     static Pair parseMoveInteger(Move move){
         String s = Integer.toBinaryString(move.move);
         var moveSourceAndDest = new Pair(

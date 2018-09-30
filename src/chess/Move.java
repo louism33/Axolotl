@@ -1,6 +1,5 @@
 package chess;
 
-import chess.Art;
 import javafx.util.Pair;
 
 public class Move {
