@@ -1,17 +1,19 @@
-package moveGeneration;
+package pinnedPieces;
 
 import chess.BitIndexing;
 import chess.Chessboard;
 import chess.Move;
+import moveGeneration.MoveGenerationUtilities;
+import moveGeneration.PieceMoveSliding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static chess.BitExtractor.getAllPieces;
 
-public class MoveGeneratorSliding {
+public class MoveGenerationPinnedPieces {
 
-    public static List<Move> masterMoveSliding (Chessboard board, boolean white, long legalPushes, long legalCaptures){
+    public static List<Move> masterMovePinned (Chessboard board, boolean white, long legalPushes, long legalCaptures){
         long ans = 0, bishops, rooks, queens;
         List<Move> moves = new ArrayList<>();
         if (white){

@@ -1,5 +1,6 @@
 package check;
 
+import chess.BitIndexing;
 import chess.Chessboard;
 import moveGeneration.MoveGeneratorPseudo;
 import moveGeneration.PieceMoveJumping;
@@ -9,7 +10,7 @@ import moveGeneration.PieceMoveSliding;
 public class CheckChecker {
 
     public static boolean boardInCheck(Chessboard board, boolean white){
-        long pseudoTable = MoveGeneratorPseudo.generatePseudoCaptureTable(board, !white);
+        long pseudoTable = MoveGeneratorPseudo.generatePseudoCaptureTable(board, !white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE);
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
         return (myKing & pseudoTable) != 0;
     }
@@ -32,11 +33,11 @@ public class CheckChecker {
         }
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
         int numberOfCheckers = 0;
-        if ((PieceMovePawns.pawnCaptures(board, myKing, white) & pawns) != 0) numberOfCheckers++;
-        if ((PieceMoveJumping.knightMove(board, myKing, white) & knights) != 0) numberOfCheckers++;
-        if ((PieceMoveSliding.bishopSlidingMove(board, myKing, white) & bishops) != 0) numberOfCheckers++;
-        if ((PieceMoveSliding.rookSlidingMove(board, myKing, white) & rooks) != 0) numberOfCheckers++;
-        if ((PieceMoveSliding.queenSlidingMove(board, myKing, white) & queens) != 0) numberOfCheckers++;
+        if ((PieceMovePawns.pawnCaptures(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & pawns) != 0) numberOfCheckers++;
+        if ((PieceMoveJumping.knightMove(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & knights) != 0) numberOfCheckers++;
+        if ((PieceMoveSliding.bishopSlidingMove(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & bishops) != 0) numberOfCheckers++;
+        if ((PieceMoveSliding.rookSlidingMove(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & rooks) != 0) numberOfCheckers++;
+        if ((PieceMoveSliding.queenSlidingMove(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & queens) != 0) numberOfCheckers++;
         return numberOfCheckers > 1;
     }
 

@@ -11,7 +11,7 @@ import static chess.BitExtractor.getAllPieces;
 
 public class MoveGeneratorJumping {
 
-    public static List<Move> masterMoveJumping(Chessboard board, boolean white){
+    public static List<Move> masterMoveJumping(Chessboard board, boolean white, long legalPushes, long legalCaptures){
         long ans = 0, knights, king;
         List<Move> moves = new ArrayList<>();
         if (white){
@@ -25,14 +25,14 @@ public class MoveGeneratorJumping {
 
         List<Long> allKnights = getAllPieces(knights);
         for (Long piece : allKnights){
-            long jumpingMoves = PieceMoveJumping.knightMove(board, piece, white);
+            long jumpingMoves = PieceMoveJumping.knightMove(board, piece, white, legalPushes, legalCaptures);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
             moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(jumpingMoves, indexOfPiece));
         }
 
         List<Long> allKings = getAllPieces(king);
         for (Long piece : allKings){
-            long jumpingMoves = PieceMoveJumping.kingMove(board, piece, white);
+            long jumpingMoves = PieceMoveJumping.kingMove(board, piece, white, legalPushes, legalCaptures);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
             moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(jumpingMoves, indexOfPiece));
         }

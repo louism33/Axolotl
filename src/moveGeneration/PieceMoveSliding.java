@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PieceMoveSliding {
 
-    public static long bishopSlidingMove(Chessboard board, long piece, boolean white){
+    public static long bishopSlidingMove(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
         long ALL_PIECES = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES(),
                 NORTH_WEST = BitBoards.FILE_A | BitBoards.RANK_EIGHT,
                 NORTH_EAST = BitBoards.FILE_H | BitBoards.RANK_EIGHT,
@@ -44,10 +44,10 @@ public class PieceMoveSliding {
             if ((temp & ALL_PIECES) != 0) break;
         }
         long emptyOfMyPieces = ~((white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES());
-        return answer & emptyOfMyPieces;
+        return answer & emptyOfMyPieces & legalPushes & legalCaptures;
     }
 
-    public static long rookSlidingMove(Chessboard board, long piece, boolean white){
+    public static long rookSlidingMove(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
         long allPieces = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
         long answer = 0;
         long temp = piece;
@@ -79,15 +79,15 @@ public class PieceMoveSliding {
             if ((temp & allPieces) != 0) break;
         }
         long emptyOfMyPieces = ~((white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES());
-        return answer & emptyOfMyPieces;
+        return answer & emptyOfMyPieces & legalPushes & legalCaptures;
     }
 
-    public static long queenSlidingMove(Chessboard board, long piece, boolean white){
-        return bishopSlidingMove(board, piece, white) | rookSlidingMove(board, piece, white);
+    public static long queenSlidingMove(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
+        return bishopSlidingMove(board, piece, white, legalPushes, legalCaptures) | rookSlidingMove(board, piece, white, legalPushes, legalCaptures);
     }
 
 
-    public static long masterAttackTableSliding(Chessboard board, boolean white){
+    public static long masterAttackTableSliding(Chessboard board, boolean white, long legalPushes, long legalCaptures){
         long ans = 0, bishops, rooks, queens;
         if (white){
             bishops = board.WHITE_BISHOPS;
@@ -102,17 +102,17 @@ public class PieceMoveSliding {
 
         List<Long> allBishops = BitExtractor.getAllPieces(bishops);
         for (Long piece : allBishops){
-            ans |= bishopSlidingMove(board, piece, white);;
+            ans |= bishopSlidingMove(board, piece, white, legalPushes, legalCaptures);
         }
 
         List<Long> allRooks = BitExtractor.getAllPieces(rooks);
         for (Long piece : allRooks){
-            ans |= rookSlidingMove(board, piece, white);;
+            ans |= rookSlidingMove(board, piece, white, legalPushes, legalCaptures);
         }
 
         List<Long> allQueens = BitExtractor.getAllPieces(queens);
         for (Long piece : allQueens){
-            ans |= queenSlidingMove(board, piece, white);;
+            ans |= queenSlidingMove(board, piece, white, legalPushes, legalCaptures);
         }
         return ans;
     }

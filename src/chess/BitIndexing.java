@@ -6,6 +6,7 @@ import java.util.List;
 
 public class BitIndexing {
 
+    public static final long UNIVERSE = 0xffffffffffffffffL;
 
     public static int getIndexOfFirstPiece (long pieces) {
         if (pieces == 0) return -1;

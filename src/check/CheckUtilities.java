@@ -1,5 +1,6 @@
 package check;
 
+import chess.BitIndexing;
 import chess.Chessboard;
 import moveGeneration.MoveGeneratorPseudo;
 
@@ -7,11 +8,11 @@ public class CheckUtilities {
 
     static long kingDangerSquares(Chessboard board, boolean white){
         Chessboard boardWithoutMyKing = chessboardCopier(board, white, true);
-        return MoveGeneratorPseudo.generatePseudoCaptureTable(boardWithoutMyKing, !white);
+        return MoveGeneratorPseudo.generatePseudoCaptureTable(boardWithoutMyKing, !white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE);
     }
 
 
-    static Chessboard chessboardCopier (Chessboard board, boolean white, boolean ignoreMyKing){
+    public static Chessboard chessboardCopier (Chessboard board, boolean white, boolean ignoreMyKing){
         Chessboard newBoard = new Chessboard();
         newBoard.WHITE_PAWNS = board.WHITE_PAWNS;
         newBoard.WHITE_KNIGHTS = board.WHITE_KNIGHTS;
