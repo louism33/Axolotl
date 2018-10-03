@@ -11,7 +11,11 @@ import static chess.BitExtractor.getAllPieces;
 
 public class PieceMovePawns {
 
-    public static long pawnPushes(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures) {
+    public static long singlePawnAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures) {
+        return singlePawnPushes(board, piece, white, legalPushes) | singlePawnCaptures(board, piece, white, legalCaptures);
+    }
+
+    public static long singlePawnPushes(Chessboard board, long piece, boolean white, long legalPushes) {
         long allPieces = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
         long HOME_RANK = (white) ? BitBoards.RANK_TWO : BitBoards.RANK_SEVEN;
         long answer = 0;
@@ -33,10 +37,10 @@ public class PieceMovePawns {
                 answer |= temp;
             } while (((temp & BitBoards.RANK_SIX) != 0));
         }
-        return answer & legalPushes & legalCaptures;
+        return answer & legalPushes;
     }
 
-    public static long pawnCaptures(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures) {
+    public static long singlePawnCaptures(Chessboard board, long piece, boolean white, long legalCaptures) {
         long allPieces = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
         long answer = 0;
         long temp = piece;
@@ -54,10 +58,10 @@ public class PieceMovePawns {
         }
 
         long enemyPieces = ((white) ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES());
-        return answer & enemyPieces & legalPushes & legalCaptures;
+        return answer & enemyPieces & legalCaptures;
     }
 
-    public static long masterPawnPushesTable(Chessboard board, boolean white, long legalPushes, long legalCaptures){
+    public static long masterPawnPushesTable(Chessboard board, boolean white, long legalPushes){
         long ans = 0, pawns;
         if (white){
             pawns = board.WHITE_PAWNS;
@@ -67,13 +71,13 @@ public class PieceMovePawns {
         }
         List<Long> allPawns = getAllPieces(pawns);
         for (Long piece : allPawns){
-            ans |= pawnPushes(board, piece, white, legalPushes, legalCaptures);
+            ans |= singlePawnPushes(board, piece, white, legalPushes);
 
         }
-        return ans & legalPushes & legalCaptures;
+        return ans & legalPushes;
     }
 
-    public static long masterPawnCapturesTable(Chessboard board, boolean white, long legalPushes, long legalCaptures){
+    public static long masterPawnCapturesTable(Chessboard board, boolean white, long legalCaptures){
         long ans = 0, pawns;
         if (white){
             pawns = board.WHITE_PAWNS;
@@ -83,7 +87,7 @@ public class PieceMovePawns {
         }
         List<Long> allPawns = getAllPieces(pawns);
         for (Long piece : allPawns){
-            ans |= pawnCaptures(board, piece, white, legalPushes, legalCaptures);
+            ans |= singlePawnCaptures(board, piece, white, legalCaptures);
         }
         return ans;
     }

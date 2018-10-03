@@ -21,11 +21,17 @@ public class Main {
     Main(){
 
         plop(board);
-
         System.out.println(Art.boardArt(board));
+
+
+
+
+
 
         List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, true);
 
+        System.out.println();
+        System.out.println("Moves from this position: ");
         System.out.println(moves);
         System.out.println(moves.size());
 

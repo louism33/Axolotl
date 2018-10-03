@@ -3,13 +3,20 @@ package check;
 import chess.BitIndexing;
 import chess.Chessboard;
 import moveGeneration.MoveGeneratorPseudo;
-import moveGeneration.PieceMoveJumping;
+import moveGeneration.PieceMoveKnight;
 import moveGeneration.PieceMovePawns;
 import moveGeneration.PieceMoveSliding;
 
 public class CheckChecker {
 
     public static boolean boardInCheck(Chessboard board, boolean white){
+        /*
+        long ENEMY_PIECES = (whiteTurn) ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES();
+        List<Move> regularPiecesMoves = MoveGeneratorPseudo.generateAllMovesWithoutKing
+                (board, whiteTurn, ~board.ALL_PIECES(), ENEMY_PIECES);
+
+         */
+        //todo: uses old functions
         long pseudoTable = MoveGeneratorPseudo.generatePseudoCaptureTable(board, !white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE);
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
         return (myKing & pseudoTable) != 0;
@@ -33,11 +40,11 @@ public class CheckChecker {
         }
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
         int numberOfCheckers = 0;
-        if ((PieceMovePawns.pawnCaptures(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & pawns) != 0) numberOfCheckers++;
-        if ((PieceMoveJumping.knightMove(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & knights) != 0) numberOfCheckers++;
-        if ((PieceMoveSliding.bishopSlidingMove(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & bishops) != 0) numberOfCheckers++;
-        if ((PieceMoveSliding.rookSlidingMove(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & rooks) != 0) numberOfCheckers++;
-        if ((PieceMoveSliding.queenSlidingMove(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & queens) != 0) numberOfCheckers++;
+        if ((PieceMovePawns.singlePawnCaptures(board, myKing, white, BitIndexing.UNIVERSE) & pawns) != 0) numberOfCheckers++;
+        if ((PieceMoveKnight.singleKnightCaptures(board, myKing, white, BitIndexing.UNIVERSE) & knights) != 0) numberOfCheckers++;
+        if ((PieceMoveSliding.singleBishopAllMoves(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & bishops) != 0) numberOfCheckers++;
+        if ((PieceMoveSliding.singleRookAllMoves(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & rooks) != 0) numberOfCheckers++;
+        if ((PieceMoveSliding.singleQueenAllMoves(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & queens) != 0) numberOfCheckers++;
         return numberOfCheckers > 1;
     }
 

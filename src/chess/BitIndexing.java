@@ -8,6 +8,10 @@ public class BitIndexing {
 
     public static final long UNIVERSE = 0xffffffffffffffffL;
 
+    public static long UNIVERSE_EMPTY (Chessboard board){
+        return board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
+    }
+
     public static int getIndexOfFirstPiece (long pieces) {
         if (pieces == 0) return -1;
         long finder = pieces;

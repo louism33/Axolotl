@@ -29,19 +29,19 @@ public class MoveGenerationPinnedPieces {
 
         List<Long> allBishops = getAllPieces(bishops);
         for (Long piece : allBishops){
-            long slidingMoves = PieceMoveSliding.bishopSlidingMove(board, piece, white, legalPushes, legalCaptures);
+            long slidingMoves = PieceMoveSliding.singleBishopAllMoves(board, piece, white, legalPushes, legalCaptures);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
             moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingMoves, indexOfPiece));
         }
         List<Long> allRooks = getAllPieces(rooks);
         for (Long piece : allRooks){
-            long slidingMoves = PieceMoveSliding.rookSlidingMove(board, piece, white, legalPushes, legalCaptures);
+            long slidingMoves = PieceMoveSliding.singleRookAllMoves(board, piece, white, legalPushes, legalCaptures);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
             moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingMoves, indexOfPiece));
         }
         List<Long> allQueens = getAllPieces(queens);
         for (Long piece : allQueens){
-            long slidingMoves = PieceMoveSliding.queenSlidingMove(board, piece, white, legalPushes, legalCaptures);
+            long slidingMoves = PieceMoveSliding.singleQueenAllMoves(board, piece, white, legalPushes, legalCaptures);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
             moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingMoves, indexOfPiece));
         }

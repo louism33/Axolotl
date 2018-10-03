@@ -1,27 +1,28 @@
 package pinnedPieces;
 
 import check.CheckUtilities;
-import chess.Art;
 import chess.BitIndexing;
 import chess.Chessboard;
 import moveGeneration.PieceMoveSliding;
 
 public class BoardWithoutPinnedPieces {
 
-
     public static Chessboard removePinnedPieces (Chessboard board, boolean white){
         //todo
         Chessboard boardWithoutPinnedPieces = CheckUtilities.chessboardCopier(board, white, false);
-        long pinnedPieces = whichPiecesArtPinned(board, white);
+        long pinnedPieces = whichPiecesArePinned(board, white);
         return boardWithoutPinnedPieces;
     }
 
-    static long whichPiecesArtPinned (Chessboard board, boolean white){
+    static long whichPiecesArePinned(Chessboard board, boolean white){
 
         long enemySlidingAttackTable = PieceMoveSliding.masterAttackTableSliding(board, !white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE);
 
-        Art.printLong(enemySlidingAttackTable);
+//        Art.printLong(enemySlidingAttackTable);
 
+        /*
+        put a bishop on king, then a rook, if hit a friendly piece, then if hit a enemy bishop / queen then rook/queen, profit
+         */
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
 
 
