@@ -1,9 +1,7 @@
 package pinnedPieces;
 
 import check.CheckUtilities;
-import chess.BitIndexing;
 import chess.Chessboard;
-import moveGeneration.PieceMoveSliding;
 
 public class BoardWithoutPinnedPieces {
 
@@ -16,7 +14,7 @@ public class BoardWithoutPinnedPieces {
 
     static long whichPiecesArePinned(Chessboard board, boolean white){
 
-        long enemySlidingAttackTable = PieceMoveSliding.masterAttackTableSliding(board, !white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE);
+//        long enemySlidingAttackTable = PieceMoveSliding.masterAttackTableSliding(board, !white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE);
 
 //        Art.printLong(enemySlidingAttackTable);
 

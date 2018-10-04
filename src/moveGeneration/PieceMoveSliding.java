@@ -118,7 +118,8 @@ public class PieceMoveSliding {
     }
 
 
-    public static long masterAttackTableSliding(Chessboard board, boolean white, long legalPushes, long legalCaptures){
+    public static long masterAttackTableSliding(Chessboard board, boolean white,
+                                                long ignoreThesePieces, long legalPushes, long legalCaptures){
         long ans = 0, bishops, rooks, queens;
         if (white){
             bishops = board.WHITE_BISHOPS;
@@ -131,17 +132,17 @@ public class PieceMoveSliding {
             queens = board.BLACK_QUEEN;
         }
 
-        List<Long> allBishops = BitExtractor.getAllPieces(bishops);
+        List<Long> allBishops = BitExtractor.getAllPieces(bishops, ignoreThesePieces);
         for (Long piece : allBishops){
             ans |= singleBishopAllMoves(board, piece, white, legalPushes, legalCaptures);
         }
 
-        List<Long> allRooks = BitExtractor.getAllPieces(rooks);
+        List<Long> allRooks = BitExtractor.getAllPieces(rooks, ignoreThesePieces);
         for (Long piece : allRooks){
             ans |= singleRookAllMoves(board, piece, white, legalPushes, legalCaptures);
         }
 
-        List<Long> allQueens = BitExtractor.getAllPieces(queens);
+        List<Long> allQueens = BitExtractor.getAllPieces(queens, ignoreThesePieces);
         for (Long piece : allQueens){
             ans |= singleQueenAllMoves(board, piece, white, legalPushes, legalCaptures);
         }

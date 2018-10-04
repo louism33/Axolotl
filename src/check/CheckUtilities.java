@@ -1,18 +1,14 @@
 package check;
 
-import chess.BitIndexing;
 import chess.Chessboard;
-import chess.Move;
 import moveGeneration.MoveGeneratorPseudo;
-
-import java.util.List;
 
 public class CheckUtilities {
 
     static long kingDangerSquares(Chessboard board, boolean white){
         Chessboard boardWithoutMyKing = chessboardCopier(board, white, true);
         long ENEMY_PIECES = (white) ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES();
-        return MoveGeneratorPseudo.generatePseudoCaptureTable(boardWithoutMyKing, !white, ~board.ALL_PIECES(), ENEMY_PIECES);
+        return MoveGeneratorPseudo.generatePseudoCaptureTable(boardWithoutMyKing, !white, 0, ~board.ALL_PIECES(), ENEMY_PIECES);
     }
 
 

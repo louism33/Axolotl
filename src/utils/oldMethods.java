@@ -99,7 +99,7 @@ class oldMethods {
         return ans;
     }
 
-    static long rookPseudoMoves(int rank, int file){ // todo: blocker
+    static long rookPseudoMoves(int rank, int file){
         long piece = RANKS[rank] & FILES[file];
         long range = RANKS[rank] | FILES[file];
         return piece ^ range;

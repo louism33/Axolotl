@@ -29,7 +29,8 @@ public class PieceMoveKing {
         return table & emptyOfMyPieces & (legalPushes | legalCaptures);
     }
 
-    public static long masterAttackTableKing(Chessboard board, boolean white, long legalPushes, long legalCaptures){
+    public static long masterAttackTableKing(Chessboard board, boolean white,
+                                             long ignoreThesePieces, long legalPushes, long legalCaptures){
         long ans = 0, king;
         if (white){
             king = board.WHITE_KING;
@@ -38,7 +39,7 @@ public class PieceMoveKing {
             king = board.BLACK_KING;
         }
 
-        List<Long> allKings = getAllPieces(king);
+        List<Long> allKings = getAllPieces(king, ignoreThesePieces);
         for (Long piece : allKings){
             ans |= singleKingAllMoves(board, piece, white, legalPushes, legalCaptures);
         }

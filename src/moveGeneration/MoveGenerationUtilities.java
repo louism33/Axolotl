@@ -17,4 +17,14 @@ public class MoveGenerationUtilities {
         return moves;
     }
 
+    public static List<Move> movesFromAttackBoardLong(long attackBoard, long longSource) {
+        List<Move> moves = new ArrayList<>();
+        int source = BitIndexing.getIndexOfFirstPiece(longSource);
+        List<Integer> indexOfAllPieces = BitIndexing.getIndexOfAllPieces(attackBoard);
+        for (int i : indexOfAllPieces) {
+            moves.add(new Move(source, i));
+        }
+        return moves;
+    }
+
 }

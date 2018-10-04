@@ -5,10 +5,10 @@ public class Chessboard {
     public boolean whiteTurn;
     public boolean whiteCanCastleK, whiteCanCastleQ, blackCanCastleK, blackCanCastleQ;
 
-//    public long WHITE_KING = 0x0000000000080000L;
-//    public long BLACK_QUEEN = 0x0000001000000000L;
-//    public long WHITE_KNIGHTS = 0x0000000000400002L;
-//    public long WHITE_BISHOPS = 0x0000000000400024L;
+    public long WHITE_KING = 0x0000000000080000L;
+    public long BLACK_QUEEN = 0x0000400000000000L;
+    public long WHITE_KNIGHTS = 0x0000000000000002L;
+    public long WHITE_BISHOPS = 0x0000000010400024L;
 //public long WHITE_ROOKS = 0x0000000000800081L;
 //    public long WHITE_QUEEN = 0x0000080000000010L;
 
@@ -16,17 +16,17 @@ public class Chessboard {
 
 
     public long WHITE_PAWNS = 0x000000000000FF00L;
-    public long WHITE_KNIGHTS = 0x0000000000000042L;
-    public long WHITE_BISHOPS = 0x0000000000000024L;
+//    public long WHITE_KNIGHTS = 0x0000000000000042L;
+//    public long WHITE_BISHOPS = 0x0000000000000024L;
     public long WHITE_ROOKS = 0x0000000000000081L;
     public long WHITE_QUEEN = 0x0000000000000010L;
-    public long WHITE_KING = 0x0000000000000008L;
+//    public long WHITE_KING = 0x0000000000000008L;
 
     public long BLACK_PAWNS = 0x00FF000000000000L;
     public long BLACK_KNIGHTS = 0x4200000000000000L;
     public long BLACK_BISHOPS = 0x2400000000000000L;
     public long BLACK_ROOKS = 0x8100000000000000L;
-    public long BLACK_QUEEN = 0x1000000000000000L;
+//    public long BLACK_QUEEN = 0x1000000000000000L;
     public long BLACK_KING = 0x0800000000000000L;
 
     public long ALL_WHITE_PIECES (){

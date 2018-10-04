@@ -3,14 +3,12 @@ package check;
 import bitboards.BitBoards;
 import chess.Chessboard;
 import chess.Move;
-import moveGeneration.MoveGeneratorPseudo;
-import moveGeneration.PieceMoveKnight;
-import moveGeneration.PieceMovePawns;
-import moveGeneration.PieceMoveSliding;
+import moveGeneration.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static bitboards.BitBoards.*;
 import static chess.BitIndexing.UNIVERSE;
 
 public class CheckMoveOrganiser {
@@ -20,12 +18,12 @@ public class CheckMoveOrganiser {
         if (CheckChecker.boardInDoubleCheck(board, white)) {
             return KingLegalMoves.kingLegalMovesOnly(board, white);
         }
-
-        return allLegalCheckEscapeMoves(board, white);
+        long ignoreThesePieces = PinnedManager.whichPiecesArePinned(board, white, myKing);
+        return allLegalCheckEscapeMoves(board, white, ignoreThesePieces);
     }
 
 
-    static List<Move> allLegalCheckEscapeMoves(Chessboard board, boolean white) {
+    static List<Move> allLegalCheckEscapeMoves(Chessboard board, boolean white, long ignoreThesePieces) {
         List<Move> moves = new ArrayList<>();
 
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
@@ -42,7 +40,8 @@ public class CheckMoveOrganiser {
             checkingPieceMask = slider;
         }
 
-        List<Move> restrictedMoves = MoveGeneratorPseudo.generateAllMovesWithoutKing(board, white, blockingSquaresMask, checkingPieceMask);
+        List<Move> restrictedMoves = MoveGeneratorPseudo.generateAllMovesWithoutKing
+                (board, white, ignoreThesePieces, blockingSquaresMask, checkingPieceMask);
         moves.addAll(restrictedMoves);
 
         List<Move> kingLegalMoves = KingLegalMoves.kingLegalMovesOnly(board, white);
@@ -55,14 +54,8 @@ public class CheckMoveOrganiser {
 
 
     public static long extractRayFromTwoPieces(Chessboard board, long pieceOne, long pieceTwo){
-
         if (pieceOne == pieceTwo) return 0;
-
-        long ALL_PIECES_TO_AVOID = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES(),
-                NORTH_WEST = BitBoards.FILE_A | BitBoards.RANK_EIGHT,
-                NORTH_EAST = BitBoards.FILE_H | BitBoards.RANK_EIGHT,
-                SOUTH_WEST = BitBoards.FILE_A | BitBoards.RANK_ONE,
-                SOUTH_EAST = BitBoards.FILE_H | BitBoards.RANK_ONE;
+        long ALL_PIECES_TO_AVOID = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
 
         ALL_PIECES_TO_AVOID ^= pieceTwo;
         ALL_PIECES_TO_AVOID ^= pieceOne;
@@ -108,7 +101,7 @@ public class CheckMoveOrganiser {
         possibleAnswer = 0;
 
         while (true) {
-            if ((smallPiece & BitBoards.FILE_H) != 0) {
+            if ((smallPiece & BitBoards.RANK_EIGHT) != 0) {
                 break;
             }
             smallPiece <<= 8;
@@ -142,6 +135,173 @@ public class CheckMoveOrganiser {
         return 0;
     }
 
+
+
+
+
+
+    public static long extractInfiniteRayFromTwoPieces(Chessboard board, long pieceOne, long pieceTwo){
+        if (pieceOne == pieceTwo) return 0;
+        long bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
+        long smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        long answer = 0, possibleAnswer = 0;
+        boolean thisOne = false;
+
+        while (true) {
+            if ((smallPiece & BitBoards.FILE_A) != 0) {
+                if (thisOne) {
+                    answer |= possibleAnswer;
+                }
+                break;
+            }
+            smallPiece <<= 1;
+            if ((smallPiece & bigPiece) != 0) {
+                thisOne = true;
+            }
+            possibleAnswer |= smallPiece;
+        }
+
+
+
+        bigPiece = !(pieceOne > pieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = !(pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        possibleAnswer = 0;
+        thisOne = false;
+        while (true) {
+            if ((smallPiece & BitBoards.FILE_H) != 0) {
+                if (thisOne) {
+                    answer |= possibleAnswer;
+                }
+                break;
+            }
+            smallPiece >>>= 1;
+            if ((smallPiece & bigPiece) != 0) {
+                thisOne = true;
+            }
+            possibleAnswer |= smallPiece;
+        }
+
+
+
+
+
+        bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        possibleAnswer = 0;
+        thisOne = false;
+        while (true) {
+            if ((smallPiece & NORTH_WEST) != 0) {
+                if (thisOne) {
+                    answer |= possibleAnswer;
+                }
+                break;
+            }
+            smallPiece <<= 9;
+            if ((smallPiece & bigPiece) != 0) {
+                thisOne = true;
+            }
+            possibleAnswer |= smallPiece;
+        }
+
+        bigPiece = !(pieceOne > pieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = !(pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        possibleAnswer = 0;
+        thisOne = false;
+        while (true) {
+            if ((smallPiece & SOUTH_EAST) != 0) {
+                if (thisOne) {
+                    answer |= possibleAnswer;
+                }
+                break;
+            }
+            smallPiece >>>= 9;
+            if ((smallPiece & bigPiece) != 0) {
+                thisOne = true;
+            }
+            possibleAnswer |= smallPiece;
+        }
+
+
+
+        bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        possibleAnswer = 0;
+        thisOne = false;
+        while (true) {
+            if ((smallPiece & BitBoards.RANK_EIGHT) != 0) {
+                if (thisOne) {
+                    answer |= possibleAnswer;
+                }
+                break;
+            }
+            smallPiece <<= 8;
+            if ((smallPiece & bigPiece) != 0) {
+                thisOne = true;
+            }
+            possibleAnswer |= smallPiece;
+        }
+
+
+
+        bigPiece = !(pieceOne > pieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = !(pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        possibleAnswer = 0;
+        thisOne = false;
+        while (true) {
+            if ((smallPiece & BitBoards.RANK_ONE) != 0) {
+                if (thisOne) {
+                    answer |= possibleAnswer;
+                }
+                break;
+            }
+            smallPiece >>>= 8;
+            if ((smallPiece & bigPiece) != 0) {
+                thisOne = true;
+            }
+            possibleAnswer |= smallPiece;
+        }
+
+
+
+
+        bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        possibleAnswer = 0;
+        thisOne = false;
+        while (true) {
+            if ((smallPiece & NORTH_EAST) != 0) {
+                if (thisOne) {
+                    answer |= possibleAnswer;
+                }
+                break;
+            }
+            smallPiece <<= 7;
+            if ((smallPiece & bigPiece) != 0) {
+                thisOne = true;
+            }
+            possibleAnswer |= smallPiece;
+        }
+
+        bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        possibleAnswer = 0;
+        thisOne = false;
+        while (true) {
+            if ((smallPiece & SOUTH_WEST) != 0) {
+                if (thisOne) {
+                    answer |= possibleAnswer;
+                }
+                break;
+            }
+            smallPiece >>>= 7;
+            if ((smallPiece & bigPiece) != 0) {
+                thisOne = true;
+            }
+            possibleAnswer |= smallPiece;
+        }
+
+        return answer;
+    }
 
 
 

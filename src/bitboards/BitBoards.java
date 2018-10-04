@@ -14,6 +14,8 @@ public class BitBoards {
         return ans;
     }
 
+
+
     public static long WHITE_PAWNS = 0x000000000000FF00L;
     public static long WHITE_KNIGHTS = 0x0000000000000042L;
     public static long WHITE_BISHOPS = 0x0000000000000024L;
@@ -71,6 +73,15 @@ public class BitBoards {
     public static long FILE_C = 0x2020202020202020L;
     public static long FILE_B = 0x4040404040404040L;
     public static long FILE_A = 0x8080808080808080L;
+
+
+    public static long NORTH_WEST = FILE_A | RANK_EIGHT;
+    public static long NORTH_EAST = FILE_H | RANK_EIGHT;
+    public static long  SOUTH_WEST = FILE_A | RANK_ONE;
+    public static long SOUTH_EAST = FILE_H | RANK_ONE;
+
+
+
 
     public static long[] RANKS = {
             0x00000000000000FFL, // 1

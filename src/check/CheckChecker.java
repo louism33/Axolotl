@@ -17,7 +17,10 @@ public class CheckChecker {
 
          */
         //todo: uses old functions
-        long pseudoTable = MoveGeneratorPseudo.generatePseudoCaptureTable(board, !white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE);
+
+
+        long pseudoTable = MoveGeneratorPseudo.generatePseudoCaptureTable(board, !white,
+                0, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE);
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
         return (myKing & pseudoTable) != 0;
     }

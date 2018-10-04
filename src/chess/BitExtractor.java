@@ -5,9 +5,9 @@ import java.util.List;
 
 public class BitExtractor {
 
-    public static List<Long> getAllPieces(long pieces){
+    public static List<Long> getAllPieces(long pieces, long ignoreThesePieces){
         List<Long> indexes = new ArrayList<>();
-        long temp = pieces;
+        long temp = pieces & (~ignoreThesePieces);
         while (temp != 0){
             long firstPiece = getFirstPiece(temp);
             indexes.add(firstPiece);

@@ -13,7 +13,8 @@ import static chess.BitExtractor.getAllPieces;
 
 public class MoveGenerationPinnedPieces {
 
-    public static List<Move> masterMovePinned (Chessboard board, boolean white, long legalPushes, long legalCaptures){
+    public static List<Move> masterMovePinned (Chessboard board, boolean white,
+                                               long ignoreThesePieces, long legalPushes, long legalCaptures){
         long ans = 0, bishops, rooks, queens;
         List<Move> moves = new ArrayList<>();
         if (white){
@@ -27,19 +28,19 @@ public class MoveGenerationPinnedPieces {
             queens = board.BLACK_QUEEN;
         }
 
-        List<Long> allBishops = getAllPieces(bishops);
+        List<Long> allBishops = getAllPieces(bishops, ignoreThesePieces);
         for (Long piece : allBishops){
             long slidingMoves = PieceMoveSliding.singleBishopAllMoves(board, piece, white, legalPushes, legalCaptures);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
             moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingMoves, indexOfPiece));
         }
-        List<Long> allRooks = getAllPieces(rooks);
+        List<Long> allRooks = getAllPieces(rooks, ignoreThesePieces);
         for (Long piece : allRooks){
             long slidingMoves = PieceMoveSliding.singleRookAllMoves(board, piece, white, legalPushes, legalCaptures);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
             moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingMoves, indexOfPiece));
         }
-        List<Long> allQueens = getAllPieces(queens);
+        List<Long> allQueens = getAllPieces(queens, ignoreThesePieces);
         for (Long piece : allQueens){
             long slidingMoves = PieceMoveSliding.singleQueenAllMoves(board, piece, white, legalPushes, legalCaptures);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
