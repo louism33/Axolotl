@@ -18,6 +18,7 @@ public class CheckMoveOrganiser {
         if (CheckChecker.boardInDoubleCheck(board, white)) {
             return KingLegalMoves.kingLegalMovesOnly(board, white);
         }
+        //can this be done earlier ? should it ?
         long ignoreThesePieces = PinnedManager.whichPiecesArePinned(board, white, myKing);
         return allLegalCheckEscapeMoves(board, white, ignoreThesePieces);
     }
@@ -46,6 +47,15 @@ public class CheckMoveOrganiser {
 
         List<Move> kingLegalMoves = KingLegalMoves.kingLegalMovesOnly(board, white);
         moves.addAll(kingLegalMoves);
+
+
+
+
+        //todo refactor all this movegen into one function. Most functions should only be used once
+        moves.addAll(MoveGeneratorPromotion.generatePromotionMoves(board, white, ignoreThesePieces));
+        moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves(board, white, ignoreThesePieces));
+
+
 
         return moves;
     }

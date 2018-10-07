@@ -1,5 +1,6 @@
 package moveMaking;
 
+import bitboards.BitBoards;
 import chess.BitManipulations;
 import chess.Chessboard;
 import chess.Move;
@@ -9,6 +10,8 @@ public class MoveRegular {
     static void makeRegularMove(Chessboard board, Move move){
         long sourcePiece = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
         long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
+
+        MoveCastling.castleFlagManager(board, move);
 
         if ((sourcePiece & board.WHITE_PAWNS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
@@ -63,4 +66,7 @@ public class MoveRegular {
             throw new RuntimeException("false move");
         }
     }
+
+
+
 }

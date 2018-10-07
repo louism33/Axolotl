@@ -6,6 +6,7 @@ import chess.Move;
 public class MoveOrganiser {
 
     public static void makeMoveMaster(Chessboard board, Move move) {
+
         if (MoveParser.isSpecialMove(move)){
             if (MoveParser.isCastlingMove(move)) {
                 MoveCastling.makeCastlingMove(board, move);

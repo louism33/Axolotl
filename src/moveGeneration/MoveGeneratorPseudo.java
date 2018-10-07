@@ -1,5 +1,6 @@
 package moveGeneration;
 
+import bitboards.BitBoards;
 import chess.Chessboard;
 import chess.Move;
 
@@ -21,9 +22,18 @@ public class MoveGeneratorPseudo {
         List<Move> moves = new ArrayList<>();
         moves.addAll(MoveGeneratorKnight.masterKnightPushes(board, whiteTurn, ignoreThesePieces, legalPushes));
         moves.addAll(MoveGeneratorSliding.masterSlidingPushes(board, whiteTurn, ignoreThesePieces, legalPushes));
-        moves.addAll(MoveGeneratorPawns.masterPawnPushes(board, whiteTurn, ignoreThesePieces, legalPushes));
 
-        return moves;
+
+        // remove promotable pawns here, as their moves are generated separately
+        if (whiteTurn) {
+            long PENULTIMATE_RANK = BitBoards.RANK_SEVEN;
+            long promotablePawns = board.WHITE_PAWNS & PENULTIMATE_RANK;
+
+            moves.addAll(MoveGeneratorPawns.masterPawnPushes(board, whiteTurn, ignoreThesePieces, legalPushes));
+        }
+
+
+            return moves;
     }
 
     public static List<Move> generateAllCaptures(Chessboard board, boolean whiteTurn,

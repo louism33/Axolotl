@@ -20,6 +20,7 @@ public class PieceMoveKing {
     }
 
     public static long singleKingAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
+        if (piece == 0) return 0;
         long table = 0;
         int index = BitIndexing.getIndexOfFirstPiece(piece);
 

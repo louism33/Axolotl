@@ -21,6 +21,7 @@ public class PieceMovePawns {
         long answer = 0;
         long temp = piece;
 
+        // promotion moves are handled elsewhere
         if (white) {
             do {
                 if ((temp & BitBoards.RANK_EIGHT) != 0) break;

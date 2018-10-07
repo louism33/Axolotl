@@ -4,6 +4,8 @@ import javafx.util.Pair;
 
 public class Move {
 
+    //could change all this to just be an int (short)
+
 
     public int move;
     public int source, destination;

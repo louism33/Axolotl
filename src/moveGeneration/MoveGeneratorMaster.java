@@ -1,5 +1,6 @@
 package moveGeneration;
 
+import bitboards.BitBoards;
 import check.CheckChecker;
 import check.CheckMoveOrganiser;
 import check.KingLegalMoves;
@@ -27,11 +28,20 @@ public class MoveGeneratorMaster {
         long myKing = (whiteTurn) ? board.WHITE_KING : board.BLACK_KING;
         long pinnedPieces = PinnedManager.whichPiecesArePinned(board, whiteTurn, myKing);
 
+        moves.addAll(MoveGeneratorCastling.generateCastlingMoves(board, whiteTurn));
+        moves.addAll(MoveGeneratorPromotion.generatePromotionMoves(board, whiteTurn, pinnedPieces));
+        moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves(board, whiteTurn, pinnedPieces));
         moves.addAll(KingLegalMoves.kingLegalMovesOnly(board, whiteTurn));
+
+
+        long PENULTIMATE_RANK = whiteTurn ? BitBoards.RANK_SEVEN : BitBoards.RANK_TWO;
+        long myPawns = whiteTurn ? board.WHITE_PAWNS : board.BLACK_PAWNS;
+        long promotablePawns = myPawns & PENULTIMATE_RANK;
+        long pinnedPiecesAndPromotingPawns = pinnedPieces | promotablePawns;
 
         if (pinnedPieces == 0){
             List<Move> regularPiecesMoves = MoveGeneratorPseudo.generateAllMovesWithoutKing
-                    (board, whiteTurn, pinnedPieces, ~board.ALL_PIECES(), ENEMY_PIECES);
+                    (board, whiteTurn, pinnedPiecesAndPromotingPawns, ~board.ALL_PIECES(), ENEMY_PIECES);
             moves.addAll(regularPiecesMoves);
             return moves;
         }
@@ -39,7 +49,8 @@ public class MoveGeneratorMaster {
         moves.addAll(pinnedMoveManager(board, whiteTurn, pinnedPieces, myKing));
 
         List<Move> unpinnedPiecesMoves = MoveGeneratorPseudo.generateAllMovesWithoutKing
-                (board, whiteTurn, pinnedPieces, ~board.ALL_PIECES(), ENEMY_PIECES);
+                (board, whiteTurn, pinnedPiecesAndPromotingPawns, ~board.ALL_PIECES(), ENEMY_PIECES);
+
         moves.addAll(unpinnedPiecesMoves);
 
         return moves;

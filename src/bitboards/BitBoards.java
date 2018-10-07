@@ -14,21 +14,19 @@ public class BitBoards {
         return ans;
     }
 
+    public static final long WHITE_PAWNS = 0x000000000000FF00L;
+    public static final long WHITE_KNIGHTS = 0x0000000000000042L;
+    public static final long WHITE_BISHOPS = 0x0000000000000024L;
+    public static final long WHITE_ROOKS = 0x0000000000000081L;
+    public static final long WHITE_QUEEN = 0x0000000000000010L;
+    public static final long WHITE_KING = 0x0000000000000008L;
 
-
-    public static long WHITE_PAWNS = 0x000000000000FF00L;
-    public static long WHITE_KNIGHTS = 0x0000000000000042L;
-    public static long WHITE_BISHOPS = 0x0000000000000024L;
-    public static long WHITE_ROOKS = 0x0000000000000081L;
-    public static long WHITE_QUEEN = 0x0000000000000010L;
-    public static long WHITE_KING = 0x0000000000000008L;
-
-    public static long BLACK_PAWNS = 0x00FF000000000000L;
-    public static long BLACK_KNIGHTS = 0x4200000000000000L;
-    public static long BLACK_BISHOPS = 0x2400000000000000L;
-    public static long BLACK_ROOKS = 0x8100000000000000L;
-    public static long BLACK_QUEEN = 0x1000000000000000L;
-    public static long BLACK_KING = 0x0800000000000000L;
+    public static final long BLACK_PAWNS = 0x00FF000000000000L;
+    public static final long BLACK_KNIGHTS = 0x4200000000000000L;
+    public static final long BLACK_BISHOPS = 0x2400000000000000L;
+    public static final long BLACK_ROOKS = 0x8100000000000000L;
+    public static final long BLACK_QUEEN = 0x1000000000000000L;
+    public static final long BLACK_KING = 0x0800000000000000L;
 
     public static long[] WHITE_PIECES = {
             0x000000000000FF00L, //Pawns
@@ -81,6 +79,10 @@ public class BitBoards {
     public static long SOUTH_EAST = FILE_H | RANK_ONE;
 
 
+    public static long NORTH_WEST_CORNER = FILE_A & RANK_EIGHT;
+    public static long NORTH_EAST_CORNER = FILE_H & RANK_EIGHT;
+    public static long  SOUTH_WEST_CORNER = FILE_A & RANK_ONE;
+    public static long SOUTH_EAST_CORNER = FILE_H & RANK_ONE;
 
 
     public static long[] RANKS = {
@@ -105,9 +107,15 @@ public class BitBoards {
             0x8080808080808080L, // A
     };
 
-    static long centreFourSquares = (RANKS[3]^RANKS[4]) & (FILES[3]^FILES[4]);
+    public static long centreFourSquares = (RANKS[3]^RANKS[4]) & (FILES[3]^FILES[4]);
 
-    static long centreNineSquares = (RANKS[2]^RANKS[3]^RANKS[4]^RANKS[5]) & (FILES[2]^FILES[3]^FILES[4]^FILES[5]);
+    public static long centreNineSquares = (RANKS[2]^RANKS[3]^RANKS[4]^RANKS[5]) & (FILES[2]^FILES[3]^FILES[4]^FILES[5]);
 
+
+    public static long whiteCastleKingEmpties = 0x0000000000000006L;
+    public static long whiteCastleQueenEmpties = 0x0000000000000070L;
+
+    public static long blackCastleKingEmpties = 0x0600000000000000L;
+    public static long blackCastleQueenEmpties = 0x7000000000000000L;
 
 }

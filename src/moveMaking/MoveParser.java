@@ -5,7 +5,7 @@ import javafx.util.Pair;
 
 public class MoveParser {
 
-    final private static int
+    final public static int
             sourceOffset = 6,
             SOURCE_MASK = 0x00000fc0,
             DESTINATION_MASK = 0x0000003f,
@@ -47,15 +47,36 @@ public class MoveParser {
     }
 
     static boolean isCastlingMove (Move move){
-        return (move.move & CASTLING_MASK) != 0;
+        return (move.move & SPECIAL_MOVE_MASK) == CASTLING_MASK;
     }
 
     static boolean isEnPassantMove (Move move){
-        return (move.move & ENPASSANT_MASK) != 0;
+        return (move.move & SPECIAL_MOVE_MASK) == ENPASSANT_MASK;
     }
 
     static boolean isPromotionMove (Move move){
-        return (move.move & PROMOTION_MASK) != 0;
+        return (move.move & SPECIAL_MOVE_MASK) == PROMOTION_MASK;
+    }
+
+
+    static boolean isPromotionToKnight (Move move){
+        if (!((move.move & SPECIAL_MOVE_MASK) == PROMOTION_MASK)) return false;
+        return (move.move & WHICH_PROMOTION) == KNIGHT_PROMOTION_MASK;
+    }
+
+    static boolean isPromotionToBishop(Move move){
+        if (!((move.move & SPECIAL_MOVE_MASK) == PROMOTION_MASK)) return false;
+        return (move.move & WHICH_PROMOTION) == BISHOP_PROMOTION_MASK;
+    }
+
+    static boolean isPromotionToRook (Move move){
+        if (!((move.move & SPECIAL_MOVE_MASK) == PROMOTION_MASK)) return false;
+        return (move.move & WHICH_PROMOTION) == ROOK_PROMOTION_MASK;
+    }
+
+    static boolean isPromotionToQueen (Move move){
+        if (!((move.move & SPECIAL_MOVE_MASK) == PROMOTION_MASK)) return false;
+        return (move.move & WHICH_PROMOTION) == QUEEN_PROMOTION_MASK;
     }
 
 }

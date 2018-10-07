@@ -7,6 +7,7 @@ import static bitboards.BitBoards.*;
 public class PinnedManager {
 
     public static long whichPiecesArePinned(Chessboard board, boolean white, long squareOfInterest){
+        if (squareOfInterest == 0) return 0;
         long pinnedPieces = 0;
         pinnedPieces |= diagonalPins(board, squareOfInterest, white);
         pinnedPieces |= cardinalPins(board, squareOfInterest, white);

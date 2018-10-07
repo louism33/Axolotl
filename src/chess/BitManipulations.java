@@ -2,25 +2,27 @@ package chess;
 
 public class BitManipulations {
 
-    private static long EMPTY = 0x0000000000000000L;
-
     public static long newPieceOnSquare (int x){
         return 0x0000000000000001L << x;
     }
 
-    static long northOne (long l){
+    public static boolean isEmptySquare (Chessboard board, long square){
+        return ((square & board.ALL_PIECES()) == 0);
+    }
+
+    public static long northOne (long l){
         return l << 8;
     }
 
-    static long southOne (long l){
+    public static long southOne (long l){
         return l >> 8;
     }
 
-    static boolean isEmpty (long l){
+    static boolean isZero(long l){
         return l == 0;
     }
 
-    static long EnemyOrEmptySquares (long l) {
+    public static long EnemyOrEmptySquares (long l) {
         return ~l;
     }
 
