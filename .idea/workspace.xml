@@ -2,45 +2,37 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69d40d9d-8980-4bb2-9941-56e4fd504839" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorCastling.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorEnPassant.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPromotion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Engine/Engine.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Evaluator/Evaluator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/chess/Copier.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/chess/Perft.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/chess/StandAlone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/bitboards/BitBoards.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/bitboards/BitBoards.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/check/CheckChecker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/check/CheckChecker.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/check/CheckMoveOrganiser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/check/CheckMoveOrganiser.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/check/CheckUtilities.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/check/CheckUtilities.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/chess/BitExtractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/chess/BitExtractor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/chess/BitManipulations.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/chess/BitManipulations.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/chess/BitIndexing.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/chess/BitIndexing.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/chess/Chessboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/chess/Chessboard.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/chess/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/chess/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/chess/Move.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/chess/Move.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/MoveGeneratorEnPassant.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/MoveGeneratorEnPassant.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/MoveGeneratorMaster.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/MoveGeneratorMaster.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/MoveGeneratorPromotion.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/MoveGeneratorPromotion.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/MoveGeneratorPseudo.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/MoveGeneratorPseudo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/PieceMoveKing.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/PieceMoveKing.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/PieceMovePawns.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/PieceMovePawns.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/PinnedManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/moveGeneration/PinnedManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/moveMaking/MoveCastling.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/moveMaking/MoveCastling.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/moveMaking/MoveOrganiser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/moveMaking/MoveOrganiser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/moveMaking/MoveRegular.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/moveMaking/MoveRegular.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/pinnedPieces/BoardWithoutPinnedPieces.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/pinnedPieces/BoardWithoutPinnedPieces.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bitboards/BitBoards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bitboards/BitBoards.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/moveMaking/MoveMakingUtilities.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/moveMaking/MoveMakingUtilities.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/pinnedPieces/BoardWithoutPinnedPieces.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/check/CheckChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/check/CheckChecker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/check/CheckMoveOrganiser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/check/CheckMoveOrganiser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chess/BitExtractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/BitExtractor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chess/BitManipulations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/BitManipulations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/check/CheckUtilities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/check/CheckUtilities.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chess/BitIndexing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/BitIndexing.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chess/Chessboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/Chessboard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chess/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chess/Move.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/chess/Move.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorMaster.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorMaster.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorEnPassant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorEnPassant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPromotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPromotion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPseudo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPseudo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/moveGeneration/PieceMoveKing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveGeneration/PieceMoveKing.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/moveGeneration/PieceMovePawns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveGeneration/PieceMovePawns.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/moveGeneration/PinnedManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveGeneration/PinnedManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/moveMaking/MoveCastling.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveMaking/MoveCastling.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/moveMaking/MoveMakingUtilities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveMaking/MoveMakingUtilities.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/moveMaking/MoveOrganiser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveMaking/MoveOrganiser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/moveMaking/MoveParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveMaking/MoveParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/moveMaking/MovePromotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveMaking/MovePromotion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/moveMaking/MoveRegular.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/moveMaking/MoveRegular.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pinnedPieces/BoardWithoutPinnedPieces.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pinnedPieces/BoardWithoutPinnedPieces.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -79,23 +71,23 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="6" />
-          <entry key="java" value="51360" />
+          <entry key="java" value="55729" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="51360" />
+          <entry key="JAVA" value="55729" />
           <entry key="PLAIN_TEXT" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="508" />
+          <entry key="java" value="550" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="508" />
+          <entry key="JAVA" value="550" />
         </counts>
       </usages-collector>
     </session>
@@ -103,98 +95,22 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/chess/Chessboard.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="35" selection-start-line="19" selection-start-column="35" selection-end-line="19" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/chess/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
-              <caret line="28" column="54" lean-forward="true" selection-start-line="28" selection-start-column="54" selection-end-line="28" selection-end-column="54" />
+            <state relative-caret-position="118">
+              <caret line="53" column="55" lean-forward="true" selection-start-line="53" selection-start-column="55" selection-end-line="53" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorMaster.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="52" selection-start-line="52" selection-end-line="52" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorEnPassant.java">
+        <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorMaster.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/moveMaking/MovePromotion.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="17" column="12" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPromotion.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="117">
-              <caret line="38" selection-start-line="38" selection-end-line="38" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/moveMaking/MoveMakingUtilities.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="263">
-              <caret line="45" column="23" selection-start-line="45" selection-start-column="23" selection-end-line="45" selection-end-column="23" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/moveMaking/MoveOrganiser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="17" column="40" selection-start-line="17" selection-start-column="40" selection-end-line="17" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/moveMaking/MoveParser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="45" column="51" selection-start-line="45" selection-start-column="51" selection-end-line="45" selection-end-column="51" />
-              <folding>
-                <element signature="e#1336#1337#0" expanded="true" />
-                <element signature="e#1411#1412#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="120">
+              <caret line="17" column="62" selection-start-line="17" selection-start-column="62" selection-end-line="17" selection-end-column="62" />
             </state>
           </provider>
         </entry>
@@ -210,21 +126,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>infinit</find>
-      <find>ENemy</find>
-      <find>enemy</find>
-      <find>EMPTY</find>
-      <find>if .*knight</find>
-      <find>if.*kni</find>
-      <find>pawns, kn</find>
-      <find>knights,</find>
-      <find>List&lt;Move&gt;</find>
-      <find>pinnedPiece</find>
-      <find>NORTH</find>
-      <find>new Mov</find>
-      <find>index</find>
-      <find>pawn.*</find>
-      <find>&lt;&lt;</find>
       <find>Empty</find>
       <find>pawnMo</find>
       <find>generateAllm</find>
@@ -240,6 +141,21 @@
       <find>WHITE</find>
       <find>PROMOTION_MASK</find>
       <find>promotionmo</find>
+      <find>getA</find>
+      <find>singleP.*capture</find>
+      <find>.*attack.*table</find>
+      <find>enemyPieces</find>
+      <find>population</find>
+      <find>&amp; legal</find>
+      <find>moveA</find>
+      <find>makeMo</find>
+      <find>board</find>
+      <find>return .*board</find>
+      <find>chessboardCopier</find>
+      <find>copyMo</find>
+      <find>pseudo</find>
+      <find>randomM</find>
+      <find>generate</find>
     </findStrings>
     <replaceStrings>
       <replace>fff</replace>
@@ -276,11 +192,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/moveMaking/MakeMove.java" />
-        <option value="$PROJECT_DIR$/src/chess/Art.java" />
-        <option value="$PROJECT_DIR$/src/bitboards/PawnCaptures.java" />
-        <option value="$PROJECT_DIR$/src/moveGeneration/CheckChecker.java" />
-        <option value="$PROJECT_DIR$/src/moveGeneration/CheckMoveOrganiser.java" />
         <option value="$PROJECT_DIR$/src/moveMaking/MoveEnPassant.java" />
         <option value="$PROJECT_DIR$/src/moveGeneration/Utils.java" />
         <option value="$PROJECT_DIR$/src/moveMaking/MoveUtils.java" />
@@ -300,10 +211,8 @@
         <option value="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorKnight.java" />
         <option value="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorSliding.java" />
         <option value="$PROJECT_DIR$/src/moveGeneration/PieceMoveSliding.java" />
-        <option value="$PROJECT_DIR$/src/check/CheckChecker.java" />
         <option value="$PROJECT_DIR$/src/moveGeneration/PieceMoveKnight.java" />
         <option value="$PROJECT_DIR$/src/check/CheckUtilities.java" />
-        <option value="$PROJECT_DIR$/src/pinnedPieces/BoardWithoutPinnedPieces.java" />
         <option value="$PROJECT_DIR$/src/moveGeneration/MoveGenerationUtilities.java" />
         <option value="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPawns.java" />
         <option value="$PROJECT_DIR$/src/chess/BitExtractor.java" />
@@ -313,19 +222,26 @@
         <option value="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorCastling.java" />
         <option value="$PROJECT_DIR$/src/bitboards/BitBoards.java" />
         <option value="$PROJECT_DIR$/src/chess/BitManipulations.java" />
-        <option value="$PROJECT_DIR$/src/moveGeneration/PieceMovePawns.java" />
-        <option value="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPseudo.java" />
-        <option value="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorEnPassant.java" />
-        <option value="$PROJECT_DIR$/src/check/CheckMoveOrganiser.java" />
         <option value="$PROJECT_DIR$/src/moveGeneration/PinnedManager.java" />
         <option value="$PROJECT_DIR$/src/moveGeneration/PieceMoveKing.java" />
         <option value="$PROJECT_DIR$/src/moveMaking/MoveParser.java" />
         <option value="$PROJECT_DIR$/src/moveMaking/MovePromotion.java" />
-        <option value="$PROJECT_DIR$/src/moveMaking/MoveMakingUtilities.java" />
         <option value="$PROJECT_DIR$/src/chess/Move.java" />
-        <option value="$PROJECT_DIR$/src/chess/Main.java" />
+        <option value="$PROJECT_DIR$/src/check/CheckChecker.java" />
+        <option value="$PROJECT_DIR$/src/check/CheckMoveOrganiser.java" />
+        <option value="$PROJECT_DIR$/src/moveGeneration/PieceMovePawns.java" />
+        <option value="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorEnPassant.java" />
         <option value="$PROJECT_DIR$/src/chess/Chessboard.java" />
+        <option value="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPseudo.java" />
+        <option value="$PROJECT_DIR$/src/pinnedPieces/BoardWithoutPinnedPieces.java" />
+        <option value="$PROJECT_DIR$/src/moveMaking/MoveMakingUtilities.java" />
+        <option value="$PROJECT_DIR$/src/chess/Copier.java" />
         <option value="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPromotion.java" />
+        <option value="$PROJECT_DIR$/src/chess/Perft.java" />
+        <option value="$PROJECT_DIR$/src/chess/StandAlone.java" />
+        <option value="$PROJECT_DIR$/src/Evaluator/Evaluator.java" />
+        <option value="$PROJECT_DIR$/src/Engine/Engine.java" />
+        <option value="$PROJECT_DIR$/src/chess/Main.java" />
         <option value="$PROJECT_DIR$/src/moveGeneration/MoveGeneratorMaster.java" />
       </list>
     </option>
@@ -343,10 +259,9 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="565" />
-    <option name="y" value="58" />
-    <option name="width" value="801" />
-    <option name="height" value="737" />
+    <option name="x" value="-1" />
+    <option name="width" value="843" />
+    <option name="height" value="741" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -524,6 +439,18 @@
               <item name="chessPlusPlus" type="b2602c69:ProjectViewProjectNode" />
               <item name="chessPlusPlus" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Engine" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chessPlusPlus" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chessPlusPlus" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Evaluator" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chessPlusPlus" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chessPlusPlus" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="moveGeneration" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -551,10 +478,10 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="Mani&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/chess/BitManipulations.java&#10;movepawn&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/moveGeneration/MoveGeneratorPawns.java" />
+    <property name="SearchEverywhereHistoryKey" value="main&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/chess/Main.java&#10;knight&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/moveGeneration/PieceMoveKnight.java&#10;Mani&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/chess/BitManipulations.java&#10;movepawn&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/moveGeneration/MoveGeneratorPawns.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538860549468" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538944040487" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../chessInJava/chessBachV8.5" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
@@ -597,19 +524,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MakeMove" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="moveMaking.MakeMove" />
-      <module name="chessPlusPlus" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="moveMaking.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="MoveGeneratorMaster" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="moveGeneration.MoveGeneratorMaster" />
       <module name="chessPlusPlus" />
@@ -636,20 +550,33 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="StandAlone" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="chess.StandAlone" />
+      <module name="chessPlusPlus" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="chess.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.Main" />
       <item itemvalue="Application.MoveGeneratorMaster" />
-      <item itemvalue="Application.MakeMove" />
       <item itemvalue="Application.CheckMoveOrganiser" />
       <item itemvalue="Application.PawnCaptures" />
+      <item itemvalue="Application.StandAlone" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.StandAlone" />
         <item itemvalue="Application.CheckMoveOrganiser" />
         <item itemvalue="Application.MoveGeneratorMaster" />
         <item itemvalue="Application.PawnCaptures" />
-        <item itemvalue="Application.MakeMove" />
       </list>
     </recent_temporary>
   </component>
@@ -686,12 +613,12 @@
       <workItem from="1538718136142" duration="2610000" />
       <workItem from="1538762393520" duration="1222000" />
       <workItem from="1538816984041" duration="11309000" />
-      <workItem from="1538896409934" duration="6787000" />
+      <workItem from="1538896409934" duration="29970000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="217476000" />
+    <option name="totallyTimeSpent" value="240659000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -706,7 +633,7 @@
     <frame x="-1" y="0" width="1368" height="741" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2189394" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22727273" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -716,8 +643,8 @@
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32847896" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.30097088" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.487055" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.4514563" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.36893204" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32847896" />
@@ -820,48 +747,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/bitboards/Queen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2100">
-          <caret line="140" selection-start-line="140" selection-end-line="140" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/bitboards/PawnMoves.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4020">
-          <caret line="268" lean-forward="true" selection-start-line="268" selection-end-line="268" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/jdk-10.0.2/lib/src.zip!/java.base/java/lang/Short.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="523" column="40" selection-start-line="523" selection-start-column="38" selection-end-line="523" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/jdk-10.0.2/lib/src.zip!/java.base/java/lang/String.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="1870" column="18" selection-start-line="1870" selection-start-column="18" selection-end-line="1870" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/jdk-10.0.2/lib/src.zip!/java.base/java/lang/StringBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1523">
-          <caret line="149" column="13" selection-start-line="149" selection-start-column="7" selection-end-line="149" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/jdk-10.0.2/lib/src.zip!/java.base/java/lang/Long.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1798">
-          <caret line="1827" column="22" selection-start-line="1827" selection-start-column="20" selection-end-line="1827" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/bitboards/Rook.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="311">
@@ -948,27 +833,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pinnedPieces/BoardWithoutPinnedPieces.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/moveGeneration/PieceMoveKnight.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="40" column="71" selection-start-line="40" selection-start-column="71" selection-end-line="40" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/moveGeneration/PieceMoveSliding.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8">
-          <caret line="19" selection-start-line="19" selection-end-line="23" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/check/CheckUtilities.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-8">
@@ -1013,26 +877,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/bitboards/BitBoards.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-535">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/chess/BitExtractor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
-          <folding>
-            <element signature="e#504#505#0" expanded="true" />
-            <element signature="e#548#549#0" expanded="true" />
-            <element signature="e#588#589#0" expanded="true" />
-            <element signature="e#631#632#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/moveMaking/MoveCastling.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="915">
@@ -1053,38 +897,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPseudo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9">
-          <caret line="56" column="29" selection-start-line="56" selection-start-column="29" selection-end-line="56" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPawns.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="42" column="4" selection-start-line="42" selection-start-column="4" selection-end-line="46" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/moveGeneration/PieceMovePawns.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="26" column="48" selection-start-line="26" selection-start-column="48" selection-end-line="26" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGenerationUtilities.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="10" column="29" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/check/CheckChecker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="89">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
         </state>
       </provider>
     </entry>
@@ -1120,27 +936,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/check/CheckMoveOrganiser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="54" column="55" lean-forward="true" selection-start-line="54" selection-start-column="55" selection-end-line="54" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/moveMaking/MoveOrganiser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="17" column="40" selection-start-line="17" selection-start-column="40" selection-end-line="17" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/moveMaking/MoveMakingUtilities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="45" column="23" selection-start-line="45" selection-start-column="23" selection-end-line="45" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1151,6 +950,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPawns.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="35" column="39" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chess/BitExtractor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+          <folding>
+            <element signature="e#504#505#0" expanded="true" />
+            <element signature="e#548#549#0" expanded="true" />
+            <element signature="e#588#589#0" expanded="true" />
+            <element signature="e#631#632#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/moveMaking/MovePromotion.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -1158,27 +977,158 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPromotion.java">
+    <entry file="file://$PROJECT_DIR$/src/moveGeneration/PieceMoveSliding.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="38" selection-start-line="38" selection-end-line="38" />
+        <state relative-caret-position="-30">
+          <caret line="18" column="105" selection-start-line="18" selection-start-column="94" selection-end-line="18" selection-end-column="105" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/check/CheckChecker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="28" column="68" selection-start-line="28" selection-start-column="68" selection-end-line="28" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/check/CheckMoveOrganiser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="333" column="43" selection-start-line="333" selection-start-column="43" selection-end-line="333" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/moveGeneration/PieceMovePawns.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="61" column="5" lean-forward="true" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/moveGeneration/PieceMoveKnight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorEnPassant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="jar:///usr/lib/jvm/jdk-10.0.2/lib/src.zip!/java.base/java/util/List.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="237" column="12" selection-start-line="237" selection-start-column="12" selection-end-line="237" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPseudo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="13" column="45" lean-forward="true" selection-start-line="13" selection-start-column="45" selection-end-line="13" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bitboards/BitBoards.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/chess/Chessboard.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="35" selection-start-line="19" selection-start-column="35" selection-end-line="19" selection-end-column="35" />
+        <state relative-caret-position="-413">
+          <caret line="4" column="35" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pinnedPieces/BoardWithoutPinnedPieces.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="20" column="12" lean-forward="true" selection-end-line="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/moveMaking/MoveMakingUtilities.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chess/Copier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="63" column="5" selection-start-line="63" selection-start-column="5" selection-end-line="63" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorPromotion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="123" column="27" selection-start-line="123" selection-start-column="27" selection-end-line="123" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chess/Perft.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="39" column="9" lean-forward="true" selection-start-line="33" selection-start-column="8" selection-end-line="39" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Evaluator/Evaluator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#470#471#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Engine/Engine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="658">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chess/StandAlone.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="14">
+          <caret line="77" column="56" selection-start-line="77" selection-start-column="56" selection-end-line="77" selection-end-column="56" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/chess/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="28" column="54" lean-forward="true" selection-start-line="28" selection-start-column="54" selection-end-line="28" selection-end-column="54" />
+        <state relative-caret-position="118">
+          <caret line="53" column="55" lean-forward="true" selection-start-line="53" selection-start-column="55" selection-end-line="53" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1187,18 +1137,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorMaster.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="52" selection-start-line="52" selection-end-line="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/moveGeneration/MoveGeneratorEnPassant.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="120">
+          <caret line="17" column="62" selection-start-line="17" selection-start-column="62" selection-end-line="17" selection-end-column="62" />
         </state>
       </provider>
     </entry>

@@ -21,30 +21,4 @@ public class MoveMakingUtilities {
         board.BLACK_KING &= mask;
     }
 
-    public static Move copyMove (Move move) {
-        Move copyMove = new Move(move.getSourceAsPiece(), move.destination);
-
-        if ((move.move & MoveParser.SPECIAL_MOVE_MASK) != 0) {
-            if ((move.move & MoveParser.SPECIAL_MOVE_MASK) == MoveParser.CASTLING_MASK) {
-                copyMove.move |= MoveParser.CASTLING_MASK;
-            } else if ((move.move & MoveParser.SPECIAL_MOVE_MASK) == MoveParser.ENPASSANT_MASK) {
-                copyMove.move |= MoveParser.ENPASSANT_MASK;
-            } else if ((move.move & MoveParser.SPECIAL_MOVE_MASK) == MoveParser.PROMOTION_MASK) {
-                copyMove.move |= MoveParser.PROMOTION_MASK;
-
-                if ((move.move & MoveParser.WHICH_PROMOTION) == MoveParser.KNIGHT_PROMOTION_MASK) {
-                    copyMove.move |= MoveParser.KNIGHT_PROMOTION_MASK;
-                } else if ((move.move & MoveParser.WHICH_PROMOTION) == MoveParser.BISHOP_PROMOTION_MASK) {
-                    copyMove.move |= MoveParser.BISHOP_PROMOTION_MASK;
-                } else if ((move.move & MoveParser.WHICH_PROMOTION) == MoveParser.ROOK_PROMOTION_MASK) {
-                    copyMove.move |= MoveParser.ROOK_PROMOTION_MASK;
-                } else if ((move.move & MoveParser.WHICH_PROMOTION) == MoveParser.QUEEN_PROMOTION_MASK) {
-                    copyMove.move |= MoveParser.QUEEN_PROMOTION_MASK;
-                }
-            }
-        }
-        return copyMove;
-    }
-
-
 }

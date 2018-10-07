@@ -5,7 +5,6 @@ import chess.*;
 import moveMaking.MoveMakingUtilities;
 import moveMaking.MoveParser;
 
-import javax.swing.plaf.metal.MetalMenuBarUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class MoveGeneratorPromotion {
 
     public static List<Move> generatePromotionMoves(Chessboard board, boolean white, long ignoreThesePieces){
         List<Move> moves = new ArrayList<>();
-//        moves.addAll(generatePromotionPushes(board, white, ignoreThesePieces));
+        moves.addAll(generatePromotionPushes(board, white, ignoreThesePieces));
         moves.addAll(generatePromotionCaptures(board, white, ignoreThesePieces));
         return moves;
     }
@@ -110,19 +109,19 @@ public class MoveGeneratorPromotion {
     static List<Move> promotingMovesByPiece(Move move){
         List<Move> moves = new ArrayList<>();
 
-        Move moveK = MoveMakingUtilities.copyMove(move);
+        Move moveK = Copier.copyMove(move);
         moveK.move |= MoveParser.KNIGHT_PROMOTION_MASK;
         moves.add(moveK);
 
-        Move moveB = MoveMakingUtilities.copyMove(move);
+        Move moveB = Copier.copyMove(move);
         moveB.move |= MoveParser.BISHOP_PROMOTION_MASK;
         moves.add(moveB);
 
-        Move moveR = MoveMakingUtilities.copyMove(move);
+        Move moveR = Copier.copyMove(move);
         moveR.move |= MoveParser.ROOK_PROMOTION_MASK;
         moves.add(moveR);
 
-        Move moveQ = MoveMakingUtilities.copyMove(move);
+        Move moveQ = Copier.copyMove(move);
         moveQ.move |= MoveParser.QUEEN_PROMOTION_MASK;
         moves.add(moveQ);
 

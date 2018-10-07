@@ -26,13 +26,14 @@ public class CheckChecker {
     }
 
     public static boolean boardInDoubleCheck(Chessboard board, boolean white){
-        long ans = 0, pawns, knights, bishops, rooks, queens;
+        long ans = 0, pawns, knights, bishops, rooks, queens, myKing;
         if (!white){
             pawns = board.WHITE_PAWNS;
             knights = board.WHITE_KNIGHTS;
             bishops = board.WHITE_BISHOPS;
             rooks = board.WHITE_ROOKS;
             queens = board.WHITE_QUEEN;
+            myKing = board.WHITE_KING;
         }
         else {
             pawns = board.BLACK_PAWNS;
@@ -40,14 +41,19 @@ public class CheckChecker {
             bishops = board.BLACK_BISHOPS;
             rooks = board.BLACK_ROOKS;
             queens = board.BLACK_QUEEN;
+            myKing = board.BLACK_KING;
         }
-        long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
+
         int numberOfCheckers = 0;
-        if ((PieceMovePawns.singlePawnCaptures(board, myKing, white, BitIndexing.UNIVERSE) & pawns) != 0) numberOfCheckers++;
-        if ((PieceMoveKnight.singleKnightCaptures(board, myKing, white, BitIndexing.UNIVERSE) & knights) != 0) numberOfCheckers++;
-        if ((PieceMoveSliding.singleBishopAllMoves(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & bishops) != 0) numberOfCheckers++;
-        if ((PieceMoveSliding.singleRookAllMoves(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & rooks) != 0) numberOfCheckers++;
-        if ((PieceMoveSliding.singleQueenAllMoves(board, myKing, white, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE) & queens) != 0) numberOfCheckers++;
+
+        if ((PieceMovePawns.singlePawnCaptures(board, myKing, white, pawns)) != 0) numberOfCheckers++;
+        if ((PieceMoveKnight.singleKnightCaptures(board, myKing, white, knights)) != 0) numberOfCheckers++;
+        if ((PieceMoveSliding.singleBishopAllMoves(board, myKing, white, bishops, bishops)) != 0) numberOfCheckers++;
+        if ((PieceMoveSliding.singleRookAllMoves(board, myKing, white, rooks, rooks)) != 0) numberOfCheckers++;
+
+        long queenAttacks = PieceMoveSliding.singleQueenAllMoves(board, myKing, white, queens, queens);
+        if (queenAttacks != 0) numberOfCheckers += BitIndexing.populationCount(queenAttacks);
+
         return numberOfCheckers > 1;
     }
 

@@ -83,7 +83,7 @@ public class BitIndexing {
         else return 0;
     }
 
-    static int populationCount (long pieces) {
+    public static int populationCount (long pieces) {
         return Long.bitCount(pieces);
     }
 

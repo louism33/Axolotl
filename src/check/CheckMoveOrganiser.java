@@ -331,7 +331,7 @@ public class CheckMoveOrganiser {
         }
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
 
-        long possiblePawn = PieceMovePawns.singlePawnCaptures(board, myKing, white, UNIVERSE) & pawns;
+        long possiblePawn = PieceMovePawns.singlePawnCaptures(board, myKing, white, pawns);
         if (possiblePawn != 0) {
             return possiblePawn;
         }

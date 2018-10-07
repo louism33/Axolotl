@@ -58,8 +58,7 @@ public class PieceMovePawns {
             answer |= l;
         }
 
-        long enemyPieces = ((white) ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES());
-        return answer & enemyPieces & legalCaptures;
+        return answer & legalCaptures;
     }
 
     public static long masterPawnPushesTable(Chessboard board, boolean white,
