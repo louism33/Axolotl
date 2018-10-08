@@ -37,7 +37,10 @@ public class CheckMoveOrganiser {
         }
         else {
             long slider = inCheckByASlider(board, white);
-            blockingSquaresMask = extractRayFromTwoPieces(board, myKing, slider);
+            // are we counting the capture of the slider twice ?
+//            blockingSquaresMask = extractRayFromTwoPieces(board, myKing, slider);
+            blockingSquaresMask = extractRayFromTwoPieces(board, myKing, slider) & (~slider);
+
             checkingPieceMask = slider;
         }
 
@@ -51,9 +54,10 @@ public class CheckMoveOrganiser {
 
 
 
+        //todo this should be in restricted moves
         //todo refactor all this movegen into one function. Most functions should only be used once
-        moves.addAll(MoveGeneratorPromotion.generatePromotionMoves(board, white, ignoreThesePieces));
-        moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves(board, white, ignoreThesePieces));
+//        moves.addAll(MoveGeneratorPromotion.generatePromotionMoves(board, white, ignoreThesePieces));
+//        moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves(board, white, ignoreThesePieces));
 
 
 

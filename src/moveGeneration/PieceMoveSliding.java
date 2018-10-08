@@ -1,6 +1,7 @@
 package moveGeneration;
 
 import bitboards.BitBoards;
+import chess.Art;
 import chess.BitExtractor;
 import chess.Chessboard;
 
@@ -46,7 +47,7 @@ public class PieceMoveSliding {
         }
         temp = piece;
         while (true) {
-            if ((temp & SOUTH_WEST) != 0) break;
+            if ((temp & SOUTH_EAST) != 0) break;
             temp >>>= 9;
             answer |= temp;
             if ((temp & ALL_PIECES) != 0) break;
@@ -99,11 +100,6 @@ public class PieceMoveSliding {
         long emptyOfMyPieces = ~((white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES());
         return answer & emptyOfMyPieces & (legalPushes | legalCaptures);
     }
-
-
-
-
-
 
     public static long singleQueenPushes(Chessboard board, long piece, boolean white, long legalPushes){
         return singleQueenAllMoves(board, piece, white, legalPushes, 0);

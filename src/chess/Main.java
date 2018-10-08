@@ -30,26 +30,10 @@ public class Main {
     }
 
 
-    void plop(){
-
-        Perft.countFinalNodesAtDepth(board, 1);
-
-        Perft.countFinalNodesAtDepth(board, 2);
-
-        Perft.countFinalNodesAtDepth(board, 3);
-
-        Perft.countFinalNodesAtDepth(board, 4);
-
-//        Perft.countFinalNodesAtDepth(board, 5);
-    }
-
-
 
     Main(){
 
         System.out.println(Art.boardArt(board));
-
-        plop();
 
         List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, false);
         System.out.println();

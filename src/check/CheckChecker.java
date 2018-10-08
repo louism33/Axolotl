@@ -2,12 +2,10 @@ package check;
 
 import chess.BitIndexing;
 import chess.Chessboard;
-import moveGeneration.MoveGeneratorPseudo;
-import moveGeneration.PieceMoveKnight;
-import moveGeneration.PieceMovePawns;
-import moveGeneration.PieceMoveSliding;
+import moveGeneration.*;
 
 public class CheckChecker {
+
 
     public static boolean boardInCheck(Chessboard board, boolean white){
         /*
@@ -16,12 +14,25 @@ public class CheckChecker {
                 (board, whiteTurn, ~board.ALL_PIECES(), ENEMY_PIECES);
 
          */
+
+        /*
+        List<Move> unpinnedPiecesMoves = MoveGeneratorPseudo.generateAllMovesWithoutKing
+                (board, whiteTurn, pinnedPiecesAndPromotingPawns, ~board.ALL_PIECES(), ENEMY_PIECES);
+
+         */
+
+        //todo: would I be checked by a pawn that is on penultimate rank?
+
         //todo: uses old functions
-
-
-        long pseudoTable = MoveGeneratorPseudo.generatePseudoCaptureTable(board, !white,
-                0, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE);
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
+        long enemyKing = (!white) ? board.WHITE_KING : board.BLACK_KING;
+
+
+        // todo: currently pinned pieces cannot check us along their legal pinned squares
+        long pinnedPieces = PinnedManager.whichPiecesArePinned(board, !white, enemyKing);
+        long pseudoTable = MoveGeneratorPseudo.generatePseudoCaptureTable(board, !white,
+                pinnedPieces, BitIndexing.UNIVERSE, BitIndexing.UNIVERSE);
+
         return (myKing & pseudoTable) != 0;
     }
 

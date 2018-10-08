@@ -30,11 +30,12 @@ public class MoveGeneratorPromotion {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {
                     long pawnMoves = PieceMovePawns.singlePawnPushes(board, piece, white, BitBoards.RANK_EIGHT);
-                    int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
-
-                    Move move = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece).get(0);
-                    move.move |= MoveParser.PROMOTION_MASK;
-                    moves.addAll(promotingMovesByPiece(move));
+                    if (pawnMoves != 0) {
+                        int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
+                        Move move = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece).get(0);
+                        move.move |= MoveParser.PROMOTION_MASK;
+                        moves.addAll(promotingMovesByPiece(move));
+                    }
                 }
             }
         }
@@ -46,11 +47,13 @@ public class MoveGeneratorPromotion {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {
                     long pawnMoves = PieceMovePawns.singlePawnPushes(board, piece, white, BitBoards.RANK_ONE);
-                    int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
+                    if (pawnMoves != 0) {
+                        int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
 
-                    Move move = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece).get(0);
-                    move.move |= MoveParser.PROMOTION_MASK;
-                    moves.addAll(promotingMovesByPiece(move));
+                        Move move = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece).get(0);
+                        move.move |= MoveParser.PROMOTION_MASK;
+                        moves.addAll(promotingMovesByPiece(move));
+                    }
                 }
             }
         }
@@ -70,12 +73,14 @@ public class MoveGeneratorPromotion {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {
                     long pawnMoves = PieceMovePawns.singlePawnCaptures(board, piece, white, promotionCaptureSquares);
-                    int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
-                    List<Move> unflaggedCaptures = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece);
+                    if (pawnMoves != 0) {
+                        int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
+                        List<Move> unflaggedCaptures = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece);
 
-                    for (Move move : unflaggedCaptures){
-                        move.move |= MoveParser.PROMOTION_MASK;
-                        moves.addAll(promotingMovesByPiece(move));
+                        for (Move move : unflaggedCaptures) {
+                            move.move |= MoveParser.PROMOTION_MASK;
+                            moves.addAll(promotingMovesByPiece(move));
+                        }
                     }
                 }
             }
@@ -89,12 +94,14 @@ public class MoveGeneratorPromotion {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {
                     long pawnMoves = PieceMovePawns.singlePawnCaptures(board, piece, white, promotionCaptureSquares);
-                    int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
-                    List<Move> unflaggedCaptures = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece);
+                    if (pawnMoves != 0) {
+                        int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
+                        List<Move> unflaggedCaptures = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece);
 
-                    for (Move move : unflaggedCaptures) {
-                        move.move |= MoveParser.PROMOTION_MASK;
-                        moves.addAll(promotingMovesByPiece(move));
+                        for (Move move : unflaggedCaptures) {
+                            move.move |= MoveParser.PROMOTION_MASK;
+                            moves.addAll(promotingMovesByPiece(move));
+                        }
                     }
                 }
             }

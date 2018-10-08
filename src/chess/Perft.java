@@ -7,23 +7,65 @@ import java.util.List;
 
 public class Perft {
 
-    public static void countMovesAtDepth(Chessboard board, int depth){
-        int i = Perft.countMovesAtDepthHelper(board, depth) - 1;
-        System.out.println("Total Nodes at Depth " + depth + ": ");
-        System.out.println(i);
+/*
+20
+400
+8902
+197281
+4865609
+ */
+
+
+    public static void main(String[] args) {
+        new Perft();
+    }
+
+    Perft(){
+        plop();
+    }
+
+    void plop(){
+
+        Chessboard board = new Chessboard();
+
+        String s = Art.boardArt(board);
+        System.out.println(s);
+        System.out.println("-----------------------------------");
+
+        int maxD = 4;
+        for (int depth = 1; depth <= maxD; depth++) {
+            countFinalNodesAtDepth(board, depth);
+            System.out.println();
+//            countTotalNodesAtDepth(board, depth);
+            System.out.println("-----");
+        }
+    }
+
+
+
+    public static void countTotalNodesAtDepth(Chessboard board, int depth){
+        long i = Perft.countMovesAtDepthHelper(board, depth) - 1;
+        System.out.println("Total Nodes at Depth " + depth + ": " + i);
     }
 
     public static void countFinalNodesAtDepth(Chessboard board, int depth) {
-        int ii = Perft.countFinalNodesAtDepthHelper(board, depth);
-        System.out.println("Final Nodes at Depth " + depth + ": ");
-        System.out.println(ii);
+        numberOfCaptures = 0;
+
+        long ii = Perft.countFinalNodesAtDepthHelper(board, depth);
+        System.out.println("Final Nodes at Depth " + depth + ": " + ii);
+        System.out.println("--previous checks: " + MoveGeneratorMaster.numberOfChecks);
+
+        System.out.println("--captures: " + numberOfCaptures);
+
     }
 
 
 
 
-    private static int countFinalNodesAtDepthHelper(Chessboard board, int depth){
-        int temp = 0;
+    public static int numberOfCaptures = 0;
+
+    private static long countFinalNodesAtDepthHelper(Chessboard board, int depth){
+        long temp = 0;
 
         if (depth == 0){
             return 1;
@@ -33,9 +75,24 @@ public class Perft {
 
         for (Move move : moves) {
             Chessboard babyBoard = Copier.chessboardCopier(board, board.isWhiteTurn(), false);
+
+            long enemies = babyBoard.isWhiteTurn() ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES();
+
+            int destination = move.destination;
+            long destSquare = BitManipulations.newPieceOnSquare(destination);
+
+//            Art.printLong(enemies);
+//            Art.printLong(destSquare);
+//            System.out.println("xxx");
+            boolean b = (destSquare & enemies) != 0;
+            if (b) {
+                numberOfCaptures++;
+            }
+
             MoveOrganiser.makeMoveMaster(babyBoard, move);
             babyBoard.setWhiteTurn(!board.isWhiteTurn());
-            int movesAtDepth = countFinalNodesAtDepthHelper(babyBoard, depth - 1);
+
+            long movesAtDepth = countFinalNodesAtDepthHelper(babyBoard, depth - 1);
             temp += movesAtDepth;
         }
 
@@ -43,8 +100,8 @@ public class Perft {
     }
 
 
-    private static int countMovesAtDepthHelper(Chessboard board, int depth){
-        int temp = 1;
+    private static long countMovesAtDepthHelper(Chessboard board, int depth){
+        long temp = 1;
 
         if (depth == 0){
             return 1;
@@ -58,9 +115,7 @@ public class Perft {
 
             babyBoard.setWhiteTurn(!board.isWhiteTurn());
 
-            int movesAtDepth = countMovesAtDepthHelper(babyBoard, depth - 1);
-
-//            System.out.println("--- " + movesAtDepth);
+            long movesAtDepth = countMovesAtDepthHelper(babyBoard, depth - 1);
 
             temp += movesAtDepth;
         }
