@@ -5,7 +5,7 @@ import moveMaking.MoveOrganiser;
 
 import java.util.List;
 
-public class Perft {
+public class Perft { // too many captures
 
 /*
 20
@@ -32,7 +32,7 @@ public class Perft {
         System.out.println(s);
         System.out.println("-----------------------------------");
 
-        int maxD = 4;
+        int maxD = 5;
         for (int depth = 1; depth <= maxD; depth++) {
             countFinalNodesAtDepth(board, depth);
             System.out.println();
@@ -54,8 +54,11 @@ public class Perft {
         long ii = Perft.countFinalNodesAtDepthHelper(board, depth);
         System.out.println("Final Nodes at Depth " + depth + ": " + ii);
         System.out.println("--previous checks: " + MoveGeneratorMaster.numberOfChecks);
-
+        System.out.println("--checkmates: " + MoveGeneratorMaster.numberOfCheckMates);
+        System.out.println("--stalemates: " + MoveGeneratorMaster.numberOfStaleMates);
         System.out.println("--captures: " + numberOfCaptures);
+
+
 
     }
 
@@ -72,6 +75,10 @@ public class Perft {
         }
 
         List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
+
+        if (depth == 1){
+            return moves.size();
+        }
 
         for (Move move : moves) {
             Chessboard babyBoard = Copier.chessboardCopier(board, board.isWhiteTurn(), false);

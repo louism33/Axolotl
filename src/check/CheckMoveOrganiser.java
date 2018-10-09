@@ -14,10 +14,15 @@ import static chess.BitIndexing.UNIVERSE;
 public class CheckMoveOrganiser {
 
     public static List<Move> evadeCheckMovesMaster(Chessboard board, boolean white){
+        // can be combined with first checkchecker
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
-        if (CheckChecker.boardInDoubleCheck(board, white)) {
+
+        int numberOfCheckers = CheckChecker.numberOfPiecesThatLegalThreatenSquare(board, white, myKing);
+
+        if (numberOfCheckers > 1){
             return KingLegalMoves.kingLegalMovesOnly(board, white);
         }
+
         //can this be done earlier ? should it ?
         long ignoreThesePieces = PinnedManager.whichPiecesArePinned(board, white, myKing);
         return allLegalCheckEscapeMoves(board, white, ignoreThesePieces);

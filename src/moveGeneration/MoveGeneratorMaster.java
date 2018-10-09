@@ -14,14 +14,33 @@ import java.util.List;
 public class MoveGeneratorMaster {
 
     public static int numberOfChecks = 0;
-
+    public static int numberOfCheckMates = 0;
+    public static int numberOfStaleMates = 0;
 
     public static List<Move> generateLegalMoves(Chessboard board, boolean whiteTurn) {
+
         if (CheckChecker.boardInCheck(board, whiteTurn)){
             numberOfChecks++;
-            return CheckMoveOrganiser.evadeCheckMovesMaster(board, whiteTurn);
+            List<Move> checkEscapeMoves = CheckMoveOrganiser.evadeCheckMovesMaster(board, whiteTurn);
+
+            if (checkEscapeMoves.size() == 0){
+                numberOfCheckMates++;
+//                System.out.println("CHECKMATE");
+            }
+
+            return checkEscapeMoves;
         }
-        return notInCheckMoves(board, whiteTurn);
+
+
+        List<Move> moves = notInCheckMoves(board, whiteTurn);
+
+        if (moves.size() == 0){
+            numberOfStaleMates++;
+//            System.out.println("Stalemate");
+        }
+
+
+        return moves;
     }
 
 

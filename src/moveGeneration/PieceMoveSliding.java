@@ -17,6 +17,8 @@ public class PieceMoveSliding {
         return singleBishopAllMoves(board, piece, white, 0, legalCaptures);
     }
 
+
+    //private
     public static long singleBishopAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
         long ALL_PIECES = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES(),
                 NORTH_WEST = BitBoards.FILE_A | BitBoards.RANK_EIGHT,
@@ -65,7 +67,8 @@ public class PieceMoveSliding {
         return singleRookAllMoves(board, piece, white, 0, legalCaptures);
     }
     
-    
+
+    //private
     public static long singleRookAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
         long allPieces = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
         long answer = 0;
@@ -109,6 +112,7 @@ public class PieceMoveSliding {
         return singleQueenAllMoves(board, piece, white, 0, legalCaptures);
     }
 
+    // private
     public static long singleQueenAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
         return singleBishopAllMoves(board, piece, white, legalPushes, legalCaptures) | singleRookAllMoves(board, piece, white, legalPushes, legalCaptures);
     }

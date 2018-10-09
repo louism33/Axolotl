@@ -46,6 +46,10 @@ public class PieceMovePawns {
         long answer = 0;
         long temp = piece;
 
+        if (piece == 0) {
+            return 0;
+        }
+
         if (white){
             int index = BitIndexing.getIndexOfFirstPiece(piece);
             long l = PawnCaptures.PAWN_CAPTURE_TABLE_WHITE[index];

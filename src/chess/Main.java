@@ -1,6 +1,7 @@
 package chess;
 
 import bitboards.BitBoards;
+import check.CheckChecker;
 import check.CheckMoveOrganiser;
 import moveGeneration.MoveGeneratorMaster;
 import moveMaking.MoveOrganiser;
@@ -35,11 +36,14 @@ public class Main {
 
         System.out.println(Art.boardArt(board));
 
-        List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, false);
-        System.out.println();
-        System.out.println("Moves from this position: ");
-        System.out.println(moves);
-        System.out.println(moves.size());
+//        List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, false);
+//        System.out.println();
+//        System.out.println("Moves from this position: ");
+//        System.out.println(moves);
+//        System.out.println(moves.size());
+
+
+        CheckChecker.numberOfPiecesThatLegalThreatenSquare(board, true, board.WHITE_KING);
 
 
 

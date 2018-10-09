@@ -3,6 +3,9 @@ package utils;
 import bitboards.WhichTable;
 import chess.BitIndexing;
 import chess.Chessboard;
+import moveGeneration.PieceMoveKnight;
+import moveGeneration.PieceMovePawns;
+import moveGeneration.PieceMoveSliding;
 
 import java.util.List;
 
@@ -10,6 +13,77 @@ import static bitboards.BitBoards.FILES;
 import static bitboards.BitBoards.RANKS;
 
 class oldMethods {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static boolean boardInDoubleCheck(Chessboard board, boolean white){
+        long ans = 0, pawns, knights, bishops, rooks, queens, myKing;
+        if (!white){
+            pawns = board.WHITE_PAWNS;
+            knights = board.WHITE_KNIGHTS;
+            bishops = board.WHITE_BISHOPS;
+            rooks = board.WHITE_ROOKS;
+            queens = board.WHITE_QUEEN;
+            myKing = board.BLACK_KING;
+        }
+        else {
+            pawns = board.BLACK_PAWNS;
+            knights = board.BLACK_KNIGHTS;
+            bishops = board.BLACK_BISHOPS;
+            rooks = board.BLACK_ROOKS;
+            queens = board.BLACK_QUEEN;
+            myKing = board.WHITE_KING;
+        }
+
+        int numberOfCheckers = 0;
+
+        if ((PieceMovePawns.singlePawnCaptures(board, myKing, white, pawns)) != 0) numberOfCheckers++;
+        if ((PieceMoveKnight.singleKnightCaptures(board, myKing, white, knights)) != 0) numberOfCheckers++;
+        if ((PieceMoveSliding.singleBishopCaptures(board, myKing, white, bishops)) != 0) numberOfCheckers++;
+        if ((PieceMoveSliding.singleRookCaptures(board, myKing, white, rooks)) != 0) numberOfCheckers++;
+
+        long queenAttacks = PieceMoveSliding.singleQueenCaptures(board, myKing, white, queens);
+        if (queenAttacks != 0) numberOfCheckers += BitIndexing.populationCount(queenAttacks);
+
+        return numberOfCheckers > 1;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     long allMovesPieces(Chessboard board, long[] pieces, boolean white){
         long table = 0;
