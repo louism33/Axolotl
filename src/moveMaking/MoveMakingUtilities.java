@@ -1,7 +1,6 @@
 package moveMaking;
 
 import chess.Chessboard;
-import chess.Move;
 
 public class MoveMakingUtilities {
 

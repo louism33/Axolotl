@@ -84,8 +84,6 @@ public class MoveGeneratorSliding {
     }
 
 
-
-
     public static List<Move> masterMoveSliding (Chessboard board, boolean white,
                                                 long ignoreThesePieces, long legalPushes, long legalCaptures){
         long ans = 0, bishops, rooks, queens;
@@ -103,21 +101,35 @@ public class MoveGeneratorSliding {
 
         List<Long> allBishops = getAllPieces(bishops, ignoreThesePieces);
         for (Long piece : allBishops){
-            long slidingMoves = PieceMoveSliding.singleBishopAllMoves(board, piece, white, legalPushes, legalCaptures);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
-            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingMoves, indexOfPiece));
+
+            long slidingPushes = PieceMoveSliding.singleBishopPushes(board, piece, white, legalPushes);
+            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingPushes, indexOfPiece));
+
+            long slidingCaptures = PieceMoveSliding.singleBishopCaptures(board, piece, white, legalCaptures);
+            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingCaptures, indexOfPiece));
         }
+
         List<Long> allRooks = getAllPieces(rooks, ignoreThesePieces);
         for (Long piece : allRooks){
-            long slidingMoves = PieceMoveSliding.singleRookAllMoves(board, piece, white, legalPushes, legalCaptures);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
-            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingMoves, indexOfPiece));
+
+            long rookPushes = PieceMoveSliding.singleRookPushes(board, piece, white, legalPushes);
+            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(rookPushes, indexOfPiece));
+
+            long rookCaptures = PieceMoveSliding.singleRookCaptures(board, piece, white, legalCaptures);
+            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(rookCaptures, indexOfPiece));
         }
+
         List<Long> allQueens = getAllPieces(queens, ignoreThesePieces);
         for (Long piece : allQueens){
-            long slidingMoves = PieceMoveSliding.singleQueenAllMoves(board, piece, white, legalPushes, legalCaptures);
             int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
-            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(slidingMoves, indexOfPiece));
+
+            long queenPushes = PieceMoveSliding.singleQueenPushes(board, piece, white, legalPushes);
+            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(queenPushes, indexOfPiece));
+
+            long queenCaptures = PieceMoveSliding.singleQueenCaptures(board, piece, white, legalCaptures);
+            moves.addAll(MoveGenerationUtilities.movesFromAttackBoard(queenCaptures, indexOfPiece));
         }
         return moves;
     }

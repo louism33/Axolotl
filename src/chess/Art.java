@@ -4,29 +4,29 @@ import static chess.BitIndexing.pieceOnSquare;
 
 public class Art {
 
-    static void printPieceOnSquare(Chessboard board, int s){
-        printPieceByNumber(pieceOnSquare(board, s));
-    }
+//    static void printPieceOnSquare(Chessboard board, int s){
+//        printPieceByNumber(pieceOnSquare(board, s));
+//    }
 
-    static void printPieceByNumber (int s){
-        if (s == 0) System.out.println("Empty Square at "+s);
+//    private static void printPieceByNumber (int s){
+//        if (s == 0) System.out.println("Empty Square at "+s);
+//
+//        if (s == 1) System.out.println("White Pawn at "+s);
+//        if (s == 2) System.out.println("White Knight at "+s);
+//        if (s == 3) System.out.println("White Bishop at "+s);
+//        if (s == 4) System.out.println("White Rook at "+s);
+//        if (s == 5) System.out.println("White Queen at "+s);
+//        if (s == 6) System.out.println("White King at "+s);
+//
+//        if (s == 7) System.out.println("Black Pawn at "+s);
+//        if (s == 8) System.out.println("Black Knight at "+s);
+//        if (s == 9) System.out.println("Black Bishop at "+s);
+//        if (s == 10) System.out.println("Black Rook at "+s);
+//        if (s == 11) System.out.println("Black Queen at "+s);
+//        if (s == 12) System.out.println("Black King at "+s);
+//    }
 
-        if (s == 1) System.out.println("White Pawn at "+s);
-        if (s == 2) System.out.println("White Knight at "+s);
-        if (s == 3) System.out.println("White Bishop at "+s);
-        if (s == 4) System.out.println("White Rook at "+s);
-        if (s == 5) System.out.println("White Queen at "+s);
-        if (s == 6) System.out.println("White King at "+s);
-
-        if (s == 7) System.out.println("Black Pawn at "+s);
-        if (s == 8) System.out.println("Black Knight at "+s);
-        if (s == 9) System.out.println("Black Bishop at "+s);
-        if (s == 10) System.out.println("Black Rook at "+s);
-        if (s == 11) System.out.println("Black Queen at "+s);
-        if (s == 12) System.out.println("Black King at "+s);
-    }
-
-    static String pieceByNumberASCII(int s){
+    private static String pieceByNumberASCII(int s){
 
         if (s == 1) return ("P");
         if (s == 2) return ("N");
@@ -60,12 +60,11 @@ public class Art {
         s += "  +---------------+\n";
         s += "   a b c d e f g h\n";
 
-
         return s;
     }
 
 
-    public static String makeMoveToString (int l){
+    static String makeMoveToString (int l){
         String binaryString = Integer.toBinaryString(l);
         int numberOfPaddingZeros = 16 - binaryString.length();
         StringBuilder sb = new StringBuilder();
@@ -82,32 +81,32 @@ public class Art {
         return answer;
     }
 
-    public static String makeIntegerString (int l){
-        String s = Integer.toBinaryString(l);
-        for (int y = 0; y < 4; y++) {
-            for (int i = 0; i < 8; i++) {
-                while (s.length() < 32) {
-                    s = "0"+s;
-                }
-            }
-        }
-        return s;
-    }
+//    public static String makeIntegerString (int l){
+//        String s = Integer.toBinaryString(l);
+//        for (int y = 0; y < 4; y++) {
+//            for (int i = 0; i < 8; i++) {
+//                while (s.length() < 32) {
+//                    s = "0"+s;
+//                }
+//            }
+//        }
+//        return s;
+//    }
 
 
-    public static void printInteger (int l){
-        for (int y = 0; y < 4; y++) {
-            for (int i = 0; i < 8; i++) {
-                String s = Integer.toBinaryString(l);
-                while (s.length() < 32) {
-                    s = "0"+s;
-                }
-                System.out.print(s.charAt(y * 8 + i));
-            }
-            System.out.println();
-        }
-        System.out.println("---");
-    }
+//    public static void printInteger (int l){
+//        for (int y = 0; y < 4; y++) {
+//            for (int i = 0; i < 8; i++) {
+//                String s = Integer.toBinaryString(l);
+//                while (s.length() < 32) {
+//                    s = "0"+s;
+//                }
+//                System.out.print(s.charAt(y * 8 + i));
+//            }
+//            System.out.println();
+//        }
+//        System.out.println("---");
+//    }
 
 
     public static void printLong(long l){
@@ -124,12 +123,12 @@ public class Art {
         System.out.println("---");
     }
 
-    public static void printArrayOfLongs(long[] board){
-        for (long l : board){
-            printLong(l);
-            System.out.println("---");
-        }
-    }
+//    public static void printArrayOfLongs(long[] board){
+//        for (long l : board){
+//            printLong(l);
+//            System.out.println("---");
+//        }
+//    }
 
 
 }

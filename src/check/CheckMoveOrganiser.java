@@ -366,15 +366,15 @@ public class CheckMoveOrganiser {
         }
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
 
-        long possibleBishop = PieceMoveSliding.singleBishopAllMoves(board, myKing, white, UNIVERSE, UNIVERSE) & bishops;
+        long possibleBishop = PieceMoveSliding.singleBishopCaptures(board, myKing, white, bishops);
         if (possibleBishop != 0) {
             return possibleBishop;
         }
-        long possibleRook = PieceMoveSliding.singleRookAllMoves(board, myKing, white, UNIVERSE, UNIVERSE) & rooks;
+        long possibleRook = PieceMoveSliding.singleRookCaptures(board, myKing, white, rooks);
         if (possibleRook != 0){
             return possibleRook;
         }
-        long possibleQueen = PieceMoveSliding.singleQueenAllMoves(board, myKing, white, UNIVERSE, UNIVERSE) & queens;
+        long possibleQueen = PieceMoveSliding.singleQueenCaptures(board, myKing, white, queens);
         if (possibleQueen != 0){
             return possibleQueen;
         }

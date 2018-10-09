@@ -5,7 +5,7 @@ import moveMaking.MoveOrganiser;
 
 import java.util.List;
 
-public class Perft { // too many captures
+public class Perft {
 
 /*
 20
@@ -32,7 +32,7 @@ public class Perft { // too many captures
         System.out.println(s);
         System.out.println("-----------------------------------");
 
-        int maxD = 5;
+        int maxD = 4;
         for (int depth = 1; depth <= maxD; depth++) {
             countFinalNodesAtDepth(board, depth);
             System.out.println();

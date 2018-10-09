@@ -20,7 +20,11 @@ public class PieceMoveKnight {
 
     public static long singleKnightAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures) {
         long table = 0;
+        if (piece == 0){
+            return 0;
+        }
         int index = BitIndexing.getIndexOfFirstPiece(piece);
+
         long l = Knight.KNIGHT_MOVE_TABLE[index];
         table |= l;
         long emptyOfMyPieces = ~((white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES());
@@ -40,7 +44,8 @@ public class PieceMoveKnight {
 
         List<Long> allKnights = getAllPieces(knights, ignoreThesePieces);
         for (Long piece : allKnights){
-            ans |= singleKnightAllMoves(board, piece, white, legalPushes, legalCaptures);
+            ans |= singleKnightPushes(board, piece, white, legalPushes);
+            ans |= singleKnightCaptures(board, piece, white, legalCaptures);
         }
 
         return ans;

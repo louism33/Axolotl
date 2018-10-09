@@ -8,9 +8,9 @@ public class BitIndexing {
 
     public static final long UNIVERSE = 0xffffffffffffffffL;
 
-    public static long UNIVERSE_EMPTY (Chessboard board){
-        return board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
-    }
+//    public static long UNIVERSE_EMPTY (Chessboard board){
+//        return board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
+//    }
 
     public static int getIndexOfFirstPiece (long pieces) {
         if (pieces == 0) return -1;
@@ -23,15 +23,15 @@ public class BitIndexing {
         return i;
     }
 
-    public static int getIndexOfLastPiece (long pieces) {
-        long finder = pieces;
-        int i = 63;
-        while (finder > 0){
-            finder <<= 1;
-            i--;
-        }
-        return i;
-    }
+//    public static int getIndexOfLastPiece (long pieces) {
+//        long finder = pieces;
+//        int i = 63;
+//        while (finder > 0){
+//            finder <<= 1;
+//            i--;
+//        }
+//        return i;
+//    }
 
     public static List<Integer> getIndexOfAllPieces(long pieces){
         List<Integer> indexes = new ArrayList<>();
@@ -46,22 +46,22 @@ public class BitIndexing {
         return indexes;
     }
 
-    public static int extractPieceIndexOrganiser(long pieces){
-        if (pieces > 0) {
-            return getIndexOfFirstPiece(pieces);
-        }
-        long pieceIndexHack = 0x8000000000000000L;
-
-        if (pieces == pieceIndexHack) {
-            return 63;
-        }
-
-        if (pieces < 0) {
-            pieces ^= pieceIndexHack;
-            return getIndexOfFirstPiece(pieces);
-        }
-        return -1;
-    }
+//    public static int extractPieceIndexOrganiser(long pieces){
+//        if (pieces > 0) {
+//            return getIndexOfFirstPiece(pieces);
+//        }
+//        long pieceIndexHack = 0x8000000000000000L;
+//
+//        if (pieces == pieceIndexHack) {
+//            return 63;
+//        }
+//
+//        if (pieces < 0) {
+//            pieces ^= pieceIndexHack;
+//            return getIndexOfFirstPiece(pieces);
+//        }
+//        return -1;
+//    }
 
     static int pieceOnSquare(Chessboard board, int s){
         long square = BitManipulations.newPieceOnSquare(s);

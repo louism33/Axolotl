@@ -1,10 +1,11 @@
 package check;
 
-import chess.Art;
 import chess.BitIndexing;
-import chess.BitManipulations;
 import chess.Chessboard;
-import moveGeneration.*;
+import moveGeneration.PieceMoveKing;
+import moveGeneration.PieceMoveKnight;
+import moveGeneration.PieceMovePawns;
+import moveGeneration.PieceMoveSliding;
 
 public class CheckChecker {
 
@@ -17,7 +18,7 @@ public class CheckChecker {
 
 
     public static int numberOfPiecesThatLegalThreatenSquare(Chessboard board, boolean white, long square){
-        long ans = 0, pawns, knights, bishops, rooks, queens, king;
+        long pawns, knights, bishops, rooks, queens, king;
         if (!white){
             pawns = board.WHITE_PAWNS;
             knights = board.WHITE_KNIGHTS;
@@ -37,27 +38,39 @@ public class CheckChecker {
 
         int numberOfThreats = 0;
 
-        numberOfThreats += BitIndexing.populationCount(PieceMovePawns.singlePawnCaptures(board, square, white, pawns));
+        if (pawns != 0) {
+            numberOfThreats += BitIndexing.populationCount(PieceMovePawns.singlePawnCaptures(board, square, white, pawns));
+        }
         if (numberOfThreats > 1){
             return numberOfThreats;
         }
-        numberOfThreats += BitIndexing.populationCount(PieceMoveKnight.singleKnightCaptures(board, square, white, knights));
+        if (knights != 0) {
+            numberOfThreats += BitIndexing.populationCount(PieceMoveKnight.singleKnightCaptures(board, square, white, knights));
+        }
         if (numberOfThreats > 1){
             return numberOfThreats;
         }
-        numberOfThreats += BitIndexing.populationCount(PieceMoveSliding.singleBishopCaptures(board, square, white, bishops));
+        if (bishops != 0) {
+            numberOfThreats += BitIndexing.populationCount(PieceMoveSliding.singleBishopCaptures(board, square, white, bishops));
+        }
         if (numberOfThreats > 1){
             return numberOfThreats;
         }
-        numberOfThreats += BitIndexing.populationCount(PieceMoveSliding.singleRookCaptures(board, square, white, rooks));
+        if (rooks != 0) {
+            numberOfThreats += BitIndexing.populationCount(PieceMoveSliding.singleRookCaptures(board, square, white, rooks));
+        }
         if (numberOfThreats > 1){
             return numberOfThreats;
         }
-        numberOfThreats += BitIndexing.populationCount(PieceMoveSliding.singleQueenCaptures(board, square, white, queens));
+        if (queens != 0) {
+            numberOfThreats += BitIndexing.populationCount(PieceMoveSliding.singleQueenCaptures(board, square, white, queens));
+        }
         if (numberOfThreats > 1){
             return numberOfThreats;
         }
-        numberOfThreats += BitIndexing.populationCount(PieceMoveKing.singleKingCaptures(board, square, white, king));
+        if (king != 0) {
+            numberOfThreats += BitIndexing.populationCount(PieceMoveKing.singleKingCaptures(board, square, white, king));
+        }
 
         return numberOfThreats;
     }

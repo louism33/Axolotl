@@ -18,10 +18,16 @@ public class KingLegalMoves {
     }
 
     public static long kingLegalPushAndCaptureTable(Chessboard board, boolean white){
+        long ans = 0;
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
         long kingSafeSquares = ~CheckUtilities.kingDangerSquares(board, white);
-        long kingSafeMoves = PieceMoveKing.singleKingAllMoves(board, myKing, white, kingSafeSquares, kingSafeSquares);
-        return kingSafeMoves;
+        long enemyPieces = (!white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES();
+        long kingSafeCaptures = enemyPieces & kingSafeSquares;
+        long kingSafePushes = kingSafeSquares & ~kingSafeCaptures;
+
+        ans |= PieceMoveKing.singleKingPushes(board, myKing, white, kingSafePushes);
+        ans |= PieceMoveKing.singleKingCaptures(board, myKing, white, kingSafeCaptures);
+        return ans;
     }
 
 }

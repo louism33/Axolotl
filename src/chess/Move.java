@@ -1,7 +1,5 @@
 package chess;
 
-import javafx.util.Pair;
-
 public class Move {
 
     public int move;
@@ -52,20 +50,9 @@ public class Move {
         this.move |= this.destination;
     }
 
-
-    Pair parseMove(){
-        String s = Integer.toBinaryString(move);
-        var moveSourceAndDest = new Pair(
-                Integer.toBinaryString((move & SOURCE_MASK) >> sourceOffset),
-                Integer.toBinaryString((move & DESTINATION_MASK))
-        );
-        return moveSourceAndDest;
-    }
-
     @Override
     public String toString() {
         return (getSourceAsPiece() +" " +destination);
-
     }
 
 

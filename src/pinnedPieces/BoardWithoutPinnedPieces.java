@@ -6,7 +6,7 @@
 //public class BoardWithoutPinnedPieces {
 //
 //    public static Chessboard removePinnedPieces (Chessboard board, boolean white){
-//        //todo
+//
 //        Chessboard boardWithoutPinnedPieces = CheckUtilities.chessboardCopier(board, white, false);
 //        long pinnedPieces = whichPiecesArePinned(board, white);
 //        return boardWithoutPinnedPieces;

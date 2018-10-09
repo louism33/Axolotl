@@ -2,18 +2,6 @@ package bitboards;
 
 public class BitBoards {
 
-    static long ALL_WHITE_PIECES (){
-        long ans = 0;
-        for (long l : WHITE_PIECES) ans |= l;
-        return ans;
-    }
-
-    static long ALL_BLACK_PIECES (){
-        long ans = 0;
-        for (long l : BLACK_PIECES) ans |= l;
-        return ans;
-    }
-
     public static final long WHITE_PAWNS = 0x000000000000FF00L;
     public static final long WHITE_KNIGHTS = 0x0000000000000042L;
     public static final long WHITE_BISHOPS = 0x0000000000000024L;
@@ -75,7 +63,7 @@ public class BitBoards {
 
     public static long NORTH_WEST = FILE_A | RANK_EIGHT;
     public static long NORTH_EAST = FILE_H | RANK_EIGHT;
-    public static long  SOUTH_WEST = FILE_A | RANK_ONE;
+    public static long SOUTH_WEST = FILE_A | RANK_ONE;
     public static long SOUTH_EAST = FILE_H | RANK_ONE;
 
 

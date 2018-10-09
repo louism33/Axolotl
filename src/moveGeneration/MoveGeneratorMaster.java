@@ -27,18 +27,14 @@ public class MoveGeneratorMaster {
                 numberOfCheckMates++;
 //                System.out.println("CHECKMATE");
             }
-
             return checkEscapeMoves;
         }
 
-
         List<Move> moves = notInCheckMoves(board, whiteTurn);
-
         if (moves.size() == 0){
             numberOfStaleMates++;
 //            System.out.println("Stalemate");
         }
-
 
         return moves;
     }
@@ -119,21 +115,33 @@ public class MoveGeneratorMaster {
                 break;
             }
             if ((pinnedPiece & bishops) != 0) {
-                long singleBishopAllMoves = PieceMoveSliding.singleBishopAllMoves(board, pinnedPiece, whiteTurn, pushMask, captureMask);
-                List<Move> bishopMoves = MoveGenerationUtilities.movesFromAttackBoardLong(singleBishopAllMoves, pinnedPiece);
-                moves.addAll(bishopMoves);
+                long singleBishopsAllPushes = PieceMoveSliding.singleBishopPushes(board, pinnedPiece, whiteTurn, pushMask);
+                List<Move> bishopMovesPushes = MoveGenerationUtilities.movesFromAttackBoardLong(singleBishopsAllPushes, pinnedPiece);
+                moves.addAll(bishopMovesPushes);
+
+                long singleBishopAllCaptures = PieceMoveSliding.singleBishopCaptures(board, pinnedPiece, whiteTurn, captureMask);
+                List<Move> bishopMovesCaptures = MoveGenerationUtilities.movesFromAttackBoardLong(singleBishopAllCaptures, pinnedPiece);
+                moves.addAll(bishopMovesCaptures);
                 break;
             }
             if ((pinnedPiece & rooks) != 0) {
-                long singleRookAllMoves = PieceMoveSliding.singleRookAllMoves(board, pinnedPiece, whiteTurn, pushMask, captureMask);
-                List<Move> rookMoves = MoveGenerationUtilities.movesFromAttackBoardLong(singleRookAllMoves, pinnedPiece);
-                moves.addAll(rookMoves);
+                long singleRookAllPushes = PieceMoveSliding.singleRookPushes(board, pinnedPiece, whiteTurn, pushMask);
+                List<Move> rookMovesPushes = MoveGenerationUtilities.movesFromAttackBoardLong(singleRookAllPushes, pinnedPiece);
+                moves.addAll(rookMovesPushes);
+
+                long singleRookAllCaptures = PieceMoveSliding.singleRookCaptures(board, pinnedPiece, whiteTurn, captureMask);
+                List<Move> rookMovesCaptures = MoveGenerationUtilities.movesFromAttackBoardLong(singleRookAllCaptures, pinnedPiece);
+                moves.addAll(rookMovesCaptures);
                 break;
             }
             if ((pinnedPiece & queens) != 0) {
-                long singleQueenAllMoves = PieceMoveSliding.singleQueenAllMoves(board, pinnedPiece, whiteTurn, pushMask, captureMask);
-                List<Move> queenMoves = MoveGenerationUtilities.movesFromAttackBoardLong(singleQueenAllMoves, pinnedPiece);
-                moves.addAll(queenMoves);
+                long singleQueenAllPushes = PieceMoveSliding.singleQueenPushes(board, pinnedPiece, whiteTurn, pushMask);
+                List<Move> queenPushes = MoveGenerationUtilities.movesFromAttackBoardLong(singleQueenAllPushes, pinnedPiece);
+                moves.addAll(queenPushes);
+
+                long singleQueenAllCaptures = PieceMoveSliding.singleQueenCaptures(board, pinnedPiece, whiteTurn, captureMask);
+                List<Move> queenCaptures = MoveGenerationUtilities.movesFromAttackBoardLong(singleQueenAllCaptures, pinnedPiece);
+                moves.addAll(queenCaptures);
                 break;
             }
         }

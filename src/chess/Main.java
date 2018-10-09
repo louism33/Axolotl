@@ -1,15 +1,9 @@
 package chess;
 
-import bitboards.BitBoards;
-import check.CheckChecker;
-import check.CheckMoveOrganiser;
+import check.CheckUtilities;
 import moveGeneration.MoveGeneratorMaster;
-import moveMaking.MoveOrganiser;
-import moveMaking.MoveParser;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class Main {
 
@@ -36,14 +30,12 @@ public class Main {
 
         System.out.println(Art.boardArt(board));
 
-//        List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, false);
-//        System.out.println();
-//        System.out.println("Moves from this position: ");
-//        System.out.println(moves);
-//        System.out.println(moves.size());
+        List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, true);
+        System.out.println();
+        System.out.println("Moves from this position: ");
+        System.out.println(moves);
+        System.out.println(moves.size());
 
-
-        CheckChecker.numberOfPiecesThatLegalThreatenSquare(board, true, board.WHITE_KING);
 
 
 

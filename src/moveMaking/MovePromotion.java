@@ -1,6 +1,5 @@
 package moveMaking;
 
-import chess.Art;
 import chess.BitManipulations;
 import chess.Chessboard;
 import chess.Move;

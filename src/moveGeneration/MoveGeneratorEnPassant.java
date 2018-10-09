@@ -1,7 +1,10 @@
 package moveGeneration;
 
 import bitboards.BitBoards;
-import chess.*;
+import chess.BitExtractor;
+import chess.BitIndexing;
+import chess.Chessboard;
+import chess.Move;
 
 import java.util.ArrayList;
 import java.util.List;

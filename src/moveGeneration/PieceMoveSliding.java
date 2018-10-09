@@ -17,16 +17,18 @@ public class PieceMoveSliding {
         return singleBishopAllMoves(board, piece, white, 0, legalCaptures);
     }
 
-
-    //private
-    public static long singleBishopAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
+    private static long singleBishopAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
         long ALL_PIECES = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES(),
                 NORTH_WEST = BitBoards.FILE_A | BitBoards.RANK_EIGHT,
                 NORTH_EAST = BitBoards.FILE_H | BitBoards.RANK_EIGHT,
                 SOUTH_WEST = BitBoards.FILE_A | BitBoards.RANK_ONE,
                 SOUTH_EAST = BitBoards.FILE_H | BitBoards.RANK_ONE;
+
+        assert piece != 0;
+
         long answer = 0;
         long temp = piece;
+
         while (true) {
             if ((temp & NORTH_WEST) != 0) break;
             temp <<= 9;
@@ -67,9 +69,7 @@ public class PieceMoveSliding {
         return singleRookAllMoves(board, piece, white, 0, legalCaptures);
     }
     
-
-    //private
-    public static long singleRookAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
+    private static long singleRookAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
         long allPieces = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
         long answer = 0;
         long temp = piece;
@@ -112,8 +112,7 @@ public class PieceMoveSliding {
         return singleQueenAllMoves(board, piece, white, 0, legalCaptures);
     }
 
-    // private
-    public static long singleQueenAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
+    private static long singleQueenAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures){
         return singleBishopAllMoves(board, piece, white, legalPushes, legalCaptures) | singleRookAllMoves(board, piece, white, legalPushes, legalCaptures);
     }
 
@@ -134,17 +133,20 @@ public class PieceMoveSliding {
 
         List<Long> allBishops = BitExtractor.getAllPieces(bishops, ignoreThesePieces);
         for (Long piece : allBishops){
-            ans |= singleBishopAllMoves(board, piece, white, legalPushes, legalCaptures);
+            ans |= singleBishopPushes(board, piece, white, legalPushes);
+            ans |= singleBishopCaptures(board, piece, white, legalCaptures);
         }
 
         List<Long> allRooks = BitExtractor.getAllPieces(rooks, ignoreThesePieces);
         for (Long piece : allRooks){
-            ans |= singleRookAllMoves(board, piece, white, legalPushes, legalCaptures);
+            ans |= singleRookPushes(board, piece, white, legalPushes);
+            ans |= singleRookCaptures(board, piece, white, legalCaptures);
         }
 
         List<Long> allQueens = BitExtractor.getAllPieces(queens, ignoreThesePieces);
         for (Long piece : allQueens){
-            ans |= singleQueenAllMoves(board, piece, white, legalPushes, legalCaptures);
+            ans |= singleQueenPushes(board, piece, white, legalPushes);
+            ans |= singleQueenCaptures(board, piece, white, legalCaptures);
         }
         return ans;
     }
