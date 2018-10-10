@@ -5,7 +5,9 @@ import moveMaking.MoveOrganiser;
 
 import java.util.List;
 
-public class Perft {
+public class Perft { // 4865351
+    // 258 too few moves
+    // too many checks, captures
 
 /*
 20
@@ -32,13 +34,14 @@ public class Perft {
         System.out.println(s);
         System.out.println("-----------------------------------");
 
-        int maxD = 4;
+        int maxD = 5;
         for (int depth = 1; depth <= maxD; depth++) {
             countFinalNodesAtDepth(board, depth);
             System.out.println();
 //            countTotalNodesAtDepth(board, depth);
             System.out.println("-----");
         }
+
     }
 
 
@@ -51,6 +54,9 @@ public class Perft {
     public static void countFinalNodesAtDepth(Chessboard board, int depth) {
         numberOfCaptures = 0;
 
+
+        long t1 = System.currentTimeMillis();
+
         long ii = Perft.countFinalNodesAtDepthHelper(board, depth);
         System.out.println("Final Nodes at Depth " + depth + ": " + ii);
         System.out.println("--previous checks: " + MoveGeneratorMaster.numberOfChecks);
@@ -59,6 +65,14 @@ public class Perft {
         System.out.println("--captures: " + numberOfCaptures);
 
 
+
+        long t2 = System.currentTimeMillis();
+
+        long t = t2 - t1;
+        long seconds = t / 1000;
+
+        System.out.println("Depth " + depth + " took " + seconds + " seconds (" + t+" milliseconds).");
+        System.out.println("Veeeery roughly "+ (ii / t)*1000 + " (final) nodes per second.");
 
     }
 
@@ -88,9 +102,6 @@ public class Perft {
             int destination = move.destination;
             long destSquare = BitManipulations.newPieceOnSquare(destination);
 
-//            Art.printLong(enemies);
-//            Art.printLong(destSquare);
-//            System.out.println("xxx");
             boolean b = (destSquare & enemies) != 0;
             if (b) {
                 numberOfCaptures++;

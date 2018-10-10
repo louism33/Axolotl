@@ -65,24 +65,24 @@ public class PieceMovePawns {
         return answer & legalCaptures;
     }
 
-    public static long masterPawnPushesTable(Chessboard board, boolean white,
-                                             long ignoreThesePieces, long legalPushes){
-        long ans = 0, pawns;
-        if (white){
-            pawns = board.WHITE_PAWNS;
-        }
-        else {
-            pawns = board.BLACK_PAWNS;
-        }
-        List<Long> allPawns = getAllPieces(pawns, ignoreThesePieces);
-        for (Long piece : allPawns){
-            ans |= singlePawnPushes(board, piece, white, legalPushes);
+//    public static long masterPawnPushesTable(Chessboard board, boolean white,
+//                                             long ignoreThesePieces, long legalPushes){
+//        long ans = 0, pawns;
+//        if (white){
+//            pawns = board.WHITE_PAWNS;
+//        }
+//        else {
+//            pawns = board.BLACK_PAWNS;
+//        }
+//        List<Long> allPawns = getAllPieces(pawns, ignoreThesePieces);
+//        for (Long piece : allPawns){
+//            ans |= singlePawnPushes(board, piece, white, legalPushes);
+//
+//        }
+//        return ans & legalPushes;
+//    }
 
-        }
-        return ans & legalPushes;
-    }
-
-    public static long masterPawnCapturesTable(Chessboard board, boolean white,
+    static long masterPawnCapturesTable(Chessboard board, boolean white,
                                                long ignoreThesePieces, long legalCaptures){
         long ans = 0, pawns;
         if (white){

@@ -18,13 +18,15 @@ public class PieceMoveKnight {
         return singleKnightAllMoves(board, piece, white, 0, legalCaptures);
     }
 
-    public static long singleKnightAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures) {
+    private static long singleKnightAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures) {
+        assert piece != 0;
+
         long table = 0;
-        if (piece == 0){
-            return 0;
-        }
         int index = BitIndexing.getIndexOfFirstPiece(piece);
 
+        if (index == -1){
+            return 0;
+        }
         long l = Knight.KNIGHT_MOVE_TABLE[index];
         table |= l;
         long emptyOfMyPieces = ~((white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES());

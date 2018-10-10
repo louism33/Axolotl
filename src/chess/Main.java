@@ -1,5 +1,6 @@
 package chess;
 
+import bitboards.Knight;
 import check.CheckUtilities;
 import moveGeneration.MoveGeneratorMaster;
 
@@ -36,6 +37,8 @@ public class Main {
         System.out.println(moves);
         System.out.println(moves.size());
 
+
+        long[] knightMoveTable = Knight.KNIGHT_MOVE_TABLE;
 
 
 

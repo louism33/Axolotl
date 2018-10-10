@@ -4,6 +4,7 @@ import bitboards.BitBoards;
 import check.CheckChecker;
 import check.CheckMoveOrganiser;
 import check.KingLegalMoves;
+import chess.Art;
 import chess.BitExtractor;
 import chess.Chessboard;
 import chess.Move;
@@ -20,6 +21,11 @@ public class MoveGeneratorMaster {
     public static List<Move> generateLegalMoves(Chessboard board, boolean whiteTurn) {
 
         if (CheckChecker.boardInCheck(board, whiteTurn)){
+
+//            String s = Art.boardArt(board);
+//            System.out.println(s);
+
+
             numberOfChecks++;
             List<Move> checkEscapeMoves = CheckMoveOrganiser.evadeCheckMovesMaster(board, whiteTurn);
 
@@ -50,6 +56,7 @@ public class MoveGeneratorMaster {
         moves.addAll(MoveGeneratorCastling.generateCastlingMoves(board, whiteTurn));
         moves.addAll(MoveGeneratorPromotion.generatePromotionMoves(board, whiteTurn, pinnedPieces));
         moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves(board, whiteTurn, pinnedPieces));
+
         moves.addAll(KingLegalMoves.kingLegalMovesOnly(board, whiteTurn));
 
 
@@ -106,12 +113,17 @@ public class MoveGeneratorMaster {
             long captureMask = infiniteRay & ENEMY_PIECES;
 
             if ((pinnedPiece & knights) != 0) {
+                // knights cannot move cardinally or diagonally, and so cannot move while pinned
                 break;
             }
             if ((pinnedPiece & pawns) != 0) {
-                long singlePawnAllMoves = PieceMovePawns.singlePawnAllMoves(board, pinnedPiece, whiteTurn, pushMask, captureMask);
-                List<Move> pawnMoves = MoveGenerationUtilities.movesFromAttackBoardLong(singlePawnAllMoves, pinnedPiece);
-                moves.addAll(pawnMoves);
+                long singlePawnAllPushes = PieceMovePawns.singlePawnPushes(board, pinnedPiece, whiteTurn, pushMask);
+                List<Move> pawnPushes = MoveGenerationUtilities.movesFromAttackBoardLong(singlePawnAllPushes, pinnedPiece);
+                moves.addAll(pawnPushes);
+
+                long singlePawnAllCaptures = PieceMovePawns.singlePawnCaptures(board, pinnedPiece, whiteTurn, captureMask);
+                List<Move> pawnCaptures = MoveGenerationUtilities.movesFromAttackBoardLong(singlePawnAllCaptures, pinnedPiece);
+                moves.addAll(pawnCaptures);
                 break;
             }
             if ((pinnedPiece & bishops) != 0) {

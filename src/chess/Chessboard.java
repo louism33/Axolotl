@@ -2,37 +2,37 @@ package chess;
 
 public class Chessboard {
 
-    public boolean whiteTurn = true;
+    private boolean whiteTurn = true;
     public boolean whiteCanCastleK = true, whiteCanCastleQ = true, blackCanCastleK = true, blackCanCastleQ = true;
 
 
-    public long WHITE_PAWNS = 0x000000000000000L;
-    public long WHITE_KNIGHTS = 0x0000200020000000L;
-    public long WHITE_BISHOPS = 0; //0x0002000000000000L;
-    public long WHITE_ROOKS = 0x0000000000000000L;
-    public long WHITE_QUEEN = 0x00000000000000L;
-    public long WHITE_KING = 0x0000000000000080L;
+//    public long WHITE_PAWNS = 0x000008000800000L;
+//    public long WHITE_KNIGHTS = 0x0000000000008000L;
+//    public long WHITE_BISHOPS = 0; //0x0002000000000000L;
+//    public long WHITE_ROOKS = 0x0000000000000000L;
+//    public long WHITE_QUEEN = 0x00000000000000L;
+//    public long WHITE_KING = 0x0000000000000080L;
+//
+//    public long BLACK_PAWNS = 0x0000000000000000L;
+//    public long BLACK_KNIGHTS = 0; // 0x000010018008ffffL;
+//    public long BLACK_BISHOPS = 0; //0x00000000fff000ffL;
+//    public long BLACK_ROOKS = 0x000000000000000; //0x8000000000000000L;
+//    public long BLACK_QUEEN = 0x0080000000000000L;
+//    public long BLACK_KING = 0; // 0x0000040000000000L;
 
-    public long BLACK_PAWNS = 0x0000000000000000L;
-    public long BLACK_KNIGHTS = 0; // 0x000010018008ffffL;
-    public long BLACK_BISHOPS = 0; //0x00000000fff000ffL;
-    public long BLACK_ROOKS = 0x000000000000000; //0x8000000000000000L;
-    public long BLACK_QUEEN = 0x0080000000000000L;
-    public long BLACK_KING = 0; // 0x0000040000000000L;
+    public long WHITE_PAWNS = 0x000000000000FF00L;
+    public long WHITE_KNIGHTS = 0x0000000000000042L;
+    public long WHITE_BISHOPS = 0x0000000000000024L;
+    public long WHITE_ROOKS = 0x0000000000000081L;
+    public long WHITE_QUEEN = 0x0000000000000010L;
+    public long WHITE_KING = 0x0000000000000008L;
 
-//    public long WHITE_PAWNS = 0x000000000000FF00L;
-//    public long WHITE_KNIGHTS = 0x0000000000000042L;
-//    public long WHITE_BISHOPS = 0x0000000000000024L;
-//    public long WHITE_ROOKS = 0x0000000000000081L;
-//    public long WHITE_QUEEN = 0x0000000000000010L;
-//    public long WHITE_KING = 0x0000000000000008L;
-
-//    public long BLACK_PAWNS = 0x00FF000000000000L;
-//    public long BLACK_KNIGHTS = 0x4200000000000000L;
-//    public long BLACK_BISHOPS = 0x2400000000000000L;
-//    public long BLACK_ROOKS = 0x8100000000000000L;
-//    public long BLACK_QUEEN = 0x1000000000000000L;
-//    public long BLACK_KING = 0x0800000000000000L;
+    public long BLACK_PAWNS = 0x00FF000000000000L;
+    public long BLACK_KNIGHTS = 0x4200000000000000L;
+    public long BLACK_BISHOPS = 0x2400000000000000L;
+    public long BLACK_ROOKS = 0x8100000000000000L;
+    public long BLACK_QUEEN = 0x1000000000000000L;
+    public long BLACK_KING = 0x0800000000000000L;
 
     public long ALL_WHITE_PIECES (){
         return WHITE_PAWNS | WHITE_KNIGHTS | WHITE_BISHOPS | WHITE_ROOKS | WHITE_QUEEN | WHITE_KING;

@@ -51,7 +51,8 @@ public class MoveGeneratorEnPassant {
             moves.add(legalEPMove);
         }
 
-        return moves;
+        return new ArrayList<>();
+//        return moves;
     }
 
 

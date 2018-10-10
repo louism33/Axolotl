@@ -1,6 +1,7 @@
 package check;
 
 import bitboards.BitBoards;
+import chess.Art;
 import chess.Chessboard;
 import chess.Move;
 import moveGeneration.*;
@@ -42,8 +43,6 @@ public class CheckMoveOrganiser {
         }
         else {
             long slider = inCheckByASlider(board, white);
-            // are we counting the capture of the slider twice ?
-//            blockingSquaresMask = extractRayFromTwoPieces(board, myKing, slider);
             blockingSquaresMask = extractRayFromTwoPieces(board, myKing, slider) & (~slider);
 
             checkingPieceMask = slider;

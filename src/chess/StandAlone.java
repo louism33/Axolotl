@@ -37,7 +37,7 @@ public class StandAlone {
             while (true) {
 //                b = player.getBoard();
 
-                if (board.whiteTurn) prompt = "White"; else prompt = "Black";
+                if (board.isWhiteTurn()) prompt = "White"; else prompt = "Black";
 
                 System.out.println("\nPosition ("+prompt+" to move):\n" + Art.boardArt(board));
 
