@@ -1,2 +1,2 @@
 # chessPlusPlus
-Chess Engine written in Java, BitBoards
+Chess main.Engine written in Java, BitBoards
