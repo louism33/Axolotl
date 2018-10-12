@@ -187,7 +187,7 @@ public class MoveUnmaker {
         long sourcePiece = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
         long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
 
-        MoveCastling.castleFlagManager(board, move);
+//        MoveCastling.castleFlagManager(board, move);
 
         if ((sourcePiece & board.WHITE_PAWNS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
@@ -240,9 +240,7 @@ public class MoveUnmaker {
         }
         else {
             System.out.println(Art.boardArt(board));
-
             System.out.println(move);
-
             throw new RuntimeException("false move");
         }
     }

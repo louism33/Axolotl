@@ -9,8 +9,7 @@ import main.moveGeneration.PieceMoveKing;
 import java.util.List;
 
 public class KingLegalMoves {
-
-
+    
     public static List<Move> kingLegalMovesOnly(Chessboard board, boolean white){
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
         int indexOfKing = BitIndexing.getIndexOfFirstPiece(myKing);
@@ -27,6 +26,7 @@ public class KingLegalMoves {
 //                kingSafeSquares & ~kingSafeCaptures;
 
         ans |= PieceMoveKing.singleKingPushes(board, myKing, white, kingSafePushes);
+        
         ans |= PieceMoveKing.singleKingCaptures(board, myKing, white, kingSafeCaptures);
         return ans;
     }

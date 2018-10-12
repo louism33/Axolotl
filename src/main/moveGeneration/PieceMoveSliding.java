@@ -54,7 +54,8 @@ public class PieceMoveSliding {
             if ((temp & ALL_PIECES) != 0) break;
         }
         long emptyOfMyPieces = ~((white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES());
-        return answer & emptyOfMyPieces & (legalPushes | legalCaptures);
+//        return answer & emptyOfMyPieces & (legalPushes | legalCaptures);
+        return answer & (legalPushes | legalCaptures);
     }
 
 
@@ -98,7 +99,8 @@ public class PieceMoveSliding {
             if ((temp & allPieces) != 0) break;
         }
         long emptyOfMyPieces = ~((white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES());
-        return answer & emptyOfMyPieces & (legalPushes | legalCaptures);
+//        return answer & emptyOfMyPieces & (legalPushes | legalCaptures);
+        return answer & (legalPushes | legalCaptures);
     }
 
     public static long singleQueenPushes(Chessboard board, long piece, boolean white, long legalPushes){

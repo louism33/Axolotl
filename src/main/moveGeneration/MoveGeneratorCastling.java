@@ -1,6 +1,9 @@
 package main.moveGeneration;
 
 import main.bitboards.BitBoards;
+import main.check.CheckChecker;
+import main.chess.Art;
+import main.chess.BitExtractor;
 import main.chess.Chessboard;
 import main.chess.Move;
 
@@ -27,7 +30,7 @@ public class MoveGeneratorCastling {
 
             if(board.whiteCanCastleQ){
                 if (areTheseSquaresEmpty(board, BitBoards.whiteCastleQueenEmpties)
-                        && areTheseSquaresUnthreatened(board, white, BitBoards.whiteCastleQueenEmpties)
+                        && areTheseSquaresUnthreatened(board, white, BitBoards.whiteCastleQueenUnthreateneds)
                         && ((board.WHITE_KING & BitBoards.WHITE_KING) != 0)
                         && ((board.WHITE_ROOKS & BitBoards.SOUTH_WEST_CORNER) != 0)){
 
@@ -52,7 +55,7 @@ public class MoveGeneratorCastling {
 
             if(board.blackCanCastleQ){
                 if (areTheseSquaresEmpty(board, BitBoards.blackCastleQueenEmpties)
-                        && areTheseSquaresUnthreatened(board, white, BitBoards.blackCastleQueenEmpties)
+                        && areTheseSquaresUnthreatened(board, white, BitBoards.blackCastleQueenUnthreateneds)
                         && ((board.BLACK_KING & BitBoards.BLACK_KING) != 0)
                         && ((board.BLACK_ROOKS & BitBoards.NORTH_WEST_CORNER) != 0)){
 
@@ -72,6 +75,15 @@ public class MoveGeneratorCastling {
 
 
     public static boolean areTheseSquaresUnthreatened(Chessboard board, boolean white, long squares){
+        List<Long> squaresThatShouldBeUnthreatened = BitExtractor.getAllPieces(squares, 0);
+        for (long square : squaresThatShouldBeUnthreatened) {
+            int numberOfThreats = CheckChecker.numberOfPiecesThatLegalThreatenSquare(board, white, square); 
+            if (numberOfThreats > 0){
+//                System.out.println(Art.boardArt(board));
+//                System.out.println("Cannot castle through check, turn white: " + board.isWhiteTurn());
+                return false;
+            }
+        }
         return true;
     }
 

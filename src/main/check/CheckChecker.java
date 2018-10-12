@@ -59,14 +59,7 @@ public class CheckChecker {
         }
         if (rooks != 0) {
             
-            
-//            System.out.println(Art.boardArt(board));
-//            Art.printLong(rooks);
-
-
             long pieces = PieceMoveSliding.singleRookCaptures(board, square, white, rooks);
-//            Art.printLong(pieces);
-
 
             numberOfThreats += BitIndexing.populationCount(pieces);
         }

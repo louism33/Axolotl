@@ -1,5 +1,7 @@
 package main.bitboards;
 
+import main.chess.Art;
+
 public class BitBoards {
 
     public static final long WHITE_PAWNS = 0x000000000000FF00L;
@@ -106,4 +108,6 @@ public class BitBoards {
     public static long blackCastleKingEmpties = 0x0600000000000000L;
     public static long blackCastleQueenEmpties = 0x7000000000000000L;
 
+    public static long whiteCastleQueenUnthreateneds = 0x0000000000000030L;
+    public static long blackCastleQueenUnthreateneds = 0x3000000000000000L;
 }

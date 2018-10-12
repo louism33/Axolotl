@@ -27,7 +27,11 @@ public class PieceMoveKing {
         long l1 = King.KING_MOVE_TABLE[index];
         table |= l1;
         long emptyOfMyPieces = ~((white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES());
-        return table & emptyOfMyPieces & (legalPushes | legalCaptures);
+       
+       
+        return table & (legalPushes | legalCaptures);
+        
+//        return table & emptyOfMyPieces & (legalPushes | legalCaptures);
     }
 
     public static long masterAttackTableKing(Chessboard board, boolean white,

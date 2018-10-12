@@ -5,7 +5,6 @@ import main.chess.BitManipulations;
 import main.chess.Chessboard;
 import main.moveMaking.StackMoveData;
 
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

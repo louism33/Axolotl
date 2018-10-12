@@ -41,15 +41,14 @@ public class Main {
 
         moveNStuff(board, 13);
         moveNStuff(board, 12);
-        moveNStuff(board, 22);
+        moveNStuff(board, 5);
+        moveNStuff(board, 4);
+        moveNStuff(board, 7);
         moveNStuff(board, 7);
         
         
-        
         moveNStuff(board, 0);
-//        moveNStuff(board, 4);
-//        moveNStuff(board, 10);
-//        moveNStuff(board, 17);
+        moveNStuff(board, 0);
 
 
 

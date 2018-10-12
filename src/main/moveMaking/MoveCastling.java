@@ -61,7 +61,7 @@ class MoveCastling {
 
     static void castleFlagManager (Chessboard board, Move move){
 
-        // disable relevant castle flag whenever a takenPiece moves into the relevant square.
+        // disable relevant castle flag whenever a piece moves into the relevant square.
 
         if (move.destination == 0){
             board.whiteCanCastleK = false;
