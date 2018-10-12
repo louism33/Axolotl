@@ -1,5 +1,6 @@
 package main.check;
 
+import main.chess.Art;
 import main.chess.BitIndexing;
 import main.chess.Chessboard;
 import main.moveGeneration.PieceMoveKing;
@@ -57,7 +58,17 @@ public class CheckChecker {
             return numberOfThreats;
         }
         if (rooks != 0) {
-            numberOfThreats += BitIndexing.populationCount(PieceMoveSliding.singleRookCaptures(board, square, white, rooks));
+            
+            
+//            System.out.println(Art.boardArt(board));
+//            Art.printLong(rooks);
+
+
+            long pieces = PieceMoveSliding.singleRookCaptures(board, square, white, rooks);
+//            Art.printLong(pieces);
+
+
+            numberOfThreats += BitIndexing.populationCount(pieces);
         }
         if (numberOfThreats > 1){
             return numberOfThreats;

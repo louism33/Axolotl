@@ -14,15 +14,16 @@ import static main.chess.BitExtractor.getAllPieces;
 
 public class MoveGeneratorPromotion {
 
-    //todo add masks here
-    public static List<Move> generatePromotionMoves(Chessboard board, boolean white, long ignoreThesePieces){
+    public static List<Move> generatePromotionMoves(Chessboard board, boolean white,
+                                                    long ignoreThesePieces, long legalPushes, long legalCaptures){
         List<Move> moves = new ArrayList<>();
-        moves.addAll(generatePromotionPushes(board, white, ignoreThesePieces));
-        moves.addAll(generatePromotionCaptures(board, white, ignoreThesePieces));
+        moves.addAll(generatePromotionPushes(board, white, ignoreThesePieces, legalPushes));
+        moves.addAll(generatePromotionCaptures(board, white, ignoreThesePieces, legalCaptures));
         return moves;
     }
 
-    public static List<Move> generatePromotionPushes(Chessboard board, boolean white, long ignoreThesePieces){
+    private static List<Move> generatePromotionPushes(Chessboard board, boolean white, 
+                                                     long ignoreThesePieces, long legalPushes){
         List<Move> moves = new ArrayList<>();
         long legalPieces = ~ignoreThesePieces;
 
@@ -32,7 +33,7 @@ public class MoveGeneratorPromotion {
             if ((promotablePawns) != 0) {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {
-                    long pawnMoves = PieceMovePawns.singlePawnPushes(board, piece, white, BitBoards.RANK_EIGHT);
+                    long pawnMoves = PieceMovePawns.singlePawnPushes(board, piece, white, (BitBoards.RANK_EIGHT & legalPushes));
                     if (pawnMoves != 0) {
                         int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
                         Move move = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece).get(0);
@@ -49,7 +50,7 @@ public class MoveGeneratorPromotion {
             if ((promotablePawns) != 0) {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {
-                    long pawnMoves = PieceMovePawns.singlePawnPushes(board, piece, white, BitBoards.RANK_ONE);
+                    long pawnMoves = PieceMovePawns.singlePawnPushes(board, piece, white, (BitBoards.RANK_ONE & legalPushes));
                     if (pawnMoves != 0) {
                         int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
 
@@ -64,7 +65,8 @@ public class MoveGeneratorPromotion {
         return moves;
     }
 
-    public static List<Move> generatePromotionCaptures(Chessboard board, boolean white, long ignoreThesePieces){
+    private static List<Move> generatePromotionCaptures(Chessboard board, boolean white,
+                                                       long ignoreThesePieces, long legalCaptures){
         List<Move> moves = new ArrayList<>();
         long legalPieces = ~ignoreThesePieces;
 
@@ -75,7 +77,7 @@ public class MoveGeneratorPromotion {
             if ((promotablePawns) != 0) {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {
-                    long pawnMoves = PieceMovePawns.singlePawnCaptures(board, piece, white, promotionCaptureSquares);
+                    long pawnMoves = PieceMovePawns.singlePawnCaptures(board, piece, white, (promotionCaptureSquares & legalCaptures));
                     if (pawnMoves != 0) {
                         int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
                         List<Move> unflaggedCaptures = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece);
@@ -96,7 +98,7 @@ public class MoveGeneratorPromotion {
             if ((promotablePawns) != 0) {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {
-                    long pawnMoves = PieceMovePawns.singlePawnCaptures(board, piece, white, promotionCaptureSquares);
+                    long pawnMoves = PieceMovePawns.singlePawnCaptures(board, piece, white, (promotionCaptureSquares & legalCaptures));
                     if (pawnMoves != 0) {
                         int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
                         List<Move> unflaggedCaptures = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece);
@@ -116,7 +118,7 @@ public class MoveGeneratorPromotion {
 
 
 
-    static List<Move> promotingMovesByPiece(Move move){
+    private static List<Move> promotingMovesByPiece(Move move){
         List<Move> moves = new ArrayList<>();
 
         Move moveK = Copier.copyMove(move);

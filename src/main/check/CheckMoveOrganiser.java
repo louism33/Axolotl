@@ -46,10 +46,11 @@ public class CheckMoveOrganiser {
         List<Move> kingLegalMoves = KingLegalMoves.kingLegalMovesOnly(board, white);
         moves.addAll(kingLegalMoves);
 
-        moves.addAll(MoveGeneratorPromotion.generatePromotionMoves(board, white, ignoreThesePieces));
+        moves.addAll(MoveGeneratorPromotion.generatePromotionMoves(board, white, ignoreThesePieces, blockingSquaresMask, checkingPieceMask));
+
+        List<Move> enPassantMoves = MoveGeneratorEnPassant.generateEnPassantMoves(board, white, ignoreThesePieces, blockingSquaresMask, checkingPieceMask);
         
-        //todo
-        moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves(board, white, ignoreThesePieces));
+        moves.addAll(enPassantMoves);
 
 
         return moves;

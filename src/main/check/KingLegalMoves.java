@@ -13,8 +13,8 @@ public class KingLegalMoves {
 
     public static List<Move> kingLegalMovesOnly(Chessboard board, boolean white){
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
-        int indexOfFirstPiece = BitIndexing.getIndexOfFirstPiece(myKing);
-        return MoveGenerationUtilities.movesFromAttackBoard(kingLegalPushAndCaptureTable(board, white), indexOfFirstPiece);
+        int indexOfKing = BitIndexing.getIndexOfFirstPiece(myKing);
+        return MoveGenerationUtilities.movesFromAttackBoard(kingLegalPushAndCaptureTable(board, white), indexOfKing);
     }
 
     public static long kingLegalPushAndCaptureTable(Chessboard board, boolean white){
@@ -23,7 +23,8 @@ public class KingLegalMoves {
         long kingSafeSquares = ~CheckUtilities.kingDangerSquares(board, white);
         long enemyPieces = (!white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES();
         long kingSafeCaptures = enemyPieces & kingSafeSquares;
-        long kingSafePushes = kingSafeSquares & ~kingSafeCaptures;
+        long kingSafePushes = (~board.ALL_PIECES() & kingSafeSquares);
+//                kingSafeSquares & ~kingSafeCaptures;
 
         ans |= PieceMoveKing.singleKingPushes(board, myKing, white, kingSafePushes);
         ans |= PieceMoveKing.singleKingCaptures(board, myKing, white, kingSafeCaptures);

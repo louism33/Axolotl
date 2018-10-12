@@ -13,9 +13,11 @@ import java.util.List;
 
 public class MoveGeneratorEnPassant {
 
-    public static List<Move> generateEnPassantMoves(Chessboard board, boolean white, long ignoreThesePieces) {
+    public static List<Move> generateEnPassantMoves(Chessboard board, boolean white,
+                                                    long ignoreThesePieces, long legalPushes, long legalCaptures) {
+        
         List<Move> moves = new ArrayList<>();
-
+        
         long myPawns = white ? board.WHITE_PAWNS : board.BLACK_PAWNS;
         long enemyPawns = white ? board.BLACK_PAWNS : board.WHITE_PAWNS;
         long enPassantTakingRank = white ? BitBoards.RANK_FIVE : BitBoards.RANK_FOUR;
@@ -30,6 +32,11 @@ public class MoveGeneratorEnPassant {
             return new ArrayList<>();
         }
 
+        
+        if (board.moveStack.size() < 1){
+            return new ArrayList<>();
+        }
+        
         StackMoveData previousMove = board.moveStack.peek();
         if (!(previousMove.typeOfSpecialMove == StackMoveData.SpecialMove.ENPASSANTVICTIM)){
             return new ArrayList<>();
@@ -42,8 +49,14 @@ public class MoveGeneratorEnPassant {
         long enemyTakingSpots = 0;
         for (Long enemyPawn : allEnemyPawnsInPosition){
             long takingSpot = white ? enemyPawn << 8 : enemyPawn >>> 8;
-            enemyTakingSpots |= (takingSpot & FILE);
+            long potentialTakingSpot = takingSpot & FILE;
+
+            if (((enemyPawn & legalCaptures) == 0) && ((potentialTakingSpot & legalPushes) == 0)) {
+                continue;
+            }
+            enemyTakingSpots |= potentialTakingSpot;
         }
+        
 
         if (enemyTakingSpots == 0){
             return new ArrayList<>();
@@ -66,10 +79,23 @@ public class MoveGeneratorEnPassant {
             MoveOrganiser.makeMoveMaster(board, move);
             boolean enPassantWouldLeadToCheck = CheckChecker.boardInCheck(board, white);
             MoveUnmaker.unMakeMoveMaster(board);
+
+
+            long k = BitManipulations.newPieceOnSquare(51);
+            long r = BitManipulations.newPieceOnSquare(35);
+            
+            
+//            if (((k & board.BLACK_KING) != 0) && ((r & board.BLACK_ROOKS) != 0) && ((BitBoards.RANK_FIVE & board.WHITE_KING) != 0)){
+//                System.out.println(Art.boardArt(board));
+//                System.out.println();
+//            }
+//            
+            
+            
             
             if (enPassantWouldLeadToCheck){
-                System.out.println("Unsafe EP Move");
-                System.out.println(Art.boardArt(board));
+//                System.out.println("Unsafe EP Move");
+//                System.out.println(Art.boardArt(board));
                 continue;
             }
             safeEPMoves.add(move);

@@ -60,43 +60,51 @@ public class MoveGeneratorMaster {
         List<Move> moves = new ArrayList<>();
 
         long ENEMY_PIECES = (whiteTurn) ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES();
+        long ALL_EMPTY_SQUARES = ~board.ALL_PIECES();
         long myKing = (whiteTurn) ? board.WHITE_KING : board.BLACK_KING;
         long pinnedPieces = PinnedManager.whichPiecesArePinned(board, whiteTurn, myKing);
-
-//        long ALL_EMPTY_SQUARES = 
-        
-        
-        moves.addAll(MoveGeneratorCastling.generateCastlingMoves(board, whiteTurn));
-        moves.addAll(MoveGeneratorPromotion.generatePromotionMoves(board, whiteTurn, pinnedPieces));
-        moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves(board, whiteTurn, pinnedPieces));
-        moves.addAll(KingLegalMoves.kingLegalMovesOnly(board, whiteTurn));
-
         long PENULTIMATE_RANK = whiteTurn ? BitBoards.RANK_SEVEN : BitBoards.RANK_TWO;
         long myPawns = whiteTurn ? board.WHITE_PAWNS : board.BLACK_PAWNS;
         long promotablePawns = myPawns & PENULTIMATE_RANK;
         long pinnedPiecesAndPromotingPawns = pinnedPieces | promotablePawns;
 
+        moves.addAll(MoveGeneratorCastling.generateCastlingMoves(board, whiteTurn));
+
+        moves.addAll(KingLegalMoves.kingLegalMovesOnly(board, whiteTurn));
+
         if (pinnedPieces == 0){
             List<Move> regularPiecesMoves = MoveGeneratorPseudo.generateAllMovesWithoutKing
-                    (board, whiteTurn, pinnedPiecesAndPromotingPawns, ~board.ALL_PIECES(), ENEMY_PIECES);
+                    (board, whiteTurn, promotablePawns, ALL_EMPTY_SQUARES, ENEMY_PIECES);
+
             moves.addAll(regularPiecesMoves);
+
+            moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves
+                    (board, whiteTurn, promotablePawns, ALL_EMPTY_SQUARES, ENEMY_PIECES));
+
+            moves.addAll(MoveGeneratorPromotion.generatePromotionMoves
+                    (board, whiteTurn, 0, ALL_EMPTY_SQUARES, ENEMY_PIECES));
+
             return moves;
         }
 
-//        System.out.println("xxx Pinned");
-//        Art.printLong(pinnedPieces);
-        
-        
+
         List<Move> pinnedPiecesMoves = pinnedMoveManager(board, whiteTurn, pinnedPieces, myKing);
         moves.addAll(pinnedPiecesMoves);
 
-//        System.out.println(pinnedPiecesMoves);
-        
+
         List<Move> unpinnedPiecesMoves = MoveGeneratorPseudo.generateAllMovesWithoutKing
                 (board, whiteTurn, pinnedPiecesAndPromotingPawns, ~board.ALL_PIECES(), ENEMY_PIECES);
-
         moves.addAll(unpinnedPiecesMoves);
-        
+
+
+        moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves
+                (board, whiteTurn, pinnedPiecesAndPromotingPawns, ALL_EMPTY_SQUARES, ENEMY_PIECES));
+
+        moves.addAll(MoveGeneratorPromotion.generatePromotionMoves
+                (board, whiteTurn, pinnedPieces, ALL_EMPTY_SQUARES, ENEMY_PIECES));
+
+
+
         return moves;
     }
 
@@ -122,6 +130,7 @@ public class MoveGeneratorMaster {
             queens = board.BLACK_QUEEN;
         }
 
+        long FRIENLDY_PIECES = (whiteTurn) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES();
         long ENEMY_PIECES = (whiteTurn) ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES();
 
         for (long pinnedPiece : allPinnedPieces){
@@ -142,6 +151,17 @@ public class MoveGeneratorMaster {
                 long singlePawnAllCaptures = PieceMovePawns.singlePawnCaptures(board, pinnedPiece, whiteTurn, captureMask);
                 List<Move> pawnCaptures = MoveGenerationUtilities.movesFromAttackBoardLong(singlePawnAllCaptures, pinnedPiece);
                 moves.addAll(pawnCaptures);
+
+                long allButPinnedFriends = FRIENLDY_PIECES & ~pinnedPiece;
+
+                // a pinned pawn may still EP
+                moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves
+                        (board, whiteTurn, allButPinnedFriends, pushMask, captureMask));
+
+                // a pinned pawn may still promote, through a capture of the pinner
+                moves.addAll(MoveGeneratorPromotion.generatePromotionMoves
+                        (board, whiteTurn, allButPinnedFriends, pushMask, captureMask));
+
                 break;
             }
             if ((pinnedPiece & bishops) != 0) {
