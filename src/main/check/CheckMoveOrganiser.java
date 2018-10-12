@@ -47,6 +47,8 @@ public class CheckMoveOrganiser {
         moves.addAll(kingLegalMoves);
 
         moves.addAll(MoveGeneratorPromotion.generatePromotionMoves(board, white, ignoreThesePieces));
+        
+        //todo
         moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves(board, white, ignoreThesePieces));
 
 

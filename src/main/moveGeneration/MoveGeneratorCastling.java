@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MoveGeneratorCastling {
 
-    //main.check if we are in main.check happens elsewhere
+    // check if we are in check happens elsewhere
     public static List<Move> generateCastlingMoves(Chessboard board, boolean white){
         List<Move> moves = new ArrayList<>();
 

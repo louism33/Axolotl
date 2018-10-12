@@ -1,8 +1,11 @@
 package main.moveGeneration;
 
 import main.bitboards.BitBoards;
+import main.check.CheckChecker;
 import main.chess.*;
+import main.moveMaking.MoveOrganiser;
 import main.moveMaking.MoveParser;
+import main.moveMaking.MoveUnmaker;
 import main.moveMaking.StackMoveData;
 
 import java.util.ArrayList;
@@ -27,9 +30,6 @@ public class MoveGeneratorEnPassant {
             return new ArrayList<>();
         }
 
-//        System.out.println(Art.boardArt(board));
-        
-        
         StackMoveData previousMove = board.moveStack.peek();
         if (!(previousMove.typeOfSpecialMove == StackMoveData.SpecialMove.ENPASSANTVICTIM)){
             return new ArrayList<>();
@@ -44,7 +44,7 @@ public class MoveGeneratorEnPassant {
             long takingSpot = white ? enemyPawn << 8 : enemyPawn >>> 8;
             enemyTakingSpots |= (takingSpot & FILE);
         }
-        
+
         if (enemyTakingSpots == 0){
             return new ArrayList<>();
         }
@@ -54,20 +54,31 @@ public class MoveGeneratorEnPassant {
         for (Long myPawn : allMyPawnsInPosition){
             int indexOfFirstPiece = BitIndexing.getIndexOfFirstPiece(myPawn);
             long pawnEnPassantCapture = PieceMovePawns.singlePawnCaptures(board, myPawn, white, enemyTakingSpots);
-            
             List<Move> epMoves = MoveGenerationUtilities.movesFromAttackBoard(pawnEnPassantCapture, indexOfFirstPiece);
             moves.addAll(epMoves);
         }
-        
+
+        List<Move> safeEPMoves = new ArrayList<>();
+        // remove moves that would lead us in check
         for (Move move : moves){
             move.move |= MoveParser.ENPASSANT_MASK;
+
+            MoveOrganiser.makeMoveMaster(board, move);
+            boolean enPassantWouldLeadToCheck = CheckChecker.boardInCheck(board, white);
+            MoveUnmaker.unMakeMoveMaster(board);
+            
+            if (enPassantWouldLeadToCheck){
+                System.out.println("Unsafe EP Move");
+                System.out.println(Art.boardArt(board));
+                continue;
+            }
+            safeEPMoves.add(move);
         }
 
- // todo check for checks        
-        return moves;
+        return safeEPMoves;
     }
-    
-    
+
+
     private static long extractFileFromInt(int file){
         if (file == 1){
             return BitBoards.FILE_A;
@@ -86,7 +97,7 @@ public class MoveGeneratorEnPassant {
         }
         else if (file == 6){
             return BitBoards.FILE_F;
-        }        
+        }
         else if (file == 7){
             return BitBoards.FILE_G;
         }
@@ -94,7 +105,7 @@ public class MoveGeneratorEnPassant {
             return BitBoards.FILE_H;
         }
         throw new RuntimeException("Incorrect File gotten from Stack.");
-        
+
     }
 
 

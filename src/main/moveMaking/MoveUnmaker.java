@@ -1,6 +1,9 @@
 package main.moveMaking;
 
 import main.chess.*;
+import main.moveGeneration.MoveGeneratorMaster;
+
+import java.util.List;
 
 public class MoveUnmaker {
 
@@ -29,13 +32,10 @@ public class MoveUnmaker {
             }
         }
 
+        //double pawn push
         else if (popSMD.typeOfSpecialMove == StackMoveData.SpecialMove.ENPASSANTVICTIM){
             Move basicReversedMove = new Move(pieceToMoveBack, squareToMoveBackTo);
             makeRegularMove(board, basicReversedMove);
-            int takenPiece = popSMD.takenPiece;
-            if (takenPiece != 0){
-                addRelevantPieceToSquare(board, takenPiece, pieceToMoveBack);
-            }
         }
 
         else if (popSMD.typeOfSpecialMove == StackMoveData.SpecialMove.ENPASSANTCAPTURE){
@@ -43,11 +43,11 @@ public class MoveUnmaker {
             makeRegularMove(board, basicReversedMove);
             int takenPiece = popSMD.takenPiece;
             
-            if (popSMD.board.isWhiteTurn()) {
-                addRelevantPieceToSquare(board, 1, pieceToMoveBack + 8);
+            if (popSMD.whiteTurn) {
+                addRelevantPieceToSquare(board, 7, pieceToMoveBack - 8);
             }
             else {
-                addRelevantPieceToSquare(board, 7, pieceToMoveBack - 8);
+                addRelevantPieceToSquare(board, 1, pieceToMoveBack + 8);
             }
         }
         
@@ -83,8 +83,8 @@ public class MoveUnmaker {
                 long newKing = BitManipulations.newPieceOnSquare(pieceToMoveBack);
 
                 MoveMakingUtilities.removePieces(board, newKing, newRook);
-                board.WHITE_KING |= originalKing;
-                board.WHITE_ROOKS |= originalRook;
+                board.BLACK_KING |= originalKing;
+                board.BLACK_ROOKS |= originalRook;
             }
 
             else if (pieceToMoveBack == 61){
@@ -94,8 +94,8 @@ public class MoveUnmaker {
                 long newKing = BitManipulations.newPieceOnSquare(pieceToMoveBack);
 
                 MoveMakingUtilities.removePieces(board, newKing, newRook);
-                board.WHITE_KING |= originalKing;
-                board.WHITE_ROOKS |= originalRook;
+                board.BLACK_KING |= originalKing;
+                board.BLACK_ROOKS |= originalRook;
             }
             
         }
@@ -107,11 +107,11 @@ public class MoveUnmaker {
             
             MoveMakingUtilities.removePieces(board, sourceSquare, destinationSquare);
             
-            if (popSMD.board.isWhiteTurn()) {
-                addRelevantPieceToSquare(board, 7, squareToMoveBackTo);
+            if (popSMD.whiteTurn) {
+                addRelevantPieceToSquare(board, 1, squareToMoveBackTo);
             }
             else {
-                addRelevantPieceToSquare(board, 1, squareToMoveBackTo);
+                addRelevantPieceToSquare(board, 7, squareToMoveBackTo);
             }
 
             int takenPiece = popSMD.takenPiece;
@@ -129,7 +129,7 @@ public class MoveUnmaker {
         board.blackCanCastleQ = popSMD.blackCanCastleQ;
         
 
-        board.setWhiteTurn(!board.isWhiteTurn());
+        board.setWhiteTurn(popSMD.whiteTurn);
 
 
 
@@ -178,7 +178,7 @@ public class MoveUnmaker {
             board.BLACK_KING |= placeToAddPiece;
         }
         else {
-            throw new RuntimeException("problem with putting back a cpatured piece");
+            throw new RuntimeException("problem with putting back a captured piece");
         }
     }
 
@@ -201,44 +201,48 @@ public class MoveUnmaker {
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
             board.WHITE_BISHOPS |= destinationPiece;
         }
-        else if  ((sourcePiece & board.WHITE_ROOKS) != 0){
+        else if ((sourcePiece & board.WHITE_ROOKS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
             board.WHITE_ROOKS |= destinationPiece;
         }
-        else if  ((sourcePiece & board.WHITE_QUEEN) != 0){
+        else if ((sourcePiece & board.WHITE_QUEEN) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
             board.WHITE_QUEEN |= destinationPiece;
         }
-        else if  ((sourcePiece & board.WHITE_KING) != 0){
+        else if ((sourcePiece & board.WHITE_KING) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
             board.WHITE_KING |= destinationPiece;
         }
 
-        else if  ((sourcePiece & board.BLACK_PAWNS) != 0){
+        else if ((sourcePiece & board.BLACK_PAWNS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
             board.BLACK_PAWNS |= destinationPiece;
         }
-        else if  ((sourcePiece & board.BLACK_KNIGHTS) != 0){
+        else if ((sourcePiece & board.BLACK_KNIGHTS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
             board.BLACK_KNIGHTS |= destinationPiece;
         }
-        else if  ((sourcePiece & board.BLACK_BISHOPS) != 0){
+        else if ((sourcePiece & board.BLACK_BISHOPS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
             board.BLACK_BISHOPS |= destinationPiece;
         }
-        else if  ((sourcePiece & board.BLACK_ROOKS) != 0){
+        else if ((sourcePiece & board.BLACK_ROOKS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
             board.BLACK_ROOKS |= destinationPiece;
         }
-        else if  ((sourcePiece & board.BLACK_QUEEN) != 0){
+        else if ((sourcePiece & board.BLACK_QUEEN) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
             board.BLACK_QUEEN |= destinationPiece;
         }
-        else if  ((sourcePiece & board.BLACK_KING) != 0) {
+        else if ((sourcePiece & board.BLACK_KING) != 0) {
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
             board.BLACK_KING |= destinationPiece;
         }
         else {
+            System.out.println(Art.boardArt(board));
+
+            System.out.println(move);
+
             throw new RuntimeException("false move");
         }
     }

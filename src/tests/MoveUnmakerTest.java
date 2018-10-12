@@ -8,6 +8,7 @@ import main.chess.Move;
 import main.moveGeneration.MoveGeneratorMaster;
 import main.moveMaking.MoveOrganiser;
 import main.moveMaking.MoveUnmaker;
+import main.moveMaking.StackMoveData;
 import main.utils.RandomBoard;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +16,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Random;
 
+import static main.chess.StandAlone.board;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MoveUnmakerTest {
@@ -49,7 +52,7 @@ class MoveUnmakerTest {
             
             if (debug) {
                 System.out.println("----------------- " + i + " -------------------");
-                System.out.println("Whites's turn: " + b.isWhiteTurn());
+                System.out.println("White's turn: " + b.isWhiteTurn());
             }
             if (debug) {
                 System.out.println(Art.boardArt(b));
@@ -205,5 +208,60 @@ class MoveUnmakerTest {
         System.out.println("total multi level tests: " + total);
 
 
+
+
+        Chessboard board = new Chessboard();
+        int num = 1000;
+        System.out.println("------- Random high depth, starting white");
+        Chessboard copy1 = Copier.copyBoard(board, board.isWhiteTurn(), false);
+        moveNStuffRandom(board, num, debug);
+        System.out.println(Art.boardArt(board));
+        unMoveNStuff(board, debug);
+
+        System.out.println("Same as before ? " + board.equals(copy1));
+        System.out.println();
+        Assert.assertEquals(board, copy1);        
+    }
+
+
+
+    static void unMoveNStuff(Chessboard board, boolean debug){
+
+        int size = board.moveStack.size();
+        System.out.println(size);
+
+        for (int undo = 0; undo < size; undo++) {
+            MoveUnmaker.unMakeMoveMaster(board);
+            if (debug) {
+                System.out.println(Art.boardArt(board));
+            }
+        }
+    }
+
+    static void moveNStuffRandom (Chessboard board, int totalRandoms, boolean debug){
+        for (int r = 0; r < totalRandoms; r++) {
+            List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
+            Random rand = new Random();
+            
+            if (moves.size() == 0){
+                System.out.println("Checkmate");
+                return;
+            }
+
+            Move move = moves.get(rand.nextInt(moves.size()));
+
+            if (debug) {
+                System.out.println(moves + " " + moves.size());
+                System.out.println(move);
+            }
+            MoveOrganiser.makeMoveMaster(board, move);
+            MoveOrganiser.flipTurn(board);
+            if (debug) {
+                System.out.println(Art.boardArt(board));
+                StackMoveData peek = board.moveStack.peek();
+                System.out.println(peek);
+//            System.out.println("Peek turn white : " + peek.whiteTurn);
+            }
+        }
     }
 }

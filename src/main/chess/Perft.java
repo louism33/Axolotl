@@ -1,12 +1,13 @@
 package main.chess;
 
+import main.miscAdmin.FenParser;
 import main.moveGeneration.MoveGeneratorMaster;
 import main.moveMaking.MoveOrganiser;
+import main.moveMaking.MoveUnmaker;
 
 import java.util.List;
 
-public class Perft { // 4865351
-    // 258 too few moves
+public class Perft {
     // too many checks, captures
 
 /*
@@ -15,6 +16,7 @@ public class Perft { // 4865351
 8902
 197281
 4865609
+119060324
  */
 
 
@@ -23,18 +25,25 @@ public class Perft { // 4865351
     }
 
     Perft(){
-        plop();
+
+        String fenBoardOne = "8/5N2/4p2p/5p1k/1p4rP/1P2Q1P1/P4P1K/5q2 w - - 15 44";
+        
+        Chessboard chessboardOne = FenParser.makeBoardBasedOnFEN(fenBoardOne);
+        runPerftTestWithBoard(chessboardOne);
+
+//        Chessboard normalBoard = new Chessboard();
+//        runPerftTestWithBoard(normalBoard);
+        
+        
     }
 
-    void plop(){
-
-        Chessboard board = new Chessboard();
+    void runPerftTestWithBoard(Chessboard board){
 
         String s = Art.boardArt(board);
         System.out.println(s);
         System.out.println("-----------------------------------");
 
-        int maxD = 5;
+        int maxD = 4;
         for (int depth = 1; depth <= maxD; depth++) {
             countFinalNodesAtDepth(board, depth);
             System.out.println();
@@ -79,32 +88,41 @@ public class Perft { // 4865351
 
 
 
-
     private static long countFinalNodesAtDepthHelper(Chessboard board, int depth){
         long temp = 0;
-
         if (depth == 0){
             return 1;
         }
-
         List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
-
         if (depth == 1){
             return moves.size();
         }
+        for (Move move : moves) {
+            MoveOrganiser.makeMoveMaster(board, move);
+            MoveOrganiser.flipTurn(board);
+            long movesAtDepth = countFinalNodesAtDepthHelper(board, depth - 1);
+            temp += movesAtDepth;
+            MoveUnmaker.unMakeMoveMaster(board);
+        }
+        return temp;
+    }
 
+    private static long countFinalNodesAtDepthHelperOld(Chessboard board, int depth){
+        long temp = 0;
+        if (depth == 0){
+            return 1;
+        }
+        List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
+        if (depth == 1){
+            return moves.size();
+        }
         for (Move move : moves) {
             Chessboard babyBoard = Copier.copyBoard(board, board.isWhiteTurn(), false);
-
-            long enemies = babyBoard.isWhiteTurn() ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES();
-
             MoveOrganiser.makeMoveMaster(babyBoard, move);
             MoveOrganiser.flipTurn(babyBoard);
-
             long movesAtDepth = countFinalNodesAtDepthHelper(babyBoard, depth - 1);
             temp += movesAtDepth;
         }
-
         return temp;
     }
 

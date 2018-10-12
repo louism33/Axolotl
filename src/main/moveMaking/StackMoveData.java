@@ -4,11 +4,14 @@ import main.chess.Chessboard;
 import main.chess.Move;
 
 public class StackMoveData {
+    
+    //eventually remove board altogether
 
     public Chessboard board;
     public Move move;
     public int takenPiece = 0;
     public int fiftyMoveCounter;
+    public boolean whiteTurn;
     
     public enum SpecialMove {
         BASICQUIETPUSH, BASICLOUDPUSH, BASICCAPTURE, ENPASSANTVICTIM, ENPASSANTCAPTURE, CASTLING, PROMOTION,
@@ -26,6 +29,8 @@ public class StackMoveData {
         this.fiftyMoveCounter = fiftyMoveCounter;
         this.typeOfSpecialMove = typeOfSpecialMove;
 
+        this.whiteTurn = board.isWhiteTurn();
+        
         this.whiteCanCastleK = board.whiteCanCastleK;
         this.whiteCanCastleQ = board.whiteCanCastleQ;
         this.blackCanCastleK = board.blackCanCastleK;
@@ -39,7 +44,9 @@ public class StackMoveData {
         this.fiftyMoveCounter = fiftyMoveCounter;
         this.typeOfSpecialMove = typeOfSpecialMove;
         this.takenPiece = takenPiece;
-        
+
+        this.whiteTurn = board.isWhiteTurn();
+
         this.whiteCanCastleK = board.whiteCanCastleK;
         this.whiteCanCastleQ = board.whiteCanCastleQ;
         this.blackCanCastleK = board.blackCanCastleK;
@@ -56,7 +63,9 @@ public class StackMoveData {
         if (this.typeOfSpecialMove == SpecialMove.ENPASSANTVICTIM){
             this.enPassantFile = enPassantFile;
         }
-        
+
+        this.whiteTurn = board.isWhiteTurn();
+
         this.whiteCanCastleK = board.whiteCanCastleK;
         this.whiteCanCastleQ = board.whiteCanCastleQ;
         this.blackCanCastleK = board.blackCanCastleK;
@@ -70,6 +79,7 @@ public class StackMoveData {
                 "move=" + move +
                 ", takenPiece=" + takenPiece +
                 ", fiftyMoveCounter=" + fiftyMoveCounter +
+                ", whiteTurn=" + whiteTurn +
                 ", typeOfSpecialMove=" + typeOfSpecialMove +
                 ", enPassantFile=" + enPassantFile +
                 ", whiteCanCastleK=" + whiteCanCastleK +

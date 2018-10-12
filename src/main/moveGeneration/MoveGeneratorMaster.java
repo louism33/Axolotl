@@ -4,6 +4,7 @@ import main.bitboards.BitBoards;
 import main.check.CheckChecker;
 import main.check.CheckMoveOrganiser;
 import main.check.KingLegalMoves;
+import main.chess.Art;
 import main.chess.BitExtractor;
 import main.chess.Chessboard;
 import main.chess.Move;
@@ -62,11 +63,12 @@ public class MoveGeneratorMaster {
         long myKing = (whiteTurn) ? board.WHITE_KING : board.BLACK_KING;
         long pinnedPieces = PinnedManager.whichPiecesArePinned(board, whiteTurn, myKing);
 
+//        long ALL_EMPTY_SQUARES = 
+        
+        
         moves.addAll(MoveGeneratorCastling.generateCastlingMoves(board, whiteTurn));
         moves.addAll(MoveGeneratorPromotion.generatePromotionMoves(board, whiteTurn, pinnedPieces));
-        List<Move> c = MoveGeneratorEnPassant.generateEnPassantMoves(board, whiteTurn, pinnedPieces);
-        
-        moves.addAll(c);
+        moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves(board, whiteTurn, pinnedPieces));
         moves.addAll(KingLegalMoves.kingLegalMovesOnly(board, whiteTurn));
 
         long PENULTIMATE_RANK = whiteTurn ? BitBoards.RANK_SEVEN : BitBoards.RANK_TWO;
@@ -81,13 +83,20 @@ public class MoveGeneratorMaster {
             return moves;
         }
 
-        moves.addAll(pinnedMoveManager(board, whiteTurn, pinnedPieces, myKing));
+//        System.out.println("xxx Pinned");
+//        Art.printLong(pinnedPieces);
+        
+        
+        List<Move> pinnedPiecesMoves = pinnedMoveManager(board, whiteTurn, pinnedPieces, myKing);
+        moves.addAll(pinnedPiecesMoves);
 
+//        System.out.println(pinnedPiecesMoves);
+        
         List<Move> unpinnedPiecesMoves = MoveGeneratorPseudo.generateAllMovesWithoutKing
                 (board, whiteTurn, pinnedPiecesAndPromotingPawns, ~board.ALL_PIECES(), ENEMY_PIECES);
 
         moves.addAll(unpinnedPiecesMoves);
-
+        
         return moves;
     }
 
