@@ -2,10 +2,9 @@ package main.miscAdmin;
 
 import main.chess.Chessboard;
 
-public class BlankBoard {
+class BlankBoard {
     
-    public static Chessboard blankBoard(){
-        
+    static Chessboard blankBoard(){
         Chessboard board = new Chessboard();
 
         board.WHITE_PAWNS = 0;
@@ -23,6 +22,5 @@ public class BlankBoard {
         board.BLACK_KING = 0;
         
         return board;
-        
     }
 }

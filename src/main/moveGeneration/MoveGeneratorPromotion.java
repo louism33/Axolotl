@@ -92,9 +92,9 @@ public class MoveGeneratorPromotion {
         }
 
         else {
-            long PENULTIMATE_RANK = BitBoards.RANK_ONE;
-            long promotablePawns = board.WHITE_PAWNS & PENULTIMATE_RANK & legalPieces;
-            long promotionCaptureSquares = BitBoards.RANK_ONE & board.ALL_BLACK_PIECES();
+            long PENULTIMATE_RANK = BitBoards.RANK_TWO;
+            long promotablePawns = board.BLACK_PAWNS & PENULTIMATE_RANK & legalPieces;
+            long promotionCaptureSquares = BitBoards.RANK_ONE & board.ALL_WHITE_PIECES();
             if ((promotablePawns) != 0) {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {

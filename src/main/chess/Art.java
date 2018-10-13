@@ -22,22 +22,22 @@ public class Art {
     }
 
     public static String boardArt (Chessboard board) {
-        String s = "";
-        s += "   a b c d e f g h\n";
-        s += "  +---------------+\n";
+        StringBuilder s = new StringBuilder();
+        s.append("   a b c d e f g h\n");
+        s.append("  +---------------+\n");
         for (int y = 7; y >= 0; y--) {
-            s += (y+1) + " |";
+            s.append(y + 1).append(" |");
             for (int x = 7; x >= 0; x--) {
-                s += pieceByNumberASCII( pieceOnSquare(board, x + y*8) );
-                if (x>0) s += " ";
+                s.append(pieceByNumberASCII(pieceOnSquare(board, x + y * 8)));
+                if (x>0) s.append(" ");
             }
-            s += "| " + (y+1);
-            s += "\n";
+            s.append("| ").append(y + 1);
+            s.append("\n");
         }
-        s += "  +---------------+\n";
-        s += "   a b c d e f g h\n";
+        s.append("  +---------------+\n");
+        s.append("   a b c d e f g h\n");
 
-        return s;
+        return s.toString();
     }
 
 
@@ -50,20 +50,17 @@ public class Art {
         }
 
         String temp = sb.toString() + "" + binaryString;
-
-        String answer = temp.substring(0, 6) +"\n" +
+        return temp.substring(0, 6) +"\n" +
                 temp.substring(6, 12) + "\n" +
                 temp.substring(12, 16);
-
-        return answer;
     }
 
     public static void printLong(long l){
         for (int y = 0; y < 8; y++) {
             for (int i = 0; i < 8; i++) {
-                String s = Long.toBinaryString(l);
+                StringBuilder s = new StringBuilder(Long.toBinaryString(l));
                 while (s.length() < 64) {
-                    s = "0"+s;
+                    s.insert(0, "0");
                 }
                 System.out.print(s.charAt(y * 8 + i));
             }

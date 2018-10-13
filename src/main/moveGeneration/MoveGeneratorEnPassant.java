@@ -2,7 +2,10 @@ package main.moveGeneration;
 
 import main.bitboards.BitBoards;
 import main.check.CheckChecker;
-import main.chess.*;
+import main.chess.BitExtractor;
+import main.chess.BitIndexing;
+import main.chess.Chessboard;
+import main.chess.Move;
 import main.moveMaking.MoveOrganiser;
 import main.moveMaking.MoveParser;
 import main.moveMaking.MoveUnmaker;
@@ -15,7 +18,6 @@ public class MoveGeneratorEnPassant {
 
     public static List<Move> generateEnPassantMoves(Chessboard board, boolean white,
                                                     long ignoreThesePieces, long legalPushes, long legalCaptures) {
-        
         List<Move> moves = new ArrayList<>();
         
         long myPawns = white ? board.WHITE_PAWNS : board.BLACK_PAWNS;
@@ -31,7 +33,6 @@ public class MoveGeneratorEnPassant {
         if (enemyPawnsInPosition == 0) {
             return new ArrayList<>();
         }
-
         
         if (board.moveStack.size() < 1){
             return new ArrayList<>();
@@ -79,28 +80,12 @@ public class MoveGeneratorEnPassant {
             MoveOrganiser.makeMoveMaster(board, move);
             boolean enPassantWouldLeadToCheck = CheckChecker.boardInCheck(board, white);
             MoveUnmaker.unMakeMoveMaster(board);
-
-
-            long k = BitManipulations.newPieceOnSquare(51);
-            long r = BitManipulations.newPieceOnSquare(35);
-            
-            
-//            if (((k & board.BLACK_KING) != 0) && ((r & board.BLACK_ROOKS) != 0) && ((BitBoards.RANK_FIVE & board.WHITE_KING) != 0)){
-//                System.out.println(Art.boardArt(board));
-//                System.out.println();
-//            }
-//            
-            
-            
             
             if (enPassantWouldLeadToCheck){
-//                System.out.println("Unsafe EP Move");
-//                System.out.println(Art.boardArt(board));
                 continue;
             }
             safeEPMoves.add(move);
         }
-
         return safeEPMoves;
     }
 
@@ -131,8 +116,6 @@ public class MoveGeneratorEnPassant {
             return BitBoards.FILE_H;
         }
         throw new RuntimeException("Incorrect File gotten from Stack.");
-
     }
-
 
 }

@@ -24,6 +24,7 @@ public class MoveOrganiser {
                 StackMoveData stackMoveData = new StackMoveData(move, board, 50, StackMoveData.SpecialMove.CASTLING);
                 board.moveStack.push(stackMoveData);
                 MoveCastling.makeCastlingMove(board, move);
+                MoveCastling.castleFlagManager(board, move);
             }
 
             else if (MoveParser.isEnPassantMove(move)){
@@ -32,6 +33,7 @@ public class MoveOrganiser {
                         (move, board, 50, StackMoveData.SpecialMove.ENPASSANTCAPTURE);
                 board.moveStack.push(stackMoveData);
                 MoveEnPassant.makeEnPassantMove(board, move);
+                MoveCastling.castleFlagManager(board, move);
             }
 
             else if (MoveParser.isPromotionMove(move)){
@@ -39,29 +41,23 @@ public class MoveOrganiser {
                 long destSquare = BitManipulations.newPieceOnSquare(destination);
                 boolean capturePromotion = (destSquare & board.ALL_PIECES()) != 0;
                 if (capturePromotion) {
-
                     long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
                     int takenPiece = whichPieceOnSquare(board, destinationPiece);
 
                     promotions++;
                     captures++;
-                    
                     StackMoveData stackMoveData = new StackMoveData(move, board, 50, StackMoveData.SpecialMove.PROMOTION, takenPiece);
                     board.moveStack.push(stackMoveData);
                     MovePromotion.makePromotingMove(board, move);
+                    MoveCastling.castleFlagManager(board, move);
                 }
                 else {
                     promotions++;
-                    
                     StackMoveData stackMoveData = new StackMoveData(move, board, 50, StackMoveData.SpecialMove.PROMOTION);
                     board.moveStack.push(stackMoveData);
                     MovePromotion.makePromotingMove(board, move);
+                    MoveCastling.castleFlagManager(board, move);
                 }
-
-
-
-
-
 
             }
         }
@@ -72,21 +68,15 @@ public class MoveOrganiser {
             long destSquare = BitManipulations.newPieceOnSquare(destination);
             boolean captureMove = (destSquare & board.ALL_PIECES()) != 0;
             if (captureMove) {
-
                 captures++;
-                
                 long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
                 int takenPiece = whichPieceOnSquare(board, destinationPiece);
-
                 StackMoveData stackMoveData = new StackMoveData
                         (move, board, 50, StackMoveData.SpecialMove.BASICCAPTURE, takenPiece);
                 board.moveStack.push(stackMoveData);
                 MoveRegular.makeRegularMove(board, move);
+                MoveCastling.castleFlagManager(board, move);
             }
-
-
-
-
 
             else if (enPassantPossibility(board, move)){
                 int sourceAsPiece = move.getSourceAsPiece();
@@ -95,22 +85,18 @@ public class MoveOrganiser {
                         (move, board, 50, whichFile, StackMoveData.SpecialMove.ENPASSANTVICTIM);
                 board.moveStack.push(stackMoveData);
                 MoveRegular.makeRegularMove(board, move);
+                MoveCastling.castleFlagManager(board, move);
             }
 
-
-
-
-
             else {
-
                 long destinationPiece = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
                 int movingPiece = whichPieceOnSquare(board, destinationPiece);
-
                 if (movingPiece == 1 || movingPiece == 7){
                     StackMoveData stackMoveData = new StackMoveData
                             (move, board, 50, StackMoveData.SpecialMove.BASICLOUDPUSH);
                     board.moveStack.push(stackMoveData);
                     MoveRegular.makeRegularMove(board, move);
+                    MoveCastling.castleFlagManager(board, move);
                 }
                 else {
                     // increment 50 move rule
@@ -118,19 +104,13 @@ public class MoveOrganiser {
                             (move, board, 50, StackMoveData.SpecialMove.BASICQUIETPUSH);
                     board.moveStack.push(stackMoveData);
                     MoveRegular.makeRegularMove(board, move);
+                    MoveCastling.castleFlagManager(board, move);
                 }
-
-
-
             }
-
-
-            // add quiet moves (for FMC)
-
         }
     }
 
-    static boolean enPassantPossibility(Chessboard board, Move move){
+    private static boolean enPassantPossibility(Chessboard board, Move move){
         // determine if flag should be added to enable EP on next turn
         long sourceSquare = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
         long destinationSquare = BitManipulations.newPieceOnSquare(move.destination);
@@ -145,12 +125,7 @@ public class MoveOrganiser {
         if ((sourceSquare & MY_PAWNS) == 0){
             return false;
         }
-
-        if ((destinationSquare & enPassantPossibilityRank) == 0){
-            return false;
-        }
-
-        return true;
+        return (destinationSquare & enPassantPossibilityRank) != 0;
     }
 
 
@@ -200,10 +175,6 @@ public class MoveOrganiser {
         else {
             throw new RuntimeException("false entry");
         }
-
-
-
     }
-
 
 }

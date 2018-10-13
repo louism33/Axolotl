@@ -1,37 +1,20 @@
 package main.chess;
 
-import main.bitboards.King;
-import main.bitboards.Knight;
-import main.bitboards.PawnCaptures;
 import main.moveGeneration.MoveGeneratorMaster;
 import main.moveMaking.MoveOrganiser;
 import main.moveMaking.MoveUnmaker;
 import main.moveMaking.StackMoveData;
-import main.utils.RandomBoard;
 
 import java.util.List;
 import java.util.Random;
 
-public class Main {
-
-    /*
-    create true separation of push gen and cap gen
-
-    clean up of redundant functions
-     */
-
+class Main {
 
     public static void main(String[] args) {
         new Main();
     }
 
-
-
-
-    static int num = 11;
-    static Chessboard[] bs = new Chessboard[num];
-
-    Main(){
+    private Main(){
         Chessboard board = new Chessboard();
         System.out.println(Art.boardArt(board));
 
@@ -61,7 +44,7 @@ public class Main {
 
     }
 
-    static void unMoveNStuff(Chessboard board){
+    private static void unMoveNStuff(Chessboard board){
         int size = board.moveStack.size();
         for (int undo = 0; undo < size; undo++) {
             MoveUnmaker.unMakeMoveMaster(board);
@@ -92,7 +75,7 @@ public class Main {
 
 
 
-    static void moveNStuff (Chessboard board, int i){
+    private static void moveNStuff(Chessboard board, int i){
         List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
 
         Move move = moves.get(i);

@@ -1,7 +1,6 @@
 package tests;
 
 import main.check.CheckChecker;
-import main.chess.Art;
 import main.chess.Chessboard;
 import main.utils.RandomBoard;
 import org.junit.Assert;
@@ -10,9 +9,8 @@ import org.junit.jupiter.api.Test;
 
 class CheckCheckerTest {
 
-
     static int num = 11;
-    static Chessboard[] bs;
+    private static Chessboard[] bs;
 
     @BeforeAll
     static void setUp() {
@@ -55,7 +53,4 @@ class CheckCheckerTest {
         Assert.assertTrue(CheckChecker.boardInCheck(bs[10], false));
     }
 
-    @Test
-    void numberOfPiecesThatLegalThreatenSquare() {
-    }
 }

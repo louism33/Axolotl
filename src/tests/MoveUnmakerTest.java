@@ -11,19 +11,15 @@ import main.moveMaking.MoveUnmaker;
 import main.moveMaking.StackMoveData;
 import main.utils.RandomBoard;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Random;
 
-import static main.chess.StandAlone.board;
-import static org.junit.jupiter.api.Assertions.*;
-
 class MoveUnmakerTest {
 
-    static Chessboard[] bs;
+    private static Chessboard[] bs;
 
     @BeforeEach
     void setUp() {
@@ -77,7 +73,7 @@ class MoveUnmakerTest {
                 if (debug) {
                     System.out.println(Art.boardArt(b));
                 }
-                Assert.assertTrue(b.equals(copy));
+                Assert.assertEquals(b, copy);
             }
         }
         System.out.println("total white single tests: " + totalWhites);
@@ -124,7 +120,7 @@ class MoveUnmakerTest {
                 if (debug) {
                     System.out.println(Art.boardArt(b));
                 }
-                Assert.assertTrue(b.equals(copy));
+                Assert.assertEquals(b, copy);
             }
         }
         System.out.println("total black single tests: " + totalBlacks);
@@ -202,7 +198,7 @@ class MoveUnmakerTest {
                 if (debug) {
                     System.out.println(Art.boardArt(b));
                 }
-                Assert.assertTrue(b.equals(copy));
+                Assert.assertEquals(b, copy);
             }
         }
         System.out.println("total multi level tests: " + total);
@@ -225,7 +221,7 @@ class MoveUnmakerTest {
 
 
 
-    static void unMoveNStuff(Chessboard board, boolean debug){
+    private static void unMoveNStuff(Chessboard board, boolean debug){
 
         int size = board.moveStack.size();
         System.out.println(size);
@@ -238,7 +234,7 @@ class MoveUnmakerTest {
         }
     }
 
-    static void moveNStuffRandom (Chessboard board, int totalRandoms, boolean debug){
+    private static void moveNStuffRandom(Chessboard board, int totalRandoms, boolean debug){
         for (int r = 0; r < totalRandoms; r++) {
             List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
             Random rand = new Random();

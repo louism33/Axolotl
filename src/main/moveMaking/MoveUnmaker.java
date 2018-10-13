@@ -1,15 +1,14 @@
 package main.moveMaking;
 
-import main.chess.*;
-import main.moveGeneration.MoveGeneratorMaster;
-
-import java.util.List;
+import main.chess.Art;
+import main.chess.BitManipulations;
+import main.chess.Chessboard;
+import main.chess.Move;
 
 public class MoveUnmaker {
 
     public static void unMakeMoveMaster(Chessboard board) {
         StackMoveData popSMD = board.moveStack.pop();
-
         int pieceToMoveBack = popSMD.move.destination;
         int squareToMoveBackTo = popSMD.move.getSourceAsPiece();
 
@@ -101,43 +100,31 @@ public class MoveUnmaker {
         }
         
         else if (popSMD.typeOfSpecialMove == StackMoveData.SpecialMove.PROMOTION){
-
             long sourceSquare = BitManipulations.newPieceOnSquare(pieceToMoveBack);
             long destinationSquare = BitManipulations.newPieceOnSquare(squareToMoveBackTo);
-            
             MoveMakingUtilities.removePieces(board, sourceSquare, destinationSquare);
-            
             if (popSMD.whiteTurn) {
                 addRelevantPieceToSquare(board, 1, squareToMoveBackTo);
             }
             else {
                 addRelevantPieceToSquare(board, 7, squareToMoveBackTo);
             }
-
             int takenPiece = popSMD.takenPiece;
-            
             if (takenPiece > 0){
                 addRelevantPieceToSquare(board, takenPiece, pieceToMoveBack);
             }
-            
         }
-
 
         board.whiteCanCastleK = popSMD.whiteCanCastleK;
         board.whiteCanCastleQ = popSMD.whiteCanCastleQ;
         board.blackCanCastleK = popSMD.blackCanCastleK;
         board.blackCanCastleQ = popSMD.blackCanCastleQ;
-        
 
         board.setWhiteTurn(popSMD.whiteTurn);
-
-
-
     }
 
 
-    static void addRelevantPieceToSquare(Chessboard board, int pieceToAdd, int placeToAddIt){
-
+    private static void addRelevantPieceToSquare(Chessboard board, int pieceToAdd, int placeToAddIt){
         long placeToAddPiece = BitManipulations.newPieceOnSquare(placeToAddIt);
 
         if (pieceToAdd == 1){
@@ -183,11 +170,9 @@ public class MoveUnmaker {
     }
 
 
-    static void makeRegularMove(Chessboard board, Move move){
+    private static void makeRegularMove(Chessboard board, Move move){
         long sourcePiece = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
         long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
-
-//        MoveCastling.castleFlagManager(board, move);
 
         if ((sourcePiece & board.WHITE_PAWNS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);

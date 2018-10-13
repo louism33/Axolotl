@@ -3,14 +3,15 @@ package main.moveMaking;
 import main.chess.Chessboard;
 import main.chess.Move;
 
+@SuppressWarnings("CanBeFinal")
 public class StackMoveData {
     
     //eventually remove board altogether
 
-    public Chessboard board;
+    private Chessboard board;
     public Move move;
     public int takenPiece = 0;
-    public int fiftyMoveCounter;
+    private int fiftyMoveCounter;
     public boolean whiteTurn;
     
     public enum SpecialMove {

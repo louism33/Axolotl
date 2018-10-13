@@ -4,13 +4,11 @@ import main.chess.BitManipulations;
 import main.chess.Chessboard;
 import main.chess.Move;
 
-public class MoveRegular {
+class MoveRegular {
 
     static void makeRegularMove(Chessboard board, Move move){
         long sourcePiece = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
         long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
-
-        MoveCastling.castleFlagManager(board, move);
 
         if ((sourcePiece & board.WHITE_PAWNS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);

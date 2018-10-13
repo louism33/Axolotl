@@ -1,7 +1,6 @@
 package main.check;
 
 import main.bitboards.BitBoards;
-import main.chess.Art;
 import main.chess.Chessboard;
 import main.chess.Move;
 import main.moveGeneration.*;
@@ -11,6 +10,7 @@ import java.util.List;
 
 import static main.bitboards.BitBoards.*;
 import static main.chess.BitIndexing.UNIVERSE;
+import static main.chess.BitIndexing.getIndexOfFirstPiece;
 
 public class CheckMoveOrganiser {
 
@@ -22,12 +22,10 @@ public class CheckMoveOrganiser {
     }
 
 
-    public static List<Move> allLegalCheckEscapeMoves(Chessboard board, boolean white, long ignoreThesePieces) {
+    private static List<Move> allLegalCheckEscapeMoves(Chessboard board, boolean white, long ignoreThesePieces) {
         List<Move> moves = new ArrayList<>();
-
         long myKing = (white) ? board.WHITE_KING : board.BLACK_KING;
         long blockingSquaresMask, checkingPieceMask;
-
         long jumper = inCheckByAJumper(board, white);
         if (jumper != 0){
             blockingSquaresMask = 0;
@@ -38,38 +36,37 @@ public class CheckMoveOrganiser {
             blockingSquaresMask = extractRayFromTwoPieces(board, myKing, slider) & (~slider);
             checkingPieceMask = slider;
         }
+        long PENULTIMATE_RANK = white ? BitBoards.RANK_SEVEN : BitBoards.RANK_TWO;
+        long myPawns = white ? board.WHITE_PAWNS : board.BLACK_PAWNS;
+        long promotablePawns = myPawns & PENULTIMATE_RANK;
+        long piecesToIgnoreAndPromotingPawns = ignoreThesePieces | promotablePawns;
+        
+        moves.addAll(MoveGeneratorPseudo.generateAllMovesWithoutKing
+                (board, white, piecesToIgnoreAndPromotingPawns, blockingSquaresMask, checkingPieceMask));
 
-        List<Move> restrictedMoves = MoveGeneratorPseudo.generateAllMovesWithoutKing
-                (board, white, ignoreThesePieces, blockingSquaresMask, checkingPieceMask);
-        moves.addAll(restrictedMoves);
-
-        List<Move> kingLegalMoves = KingLegalMoves.kingLegalMovesOnly(board, white);
-        moves.addAll(kingLegalMoves);
-
+        moves.addAll(KingLegalMoves.kingLegalMovesOnly(board, white));
+        
         moves.addAll(MoveGeneratorPromotion.generatePromotionMoves(board, white, ignoreThesePieces, blockingSquaresMask, checkingPieceMask));
 
-        List<Move> enPassantMoves = MoveGeneratorEnPassant.generateEnPassantMoves(board, white, ignoreThesePieces, blockingSquaresMask, checkingPieceMask);
-        
-        moves.addAll(enPassantMoves);
-
+        moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves(board, white, piecesToIgnoreAndPromotingPawns, blockingSquaresMask, checkingPieceMask));
 
         return moves;
     }
 
-
-
-
-    public static long extractRayFromTwoPieces(Chessboard board, long pieceOne, long pieceTwo){
+    private static long extractRayFromTwoPieces(Chessboard board, long pieceOne, long pieceTwo){
         if (pieceOne == pieceTwo) return 0;
         long ALL_PIECES_TO_AVOID = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
 
         ALL_PIECES_TO_AVOID ^= pieceTwo;
         ALL_PIECES_TO_AVOID ^= pieceOne;
-
-        long bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
-        long smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        
+        // necessary as java offers signed ints, which get confused if talking about square 63
+        int indexOfPieceOne = getIndexOfFirstPiece(pieceOne);
+        int indexOfPieceTwo = getIndexOfFirstPiece(pieceTwo);
+        long bigPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceOne : pieceTwo;
+        long smallPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceTwo : pieceOne;
         long possibleAnswer = 0;
-
+        
         while (true) {
             if ((smallPiece & BitBoards.FILE_A) != 0) {
                 break;
@@ -84,10 +81,10 @@ public class CheckMoveOrganiser {
             possibleAnswer |= smallPiece;
         }
 
-        bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
-        smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        bigPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceTwo : pieceOne;
         possibleAnswer = 0;
-
+        
         while (true) {
             if ((smallPiece & NORTH_WEST) != 0) {
                 break;
@@ -102,8 +99,8 @@ public class CheckMoveOrganiser {
             possibleAnswer |= smallPiece;
         }
 
-        bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
-        smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        bigPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceTwo : pieceOne;
         possibleAnswer = 0;
 
         while (true) {
@@ -120,8 +117,8 @@ public class CheckMoveOrganiser {
             possibleAnswer |= smallPiece;
         }
 
-        bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
-        smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        bigPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceTwo : pieceOne;
         possibleAnswer = 0;
 
         while (true) {
@@ -141,18 +138,17 @@ public class CheckMoveOrganiser {
         return 0;
     }
 
-
-
-
-
-
     public static long extractInfiniteRayFromTwoPieces(Chessboard board, long pieceOne, long pieceTwo){
         if (pieceOne == pieceTwo) return 0;
-        long bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
-        long smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
-        long answer = 0, possibleAnswer = 0;
-        boolean thisOne = false;
 
+        int indexOfPieceOne = getIndexOfFirstPiece(pieceOne);
+        int indexOfPieceTwo = getIndexOfFirstPiece(pieceTwo);
+        long bigPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceOne : pieceTwo;
+        long smallPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceTwo : pieceOne;
+        long possibleAnswer = 0;
+        long answer = 0;
+        
+        boolean thisOne = false;
         while (true) {
             if ((smallPiece & BitBoards.FILE_A) != 0) {
                 if (thisOne) {
@@ -167,11 +163,10 @@ public class CheckMoveOrganiser {
             possibleAnswer |= smallPiece;
         }
 
-
-
-        bigPiece = !(pieceOne > pieceTwo) ? pieceOne : pieceTwo;
-        smallPiece = !(pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        bigPiece = !(indexOfPieceOne > indexOfPieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = !(indexOfPieceOne > indexOfPieceTwo) ? pieceTwo : pieceOne;
         possibleAnswer = 0;
+        
         thisOne = false;
         while (true) {
             if ((smallPiece & BitBoards.FILE_H) != 0) {
@@ -187,13 +182,10 @@ public class CheckMoveOrganiser {
             possibleAnswer |= smallPiece;
         }
 
-
-
-
-
-        bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
-        smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        bigPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceTwo : pieceOne;
         possibleAnswer = 0;
+        
         thisOne = false;
         while (true) {
             if ((smallPiece & NORTH_WEST) != 0) {
@@ -209,9 +201,10 @@ public class CheckMoveOrganiser {
             possibleAnswer |= smallPiece;
         }
 
-        bigPiece = !(pieceOne > pieceTwo) ? pieceOne : pieceTwo;
-        smallPiece = !(pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        bigPiece = !(indexOfPieceOne > indexOfPieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = !(indexOfPieceOne > indexOfPieceTwo) ? pieceTwo : pieceOne;
         possibleAnswer = 0;
+        
         thisOne = false;
         while (true) {
             if ((smallPiece & SOUTH_EAST) != 0) {
@@ -227,11 +220,10 @@ public class CheckMoveOrganiser {
             possibleAnswer |= smallPiece;
         }
 
-
-
-        bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
-        smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        bigPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceTwo : pieceOne;
         possibleAnswer = 0;
+        
         thisOne = false;
         while (true) {
             if ((smallPiece & BitBoards.RANK_EIGHT) != 0) {
@@ -247,11 +239,10 @@ public class CheckMoveOrganiser {
             possibleAnswer |= smallPiece;
         }
 
-
-
-        bigPiece = !(pieceOne > pieceTwo) ? pieceOne : pieceTwo;
-        smallPiece = !(pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        bigPiece = !(indexOfPieceOne > indexOfPieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = !(indexOfPieceOne > indexOfPieceTwo) ? pieceTwo : pieceOne;
         possibleAnswer = 0;
+        
         thisOne = false;
         while (true) {
             if ((smallPiece & BitBoards.RANK_ONE) != 0) {
@@ -267,12 +258,10 @@ public class CheckMoveOrganiser {
             possibleAnswer |= smallPiece;
         }
 
-
-
-
-        bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
-        smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        bigPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = (indexOfPieceOne > indexOfPieceTwo) ? pieceTwo : pieceOne;
         possibleAnswer = 0;
+        
         thisOne = false;
         while (true) {
             if ((smallPiece & NORTH_EAST) != 0) {
@@ -288,9 +277,10 @@ public class CheckMoveOrganiser {
             possibleAnswer |= smallPiece;
         }
 
-        bigPiece = (pieceOne > pieceTwo) ? pieceOne : pieceTwo;
-        smallPiece = (pieceOne > pieceTwo) ? pieceTwo : pieceOne;
+        bigPiece = !(indexOfPieceOne > indexOfPieceTwo) ? pieceOne : pieceTwo;
+        smallPiece = !(indexOfPieceOne > indexOfPieceTwo) ? pieceTwo : pieceOne;
         possibleAnswer = 0;
+        
         thisOne = false;
         while (true) {
             if ((smallPiece & SOUTH_WEST) != 0) {
@@ -305,17 +295,11 @@ public class CheckMoveOrganiser {
             }
             possibleAnswer |= smallPiece;
         }
-
         return answer;
     }
 
 
-
-
-
-
-
-    static long inCheckByAJumper(Chessboard board, boolean white){
+    private static long inCheckByAJumper(Chessboard board, boolean white){
         long ans = 0, pawns, knights;
         if (!white){
             pawns = board.WHITE_PAWNS;
@@ -339,7 +323,7 @@ public class CheckMoveOrganiser {
         return 0;
     }
 
-    static long inCheckByASlider(Chessboard board, boolean white){
+    private static long inCheckByASlider(Chessboard board, boolean white){
         long ans = 0, bishops, rooks, queens;
         if (!white){
             bishops = board.WHITE_BISHOPS;
@@ -365,10 +349,7 @@ public class CheckMoveOrganiser {
         if (possibleQueen != 0){
             return possibleQueen;
         }
-
         return 0;
     }
-
-
 
 }

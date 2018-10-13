@@ -4,24 +4,11 @@ import main.chess.Art;
 import main.chess.Chessboard;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class RandomBoard {
 
-    public static void main (String[] args){
-        new RandomBoard();
-    }
-
-    RandomBoard(){
-
-    }
-
-    static int num = 18;
-    private static Chessboard[] bs;
-    
-    
     public static void printBoards (Chessboard[] bs){
         for (int i = 0; i < bs.length; i++) {
             Chessboard b = bs[i];
@@ -32,11 +19,9 @@ public class RandomBoard {
         }
     }
     
-    
     public static Chessboard[] boardForTests (){
-
-        bs = new Chessboard[num];
-        
+        int num = 18;
+        Chessboard[] bs = new Chessboard[num];
         for (int i = 0; i < num; i ++) {
             if (i > 0 && i % 3 == 0) {
                 bs[i] = RandomBoard.makeRandomBoard(i * 100);
@@ -44,18 +29,12 @@ public class RandomBoard {
             else {
                 bs[i] = RandomBoard.makeRandomBoard(i);
             }
-//            System.out.println("\n--- " + i + " ---");
-//            String s = Art.boardArt(bs[i]);
-//            System.out.println(s);
         }
         return bs;
     }
     
-    
-
-    static List<Long> randomLongs (Random r, int num){
+    private static List<Long> randomLongs(Random r, int num){
         List<Long> ans = new ArrayList<>();
-
         int i = 0;
         while (i < 12){
             int j = r.nextInt(63);
@@ -65,15 +44,13 @@ public class RandomBoard {
             if (ans.contains(l)) {
                 continue;
             }
-
             ans.add(l);
-
             i++;
         }
         return ans;
     }
 
-    public static Chessboard makeRandomBoard(long seed){
+    private static Chessboard makeRandomBoard(long seed){
         Chessboard board = new Chessboard();
         Random r = new Random(seed);
         int ii = 12;

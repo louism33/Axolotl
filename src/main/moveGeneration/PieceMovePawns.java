@@ -11,11 +11,7 @@ import static main.chess.BitExtractor.getAllPieces;
 
 public class PieceMovePawns {
 
-//    public static long singlePawnAllMoves(Chessboard board, long piece, boolean white, long legalPushes, long legalCaptures) {
-//        return singlePawnPushes(board, piece, white, legalPushes) | singlePawnCaptures(board, piece, white, legalCaptures);
-//    }
-
-    public static long singlePawnPushes(Chessboard board, long piece, boolean white, long legalPushes) {
+    static long singlePawnPushes(Chessboard board, long piece, boolean white, long legalPushes) {
         long allPieces = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
         long HOME_RANK = (white) ? BitBoards.RANK_TWO : BitBoards.RANK_SEVEN;
         long answer = 0;
@@ -44,12 +40,10 @@ public class PieceMovePawns {
     public static long singlePawnCaptures(Chessboard board, long piece, boolean white, long legalCaptures) {
         long allPieces = board.ALL_WHITE_PIECES() | board.ALL_BLACK_PIECES();
         long answer = 0;
-        long temp = piece;
 
         if (piece == 0) {
             return 0;
         }
-
         if (white){
             int index = BitIndexing.getIndexOfFirstPiece(piece);
             long l = PawnCaptures.PAWN_CAPTURE_TABLE_WHITE[index];
@@ -64,23 +58,6 @@ public class PieceMovePawns {
 
         return answer & legalCaptures;
     }
-
-//    public static long masterPawnPushesTable(Chessboard board, boolean white,
-//                                             long ignoreThesePieces, long legalPushes){
-//        long ans = 0, pawns;
-//        if (white){
-//            pawns = board.WHITE_PAWNS;
-//        }
-//        else {
-//            pawns = board.BLACK_PAWNS;
-//        }
-//        List<Long> allPawns = getAllPieces(pawns, ignoreThesePieces);
-//        for (Long piece : allPawns){
-//            ans |= singlePawnPushes(board, piece, white, legalPushes);
-//
-//        }
-//        return ans & legalPushes;
-//    }
 
     static long masterPawnCapturesTable(Chessboard board, boolean white,
                                                long ignoreThesePieces, long legalCaptures){

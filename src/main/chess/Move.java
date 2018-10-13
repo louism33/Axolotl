@@ -3,7 +3,8 @@ package main.chess;
 public class Move {
 
     public int move;
-    public int source, destination;
+    private int source;
+    public int destination;
     final private static int
             sourceOffset = 6,
             SOURCE_MASK = 0x00000fc0,

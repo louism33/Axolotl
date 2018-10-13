@@ -9,9 +9,9 @@ import java.util.List;
 
 import static main.chess.BitExtractor.getAllPieces;
 
-public class MoveGeneratorSliding {
+class MoveGeneratorSliding {
 
-    public static List<Move> masterSlidingPushes (Chessboard board, boolean white,
+    static List<Move> masterSlidingPushes (Chessboard board, boolean white,
                                                   long ignoreThesePieces, long legalPushes){
         long ans = 0, bishops, rooks, queens;
         List<Move> moves = new ArrayList<>();
@@ -47,7 +47,7 @@ public class MoveGeneratorSliding {
         return moves;
     }
 
-    public static List<Move> masterSlidingCaptures (Chessboard board, boolean white,
+    static List<Move> masterSlidingCaptures (Chessboard board, boolean white,
                                                     long ignoreThesePieces, long legalCaptures){
         long ans = 0, bishops, rooks, queens;
         List<Move> moves = new ArrayList<>();
@@ -82,7 +82,6 @@ public class MoveGeneratorSliding {
         }
         return moves;
     }
-
 
     public static List<Move> masterMoveSliding (Chessboard board, boolean white,
                                                 long ignoreThesePieces, long legalPushes, long legalCaptures){

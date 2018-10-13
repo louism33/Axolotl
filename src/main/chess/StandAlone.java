@@ -9,11 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-public class StandAlone {
-
-    private static boolean logfile = false; // true if we're using a logfile
-
-    public static Chessboard board;
+class StandAlone {
 
     private static int totalMoves = 1;
 
@@ -23,7 +19,7 @@ public class StandAlone {
         stdin = new InputStreamReader(System.in);
 
         Move[] moveArray;
-        board = new Chessboard();
+        Chessboard board = new Chessboard();
         String command, prompt;
         Move move;
         Engine engine = new Engine();
@@ -42,7 +38,7 @@ public class StandAlone {
                 System.out.println("\nPosition ("+prompt+" to move):\n" + Art.boardArt(board));
 
                 List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
-                moveArray = moves.toArray(new Move[moves.size()]);
+                moveArray = moves.toArray(new Move[0]);
 
                 if (moveArray.length == 0) {
                     if (CheckChecker.boardInCheck(board, board.isWhiteTurn())){
@@ -86,9 +82,9 @@ public class StandAlone {
 
                     else {
                         move = null;
-                        for (int i=0; i<moveArray.length; i++) {
-                            if (command.equals(moveArray[i].toString())) {
-                                move = moveArray[i];
+                        for (Move aMoveArray : moveArray) {
+                            if (command.equals(aMoveArray.toString())) {
+                                move = aMoveArray;
                                 break;
                             }
                         }
@@ -117,13 +113,12 @@ public class StandAlone {
             }
         }
     }
-    static String readCommand(InputStreamReader stdin) throws IOException {
+    private static String readCommand(InputStreamReader stdin) throws IOException {
         final int MAX = 100;
         int len = 0;
         char[] cbuf = new char[MAX];
         //len = stdin.read(cbuf, 0, MAX);
         for(int i=0; i<cbuf.length; i++){
-            if(logfile && !stdin.ready()) return "quit"; // file is done.
 
             cbuf[i] = (char)stdin.read();
             len++;

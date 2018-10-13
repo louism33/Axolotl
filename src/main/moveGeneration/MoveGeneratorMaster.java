@@ -4,7 +4,6 @@ import main.bitboards.BitBoards;
 import main.check.CheckChecker;
 import main.check.CheckMoveOrganiser;
 import main.check.KingLegalMoves;
-import main.chess.Art;
 import main.chess.BitExtractor;
 import main.chess.Chessboard;
 import main.chess.Move;
@@ -87,10 +86,8 @@ public class MoveGeneratorMaster {
             return moves;
         }
 
-
         List<Move> pinnedPiecesMoves = pinnedMoveManager(board, whiteTurn, pinnedPieces, myKing);
         moves.addAll(pinnedPiecesMoves);
-
 
         List<Move> unpinnedPiecesMoves = MoveGeneratorPseudo.generateAllMovesWithoutKing
                 (board, whiteTurn, pinnedPiecesAndPromotingPawns, ~board.ALL_PIECES(), ENEMY_PIECES);
@@ -103,13 +100,11 @@ public class MoveGeneratorMaster {
         moves.addAll(MoveGeneratorPromotion.generatePromotionMoves
                 (board, whiteTurn, pinnedPieces, ALL_EMPTY_SQUARES, ENEMY_PIECES));
 
-
-
         return moves;
     }
 
 
-    public static List<Move> pinnedMoveManager(Chessboard board, boolean whiteTurn,
+    private static List<Move> pinnedMoveManager(Chessboard board, boolean whiteTurn,
                                                long pinnedPieces, long squareWeArePinnedTo){
         List<Move> moves = new ArrayList<>();
         List<Long> allPinnedPieces = BitExtractor.getAllPieces(pinnedPieces, 0);
@@ -134,14 +129,13 @@ public class MoveGeneratorMaster {
         long ENEMY_PIECES = (whiteTurn) ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES();
 
         for (long pinnedPiece : allPinnedPieces){
-
             long infiniteRay = CheckMoveOrganiser.extractInfiniteRayFromTwoPieces(board, squareWeArePinnedTo, pinnedPiece);
             long pushMask = infiniteRay & ~(board.ALL_BLACK_PIECES() | board.ALL_WHITE_PIECES());
             long captureMask = infiniteRay & ENEMY_PIECES;
 
             if ((pinnedPiece & knights) != 0) {
                 // knights cannot move cardinally or diagonally, and so cannot move while pinned
-                break;
+                continue;
             }
             if ((pinnedPiece & pawns) != 0) {
                 long singlePawnAllPushes = PieceMovePawns.singlePawnPushes(board, pinnedPiece, whiteTurn, pushMask);
@@ -162,17 +156,18 @@ public class MoveGeneratorMaster {
                 moves.addAll(MoveGeneratorPromotion.generatePromotionMoves
                         (board, whiteTurn, allButPinnedFriends, pushMask, captureMask));
 
-                break;
+                continue;
             }
             if ((pinnedPiece & bishops) != 0) {
                 long singleBishopsAllPushes = PieceMoveSliding.singleBishopPushes(board, pinnedPiece, whiteTurn, pushMask);
                 List<Move> bishopMovesPushes = MoveGenerationUtilities.movesFromAttackBoardLong(singleBishopsAllPushes, pinnedPiece);
+                
                 moves.addAll(bishopMovesPushes);
 
                 long singleBishopAllCaptures = PieceMoveSliding.singleBishopCaptures(board, pinnedPiece, whiteTurn, captureMask);
                 List<Move> bishopMovesCaptures = MoveGenerationUtilities.movesFromAttackBoardLong(singleBishopAllCaptures, pinnedPiece);
                 moves.addAll(bishopMovesCaptures);
-                break;
+                continue;
             }
             if ((pinnedPiece & rooks) != 0) {
                 long singleRookAllPushes = PieceMoveSliding.singleRookPushes(board, pinnedPiece, whiteTurn, pushMask);
@@ -182,7 +177,7 @@ public class MoveGeneratorMaster {
                 long singleRookAllCaptures = PieceMoveSliding.singleRookCaptures(board, pinnedPiece, whiteTurn, captureMask);
                 List<Move> rookMovesCaptures = MoveGenerationUtilities.movesFromAttackBoardLong(singleRookAllCaptures, pinnedPiece);
                 moves.addAll(rookMovesCaptures);
-                break;
+                continue;
             }
             if ((pinnedPiece & queens) != 0) {
                 long singleQueenAllPushes = PieceMoveSliding.singleQueenPushes(board, pinnedPiece, whiteTurn, pushMask);
@@ -192,7 +187,6 @@ public class MoveGeneratorMaster {
                 long singleQueenAllCaptures = PieceMoveSliding.singleQueenCaptures(board, pinnedPiece, whiteTurn, captureMask);
                 List<Move> queenCaptures = MoveGenerationUtilities.movesFromAttackBoardLong(singleQueenAllCaptures, pinnedPiece);
                 moves.addAll(queenCaptures);
-                break;
             }
         }
         return moves;

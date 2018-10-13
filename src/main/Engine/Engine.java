@@ -19,9 +19,7 @@ public class Engine {
     public Move search (Chessboard board, long timeLimit){
         List<Move> moves = new ArrayList<>();
 
-        Move aiMove = aspirationSearch(board, timeLimit);
-
-        return aiMove;
+        return aspirationSearch(board, timeLimit);
     }
 
 

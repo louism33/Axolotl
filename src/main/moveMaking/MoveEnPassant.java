@@ -1,12 +1,10 @@
 package main.moveMaking;
 
-import main.chess.Art;
 import main.chess.BitManipulations;
 import main.chess.Chessboard;
 import main.chess.Move;
 
 class MoveEnPassant {
-    
     
     static void makeEnPassantMove(Chessboard board, Move move){
         long sourcePiece = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());

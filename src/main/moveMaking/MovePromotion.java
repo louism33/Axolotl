@@ -10,10 +10,8 @@ class MovePromotion {
         long sourcePiece = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
         long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
 
-
         if ((sourcePiece & board.WHITE_PAWNS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
-
             if ((move.move & MoveParser.WHICH_PROMOTION) == MoveParser.KNIGHT_PROMOTION_MASK){
                 board.WHITE_KNIGHTS |= destinationPiece;
             }
@@ -28,11 +26,8 @@ class MovePromotion {
             }
         }
 
-
-
         else if ((sourcePiece & board.BLACK_PAWNS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);
-
             if ((move.move & MoveParser.WHICH_PROMOTION) == MoveParser.KNIGHT_PROMOTION_MASK){
                 board.BLACK_KNIGHTS |= destinationPiece;
             }
@@ -48,5 +43,4 @@ class MovePromotion {
         }
 
     }
-
 }

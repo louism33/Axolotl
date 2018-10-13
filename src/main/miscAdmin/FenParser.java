@@ -13,8 +13,6 @@ public class FenParser {
     FenParser(String fenString){
         Chessboard chessboard = parseFenString(fenString);
         String s = Art.boardArt(chessboard);
-//        System.out.println(s);
-
     }
 
     public static Chessboard makeBoardBasedOnFEN(String fen){
@@ -30,7 +28,6 @@ public class FenParser {
         if (isEPFlagSet(fen)){
             epFlag(fen, board);
         }
-
         return board;
     }
 
@@ -71,11 +68,6 @@ public class FenParser {
 
         return !epFlags.equals("-");
     }
-
-
-    
-    
-    
 
     private static void epFlag(String fen, Chessboard board){
         String boardPattern = " (.) (\\w+|-) (\\w|-)";
@@ -143,7 +135,6 @@ public class FenParser {
             default:
                 System.out.println("problem with EP flag");
         }
-
     }
 
     private static boolean isEPFlagSet(String fen){
@@ -163,19 +154,14 @@ public class FenParser {
         return !epFlags.equals("-");
     }
 
-
-
     private static boolean[] castlingRights(String fen){
         boolean[] castlingRights = {
                 false, false, false, false,
         };
-
         String boardPattern = " (.) (\\w+|-)";
         Pattern r = Pattern.compile(boardPattern);
         Matcher m = r.matcher(fen);
-
         String castleString = "";
-
         if (m.find()){
             castleString = m.group(2);
         }
@@ -203,27 +189,19 @@ public class FenParser {
         return castlingRights;
     }
 
-
-
     private static boolean isItWhitesTurn(String fen){
         String boardPattern = " (.)";
         Pattern r = Pattern.compile(boardPattern);
         Matcher m = r.matcher(fen);
-
         String player = "";
-
         if (m.find()){
             player = m.group(1);
         }
         if (player.length() == 0){
             throw new RuntimeException("Could not Parse board rep of fen string");
         }
-
         return player.equals("w");
     }
-
-
-
 
     private static Chessboard parseFenString (String fen){
         Chessboard board = BlankBoard.blankBoard();
@@ -297,22 +275,17 @@ public class FenParser {
         return board;
     }
 
-
-
     private static String boardRep(String fen){
         String boardPattern = "^[\\w*/]*";
         Pattern r = Pattern.compile(boardPattern);
         Matcher m = r.matcher(fen);
-
         String boardRepresentation = "";
-
         if (m.find()){
             boardRepresentation = m.group();
         }
         if (boardRepresentation.length() == 0){
             throw new RuntimeException("Could not Parse board rep of fen string");
         }
-
         return boardRepresentation;
     }
 

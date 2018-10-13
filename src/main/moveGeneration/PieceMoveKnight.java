@@ -10,7 +10,7 @@ import static main.chess.BitExtractor.getAllPieces;
 
 public class PieceMoveKnight {
 
-    public static long singleKnightPushes(Chessboard board, long piece, boolean white, long legalPushes){
+    static long singleKnightPushes(Chessboard board, long piece, boolean white, long legalPushes){
         return singleKnightAllMoves(board, piece, white, legalPushes, 0);
     }
 
@@ -29,11 +29,10 @@ public class PieceMoveKnight {
         table |= l;
         long emptyOfMyPieces = ~((white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES());
 
-//        return table & emptyOfMyPieces & (legalPushes | legalCaptures);
         return table & (legalPushes | legalCaptures);
     }
 
-    public static long masterAttackTableKnights(Chessboard board, boolean white,
+    static long masterAttackTableKnights(Chessboard board, boolean white,
                                                 long ignoreThesePieces, long legalPushes, long legalCaptures){
         long ans = 0, knights;
         if (white){

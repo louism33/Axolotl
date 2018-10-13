@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PieceMoveSliding {
 
-    public static long singleBishopPushes(Chessboard board, long piece, boolean white, long legalPushes){
+    static long singleBishopPushes(Chessboard board, long piece, boolean white, long legalPushes){
         return singleBishopAllMoves(board, piece, white, legalPushes, 0);
     }
 
@@ -53,13 +53,11 @@ public class PieceMoveSliding {
             answer |= temp;
             if ((temp & ALL_PIECES) != 0) break;
         }
-        long emptyOfMyPieces = ~((white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES());
-//        return answer & emptyOfMyPieces & (legalPushes | legalCaptures);
         return answer & (legalPushes | legalCaptures);
     }
 
 
-    public static long singleRookPushes(Chessboard board, long piece, boolean white, long legalPushes){
+    static long singleRookPushes(Chessboard board, long piece, boolean white, long legalPushes){
         return singleRookAllMoves(board, piece, white, legalPushes, 0);
     }
 
@@ -98,12 +96,10 @@ public class PieceMoveSliding {
             answer |= temp;
             if ((temp & allPieces) != 0) break;
         }
-        long emptyOfMyPieces = ~((white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES());
-//        return answer & emptyOfMyPieces & (legalPushes | legalCaptures);
         return answer & (legalPushes | legalCaptures);
     }
 
-    public static long singleQueenPushes(Chessboard board, long piece, boolean white, long legalPushes){
+    static long singleQueenPushes(Chessboard board, long piece, boolean white, long legalPushes){
         return singleQueenAllMoves(board, piece, white, legalPushes, 0);
     }
 
@@ -115,8 +111,7 @@ public class PieceMoveSliding {
         return singleBishopAllMoves(board, piece, white, legalPushes, legalCaptures) | singleRookAllMoves(board, piece, white, legalPushes, legalCaptures);
     }
 
-
-    public static long masterAttackTableSliding(Chessboard board, boolean white,
+    static long masterAttackTableSliding(Chessboard board, boolean white,
                                                 long ignoreThesePieces, long legalPushes, long legalCaptures){
         long ans = 0, bishops, rooks, queens;
         if (white){
