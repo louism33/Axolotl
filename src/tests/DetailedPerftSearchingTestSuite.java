@@ -1,8 +1,8 @@
 package tests;
 
-import main.chess.Chessboard;
-import main.miscAdmin.DetailedPerftSearching;
-import main.miscAdmin.FenParser;
+import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.miscAdmin.DetailedPerftSearching;
+import javacode.chessprogram.miscAdmin.FenParser;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 

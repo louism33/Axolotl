@@ -1,8 +1,8 @@
 package tests;
 
-import main.check.CheckChecker;
-import main.chess.Chessboard;
-import main.utils.RandomBoard;
+import javacode.chessprogram.check.CheckChecker;
+import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.bitboards.RandomBoard;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

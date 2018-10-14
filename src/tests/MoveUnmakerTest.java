@@ -1,15 +1,15 @@
 package tests;
 
-import main.check.CheckChecker;
-import main.chess.Art;
-import main.chess.Chessboard;
-import main.chess.Copier;
-import main.chess.Move;
-import main.moveGeneration.MoveGeneratorMaster;
-import main.moveMaking.MoveOrganiser;
-import main.moveMaking.MoveUnmaker;
-import main.moveMaking.StackMoveData;
-import main.utils.RandomBoard;
+import javacode.chessprogram.check.CheckChecker;
+import javacode.graphicsandui.Art;
+import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.chess.Copier;
+import javacode.chessprogram.chess.Move;
+import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
+import javacode.chessprogram.moveMaking.MoveOrganiser;
+import javacode.chessprogram.moveMaking.MoveUnmaker;
+import javacode.chessprogram.moveMaking.StackMoveData;
+import javacode.chessprogram.bitboards.RandomBoard;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
