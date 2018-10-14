@@ -25,7 +25,7 @@ class DetailedPerftSearchingTestSuite {
     void generateLegalMoves() {
 
         boolean testOneAndTwo = true;
-        boolean testThree = true;
+        boolean testThree = false;
 
         if (testOneAndTwo) {
             System.out.println("Regular Board\n");

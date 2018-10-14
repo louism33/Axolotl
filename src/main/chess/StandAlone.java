@@ -23,12 +23,10 @@ class StandAlone {
         String command, prompt;
         Move move;
         Engine engine = new Engine();
-//
 //        System.out.println("Computer player: "+player.getName());
 
         while(true) {
 //            player.newGame(5*60*1000, 0);
-
 
             while (true) {
 //                b = player.getBoard();
@@ -92,7 +90,6 @@ class StandAlone {
                         System.out.println("\""+command+"\" is not a legal move");
                     }
                 }
-
 
                 MoveOrganiser.makeMoveMaster(board, move);
                 board.setWhiteTurn(!board.isWhiteTurn());

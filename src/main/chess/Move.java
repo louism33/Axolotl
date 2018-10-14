@@ -1,5 +1,7 @@
 package main.chess;
 
+import main.miscAdmin.MovePrettifier;
+
 public class Move {
 
     public int move;
@@ -53,10 +55,13 @@ public class Move {
 
     @Override
     public String toString() {
-        return (getSourceAsPiece() +" " +destination);
+        return MovePrettifier.prettyMove(this);
     }
 
-
+    public String toStringSimple() {
+        return (getSourceAsPiece() +" " +destination);
+    }
+    
     public String toComplicatedString(){
         return Art.makeMoveToString(this.move);
     }

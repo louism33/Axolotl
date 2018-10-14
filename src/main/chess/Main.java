@@ -1,5 +1,6 @@
 package main.chess;
 
+import main.miscAdmin.MovePrettifier;
 import main.moveGeneration.MoveGeneratorMaster;
 import main.moveMaking.MoveOrganiser;
 import main.moveMaking.MoveUnmaker;
@@ -19,27 +20,15 @@ class Main {
         System.out.println(Art.boardArt(board));
 
 
-        Chessboard copy1 = Copier.copyBoard(board, board.isWhiteTurn(), false);
-
-
-        moveNStuff(board, 13);
-        moveNStuff(board, 12);
-        moveNStuff(board, 5);
-        moveNStuff(board, 4);
-        moveNStuff(board, 7);
-        moveNStuff(board, 7);
+        List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
         
+
+        Move move = moves.get(0);
+        System.out.println(move);
         
-        moveNStuff(board, 0);
-        moveNStuff(board, 0);
+        MoveOrganiser.makeMoveMaster(board, move);
+        MoveOrganiser.flipTurn(board);
 
-
-
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-        unMoveNStuff(board);
-
-        System.out.println("Same as before ? " + board.equals(copy1));
-        System.out.println();
         
 
     }

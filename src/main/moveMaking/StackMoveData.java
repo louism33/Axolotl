@@ -6,9 +6,6 @@ import main.chess.Move;
 @SuppressWarnings("CanBeFinal")
 public class StackMoveData {
     
-    //eventually remove board altogether
-
-    private Chessboard board;
     public Move move;
     public int takenPiece = 0;
     private int fiftyMoveCounter;
@@ -26,7 +23,6 @@ public class StackMoveData {
 
     public StackMoveData(Move move, Chessboard board, int fiftyMoveCounter, SpecialMove typeOfSpecialMove) {
         this.move = move;
-        this.board = board;
         this.fiftyMoveCounter = fiftyMoveCounter;
         this.typeOfSpecialMove = typeOfSpecialMove;
 
@@ -41,7 +37,6 @@ public class StackMoveData {
     
     public StackMoveData(Move move, Chessboard board, int fiftyMoveCounter, SpecialMove typeOfSpecialMove, int takenPiece) {
         this.move = move;
-        this.board = board;
         this.fiftyMoveCounter = fiftyMoveCounter;
         this.typeOfSpecialMove = typeOfSpecialMove;
         this.takenPiece = takenPiece;
@@ -57,7 +52,6 @@ public class StackMoveData {
 
     public StackMoveData(Move move, Chessboard board, int fiftyMoveCounter, int enPassantFile, SpecialMove typeOfSpecialMove) {
         this.move = move;
-        this.board = board;
         this.fiftyMoveCounter = fiftyMoveCounter;
         this.typeOfSpecialMove = typeOfSpecialMove;
         
