@@ -1,14 +1,15 @@
 package javacode.main;
 
 import javacode.chessengine.Engine;
+import javacode.chessengine.TranspositionTable;
+import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.chess.Copier;
+import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.chessprogram.moveMaking.MoveUnmaker;
 import javacode.chessprogram.moveMaking.StackMoveData;
 import javacode.graphicsandui.Art;
-import javacode.chessprogram.chess.Chessboard;
-import javacode.chessprogram.chess.Copier;
-import javacode.chessprogram.chess.Move;
 
 import java.util.List;
 import java.util.Random;
@@ -19,14 +20,46 @@ class Main {
         new Main();
     }
 
-    private Main(){
+    private Main() {
         Chessboard board = new Chessboard();
         System.out.println(Art.boardArt(board));
 
 
+        if (false){
+            List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
+
+            MoveOrganiser.makeMoveMaster(board, MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()).get(10));
+            MoveOrganiser.flipTurn(board);
+
+            MoveOrganiser.makeMoveMaster(board, MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()).get(11));
+            MoveOrganiser.flipTurn(board);
+
+            MoveOrganiser.makeMoveMaster(board, MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()).get(5));
+            MoveOrganiser.flipTurn(board);
+
+            MoveOrganiser.makeMoveMaster(board, MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()).get(2));
+            MoveOrganiser.flipTurn(board);
+
+            System.out.println(Art.boardArt(board));
+
+        }
+
+
+
+
         Engine.search(board, 1000);
 
+        TranspositionTable table = TranspositionTable.getInstance();
+        System.out.println(table);
+        System.out.println("table size: " + table.size());
+        Move move = table.get(board).getMove();
+        System.out.println(move);
+
+        MoveOrganiser.makeMoveMaster(board, move);
+
+        System.out.println(Art.boardArt(board));
     }
+
 
     private static void unMoveNStuff(Chessboard board){
         int size = board.moveStack.size();
@@ -36,15 +69,15 @@ class Main {
         }
     }
 
-  
+
 
     static void moveNStuffRandom (Chessboard board, int totalRandoms){
         for (int r = 0; r < totalRandoms; r++) {
             List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
             Random rand = new Random();
-                    
+
             Move move = moves.get(rand.nextInt(moves.size()));
-            
+
             System.out.println(moves + " " + moves.size());
             System.out.println(move);
             MoveOrganiser.makeMoveMaster(board, move);
@@ -55,7 +88,7 @@ class Main {
 //            System.out.println("Peek turn white : " + peek.whiteTurn);
         }
     }
-    
+
 
 
 

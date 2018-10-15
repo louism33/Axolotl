@@ -1,9 +1,9 @@
 package javacode.chessprogram.moveGeneration;
 
+import javacode.chessprogram.bitboards.BitBoards;
 import javacode.chessprogram.check.CheckChecker;
 import javacode.chessprogram.check.CheckMoveOrganiser;
 import javacode.chessprogram.check.KingLegalMoves;
-import javacode.chessprogram.bitboards.BitBoards;
 import javacode.chessprogram.chess.BitExtractor;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;

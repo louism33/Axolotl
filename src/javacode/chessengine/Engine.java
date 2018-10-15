@@ -1,15 +1,10 @@
 package javacode.chessengine;
 
 import javacode.chessprogram.chess.Chessboard;
-import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
-import javacode.chessprogram.moveMaking.MoveOrganiser;
-import javacode.chessprogram.moveMaking.MoveUnmaker;
-import javacode.evalutation.Evaluator;
-import javacode.chessprogram.chess.Copier;
 import javacode.chessprogram.chess.Move;
+import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 

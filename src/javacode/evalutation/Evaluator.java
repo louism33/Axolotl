@@ -3,6 +3,8 @@ package javacode.evalutation;
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 
+import java.util.Random;
+
 public class Evaluator {
 
     private static final int PAWN_SCORE = 100;
@@ -13,6 +15,7 @@ public class Evaluator {
 
 
     public static int eval(Chessboard board, boolean white){
+//        return new Random().nextInt(100);
         return evalTurn(board, white) - evalTurn(board, !white);
     }
 

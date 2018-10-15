@@ -1,7 +1,7 @@
 package tests;
 
-import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.bitboards.RandomBoard;
+import javacode.chessprogram.chess.Chessboard;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -76,4 +76,11 @@ public class Chessboard {
     public int hashCode() {
         return Objects.hash(moveStack, whiteTurn, whiteCanCastleK, whiteCanCastleQ, blackCanCastleK, blackCanCastleQ, WHITE_PAWNS, WHITE_KNIGHTS, WHITE_BISHOPS, WHITE_ROOKS, WHITE_QUEEN, WHITE_KING, BLACK_PAWNS, BLACK_KNIGHTS, BLACK_BISHOPS, BLACK_ROOKS, BLACK_QUEEN, BLACK_KING);
     }
+
+    @Override
+    public String toString() {
+        return "Chessboard{" +
+                "whiteTurn=" + whiteTurn +
+                '}';
+    }
 }

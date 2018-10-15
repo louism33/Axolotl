@@ -1,12 +1,12 @@
 package javacode;
 
+import javacode.chessengine.Engine;
 import javacode.chessprogram.check.CheckChecker;
+import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.graphicsandui.Art;
-import javacode.chessengine.Engine;
-import javacode.chessprogram.chess.Chessboard;
-import javacode.chessprogram.chess.Move;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

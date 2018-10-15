@@ -1,9 +1,9 @@
 package javacode.chessprogram.moveMaking;
 
-import javacode.graphicsandui.Art;
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
+import javacode.graphicsandui.Art;
 
 public class MoveUnmaker {
 
