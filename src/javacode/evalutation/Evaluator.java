@@ -13,20 +13,22 @@ public class Evaluator {
     private static final int ROOK_SCORE = 500;
     private static final int QUEEN_SCORE = 900;
 
+    public static int numberOfEvals = 0;
 
     public static int eval(Chessboard board, boolean white){
-//        return new Random().nextInt(100);
-        return evalTurn(board, white) - evalTurn(board, !white);
+        numberOfEvals++;
+        return new Random().nextInt(100);
+//        return evalTurn(board, white) - evalTurn(board, !white);
     }
 
     private static int evalTurn (Chessboard board, boolean white){
         int score = 0;
-        score += pawnScores(board, white)
-                +knightScores(board, white)
-                +bishopScores(board, white)
-                +rookScores(board, white)
-                +queenScores(board, white)
-        ;
+//        score += pawnScores(board, white)
+//                +knightScores(board, white)
+//                +bishopScores(board, white)
+//                +rookScores(board, white)
+//                +queenScores(board, white)
+//        ;
 
         return score;
     }

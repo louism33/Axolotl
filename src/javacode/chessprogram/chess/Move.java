@@ -3,6 +3,8 @@ package javacode.chessprogram.chess;
 import javacode.chessprogram.miscAdmin.MovePrettifier;
 import javacode.graphicsandui.Art;
 
+import java.util.Objects;
+
 public class Move {
 
     public int move;
@@ -69,5 +71,20 @@ public class Move {
 
     public int getSourceAsPiece() {
         return source >>> sourceOffset;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Move move1 = (Move) o;
+        return move == move1.move &&
+                source == move1.source &&
+                destination == move1.destination;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(move, source, destination);
     }
 }

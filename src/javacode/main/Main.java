@@ -50,14 +50,14 @@ class Main {
         Engine.search(board, 1000);
 
         TranspositionTable table = TranspositionTable.getInstance();
-        System.out.println(table);
+//        System.out.println(table);
         System.out.println("table size: " + table.size());
         Move move = table.get(board).getMove();
         System.out.println(move);
 
         MoveOrganiser.makeMoveMaster(board, move);
 
-        System.out.println(Art.boardArt(board));
+//        System.out.println(Art.boardArt(board));
     }
 
 

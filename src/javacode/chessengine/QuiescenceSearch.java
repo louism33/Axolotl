@@ -39,7 +39,7 @@ public class QuiescenceSearch {
         }
         
         List<Move> orderedCaptureMove = MoveOrderer.
-                orderMovesQuiescence(board, QuiescentSearchUtils.onlyCaptureMoves(board, moves));
+                orderMovesQuiescence(board, MoveOrderer.onlyCaptureMoves(board, moves));
 
         Move bestMove = orderedCaptureMove.get(0);
         int bestScore = -10000;

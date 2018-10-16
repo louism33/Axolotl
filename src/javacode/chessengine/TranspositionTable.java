@@ -9,9 +9,7 @@ public class TranspositionTable extends HashMap<Chessboard, TranspositionTable.T
     
     private static TranspositionTable table = new TranspositionTable();
     
-    private TranspositionTable(){
-        
-    }
+    private TranspositionTable(){}
     
     public static TranspositionTable getInstance(){
         if (table == null){
@@ -50,6 +48,9 @@ public class TranspositionTable extends HashMap<Chessboard, TranspositionTable.T
             return flag;
         }
 
+        public int getDepth() {
+            return depth;
+        }
 
         @Override
         public String toString() {

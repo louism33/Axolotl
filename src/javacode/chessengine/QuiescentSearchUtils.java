@@ -7,13 +7,9 @@ import javacode.chessprogram.chess.Move;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class QuiescentSearchUtils {
+import static javacode.chessengine.MoveOrderer.moveIsCapture;
 
-    static boolean moveIsCapture(Chessboard board, Move move){
-        long ENEMY_PIECES = board.isWhiteTurn() ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES();
-        long destinationSquare = BitManipulations.newPieceOnSquare(move.destination);
-        return (destinationSquare & ENEMY_PIECES) != 0;
-    }
+public class QuiescentSearchUtils {
 
     static boolean isNodeQuiet(Chessboard board, List<Move> moves){
         for (Move move : moves){
@@ -24,9 +20,7 @@ public class QuiescentSearchUtils {
         return true;
     }
     
-    static List<Move> onlyCaptureMoves(Chessboard board, List<Move> moves){
-        return moves.stream().filter(move -> moveIsCapture(board, move)).collect(Collectors.toList());
-    }
+
     
     
 }

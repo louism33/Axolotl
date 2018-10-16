@@ -22,7 +22,7 @@ public class Engine {
         List<Move> possibleMoves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
         List<Integer> scores = new ArrayList<>();
 
-        Move move = IterativeDeepeningDFS.idDFS(board, timeLimit);
+        Move move = IterativeDeepeningDFS.iterativeDeepeningWithAspirationWindows(board, timeLimit);
 
         return move;
     }
