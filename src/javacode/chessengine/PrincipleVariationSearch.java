@@ -30,6 +30,7 @@ public class PrincipleVariationSearch {
                 hashMove = previousTableData.getMove();
                 if (flag == TranspositionTable.TableObject.Flag.EXACT) {
                     if (depth == originalDepth) {
+                        System.out.println(" hash : AIMOVE was " + aiMove +" and is now "+ hashMove);
                         aiMove = hashMove;
                     }
                     return scoreFromTable;
@@ -40,7 +41,9 @@ public class PrincipleVariationSearch {
                 }
                 if (alpha >= beta) {
                     if (depth == originalDepth) {
+                        System.out.println("  hash AB cutoff AIMOVE was " + aiMove +" and is now "+ hashMove);
                         aiMove = hashMove;
+                        
                     }
                     return scoreFromTable;
                 }
@@ -53,19 +56,21 @@ public class PrincipleVariationSearch {
             return QuiescenceSearch.quiescenceSearch(board, alpha, beta);
         }
 
-        List<Move> orderedMoves = MoveOrderer.
-                orderMoves(board, hashMove, MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()));
+        List<Move> orderedMoves = 
+                MoveOrderer.orderMoves(board, hashMove, MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()));
 
         // can try hashmove here before rest of generation ?
         
         if (orderedMoves.size() == 0) {
             numberOfFinalNegaMax++;
-            return Evaluator.eval(board, board.isWhiteTurn());
+            return Evaluator.eval(board, board.isWhiteTurn(), orderedMoves);
         }
 
         Move bestMove = orderedMoves.get(0);
 
         if (depth == originalDepth){
+//            System.out.println(orderedMoves);
+            System.out.println("  orig     AIMOVE was " + aiMove +" and is now "+ orderedMoves.get(0));
             aiMove = Copier.copyMove(orderedMoves.get(0));
         }
 
@@ -97,6 +102,7 @@ public class PrincipleVariationSearch {
             if (score > alpha) {
                 alpha = score;
                 if (depth == originalDepth) {
+                    System.out.println("   alpha improvvv  AIMOVE was " + aiMove +" and is now "+ move);
                     aiMove = Copier.copyMove(move);
                 }
             }

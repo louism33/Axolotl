@@ -17,7 +17,6 @@ class IterativeDeepeningDFS {
         int maxDepth = 7;
 
         int firstWindow = 10000;
-
         int alpha = -firstWindow, alphaFac = 2;
         int beta = firstWindow, betaFac = 2;
 
@@ -26,30 +25,30 @@ class IterativeDeepeningDFS {
         Move bestMove = rootMoves.get(0);
 
         for (int depth = 0; depth < maxDepth; depth++){
-            System.out.println("---- depth: " + depth + " ----");
-            for (;;) {
+//            System.out.println("---- depth: " + depth + " ----");
+//            for (;;) {
 
                 int score = principleVariationSearch(board, depth, depth, alpha, beta);
-
-                if (score <= alpha) {
-                    System.out.println("Missed Alpha");
-                    alpha = -firstWindow * alphaFac;
-                    alphaFac++;
-                }
-                else if (score >= beta) {
-                    System.out.println("Missed Beta");
-                    beta = firstWindow * betaFac;
-                    betaFac++;
-                }
-                else {
-                    break;
-                }
-            }
+//
+//                if (score <= alpha) {
+//                    System.out.println("Missed Alpha");
+//                    alpha = -firstWindow * alphaFac;
+//                    alphaFac++;
+//                }
+//                else if (score >= beta) {
+//                    System.out.println("Missed Beta");
+//                    beta = firstWindow * betaFac;
+//                    betaFac++;
+//                }
+//                else {
+//                    break;
+//                }
+//            }
         }
 
         System.out.println();
         System.out.println("------");
-        System.out.println(bestMove);
+        System.out.println(PrincipleVariationSearch.getAiMove());
         System.out.println("number of evals: "+ PrincipleVariationSearch.numberOfFinalNegaMax);
         System.out.println("number of Qevals: "+ QuiescenceSearch.numberOfQuiescentEvals);
         System.out.println("attempt at node number: "+ PrincipleVariationSearch.attemptAtFinalNodeCount);
@@ -58,6 +57,8 @@ class IterativeDeepeningDFS {
         System.out.println();
         System.out.println("total of calls to eval(): " + (Evaluator.numberOfEvals));
         System.out.println("------");
+
+//        System.out.println(table);
 
         return PrincipleVariationSearch.getAiMove();
     }

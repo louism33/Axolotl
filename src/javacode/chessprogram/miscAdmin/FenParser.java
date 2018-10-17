@@ -2,6 +2,7 @@ package javacode.chessprogram.miscAdmin;
 
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveMaking.StackMoveData;
 import javacode.graphicsandui.Art;
 
@@ -9,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FenParser {
-
+    
     FenParser(String fenString){
         Chessboard chessboard = parseFenString(fenString);
         String s = Art.boardArt(chessboard);
@@ -269,7 +270,7 @@ public class FenParser {
                     board.BLACK_KING |= pieceFromFen;
                     break;
                 default:
-                    System.out.println("I don't know this piece");
+                    System.out.println("I don't know this Piece");
             }
         }
         return board;

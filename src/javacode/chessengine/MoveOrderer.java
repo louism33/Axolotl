@@ -16,13 +16,16 @@ class MoveOrderer {
     static List<Move> orderMoves (Chessboard board, Move hashMove, List<Move> moves){
         List<Move> orderedMoves = orderMovesHelper(board, moves);
 
-        if (hashMove != null) {
-            Assert.assertTrue(orderedMoves.contains(hashMove));
+        System.out.println(hashMove);
+        
+        if (hashMove != null && orderedMoves.contains(hashMove)) {
 
+            System.out.println("        " + hashMove);
+            
             orderedMoves.remove(hashMove);
             orderedMoves.add(0, hashMove);
 
-            Assert.assertTrue(orderedMoves.get(0).equals(hashMove));
+            Assert.assertEquals(orderedMoves.get(0), hashMove);
         }
 
         return moves;

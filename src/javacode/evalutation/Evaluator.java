@@ -1,8 +1,11 @@
 package javacode.evalutation;
 
+import javacode.chessprogram.check.CheckChecker;
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.chess.Move;
 
+import java.util.List;
 import java.util.Random;
 
 public class Evaluator {
@@ -13,22 +16,39 @@ public class Evaluator {
     private static final int ROOK_SCORE = 500;
     private static final int QUEEN_SCORE = 900;
 
+    private static final int CHECKMATE_SCORE = 100000;
+    private static final int STALEMATE_SCORE = 0;
+    
     public static int numberOfEvals = 0;
 
+    public static int eval(Chessboard board, boolean white, List<Move> moves) {
+        if (moves.size() == 0){
+            if (CheckChecker.boardInCheck(board, white)){
+                return -CHECKMATE_SCORE;
+            }
+            else {
+                return STALEMATE_SCORE;
+            }
+        }
+        else{
+            return eval(board, white);
+        }
+    }
+    
     public static int eval(Chessboard board, boolean white){
         numberOfEvals++;
-        return new Random().nextInt(100);
-//        return evalTurn(board, white) - evalTurn(board, !white);
+//        return new Random().nextInt(100);
+        return evalTurn(board, white) - evalTurn(board, !white);
     }
 
     private static int evalTurn (Chessboard board, boolean white){
         int score = 0;
-//        score += pawnScores(board, white)
-//                +knightScores(board, white)
-//                +bishopScores(board, white)
-//                +rookScores(board, white)
-//                +queenScores(board, white)
-//        ;
+        score += pawnScores(board, white)
+                +knightScores(board, white)
+                +bishopScores(board, white)
+                +rookScores(board, white)
+                +queenScores(board, white)
+        ;
 
         return score;
     }

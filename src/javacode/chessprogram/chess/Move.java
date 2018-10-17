@@ -45,6 +45,22 @@ public class Move {
         }
     }
 
+    public Move(int source, int destination, boolean castling, boolean enPassant, boolean promotion,
+                boolean promoteToKnight, boolean promoteToBishop, boolean promoteToRook, boolean promoteToQueen, int hack){
+
+        makeSourceAndDest(source, destination);
+
+        if (castling) this.move |= CASTLING_MASK;
+        if (enPassant) this.move |= ENPASSANT_MASK;
+        if (promotion) {
+            this.move |= PROMOTION_MASK;
+            if (promoteToKnight) this.move |= KNIGHT_PROMOTION_MASK;
+            else if (promoteToBishop) this.move |= BISHOP_PROMOTION_MASK;
+            else if (promoteToRook) this.move |= ROOK_PROMOTION_MASK;
+            else if (promoteToQueen) this.move |= QUEEN_PROMOTION_MASK;
+        }
+    }
+
 
     private void makeSourceAndDest(int s, int d){
         if (s >= 64 | s < 0 | d >= 64 | d < 0){
