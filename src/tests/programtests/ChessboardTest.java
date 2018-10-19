@@ -1,4 +1,4 @@
-package tests;
+package tests.programtests;
 
 import javacode.chessprogram.bitboards.RandomBoard;
 import javacode.chessprogram.chess.Chessboard;

@@ -1,11 +1,9 @@
 package javacode.chessengine;
 
-import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static javacode.chessengine.MoveOrderer.moveIsCapture;
 

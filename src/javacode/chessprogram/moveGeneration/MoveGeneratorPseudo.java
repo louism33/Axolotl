@@ -11,12 +11,14 @@ public class MoveGeneratorPseudo {
     public static List<Move> generateAllMovesWithoutKing(Chessboard board, boolean whiteTurn,
                                                          long ignoreThesePieces, long legalPushes, long legalCaptures){
         List<Move> moves = new ArrayList<>();
-        if (legalPushes != 0) {
-            moves.addAll(generateAllPushesWithoutKing(board, whiteTurn, ignoreThesePieces, legalPushes));
-        }
         if (legalCaptures != 0) {
             moves.addAll(generateAllCapturesWithoutKing(board, whiteTurn, ignoreThesePieces, legalCaptures));
         }
+        
+        if (legalPushes != 0) {
+            moves.addAll(generateAllPushesWithoutKing(board, whiteTurn, ignoreThesePieces, legalPushes));
+        }
+
         return moves;
     }
 

@@ -86,19 +86,18 @@ public class MoveGeneratorMaster {
             return moves;
         }
 
+        moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves
+                (board, whiteTurn, pinnedPiecesAndPromotingPawns, ALL_EMPTY_SQUARES, ENEMY_PIECES));
+
+        moves.addAll(MoveGeneratorPromotion.generatePromotionMoves
+                (board, whiteTurn, pinnedPieces, ALL_EMPTY_SQUARES, ENEMY_PIECES));
+        
         List<Move> pinnedPiecesMoves = pinnedMoveManager(board, whiteTurn, pinnedPieces, myKing);
         moves.addAll(pinnedPiecesMoves);
 
         List<Move> unpinnedPiecesMoves = MoveGeneratorPseudo.generateAllMovesWithoutKing
                 (board, whiteTurn, pinnedPiecesAndPromotingPawns, ~board.ALL_PIECES(), ENEMY_PIECES);
         moves.addAll(unpinnedPiecesMoves);
-
-
-        moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves
-                (board, whiteTurn, pinnedPiecesAndPromotingPawns, ALL_EMPTY_SQUARES, ENEMY_PIECES));
-
-        moves.addAll(MoveGeneratorPromotion.generatePromotionMoves
-                (board, whiteTurn, pinnedPieces, ALL_EMPTY_SQUARES, ENEMY_PIECES));
 
         return moves;
     }

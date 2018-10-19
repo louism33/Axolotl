@@ -2,7 +2,6 @@ package javacode.chessengine;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 
 import java.util.ArrayList;
 import java.util.List;

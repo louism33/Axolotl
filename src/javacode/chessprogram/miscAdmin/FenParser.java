@@ -2,7 +2,6 @@ package javacode.chessprogram.miscAdmin;
 
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
-import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveMaking.StackMoveData;
 import javacode.graphicsandui.Art;
 
@@ -17,6 +16,8 @@ public class FenParser {
     }
 
     public static Chessboard makeBoardBasedOnFEN(String fen){
+//        System.out.println(fen);
+        
         Chessboard board = parseFenString(fen);
         board.setWhiteTurn(isItWhitesTurn(fen));
 
@@ -287,6 +288,7 @@ public class FenParser {
         if (boardRepresentation.length() == 0){
             throw new RuntimeException("Could not Parse board rep of fen string");
         }
+
         return boardRepresentation;
     }
 

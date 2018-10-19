@@ -60,7 +60,7 @@ class MoveRegular {
             board.BLACK_KING |= destinationPiece;
         }
         else {
-            throw new RuntimeException("false move");
+            throw new RuntimeException("MoveRegular: false move "+ move);
         }
     }
 

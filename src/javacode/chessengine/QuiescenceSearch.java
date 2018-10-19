@@ -27,7 +27,7 @@ public class QuiescenceSearch {
         
         if (moves.size() == 0) {
             numberOfQuiescentEvals++;
-            return standPatScore;
+            return Evaluator.eval(board, board.isWhiteTurn(), moves);
         }
         
         if (standPatScore >= beta){
@@ -42,7 +42,7 @@ public class QuiescenceSearch {
                 orderMovesQuiescence(board, MoveOrderer.onlyCaptureMoves(board, moves));
 
         Move bestMove = orderedCaptureMove.get(0);
-        int bestScore = -10000;
+        int bestScore = -10000; // = alpha
 
         for (Move captureMove : orderedCaptureMove){
             MoveOrganiser.makeMoveMaster(board, captureMove);

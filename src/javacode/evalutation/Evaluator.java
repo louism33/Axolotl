@@ -4,6 +4,8 @@ import javacode.chessprogram.check.CheckChecker;
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
+import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
+import javacode.graphicsandui.Art;
 
 import java.util.List;
 import java.util.Random;
@@ -16,29 +18,47 @@ public class Evaluator {
     private static final int ROOK_SCORE = 500;
     private static final int QUEEN_SCORE = 900;
 
-    private static final int CHECKMATE_SCORE = 100000;
-    private static final int STALEMATE_SCORE = 0;
-    
+    public static final int IN_CHECKMATE_SCORE = -100000;
+    public static final int IN_STALEMATE_SCORE = 0;
+
     public static int numberOfEvals = 0;
+    public static int numberOfCheckmates = 0;
+    public static int numberOfStalemates = 0;
 
     public static int eval(Chessboard board, boolean white, List<Move> moves) {
         if (moves.size() == 0){
             if (CheckChecker.boardInCheck(board, white)){
-                return -CHECKMATE_SCORE;
+                numberOfCheckmates++;
+//                System.out.println(Art.boardArt(board));
+                return IN_CHECKMATE_SCORE;
             }
             else {
-                return STALEMATE_SCORE;
+                numberOfStalemates++;
+                return IN_STALEMATE_SCORE;
             }
         }
         else{
             return eval(board, white);
         }
     }
-    
-    public static int eval(Chessboard board, boolean white){
+
+    public static int eval(Chessboard board, boolean white) {
         numberOfEvals++;
 //        return new Random().nextInt(100);
-        return evalTurn(board, white) - evalTurn(board, !white);
+//        return evalTurn(board, white) - evalTurn(board, !white);
+
+        List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, white);
+        if (moves.size() == 0) {
+            if (CheckChecker.boardInCheck(board, white)) {
+                numberOfCheckmates++;
+//                System.out.println(Art.boardArt(board));
+                return IN_CHECKMATE_SCORE;
+            } else {
+                numberOfStalemates++;
+                return IN_STALEMATE_SCORE;
+            }
+        }
+        return 0;
     }
 
     private static int evalTurn (Chessboard board, boolean white){

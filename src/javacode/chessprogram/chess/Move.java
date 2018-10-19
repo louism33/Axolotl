@@ -64,7 +64,7 @@ public class Move {
 
     private void makeSourceAndDest(int s, int d){
         if (s >= 64 | s < 0 | d >= 64 | d < 0){
-            throw new RuntimeException("False Move " + s+" "+ d);
+            throw new RuntimeException("Move: False Move " + s+" "+ d);
         }
         this.source = (s << sourceOffset) & SOURCE_MASK;
         this.destination = d & DESTINATION_MASK;

@@ -226,7 +226,7 @@ public class MoveUnmaker {
         else {
             System.out.println(Art.boardArt(board));
             System.out.println(move);
-            throw new RuntimeException("false move");
+            throw new RuntimeException("unMakeMoveMaster: false move " + move);
         }
     }
 

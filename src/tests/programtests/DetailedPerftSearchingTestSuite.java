@@ -1,4 +1,4 @@
-package tests;
+package tests.programtests;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.miscAdmin.DetailedPerftSearching;

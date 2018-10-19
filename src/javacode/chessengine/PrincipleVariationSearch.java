@@ -21,17 +21,21 @@ public class PrincipleVariationSearch {
     static int principleVariationSearch(Chessboard board, int originalDepth, int depth, int alpha, int beta){
         int originalAlpha = alpha;
 
-        Move hashMove = null;
+        Move hashMove;
         TranspositionTable.TableObject previousTableData = table.get(board);
+        boardLookup:
         if (previousTableData != null) {
             if (previousTableData.getDepth() >= depth) {
                 TranspositionTable.TableObject.Flag flag = previousTableData.getFlag();
                 int scoreFromTable = previousTableData.getScore();
                 hashMove = previousTableData.getMove();
+                List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
+                if (!moves.contains(hashMove)){
+                    break boardLookup;
+                }
                 if (flag == TranspositionTable.TableObject.Flag.EXACT) {
                     if (depth == originalDepth) {
-                        System.out.println(" hash : AIMOVE was " + aiMove +" and is now "+ hashMove);
-                        aiMove = hashMove;
+                        aiMove = Copier.copyMove(hashMove);
                     }
                     return scoreFromTable;
                 } else if (flag == TranspositionTable.TableObject.Flag.LOWERBOUND) {
@@ -41,8 +45,7 @@ public class PrincipleVariationSearch {
                 }
                 if (alpha >= beta) {
                     if (depth == originalDepth) {
-                        System.out.println("  hash AB cutoff AIMOVE was " + aiMove +" and is now "+ hashMove);
-                        aiMove = hashMove;
+                        aiMove = Copier.copyMove(hashMove);
                         
                     }
                     return scoreFromTable;
@@ -53,24 +56,40 @@ public class PrincipleVariationSearch {
         if (depth == 0){
             numberOfFinalNegaMax++;
             attemptAtFinalNodeCount++;
-            return QuiescenceSearch.quiescenceSearch(board, alpha, beta);
+            return Evaluator.eval(board, board.isWhiteTurn());
+//            return QuiescenceSearch.quiescenceSearch(board, alpha, beta);
         }
 
-        List<Move> orderedMoves = 
-                MoveOrderer.orderMoves(board, hashMove, MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()));
+        List<Move> orderedMoves;
+        
+        loop:
+        if (previousTableData != null) {
+            Move moveFromHash = previousTableData.getMove();
+            orderedMoves = MoveOrderer.orderMoves(board, board.isWhiteTurn());
+
+//            System.out.println("hashmove: "+moveFromHash);
+            
+            if (!orderedMoves.contains(moveFromHash)){
+                break loop;
+            }
+            
+            orderedMoves.remove(moveFromHash);
+            orderedMoves.add(0, moveFromHash);
+        }
+        else {
+            orderedMoves = MoveOrderer.orderMoves(board, board.isWhiteTurn());
+        }
 
         // can try hashmove here before rest of generation ?
         
         if (orderedMoves.size() == 0) {
-            numberOfFinalNegaMax++;
             return Evaluator.eval(board, board.isWhiteTurn(), orderedMoves);
         }
 
-        Move bestMove = orderedMoves.get(0);
+        Move bestMove = Copier.copyMove(orderedMoves.get(0));
 
         if (depth == originalDepth){
-//            System.out.println(orderedMoves);
-            System.out.println("  orig     AIMOVE was " + aiMove +" and is now "+ orderedMoves.get(0));
+//            System.out.println("before search aimove was " + aiMove +"  is now " + orderedMoves.get(0));
             aiMove = Copier.copyMove(orderedMoves.get(0));
         }
 
@@ -97,15 +116,22 @@ public class PrincipleVariationSearch {
 
             if (score > bestScore){
                 bestScore = score;
-                bestMove = move;
+                bestMove = Copier.copyMove(move);
             }
             if (score > alpha) {
                 alpha = score;
                 if (depth == originalDepth) {
-                    System.out.println("   alpha improvvv  AIMOVE was " + aiMove +" and is now "+ move);
+//                    Assert.assertTrue(orderedMoves.contains(aiMove));
+
+//                    System.out.println("      after search aimove was " + aiMove +"  is now " + move);
                     aiMove = Copier.copyMove(move);
                 }
             }
+
+//            if (score == Evaluator.IN_CHECKMATE_SCORE){
+//                return score;
+//            }
+            
             if (alpha >= beta){
                 break;
             }
@@ -128,7 +154,7 @@ public class PrincipleVariationSearch {
         return bestScore;
     }
 
-    public static Move getAiMove() {
+    static Move getAiMove() {
         return aiMove;
     }
 }

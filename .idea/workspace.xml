@@ -5,24 +5,57 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="69d40d9d-8980-4bb2-9941-56e4fd504839" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/MoveParserFromAN.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tests/EngineTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/javacode/chessengine/AspirationSearch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/ExtendedPositionDescriptionParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/enginetests/BratkoKopecTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/enginetests/CCROneHourTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInFive.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInFour.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInSix.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInThree.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInTwo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/enginetests/EngineTestMisc.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/enginetests/KaufmanTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/Engine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/Engine.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/IterativeDeepeningDFS.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/IterativeDeepeningDFS.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/MoveOrderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/MoveOrderer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/PrincipleVariationSearch.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/PrincipleVariationSearch.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/QuiescenceSearch.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/QuiescenceSearch.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/QuiescentSearchUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/QuiescentSearchUtils.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/chess/Move.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/chess/Move.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/FenParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/FenParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/MoveParserFromAN$Piece.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/MoveParserFromAN$Piece.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/MoveParserFromAN.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/MoveParserFromAN.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/MoveGeneratorPseudo.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/MoveGeneratorPseudo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveMaking/MoveRegular.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveMaking/MoveRegular.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveMaking/MoveUnmaker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveMaking/MoveUnmaker.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/evalutation/Evaluator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/evalutation/Evaluator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/DetailedPerftSearchingTestSuite.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/DetailedPerftSearchingTestSuite.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/CheckCheckerTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/ChessboardTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/DetailedPerftSearchingTestSuite.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/EngineTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/MoveUnmakerTest.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/Engine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/IterativeDeepeningDFS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/IterativeDeepeningDFS.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/MoveOrderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/MoveOrderer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/PrincipleVariationSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/PrincipleVariationSearch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/QuiescenceSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/QuiescenceSearch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/QuiescentSearchUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/QuiescentSearchUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/chess/Move.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/chess/Move.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/FenParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/FenParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/MoveParserFromAN.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/MoveParserFromAN.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorPseudo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorPseudo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveMaking/MoveRegular.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveMaking/MoveRegular.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveMaking/MoveUnmaker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveMaking/MoveUnmaker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/javacode/evalutation/Evaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/evalutation/Evaluator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/DetailedPerftSearchingTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/DetailedPerftSearchingTestSuite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/CheckCheckerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/programtests/CheckCheckerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/ChessboardTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/programtests/ChessboardTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/DetailedPerftSearchingTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/programtests/DetailedPerftSearchingTestSuite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/EngineTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/MoveUnmakerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/programtests/MoveUnmakerTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -56,13 +89,13 @@
     <session id="-1019366752">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="40" />
+          <entry key="project.closed" value="42" />
           <entry key="project.open.time.13" value="2" />
           <entry key="project.open.time.14" value="1" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.16" value="3" />
-          <entry key="project.open.time.17" value="4" />
-          <entry key="project.open.time.18" value="1" />
+          <entry key="project.open.time.17" value="5" />
+          <entry key="project.open.time.18" value="3" />
           <entry key="project.open.time.19" value="3" />
           <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.20" value="1" />
@@ -83,19 +116,19 @@
           <entry key="project.open.time.42" value="1" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.50" value="1" />
-          <entry key="project.opened" value="41" />
+          <entry key="project.opened" value="44" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="6" />
-          <entry key="java" value="96846" />
+          <entry key="java" value="102202" />
           <entry key="xml" value="166" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="96846" />
+          <entry key="JAVA" value="102202" />
           <entry key="PLAIN_TEXT" value="6" />
           <entry key="XML" value="166" />
         </counts>
@@ -104,7 +137,7 @@
         <counts>
           <entry key="LICENSE" value="1" />
           <entry key="iml" value="5" />
-          <entry key="java" value="1263" />
+          <entry key="java" value="1313" />
           <entry key="md" value="1" />
           <entry key="xml" value="1" />
         </counts>
@@ -112,7 +145,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="IDEA_MODULE" value="5" />
-          <entry key="JAVA" value="1263" />
+          <entry key="JAVA" value="1313" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="1" />
           <entry key="XML" value="1" />
@@ -123,22 +156,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/IterativeDeepeningDFS.java">
+        <entry file="file://$PROJECT_DIR$/src/tests/enginetests/KaufmanTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/PrincipleVariationSearch.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-307">
-              <caret line="59" column="54" selection-start-line="59" selection-start-column="46" selection-end-line="59" selection-end-column="54" />
+            <state relative-caret-position="375">
+              <caret line="79" column="4" lean-forward="true" selection-start-line="10" selection-start-column="4" selection-end-line="79" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -147,10 +168,79 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/MoveOrderer.java">
+        <entry file="file://$PROJECT_DIR$/src/tests/enginetests/CCROneHourTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="98">
-              <caret line="15" column="28" lean-forward="true" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="28" />
+            <state relative-caret-position="210">
+              <caret line="23" column="54" selection-start-line="23" selection-start-column="54" selection-end-line="23" selection-end-column="54" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/FenParser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="118">
+              <caret line="19" column="8" lean-forward="true" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/MoveParserFromAN.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="112">
+              <caret line="188" column="41" selection-start-line="188" selection-start-column="41" selection-end-line="188" selection-end-column="41" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInFive.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="197" selection-start-line="197" selection-end-line="208" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInSix.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="175">
+              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/IterativeDeepeningDFS.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/ExtendedPositionDescriptionParser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -171,41 +261,38 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>number of</find>
-      <find>print</find>
+      <find>CHECKMA</find>
+      <find>CHECKM</find>
+      <find>IN_CHECKMATE_SCORE</find>
+      <find>Art</find>
       <find>Art.</find>
-      <find>pinnedM</find>
-      <find>println</find>
-      <find>kinglegal</find>
-      <find>while</find>
-      <find>restr</find>
-      <find>detailedp</find>
-      <find>catch</find>
-      <find>board</find>
-      <find>popSMD.boa</find>
-      <find>ispromo</find>
-      <find>public</find>
-      <find>1100</find>
-      <find>checkmate</find>
-      <find>&amp; enem</find>
-      <find>previousTableData</find>
-      <find>table</find>
-      <find>alpha</find>
-      <find>bestMove</find>
-      <find>addAll</find>
-      <find>% 8</find>
-      <find>promotion mo</find>
-      <find>checker</find>
-      <find>WHITE</find>
-      <find>aiMove</find>
+      <find>f6f1</find>
+      <find>art.</find>
       <find>aiMo</find>
+      <find>aiMove</find>
       <find>moves</find>
-      <find>100000</find>
+      <find>move</find>
+      <find>aimve</find>
+      <find>f8c5</find>
+      <find>f8</find>
+      <find>best</find>
+      <find>bestM</find>
+      <find>print</find>
+      <find>checkmateIn2</find>
+      <find>Piece id</find>
+      <find>problem</find>
+      <find>board r</find>
+      <find>iden</find>
+      <find>checkmateIn3</find>
+      <find>testC</find>
+      <find>testG</find>
+      <find>am</find>
+      <find>test</find>
+      <find>testE</find>
+      <find>testH</find>
+      <find>3kr3</find>
     </findStrings>
     <replaceStrings>
-      <replace>fff</replace>
-      <replace>rrr</replace>
-      <replace>rrrr</replace>
       <replace>piece</replace>
       <replace>Piece</replace>
       <replace>return</replace>
@@ -225,9 +312,21 @@
       <replace>board.</replace>
       <replace>black</replace>
       <replace>BLACK</replace>
+      <replace>test</replace>
+      <replace>test9</replace>
+      <replace>test10</replace>
+      <replace>test1</replace>
+      <replace>test2</replace>
+      <replace>test3</replace>
+      <replace>test4</replace>
+      <replace>test5</replace>
+      <replace>test6</replace>
+      <replace>test7</replace>
+      <replace>test8</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src/main/miscAdmin</dir>
+      <dir>$PROJECT_DIR$/src/javacode/chessengine</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -236,21 +335,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/miscAdmin/DetailedPerftSearching.java" />
-        <option value="$PROJECT_DIR$/src/main/moveGeneration/MoveGeneratorMaster.java" />
-        <option value="$PROJECT_DIR$/src/main/Engine/Engine.java" />
-        <option value="$PROJECT_DIR$/src/main/moveMaking/StackMoveData.java" />
-        <option value="$PROJECT_DIR$/src/main/chess/Move.java" />
-        <option value="$PROJECT_DIR$/src/main/chess/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/chess/StandAlone.java" />
-        <option value="$PROJECT_DIR$/src/main/miscAdmin/MovePrettifier.java" />
-        <option value="$PROJECT_DIR$/src/main/chess/BitIndexing.java" />
-        <option value="$PROJECT_DIR$/src/main/chess/Art.java" />
-        <option value="$PROJECT_DIR$/src/graphicsAndUI/Art.java" />
-        <option value="$PROJECT_DIR$/src/evaluation/Engine.java" />
-        <option value="$PROJECT_DIR$/src/chessengine/Engine.java" />
-        <option value="$PROJECT_DIR$/src/evaluation/Evaluator.java" />
-        <option value="$PROJECT_DIR$/src/main/miscAdmin/BlankBoard.java" />
         <option value="$PROJECT_DIR$/src/main/bitboards/BlankBoard.java" />
         <option value="$PROJECT_DIR$/src/chessprogram/DetailedPerftSearching.java" />
         <option value="$PROJECT_DIR$/src/chessprogram/debug/DetailedPerftSearching.java" />
@@ -270,23 +354,38 @@
         <option value="$PROJECT_DIR$/src/javacode/chessprogram/check/CheckMoveOrganiser.java" />
         <option value="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGenerationUtilities.java" />
         <option value="$PROJECT_DIR$/src/javacode/chessprogram/chess/Chessboard.java" />
-        <option value="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java" />
         <option value="$PROJECT_DIR$/src/javacode/main/Main.java" />
         <option value="$PROJECT_DIR$/src/javacode/chessengine/TranspositionTable.java" />
         <option value="$PROJECT_DIR$/src/javacode/chessengine/KillerMoveArray.java" />
         <option value="$PROJECT_DIR$/src/javacode/chessengine/QuiescentSearchUtils.java" />
-        <option value="$PROJECT_DIR$/src/javacode/chessengine/QuiescenceSearch.java" />
         <option value="$PROJECT_DIR$/src/javacode/chessengine/Engine.java" />
         <option value="$PROJECT_DIR$/src/tests/DetailedPerftSearchingTestSuite.java" />
-        <option value="$PROJECT_DIR$/src/javacode/evalutation/Evaluator.java" />
         <option value="$PROJECT_DIR$/src/javacode/chessprogram/chess/Move.java" />
         <option value="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/FenAndMoveParser.java" />
-        <option value="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/FenParser.java" />
-        <option value="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/MoveParserFromAN.java" />
-        <option value="$PROJECT_DIR$/src/tests/EngineTest.java" />
-        <option value="$PROJECT_DIR$/src/javacode/chessengine/IterativeDeepeningDFS.java" />
-        <option value="$PROJECT_DIR$/src/javacode/chessengine/PrincipleVariationSearch.java" />
+        <option value="$PROJECT_DIR$/src/tests/EngineTestMateInTwo.java" />
+        <option value="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java" />
+        <option value="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorPseudo.java" />
+        <option value="$PROJECT_DIR$/src/javacode/chessengine/QuiescenceSearch.java" />
         <option value="$PROJECT_DIR$/src/javacode/chessengine/MoveOrderer.java" />
+        <option value="$PROJECT_DIR$/src/javacode/evalutation/Evaluator.java" />
+        <option value="$PROJECT_DIR$/src/javacode/chessengine/PrincipleVariationSearch.java" />
+        <option value="$PROJECT_DIR$/src/javacode/chessengine/AspirationSearch.java" />
+        <option value="$PROJECT_DIR$/src/tests/EngineTest.java" />
+        <option value="$PROJECT_DIR$/src/tests/EngineTestMisc.java" />
+        <option value="$PROJECT_DIR$/src/tests/enginetests/EngineTestMisc.java" />
+        <option value="$PROJECT_DIR$/src/tests/enginetests/EngineTest.java" />
+        <option value="$PROJECT_DIR$/src/tests/enginetests/BratkoKopecTest.java" />
+        <option value="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/FenParser.java" />
+        <option value="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/ExtendedPositionDescriptionParser.java" />
+        <option value="$PROJECT_DIR$/src/tests/enginetests/KaufmanTests.java" />
+        <option value="$PROJECT_DIR$/src/tests/enginetests/CCROneHourTest.java" />
+        <option value="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/MoveParserFromAN.java" />
+        <option value="$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInThree.java" />
+        <option value="$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInTwo.java" />
+        <option value="$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInFour.java" />
+        <option value="$PROJECT_DIR$/src/javacode/chessengine/IterativeDeepeningDFS.java" />
+        <option value="$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInFive.java" />
+        <option value="$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInSix.java" />
       </list>
     </option>
   </component>
@@ -313,7 +412,7 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-1" />
-    <option name="width" value="684" />
+    <option name="width" value="882" />
     <option name="height" value="741" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -457,8 +556,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -489,6 +586,21 @@
               <item name="chessPlusPlus" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="javacode" type="462c0819:PsiDirectoryNode" />
+              <item name="chessprogram" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chessPlusPlus" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chessPlusPlus" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="javacode" type="462c0819:PsiDirectoryNode" />
+              <item name="chessprogram" type="462c0819:PsiDirectoryNode" />
+              <item name="miscAdmin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chessPlusPlus" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chessPlusPlus" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="javacode" type="462c0819:PsiDirectoryNode" />
               <item name="evalutation" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -504,10 +616,26 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="chessPlusPlus" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chessPlusPlus" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="enginetests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chessPlusPlus" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chessPlusPlus" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="programtests" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -517,7 +645,7 @@
     <property name="SearchEverywhereHistoryKey" value="pretti&#9;PSI&#9;JAVA://javacode.chessprogram.miscAdmin.MovePrettifier&#10;chessbo&#9;PSI&#9;JAVA://javacode.chessprogram.chess.Chessboard&#10;Mo&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/java/graphicsandui/MovePrettifier.java&#10;parse&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/MoveParser.java&#10;unmake&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/MoveUnmaker.java&#10;movegenma&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveGeneration/MoveGeneratorMaster.java&#10;movegen&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveGeneration/MoveGeneratorMaster.java&#10;moveorg&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/MoveOrganiser.java&#10;Stac&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/StackMoveData.java&#10;random&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/utils/RandomBoard.java&#10;MovePar&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/MoveParser.java&#10;art&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/chess/Art.java&#10;Art&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/chess/Art.java&#10;chessb&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/chess/Chessboard.java&#10;main&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/chess/Main.java&#10;knight&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/moveGeneration/PieceMoveKnight.java&#10;Mani&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/chess/BitManipulations.java&#10;movepawn&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/moveGeneration/MoveGeneratorPawns.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539809528024" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539949961536" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Arquillian JUnit4" value="" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
@@ -560,96 +688,95 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.EngineTest.checkmateInPromotion">
-    <configuration name="MoveParserFromAN" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="javacode.chessprogram.miscAdmin.MoveParserFromAN" />
+  <component name="RunManager" selected="JUnit.EngineTestMateInFive.test11">
+    <configuration name="CCROneHourTest.ccrTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="chessPlusPlus" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="javacode.chessprogram.miscAdmin.*" />
+          <option name="PATTERN" value="tests.enginetests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EngineTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="chessPlusPlus" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="tests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="tests" />
-      <option name="MAIN_CLASS_NAME" value="tests.EngineTest" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EngineTest.checkmateIn2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="chessPlusPlus" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="tests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="tests" />
-      <option name="MAIN_CLASS_NAME" value="tests.EngineTest" />
-      <option name="METHOD_NAME" value="checkmateIn2" />
+      <option name="PACKAGE_NAME" value="tests.enginetests" />
+      <option name="MAIN_CLASS_NAME" value="tests.enginetests.CCROneHourTest" />
+      <option name="METHOD_NAME" value="ccrTests" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EngineTest.checkmateInOne" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="EngineTestMateInFive.test11" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="chessPlusPlus" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="tests.*" />
+          <option name="PATTERN" value="tests.enginetests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="tests" />
-      <option name="MAIN_CLASS_NAME" value="tests.EngineTest" />
-      <option name="METHOD_NAME" value="checkmateInOne" />
+      <option name="PACKAGE_NAME" value="tests.enginetests" />
+      <option name="MAIN_CLASS_NAME" value="tests.enginetests.EngineTestMateInFive" />
+      <option name="METHOD_NAME" value="test11" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EngineTest.checkmateInPromotion" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="EngineTestMateInFour" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="chessPlusPlus" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="tests.*" />
+          <option name="PATTERN" value="tests.enginetests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="tests" />
-      <option name="MAIN_CLASS_NAME" value="tests.EngineTest" />
-      <option name="METHOD_NAME" value="checkmateInPromotion" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="tests.enginetests" />
+      <option name="MAIN_CLASS_NAME" value="tests.enginetests.EngineTestMateInFour" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EngineTestMateInThree" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="chessPlusPlus" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.enginetests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tests.enginetests" />
+      <option name="MAIN_CLASS_NAME" value="tests.enginetests.EngineTestMateInThree" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EngineTestMateInTwo" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="chessPlusPlus" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.enginetests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tests.enginetests" />
+      <option name="MAIN_CLASS_NAME" value="tests.enginetests.EngineTestMateInTwo" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.EngineTest.checkmateInOne" />
-      <item itemvalue="JUnit.EngineTest.checkmateInPromotion" />
-      <item itemvalue="Application.MoveParserFromAN" />
-      <item itemvalue="JUnit.EngineTest.checkmateIn2" />
-      <item itemvalue="JUnit.EngineTest" />
+      <item itemvalue="JUnit.CCROneHourTest.ccrTests" />
+      <item itemvalue="JUnit.EngineTestMateInTwo" />
+      <item itemvalue="JUnit.EngineTestMateInThree" />
+      <item itemvalue="JUnit.EngineTestMateInFour" />
+      <item itemvalue="JUnit.EngineTestMateInFive.test11" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.EngineTest.checkmateInPromotion" />
-        <item itemvalue="JUnit.EngineTest" />
-        <item itemvalue="JUnit.EngineTest.checkmateIn2" />
-        <item itemvalue="Application.MoveParserFromAN" />
-        <item itemvalue="JUnit.EngineTest.checkmateInOne" />
+        <item itemvalue="JUnit.EngineTestMateInFive.test11" />
+        <item itemvalue="JUnit.EngineTestMateInFour" />
+        <item itemvalue="JUnit.EngineTestMateInTwo" />
+        <item itemvalue="JUnit.EngineTestMateInThree" />
+        <item itemvalue="JUnit.CCROneHourTest.ccrTests" />
       </list>
     </recent_temporary>
   </component>
@@ -704,43 +831,46 @@
       <workItem from="1539711184961" duration="10035000" />
       <workItem from="1539755168829" duration="4385000" />
       <workItem from="1539795454171" duration="12046000" />
+      <workItem from="1539841349882" duration="27254000" />
+      <workItem from="1539931612327" duration="7797000" />
+      <workItem from="1539944547714" duration="5381000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="EngineTest_checkmateInPromotion - 2018.10.17 at 22h 01m 44s.xml">
-      <configuration name="EngineTest.checkmateInPromotion" configurationId="JUnit" />
+    <history-entry file="CCROneHourTest_ccrTests - 2018.10.19 at 12h 54m 14s.xml">
+      <configuration name="CCROneHourTest.ccrTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EngineTest_checkmateInPromotion - 2018.10.17 at 22h 02m 41s.xml">
-      <configuration name="EngineTest.checkmateInPromotion" configurationId="JUnit" />
+    <history-entry file="CCROneHourTest_ccrTests - 2018.10.19 at 12h 56m 29s.xml">
+      <configuration name="CCROneHourTest.ccrTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EngineTest_checkmateInPromotion - 2018.10.17 at 22h 03m 06s.xml">
-      <configuration name="EngineTest.checkmateInPromotion" configurationId="JUnit" />
+    <history-entry file="EngineTestMateInTwo - 2018.10.19 at 12h 56m 47s.xml">
+      <configuration name="EngineTestMateInTwo" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EngineTest_checkmateInPromotion - 2018.10.17 at 22h 09m 56s.xml">
-      <configuration name="EngineTest.checkmateInPromotion" configurationId="JUnit" />
+    <history-entry file="EngineTestMateInThree - 2018.10.19 at 12h 57m 20s.xml">
+      <configuration name="EngineTestMateInThree" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EngineTest_checkmateInPromotion - 2018.10.17 at 22h 49m 22s.xml">
-      <configuration name="EngineTest.checkmateInPromotion" configurationId="JUnit" />
+    <history-entry file="KaufmanTests - 2018.10.19 at 12h 57m 35s.xml">
+      <configuration name="KaufmanTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EngineTest_checkmateInPromotion - 2018.10.17 at 22h 49m 36s.xml">
-      <configuration name="EngineTest.checkmateInPromotion" configurationId="JUnit" />
+    <history-entry file="EngineTestMateInFour - 2018.10.19 at 13h 04m 49s.xml">
+      <configuration name="EngineTestMateInFour" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EngineTest_checkmateInPromotion - 2018.10.17 at 22h 51m 16s.xml">
-      <configuration name="EngineTest.checkmateInPromotion" configurationId="JUnit" />
+    <history-entry file="EngineTestMateInThree - 2018.10.19 at 13h 05m 39s.xml">
+      <configuration name="EngineTestMateInThree" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EngineTest_checkmateInPromotion - 2018.10.17 at 22h 51m 28s.xml">
-      <configuration name="EngineTest.checkmateInPromotion" configurationId="JUnit" />
+    <history-entry file="EngineTestMateInTwo - 2018.10.19 at 13h 10m 18s.xml">
+      <configuration name="EngineTestMateInTwo" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EngineTest_checkmateInPromotion - 2018.10.17 at 22h 51m 52s.xml">
-      <configuration name="EngineTest.checkmateInPromotion" configurationId="JUnit" />
+    <history-entry file="EngineTestMateInFour - 2018.10.19 at 13h 34m 35s.xml">
+      <configuration name="EngineTestMateInFour" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EngineTest_checkmateInPromotion - 2018.10.17 at 22h 52m 11s.xml">
-      <configuration name="EngineTest.checkmateInPromotion" configurationId="JUnit" />
+    <history-entry file="EngineTestMateInFive_test11 - 2018.10.19 at 13h 48m 37s.xml">
+      <configuration name="EngineTestMateInFive.test11" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="466046000" />
+    <option name="totallyTimeSpent" value="506478000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -755,18 +885,18 @@
     <frame x="-1" y="0" width="1368" height="741" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49739584" visible="true" weight="0.22727273" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49739584" visible="true" weight="0.19090909" />
       <window_info id="Structure" order="1" sideWeight="0.5026042" side_tool="true" weight="0.20757575" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="UI Designer" order="5" />
-      <window_info id="Learn" order="6" />
+      <window_info id="Learn" order="6" weight="0.32954547" />
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32847896" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924242" weight="0.44012946" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.37864077" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924242" visible="true" weight="0.44174758" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.27993527" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32847896" />
@@ -833,16 +963,16 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/javacode/chessprogram/chess/Move.java</url>
-          <line>39</line>
+          <url>file://$PROJECT_DIR$/src/javacode/chessengine/PrincipleVariationSearch.java</url>
+          <line>131</line>
           <properties />
-          <option name="timeStamp" value="5" />
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/javacode/chessengine/MoveOrderer.java</url>
-          <line>27</line>
+          <url>file://$PROJECT_DIR$/src/javacode/chessengine/IterativeDeepeningDFS.java</url>
+          <line>28</line>
           <properties />
-          <option name="timeStamp" value="6" />
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -922,32 +1052,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/StandAlone.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/chessprogram/check/CheckMoveOrganiser.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/chessprogram/moveGeneration/MoveGeneratorSliding.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/graphicsandui/Art.java" />
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor />
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chessprogram/chess/Move.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/chessprogram/moveGeneration/MoveGenerationUtilities.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/graphicsandui/MovePrettifier.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/chessprogram/moveMaking/MoveCastling.java" />
-    <entry file="file://$PROJECT_DIR$/.idea/chessPlusPlus.iml" />
-    <entry file="file://$PROJECT_DIR$/chessPlusPlus.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="44" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/evaluation/Evaluator.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/chessprogram/moveGeneration/MoveGeneratorKnight.java" />
     <entry file="file://$PROJECT_DIR$/pom.xml" />
     <entry file="file://$PROJECT_DIR$/src/main/java/chessengine/Engine.java" />
@@ -1003,31 +1107,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/javacode/StandAlone.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="21" column="49" lean-forward="true" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/moveMaking/MoveRegular.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="356">
           <caret line="62" selection-start-line="62" selection-end-line="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/javacode/main/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -1065,49 +1148,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/DetailedPerftSearchingTestSuite.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="96" column="130" selection-start-line="96" selection-start-column="64" selection-end-line="96" selection-end-column="130" />
-          <folding>
-            <element signature="method#regularBoard#0;class#DetailedPerftSearchingTestSuite#0" />
-            <element signature="method#tinyDepths#0;class#DetailedPerftSearchingTestSuite#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/ChessboardTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/QuiescenceSearch.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="20" column="41" selection-start-line="20" selection-start-column="41" selection-end-line="20" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorPromotion.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/chess/Move.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="48" column="121" selection-start-line="48" selection-start-column="121" selection-end-line="48" selection-end-column="121" />
-          <folding>
-            <element signature="e#834#835#0" expanded="true" />
-            <element signature="e#888#889#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1129,37 +1173,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/FenParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="180" column="29" selection-start-line="180" selection-start-column="29" selection-end-line="180" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/check/CheckMoveOrganiser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-900">
           <caret line="14" column="33" lean-forward="true" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/check/CheckChecker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/MoveParserFromAN.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="21" column="11" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#whichPieceIsMoving#0;class#MoveParserFromAN#0" />
           </folding>
         </state>
       </provider>
@@ -1171,20 +1190,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/Engine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="20" column="50" selection-start-line="20" selection-start-column="50" selection-end-line="20" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/javacode/evalutation/Evaluator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-90">
-          <caret line="18" column="50" selection-start-line="18" selection-start-column="50" selection-end-line="18" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/jdk-10.0.2/lib/src.zip!/java.base/java/lang/System.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
@@ -1192,27 +1197,83 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/EngineTest.java">
+    <entry file="file://$PROJECT_DIR$/src/javacode/main/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="47" column="24" selection-start-line="47" selection-start-column="19" selection-end-line="47" selection-end-column="24" />
+        <state relative-caret-position="80">
+          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/IterativeDeepeningDFS.java">
+    <entry file="file://$PROJECT_DIR$/src/javacode/StandAlone.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
+        <state relative-caret-position="-809">
+          <caret line="21" column="49" lean-forward="true" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/chess/Move.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="335">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
+          <folding>
+            <element signature="e#834#835#0" expanded="true" />
+            <element signature="e#888#889#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorPseudo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="278">
+          <caret line="97" column="77" lean-forward="true" selection-start-line="97" selection-start-column="77" selection-end-line="97" selection-end-column="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/check/CheckChecker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/MoveOrderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="29" selection-start-line="20" selection-start-column="29" selection-end-line="20" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/MoveOrderer.java">
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/Engine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="98">
-          <caret line="15" column="28" lean-forward="true" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="28" />
+        <state relative-caret-position="210">
+          <caret line="19" column="54" selection-start-line="19" selection-start-column="54" selection-end-line="19" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/AspirationSearch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="9" column="27" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/QuiescenceSearch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="29" column="32" lean-forward="true" selection-start-line="29" selection-start-column="32" selection-end-line="29" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1221,8 +1282,171 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/PrincipleVariationSearch.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-307">
-          <caret line="59" column="54" selection-start-line="59" selection-start-column="46" selection-end-line="59" selection-end-column="54" />
+        <state relative-caret-position="115">
+          <caret line="85" column="29" selection-start-line="85" selection-start-column="29" selection-end-line="85" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/evalutation/Evaluator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="27" column="22" lean-forward="true" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/programtests/CheckCheckerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/programtests/ChessboardTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/programtests/MoveUnmakerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/enginetests/EngineTestMisc.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="366">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/programtests/DetailedPerftSearchingTestSuite.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+          <folding>
+            <element signature="method#regularBoard#0;class#DetailedPerftSearchingTestSuite#0" />
+            <element signature="method#tinyDepths#0;class#DetailedPerftSearchingTestSuite#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/enginetests/BratkoKopecTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-208">
+          <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/ExtendedPositionDescriptionParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/MoveParserFromAN.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="188" column="41" selection-start-line="188" selection-start-column="41" selection-end-line="188" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInThree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="268" column="52" lean-forward="true" selection-start-line="268" selection-start-column="52" selection-end-line="268" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/enginetests/CCROneHourTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="23" column="54" selection-start-line="23" selection-start-column="54" selection-end-line="23" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/enginetests/KaufmanTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="79" column="4" lean-forward="true" selection-start-line="10" selection-start-column="4" selection-end-line="79" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInTwo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="275" selection-start-line="275" selection-end-line="275" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/FenParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="19" column="8" lean-forward="true" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInFour.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="17" selection-start-line="17" selection-end-line="28" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/IterativeDeepeningDFS.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInFive.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="197" selection-start-line="197" selection-end-line="208" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInSix.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

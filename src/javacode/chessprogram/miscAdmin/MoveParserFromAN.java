@@ -10,11 +10,6 @@ import java.util.regex.Pattern;
 
 public class MoveParserFromAN {
 
-    public static void main (String[] args){
-        Chessboard board = FenParser.makeBoardBasedOnFEN("r2qkb1r/pp2nppp/3p4/2pNN1B1/2BnP3/3P4/PPP2PPP/R2bK2R w KQkq - 1 0");
-        makeMoveBasedOnAlgNotation(board, "Nf6+");
-    }
-    
     MoveParserFromAN(){
         
     }
@@ -120,12 +115,12 @@ public class MoveParserFromAN {
             return Piece.BLACK_KING;
         }
         else {
-            throw new RuntimeException("Could not retrive Piece");
+            throw new RuntimeException("Could not retrieve Piece");
         }
     }
 
     private static long whichPieceIsMoving(Chessboard board, String algebraicNotation){
-        String boardPattern = ".";
+        String boardPattern = "[p|n|b|r|q|k|P|N|B|R|Q|K]?";
         Pattern r = Pattern.compile(boardPattern);
         Matcher m = r.matcher(algebraicNotation);
 
@@ -190,7 +185,8 @@ public class MoveParserFromAN {
         return (r-1) * 8 + f;
     }
     private static int whichDestinationRank(Chessboard board, String algebraicNotation){
-        String boardPattern = "..(.)";
+//        String boardPattern = ".x?.(.)";
+        String boardPattern = ".?x?.x?(\\d)";
         Pattern r = Pattern.compile(boardPattern);
         Matcher m = r.matcher(algebraicNotation);
 
@@ -207,7 +203,8 @@ public class MoveParserFromAN {
     }
     
     private static int whichDestinationFile(Chessboard board, String algebraicNotation){
-        String boardPattern = ".(.)";
+//        String boardPattern = ".x?(.)";
+        String boardPattern = ".?x?(.)";
         Pattern r = Pattern.compile(boardPattern);
         Matcher m = r.matcher(algebraicNotation);
 
