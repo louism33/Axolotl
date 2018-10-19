@@ -7,6 +7,7 @@ import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.chessprogram.moveMaking.MoveUnmaker;
 import javacode.evalutation.Evaluator;
+import org.junit.Assert;
 
 import java.util.List;
 
@@ -67,7 +68,6 @@ public class PrincipleVariationSearch {
             Move moveFromHash = previousTableData.getMove();
             orderedMoves = MoveOrderer.orderMoves(board, board.isWhiteTurn());
 
-//            System.out.println("hashmove: "+moveFromHash);
             
             if (!orderedMoves.contains(moveFromHash)){
                 break loop;
@@ -89,7 +89,6 @@ public class PrincipleVariationSearch {
         Move bestMove = Copier.copyMove(orderedMoves.get(0));
 
         if (depth == originalDepth){
-//            System.out.println("before search aimove was " + aiMove +"  is now " + orderedMoves.get(0));
             aiMove = Copier.copyMove(orderedMoves.get(0));
         }
 
@@ -121,17 +120,11 @@ public class PrincipleVariationSearch {
             if (score > alpha) {
                 alpha = score;
                 if (depth == originalDepth) {
-//                    Assert.assertTrue(orderedMoves.contains(aiMove));
-
-//                    System.out.println("      after search aimove was " + aiMove +"  is now " + move);
+                    Assert.assertTrue(orderedMoves.contains(aiMove));
                     aiMove = Copier.copyMove(move);
                 }
             }
 
-//            if (score == Evaluator.IN_CHECKMATE_SCORE){
-//                return score;
-//            }
-            
             if (alpha >= beta){
                 break;
             }

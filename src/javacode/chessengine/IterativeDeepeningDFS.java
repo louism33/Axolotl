@@ -12,32 +12,21 @@ class IterativeDeepeningDFS {
     private static TranspositionTable table = TranspositionTable.getInstance();
 
     static Move iterativeDeepeningWithAspirationWindows(Chessboard board, long timeLimit){
-        int maxDepth = 10;
-
+        int maxDepth = 6;
         int aspirationScore = 0;
         
         List<Move> rootMoves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
 
-
         for (int depth = 0; depth < maxDepth; depth++){
-//            System.out.println("---- depth: " + depth + " ----");
+            System.out.println("---- depth: " + depth + " ----");
 
             int score = AspirationSearch.aspirationSearch(board, timeLimit, depth, aspirationScore);
 
-            if (score == Evaluator.IN_CHECKMATE_SCORE){
-                System.out.println(PrincipleVariationSearch.getAiMove());
-                System.out.println();
-            }
-
             if (score == -Evaluator.IN_CHECKMATE_SCORE){
-                System.out.println("    " + PrincipleVariationSearch.getAiMove());
-                System.out.println();
                 break;
             }
             
-            
             aspirationScore = score;
-            
         }
 
         boolean debug = false;
@@ -60,11 +49,6 @@ class IterativeDeepeningDFS {
 
         return PrincipleVariationSearch.getAiMove();
     }
-
-
-
-
-
 
 
 }

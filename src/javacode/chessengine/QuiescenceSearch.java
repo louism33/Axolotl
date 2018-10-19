@@ -11,7 +11,7 @@ import java.util.List;
 
 import static javacode.chessengine.QuiescentSearchUtils.isNodeQuiet;
 
-public class QuiescenceSearch {
+class QuiescenceSearch {
 
     static int numberOfQuiescentEvals = 0;
 

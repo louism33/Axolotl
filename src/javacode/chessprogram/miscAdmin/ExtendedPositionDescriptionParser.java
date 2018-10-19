@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class ExtendedPositionDescriptionParser {
 
 
-    //Currently no support for avoid moves
+    // Currently no support for avoid moves
     
     ExtendedPositionDescriptionParser(){
 
