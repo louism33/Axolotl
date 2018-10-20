@@ -6,16 +6,17 @@ import static javacode.chessengine.PrincipleVariationSearch.principleVariationSe
 
 class AspirationSearch {
     
-    static int aspirationSearch(Chessboard board, long timeLimit, int depth, int aspirationScore){
-        int firstWindow = 100;
-        int alpha = aspirationScore - firstWindow, alphaFac = 2;
-        int beta = aspirationScore + firstWindow, betaFac = 2;
-        int score;
+    static int aspirationSearch(Chessboard board, long timeLimit, ZobristHash zobristHash, int depth, int aspirationScore){
+        int firstWindow = 100,
+                alpha = aspirationScore - firstWindow,
+                beta = aspirationScore + firstWindow,
+                alphaFac = 2,
+                betaFac = 2,
+                score;
         
         for (;;) {
+            score = principleVariationSearch(board, zobristHash, depth, depth, alpha, beta);
             
-            score = principleVariationSearch(board, depth, depth, alpha, beta);
-
             if (score <= alpha) {
                 alpha = -firstWindow * alphaFac;
                 alphaFac *= 2;
@@ -28,9 +29,7 @@ class AspirationSearch {
                 break;
             }
         }
-        
         return score;
-        
     }
     
 }

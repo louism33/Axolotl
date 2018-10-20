@@ -9,7 +9,7 @@ import javacode.graphicsandui.Art;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-public class EngineTestMateInTwo {
+class EngineTestMateInTwo {
 
     @Test
     void test1() {

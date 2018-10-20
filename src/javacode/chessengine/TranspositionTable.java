@@ -1,11 +1,10 @@
 package javacode.chessengine;
 
-import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
 import java.util.HashMap;
 
-public class TranspositionTable extends HashMap<Chessboard, TranspositionTable.TableObject> {
+public class TranspositionTable extends HashMap<Long, TranspositionTable.TableObject> {
     
     private static TranspositionTable table = new TranspositionTable();
     
@@ -21,9 +20,10 @@ public class TranspositionTable extends HashMap<Chessboard, TranspositionTable.T
     
 
     public static class TableObject {
-        private Move move;
-        private int score, depth;
-        private Flag flag;
+        private final Move move;
+        private final int score;
+        private final int depth;
+        private final Flag flag;
         
         public enum Flag {
                 EXACT, LOWERBOUND, UPPERBOUND

@@ -6,7 +6,7 @@ import javacode.chessprogram.miscAdmin.ExtendedPositionDescriptionParser;
 import javacode.graphicsandui.Art;
 import org.junit.jupiter.api.Test;
 
-public class BS2830Test {
+class BS2830Test {
 
     @Test
     void bS2830TestTests() {

@@ -3,7 +3,6 @@ package tests.enginetests;
 import javacode.chessengine.Engine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.miscAdmin.ExtendedPositionDescriptionParser;
 import javacode.chessprogram.miscAdmin.FenParser;
 import javacode.chessprogram.miscAdmin.MoveParserFromAN;
 import javacode.graphicsandui.Art;
@@ -89,7 +88,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "g6");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
     @Test
@@ -102,7 +101,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "Nf6");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
     @Test
@@ -115,7 +114,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "f5");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
     @Test
@@ -128,7 +127,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "f5");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
     
     
@@ -142,7 +141,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "Ne5");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
     @Test
@@ -155,7 +154,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "f4");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
 
@@ -169,7 +168,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "Bf5");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
 
@@ -184,7 +183,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "b4");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
 
@@ -214,7 +213,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "Qxg7+");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
 
@@ -228,7 +227,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "Ne4");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
     @Test
@@ -241,7 +240,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "h5");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
 
@@ -255,7 +254,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "Nb3");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
 
@@ -269,7 +268,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "Rxe4");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
     @Test
@@ -282,7 +281,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "g4");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
 
@@ -296,7 +295,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "Nh6");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
 
@@ -310,7 +309,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "Bxe4");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
 
@@ -324,7 +323,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "f6");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
 
     @Test
@@ -337,7 +336,7 @@ class BratkoKopecTest {
 
         int moveToWin1 = MoveParserFromAN.destinationIndex(chessboard, "f4");
         int destination = move.destination;
-        Assert.assertTrue(destination == moveToWin1);
+        Assert.assertEquals(destination, moveToWin1);
     }
     /*
     https://www.chessprogramming.org/Bratko-Kopec_Test

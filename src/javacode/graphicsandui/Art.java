@@ -70,7 +70,7 @@ public class Art {
         System.out.println("---");
     }
 
-    static int pieceOnSquare(Chessboard board, int s){
+    private static int pieceOnSquare(Chessboard board, int s){
         long square = BitManipulations.newPieceOnSquare(s);
 
         if ((square & board.WHITE_PAWNS) != 0) return 1;

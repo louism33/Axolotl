@@ -32,12 +32,10 @@ public class ExtendedPositionDescriptionParser {
 
         int destinationI = MoveParserFromAN.destinationIndex(chessboard, bm);
 
-        EDPObject edpObject = new EDPObject(chessboard, destinationI, id);
-
-        return edpObject;
+        return new EDPObject(chessboard, destinationI, id);
     }
 
-    static String extractBestMove(String edpPosition){
+    private static String extractBestMove(String edpPosition){
         String pattern = "bm (\\w*)";
         Pattern p = Pattern.compile(pattern);
         Matcher m = p.matcher(edpPosition);
@@ -50,7 +48,7 @@ public class ExtendedPositionDescriptionParser {
         return ans;
     }
     
-    static String extractIDString(String edpPosition){
+    private static String extractIDString(String edpPosition){
         String pattern = "id \\\"(\\w*[\\.+| +\\w]*)\\\"";
         Pattern p = Pattern.compile(pattern);
         Matcher m = p.matcher(edpPosition);
@@ -69,12 +67,12 @@ public class ExtendedPositionDescriptionParser {
     
     
     public static class EDPObject{
-        private Chessboard board;
+        private final Chessboard board;
 //        private Move bestMove1, bestMove2;
-        private int bestMoveDestinationIndex;
-        private String id;
+        private final int bestMoveDestinationIndex;
+        private final String id;
 
-        public EDPObject(Chessboard board, int bestMoveDestinationIndex, String id) {
+        EDPObject(Chessboard board, int bestMoveDestinationIndex, String id) {
             this.board = board;
             this.bestMoveDestinationIndex = bestMoveDestinationIndex;
             this.id = id;

@@ -9,7 +9,7 @@ import javacode.graphicsandui.Art;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-public class EngineTestMateInFive {
+class EngineTestMateInFive {
 
 
     @Test
@@ -27,7 +27,7 @@ public class EngineTestMateInFive {
 
     @Test
     void test2() {
-        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("2q1nk1r/4Rp2/1ppp1P2/6Pp/3p1B2/3P3P/PPP1Q3/6K1 w");
+        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("2q1nk1r/4Rp2/1ppp1P2/6Pp/3p1B2/3P3P/PPP1Q3/6K1 w - - 0 1");
         System.out.println(Art.boardArt(chessboard));
 
         Move move = Engine.search(chessboard, 1000);
@@ -40,7 +40,7 @@ public class EngineTestMateInFive {
 
     @Test
     void test3() {
-        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("6r1/p3p1rk/1p1pPp1p/q3n2R/4P3/3BR2P/PPP2QP1/7K w");
+        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("6r1/p3p1rk/1p1pPp1p/q3n2R/4P3/3BR2P/PPP2QP1/7K w - - 0 1");
         System.out.println(Art.boardArt(chessboard));
 
         Move move = Engine.search(chessboard, 1000);

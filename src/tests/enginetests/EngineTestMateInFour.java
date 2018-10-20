@@ -6,7 +6,6 @@ import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.miscAdmin.FenParser;
 import javacode.chessprogram.miscAdmin.MoveParserFromAN;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
-import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.graphicsandui.Art;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;

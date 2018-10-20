@@ -129,7 +129,7 @@ public class MoveOrganiser {
     }
 
 
-    private static int whichPieceOnSquare(Chessboard board, long destinationPiece){
+    public static int whichPieceOnSquare(Chessboard board, long destinationPiece){
 
         if ((destinationPiece & board.ALL_PIECES()) == 0){
             return 0;
@@ -144,32 +144,32 @@ public class MoveOrganiser {
         else if ((destinationPiece & board.WHITE_BISHOPS) != 0){
             return 3;
         }
-        else if  ((destinationPiece & board.WHITE_ROOKS) != 0){
+        else if ((destinationPiece & board.WHITE_ROOKS) != 0){
             return 4;
         }
-        else if  ((destinationPiece & board.WHITE_QUEEN) != 0){
+        else if ((destinationPiece & board.WHITE_QUEEN) != 0){
             return 5;
         }
-        else if  ((destinationPiece & board.WHITE_KING) != 0){
+        else if ((destinationPiece & board.WHITE_KING) != 0){
             return 6;
         }
 
-        else if  ((destinationPiece & board.BLACK_PAWNS) != 0){
+        else if ((destinationPiece & board.BLACK_PAWNS) != 0){
             return 7;
         }
-        else if  ((destinationPiece & board.BLACK_KNIGHTS) != 0){
+        else if ((destinationPiece & board.BLACK_KNIGHTS) != 0){
             return 8;
         }
-        else if  ((destinationPiece & board.BLACK_BISHOPS) != 0){
+        else if ((destinationPiece & board.BLACK_BISHOPS) != 0){
             return 9;
         }
-        else if  ((destinationPiece & board.BLACK_ROOKS) != 0){
+        else if ((destinationPiece & board.BLACK_ROOKS) != 0){
             return 10;
         }
-        else if  ((destinationPiece & board.BLACK_QUEEN) != 0){
+        else if ((destinationPiece & board.BLACK_QUEEN) != 0){
             return 11;
         }
-        else if  ((destinationPiece & board.BLACK_KING) != 0) {
+        else if ((destinationPiece & board.BLACK_KING) != 0) {
             return 12;
         }
         else {

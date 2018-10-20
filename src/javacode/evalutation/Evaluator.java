@@ -5,10 +5,8 @@ import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
-import javacode.graphicsandui.Art;
 
 import java.util.List;
-import java.util.Random;
 
 public class Evaluator {
 
@@ -19,11 +17,18 @@ public class Evaluator {
     private static final int QUEEN_SCORE = 900;
 
     public static final int IN_CHECKMATE_SCORE = -100000;
-    public static final int IN_STALEMATE_SCORE = 0;
+    private static final int IN_STALEMATE_SCORE = 0;
 
     public static int numberOfEvals = 0;
-    public static int numberOfCheckmates = 0;
-    public static int numberOfStalemates = 0;
+    private static int numberOfCheckmates = 0;
+    private static int numberOfStalemates = 0;
+    
+    /*
+    draw noticer
+    
+    material hash
+    pawn hash
+     */
 
     public static int eval(Chessboard board, boolean white, List<Move> moves) {
         if (moves.size() == 0){
@@ -44,8 +49,6 @@ public class Evaluator {
 
     public static int eval(Chessboard board, boolean white) {
         numberOfEvals++;
-//        return new Random().nextInt(100);
-//        return evalTurn(board, white) - evalTurn(board, !white);
 
         List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, white);
         if (moves.size() == 0) {
@@ -58,7 +61,8 @@ public class Evaluator {
                 return IN_STALEMATE_SCORE;
             }
         }
-        return 0;
+        return evalTurn(board, white) - evalTurn(board, !white);
+//        return 0;
     }
 
     private static int evalTurn (Chessboard board, boolean white){

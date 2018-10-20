@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class EngineTestMateInThree {
+class EngineTestMateInThree {
 
     @Test
     void test1() {
@@ -25,7 +25,7 @@ public class EngineTestMateInThree {
         Move move = Engine.search(chessboard, 1000);
         System.out.println(move);
 
-        Assert.assertTrue(correctMove.equals(move));
+        Assert.assertEquals(correctMove, move);
     }
 
     @Test

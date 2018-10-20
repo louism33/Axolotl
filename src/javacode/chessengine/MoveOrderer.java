@@ -4,67 +4,180 @@ import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
-import org.junit.Assert;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static javacode.chessprogram.moveMaking.MoveParser.*;
+
 class MoveOrderer {
     
-    static Move[] killerMoves = new Move[2];
+    /*
+    history heuristic
+    static exchange eval
+     */
 
-    static List<Move> orderMoves (Chessboard board, boolean white){
-        List<Move> unOrderedMoves = MoveGeneratorMaster.generateLegalMoves(board, white);
-        List<Move> orderedMoves = orderMovesHelper(board, unOrderedMoves);
+    static final Move[][] killerMoves = new Move[12][2];
 
-        return unOrderedMoves;
+    static List<Move> orderedMoves(Chessboard board, boolean white, int ply, Move hashMove){
+        return extractMoves(board, white, 
+                MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()),
+                ply, hashMove);
     }
 
-    static List<Move> orderMovesHelper (Chessboard board, List<Move> moves) {
-        // hash is added elsewhere
-        List<Move> quietMoves = new ArrayList<>();
-        List<Move> captureMoves = new ArrayList<>();
-        
-        // killers
-        // histories
-        // captures
-        // checks
-        // promotions
-        
+    private static List<Move> extractMoves(Chessboard board, boolean white, List<Move> moves, int ply, Move hashMove){
+        List<MoveScore> moveScores = orderedMoveScores(board, white, moves, ply, hashMove);
+        return moveScores.stream().map(moveScore -> moveScore.move).collect(Collectors.toList());
+    }
+
+    private static List<MoveScore> orderedMoveScores(Chessboard board, boolean white, List<Move> moves, int ply, Move hashMove){
+        List<MoveScore> moveScores = scoreMoves(board, white, moves, ply, hashMove);
+        moveScores.sort(Comparator.comparingInt(MoveScore::getScore).reversed());
+        return moveScores;
+    }
+
+    private static List<MoveScore> scoreMoves(Chessboard board, boolean white, List<Move> moves, int ply, Move hashMove){
+        List<MoveScore> unsortedScoredMoves = new ArrayList<>();
+        int hashScore = 30000, promotionScore = 1000, captureOfLastMovedPiece = 1000, killerScore = 50, oldKillerScore = 25, castlingMove = 25, uninterestingMove = -30000;
         for (Move move : moves){
-            if(moveIsCapture(board, move)){
-                captureMoves.add(move);
+            MoveScore moveScore;
+            if (move.equals(hashMove)){
+                moveScore = new MoveScore(move, hashScore);
+            }
+            else if (Arrays.asList(killerMoves[ply]).contains(move)){
+                moveScore = new MoveScore(move, killerScore);
+            }
+            else if (ply - 2 >= 0 && Arrays.asList(killerMoves[ply-2]).contains(move)){
+                moveScore = new MoveScore(move, oldKillerScore);
+            }
+            else if (moveIsCaptureOfLastMovePiece(board, move)){
+                moveScore = new MoveScore(move, captureOfLastMovedPiece);
+            }
+            else if (moveIsCapture(board, move)){
+                int sourceScore = scoreByPiece(board, move, BitManipulations.newPieceOnSquare(move.getSourceAsPiece()));
+                int destinationScore = 10 * scoreByPiece(board, move, BitManipulations.newPieceOnSquare(move.destination));
+                moveScore = new MoveScore(move, destinationScore - sourceScore);
+            }
+            else if (isPromotionMove(move)){
+                moveScore = new MoveScore(move, promotionScore);
+            }
+            else if (isCastlingMove(move)){
+                moveScore = new MoveScore(move, castlingMove);
             }
             else {
-                quietMoves.add(move);
+                moveScore = new MoveScore(move, uninterestingMove);
             }
+
+            unsortedScoredMoves.add(moveScore);
         }
-        List<Move> finalMovesInOrder = new ArrayList<>(captureMoves);
-        finalMovesInOrder.addAll(quietMoves);
-        return finalMovesInOrder;
+        return unsortedScoredMoves;
     }
 
-    static List<Move> orderMovesQuiescence (Chessboard board, List<Move> moves){
-        for (Move move : moves){
-            Assert.assertTrue(moveIsCapture(board, move));
+    private static boolean moveIsCaptureOfLastMovePiece(Chessboard board, Move move){
+        if (board.moveStack.size() == 0){
+            return false;
         }
-        return moves;
+        int previousMoveDestination = board.moveStack.peek().move.destination;
+        return (move.destination & previousMoveDestination) != 0;
+    }
+
+    private static int scoreByPiece(Chessboard board, Move move, long piece){
+        if (((piece & board.WHITE_PAWNS) != 0) || ((piece & board.BLACK_PAWNS) != 0)){
+            return 10;
+        }
+        else if (((piece & board.WHITE_KNIGHTS) != 0) || ((piece & board.BLACK_KNIGHTS) != 0)){
+            return 30;
+        }
+        else if (((piece & board.WHITE_BISHOPS) != 0) || ((piece & board.BLACK_BISHOPS) != 0)){
+            return 31;
+        }
+        else if (((piece & board.WHITE_ROOKS) != 0) || ((piece & board.BLACK_ROOKS) != 0)){
+            return 50;
+        }
+        else if (((piece & board.WHITE_QUEEN) != 0) || ((piece & board.BLACK_QUEEN) != 0)){
+            return 90;
+        }
+        else if (((piece & board.WHITE_KING) != 0) || ((piece & board.BLACK_KING) != 0)){
+            return 200;
+        }
+        else {
+            throw new RuntimeException("score by piece problem "+ move);
+        }
+    }
+
+    private static boolean isPromotionMove(Move move){
+        return (move.move & SPECIAL_MOVE_MASK) == PROMOTION_MASK;
+    }
+
+    private static boolean isCastlingMove (Move move){
+        return (move.move & SPECIAL_MOVE_MASK) == CASTLING_MASK;
+    }
+
+
+    
+    
+    
+    
+    static List<Move> orderMovesQuiescence (Chessboard board, boolean white){
+        return extractMovesQuiescence(board, white, 
+                MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()));
+    }
+
+    private static List<Move> extractMovesQuiescence(Chessboard board, boolean white, List<Move> moves){
+        List<MoveScore> moveScores = orderedMoveScoresQuiescence(board, white, moves);
+        return moveScores.stream().map(moveScore -> moveScore.move).collect(Collectors.toList());
+    }
+
+    private static List<MoveScore> orderedMoveScoresQuiescence(Chessboard board, boolean white, List<Move> moves){
+        List<MoveScore> moveScores = scoreMovesQuiescence(board, white, moves);
+        moveScores.sort(Comparator.comparingInt(MoveScore::getScore).reversed());
+        return moveScores;
     }
     
-    void leastValuableAttackerMostValuableDefender(Chessboard board, List<Move> moves){
-        
+    private static List<MoveScore> scoreMovesQuiescence(Chessboard board, boolean white, List<Move> moves){
+        List<MoveScore> unsortedScoredMoves = new ArrayList<>();
+        for (Move move : moves){
+            if (moveIsCapture(board, move)){
+                int sourceScore = scoreByPiece(board, move, BitManipulations.newPieceOnSquare(move.getSourceAsPiece()));
+                int destinationScore = 10 * scoreByPiece(board, move, BitManipulations.newPieceOnSquare(move.destination));
+                unsortedScoredMoves.add(new MoveScore(move, destinationScore - sourceScore));
+            }
+        }
+        return unsortedScoredMoves;
     }
-
-
+    
     static boolean moveIsCapture(Chessboard board, Move move){
         long ENEMY_PIECES = board.isWhiteTurn() ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES();
         long destinationSquare = BitManipulations.newPieceOnSquare(move.destination);
         return (destinationSquare & ENEMY_PIECES) != 0;
     }
 
+    private static class MoveScore {
+        private final Move move;
+        private final int score;
 
-    static List<Move> onlyCaptureMoves(Chessboard board, List<Move> moves){
-        return moves.stream().filter(move -> moveIsCapture(board, move)).collect(Collectors.toList());
+        MoveScore(Move move, int score) {
+            this.move = move;
+            this.score = score;
+        }
+
+        public Move getMove() {
+            return move;
+        }
+
+        int getScore() {
+            return score;
+        }
+
+        @Override
+        public String toString() {
+            return "MoveScore{" +
+                    "move=" + move +
+                    ", score=" + score +
+                    '}';
+        }
     }
 }

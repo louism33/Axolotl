@@ -210,9 +210,9 @@ class MoveUnmakerTest {
         int num = 1000;
         System.out.println("------- Random high depth, starting white");
         Chessboard copy1 = Copier.copyBoard(board, board.isWhiteTurn(), false);
-        moveNStuffRandom(board, num, debug);
+        moveNStuffRandom(board, num, false);
         System.out.println(Art.boardArt(board));
-        unMoveNStuff(board, debug);
+        unMoveNStuff(board, false);
 
         System.out.println("Same as before ? " + board.equals(copy1));
         System.out.println();

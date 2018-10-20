@@ -62,35 +62,34 @@ class StandAlone {
                 System.out.println(moveArray.length +  " moves in total.");
                 System.out.println();
 
-                while(true) {
+                label:
+                while (true) {
                     System.out.print(prompt + " move (or \"go\" or \"quit\")> ");
                     command = readCommand(stdin);
-                    System.out.println("This is move number " + totalMoves+".");
+                    System.out.println("This is move number " + totalMoves + ".");
 
-                    if (command.equals("go")) {
+                    switch (command) {
+                        case "go":
 //                        move = player.computeMove(1*60*1000, 0);
 //                        System.out.println("Computer Moves: " + move);
 
-                        move = engine.search(board, 1000);
+                            move = Engine.search(board, 1000);
 
-                        break;
-                    }
-
-                    else if (command.equals("quit")) {
-                        System.out.println("QUIT.\n");
-                        System.exit(1);
-                    }
-
-                    else {
-                        move = null;
-                        for (Move aMoveArray : moveArray) {
-                            if (command.equals(aMoveArray.toString())) {
-                                move = aMoveArray;
-                                break;
+                            break label;
+                        case "quit":
+                            System.out.println("QUIT.\n");
+                            System.exit(1);
+                        default:
+                            move = null;
+                            for (Move aMoveArray : moveArray) {
+                                if (command.equals(aMoveArray.toString())) {
+                                    move = aMoveArray;
+                                    break;
+                                }
                             }
-                        }
-                        if (move != null) break;
-                        System.out.println("\""+command+"\" is not a legal move");
+                            if (move != null) break label;
+                            System.out.println("\"" + command + "\" is not a legal move");
+                            break;
                     }
                 }
 

@@ -2,11 +2,14 @@
   <dictionary name="louis">
     <words>
       <w>castlings</w>
+      <w>evals</w>
       <w>kppp</w>
+      <w>noticer</w>
       <w>passant</w>
       <w>perft</w>
       <w>unmaker</w>
       <w>veeeery</w>
+      <w>zobrist</w>
     </words>
   </dictionary>
 </component>

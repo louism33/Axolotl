@@ -174,9 +174,15 @@ public class MoveParserFromAN {
                 return board.WHITE_KING;
             }
             default:
-                System.out.println("problem with Piece identifier");
+                System.out.println("problem with Piece identifier in which piece in moving()");
                 return 0;
         }
+    }
+    
+    
+    public static void main (String[] args){
+        int i = rankAndFile(new Chessboard(), "c2+");
+        System.out.println(i);
     }
 
     private static int rankAndFile(Chessboard board, String algebraicNotation){
@@ -204,7 +210,8 @@ public class MoveParserFromAN {
     
     private static int whichDestinationFile(Chessboard board, String algebraicNotation){
 //        String boardPattern = ".x?(.)";
-        String boardPattern = ".?x?(.)";
+//        String boardPattern = ".?x?(.)";
+        String boardPattern = "([a-h])(\\d)";
         Pattern r = Pattern.compile(boardPattern);
         Matcher m = r.matcher(algebraicNotation);
 
@@ -243,7 +250,7 @@ public class MoveParserFromAN {
                 return 0;
             }
             default:
-                System.out.println("problem with Piece identifier");
+                System.out.println("problem with Getting destination file");
                 return 0;
         }
     }

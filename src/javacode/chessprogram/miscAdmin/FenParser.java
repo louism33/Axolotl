@@ -228,7 +228,7 @@ public class FenParser {
                 square -= (i);
                 continue;
             }
-            catch (NumberFormatException e){
+            catch (NumberFormatException ignored){
             }
             long pieceFromFen = BitManipulations.newPieceOnSquare(square);
             square--;

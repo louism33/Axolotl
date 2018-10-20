@@ -19,12 +19,12 @@ class MoveGeneratorCastling {
         if (white){
             if(board.whiteCanCastleK){
                 if (areTheseSquaresEmpty(board, BitBoards.whiteCastleKingEmpties)
-                        && areTheseSquaresUnthreatened(board, white, BitBoards.whiteCastleKingEmpties)
+                        && areTheseSquaresUnthreatened(board, true, BitBoards.whiteCastleKingEmpties)
                         && ((board.WHITE_KING & BitBoards.WHITE_KING) != 0)
                         && ((board.WHITE_ROOKS & BitBoards.SOUTH_EAST_CORNER) != 0)){
 
-                    Assert.assertTrue(areTheseSquaresUnthreatened(board, white, board.WHITE_KING));
-                    Assert.assertTrue(!CheckChecker.boardInCheck(board, white));
+                    Assert.assertTrue(areTheseSquaresUnthreatened(board, true, board.WHITE_KING));
+                    Assert.assertTrue(!CheckChecker.boardInCheck(board, true));
                     
                     Move whiteCastleSE = new Move(3, 1, true, false, false, false, false, false, false);
                     moves.add(whiteCastleSE);
@@ -33,12 +33,12 @@ class MoveGeneratorCastling {
 
             if(board.whiteCanCastleQ){
                 if (areTheseSquaresEmpty(board, BitBoards.whiteCastleQueenEmpties)
-                        && areTheseSquaresUnthreatened(board, white, BitBoards.whiteCastleQueenUnthreateneds)
+                        && areTheseSquaresUnthreatened(board, true, BitBoards.whiteCastleQueenUnthreateneds)
                         && ((board.WHITE_KING & BitBoards.WHITE_KING) != 0)
                         && ((board.WHITE_ROOKS & BitBoards.SOUTH_WEST_CORNER) != 0)){
 
-                    Assert.assertTrue(areTheseSquaresUnthreatened(board, white, board.WHITE_KING));
-                    Assert.assertTrue(!CheckChecker.boardInCheck(board, white));
+                    Assert.assertTrue(areTheseSquaresUnthreatened(board, true, board.WHITE_KING));
+                    Assert.assertTrue(!CheckChecker.boardInCheck(board, true));
 
                     Move whiteCastleSW = new Move(3, 5, true, false, false, false, false, false, false);
                     moves.add(whiteCastleSW);
@@ -50,12 +50,12 @@ class MoveGeneratorCastling {
         else {
             if(board.blackCanCastleK){
                 if (areTheseSquaresEmpty(board, BitBoards.blackCastleKingEmpties)
-                        && areTheseSquaresUnthreatened(board, white, BitBoards.blackCastleKingEmpties)
+                        && areTheseSquaresUnthreatened(board, false, BitBoards.blackCastleKingEmpties)
                         && ((board.BLACK_KING & BitBoards.BLACK_KING) != 0)
                         && ((board.BLACK_ROOKS & BitBoards.NORTH_EAST_CORNER) != 0)){
 
-                    Assert.assertTrue(areTheseSquaresUnthreatened(board, white, board.BLACK_KING));
-                    Assert.assertTrue(!CheckChecker.boardInCheck(board, white));
+                    Assert.assertTrue(areTheseSquaresUnthreatened(board, false, board.BLACK_KING));
+                    Assert.assertTrue(!CheckChecker.boardInCheck(board, false));
                     
                     Move blackCastleNE = new Move(59, 57, true, false, false, false, false, false, false);
                     moves.add(blackCastleNE);
@@ -64,12 +64,12 @@ class MoveGeneratorCastling {
 
             if(board.blackCanCastleQ){
                 if (areTheseSquaresEmpty(board, BitBoards.blackCastleQueenEmpties)
-                        && areTheseSquaresUnthreatened(board, white, BitBoards.blackCastleQueenUnthreateneds)
+                        && areTheseSquaresUnthreatened(board, false, BitBoards.blackCastleQueenUnthreateneds)
                         && ((board.BLACK_KING & BitBoards.BLACK_KING) != 0)
                         && ((board.BLACK_ROOKS & BitBoards.NORTH_WEST_CORNER) != 0)){
 
-                    Assert.assertTrue(areTheseSquaresUnthreatened(board, white, board.BLACK_KING));
-                    Assert.assertTrue(!CheckChecker.boardInCheck(board, white));
+                    Assert.assertTrue(areTheseSquaresUnthreatened(board, false, board.BLACK_KING));
+                    Assert.assertTrue(!CheckChecker.boardInCheck(board, false));
                     
                     Move blackCastleNW = new Move(59, 61, true, false, false, false, false, false, false);
                     moves.add(blackCastleNW);

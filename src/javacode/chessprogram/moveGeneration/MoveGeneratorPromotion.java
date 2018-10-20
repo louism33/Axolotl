@@ -33,7 +33,7 @@ public class MoveGeneratorPromotion {
             if ((promotablePawns) != 0) {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {
-                    long pawnMoves = PieceMovePawns.singlePawnPushes(board, piece, white, (BitBoards.RANK_EIGHT & legalPushes));
+                    long pawnMoves = PieceMovePawns.singlePawnPushes(board, piece, true, (BitBoards.RANK_EIGHT & legalPushes));
                     if (pawnMoves != 0) {
                         int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
                         Move move = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece).get(0);
@@ -50,7 +50,7 @@ public class MoveGeneratorPromotion {
             if ((promotablePawns) != 0) {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {
-                    long pawnMoves = PieceMovePawns.singlePawnPushes(board, piece, white, (BitBoards.RANK_ONE & legalPushes));
+                    long pawnMoves = PieceMovePawns.singlePawnPushes(board, piece, false, (BitBoards.RANK_ONE & legalPushes));
                     if (pawnMoves != 0) {
                         int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
 
@@ -77,7 +77,7 @@ public class MoveGeneratorPromotion {
             if ((promotablePawns) != 0) {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {
-                    long pawnMoves = PieceMovePawns.singlePawnCaptures(board, piece, white, (promotionCaptureSquares & legalCaptures));
+                    long pawnMoves = PieceMovePawns.singlePawnCaptures(board, piece, true, (promotionCaptureSquares & legalCaptures));
                     if (pawnMoves != 0) {
                         int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
                         List<Move> unflaggedCaptures = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece);
@@ -98,7 +98,7 @@ public class MoveGeneratorPromotion {
             if ((promotablePawns) != 0) {
                 List<Long> allPromotablePawns = getAllPieces(promotablePawns, 0);
                 for (long piece : allPromotablePawns) {
-                    long pawnMoves = PieceMovePawns.singlePawnCaptures(board, piece, white, (promotionCaptureSquares & legalCaptures));
+                    long pawnMoves = PieceMovePawns.singlePawnCaptures(board, piece, false, (promotionCaptureSquares & legalCaptures));
                     if (pawnMoves != 0) {
                         int indexOfPiece = BitIndexing.getIndexOfFirstPiece(piece);
                         List<Move> unflaggedCaptures = MoveGenerationUtilities.movesFromAttackBoard(pawnMoves, indexOfPiece);

@@ -3,7 +3,6 @@ package javacode.chessengine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Copier;
 import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.chessprogram.moveMaking.MoveUnmaker;
 import javacode.evalutation.Evaluator;
@@ -11,29 +10,28 @@ import org.junit.Assert;
 
 import java.util.List;
 
-public class PrincipleVariationSearch {
+import static javacode.chessengine.MoveOrderer.killerMoves;
 
-    private static TranspositionTable table = TranspositionTable.getInstance();
+class PrincipleVariationSearch {
+
+    private static final TranspositionTable table = TranspositionTable.getInstance();
     static int numberOfFinalNegaMax = 0;
     private static Move aiMove;
     
     static int attemptAtFinalNodeCount = 0;
 
-    static int principleVariationSearch(Chessboard board, int originalDepth, int depth, int alpha, int beta){
+    static int principleVariationSearch(Chessboard board, ZobristHash zobristHash, int originalDepth, int depth, int alpha, int beta){
         int originalAlpha = alpha;
+        int ply = originalDepth - depth;
 
         Move hashMove;
-        TranspositionTable.TableObject previousTableData = table.get(board);
+        TranspositionTable.TableObject previousTableData = table.get(zobristHash.getBoardHash());
         boardLookup:
         if (previousTableData != null) {
             if (previousTableData.getDepth() >= depth) {
                 TranspositionTable.TableObject.Flag flag = previousTableData.getFlag();
                 int scoreFromTable = previousTableData.getScore();
                 hashMove = previousTableData.getMove();
-                List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
-                if (!moves.contains(hashMove)){
-                    break boardLookup;
-                }
                 if (flag == TranspositionTable.TableObject.Flag.EXACT) {
                     if (depth == originalDepth) {
                         aiMove = Copier.copyMove(hashMove);
@@ -57,31 +55,21 @@ public class PrincipleVariationSearch {
         if (depth == 0){
             numberOfFinalNegaMax++;
             attemptAtFinalNodeCount++;
-            return Evaluator.eval(board, board.isWhiteTurn());
-//            return QuiescenceSearch.quiescenceSearch(board, alpha, beta);
+//            return Evaluator.eval(board, board.isWhiteTurn());
+            return QuiescenceSearch.quiescenceSearch(board, zobristHash, alpha, beta);
         }
 
         List<Move> orderedMoves;
-        
+
         loop:
         if (previousTableData != null) {
-            Move moveFromHash = previousTableData.getMove();
-            orderedMoves = MoveOrderer.orderMoves(board, board.isWhiteTurn());
-
-            
-            if (!orderedMoves.contains(moveFromHash)){
-                break loop;
-            }
-            
-            orderedMoves.remove(moveFromHash);
-            orderedMoves.add(0, moveFromHash);
+            hashMove = previousTableData.getMove();
+            orderedMoves = MoveOrderer.orderedMoves(board, board.isWhiteTurn(), ply, hashMove);
         }
         else {
-            orderedMoves = MoveOrderer.orderMoves(board, board.isWhiteTurn());
+            orderedMoves = MoveOrderer.orderedMoves(board, board.isWhiteTurn(), ply, null);
         }
 
-        // can try hashmove here before rest of generation ?
-        
         if (orderedMoves.size() == 0) {
             return Evaluator.eval(board, board.isWhiteTurn(), orderedMoves);
         }
@@ -95,22 +83,25 @@ public class PrincipleVariationSearch {
         int bestScore = alpha;
 
         for (Move move : orderedMoves){
+            zobristHash.zobristStack.push(zobristHash.getBoardHash());
+            zobristHash.updateHash(board, move, false);
             MoveOrganiser.makeMoveMaster(board, move);
             MoveOrganiser.flipTurn(board);
 
             int score;
 
             if (move.equals(orderedMoves.get(0))) {
-                score = -principleVariationSearch(board, originalDepth, depth - 1, -beta, -alpha);
+                score = -principleVariationSearch(board, zobristHash, originalDepth, depth - 1, -beta, -alpha);
             }
             else {
-                score = -principleVariationSearch(board, originalDepth, depth - 1, -alpha-1, -alpha);
+                score = -principleVariationSearch(board, zobristHash, originalDepth, depth - 1, -alpha - 1, -alpha);
 
                 if (score > alpha && score < beta){
-                    score = -principleVariationSearch(board, originalDepth, depth - 1, -beta, -alpha);
+                    score = -principleVariationSearch(board, zobristHash, originalDepth, depth - 1, -beta, -alpha);
                 }
             }
 
+            zobristHash.setBoardHash(zobristHash.zobristStack.pop());
             MoveUnmaker.unMakeMoveMaster(board);
 
             if (score > bestScore){
@@ -126,10 +117,12 @@ public class PrincipleVariationSearch {
             }
 
             if (alpha >= beta){
+                if (!MoveOrderer.moveIsCapture(board, move)){
+                    updateKillerMoves(move, originalDepth, depth);
+                }
                 break;
             }
         }
-
 
         TranspositionTable.TableObject.Flag flag;
         if (bestScore <= originalAlpha){
@@ -139,12 +132,19 @@ public class PrincipleVariationSearch {
         } else {
             flag = TranspositionTable.TableObject.Flag.EXACT;
         }
-        table.put(board,
+        table.put(zobristHash.getBoardHash(),
                 new TranspositionTable.TableObject(bestMove, bestScore, depth,
                         flag));
 
-
         return bestScore;
+    }
+    
+    private static void updateKillerMoves(Move move, int originalDepth, int ply){
+        // shift killers to the right
+        if (killerMoves[ply].length - 2 + 1 >= 0)
+            System.arraycopy(killerMoves[ply], 0, killerMoves[ply], 1, killerMoves[ply].length - 2 + 1);
+        killerMoves[ply][0] = move;
+        
     }
 
     static Move getAiMove() {
