@@ -13,21 +13,26 @@ import static javacode.chessengine.QuiescentSearchUtils.isBoardQuiet;
 
 class QuiescenceSearch {
 
-    static int numberOfQuiescentEvals = 0;
-
+    /*
+    Quiescence Search: 
+    special search for captures only
+     */
     static int quiescenceSearch(Chessboard board, ZobristHash zobristHash, int alpha, int beta){
         List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
 
-        int standPatScore = Evaluator.eval(board, board.isWhiteTurn());
+        /*
+        the score we get from not making captures anymore
+         */
+        int standPatScore = Evaluator.eval(board, board.isWhiteTurn(), moves);
         
-        if (isBoardQuiet(board, moves)){
-            numberOfQuiescentEvals++;
+        /*
+        no more captures to make or no more moves at all
+         */
+        if (isBoardQuiet(board, moves) || moves.size() == 0){
+            if (Engine.DEBUG) {
+                Engine.numberOfQuiescentEvals++;
+            }
             return standPatScore;
-        }
-        
-        if (moves.size() == 0) {
-            numberOfQuiescentEvals++;
-            return Evaluator.eval(board, board.isWhiteTurn(), moves);
         }
         
         if (standPatScore >= beta){
@@ -38,45 +43,30 @@ class QuiescenceSearch {
             alpha = standPatScore;
         }
         
-        List<Move> orderedCaptureMove = MoveOrderer.orderMovesQuiescence(board, board.isWhiteTurn());
-
-        Move bestMove = orderedCaptureMove.get(0);
-        int bestScore = -10000; // = alpha
+        List<Move> orderedCaptureMove = MoveOrderer.orderMovesQuiescence(board, board.isWhiteTurn(), moves);
 
         for (Move captureMove : orderedCaptureMove){
-            zobristHash.updateHash(board, captureMove, false);
-
-
-            zobristHash.zobristStack.push(zobristHash.getBoardHash());
-            zobristHash.updateHash(board, captureMove, false);
             MoveOrganiser.makeMoveMaster(board, captureMove);
             MoveOrganiser.flipTurn(board);
 
+            if (Engine.DEBUG){
+                Engine.numberOfQuiescentMovesMade++;
+            }
+
             int score = -quiescenceSearch(board, zobristHash, -beta, -alpha);
 
-
-            zobristHash.setBoardHash(zobristHash.zobristStack.pop());
             MoveUnmaker.unMakeMoveMaster(board);
             
-            
-            if (score > bestScore){
-                bestScore = score;
+            if (score >= beta){
+                return beta;
             }
 
             if (score > alpha){
                 alpha = score;
-                if (alpha >= beta){
-                    break;
-                }
             }
         }
-
-
-        return bestScore;
+        return alpha;
     }
-
-
-
 
 
 }

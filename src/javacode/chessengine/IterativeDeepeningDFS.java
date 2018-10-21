@@ -12,38 +12,30 @@ class IterativeDeepeningDFS {
     private static TranspositionTable table = TranspositionTable.getInstance();
 
     static Move iterativeDeepeningWithAspirationWindows(Chessboard board, ZobristHash zobristHash, long timeLimit){
-        int maxDepth = 9;
+        int maxDepth = 14;
         int aspirationScore = 0;
         
         List<Move> rootMoves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
 
+        /*
+        Iterative Deepening Depth First Search:
+        call search function at increasing depths, the data we get from lower depths is easily worth it
+         */
         for (int depth = 0; depth < maxDepth; depth++){
             System.out.println("---- depth: " + depth + " ----");
-
+            System.out.println("---- current best move: " + PrincipleVariationSearch.getAiMove() + " ----");
+            System.out.println();
+            
             int score = AspirationSearch.aspirationSearch(board, timeLimit, zobristHash, depth, aspirationScore);
 
-            if (score == -Evaluator.IN_CHECKMATE_SCORE){
+            /*
+            stop search when a checkmate has been found, however far away
+             */
+            if (score >= -Evaluator.IN_CHECKMATE_SCORE_MAY_PLY){
                 break;
             }
             
             aspirationScore = score;
-        }
-
-        if (Engine.DEBUG) {
-            System.out.println();
-            System.out.println("------");
-            System.out.println(PrincipleVariationSearch.getAiMove());
-            System.out.println("number of evals: " + PrincipleVariationSearch.numberOfFinalNegaMax);
-            System.out.println("number of Qevals: " + QuiescenceSearch.numberOfQuiescentEvals);
-            System.out.println("attempt at node number: " + PrincipleVariationSearch.attemptAtFinalNodeCount);
-            System.out.println("total evals: " +
-                    (PrincipleVariationSearch.numberOfFinalNegaMax + QuiescenceSearch.numberOfQuiescentEvals));
-            System.out.println();
-            System.out.println("total of calls to eval(): " + (Evaluator.numberOfEvals));
-            System.out.println("------");
-
-//        System.out.println(table);
-
         }
 
         return PrincipleVariationSearch.getAiMove();

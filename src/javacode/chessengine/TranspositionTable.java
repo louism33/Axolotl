@@ -4,20 +4,22 @@ import javacode.chessprogram.chess.Move;
 
 import java.util.HashMap;
 
-public class TranspositionTable extends HashMap<Long, TranspositionTable.TableObject> {
+class TranspositionTable extends HashMap<Long, TranspositionTable.TableObject> {
     
     private static TranspositionTable table = new TranspositionTable();
     
     private TranspositionTable(){}
     
-    public static TranspositionTable getInstance(){
+    /*
+    Transposition Table:
+    a singleton hashmap which gets populated by our search
+     */
+    static TranspositionTable getInstance(){
         if (table == null){
             table = new TranspositionTable();
         }
         return table;
     }
-
-    
 
     public static class TableObject {
         private final Move move;
@@ -29,7 +31,7 @@ public class TranspositionTable extends HashMap<Long, TranspositionTable.TableOb
                 EXACT, LOWERBOUND, UPPERBOUND
         }
 
-        public TableObject(Move move, int score, int depth, Flag flag) {
+        TableObject(Move move, int score, int depth, Flag flag) {
             this.move = move;
             this.score = score;
             this.depth = depth;
@@ -40,15 +42,15 @@ public class TranspositionTable extends HashMap<Long, TranspositionTable.TableOb
             return move;
         }
 
-        public int getScore() {
+        int getScore() {
             return score;
         }
 
-        public Flag getFlag() {
+        Flag getFlag() {
             return flag;
         }
 
-        public int getDepth() {
+        int getDepth() {
             return depth;
         }
 

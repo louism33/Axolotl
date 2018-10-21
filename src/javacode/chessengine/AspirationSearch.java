@@ -15,8 +15,16 @@ class AspirationSearch {
                 score;
         
         for (;;) {
-            score = principleVariationSearch(board, zobristHash, depth, depth, alpha, beta);
+            /*
+            Aspiration Search:
+            call main search function with artificially small windows, hoping for more cutoffs
+             */
+            score = principleVariationSearch(board, zobristHash, depth, depth, alpha, beta, 0);
             
+            /*
+            Aspiration Search Miss:
+            if score outside of window, widen window and increase speed of widening
+             */
             if (score <= alpha) {
                 alpha = -firstWindow * alphaFac;
                 alphaFac *= 2;

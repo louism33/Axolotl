@@ -17,11 +17,16 @@ class MoveOrderer {
     
     /*
     history heuristic
-    static exchange eval
+    static exchange evalHelper
      */
 
     static final Move[][] killerMoves = new Move[12][2];
 
+    /*
+    Move Ordering:
+    previous Hash Moves, promotions, capture of last moved piece, good captures, killers, killers from earlier plies, 
+    castling, bad captures, quiet moves, bad promotions
+     */
     static List<Move> orderedMoves(Chessboard board, boolean white, int ply, Move hashMove){
         return extractMoves(board, white, 
                 MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()),
@@ -41,7 +46,8 @@ class MoveOrderer {
 
     private static List<MoveScore> scoreMoves(Chessboard board, boolean white, List<Move> moves, int ply, Move hashMove){
         List<MoveScore> unsortedScoredMoves = new ArrayList<>();
-        int hashScore = 30000, promotionScore = 1000, captureOfLastMovedPiece = 1000, killerScore = 50, oldKillerScore = 25, castlingMove = 25, uninterestingMove = -30000;
+        int hashScore = 30000, queenPromotionScore = 1000, knightPromotionScore = 350, captureOfLastMovedPiece = 500, killerScore = 50, oldKillerScore = 25, giveCheckMove = 25, castlingMove = 10, uninterestingMove = -30000;
+
         for (Move move : moves){
             MoveScore moveScore;
             if (move.equals(hashMove)){
@@ -56,13 +62,25 @@ class MoveOrderer {
             else if (moveIsCaptureOfLastMovePiece(board, move)){
                 moveScore = new MoveScore(move, captureOfLastMovedPiece);
             }
+            else if (moveGivesCheck(board, move)){
+                moveScore = new MoveScore(move, giveCheckMove);
+            }
             else if (moveIsCapture(board, move)){
                 int sourceScore = scoreByPiece(board, move, BitManipulations.newPieceOnSquare(move.getSourceAsPiece()));
                 int destinationScore = 10 * scoreByPiece(board, move, BitManipulations.newPieceOnSquare(move.destination));
                 moveScore = new MoveScore(move, destinationScore - sourceScore);
             }
             else if (isPromotionMove(move)){
-                moveScore = new MoveScore(move, promotionScore);
+                if (isQueenPromotionMove(move)) {
+                    moveScore = new MoveScore(move, queenPromotionScore);
+                }
+                else if (isKnightPromotionMove(move)){
+                    moveScore = new MoveScore(move, knightPromotionScore);
+                }
+                else {
+                    // promotions to rook and bishop are considered right at the end
+                    moveScore = new MoveScore(move, uninterestingMove - 1);
+                }
             }
             else if (isCastlingMove(move)){
                 moveScore = new MoveScore(move, castlingMove);
@@ -74,6 +92,11 @@ class MoveOrderer {
             unsortedScoredMoves.add(moveScore);
         }
         return unsortedScoredMoves;
+    }
+    
+    private static boolean moveGivesCheck(Chessboard board, Move move){
+        
+        return false;
     }
 
     private static boolean moveIsCaptureOfLastMovePiece(Chessboard board, Move move){
@@ -112,18 +135,24 @@ class MoveOrderer {
         return (move.move & SPECIAL_MOVE_MASK) == PROMOTION_MASK;
     }
 
+    private static boolean isQueenPromotionMove(Move move){
+        return (move.move & WHICH_PROMOTION) == QUEEN_PROMOTION_MASK;
+    }
+
+    private static boolean isKnightPromotionMove(Move move){
+        return (move.move & WHICH_PROMOTION) == KNIGHT_PROMOTION_MASK;
+    }
+
     private static boolean isCastlingMove (Move move){
         return (move.move & SPECIAL_MOVE_MASK) == CASTLING_MASK;
     }
 
-
-    
-    
-    
-    
-    static List<Move> orderMovesQuiescence (Chessboard board, boolean white){
-        return extractMovesQuiescence(board, white, 
-                MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()));
+    /*
+    Quiescence Search ordering:
+    order moves by most valuable victim and least valuable aggressor
+     */
+    static List<Move> orderMovesQuiescence (Chessboard board, boolean white, List<Move> allMoves){
+        return extractMovesQuiescence(board, white, allMoves);
     }
 
     private static List<Move> extractMovesQuiescence(Chessboard board, boolean white, List<Move> moves){

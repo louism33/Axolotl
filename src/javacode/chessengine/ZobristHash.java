@@ -13,33 +13,16 @@ import static javacode.chessprogram.moveMaking.MoveOrganiser.whichPieceOnSquare;
 
 class ZobristHash {
 
-    public final Stack<Long> zobristStack = new Stack<>();
+    private static final long initHashSeed = 100;
+    final Stack<Long> zobristStack = new Stack<>();
     private final long[][] zobristHash = initHash();
     private long boardHash;
 
-    public ZobristHash(Chessboard board) {
+    ZobristHash(Chessboard board) {
         this.boardHash = boardToHash(board);
     }
 
-
-
-    void updateHash2(Chessboard board, Move move, boolean unmake){
-        int sourceSquare = !unmake ? move.getSourceAsPiece() : move.destination;
-        int destinationSquare = !unmake ? move.destination : move.getSourceAsPiece();
-
-        long source = BitManipulations.newPieceOnSquare(sourceSquare);
-        int sourcePieceIdentifier = whichPieceOnSquare(board, source) - 1;
-        long sourceZH = zobristHash[sourceSquare][sourcePieceIdentifier];
-
-        long destination = BitManipulations.newPieceOnSquare(destinationSquare);
-        long destinationZH = zobristHash[destinationSquare][sourcePieceIdentifier];
-
-        boardHash ^= sourceZH;
-        boardHash ^= destinationZH;
-
-    }
-
-    void updateHash(Chessboard board, Move move, boolean unmake){
+    void updateHash(Chessboard board, Move move){
         int sourceSquare = move.getSourceAsPiece();
         int destinationSquare = move.destination;
 
@@ -53,16 +36,16 @@ class ZobristHash {
         boardHash ^= sourceZH;
         boardHash ^= destinationZH;
 
-        // capture
+        /*
+        captures
+         */
         if ((destination & board.ALL_PIECES()) != 0){
             int destinationPieceIdentifier = whichPieceOnSquare(board, destination) - 1;
             long victimZH = zobristHash[sourceSquare][destinationPieceIdentifier];
             boardHash ^= victimZH;
         }
 
-
         long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
-
 
         if (MoveParser.isSpecialMove(move)){
             if (MoveParser.isCastlingMove(move)) {
@@ -150,6 +133,9 @@ class ZobristHash {
         }
     }
 
+    /*
+    create almost unique long to identify current board
+     */
     private long boardToHash(Chessboard board){
         long hash = 0;
         for (int sq = 0; sq < 64; sq++) {
@@ -162,8 +148,11 @@ class ZobristHash {
         return hash;
     }
 
+    /*
+    create values for every possible piece on every possible square
+     */
     private static long[][] initHash(){
-        Random r = new Random(100);
+        Random r = new Random(initHashSeed);
         long[][] zobristHash = new long[64][12];
         for (int outer = 0; outer < 64; outer++){
             for (int inner = 0; inner < 12; inner++){
@@ -173,11 +162,11 @@ class ZobristHash {
         return zobristHash;
     }
 
-    public long getBoardHash() {
+    long getBoardHash() {
         return boardHash;
     }
 
-    public void setBoardHash(long boardHash) {
+    void setBoardHash(long boardHash) {
         this.boardHash = boardHash;
     }
 

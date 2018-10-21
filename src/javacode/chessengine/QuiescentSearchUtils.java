@@ -9,6 +9,9 @@ import static javacode.chessengine.MoveOrderer.moveIsCapture;
 
 class QuiescentSearchUtils {
 
+    /*
+    a board is quiet when there are no more captures that can be made
+     */
     static boolean isBoardQuiet(Chessboard board, List<Move> moves){
         for (Move move : moves){
             if(moveIsCapture(board, move)){

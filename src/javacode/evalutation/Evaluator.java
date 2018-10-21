@@ -1,12 +1,14 @@
 package javacode.evalutation;
 
-import javacode.chessprogram.check.CheckChecker;
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 
 import java.util.List;
+
+import static javacode.chessengine.Engine.*;
+import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 
 public class Evaluator {
 
@@ -17,52 +19,39 @@ public class Evaluator {
     private static final int QUEEN_SCORE = 900;
 
     public static final int IN_CHECKMATE_SCORE = -100000;
-    private static final int IN_STALEMATE_SCORE = 0;
-
-    public static int numberOfEvals = 0;
-    private static int numberOfCheckmates = 0;
-    private static int numberOfStalemates = 0;
-    
-    /*
-    draw noticer
-    
-    material hash
-    pawn hash
-     */
+    public static final int IN_CHECKMATE_SCORE_MAY_PLY = IN_CHECKMATE_SCORE + 100;
+    public static final int IN_STALEMATE_SCORE = 0;
 
     public static int eval(Chessboard board, boolean white, List<Move> moves) {
+        if (moves == null){
+            moves = MoveGeneratorMaster.generateLegalMoves(board, white);
+        }
+        
+        if (DEBUG) {
+            numberOfEvals++;
+        }
+
         if (moves.size() == 0){
-            if (CheckChecker.boardInCheck(board, white)){
-                numberOfCheckmates++;
-//                System.out.println(Art.boardArt(board));
+            if (boardInCheck(board, white)) {
+                if (DEBUG) {
+                    numberOfCheckmates++;
+                }
                 return IN_CHECKMATE_SCORE;
             }
             else {
-                numberOfStalemates++;
+                if (DEBUG) {
+                    numberOfStalemates++;
+                }
                 return IN_STALEMATE_SCORE;
             }
         }
         else{
-            return eval(board, white);
+            return evalHelper(board, white);
         }
     }
 
-    public static int eval(Chessboard board, boolean white) {
-        numberOfEvals++;
-
-        List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, white);
-        if (moves.size() == 0) {
-            if (CheckChecker.boardInCheck(board, white)) {
-                numberOfCheckmates++;
-//                System.out.println(Art.boardArt(board));
-                return IN_CHECKMATE_SCORE;
-            } else {
-                numberOfStalemates++;
-                return IN_STALEMATE_SCORE;
-            }
-        }
+    private static int evalHelper(Chessboard board, boolean white) {
         return evalTurn(board, white) - evalTurn(board, !white);
-//        return 0;
     }
 
     private static int evalTurn (Chessboard board, boolean white){
@@ -77,6 +66,9 @@ public class Evaluator {
         return score;
     }
 
+    /*
+    material scores
+     */
     private static int pawnScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_PAWNS : board.BLACK_PAWNS;
         int numberOfPawns = BitIndexing.populationCount(myPieces);

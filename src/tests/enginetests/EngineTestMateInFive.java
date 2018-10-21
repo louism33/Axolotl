@@ -14,13 +14,13 @@ class EngineTestMateInFive {
 
     @Test
     void test1() {
-        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("6k1/3b3r/1p1p4/p1n2p2/1PPNpP1q/P3Q1p1/1R1RB1P1/5K2 b - - 0 1");
+        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("6r1/p3p1rk/1p1pPp1p/q3n2R/4P3/3BR2P/PPP2QP1/7K w - - 0 1");
         System.out.println(Art.boardArt(chessboard));
 
         Move move = Engine.search(chessboard, 1000);
         System.out.println(move);
 
-        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "qxf4");
+        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rxh6+");
         int destination = move.destination;
         Assert.assertEquals(moveToWin, destination);
     }
@@ -39,16 +39,21 @@ class EngineTestMateInFive {
     }
 
     @Test
-    void test3() {
-        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("6r1/p3p1rk/1p1pPp1p/q3n2R/4P3/3BR2P/PPP2QP1/7K w - - 0 1");
+    void test3Lucifer() {
+
+        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("6k1/3b3r/1p1p4/p1n2p2/1PPNpP1q/P3Q1p1/1R1RB1P1/5K2 b - - 0 1");
         System.out.println(Art.boardArt(chessboard));
 
         Move move = Engine.search(chessboard, 1000);
         System.out.println(move);
 
-        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rxh6+");
+        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "qxf4");
         int destination = move.destination;
         Assert.assertEquals(moveToWin, destination);
+        
+        
+        
+        
     }
 
 
@@ -84,7 +89,7 @@ class EngineTestMateInFive {
 
 
     @Test
-    void test6() {
+    void test6Flagg() {
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN("3r4/1b5p/ppqP1Ppk/2p1rp2/2P1P3/3n2N1/P5QP/3R1RK1 w - - 1 0");
         System.out.println(Art.boardArt(chessboard));
 
@@ -126,14 +131,14 @@ class EngineTestMateInFive {
 
 
     @Test
-    void test9() {
-        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("r4bk1/q5pp/3N1p2/2p5/1p2PB2/1Pp2PP1/4Q2P/1K1R4 b - - 0 1");
+    void test9Satan() {
+        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("7k/1p2r1p1/pPq4p/7R/1P1Nn2P/P5p1/1B3r2/3Q2K1 b - - 0 1");
         System.out.println(Art.boardArt(chessboard));
 
         Move move = Engine.search(chessboard, 1000);
         System.out.println(move);
 
-        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "c2+");
+        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "ng5");
         int destination = move.destination;
         Assert.assertEquals(moveToWin, destination);
     }
@@ -155,13 +160,13 @@ class EngineTestMateInFive {
 
     @Test
     void test11() {
-        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("7k/1p2r1p1/pPq4p/7R/1P1Nn2P/P5p1/1B3r2/3Q2K1 b - - 0 1");
+        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("r4bk1/q5pp/3N1p2/2p5/1p2PB2/1Pp2PP1/4Q2P/1K1R4 b - - 0 1");
         System.out.println(Art.boardArt(chessboard));
 
         Move move = Engine.search(chessboard, 1000);
         System.out.println(move);
 
-        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "ng5");
+        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "c2+");
         int destination = move.destination;
         Assert.assertEquals(moveToWin, destination);
     }

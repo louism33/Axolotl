@@ -41,7 +41,7 @@ class EngineTestMateInFour {
     }
 
     @Test
-    void test3() {
+    void test3Hades() {
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN("Q7/p1p1q1pk/3p2rp/4n3/3bP3/7b/PP3PPK/R1B2R2 b - - 0 1");
         System.out.println(Art.boardArt(chessboard));
 
