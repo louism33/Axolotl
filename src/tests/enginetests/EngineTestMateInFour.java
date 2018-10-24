@@ -70,7 +70,7 @@ class EngineTestMateInFour {
     }
 
     @Test
-    void test5() {
+    void test5Meanie() {
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN("r1b3kr/3pR1p1/ppq4p/5P2/4Q3/B7/P5PP/5RK1 w - - 1 0");
         System.out.println(Art.boardArt(chessboard));
 

@@ -6,7 +6,7 @@ import javacode.chessprogram.chess.Move;
 
 class FutilityPruning {
     
-    static final int futilityMarginDepthOne = 100;
+    static final int futilityMarginDepthOne = 200;
     
     static boolean isFutilityPruningAllowedHere(Chessboard board, Move move, int depth){
         return depth == 1 

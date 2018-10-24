@@ -19,7 +19,7 @@ public class Evaluator {
     private static final int QUEEN_SCORE = 900;
 
     public static final int IN_CHECKMATE_SCORE = -100000;
-    public static final int IN_CHECKMATE_SCORE_MAY_PLY = IN_CHECKMATE_SCORE + 100;
+    public static final int IN_CHECKMATE_SCORE_MAX_PLY = IN_CHECKMATE_SCORE + 100;
     public static final int IN_STALEMATE_SCORE = 0;
 
     public static int eval(Chessboard board, boolean white, List<Move> moves) {

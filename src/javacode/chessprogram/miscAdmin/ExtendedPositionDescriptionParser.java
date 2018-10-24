@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
 public class ExtendedPositionDescriptionParser {
 
 
+    // todo
     // Currently no support for avoid moves
+    // add castling 0-0 and 0-0-0
     
     ExtendedPositionDescriptionParser(){
 
@@ -29,10 +31,25 @@ public class ExtendedPositionDescriptionParser {
         String bm = extractBestMove(edpPosition);
 
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN(edpPosition);
+        
+        String boardFen = extractBoardFen(edpPosition);
 
         int destinationI = MoveParserFromAN.destinationIndex(chessboard, bm);
 
-        return new EDPObject(chessboard, destinationI, id);
+        return new EDPObject(chessboard, destinationI, id, boardFen);
+    }
+
+    private static String extractBoardFen(String edpPosition){
+        String pattern = "[/|\\w]* ";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(edpPosition);
+
+        String ans = "";
+
+        if (m.find()){
+            ans = m.group();
+        }
+        return ans;
     }
 
     private static String extractBestMove(String edpPosition){
@@ -68,14 +85,15 @@ public class ExtendedPositionDescriptionParser {
     
     public static class EDPObject{
         private final Chessboard board;
-//        private Move bestMove1, bestMove2;
         private final int bestMoveDestinationIndex;
         private final String id;
+        private final String boardFen;
 
-        EDPObject(Chessboard board, int bestMoveDestinationIndex, String id) {
+        EDPObject(Chessboard board, int bestMoveDestinationIndex, String id, String boardFen) {
             this.board = board;
             this.bestMoveDestinationIndex = bestMoveDestinationIndex;
             this.id = id;
+            this.boardFen = boardFen;
         }
 
         public Chessboard getBoard() {
@@ -95,6 +113,7 @@ public class ExtendedPositionDescriptionParser {
             return "EDPObject{" +
                     "bestMoveDestinationIndex=" + bestMoveDestinationIndex +
                     ", id='" + id + '\'' +
+                    ", boardFen='" + boardFen + '\'' +
                     '}';
         }
     }

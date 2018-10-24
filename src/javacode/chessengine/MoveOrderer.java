@@ -11,17 +11,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static javacode.chessengine.Engine.*;
+import static javacode.chessengine.HistoryMoves.historyMoveScore;
+import static javacode.chessengine.KillerMoves.killerMoves;
 import static javacode.chessprogram.moveMaking.MoveParser.*;
 
 class MoveOrderer {
     
-    /*
-    history heuristic
-    static exchange evalHelper
-     */
-
-    static final Move[][] killerMoves = new Move[12][2];
-
     /*
     Move Ordering:
     previous Hash Moves, promotions, capture of last moved piece, good captures, killers, killers from earlier plies, 
@@ -46,29 +42,15 @@ class MoveOrderer {
 
     private static List<MoveScore> scoreMoves(Chessboard board, boolean white, List<Move> moves, int ply, Move hashMove){
         List<MoveScore> unsortedScoredMoves = new ArrayList<>();
-        int hashScore = 30000, queenPromotionScore = 1000, knightPromotionScore = 350, captureOfLastMovedPiece = 500, killerScore = 50, oldKillerScore = 25, giveCheckMove = 25, castlingMove = 10, uninterestingMove = -30000;
+        int hashScore = 10000, queenPromotionScore = 900, knightPromotionScore = 300, captureOfLastMovedPiece = 301, killerOneScore = 270, killerTwoScore = 270, oldKillerScore = 260, giveCheckMove = 0, castlingMove = 10, uninterestingMove = 0;
 
         for (Move move : moves){
             MoveScore moveScore;
             if (move.equals(hashMove)){
                 moveScore = new MoveScore(move, hashScore);
             }
-            else if (Arrays.asList(killerMoves[ply]).contains(move)){
-                moveScore = new MoveScore(move, killerScore);
-            }
-            else if (ply - 2 >= 0 && Arrays.asList(killerMoves[ply-2]).contains(move)){
-                moveScore = new MoveScore(move, oldKillerScore);
-            }
             else if (moveIsCaptureOfLastMovePiece(board, move)){
                 moveScore = new MoveScore(move, captureOfLastMovedPiece);
-            }
-            else if (moveGivesCheck(board, move)){
-                moveScore = new MoveScore(move, giveCheckMove);
-            }
-            else if (moveIsCapture(board, move)){
-                int sourceScore = scoreByPiece(board, move, BitManipulations.newPieceOnSquare(move.getSourceAsPiece()));
-                int destinationScore = 10 * scoreByPiece(board, move, BitManipulations.newPieceOnSquare(move.destination));
-                moveScore = new MoveScore(move, destinationScore - sourceScore);
             }
             else if (isPromotionMove(move)){
                 if (isQueenPromotionMove(move)) {
@@ -82,8 +64,25 @@ class MoveOrderer {
                     moveScore = new MoveScore(move, uninterestingMove - 1);
                 }
             }
+            else if (ALLOW_KILLERS && killerMoves[ply][0] != null && killerMoves[ply][0].equals(move)){
+                moveScore = new MoveScore(move, killerOneScore);
+            }
+            else if (ALLOW_KILLERS && killerMoves[ply][1] != null && killerMoves[ply][1].equals(move)){
+                moveScore = new MoveScore(move, killerTwoScore);
+            }
+            else if (moveGivesCheck(board, move)){
+                moveScore = new MoveScore(move, giveCheckMove);
+            }
+            else if (moveIsCapture(board, move)){
+                int sourceScore = scoreByPiece(board, move, BitManipulations.newPieceOnSquare(move.getSourceAsPiece()));
+                int destinationScore = 10 * scoreByPiece(board, move, BitManipulations.newPieceOnSquare(move.destination));
+                moveScore = new MoveScore(move, destinationScore - sourceScore);
+            }
             else if (isCastlingMove(move)){
                 moveScore = new MoveScore(move, castlingMove);
+            }
+            else if (ALLOW_HISTORY_MOVES){
+                moveScore = new MoveScore(move, historyMoveScore(move));
             }
             else {
                 moveScore = new MoveScore(move, uninterestingMove);

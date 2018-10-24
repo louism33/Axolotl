@@ -3,6 +3,7 @@ package javacode.chessprogram.moveMaking;
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
+import javacode.graphicsandui.Art;
 
 class MoveEnPassant {
     
@@ -11,6 +12,7 @@ class MoveEnPassant {
         long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
         
         if ((destinationPiece & board.ALL_PIECES()) != 0) {
+            System.out.println(Art.boardArt(board));
             throw new RuntimeException("EP move Problem");
         }
         

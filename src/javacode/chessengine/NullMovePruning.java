@@ -12,7 +12,7 @@ class NullMovePruning {
      */
     static boolean isNullMoveOkHere(Chessboard board, int depth, int nullMoveDepthReduction){
         return Engine.ALLOW_NULL_MOVE_PRUNING
-                && depth >= nullMoveDepthReduction
+//                && depth >= nullMoveDepthReduction
                 && !CheckChecker.boardInCheck(board, board.isWhiteTurn())
                 && !maybeInEndgame(board)
                 && !maybeInZugzwang(board, board.isWhiteTurn())
