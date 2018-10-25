@@ -5,6 +5,8 @@ import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 
 class NullMovePruning {
+
+    static int nullMoveDepthReduction = 2;
     
     /*
     Null Move Pruning:
@@ -12,7 +14,6 @@ class NullMovePruning {
      */
     static boolean isNullMoveOkHere(Chessboard board, int depth, int nullMoveDepthReduction){
         return Engine.ALLOW_NULL_MOVE_PRUNING
-//                && depth >= nullMoveDepthReduction
                 && !CheckChecker.boardInCheck(board, board.isWhiteTurn())
                 && !maybeInEndgame(board)
                 && !maybeInZugzwang(board, board.isWhiteTurn())
@@ -24,7 +25,7 @@ class NullMovePruning {
     }
 
     private static boolean maybeInZugzwang(Chessboard board, boolean white){
-        // returns true if you are down to Paws and King (+1 extra piece)
+        // returns true if you are down to Pawns and King (+1 extra piece)
         long myPawns, myKing, allMyPieces;
         if (white){
             allMyPieces = board.ALL_WHITE_PIECES();
@@ -38,4 +39,7 @@ class NullMovePruning {
         }
         return BitIndexing.populationCount(allMyPieces ^ (myPawns | myKing)) <= 1;
     }
+    
+    
+
 }

@@ -77,7 +77,7 @@ public class MoveOrganiser {
                 MoveRegular.makeRegularMove(board, move);
                 MoveCastling.castleFlagManager(board, move);
             }
-
+            
             else if (enPassantPossibility(board, move)){
                 int sourceAsPiece = move.getSourceAsPiece();
                 int whichFile = 8 - sourceAsPiece % 8;
@@ -110,7 +110,7 @@ public class MoveOrganiser {
         }
     }
 
-    private static boolean enPassantPossibility(Chessboard board, Move move){
+    public static boolean enPassantPossibility(Chessboard board, Move move){
         // determine if flag should be added to enable EP on next turn
         long sourceSquare = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
         long destinationSquare = BitManipulations.newPieceOnSquare(move.destination);

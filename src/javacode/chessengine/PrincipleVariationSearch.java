@@ -3,25 +3,27 @@ package javacode.chessengine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
-import javacode.chessprogram.moveMaking.MoveUnmaker;
 import javacode.evalutation.Evaluator;
 import org.junit.Assert;
 
 import java.util.List;
 
 import static javacode.chessengine.Engine.*;
+import static javacode.chessengine.EngineMovesAndHash.*;
 import static javacode.chessengine.FutilityPruning.futilityMarginDepthOne;
 import static javacode.chessengine.FutilityPruning.isFutilityPruningAllowedHere;
 import static javacode.chessengine.HistoryMoves.*;
 import static javacode.chessengine.KillerMoves.updateKillerMoves;
 import static javacode.chessengine.LateMoveReductions.isLateMoveReductionAllowedHere;
 import static javacode.chessengine.MoveOrderer.*;
+import static javacode.chessengine.NullMovePruning.*;
 import static javacode.chessengine.NullMovePruning.isNullMoveOkHere;
 import static javacode.chessengine.Razoring.*;
 import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.chess.Copier.copyMove;
 import static javacode.chessprogram.moveMaking.MoveOrganiser.flipTurn;
 import static javacode.chessprogram.moveMaking.MoveOrganiser.makeMoveMaster;
+import static javacode.chessprogram.moveMaking.MoveUnmaker.*;
 import static javacode.evalutation.Evaluator.*;
 
 class PrincipleVariationSearch {
@@ -37,6 +39,7 @@ class PrincipleVariationSearch {
         int currentDistanceFromRoot = originalDepth - depth;
         depth += extensions(board, currentDistanceFromRoot);
 
+        Assert.assertTrue(depth >= 0);
         
         /*
         Quiescent Search:
@@ -45,6 +48,8 @@ class PrincipleVariationSearch {
         if (depth <= 0){
             return QuiescenceSearch.quiescenceSearch(board, zobristHash, alpha, beta);
         }
+
+        Assert.assertTrue(depth >= 1);
         
         /*
         Mate Distance Pruning:
@@ -54,7 +59,6 @@ class PrincipleVariationSearch {
             alpha = Math.max(alpha, IN_CHECKMATE_SCORE + currentDistanceFromRoot);
             beta = Math.min(beta, -IN_CHECKMATE_SCORE - currentDistanceFromRoot - 1);
             if (alpha >= beta){
-                System.out.println("        alpha "+alpha);
                 return alpha;
             }
         }
@@ -135,17 +139,20 @@ class PrincipleVariationSearch {
             Null Move Pruning:
             if not in dangerous position, forfeit a move and make shallower null window search
             */
-            int nullMoveDepthReduction = 2; // + depth / 3;
+
             if (nullMoveCounter < 2 && isNullMoveOkHere(board, depth, nullMoveDepthReduction)) {
-                flipTurn(board);
+                makeNullMove(board, zobristHash);
+
+                Assert.assertTrue(depth >= 1);
+                Assert.assertTrue(alpha < beta);
 
                 score = depth - nullMoveDepthReduction <= 0 ?
                         -QuiescenceSearch.quiescenceSearch(board, zobristHash, -beta, -beta + 1)
                         : -principleVariationSearch(board, zobristHash, originalDepth,
                         depth - nullMoveDepthReduction, -beta, -beta + 1, nullMoveCounter + 1);
 
-                flipTurn(board);
-
+                unMakeNullMove(board, zobristHash);
+                
                 if (score >= beta) {
                     if (DEBUG) {
                         numberOfNullMoveHits++;
@@ -170,7 +177,6 @@ class PrincipleVariationSearch {
             orderedMoves = orderedMoves(board, board.isWhiteTurn(), currentDistanceFromRoot, hashMove);
         }
         else {
-//            System.out.println(currentDistanceFromRoot);
             orderedMoves = orderedMoves(board, board.isWhiteTurn(), currentDistanceFromRoot, null);
         }
         
@@ -178,7 +184,19 @@ class PrincipleVariationSearch {
         see if checkmate or stalemate
          */
         if (orderedMoves.size() == 0) {
-            return eval(board, board.isWhiteTurn(), orderedMoves);
+            if (boardInCheck(board, board.isWhiteTurn())) {
+                if (DEBUG) {
+                    numberOfCheckmates++;
+                }
+                return IN_CHECKMATE_SCORE + currentDistanceFromRoot;
+            }
+            else {
+                if (DEBUG) {
+                    numberOfStalemates++;
+                }
+//                    return IN_STALEMATE_SCORE;
+                return eval(board, board.isWhiteTurn(), orderedMoves);
+            }
         }
 
         /*
@@ -216,11 +234,8 @@ class PrincipleVariationSearch {
 
             }
 
-
-            zobristHash.zobristStack.push(zobristHash.getBoardHash());
-            zobristHash.updateHash(board, move);
-            makeMoveMaster(board, move);
-            flipTurn(board);
+            
+            makeMoveAndHashUpdate(board, move, zobristHash);
             numberOfMovesSearched++;
 
             
@@ -269,7 +284,7 @@ class PrincipleVariationSearch {
             moves that are not favourite (PV) are searched with a null window
              */
             else if (ALLOW_PRINCIPLE_VARIATION_SEARCH && numberOfMovesSearched > 1){
-                score = -principleVariationSearch(board, zobristHash, originalDepth, 
+                score = -principleVariationSearch(board, zobristHash, originalDepth,
                         depth - 1, -alpha - 1, -alpha, 0);
                 
                 /*
@@ -292,8 +307,7 @@ class PrincipleVariationSearch {
                         depth - 1, -beta, -alpha, 0);
             }
 
-            zobristHash.setBoardHash(zobristHash.zobristStack.pop());
-            MoveUnmaker.unMakeMoveMaster(board);
+            UnMakeMoveAndHashUpdate(board, zobristHash);
 
             /*
             record score and move if better than previous ones

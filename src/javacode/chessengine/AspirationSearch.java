@@ -30,8 +30,7 @@ class AspirationSearch {
             score = principleVariationSearch(board, zobristHash, depth, depth, alpha, beta, 0);
 
             if (score >= -IN_CHECKMATE_SCORE_MAX_PLY){
-                System.out.println(score);
-                System.out.println();
+                return score;
             }
             
             /*

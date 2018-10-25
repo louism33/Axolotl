@@ -11,7 +11,7 @@ public class Engine {
 
     Chessboard board;
 
-    public static final int MAX_DEPTH = 10;
+    public static final int MAX_DEPTH = 12;
     
     public static final boolean DEBUG = true;
 
@@ -44,41 +44,43 @@ public class Engine {
 
     public static int numberOfSuccessfulAspirations = 0;
     public static int numberOfFailedAspirations = 0;
+//
+//    static final boolean ALLOW_PRINCIPLE_VARIATION_SEARCH   = false;
+//    static final boolean ALLOW_MATE_DISTANCE_PRUNING        = false;
+//    static final boolean ALLOW_EXTENSIONS                   = false;
+//    
+//    static final boolean ALLOW_LATE_MOVE_REDUCTIONS         = false;
+//    
+//    static final boolean ALLOW_NULL_MOVE_PRUNING            = true;
+//    
+//    static final boolean ALLOW_RAZORING                     = false;
+//    static final boolean ALLOW_FUTILITY_PRUNING             = false;
+//    static final boolean ALLOW_KILLERS                      = false;
+//    static final boolean ALLOW_HISTORY_MOVES                = false;
+//    static final boolean ALLOW_ASPIRATION_WINDOWS           = false;
 
     static final boolean ALLOW_PRINCIPLE_VARIATION_SEARCH   = true;
     static final boolean ALLOW_MATE_DISTANCE_PRUNING        = true;
     static final boolean ALLOW_EXTENSIONS                   = true;
-    
     static final boolean ALLOW_LATE_MOVE_REDUCTIONS         = true;
-    
     static final boolean ALLOW_NULL_MOVE_PRUNING            = true;
-    
     static final boolean ALLOW_RAZORING                     = false;
     static final boolean ALLOW_FUTILITY_PRUNING             = false;
-    static final boolean ALLOW_KILLERS                      = false;
+    static final boolean ALLOW_KILLERS                      = true;
     static final boolean ALLOW_HISTORY_MOVES                = true;
     static final boolean ALLOW_ASPIRATION_WINDOWS           = true;
-
-//    static final boolean ALLOW_PRINCIPLE_VARIATION_SEARCH   = true;
-//    static final boolean ALLOW_MATE_DISTANCE_PRUNING        = true;
-//    static final boolean ALLOW_EXTENSIONS                   = true;
-//    static final boolean ALLOW_LATE_MOVE_REDUCTIONS         = true;
-//    static final boolean ALLOW_NULL_MOVE_PRUNING            = true;
-//    static final boolean ALLOW_RAZORING                     = true;
-//    static final boolean ALLOW_FUTILITY_PRUNING             = true;
-//    static final boolean ALLOW_KILLERS                      = true;
-//    static final boolean ALLOW_HISTORY_MOVES                = true;
-//    static final boolean ALLOW_ASPIRATION_WINDOWS           = true;
 
     private static void allocatedTime(Chessboard board, long timeLimit){
 
     }
-
+    
+    public static ZobristHash zobristHash;
+            
     public static Move search (Chessboard board, long timeLimit){
         /*
         create hash value of the board, used for lookup in transposition table
          */
-        ZobristHash zobristHash = new ZobristHash(board);
+        zobristHash = new ZobristHash(board);
 
         Move move = IterativeDeepeningDFS.iterativeDeepeningWithAspirationWindows(board, zobristHash, timeLimit);
 
@@ -143,7 +145,6 @@ public class Engine {
                 System.out.println();
             }
         
-            System.out.println();
             System.out.println("------");
             System.out.println("number of moves made: " + numberOfMovesMade);
             System.out.println("number of Q moves made: " + numberOfQuiescentMovesMade);

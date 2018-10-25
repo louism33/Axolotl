@@ -34,8 +34,7 @@ class IterativeDeepeningDFS {
              */
             if (score >= -IN_CHECKMATE_SCORE_MAX_PLY){
                 if (Engine.ALLOW_MATE_DISTANCE_PRUNING) {
-                    System.out.println(score);
-                    int distanceToCheckmate = score + IN_CHECKMATE_SCORE_MAX_PLY;
+                    int distanceToCheckmate = -IN_CHECKMATE_SCORE - score;
                     System.out.println("Checkmate found in " + distanceToCheckmate + " plies.");
                 }
                 else{

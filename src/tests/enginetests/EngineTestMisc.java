@@ -4,6 +4,7 @@ import javacode.chessengine.Engine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.miscAdmin.FenParser;
+import javacode.chessprogram.miscAdmin.MoveParserFromAN;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.graphicsandui.Art;
 import org.junit.Assert;
@@ -14,6 +15,20 @@ import java.util.List;
 class EngineTestMisc {
 
 
+    @Test
+    void retiEndgameStudy() {
+
+        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("7K/8/k1P5/7p/8/8/8/8 w - -");
+        System.out.println(Art.boardArt(chessboard));
+
+        Move move = Engine.search(chessboard, 1000);
+        System.out.println(move);
+
+        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Kg7");
+        int destination = move.destination;
+        Assert.assertEquals(moveToWin, destination);
+
+    }
 
 
     @Test
@@ -48,5 +63,5 @@ class EngineTestMisc {
         System.out.println(move);
         Assert.assertEquals(move, new Move(13, 12));
     }
-    
+
 }

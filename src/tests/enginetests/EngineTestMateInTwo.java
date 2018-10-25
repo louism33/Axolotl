@@ -182,7 +182,7 @@ class EngineTestMateInTwo {
 
 
     @Test
-    void test14() {
+    void test14Styx() {
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN("2q1r3/4pR2/3rQ1pk/p1pnN2p/Pn5B/8/1P4PP/3R3K w - - 1 0");
         System.out.println(Art.boardArt(chessboard));
 

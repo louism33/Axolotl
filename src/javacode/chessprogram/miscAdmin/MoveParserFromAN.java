@@ -191,7 +191,6 @@ public class MoveParserFromAN {
         return (r-1) * 8 + f;
     }
     private static int whichDestinationRank(Chessboard board, String algebraicNotation){
-//        String boardPattern = ".x?.(.)";
         String boardPattern = ".?x?.x?(\\d)";
         Pattern r = Pattern.compile(boardPattern);
         Matcher m = r.matcher(algebraicNotation);
@@ -209,8 +208,6 @@ public class MoveParserFromAN {
     }
     
     private static int whichDestinationFile(Chessboard board, String algebraicNotation){
-//        String boardPattern = ".x?(.)";
-//        String boardPattern = ".?x?(.)";
         String boardPattern = "([a-h])(\\d)";
         Pattern r = Pattern.compile(boardPattern);
         Matcher m = r.matcher(algebraicNotation);

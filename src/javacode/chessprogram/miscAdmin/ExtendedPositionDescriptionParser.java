@@ -78,11 +78,6 @@ public class ExtendedPositionDescriptionParser {
         return ans;
     }
     
-    
-    
-    
-    
-    
     public static class EDPObject{
         private final Chessboard board;
         private final int bestMoveDestinationIndex;
