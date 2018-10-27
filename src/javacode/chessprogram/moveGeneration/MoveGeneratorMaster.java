@@ -7,6 +7,7 @@ import javacode.chessprogram.check.KingLegalMoves;
 import javacode.chessprogram.chess.BitExtractor;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
+import javacode.graphicsandui.Art;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,24 +138,29 @@ public class MoveGeneratorMaster {
                 continue;
             }
             if ((pinnedPiece & pawns) != 0) {
-                long singlePawnAllPushes = PieceMovePawns.singlePawnPushes(board, pinnedPiece, whiteTurn, pushMask);
-                List<Move> pawnPushes = MoveGenerationUtilities.movesFromAttackBoardLong(singlePawnAllPushes, pinnedPiece);
-                moves.addAll(pawnPushes);
 
-                long singlePawnAllCaptures = PieceMovePawns.singlePawnCaptures(board, pinnedPiece, whiteTurn, captureMask);
-                List<Move> pawnCaptures = MoveGenerationUtilities.movesFromAttackBoardLong(singlePawnAllCaptures, pinnedPiece);
-                moves.addAll(pawnCaptures);
-
+                long PENULTIMATE_RANK = whiteTurn ? BitBoards.RANK_SEVEN : BitBoards.RANK_TWO;
                 long allButPinnedFriends = FRIENLDY_PIECES & ~pinnedPiece;
+                
+                if ((pinnedPiece & PENULTIMATE_RANK) == 0) {
 
-                // a pinned pawn may still EP
-                moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves
-                        (board, whiteTurn, allButPinnedFriends, pushMask, captureMask));
+                    long singlePawnAllPushes = PieceMovePawns.singlePawnPushes(board, pinnedPiece, whiteTurn, pushMask);
+                    List<Move> pawnPushes = MoveGenerationUtilities.movesFromAttackBoardLong(singlePawnAllPushes, pinnedPiece);
+                    moves.addAll(pawnPushes);
 
-                // a pinned pawn may still promote, through a capture of the pinner
-                moves.addAll(MoveGeneratorPromotion.generatePromotionMoves
-                        (board, whiteTurn, allButPinnedFriends, pushMask, captureMask));
-
+                    long singlePawnAllCaptures = PieceMovePawns.singlePawnCaptures(board, pinnedPiece, whiteTurn, captureMask);
+                    List<Move> pawnCaptures = MoveGenerationUtilities.movesFromAttackBoardLong(singlePawnAllCaptures, pinnedPiece);
+                    moves.addAll(pawnCaptures);
+                    
+                    // a pinned pawn may still EP
+                    moves.addAll(MoveGeneratorEnPassant.generateEnPassantMoves
+                            (board, whiteTurn, allButPinnedFriends, pushMask, captureMask));
+                }
+                else {
+                    // a pinned pawn may still promote, through a capture of the pinner
+                    moves.addAll(MoveGeneratorPromotion.generatePromotionMoves
+                            (board, whiteTurn, allButPinnedFriends, pushMask, captureMask));
+                }
                 continue;
             }
             if ((pinnedPiece & bishops) != 0) {

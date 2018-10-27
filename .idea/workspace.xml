@@ -5,73 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="69d40d9d-8980-4bb2-9941-56e4fd504839" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Test Results - WACTests.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/javacode/evalutation/Bishop.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/javacode/evalutation/King.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/javacode/evalutation/Knight.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/javacode/evalutation/MaterialEval.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/javacode/evalutation/Misc.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/javacode/evalutation/Pawns.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/javacode/evalutation/PositionEval.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/javacode/evalutation/Queen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/javacode/evalutation/Rook.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tests/programtests/PerftSuiteTwo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/Engine.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/Engine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/HistoryMoves.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/HistoryMoves.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/IterativeDeepeningDFS.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/IterativeDeepeningDFS.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/LateMoveReductions.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/LateMoveReductions.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/NullMovePruning.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/NullMovePruning.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/PrincipleVariationSearch.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/PrincipleVariationSearch.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/Razoring.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/Razoring.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/ZobristHash.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/ZobristHash.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/bitboards/BitBoards.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/bitboards/BitBoards.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/chess/BitManipulations.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/chess/BitManipulations.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/DetailedPerftSearching.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/DetailedPerftSearching.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/FenParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/FenParser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/MoveParserFromAN$Piece.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/MoveParserFromAN$Piece.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/MoveParserFromAN.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/miscAdmin/MoveParserFromAN.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/MoveGeneratorEnPassant.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/MoveGeneratorEnPassant.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/MoveGeneratorPawns.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/MoveGeneratorPawns.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/PieceMoveKing.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/PieceMoveKing.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/PieceMoveKnight.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/PieceMoveKnight.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/PieceMovePawns.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/PieceMovePawns.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/PieceMoveSliding.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveGeneration/PieceMoveSliding.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveMaking/MoveEnPassant.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveMaking/MoveEnPassant.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveMaking/MoveOrganiser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveMaking/MoveOrganiser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveMaking/MoveUnmaker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessprogram/moveMaking/MoveUnmaker.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/evalutation/Evaluator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/evalutation/Evaluator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/enginetests/EngineTestMisc.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/enginetests/EngineTestMisc.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/programtests/DetailedPerftSearchingTestSuite.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/programtests/DetailedPerftSearchingTestSuite.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/programtests/ZobristHashTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/programtests/ZobristHashTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/Engine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/HistoryMoves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/HistoryMoves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/IterativeDeepeningDFS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/IterativeDeepeningDFS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/LateMoveReductions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/LateMoveReductions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/MoveOrderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/MoveOrderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/NullMovePruning.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/NullMovePruning.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/PrincipleVariationSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/PrincipleVariationSearch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/Razoring.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/Razoring.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessengine/ZobristHash.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessengine/ZobristHash.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/bitboards/BitBoards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/bitboards/BitBoards.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/chess/BitManipulations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/chess/BitManipulations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/DetailedPerftSearching.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/DetailedPerftSearching.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/FenParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/FenParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/MoveParserFromAN.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/MoveParserFromAN.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorEnPassant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorEnPassant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorPawns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorPawns.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/PieceMoveKing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/PieceMoveKing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/PieceMoveKnight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/PieceMoveKnight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/PieceMovePawns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/PieceMovePawns.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/PieceMoveSliding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/PieceMoveSliding.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveMaking/MoveEnPassant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveMaking/MoveEnPassant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveMaking/MoveOrganiser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveMaking/MoveOrganiser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveMaking/MoveUnmaker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveMaking/MoveUnmaker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/javacode/evalutation/Evaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/evalutation/Evaluator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/enginetests/EngineTestMisc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/enginetests/EngineTestMisc.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tests/enginetests/WACTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/enginetests/WACTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/programtests/DetailedPerftSearchingTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/programtests/DetailedPerftSearchingTestSuite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/programtests/ZobristHashTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/programtests/ZobristHashTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -139,13 +74,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="6" />
-          <entry key="java" value="136745" />
+          <entry key="java" value="136814" />
           <entry key="xml" value="166" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="136745" />
+          <entry key="JAVA" value="136814" />
           <entry key="PLAIN_TEXT" value="6" />
           <entry key="XML" value="166" />
         </counts>
@@ -154,7 +89,7 @@
         <counts>
           <entry key="LICENSE" value="1" />
           <entry key="iml" value="5" />
-          <entry key="java" value="1726" />
+          <entry key="java" value="1729" />
           <entry key="md" value="1" />
           <entry key="xml" value="1" />
         </counts>
@@ -162,7 +97,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="IDEA_MODULE" value="5" />
-          <entry key="JAVA" value="1726" />
+          <entry key="JAVA" value="1729" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="1" />
           <entry key="XML" value="1" />
@@ -172,11 +107,38 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="75" column="43" selection-start-line="75" selection-start-column="43" selection-end-line="75" selection-end-column="43" />
+            <state relative-caret-position="377">
+              <caret line="159" selection-start-line="159" selection-end-line="159" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/tests/programtests/DetailedPerftSearchingTestSuite.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="65">
+              <caret line="483" column="17" selection-start-line="483" selection-start-column="17" selection-end-line="483" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/tests/enginetests/WACTests.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="20" column="86" selection-start-line="20" selection-start-column="86" selection-end-line="20" selection-end-column="86" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorPromotion.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="27" column="18" lean-forward="true" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -275,7 +237,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/javacode/chessengine/MoveOrderer.java" />
         <option value="$PROJECT_DIR$/src/tests/enginetests/EngineTestMateInFour.java" />
         <option value="$PROJECT_DIR$/src/tests/enginetests/BratkoKopecTest.java" />
         <option value="$PROJECT_DIR$/src/tests/enginetests/BS2830Test.java" />
@@ -326,6 +287,7 @@
         <option value="$PROJECT_DIR$/src/javacode/chessengine/Engine.java" />
         <option value="$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/DetailedPerftSearching.java" />
         <option value="$PROJECT_DIR$/src/tests/enginetests/WACTests.java" />
+        <option value="$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java" />
       </list>
     </option>
   </component>
@@ -602,7 +564,7 @@
     <property name="SearchEverywhereHistoryKey" value="Gener&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java&#10;Move Gene&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java&#10;Move F&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/miscAdmin/MoveParserFromAN.java&#10;Move or&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveMaking/MoveOrganiser.java&#10;unmak&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveMaking/MoveUnmaker.java&#10;unma&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/tests/programtests/MoveUnmakerTest.java&#10;moveOr&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveMaking/MoveOrganiser.java&#10;or&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/check/CheckMoveOrganiser.java&#10;MoveO&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveMaking/MoveOrganiser.java&#10;promot&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveGeneration/MoveGeneratorPromotion.java&#10;move prom&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveGeneration/MoveGeneratorPromotion.java&#10;promotion&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveGeneration/MoveGeneratorPromotion.java&#10;unmake&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveMaking/MoveUnmaker.java&#10;Morg&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveMaking/MoveOrganiser.java&#10;){&#9;null&#9;null&#10;pretti&#9;PSI&#9;JAVA://javacode.chessprogram.miscAdmin.MovePrettifier&#10;chessbo&#9;PSI&#9;JAVA://javacode.chessprogram.chess.Chessboard&#10;Mo&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/java/graphicsandui/MovePrettifier.java&#10;parse&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/MoveParser.java&#10;movegenma&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveGeneration/MoveGeneratorMaster.java&#10;movegen&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveGeneration/MoveGeneratorMaster.java&#10;moveorg&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/MoveOrganiser.java&#10;Stac&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/StackMoveData.java&#10;random&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/utils/RandomBoard.java&#10;MovePar&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/MoveParser.java&#10;art&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/chess/Art.java&#10;Art&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/chess/Art.java&#10;chessb&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/chess/Chessboard.java&#10;main&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/chess/Main.java&#10;knight&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/moveGeneration/PieceMoveKnight.java&#10;Mani&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/chess/BitManipulations.java&#10;movepawn&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/moveGeneration/MoveGeneratorPawns.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540645139221" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540647501606" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Arquillian JUnit4" value="" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
@@ -645,7 +607,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.DetailedPerftSearching">
+  <component name="RunManager" selected="JUnit.DetailedPerftSearchingTestSuite">
     <configuration name="DetailedPerftSearching" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="javacode.chessprogram.miscAdmin.DetailedPerftSearching" />
       <module name="chessPlusPlus" />
@@ -730,10 +692,10 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.DetailedPerftSearching" />
-        <item itemvalue="JUnit.DetailedPerftSearchingTestSuite.bigDepth8Beelzebub" />
-        <item itemvalue="JUnit.DetailedPerftSearchingTestSuite.test6" />
         <item itemvalue="JUnit.DetailedPerftSearchingTestSuite" />
+        <item itemvalue="JUnit.DetailedPerftSearchingTestSuite.bigDepth8Beelzebub" />
+        <item itemvalue="Application.DetailedPerftSearching" />
+        <item itemvalue="JUnit.DetailedPerftSearchingTestSuite.test6" />
         <item itemvalue="JUnit.DetailedPerftSearchingTestSuite.detailTest5" />
       </list>
     </recent_temporary>
@@ -803,26 +765,11 @@
       <workItem from="1540398250661" duration="10712000" />
       <workItem from="1540446512984" duration="23375000" />
       <workItem from="1540534853796" duration="35415000" />
-      <workItem from="1540631209810" duration="11600000" />
+      <workItem from="1540631209810" duration="14210000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="EngineTestMateInSix - 2018.10.27 at 00h 00m 23s.xml">
-      <configuration name="EngineTestMateInSix" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="EngineTestMateInFive - 2018.10.27 at 00h 02m 34s.xml">
-      <configuration name="EngineTestMateInFive" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DetailedPerftSearchingTestSuite_bigDepth7 - 2018.10.27 at 11h 20m 18s.xml">
-      <configuration name="DetailedPerftSearchingTestSuite.bigDepth7" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DetailedPerftSearchingTestSuite_bigDepth9 - 2018.10.27 at 11h 21m 05s.xml">
-      <configuration name="DetailedPerftSearchingTestSuite.bigDepth9" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DetailedPerftSearchingTestSuite_detailTest5 - 2018.10.27 at 11h 22m 27s.xml">
-      <configuration name="DetailedPerftSearchingTestSuite.detailTest5" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="DetailedPerftSearchingTestSuite - 2018.10.27 at 11h 26m 45s.xml">
       <configuration name="DetailedPerftSearchingTestSuite" configurationId="JUnit" />
     </history-entry>
@@ -838,9 +785,24 @@
     <history-entry file="DetailedPerftSearchingTestSuite_bigDepth8Beelzebub - 2018.10.27 at 12h 41m 48s.xml">
       <configuration name="DetailedPerftSearchingTestSuite.bigDepth8Beelzebub" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="DetailedPerftSearchingTestSuite_bigDepth8Beelzebub - 2018.10.27 at 15h 20m 34s.xml">
+      <configuration name="DetailedPerftSearchingTestSuite.bigDepth8Beelzebub" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetailedPerftSearchingTestSuite_bigDepth8Beelzebub - 2018.10.27 at 15h 23m 17s.xml">
+      <configuration name="DetailedPerftSearchingTestSuite.bigDepth8Beelzebub" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetailedPerftSearchingTestSuite_bigDepth8Beelzebub - 2018.10.27 at 15h 25m 27s.xml">
+      <configuration name="DetailedPerftSearchingTestSuite.bigDepth8Beelzebub" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="WACTests - 2018.10.27 at 15h 27m 36s.xml">
+      <configuration name="WACTests" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetailedPerftSearchingTestSuite - 2018.10.27 at 15h 41m 02s.xml">
+      <configuration name="DetailedPerftSearchingTestSuite" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="718755000" />
+    <option name="totallyTimeSpent" value="721365000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -865,7 +827,7 @@
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32847896" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924242" visible="true" weight="0.0" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924242" visible="true" weight="0.5" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.43042073" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1023,16 +985,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/javacode/chessengine/EngineMovesAndHash.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/tests/programtests/ZobristHashTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="57">
@@ -1407,24 +1359,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/enginetests/WACTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="20" column="71" selection-start-line="20" selection-start-column="71" selection-end-line="20" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/miscAdmin/DetailedPerftSearching.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="335">
           <caret line="75" column="51" selection-start-line="75" selection-start-column="51" selection-end-line="75" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/programtests/DetailedPerftSearchingTestSuite.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="482" column="138" selection-start-line="482" selection-start-column="138" selection-end-line="482" selection-end-column="138" />
         </state>
       </provider>
     </entry>
@@ -1442,10 +1380,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorPromotion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="27" column="18" lean-forward="true" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="75" column="43" selection-start-line="75" selection-start-column="43" selection-end-line="75" selection-end-column="43" />
+        <state relative-caret-position="377">
+          <caret line="159" selection-start-line="159" selection-end-line="159" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/programtests/DetailedPerftSearchingTestSuite.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="65">
+          <caret line="483" column="17" selection-start-line="483" selection-start-column="17" selection-end-line="483" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/enginetests/WACTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="20" column="86" selection-start-line="20" selection-start-column="86" selection-end-line="20" selection-end-column="86" />
         </state>
       </provider>
     </entry>
