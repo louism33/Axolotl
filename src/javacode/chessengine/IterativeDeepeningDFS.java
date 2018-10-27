@@ -3,11 +3,11 @@ package javacode.chessengine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
-import javacode.evalutation.Evaluator;
 
 import java.util.List;
 
-import static javacode.evalutation.Evaluator.*;
+import static javacode.evalutation.Evaluator.IN_CHECKMATE_SCORE;
+import static javacode.evalutation.Evaluator.IN_CHECKMATE_SCORE_MAX_PLY;
 
 class IterativeDeepeningDFS {
 

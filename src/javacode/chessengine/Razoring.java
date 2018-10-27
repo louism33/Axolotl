@@ -1,10 +1,9 @@
 package javacode.chessengine;
 
-import javacode.chessprogram.check.CheckChecker;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.evalutation.Evaluator;
 
-import static javacode.chessprogram.check.CheckChecker.*;
+import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 
 class Razoring {
     

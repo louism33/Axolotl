@@ -9,7 +9,7 @@ import java.util.List;
 
 import static javacode.chessprogram.chess.BitExtractor.getAllPieces;
 
-class MoveGeneratorPawns {
+public class MoveGeneratorPawns {
 
     static List<Move> masterPawnPushes(Chessboard board, boolean white,
                                               long ignoreThesePieces, long legalPushes){
@@ -17,7 +17,7 @@ class MoveGeneratorPawns {
     }
 
 
-    static List<Move> masterPawnCaptures(Chessboard board, boolean white,
+    public static List<Move> masterPawnCaptures(Chessboard board, boolean white,
                                                 long ignoreThesePieces, long legalCaptures){
         return masterMovePawns(board, white, ignoreThesePieces, 0, legalCaptures);
     }

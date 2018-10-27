@@ -10,7 +10,7 @@ import static javacode.chessprogram.chess.BitExtractor.getAllPieces;
 
 public class PieceMoveKnight {
 
-    static long singleKnightPushes(Chessboard board, long piece, boolean white, long legalPushes){
+    public static long singleKnightPushes(Chessboard board, long piece, boolean white, long legalPushes){
         return singleKnightAllMoves(board, piece, white, legalPushes, 0);
     }
 

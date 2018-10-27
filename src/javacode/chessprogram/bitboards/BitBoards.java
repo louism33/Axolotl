@@ -1,7 +1,9 @@
 package javacode.chessprogram.bitboards;
 
 public class BitBoards {
-
+    
+    public static final long UNIVERSE = 0xffffffffffffffffL;
+    
     public static final long WHITE_PAWNS = 0x000000000000FF00L;
     public static final long WHITE_KNIGHTS = 0x0000000000000042L;
     public static final long WHITE_BISHOPS = 0x0000000000000024L;
@@ -16,8 +18,8 @@ public class BitBoards {
     public static final long BLACK_QUEEN = 0x1000000000000000L;
     public static final long BLACK_KING = 0x0800000000000000L;
 
-    static long WHITE_SQUARES = 0x5555555555555555L;
-    static long BLACK_SQUARES = 0xAAAAAAAAAAAAAAAAL;
+    public static long WHITE_SQUARES = 0x5555555555555555L;
+    public static long BLACK_SQUARES = 0xAAAAAAAAAAAAAAAAL;
 
     static long CASTLE_WHITE_KING_SQUARES = 0x0000000000000006L;
     static long CASTLE_WHITE_QUEEN_SQUARES = 0x0000000000000070L;
@@ -55,6 +57,12 @@ public class BitBoards {
     public static long centreFourSquares = (RANK_FOUR | RANK_FIVE) & (FILE_D | FILE_E);
     public static long centreNineSquares = (RANK_THREE | RANK_FOUR | RANK_FIVE | RANK_SIX) & 
             (FILE_C |FILE_D | FILE_E | FILE_F);
+    
+    public static long noMansLand = (RANK_THREE | RANK_FOUR | RANK_FIVE | RANK_SIX);
+    public static long eastWestHighway = (RANK_FOUR | RANK_FIVE);
+    public static long northSouthHighway = (FILE_D | FILE_E);
+    
+    public static long boardWithoutEdges = UNIVERSE ^ (NORTH_WEST | NORTH_EAST | SOUTH_WEST | SOUTH_EAST);
 
     public static final long whiteCastleKingEmpties = 0x0000000000000006L;
     public static final long whiteCastleQueenEmpties = 0x0000000000000070L;

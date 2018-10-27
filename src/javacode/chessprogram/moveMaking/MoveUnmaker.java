@@ -5,7 +5,6 @@ import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.graphicsandui.Art;
 
-import static javacode.chessprogram.moveMaking.StackMoveData.*;
 import static javacode.chessprogram.moveMaking.StackMoveData.SpecialMove.*;
 
 public class MoveUnmaker {

@@ -12,18 +12,18 @@ import static javacode.chessengine.Engine.*;
 import static javacode.chessengine.EngineMovesAndHash.*;
 import static javacode.chessengine.FutilityPruning.futilityMarginDepthOne;
 import static javacode.chessengine.FutilityPruning.isFutilityPruningAllowedHere;
-import static javacode.chessengine.HistoryMoves.*;
+import static javacode.chessengine.HistoryMoves.updateHistoryMoves;
 import static javacode.chessengine.KillerMoves.updateKillerMoves;
 import static javacode.chessengine.LateMoveReductions.isLateMoveReductionAllowedHere;
-import static javacode.chessengine.MoveOrderer.*;
-import static javacode.chessengine.NullMovePruning.*;
+import static javacode.chessengine.LateMoveReductions.lateMoveDepthReduction;
+import static javacode.chessengine.MoveOrderer.moveIsCapture;
+import static javacode.chessengine.MoveOrderer.orderedMoves;
 import static javacode.chessengine.NullMovePruning.isNullMoveOkHere;
-import static javacode.chessengine.Razoring.*;
+import static javacode.chessengine.NullMovePruning.nullMoveDepthReduction;
+import static javacode.chessengine.Razoring.isRazoringMoveOkHere;
+import static javacode.chessengine.Razoring.razorMargin;
 import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.chess.Copier.copyMove;
-import static javacode.chessprogram.moveMaking.MoveOrganiser.flipTurn;
-import static javacode.chessprogram.moveMaking.MoveOrganiser.makeMoveMaster;
-import static javacode.chessprogram.moveMaking.MoveUnmaker.*;
 import static javacode.evalutation.Evaluator.*;
 
 class PrincipleVariationSearch {
@@ -129,30 +129,26 @@ class PrincipleVariationSearch {
                 }
             }
             
-            /*
-            Fail High Reduction:
-            
-             */
-            
             
             /*
             Null Move Pruning:
             if not in dangerous position, forfeit a move and make shallower null window search
             */
 
-            if (nullMoveCounter < 2 && isNullMoveOkHere(board, depth, nullMoveDepthReduction)) {
+            if (nullMoveCounter < 2 && isNullMoveOkHere(board)) {
                 makeNullMove(board, zobristHash);
 
                 Assert.assertTrue(depth >= 1);
                 Assert.assertTrue(alpha < beta);
 
-                score = depth - nullMoveDepthReduction <= 0 ?
+                int reduction = nullMoveDepthReduction(currentDistanceFromRoot);
+                score = depth - reduction <= 0 ?
                         -QuiescenceSearch.quiescenceSearch(board, zobristHash, -beta, -beta + 1)
                         : -principleVariationSearch(board, zobristHash, originalDepth,
-                        depth - nullMoveDepthReduction, -beta, -beta + 1, nullMoveCounter + 1);
+                        depth - reduction, -beta, -beta + 1, nullMoveCounter + 1);
 
                 unMakeNullMove(board, zobristHash);
-                
+
                 if (score >= beta) {
                     if (DEBUG) {
                         numberOfNullMoveHits++;
@@ -194,7 +190,6 @@ class PrincipleVariationSearch {
                 if (DEBUG) {
                     numberOfStalemates++;
                 }
-//                    return IN_STALEMATE_SCORE;
                 return eval(board, board.isWhiteTurn(), orderedMoves);
             }
         }
@@ -215,26 +210,42 @@ class PrincipleVariationSearch {
         int numberOfMovesSearched = 0;
         for (Move move : orderedMoves){
 
+
+            if (!thisIsAPrincipleVariationNode && !boardInCheck(board, board.isWhiteTurn()) && (numberOfMovesSearched > 1)) {
+            
             /*
             Pruning:
-            before making move, see if we can prune
-             */
-            if (ALLOW_FUTILITY_PRUNING){
-                if (isFutilityPruningAllowedHere(board, move, depth)){
-                    if (eval(board, board.isWhiteTurn(), orderedMoves) + futilityMarginDepthOne <= alpha){
-                        if (Engine.DEBUG){
-                            numberOfSuccessfulFutilities++;
-                        }
-                        continue;
-                    }
-                    else if (Engine.DEBUG){
-                        numberOfFailedFutilities++;
-                    }
-                }
+            before making move, see if we can prune this move
+            */
 
+                if (Engine.ALLOW_LATE_MOVE_PRUNING
+                        && numberOfMovesSearched > depth * 4 + 3 && depth < 4){
+                    if (DEBUG){
+                        numberOfLateMovePrunings++;
+                    }
+                    continue;
+                }
+            
+            /*
+            Futility Pruning:
+            if score + margin smaller than alpha, skip this move
+             */
+                if (ALLOW_FUTILITY_PRUNING) {
+                    if (isFutilityPruningAllowedHere(board, move, depth)) {
+                        if (eval(board, board.isWhiteTurn(), orderedMoves) + futilityMarginDepthOne <= alpha) {
+                            if (Engine.DEBUG) {
+                                numberOfSuccessfulFutilities++;
+                            }
+                            continue;
+                        } else if (Engine.DEBUG) {
+                            numberOfFailedFutilities++;
+                        }
+                    }
+
+                }
             }
 
-            
+
             makeMoveAndHashUpdate(board, move, zobristHash);
             numberOfMovesSearched++;
 
@@ -252,9 +263,8 @@ class PrincipleVariationSearch {
             Late Move Reductions:
             search later ordered safer moves to a lower depth
              */
-            int lateMoveDepthReduction = 2 + depth / 3;
             if (ALLOW_LATE_MOVE_REDUCTIONS &&
-                    isLateMoveReductionAllowedHere(board, move, depth, numberOfMovesSearched, lateMoveDepthReduction)) {
+                    isLateMoveReductionAllowedHere(board, move, currentDistanceFromRoot, numberOfMovesSearched)) {
                 if (DEBUG) {
                     numberOfLateMoveReductions++;
                 }
@@ -263,7 +273,7 @@ class PrincipleVariationSearch {
                 lower depth search
                  */
                 score = -principleVariationSearch
-                        (board, zobristHash, originalDepth, depth - lateMoveDepthReduction, -alpha - 1, -alpha, 0);
+                        (board, zobristHash, originalDepth, depth - lateMoveDepthReduction(currentDistanceFromRoot), -alpha - 1, -alpha, 0);
 
                 /*
                 if a lower move seems good, full depth research
@@ -275,7 +285,7 @@ class PrincipleVariationSearch {
                     }
                 }
                 else if (DEBUG) {
-                    numberOfLateMoveReductionsMisses++;
+                    numberOfLateMoveReductionsHits++;
                 }
             }  
             

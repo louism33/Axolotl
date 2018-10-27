@@ -1,11 +1,8 @@
 package javacode.chessengine;
 
 import javacode.chessprogram.bitboards.BitBoards;
-import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.moveMaking.MoveOrganiser;
-import javacode.chessprogram.moveMaking.MoveParser;
 import javacode.chessprogram.moveMaking.StackMoveData;
 import org.junit.Assert;
 
@@ -13,8 +10,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Stack;
 
-import static javacode.chessprogram.chess.BitManipulations.*;
-import static javacode.chessprogram.moveMaking.MoveOrganiser.*;
+import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveMaking.MoveOrganiser.whichPieceOnSquare;
 import static javacode.chessprogram.moveMaking.MoveParser.*;
 

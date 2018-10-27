@@ -7,14 +7,16 @@ import javacode.chessprogram.chess.Move;
 import static javacode.chessengine.MoveOrderer.moveIsCapture;
 
 class LateMoveReductions {
+    
+    static int lateMoveDepthReduction(int ply){
+        return 2 + ply / 3;
+    }
 
     static boolean isLateMoveReductionAllowedHere(Chessboard board,
-                                                  Move move, int depth, int numberOfMovesSearched,
-                                                  int lateMoveReduction) {
+                                                  Move move, int ply, int numberOfMovesSearched) {
 
-        return depth >= 3
-                && depth >= lateMoveReduction
-                && numberOfMovesSearched > 3
+        return ply >= 2
+                && numberOfMovesSearched > 2
                 && !moveIsCapture(board, move)
                 && !CheckChecker.boardInCheck(board, board.isWhiteTurn())
                 ;

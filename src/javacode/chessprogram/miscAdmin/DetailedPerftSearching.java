@@ -8,6 +8,7 @@ import javacode.chessprogram.moveMaking.MoveUnmaker;
 import javacode.graphicsandui.Art;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DetailedPerftSearching {
@@ -22,35 +23,132 @@ public class DetailedPerftSearching {
 
     private void breakDown(){
         int correctAtDepthSix = 71179139;
-        int depth = 3;
+        int depth = 6;
 
         Chessboard board = FenParser.makeBoardBasedOnFEN("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - -");
 //        runPerftTestWithBoard(depth, board, correctAtDepthSix);
-
-        Move move1 = childrenNumbersAndMoves(board, depth).get(0);
-        MoveOrganiser.makeMoveMaster(board, move1);
-        MoveOrganiser.flipTurn(board);
-
-        Move move2 = childrenNumbersAndMoves(board, depth-1).get(0);
-        MoveOrganiser.makeMoveMaster(board, move2);
-        MoveOrganiser.flipTurn(board);
-
-        Move move3 = childrenNumbersAndMoves(board, depth-2).get(0);
-        MoveOrganiser.makeMoveMaster(board, move3);
-        MoveOrganiser.flipTurn(board);
-    }
-    
-    private List<Move> childrenNumbersAndMoves(Chessboard board, int depth){
-        System.out.println(Art.boardArt(board));
         
-        List<Long> longs = sumOfChildrenStartingAt(board, depth);
+        /*
+        error in g2h1 q
+        
+        e2f2, e2e3, both king moves
+         */
+        if (true) {
+            List<MoveNLong> moveNLongs1 = childrenNumbersAndMoves(board, depth);
+            MoveOrganiser.makeMoveMaster(board, moveNLongs1.get(19).move);
+            MoveOrganiser.flipTurn(board);
+        }
+
+        if (true) {
+            List<MoveNLong> moveNLongs2 = childrenNumbersAndMoves(board, depth - 1);
+//        System.out.println(moveNLongs2);
+            MoveOrganiser.makeMoveMaster(board, moveNLongs2.get(1).move);
+            MoveOrganiser.flipTurn(board);
+        }
+
+        if (true) {
+            List<MoveNLong> moveNLongs3 = childrenNumbersAndMoves(board, depth - 2);
+            System.out.println(moveNLongs3);
+            MoveOrganiser.makeMoveMaster(board, moveNLongs3.get(9).move);
+            MoveOrganiser.flipTurn(board);
+        }
+
+        if (true) {
+            List<MoveNLong> moveNLongs3 = childrenNumbersAndMoves(board, depth - 3);
+            System.out.println(moveNLongs3);
+            MoveOrganiser.makeMoveMaster(board, moveNLongs3.get(2).move);
+            MoveOrganiser.flipTurn(board);
+        }
+        
+        if (true) {
+            List<MoveNLong> moveNLongs3 = childrenNumbersAndMoves(board, depth - 4);
+            System.out.println(moveNLongs3);
+            MoveOrganiser.makeMoveMaster(board, moveNLongs3.get(27).move);
+            MoveOrganiser.flipTurn(board);
+        }
+        
+        List<MoveNLong> moveNLongs3 = childrenNumbersAndMoves(board, depth - 5);
+        System.out.println(moveNLongs3);
+//        MoveOrganiser.makeMoveMaster(board, moveNLongs3.get(27).move);
+//        MoveOrganiser.flipTurn(board);
+
+        int[] stockfish1 = new int[]{
+              1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+        };
+
+        List<Long> stockFish11 = new ArrayList<>();
+        for (int i : stockfish1){
+            stockFish11.add((long) i);
+        }
+        System.out.println("stockfish: ");
+        System.out.println(stockFish11);
+
+
+        List<Long> scores = new ArrayList<>();
+        for (MoveNLong moveNLong : moveNLongs3){
+            scores.add(moveNLong.number);
+        }
+        System.out.println("me: ");
+        System.out.println(scores);
+
+
+        System.out.println("ODD ONES OUT");
+        List<Long> longs = oddOnesOut(scores, stockFish11);
+        System.out.println("-----------");
         System.out.println(longs);
+
+        List<Long> longs2 = oddOnesOut(stockFish11, scores);
+        System.out.println("-----------");
+        System.out.println(longs2);
+
+
+//        Move move2 = childrenNumbersAndMoves(board, depth-1).get(0);
+//        MoveOrganiser.makeMoveMaster(board, move2);
+//        MoveOrganiser.flipTurn(board);
+//
+//        Move move3 = childrenNumbersAndMoves(board, depth-2).get(0);
+//        MoveOrganiser.makeMoveMaster(board, move3);
+//        MoveOrganiser.flipTurn(board);
+    }
+
+    class MoveNLong {
+        long number;
+        Move move;
+
+        public MoveNLong(long number, Move move) {
+            this.number = number;
+            this.move = move;
+        }
+
+        @Override
+        public String toString() {
+            return "\nMoveNLong{" +
+                    "move=" + move +
+                    ", number=" + number +
+                    '}';
+        }
+    }
+    private List<MoveNLong> childrenNumbersAndMoves(Chessboard board, int depth){
+        List<MoveNLong> moveNLongs = new ArrayList<>();
+        System.out.println(Art.boardArt(board));
+
+        List<Long> longs = sumOfChildrenStartingAt(board, depth);
+//        System.out.println(longs);
         long total = sumList(longs);
+
+        List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
+//        System.out.println(moves);
+
+        for (int i = 0; i < longs.size(); i++) {
+            Long l = longs.get(i);
+            MoveNLong m = new MoveNLong(longs.get(i), moves.get(i));
+
+            moveNLongs.add(m);
+        }
         System.out.println(total);
         System.out.println("------------");
-        List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
-        System.out.println(moves);
-        return moves;
+
+        return moveNLongs;
     }
 
     private static List<Long> sumOfChildrenStartingAt(Chessboard board, int d){
@@ -88,8 +186,16 @@ public class DetailedPerftSearching {
         return total;
     }
 
+    public static long runPerftTestWithBoard(int d, Chessboard board, long correctAnswer){
+        String s = Art.boardArt(board);
+        System.out.println(s);
+        System.out.println("-----------------------------------");
+        System.out.println("Correct Number of nodes at depth " + d + ": "+ correctAnswer);
+        System.out.println("-----------------------------------");
+        return runPerftTestWithBoard(d, board);
+    }
 
-    public static long runPerftTestWithBoard(int d, Chessboard board, int correctAnswer){
+    public static long runPerftTestWithBoardLong(int d, Chessboard board, long correctAnswer){
         String s = Art.boardArt(board);
         System.out.println(s);
         System.out.println("-----------------------------------");

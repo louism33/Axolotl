@@ -5,14 +5,26 @@ import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.graphicsandui.Art;
 
+import static javacode.chessprogram.chess.BitManipulations.*;
+
 class MoveEnPassant {
     
     static void makeEnPassantMove(Chessboard board, Move move){
-        long sourcePiece = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
-        long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
+        long sourcePiece = newPieceOnSquare(move.getSourceAsPiece());
+        long destinationPiece = newPieceOnSquare(move.destination);
         
         if ((destinationPiece & board.ALL_PIECES()) != 0) {
+            System.out.println("EP MOVE PROBLEM!");
+            System.out.println("source");
+            Art.printLong(sourcePiece);
+            System.out.println("destination");
+            Art.printLong(destinationPiece);
+            System.out.println("all pieces");
+            Art.printLong(board.ALL_PIECES());
             System.out.println(Art.boardArt(board));
+            System.out.println(move);
+            System.out.println("white move: "+board.isWhiteTurn());
+            
             throw new RuntimeException("EP move Problem");
         }
         

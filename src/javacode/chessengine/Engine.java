@@ -11,7 +11,7 @@ public class Engine {
 
     Chessboard board;
 
-    public static final int MAX_DEPTH = 12;
+    public static final int MAX_DEPTH = 10;
     
     public static final boolean DEBUG = true;
 
@@ -21,51 +21,31 @@ public class Engine {
     public static int numberOfQuiescentEvals = 0;
     public static int numberOfCheckmates = 0;
     public static int numberOfStalemates = 0;
-
     public static int numberOfFailHighs = 0;
-
     public static int numberOfNullMoveHits = 0;
     public static int numberOfNullMoveMisses = 0;
-
     public static int numberOfPVSHits = 0;
     public static int numberOfPVSMisses = 0;
-
+    public static int numberOfLateMovePrunings = 0;
     public static int numberOfLateMoveReductions = 0;
     public static int numberOfLateMoveReductionsHits = 0;
     public static int numberOfLateMoveReductionsMisses = 0;
-
     public static int numberOfCheckExtensions = 0;
-
     public static int numberOfSuccessfulFutilities = 0;
     public static int numberOfFailedFutilities = 0;
-
     public static int numberOfSuccessfulRazors = 0;
     public static int numberOfFailedRazors = 0;
-
     public static int numberOfSuccessfulAspirations = 0;
     public static int numberOfFailedAspirations = 0;
-//
-//    static final boolean ALLOW_PRINCIPLE_VARIATION_SEARCH   = false;
-//    static final boolean ALLOW_MATE_DISTANCE_PRUNING        = false;
-//    static final boolean ALLOW_EXTENSIONS                   = false;
-//    
-//    static final boolean ALLOW_LATE_MOVE_REDUCTIONS         = false;
-//    
-//    static final boolean ALLOW_NULL_MOVE_PRUNING            = true;
-//    
-//    static final boolean ALLOW_RAZORING                     = false;
-//    static final boolean ALLOW_FUTILITY_PRUNING             = false;
-//    static final boolean ALLOW_KILLERS                      = false;
-//    static final boolean ALLOW_HISTORY_MOVES                = false;
-//    static final boolean ALLOW_ASPIRATION_WINDOWS           = false;
 
     static final boolean ALLOW_PRINCIPLE_VARIATION_SEARCH   = true;
     static final boolean ALLOW_MATE_DISTANCE_PRUNING        = true;
     static final boolean ALLOW_EXTENSIONS                   = true;
     static final boolean ALLOW_LATE_MOVE_REDUCTIONS         = true;
+    static final boolean ALLOW_LATE_MOVE_PRUNING            = false;
     static final boolean ALLOW_NULL_MOVE_PRUNING            = true;
     static final boolean ALLOW_RAZORING                     = false;
-    static final boolean ALLOW_FUTILITY_PRUNING             = false;
+    static final boolean ALLOW_FUTILITY_PRUNING             = true;
     static final boolean ALLOW_KILLERS                      = true;
     static final boolean ALLOW_HISTORY_MOVES                = true;
     static final boolean ALLOW_ASPIRATION_WINDOWS           = true;
@@ -97,7 +77,8 @@ public class Engine {
                     "\nALLOW_PRINCIPLE_VARIATION_SEARCH = "     + ALLOW_PRINCIPLE_VARIATION_SEARCH +
                     "\nALLOW_MATE_DISTANCE_PRUNING = "          + ALLOW_MATE_DISTANCE_PRUNING +
                     "\nALLOW_EXTENSIONS = "                     + ALLOW_EXTENSIONS +
-                    "\nALLOW_LATE_MOVE_REDUCTIONS = "           + ALLOW_LATE_MOVE_REDUCTIONS +
+                    "\nALLOW_LATE_MOVE_REDUCTIONS = "           + ALLOW_LATE_MOVE_REDUCTIONS +     
+                    "\nALLOW_LATE_MOVE_PRUNING = "              + ALLOW_LATE_MOVE_PRUNING +
                     "\nALLOW_NULL_MOVE_PRUNING = "              + ALLOW_NULL_MOVE_PRUNING +
                     "\nALLOW_RAZORING = "                       + ALLOW_RAZORING +
                     "\nALLOW_FUTILITY_PRUNING = "               + ALLOW_FUTILITY_PRUNING +
@@ -120,6 +101,10 @@ public class Engine {
                 System.out.println("number of late move reductions: " + numberOfLateMoveReductions);
                 System.out.println("number of late move reduction hits: " + numberOfLateMoveReductionsHits);
                 System.out.println("number of late move reduction misses: " + numberOfLateMoveReductionsMisses);
+                System.out.println();
+            }
+            if (ALLOW_LATE_MOVE_PRUNING) {
+                System.out.println("number of late move prunings: " + numberOfLateMovePrunings);
                 System.out.println();
             }
             if (ALLOW_NULL_MOVE_PRUNING){

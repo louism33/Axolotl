@@ -14,6 +14,53 @@ import java.util.List;
 
 class EngineTestMisc {
 
+    @Test
+    void blathyGrotesque() {
+
+        // white wins through underpromotion
+        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("8/8/8/2p5/1pp5/brpp4/qpprpK1P/1nkbn3 w - - 0 1");
+        System.out.println(Art.boardArt(chessboard));
+
+        Move move = Engine.search(chessboard, 1000);
+        System.out.println(move);
+
+        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Kxe1");
+        int destination = move.destination;
+        Assert.assertEquals(moveToWin, destination);
+    }
+    
+    @Test
+    void gorgievGrotesque() {
+
+        // white draws through sacrifices
+        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("8/8/4N3/4Q3/1pp5/1p3N2/bpqp1p2/nrkrbK2 w - - 0 1");
+        System.out.println(Art.boardArt(chessboard));
+
+        Move move = Engine.search(chessboard, 1000);
+        System.out.println(move);
+
+        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Nf4");
+        int destination = move.destination;
+        Assert.assertEquals(moveToWin, destination);
+
+    }
+
+    
+    @Test
+    void paulLamfordGrotesque() {
+
+        // ridiculous board position and checkmate, white to win
+        Chessboard chessboard = FenParser.makeBoardBasedOnFEN("8/8/8/1k3p2/p1p1pPp1/PpPpP1Pp/1P1P3P/QNK2NRR w - - 0 1");
+        System.out.println(Art.boardArt(chessboard));
+
+        Move move = Engine.search(chessboard, 1000);
+        System.out.println(move);
+
+        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Kd1");
+        int destination = move.destination;
+        Assert.assertEquals(moveToWin, destination);
+
+    }
 
     @Test
     void retiEndgameStudy() {

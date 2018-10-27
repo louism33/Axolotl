@@ -59,7 +59,7 @@ public class PieceMovePawns {
         return answer & legalCaptures;
     }
 
-    static long masterPawnCapturesTable(Chessboard board, boolean white,
+    public static long masterPawnCapturesTable(Chessboard board, boolean white,
                                                long ignoreThesePieces, long legalCaptures){
         long ans = 0, pawns;
         if (white){

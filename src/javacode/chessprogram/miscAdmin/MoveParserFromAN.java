@@ -1,5 +1,6 @@
 package javacode.chessprogram.miscAdmin;
 
+import javacode.chessprogram.bitboards.BitBoards;
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
@@ -181,6 +182,7 @@ public class MoveParserFromAN {
     
     
     public static void main (String[] args){
+        Art.printLong((BitBoards.centreNineSquares ^ BitBoards.centreFourSquares));
         int i = rankAndFile(new Chessboard(), "c2+");
         System.out.println(i);
     }

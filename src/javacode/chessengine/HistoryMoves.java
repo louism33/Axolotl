@@ -1,6 +1,5 @@
 package javacode.chessengine;
 
-import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Move;
 
 class HistoryMoves {

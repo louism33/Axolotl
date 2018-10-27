@@ -25,7 +25,6 @@ public class PieceMoveKing {
 
         long l1 = King.KING_MOVE_TABLE[index];
         table |= l1;
-        long emptyOfMyPieces = ~((white) ? board.ALL_WHITE_PIECES() : board.ALL_BLACK_PIECES());
        
         return table & (legalPushes | legalCaptures);
     }

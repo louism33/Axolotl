@@ -10,16 +10,20 @@ import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.chessprogram.moveMaking.MoveParser;
 import javacode.chessprogram.moveMaking.MoveUnmaker;
 import javacode.chessprogram.moveMaking.StackMoveData;
+import javacode.graphicsandui.Art;
+import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static javacode.chessprogram.moveMaking.StackMoveData.*;
 
 public class MoveGeneratorEnPassant {
 
     public static List<Move> generateEnPassantMoves(Chessboard board, boolean white,
                                                     long ignoreThesePieces, long legalPushes, long legalCaptures) {
         List<Move> moves = new ArrayList<>();
-        
+
         long myPawns = white ? board.WHITE_PAWNS : board.BLACK_PAWNS;
         long enemyPawns = white ? board.BLACK_PAWNS : board.WHITE_PAWNS;
         long enPassantTakingRank = white ? BitBoards.RANK_FIVE : BitBoards.RANK_FOUR;
@@ -33,15 +37,17 @@ public class MoveGeneratorEnPassant {
         if (enemyPawnsInPosition == 0) {
             return new ArrayList<>();
         }
-        
+
         if (board.moveStack.size() < 1){
             return new ArrayList<>();
         }
-        
+
         StackMoveData previousMove = board.moveStack.peek();
-        if (!(previousMove.typeOfSpecialMove == StackMoveData.SpecialMove.ENPASSANTVICTIM)){
+        if (previousMove.typeOfSpecialMove != SpecialMove.ENPASSANTVICTIM){
             return new ArrayList<>();
         }
+
+
 
         long FILE = extractFileFromInt(previousMove.enPassantFile);
 
@@ -52,12 +58,16 @@ public class MoveGeneratorEnPassant {
             long takingSpot = white ? enemyPawn << 8 : enemyPawn >>> 8;
             long potentialTakingSpot = takingSpot & FILE;
 
+            if ((potentialTakingSpot & board.ALL_PIECES()) != 0){
+                continue;
+            }
+            
             if (((enemyPawn & legalCaptures) == 0) && ((potentialTakingSpot & legalPushes) == 0)) {
                 continue;
             }
             enemyTakingSpots |= potentialTakingSpot;
         }
-        
+
 
         if (enemyTakingSpots == 0){
             return new ArrayList<>();
@@ -80,7 +90,7 @@ public class MoveGeneratorEnPassant {
             MoveOrganiser.makeMoveMaster(board, move);
             boolean enPassantWouldLeadToCheck = CheckChecker.boardInCheck(board, white);
             MoveUnmaker.unMakeMoveMaster(board);
-            
+
             if (enPassantWouldLeadToCheck){
                 continue;
             }

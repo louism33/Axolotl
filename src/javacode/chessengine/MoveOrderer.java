@@ -6,12 +6,12 @@ import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static javacode.chessengine.Engine.*;
+import static javacode.chessengine.Engine.ALLOW_HISTORY_MOVES;
+import static javacode.chessengine.Engine.ALLOW_KILLERS;
 import static javacode.chessengine.HistoryMoves.historyMoveScore;
 import static javacode.chessengine.KillerMoves.killerMoves;
 import static javacode.chessprogram.moveMaking.MoveParser.*;

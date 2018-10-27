@@ -6,13 +6,15 @@ import javacode.chessprogram.chess.Chessboard;
 
 class NullMovePruning {
 
-    static int nullMoveDepthReduction = 2;
+    static int nullMoveDepthReduction(int ply){
+        return 2 + ply / 3;
+    }
     
     /*
     Null Move Pruning:
     only perform if not in check, endgame, or position where we would actually like to pass our move (Zugzwang)
      */
-    static boolean isNullMoveOkHere(Chessboard board, int depth, int nullMoveDepthReduction){
+    static boolean isNullMoveOkHere(Chessboard board){
         return Engine.ALLOW_NULL_MOVE_PRUNING
                 && !CheckChecker.boardInCheck(board, board.isWhiteTurn())
                 && !maybeInEndgame(board)

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PieceMoveSliding {
 
-    static long singleBishopPushes(Chessboard board, long piece, boolean white, long legalPushes){
+    public static long singleBishopPushes(Chessboard board, long piece, boolean white, long legalPushes){
         return singleBishopAllMoves(board, piece, white, legalPushes, 0);
     }
 
@@ -57,7 +57,7 @@ public class PieceMoveSliding {
     }
 
 
-    static long singleRookPushes(Chessboard board, long piece, boolean white, long legalPushes){
+    public static long singleRookPushes(Chessboard board, long piece, boolean white, long legalPushes){
         return singleRookAllMoves(board, piece, white, legalPushes, 0);
     }
 
@@ -99,7 +99,7 @@ public class PieceMoveSliding {
         return answer & (legalPushes | legalCaptures);
     }
 
-    static long singleQueenPushes(Chessboard board, long piece, boolean white, long legalPushes){
+    public static long singleQueenPushes(Chessboard board, long piece, boolean white, long legalPushes){
         return singleQueenAllMoves(board, piece, white, legalPushes, 0);
     }
 

@@ -4,20 +4,15 @@ import javacode.chessengine.Engine;
 import javacode.chessengine.EngineMovesAndHash;
 import javacode.chessengine.ZobristHash;
 import javacode.chessprogram.chess.Chessboard;
-import javacode.chessprogram.chess.Copier;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.miscAdmin.FenParser;
-import javacode.chessprogram.miscAdmin.MoveParserFromAN;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
-import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.graphicsandui.Art;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Random;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ZobristHashTest {
 

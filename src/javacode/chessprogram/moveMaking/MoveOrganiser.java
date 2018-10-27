@@ -5,6 +5,8 @@ import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
+import static javacode.chessprogram.moveMaking.StackMoveData.*;
+
 public class MoveOrganiser {
 
     public static void flipTurn(Chessboard board){
@@ -21,7 +23,7 @@ public class MoveOrganiser {
         if (MoveParser.isSpecialMove(move)){
             if (MoveParser.isCastlingMove(move)) {
                 castlings++;
-                StackMoveData stackMoveData = new StackMoveData(move, board, 50, StackMoveData.SpecialMove.CASTLING);
+                StackMoveData stackMoveData = new StackMoveData(move, board, 50, SpecialMove.CASTLING);
                 board.moveStack.push(stackMoveData);
                 MoveCastling.makeCastlingMove(board, move);
                 MoveCastling.castleFlagManager(board, move);
@@ -30,7 +32,7 @@ public class MoveOrganiser {
             else if (MoveParser.isEnPassantMove(move)){
                 epNum++;
                 StackMoveData stackMoveData = new StackMoveData
-                        (move, board, 50, StackMoveData.SpecialMove.ENPASSANTCAPTURE);
+                        (move, board, 50, SpecialMove.ENPASSANTCAPTURE);
                 board.moveStack.push(stackMoveData);
                 MoveEnPassant.makeEnPassantMove(board, move);
                 MoveCastling.castleFlagManager(board, move);
@@ -46,14 +48,14 @@ public class MoveOrganiser {
 
                     promotions++;
                     captures++;
-                    StackMoveData stackMoveData = new StackMoveData(move, board, 50, StackMoveData.SpecialMove.PROMOTION, takenPiece);
+                    StackMoveData stackMoveData = new StackMoveData(move, board, 50, SpecialMove.PROMOTION, takenPiece);
                     board.moveStack.push(stackMoveData);
                     MovePromotion.makePromotingMove(board, move);
                     MoveCastling.castleFlagManager(board, move);
                 }
                 else {
                     promotions++;
-                    StackMoveData stackMoveData = new StackMoveData(move, board, 50, StackMoveData.SpecialMove.PROMOTION);
+                    StackMoveData stackMoveData = new StackMoveData(move, board, 50, SpecialMove.PROMOTION);
                     board.moveStack.push(stackMoveData);
                     MovePromotion.makePromotingMove(board, move);
                     MoveCastling.castleFlagManager(board, move);
@@ -72,7 +74,7 @@ public class MoveOrganiser {
                 long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
                 int takenPiece = whichPieceOnSquare(board, destinationPiece);
                 StackMoveData stackMoveData = new StackMoveData
-                        (move, board, 50, StackMoveData.SpecialMove.BASICCAPTURE, takenPiece);
+                        (move, board, 50, SpecialMove.BASICCAPTURE, takenPiece);
                 board.moveStack.push(stackMoveData);
                 MoveRegular.makeRegularMove(board, move);
                 MoveCastling.castleFlagManager(board, move);
@@ -82,7 +84,7 @@ public class MoveOrganiser {
                 int sourceAsPiece = move.getSourceAsPiece();
                 int whichFile = 8 - sourceAsPiece % 8;
                 StackMoveData stackMoveData = new StackMoveData
-                        (move, board, 50, whichFile, StackMoveData.SpecialMove.ENPASSANTVICTIM);
+                        (move, board, 50, whichFile, SpecialMove.ENPASSANTVICTIM);
                 board.moveStack.push(stackMoveData);
                 MoveRegular.makeRegularMove(board, move);
                 MoveCastling.castleFlagManager(board, move);
@@ -93,7 +95,7 @@ public class MoveOrganiser {
                 int movingPiece = whichPieceOnSquare(board, destinationPiece);
                 if (movingPiece == 1 || movingPiece == 7){
                     StackMoveData stackMoveData = new StackMoveData
-                            (move, board, 50, StackMoveData.SpecialMove.BASICLOUDPUSH);
+                            (move, board, 50, SpecialMove.BASICLOUDPUSH);
                     board.moveStack.push(stackMoveData);
                     MoveRegular.makeRegularMove(board, move);
                     MoveCastling.castleFlagManager(board, move);
@@ -101,7 +103,7 @@ public class MoveOrganiser {
                 else {
                     // increment 50 move rule
                     StackMoveData stackMoveData = new StackMoveData
-                            (move, board, 50, StackMoveData.SpecialMove.BASICQUIETPUSH);
+                            (move, board, 50, SpecialMove.BASICQUIETPUSH);
                     board.moveStack.push(stackMoveData);
                     MoveRegular.makeRegularMove(board, move);
                     MoveCastling.castleFlagManager(board, move);
