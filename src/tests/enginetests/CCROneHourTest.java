@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class )
-class CCROneHourTest {
+public class CCROneHourTest {
     private static final int timeLimit = 10000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")

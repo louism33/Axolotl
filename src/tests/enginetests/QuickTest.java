@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class )
-class QuickTest {
+public class QuickTest {
 
     private static final int timeLimit = 10000;
 

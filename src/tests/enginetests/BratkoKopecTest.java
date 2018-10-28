@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-class BratkoKopecTest {
+public class BratkoKopecTest {
 
     private static final int timeLimit = 10000;
 

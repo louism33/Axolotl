@@ -1,6 +1,6 @@
 package tests.enginetests;
 
-class SCHACKNYTTtests {
+public class SCHACKNYTTtests {
 }
 
 /*

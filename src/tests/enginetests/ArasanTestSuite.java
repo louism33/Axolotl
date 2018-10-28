@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-class ArasanTestSuite {
+public class ArasanTestSuite {
 
     private static final int timeLimit = 10000;
 

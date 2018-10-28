@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-class ZugzwangPositions {
+public class ZugzwangPositions {
 
     private static final int timeLimit = 10000;
 

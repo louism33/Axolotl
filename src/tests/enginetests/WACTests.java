@@ -16,12 +16,9 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-class WACTests {
-    /*
-    difficult: 2, 22, 31, 38, 86, 87, 105, 120, 141, 146, 163, 180, 196, 213, 222, 224
-     */
+public class WACTests {
 
-    private static final int timeLimit = 30000; 
+    private static final int timeLimit = 10000; 
     
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
