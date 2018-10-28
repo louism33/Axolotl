@@ -17,6 +17,9 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class WACTests {
+    /*
+    Arasan = 10 sec.	298/300
+     */
 
     private static final int timeLimit = 10000; 
     
