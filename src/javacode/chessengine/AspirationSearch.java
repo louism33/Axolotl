@@ -1,15 +1,17 @@
 package javacode.chessengine;
 
 import javacode.chessprogram.chess.Chessboard;
-import javacode.evalutation.Evaluator;
+import javacode.evaluation.Evaluator;
 
 import static javacode.chessengine.Engine.*;
 import static javacode.chessengine.PrincipleVariationSearch.principleVariationSearch;
-import static javacode.evalutation.Evaluator.IN_CHECKMATE_SCORE_MAX_PLY;
+import static javacode.evaluation.Evaluator.IN_CHECKMATE_SCORE_MAX_PLY;
 
 class AspirationSearch {
 
-    static int aspirationSearch(Chessboard board, long timeLimit, ZobristHash zobristHash, int depth, int aspirationScore){
+    static int aspirationSearch(Chessboard board, long startTime, long timeLimitMillis,
+                                ZobristHash zobristHash, int depth, int aspirationScore){
+        
         int firstWindow = 100, alpha, beta, alphaFac = 2, betaFac = 2;
         if (ALLOW_ASPIRATION_WINDOWS) {
             firstWindow = 201;
@@ -20,17 +22,29 @@ class AspirationSearch {
             alpha = Evaluator.IN_CHECKMATE_SCORE - 1;
             beta = -Evaluator.IN_CHECKMATE_SCORE + 1;
         }
-        int score;
+        int score = aspirationScore;
 
-        for (;;) {
+        boolean outOfTime = false;
+        
+        while (!outOfTime){
             /*
             Aspiration Search:
             call main search function with artificially small windows, hoping for more cutoffs
              */
-            score = principleVariationSearch(board, zobristHash, depth, depth, alpha, beta, 0);
+            score = principleVariationSearch(board, zobristHash, 
+                    startTime, timeLimitMillis,
+                    depth, depth, 0, alpha, beta, 0, false);
 
             if (score >= -IN_CHECKMATE_SCORE_MAX_PLY){
                 return score;
+            }
+
+            if (ALLOW_TIME_LIMIT) {
+                long currentTime = System.currentTimeMillis();
+                long timeLeft = startTime + timeLimitMillis - currentTime;
+                if (timeLeft < 0) {
+                    outOfTime = true;
+                }
             }
             
             /*

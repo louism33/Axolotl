@@ -8,7 +8,7 @@ class HistoryMoves {
     History Moves:
     one int for every from-square to-square combination. Incremented every time this move is found to produce cutoffs
      */
-    static int[][] historyMoves = new int[64][64];
+    private static final int[][] historyMoves = new int[64][64];
     
     /*
     square the ply as shallower moves get added many times

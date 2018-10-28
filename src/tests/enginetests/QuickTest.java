@@ -15,9 +15,9 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class )
-public class QuickTest {
+class QuickTest {
 
-    static final int timeLimit = 10000;
+    private static final int timeLimit = 10000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -53,7 +53,7 @@ public class QuickTest {
     }
 
 
-    static String bkTests = "" +
+    private static final String bkTests = "" +
             "1n1r1rk1/ppq2ppp/3p2b1/3B1NP1/4PB1R/bP2P2P/P1P5/3KQ1R1 w - - bm Qc3; id Quick-01;\n" +
             "1q6/r4pbk/1r1p2pp/B2Pn3/Q2NP3/1p3P2/6PP/1R3RK1 b - - bm Rxa5; id Quick-02;\n" +
             "3Q4/3p4/P2p4/N2b4/8/4P3/5p1p/5Kbk w - - bm Qa8; id Quick-03;\n" +
@@ -80,7 +80,7 @@ public class QuickTest {
             "3B4/1R3p1k/2p4p/2Pp3r/3P4/4Q1K1/6P1/3b1q2 w - - bm Bf6; id Quick-24;" +
             "";
 
-    static String[] splitUpBKs = bkTests.split("\\\n");
+    private static final String[] splitUpBKs = bkTests.split("\\\n");
     static int totalBKs = splitUpBKs.length;
 }
     

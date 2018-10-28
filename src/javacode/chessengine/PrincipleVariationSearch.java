@@ -1,9 +1,11 @@
 package javacode.chessengine;
 
+import javacode.chessprogram.bitboards.BitBoards;
+import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
-import javacode.evalutation.Evaluator;
+import javacode.chessprogram.moveMaking.StackMoveData;
 import org.junit.Assert;
 
 import java.util.List;
@@ -20,11 +22,13 @@ import static javacode.chessengine.MoveOrderer.moveIsCapture;
 import static javacode.chessengine.MoveOrderer.orderedMoves;
 import static javacode.chessengine.NullMovePruning.isNullMoveOkHere;
 import static javacode.chessengine.NullMovePruning.nullMoveDepthReduction;
+import static javacode.chessengine.QuiescenceSearch.quiescenceSearch;
 import static javacode.chessengine.Razoring.isRazoringMoveOkHere;
 import static javacode.chessengine.Razoring.razorMargin;
 import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.chess.Copier.copyMove;
-import static javacode.evalutation.Evaluator.*;
+import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
+import static javacode.evaluation.Evaluator.*;
 
 class PrincipleVariationSearch {
 
@@ -32,21 +36,32 @@ class PrincipleVariationSearch {
     private static Move aiMove;
 
     static int principleVariationSearch(Chessboard board, ZobristHash zobristHash,
-                                        int originalDepth, int depth, int alpha, int beta,
-                                        int nullMoveCounter){
+                                        long startTime, long timeLimitMillis,
+                                        int originalDepth, int depth, int ply,
+                                        int alpha, int beta,
+                                        int nullMoveCounter, boolean reducedSearch){
         int originalAlpha = alpha;
 
-        int currentDistanceFromRoot = originalDepth - depth;
-        depth += extensions(board, currentDistanceFromRoot);
-
+        depth += extensions(board, ply);
+        
         Assert.assertTrue(depth >= 0);
+
+        if (ALLOW_TIME_LIMIT) {
+            long currentTime = System.currentTimeMillis();
+            long timeLeft = startTime + timeLimitMillis - currentTime;
+            if (timeLeft < 0) {
+                return alpha;
+            }
+        }
         
         /*
         Quiescent Search:
         if at a leaf node, perform specialised search of captures to avoid horizon effect
          */
         if (depth <= 0){
-            return QuiescenceSearch.quiescenceSearch(board, zobristHash, alpha, beta);
+            return quiescenceSearch(board, zobristHash,
+                    startTime, timeLimitMillis,
+                    alpha, beta);
         }
 
         Assert.assertTrue(depth >= 1);
@@ -56,8 +71,8 @@ class PrincipleVariationSearch {
         prefer closer wins and further loses 
          */
         if (ALLOW_MATE_DISTANCE_PRUNING){
-            alpha = Math.max(alpha, IN_CHECKMATE_SCORE + currentDistanceFromRoot);
-            beta = Math.min(beta, -IN_CHECKMATE_SCORE - currentDistanceFromRoot - 1);
+            alpha = Math.max(alpha, IN_CHECKMATE_SCORE + ply);
+            beta = Math.min(beta, -IN_CHECKMATE_SCORE - ply - 1);
             if (alpha >= beta){
                 return alpha;
             }
@@ -78,7 +93,7 @@ class PrincipleVariationSearch {
                 int scoreFromTable = previousTableData.getScore();
                 hashMove = previousTableData.getMove();
                 if (flag == TranspositionTable.TableObject.Flag.EXACT) {
-                    if (depth == originalDepth) {
+                    if (ply == 0){
                         aiMove = copyMove(hashMove);
                     }
                     return scoreFromTable;
@@ -88,7 +103,7 @@ class PrincipleVariationSearch {
                     beta = Math.min(beta, scoreFromTable);
                 }
                 if (alpha >= beta) {
-                    if (depth == originalDepth) {
+                    if (ply == 0){
                         aiMove = copyMove(hashMove);
 
                     }
@@ -104,7 +119,7 @@ class PrincipleVariationSearch {
         final boolean thisIsAPrincipleVariationNode = beta - alpha != 1;
         if (!thisIsAPrincipleVariationNode && !boardInCheck(board, board.isWhiteTurn())) {
 
-            int staticBoardEval = Evaluator.eval(board, board.isWhiteTurn(), MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()));
+            int staticBoardEval = eval(board, board.isWhiteTurn(), generateLegalMoves(board, board.isWhiteTurn()));
 
             /*
             Razoring:
@@ -113,7 +128,8 @@ class PrincipleVariationSearch {
             if (ALLOW_RAZORING){
                 if (isRazoringMoveOkHere(board, depth, alpha)){
                     if (staticBoardEval + razorMargin < alpha){
-                        final int qScore = QuiescenceSearch.quiescenceSearch(board, zobristHash,
+                        final int qScore = quiescenceSearch(board, zobristHash,
+                                startTime, timeLimitMillis,
                                 alpha - razorMargin, alpha - razorMargin + 1);
                         if (qScore +razorMargin <= alpha){
                             if (DEBUG){
@@ -141,11 +157,15 @@ class PrincipleVariationSearch {
                 Assert.assertTrue(depth >= 1);
                 Assert.assertTrue(alpha < beta);
 
-                int reduction = nullMoveDepthReduction(currentDistanceFromRoot);
-                score = depth - reduction <= 0 ?
-                        -QuiescenceSearch.quiescenceSearch(board, zobristHash, -beta, -beta + 1)
-                        : -principleVariationSearch(board, zobristHash, originalDepth,
-                        depth - reduction, -beta, -beta + 1, nullMoveCounter + 1);
+                int reducedDepth = depth - nullMoveDepthReduction(ply) - 1;
+                score = reducedDepth <= 0 ?
+                        -quiescenceSearch(board, zobristHash,
+                                startTime, timeLimitMillis,
+                                -beta, -beta + 1)
+                        : -principleVariationSearch(board, zobristHash,
+                        startTime, timeLimitMillis,
+                        originalDepth, reducedDepth, ply + 1,
+                        -beta, -beta + 1, nullMoveCounter + 1, true);
 
                 unMakeNullMove(board, zobristHash);
 
@@ -167,13 +187,12 @@ class PrincipleVariationSearch {
         place moves most likely to cause cutoffs at the front of the move list (hashmoves, killers, captures)
          */
         List<Move> orderedMoves;
-        loop:
         if (previousTableData != null) {
             hashMove = previousTableData.getMove();
-            orderedMoves = orderedMoves(board, board.isWhiteTurn(), currentDistanceFromRoot, hashMove);
+            orderedMoves = orderedMoves(board, board.isWhiteTurn(), ply, hashMove);
         }
         else {
-            orderedMoves = orderedMoves(board, board.isWhiteTurn(), currentDistanceFromRoot, null);
+            orderedMoves = orderedMoves(board, board.isWhiteTurn(), ply, null);
         }
         
         /*
@@ -184,7 +203,7 @@ class PrincipleVariationSearch {
                 if (DEBUG) {
                     numberOfCheckmates++;
                 }
-                return IN_CHECKMATE_SCORE + currentDistanceFromRoot;
+                return IN_CHECKMATE_SCORE + ply;
             }
             else {
                 if (DEBUG) {
@@ -193,13 +212,13 @@ class PrincipleVariationSearch {
                 return eval(board, board.isWhiteTurn(), orderedMoves);
             }
         }
-
+        
         /*
         Iterative Deepening
         first move should always be winner of search at lower depth. Unless we find a better move, this one is returned
          */
         Move bestMove = copyMove(orderedMoves.get(0));
-        if (depth == originalDepth){
+        if (ply == 0){
             aiMove = copyMove(orderedMoves.get(0));
         }
         
@@ -264,7 +283,7 @@ class PrincipleVariationSearch {
             search later ordered safer moves to a lower depth
              */
             if (ALLOW_LATE_MOVE_REDUCTIONS &&
-                    isLateMoveReductionAllowedHere(board, move, currentDistanceFromRoot, numberOfMovesSearched)) {
+                    isLateMoveReductionAllowedHere(board, move, depth, numberOfMovesSearched, reducedSearch)) {
                 if (DEBUG) {
                     numberOfLateMoveReductions++;
                 }
@@ -272,14 +291,25 @@ class PrincipleVariationSearch {
                 /*
                 lower depth search
                  */
-                score = -principleVariationSearch
-                        (board, zobristHash, originalDepth, depth - lateMoveDepthReduction(currentDistanceFromRoot), -alpha - 1, -alpha, 0);
+                int lowerDepth = depth - lateMoveDepthReduction(ply) - 1;
+                score = lowerDepth <= 0 ? quiescenceSearch(board, zobristHash,
+                        startTime, timeLimitMillis,
+                        -alpha - 1, -alpha)
+
+                        : -principleVariationSearch
+                        (board, zobristHash, startTime, timeLimitMillis,
+                                originalDepth, lowerDepth, ply + 1,
+                                -alpha - 1, -alpha, 0, true);
 
                 /*
                 if a lower move seems good, full depth research
                  */
                 if (score > alpha){
-                    score = -principleVariationSearch(board, zobristHash, originalDepth, depth - 1, -alpha - 1, -alpha, 0);
+                    score = -principleVariationSearch(board, zobristHash,
+                            startTime, timeLimitMillis,
+                            originalDepth, depth - 1, ply + 1,
+                            -alpha - 1, -alpha, 0, false);
+
                     if (DEBUG) {
                         numberOfLateMoveReductionsMisses++;
                     }
@@ -294,11 +324,13 @@ class PrincipleVariationSearch {
             moves that are not favourite (PV) are searched with a null window
              */
             else if (ALLOW_PRINCIPLE_VARIATION_SEARCH && numberOfMovesSearched > 1){
-                score = -principleVariationSearch(board, zobristHash, originalDepth,
-                        depth - 1, -alpha - 1, -alpha, 0);
+                score = -principleVariationSearch(board, zobristHash,
+                        startTime, timeLimitMillis,
+                        originalDepth, depth - 1, ply + 1,
+                        -alpha - 1, -alpha, 0, reducedSearch);
                 
                 /*
-                if this line of play would improve our score, do full re-search (implemented slightly lower down (DRY))
+                if this line of play would improve our score, do full re-search (implemented slightly lower down)
                  */
                 if (score > alpha && DEBUG) {
                     numberOfPVSMisses++;
@@ -313,8 +345,9 @@ class PrincipleVariationSearch {
             always search PV node fully + full re-search of moves that showed promise
             */
             if (score > alpha) {
-                score = -principleVariationSearch(board, zobristHash, originalDepth,
-                        depth - 1, -beta, -alpha, 0);
+                score = -principleVariationSearch(board, zobristHash,
+                        startTime, timeLimitMillis,
+                        originalDepth, depth - 1, ply + 1, -beta, -alpha, 0, false);
             }
 
             UnMakeMoveAndHashUpdate(board, zobristHash);
@@ -328,7 +361,8 @@ class PrincipleVariationSearch {
             }
             if (score > alpha) {
                 alpha = score;
-                if (depth == originalDepth) {
+//                if (depth == originalDepth) {
+                if (ply == 0){
                     Assert.assertTrue(orderedMoves.contains(aiMove));
                     aiMove = copyMove(move);
                 }
@@ -350,10 +384,10 @@ class PrincipleVariationSearch {
                     record this cutoff move, because we will try out in sister nodes
                      */
                     if (ALLOW_KILLERS) {
-                        updateKillerMoves(move, currentDistanceFromRoot);
+                        updateKillerMoves(move, ply);
                     }
                     if (ALLOW_HISTORY_MOVES) {
-                        updateHistoryMoves(move, currentDistanceFromRoot);
+                        updateHistoryMoves(move, ply);
                     }
                 }
                 break;
@@ -366,7 +400,7 @@ class PrincipleVariationSearch {
                 if (DEBUG) {
                     numberOfCheckmates++;
                 }
-                return IN_CHECKMATE_SCORE + currentDistanceFromRoot;
+                return IN_CHECKMATE_SCORE + ply;
             }
             else {
                 if (DEBUG) {
@@ -402,10 +436,7 @@ class PrincipleVariationSearch {
             return 0;
         }
 
-        /*
-        only extend if we are not so close to the root that messing with depth will cause a problem for aiMove
-         */
-        if (ply <= 1){
+        if (ply < 1){
             return 0;
         }
 
@@ -415,6 +446,42 @@ class PrincipleVariationSearch {
             }
             return 1;
         }
+
+        /*
+        Passed Pawn Extension:
+        extend if pawn was just moved to penultimate rank
+         */
+        Assert.assertTrue(board.moveStack.size() > 0);
+        StackMoveData peek = board.moveStack.peek();
+        Move previousMove = peek.move;
+        long destinationSquareOfPreviousMove = BitManipulations.newPieceOnSquare(previousMove.destination);
+       
+       
+        if (board.isWhiteTurn()){
+            if ((destinationSquareOfPreviousMove & BitBoards.RANK_TWO & board.BLACK_PAWNS) != 0){
+                if (DEBUG){
+                    numberOfPassedPawnExtensions++;
+                }
+                return 1;
+            }
+        }
+        else {
+            if ((destinationSquareOfPreviousMove &  board.WHITE_PAWNS & BitBoards.RANK_SEVEN) != 0){
+                if (DEBUG){
+                    numberOfPassedPawnExtensions++;
+                }
+                return 1;
+            }
+        }   
+        
+        /*
+        Singular Reply Extension:
+        if only there is only one legal move, search deeper as we are forced situation
+        */
+        if (MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()).size() == 1){
+            return 1;
+        }
+
         return 0;
     }
 

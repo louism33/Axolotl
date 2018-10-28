@@ -10,13 +10,11 @@ import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.chessprogram.moveMaking.MoveParser;
 import javacode.chessprogram.moveMaking.MoveUnmaker;
 import javacode.chessprogram.moveMaking.StackMoveData;
-import javacode.graphicsandui.Art;
-import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static javacode.chessprogram.moveMaking.StackMoveData.*;
+import static javacode.chessprogram.moveMaking.StackMoveData.SpecialMove;
 
 public class MoveGeneratorEnPassant {
 

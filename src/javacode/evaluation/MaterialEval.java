@@ -1,9 +1,9 @@
-package javacode.evalutation;
+package javacode.evaluation;
 
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 
-import static javacode.evalutation.Evaluator.*;
+import static javacode.evaluation.Evaluator.*;
 
 class MaterialEval {
 

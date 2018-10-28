@@ -210,9 +210,9 @@ class MoveUnmakerTest {
         int num = 1000;
         System.out.println("------- Random high depth, starting white");
         Chessboard copy1 = Copier.copyBoard(board, board.isWhiteTurn(), false);
-        moveNStuffRandom(board, num, false);
+        moveNStuffRandom(board, num);
         System.out.println(Art.boardArt(board));
-        unMoveNStuff(board, false);
+        unMoveNStuff(board);
 
         System.out.println("Same as before ? " + board.equals(copy1));
         System.out.println();
@@ -221,20 +221,20 @@ class MoveUnmakerTest {
 
 
 
-    private static void unMoveNStuff(Chessboard board, boolean debug){
+    private static void unMoveNStuff(Chessboard board){
 
         int size = board.moveStack.size();
         System.out.println(size);
 
         for (int undo = 0; undo < size; undo++) {
             MoveUnmaker.unMakeMoveMaster(board);
-            if (debug) {
+            if (false) {
                 System.out.println(Art.boardArt(board));
             }
         }
     }
 
-    private static void moveNStuffRandom(Chessboard board, int totalRandoms, boolean debug){
+    private static void moveNStuffRandom(Chessboard board, int totalRandoms){
         for (int r = 0; r < totalRandoms; r++) {
             List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
             Random rand = new Random();
@@ -246,13 +246,14 @@ class MoveUnmakerTest {
 
             Move move = moves.get(rand.nextInt(moves.size()));
 
-            if (debug) {
+            boolean DEBUG = false;
+            if (DEBUG) {
                 System.out.println(moves + " " + moves.size());
                 System.out.println(move);
             }
             MoveOrganiser.makeMoveMaster(board, move);
             MoveOrganiser.flipTurn(board);
-            if (debug) {
+            if (DEBUG) {
                 System.out.println(Art.boardArt(board));
                 StackMoveData peek = board.moveStack.peek();
                 System.out.println(peek);

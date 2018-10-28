@@ -7,11 +7,18 @@ import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import java.util.List;
 import java.util.Random;
 
+import static javacode.chessengine.IterativeDeepeningDFS.iterativeDeepeningWithAspirationWindows;
+
 public class Engine {
 
     Chessboard board;
 
-    public static final int MAX_DEPTH = 10;
+    /*
+    max depth only works is time limit is false
+     */
+    public static final int MAX_DEPTH = 16;
+    public static final boolean ALLOW_TIME_LIMIT = true;
+    public static final long TIME_LIMIT = 30000;
     
     public static final boolean DEBUG = true;
 
@@ -31,6 +38,7 @@ public class Engine {
     public static int numberOfLateMoveReductionsHits = 0;
     public static int numberOfLateMoveReductionsMisses = 0;
     public static int numberOfCheckExtensions = 0;
+    public static int numberOfPassedPawnExtensions = 0;
     public static int numberOfSuccessfulFutilities = 0;
     public static int numberOfFailedFutilities = 0;
     public static int numberOfSuccessfulRazors = 0;
@@ -41,11 +49,11 @@ public class Engine {
     static final boolean ALLOW_PRINCIPLE_VARIATION_SEARCH   = true;
     static final boolean ALLOW_MATE_DISTANCE_PRUNING        = true;
     static final boolean ALLOW_EXTENSIONS                   = true;
-    static final boolean ALLOW_LATE_MOVE_REDUCTIONS         = true;
+    static final boolean ALLOW_LATE_MOVE_REDUCTIONS         = false;
     static final boolean ALLOW_LATE_MOVE_PRUNING            = false;
-    static final boolean ALLOW_NULL_MOVE_PRUNING            = true;
+    static final boolean ALLOW_NULL_MOVE_PRUNING            = false;
     static final boolean ALLOW_RAZORING                     = false;
-    static final boolean ALLOW_FUTILITY_PRUNING             = true;
+    static final boolean ALLOW_FUTILITY_PRUNING             = false;
     static final boolean ALLOW_KILLERS                      = true;
     static final boolean ALLOW_HISTORY_MOVES                = true;
     static final boolean ALLOW_ASPIRATION_WINDOWS           = true;
@@ -57,13 +65,20 @@ public class Engine {
     public static ZobristHash zobristHash;
             
     public static Move search (Chessboard board, long timeLimit){
+        
+//        timeLimit = TIME_LIMIT;
+        
         /*
         create hash value of the board, used for lookup in transposition table
          */
         zobristHash = new ZobristHash(board);
+        
+        long startTime = System.currentTimeMillis();
 
-        Move move = IterativeDeepeningDFS.iterativeDeepeningWithAspirationWindows(board, zobristHash, timeLimit);
+        Move move = iterativeDeepeningWithAspirationWindows(board, zobristHash, startTime, timeLimit);
 
+        long endTime = System.currentTimeMillis();
+        
         if (move == null) {
             move = randomMove(board, MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()));
         }
@@ -141,6 +156,10 @@ public class Engine {
             System.out.println("number of stalemates found: " + numberOfStalemates);
             System.out.println("transposition table size: "+ TranspositionTable.getInstance().size());
 
+            System.out.println();
+            System.out.println("time taken millis: " + (endTime - startTime));
+            System.out.println("------");
+            
             System.out.println("best move: " + PrincipleVariationSearch.getAiMove());
             System.out.println("------");
         }

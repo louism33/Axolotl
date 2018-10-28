@@ -1,7 +1,7 @@
 package javacode.chessengine;
 
 import javacode.chessprogram.chess.Chessboard;
-import javacode.evalutation.Evaluator;
+import javacode.evaluation.Evaluator;
 
 import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 

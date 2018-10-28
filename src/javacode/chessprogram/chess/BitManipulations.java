@@ -13,7 +13,7 @@ public class BitManipulations {
         return squareCentredOnPieceNaive(piece);
     }
 
-    public static long squareCentredOnPieceNaive(long piece){
+    private static long squareCentredOnPieceNaive(long piece){
         long answer = 0;
 
         answer += piece

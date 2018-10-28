@@ -2,32 +2,36 @@ package javacode.chessengine;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 
 import java.util.List;
 
-import static javacode.evalutation.Evaluator.IN_CHECKMATE_SCORE;
-import static javacode.evalutation.Evaluator.IN_CHECKMATE_SCORE_MAX_PLY;
+import static javacode.chessengine.AspirationSearch.aspirationSearch;
+import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
+import static javacode.evaluation.Evaluator.IN_CHECKMATE_SCORE;
+import static javacode.evaluation.Evaluator.IN_CHECKMATE_SCORE_MAX_PLY;
 
 class IterativeDeepeningDFS {
 
     private static TranspositionTable table = TranspositionTable.getInstance();
 
-    static Move iterativeDeepeningWithAspirationWindows(Chessboard board, ZobristHash zobristHash, long timeLimit){
-        int maxDepth = Engine.MAX_DEPTH;
+    static Move iterativeDeepeningWithAspirationWindows(Chessboard board, ZobristHash zobristHash, long startTime, long timeLimitMillis){
+        int maxDepth = Engine.ALLOW_TIME_LIMIT ? 10000 : Engine.MAX_DEPTH;
         int aspirationScore = 0;
         
-        List<Move> rootMoves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
+        List<Move> rootMoves = generateLegalMoves(board, board.isWhiteTurn());
 
+        int depth = 0;
+        boolean outOfTime = false;
+        
         /*
         Iterative Deepening Depth First Search:
         call search function at increasing depths, the data we get from lower depths is easily worth it
          */
-        for (int depth = 0; depth < maxDepth; depth++){
+        while (!outOfTime && depth < maxDepth){
             System.out.println("---- depth: " + depth + " ---- current best move: " + PrincipleVariationSearch.getAiMove() + " ----");
             System.out.println();
             
-            int score = AspirationSearch.aspirationSearch(board, timeLimit, zobristHash, depth, aspirationScore);
+            int score = aspirationSearch(board, startTime, timeLimitMillis, zobristHash, depth, aspirationScore);
 
             /*
             stop search when a checkmate has been found, however far away
@@ -42,8 +46,17 @@ class IterativeDeepeningDFS {
                 }
                 break;
             }
+
+            if (Engine.ALLOW_TIME_LIMIT) {
+                long currentTime = System.currentTimeMillis();
+                long timeLeft = startTime + timeLimitMillis - currentTime;
+                if (timeLeft < 0) {
+                    outOfTime = true;
+                }
+            }
             
             aspirationScore = score;
+            depth++;
         }
 
         return PrincipleVariationSearch.getAiMove();

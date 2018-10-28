@@ -1,11 +1,10 @@
 package javacode.chessprogram.moveMaking;
 
-import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.graphicsandui.Art;
 
-import static javacode.chessprogram.chess.BitManipulations.*;
+import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 
 class MoveEnPassant {
     

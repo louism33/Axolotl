@@ -1,5 +1,6 @@
-package javacode.evalutation;
+package javacode.evaluation;
 
+import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import org.junit.Assert;
 
@@ -9,7 +10,7 @@ import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.moveGeneration.PieceMoveKing.singleKingCaptures;
 
-public class King {
+class King {
 
     private static int KING_PAWN_PROTECT_BONUS = 5;
     private static final int KING_PROTECTOR_SCORE = 20;
@@ -25,7 +26,8 @@ public class King {
 
         int score = 0;
 
-        score += kingSafetyBonus(board, white, myKing)
+        score += 
+                kingSafetyBonus(board, white, myKing)
                 + kingProtectorAndAggressor(board, white, myKing)
         ;
 
@@ -45,9 +47,10 @@ public class King {
 
         int protectedFriends = 0;
         int threatenedEnemies = 0;
-        for (Integer king : indexOfAllPieces) {
+        for (Integer kingIndex : indexOfAllPieces) {
+            long king = BitManipulations.newPieceOnSquare(kingIndex);
             long pseudoAttackedOrProtectedByKing = singleKingCaptures(board, king, white, board.ALL_PIECES());
-
+            
             protectedFriends += populationCount(pseudoAttackedOrProtectedByKing & myPieces);
             threatenedEnemies += populationCount(pseudoAttackedOrProtectedByKing & enemyPieces);
         }
@@ -55,3 +58,13 @@ public class King {
                 + threatenedEnemies * KING_AGGRESSOR_SCORE;
     }
 }
+
+
+
+
+
+
+
+
+
+

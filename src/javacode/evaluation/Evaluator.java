@@ -1,21 +1,24 @@
-package javacode.evalutation;
+package javacode.evaluation;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
+import javacode.chessprogram.moveMaking.MoveOrganiser;
+import javacode.graphicsandui.Art;
 
 import java.util.List;
 
 import static javacode.chessengine.Engine.*;
 import static javacode.chessprogram.check.CheckChecker.boardInCheck;
-import static javacode.evalutation.Bishop.evalBishopByTurn;
-import static javacode.evalutation.King.evalKingByTurn;
-import static javacode.evalutation.Knight.evalKnightByTurn;
-import static javacode.evalutation.MaterialEval.evalMaterialByTurn;
-import static javacode.evalutation.Misc.*;
-import static javacode.evalutation.PositionEval.evalPositionByTurn;
-import static javacode.evalutation.Queen.evalQueenByTurn;
-import static javacode.evalutation.Rook.evalRookByTurn;
+import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
+import static javacode.evaluation.Bishop.evalBishopByTurn;
+import static javacode.evaluation.King.evalKingByTurn;
+import static javacode.evaluation.Knight.evalKnightByTurn;
+import static javacode.evaluation.MaterialEval.evalMaterialByTurn;
+import static javacode.evaluation.Misc.evalMiscByTurn;
+import static javacode.evaluation.Pawns.evalPawnsByTurn;
+import static javacode.evaluation.PositionEval.evalPositionByTurn;
+import static javacode.evaluation.Queen.evalQueenByTurn;
+import static javacode.evaluation.Rook.evalRookByTurn;
 
 public class Evaluator {
 
@@ -31,7 +34,7 @@ public class Evaluator {
 
     public static int eval(Chessboard board, boolean white, List<Move> moves) {
         if (moves == null){
-            moves = MoveGeneratorMaster.generateLegalMoves(board, white);
+            moves = generateLegalMoves(board, white);
         }
 
         if (DEBUG) {
@@ -63,9 +66,11 @@ public class Evaluator {
 
     private static int evalTurn (Chessboard board, boolean white, List<Move> moves){
         int score = 0;
-        score += evalMaterialByTurn(board, white)
+        score += 
+                evalMaterialByTurn(board, white)
                 + evalPositionByTurn(board, white)
 
+                + evalPawnsByTurn(board, white)
                 + evalBishopByTurn(board, white)
                 + evalKnightByTurn(board, white)
                 + evalRookByTurn(board, white)

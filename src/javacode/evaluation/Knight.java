@@ -1,14 +1,11 @@
-package javacode.evalutation;
+package javacode.evaluation;
 
-import javacode.chessprogram.bitboards.BitBoards;
-import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 
 import java.util.List;
 
 import static javacode.chessprogram.bitboards.BitBoards.*;
-import static javacode.chessprogram.chess.BitIndexing.*;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.chess.BitManipulations.squareCentredOnIndexNaive;
@@ -16,14 +13,13 @@ import static javacode.chessprogram.moveGeneration.PieceMoveKnight.singleKnightC
 import static javacode.chessprogram.moveGeneration.PieceMoveKnight.singleKnightPushes;
 import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapturesTable;
 
-public class Knight {
+class Knight {
 
-    private final static int KNIGHT_OUTPOST_BONUS = 25;
-    private static int KNIGHT_MOBILITY_SCORE = 3;
+    private static final int KNIGHT_OUTPOST_BONUS = 25;
+    private static final int KNIGHT_MOBILITY_SCORE = 3;
     private static final int KNIGHT_PROTECTOR_SCORE = 4;
     private static final int KNIGHT_AGGRESSOR_SCORE = 10;
     private static final int UNDEVELOPED_KNIGHT_PENALTY = -35;
-    
     
     static int evalKnightByTurn(Chessboard board, boolean white) {
         long myKnights = white ? board.WHITE_KNIGHTS : board.BLACK_KNIGHTS;

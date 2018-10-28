@@ -4,6 +4,7 @@ import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
+import javacode.chessprogram.moveMaking.MoveParser;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -169,9 +170,17 @@ class MoveOrderer {
         List<MoveScore> unsortedScoredMoves = new ArrayList<>();
         for (Move move : moves){
             if (moveIsCapture(board, move)){
+                if (MoveParser.isPromotionMove(move)) {
+                    /*
+                    ignore under promotions in Q search
+                     */
+                    if (!isPromotionToQueen(move)){
+                        continue;
+                }
                 int sourceScore = scoreByPiece(board, move, BitManipulations.newPieceOnSquare(move.getSourceAsPiece()));
                 int destinationScore = 10 * scoreByPiece(board, move, BitManipulations.newPieceOnSquare(move.destination));
                 unsortedScoredMoves.add(new MoveScore(move, destinationScore - sourceScore));
+            }
             }
         }
         return unsortedScoredMoves;

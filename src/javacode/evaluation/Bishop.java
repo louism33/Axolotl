@@ -1,12 +1,12 @@
-package javacode.evalutation;
+package javacode.evaluation;
 
-import javacode.chessprogram.bitboards.BitBoards;
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 
 import java.util.List;
 
+import static javacode.chessprogram.bitboards.BitBoards.*;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
@@ -15,7 +15,7 @@ import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapt
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleBishopCaptures;
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleBishopPushes;
 
-public class Bishop {
+class Bishop {
 
     private static final int PER_ENEMY_PAWN_COLOUR_MODIFIER = 5;
     private static final int PER_FRIENLY_PAWN_COLOUR_MODIFIFER = 3;
@@ -25,6 +25,7 @@ public class Bishop {
     private static final int BISHOP_PROTECTOR_SCORE = 2;
     private static final int BISHOP_AGGRESSOR_SCORE = 5;
     private static final int UNDEVELOPED_BISHOP_PENALTY = -20;
+    private static final int PRIME_DIAGONAL_BONUS = 20;
 
     static int evalBishopByTurn(Chessboard board, boolean white){
         long myBishops = white ? board.WHITE_BISHOPS : board.BLACK_BISHOPS;
@@ -37,8 +38,8 @@ public class Bishop {
 
         int score = 0;
         if (populationCount(myBishops) == 1){
-            long bishopSquares = ((BitBoards.WHITE_SQUARES & myBishops) != 0) ?
-                    BitBoards.WHITE_SQUARES : BitBoards.BLACK_SQUARES;
+            long bishopSquares = ((WHITE_SQUARES & myBishops) != 0) ?
+                    WHITE_SQUARES : BLACK_SQUARES;
 
             score += bishopEnemyPawnColourScore(myBishops, enemyPawns, bishopSquares)
                     + bishopFriendlyPawnColourScore(board, white, myBishops, myPawns, bishopSquares)
@@ -50,17 +51,22 @@ public class Bishop {
                 + bishopProtectorAndAggressor(board, white, myBishops)
                 + doubleBishopScore(myBishops)
                 + bishopOutpostBonus(board, white, myBishops, enemyPawns)
+        + primeDiagonals(board, white, myBishops)
         ;
 
         return score;
     }
 
     private static int unDevelopedBishops(Chessboard board, boolean white, long myBishops){
-        long originalBishops = white ? BitBoards.WHITE_BISHOPS : BitBoards.BLACK_BISHOPS;
+        long originalBishops = white ? WHITE_BISHOPS : BLACK_BISHOPS;
         return BitIndexing.populationCount(originalBishops & myBishops)
                 * UNDEVELOPED_BISHOP_PENALTY;
     }
 
+    private static int primeDiagonals(Chessboard board, boolean white, long myBishops){
+        return populationCount(myBishops & (DIAGONAL_SW_NE | DIAGONAL_NW_SE)) * PRIME_DIAGONAL_BONUS;
+    }
+    
     private static int bishopMobility(Chessboard board, boolean white, long myBishops){
         List<Integer> indexOfAllPieces = getIndexOfAllPieces(myBishops);
         long emptySquares = ~board.ALL_PIECES();
@@ -104,15 +110,15 @@ public class Bishop {
             /*
             only consider outpost if they are in middle four ranks, and not on edges
              */
-            if (((bishop & BitBoards.noMansLand) == 0)
-                    && ((bishop & BitBoards.boardWithoutEdges) == 0)){
+            if (((bishop & noMansLand) == 0)
+                    && ((bishop & boardWithoutEdges) == 0)){
                 continue;
             }
             
             /*
             if in centre files, only consider outpost if no enemy pawns can quickly threaten our bishop
              */
-            if ((bishop & BitBoards.northSouthHighway) != 0) {
+            if ((bishop & northSouthHighway) != 0) {
                 if (white) {
                     if ((((bishop << 7) & enemyPawns) != 0)
                             || (((bishop << 9) & enemyPawns) != 0)

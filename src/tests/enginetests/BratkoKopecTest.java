@@ -15,9 +15,9 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class BratkoKopecTest {
+class BratkoKopecTest {
 
-    static final int timeLimit = 10000;
+    private static final int timeLimit = 10000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -53,7 +53,7 @@ public class BratkoKopecTest {
     }
 
 
-    static String bkTests = "" +
+    private static final String bkTests = "" +
             "1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - bm Qd1+; id \"BK.01\";\n" +
             "3r1k2/4npp1/1ppr3p/p6P/P2PPPP1/1NR5/5K2/2R5 w - - bm d5; id \"BK.02\";\n" +
             "2q1rr1k/3bbnnp/p2p1pp1/2pPp3/PpP1P1P1/1P2BNNP/2BQ1PRK/7R b - - bm f5; id \"BK.03\";\n" +
@@ -80,7 +80,7 @@ public class BratkoKopecTest {
             "r2qnrnk/p2b2b1/1p1p2pp/2pPpp2/1PP1P3/PRNBB3/3QNPPP/5RK1 w - - bm f4; id \"BK.24\";" +
             "";
 
-    static String[] splitUpBKs = bkTests.split("\\\n");
+    private static final String[] splitUpBKs = bkTests.split("\\\n");
     static int totalBKs = splitUpBKs.length;
 
 }

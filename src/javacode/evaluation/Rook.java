@@ -1,5 +1,6 @@
-package javacode.evalutation;
+package javacode.evaluation;
 
+import javacode.chessprogram.bitboards.BitBoards;
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
@@ -12,13 +13,16 @@ import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleRookCaptures;
 
-public class Rook {
+class Rook {
 
     private static final int ROOK_ON_SEVENTH_BONUS = 20;
     private static final int ROOK_MOBILITY_SCORE = 1;
     private static final int ROOK_PROTECTOR_SCORE = 4;
     private static final int ROOK_AGGRESSOR_SCORE = 3;
     private static final int UNDEVELOPED_ROOK_PENALTY = -10;
+    private static final int OPEN_FILE_BONUS = 35;
+    private static final int SEMI_OPEN_FILE_BONUS = 20;
+    private static final int ROOK_PROTECTS_QUEEN = 10;
 
     static int evalRookByTurn(Chessboard board, boolean white) {
         long myRooks = white ? board.WHITE_ROOKS : board.BLACK_ROOKS;
@@ -36,9 +40,39 @@ public class Rook {
                 + rookOnSeventhRank(board, white, myRooks)
                 + rookMobility(board, white, myRooks)
                 + rookProtectorAndAggressor(board, white, myRooks)
+                + rookOnOpenFile(board, white, myRooks, myPawns, enemyPawns)
         ;
 
         return score;
+    }
+
+    private static int RookHelpsQueensAndRooks(Chessboard board, boolean white, long myRooks){
+        List<Integer> indexOfAllPieces = getIndexOfAllPieces(myRooks);
+        long myQueens = white ? board.WHITE_QUEEN : board.BLACK_QUEEN;
+        long emptySquares = ~board.ALL_PIECES();
+
+        int score = 0;
+        for (Integer rookIndex : indexOfAllPieces) {
+            long queen = BitManipulations.newPieceOnSquare(rookIndex);
+            long pseudoAvailableSquares = singleRookCaptures(board, queen, white, myRooks | myQueens);
+            score += populationCount(pseudoAvailableSquares) * ROOK_PROTECTS_QUEEN;
+        }
+        return score;
+    }
+
+    private static int rookOnOpenFile(Chessboard board, boolean white, long myRooks, long myPawns, long enemyPawns){
+        int fileScore = 0;
+        for (long file : BitBoards.FILES){
+            if ((file & myPawns) != 0){
+                continue;
+            }
+            if ((file & enemyPawns) != 0){
+                fileScore += SEMI_OPEN_FILE_BONUS;
+                continue;
+            }
+            fileScore += OPEN_FILE_BONUS;
+        }
+        return fileScore;
     }
 
     private static int unDevelopedRooks(Chessboard board, boolean white, long myRooks){

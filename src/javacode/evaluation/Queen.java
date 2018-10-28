@@ -1,4 +1,4 @@
-package javacode.evalutation;
+package javacode.evaluation;
 
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
@@ -12,12 +12,13 @@ import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleQueenCaptures;
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleQueenPushes;
 
-public class Queen {
+class Queen {
 
     private static final int QUEEN_ON_SEVENTH_BONUS = 15;
     private static final int QUEEN_MOBILITY_SCORE = 1;
     private static final int QUEEN_PROTECTOR_SCORE = 2;
     private static final int QUEEN_AGGRESSOR_SCORE = 5;
+    private static final int QUEEN_PROTECTS_ROOK = 10;
 
     static int evalQueenByTurn(Chessboard board, boolean white) {
         long myQueens = white ? board.WHITE_QUEEN : board.BLACK_QUEEN;
@@ -36,6 +37,20 @@ public class Queen {
                 + queenProtectorAndAggressor(board, white, myQueens)
         ;
 
+        return score;
+    }
+
+    private static int queensHelpRooksAndQueens(Chessboard board, boolean white, long myQueens){
+        List<Integer> indexOfAllPieces = getIndexOfAllPieces(myQueens);
+        long myRooks = white ? board.WHITE_ROOKS : board.BLACK_ROOKS;
+        long emptySquares = ~board.ALL_PIECES();
+        
+        int score = 0;
+        for (Integer queenIndex : indexOfAllPieces) {
+            long queen = BitManipulations.newPieceOnSquare(queenIndex);
+            long pseudoAvailableSquares = singleQueenPushes(board, queen, white, myRooks | myQueens);
+            score += populationCount(pseudoAvailableSquares) * QUEEN_PROTECTS_ROOK;
+        }
         return score;
     }
 

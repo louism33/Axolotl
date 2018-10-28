@@ -15,8 +15,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class )
-public class CCROneHourTest {
-    static final int timeLimit = 10000;
+class CCROneHourTest {
+    private static final int timeLimit = 10000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -52,7 +52,7 @@ public class CCROneHourTest {
     }
 
 
-    static String bkTests = "" +
+    private static final String bkTests = "" +
             "rn1qkb1r/pp2pppp/5n2/3p1b2/3P4/2N1P3/PP3PPP/R1BQKBNR w KQkq - 0 1 id \"CCR01\"; bm Qb3;\n" +
             "rn1qkb1r/pp2pppp/5n2/3p1b2/3P4/1QN1P3/PP3PPP/R1B1KBNR b KQkq - 1 1 id \"CCR02\";bm Bc8;\n" +
             "r1bqk2r/ppp2ppp/2n5/4P3/2Bp2n1/5N1P/PP1N1PP1/R2Q1RK1 b kq - 1 10 id \"CCR03\"; bm Nh6; am Ne5;\n" +
@@ -80,7 +80,7 @@ public class CCROneHourTest {
 //            "rn2kb1r/pp2pppp/1qP2n2/8/6b1/1Q6/PP1PPPBP/RNB1K1NR b KQkq - 1 6 id \"CCR25\"; am Qxb3;" +
             "";
 
-    static String[] splitUpBKs = bkTests.split("\\\n");
+    private static final String[] splitUpBKs = bkTests.split("\\\n");
     static int totalBKs = splitUpBKs.length;
 }
     

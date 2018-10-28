@@ -1,6 +1,6 @@
 package tests.programtests;
 
-public class PerftSuiteTwo {
+class PerftSuiteTwo {
 }
 
 /*

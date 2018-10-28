@@ -5,7 +5,7 @@ import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
-import static javacode.chessprogram.moveMaking.StackMoveData.*;
+import static javacode.chessprogram.moveMaking.StackMoveData.SpecialMove;
 
 public class MoveOrganiser {
 
@@ -112,7 +112,7 @@ public class MoveOrganiser {
         }
     }
 
-    public static boolean enPassantPossibility(Chessboard board, Move move){
+    private static boolean enPassantPossibility(Chessboard board, Move move){
         // determine if flag should be added to enable EP on next turn
         long sourceSquare = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
         long destinationSquare = BitManipulations.newPieceOnSquare(move.destination);

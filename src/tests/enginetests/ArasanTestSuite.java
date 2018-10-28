@@ -15,9 +15,9 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class ArasanTestSuite {
+class ArasanTestSuite {
 
-    static final int timeLimit = 10000;
+    private static final int timeLimit = 10000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -53,7 +53,7 @@ public class ArasanTestSuite {
     }
 
 
-    private static String arasanTests = "" +
+    private static final String arasanTests = "" +
             "r1bq1r1k/p1pnbpp1/1p2p3/6p1/3PB3/5N2/PPPQ1PPP/2KR3R w - - bm g4; id \"arasan20.1\"; \n" +
             "r1b2rk1/1p1nbppp/pq1p4/3B4/P2NP3/2N1p3/1PP3PP/R2Q1R1K w - - bm Rxf7; id \"arasan20.2\";\n" +
             "r1q1k2r/1p1nbpp1/2p2np1/p1Pp4/3Pp3/P1N1P1P1/1P1B1P1P/R2QRBK1 b kq - bm Bxc5; id \"arasan20.3\";\n" +
@@ -256,7 +256,7 @@ public class ArasanTestSuite {
             "4rrk1/1bq1pp2/p2p1n1Q/1pn2p1p/4P3/P1N2P2/BPP3PP/2KRR3 w - - bm g4; id \"arasan20.200\";  " +
             "";
 
-    static String[] splitUpArasan = arasanTests.split("\\\n");
+    private static final String[] splitUpArasan = arasanTests.split("\\\n");
 
 }
 

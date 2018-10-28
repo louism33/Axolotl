@@ -7,7 +7,6 @@ import javacode.chessprogram.check.KingLegalMoves;
 import javacode.chessprogram.chess.BitExtractor;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.graphicsandui.Art;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,7 +8,6 @@ import javacode.chessprogram.moveMaking.MoveUnmaker;
 import javacode.graphicsandui.Art;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DetailedPerftSearching {
@@ -112,10 +111,10 @@ public class DetailedPerftSearching {
     }
 
     class MoveNLong {
-        long number;
-        Move move;
+        final long number;
+        final Move move;
 
-        public MoveNLong(long number, Move move) {
+        MoveNLong(long number, Move move) {
             this.number = number;
             this.move = move;
         }

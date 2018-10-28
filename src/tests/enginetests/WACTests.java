@@ -16,12 +16,12 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class WACTests {
+class WACTests {
     /*
     difficult: 2, 22, 31, 38, 86, 87, 105, 120, 141, 146, 163, 180, 196, 213, 222, 224
      */
 
-    static final int timeLimit = 10000; 
+    private static final int timeLimit = 30000; 
     
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -68,7 +68,7 @@ public class WACTests {
 
 
 
-    static String wacTests = "" +
+    private static final String wacTests = "" +
             "2rr3k/pp3pp1/1nnqbN1p/3pN3/2pP4/2P3Q1/PPB4P/R4RK1 w - - bm Qg6; id \"WAC.001\";\n" +
             "8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - - bm Rxb2; id \"WAC.002\";\n" +
             "5rk1/1ppb3p/p1pb4/6q1/3P1p1r/2P1R2P/PP1BQ1P1/5RKN w - - bm Rg3; id \"WAC.003\";\n" +
@@ -371,7 +371,7 @@ public class WACTests {
             "b2b1r1k/3R1ppp/4qP2/4p1PQ/4P3/5B2/4N1K1/8 w - - bm g6; id \"WAC.300\";" +
             "";
 
-    static String[] splitUpWACs = wacTests.split("\\\n");
+    private static final String[] splitUpWACs = wacTests.split("\\\n");
     static int totalWACS = splitUpWACs.length;
     
 }

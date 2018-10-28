@@ -1,9 +1,9 @@
 package javacode.chessprogram.bitboards;
 
 public class BitBoards {
-    
-    public static final long UNIVERSE = 0xffffffffffffffffL;
-    
+
+    private static final long UNIVERSE = 0xffffffffffffffffL;
+
     public static final long WHITE_PAWNS = 0x000000000000FF00L;
     public static final long WHITE_KNIGHTS = 0x0000000000000042L;
     public static final long WHITE_BISHOPS = 0x0000000000000024L;
@@ -18,8 +18,8 @@ public class BitBoards {
     public static final long BLACK_QUEEN = 0x1000000000000000L;
     public static final long BLACK_KING = 0x0800000000000000L;
 
-    public static long WHITE_SQUARES = 0x5555555555555555L;
-    public static long BLACK_SQUARES = 0xAAAAAAAAAAAAAAAAL;
+    public static final long WHITE_SQUARES = 0x5555555555555555L;
+    public static final long BLACK_SQUARES = 0xAAAAAAAAAAAAAAAAL;
 
     static long CASTLE_WHITE_KING_SQUARES = 0x0000000000000006L;
     static long CASTLE_WHITE_QUEEN_SQUARES = 0x0000000000000070L;
@@ -44,6 +44,17 @@ public class BitBoards {
     public static final long FILE_B = 0x4040404040404040L;
     public static final long FILE_A = 0x8080808080808080L;
 
+    public static final long[] FILES = new long[]{
+            0x0101010101010101L,
+            0x0202020202020202L,
+            0x0404040404040404L,
+            0x0808080808080808L,
+            0x1010101010101010L,
+            0x2020202020202020L,
+            0x4040404040404040L,
+            0x8080808080808080L,
+    };
+
     public static final long NORTH_WEST = FILE_A | RANK_EIGHT;
     public static final long NORTH_EAST = FILE_H | RANK_EIGHT;
     public static final long SOUTH_WEST = FILE_A | RANK_ONE;
@@ -54,15 +65,18 @@ public class BitBoards {
     public static final long SOUTH_WEST_CORNER = FILE_A & RANK_ONE;
     public static final long SOUTH_EAST_CORNER = FILE_H & RANK_ONE;
 
-    public static long centreFourSquares = (RANK_FOUR | RANK_FIVE) & (FILE_D | FILE_E);
-    public static long centreNineSquares = (RANK_THREE | RANK_FOUR | RANK_FIVE | RANK_SIX) & 
+    public static final long centreFourSquares = (RANK_FOUR | RANK_FIVE) & (FILE_D | FILE_E);
+    public static final long centreNineSquares = (RANK_THREE | RANK_FOUR | RANK_FIVE | RANK_SIX) &
             (FILE_C |FILE_D | FILE_E | FILE_F);
-    
-    public static long noMansLand = (RANK_THREE | RANK_FOUR | RANK_FIVE | RANK_SIX);
+
+    public static final long noMansLand = (RANK_THREE | RANK_FOUR | RANK_FIVE | RANK_SIX);
     public static long eastWestHighway = (RANK_FOUR | RANK_FIVE);
-    public static long northSouthHighway = (FILE_D | FILE_E);
-    
-    public static long boardWithoutEdges = UNIVERSE ^ (NORTH_WEST | NORTH_EAST | SOUTH_WEST | SOUTH_EAST);
+    public static final long northSouthHighway = (FILE_D | FILE_E);
+
+    public static final long DIAGONAL_NW_SE = 0x8040201008040201L;
+    public static final long DIAGONAL_SW_NE = 0x0102040810204080L;
+
+    public static final long boardWithoutEdges = UNIVERSE ^ (NORTH_WEST | NORTH_EAST | SOUTH_WEST | SOUTH_EAST);
 
     public static final long whiteCastleKingEmpties = 0x0000000000000006L;
     public static final long whiteCastleQueenEmpties = 0x0000000000000070L;

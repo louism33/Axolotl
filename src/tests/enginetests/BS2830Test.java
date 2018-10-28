@@ -15,8 +15,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class BS2830Test {
-    static final int timeLimit = 10000;
+class BS2830Test {
+    private static final int timeLimit = 10000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -52,7 +52,7 @@ public class BS2830Test {
     }
 
 
-    static String bsTests = "" +
+    private static final String bsTests = "" +
             "4r1k1/p1pb1ppp/Qbp1r3/8/1P6/2Pq1B2/R2P1PPP/2B2RK1 b - - bm Qxf3; id \"BS2830-01\";\n" +
             "7r/2qpkp2/p3p3/6P1/1p2b2r/7P/PPP2QP1/R2N1RK1 b - - bm f5; id \"BS2830-02\";\n" +
             "r1bq1rk1/pp4bp/2np4/2p1p1p1/P1N1P3/1P1P1NP1/1BP1QPKP/1R3R2 b - - bm Bh3+; id \"BS2830-03\";\n" +
@@ -82,7 +82,7 @@ public class BS2830Test {
             "2rq1rk1/pb3ppp/1p2pn2/4N3/1b1PPB2/4R1P1/P4PBP/R2Q2K1 w - - bm d5; id \"BS2830-27\";" +
             "";
 
-    static String[] splitUpBSs = bsTests.split("\\\n");
+    private static final String[] splitUpBSs = bsTests.split("\\\n");
 }
     /*
     4r1k1/p1pb1ppp/Qbp1r3/8/1P6/2Pq1B2/R2P1PPP/2B2RK1 b - - bm Qxf3; id "BS2830-01";

@@ -1,20 +1,21 @@
-package javacode.evalutation;
+package javacode.evaluation;
 
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 
 import java.util.List;
 
-public class PositionEval {
+class PositionEval {
     
     static int evalPositionByTurn(Chessboard board, boolean white){
-        long pawns, knights, bishops, rooks, queens;
+        long pawns, knights, bishops, rooks, queens, kings;
         if (white){
             pawns = board.WHITE_PAWNS;
             knights = board.WHITE_KNIGHTS;
             bishops = board.WHITE_BISHOPS;
             rooks = board.WHITE_ROOKS;
             queens = board.WHITE_QUEEN;
+            kings = board.WHITE_KING;
         }
         else {
             pawns = board.BLACK_PAWNS;
@@ -22,26 +23,31 @@ public class PositionEval {
             bishops = board.BLACK_BISHOPS;
             rooks = board.BLACK_ROOKS;
             queens = board.BLACK_QUEEN;
+            kings = board.BLACK_KING;
         }
         
-        return piecePositionScores(pawns, pawnpos)
-                + piecePositionScores(knights, knightpos)
-                + piecePositionScores(bishops, bishoppos)
-                + piecePositionScores(rooks, rookpos)
-                + piecePositionScores(queens, queenpos)
+        return piecePositionScores(pawns, white, pawnpos)
+                + piecePositionScores(knights, white, knightpos)
+                + piecePositionScores(bishops, white, bishoppos)
+                + piecePositionScores(rooks, white, rookpos)
+                + piecePositionScores(queens, white, queenpos)
+                + piecePositionScores(kings, white, kingposstart)
                 ;
     }
     
-    private static int piecePositionScores(long pieces, int[] whichArray){
+    private static int piecePositionScores(long pieces, boolean white, int[] whichArray){
         List<Integer> indexOfAllPieces = BitIndexing.getIndexOfAllPieces(pieces);
         int answer = 0;
         for (Integer piece : indexOfAllPieces){
+            if (!white){
+                piece = 63 - piece;
+            }
             answer += whichArray[piece];
         }
         return answer;
     }
-
-    private static int pawnpos[] = {
+    
+    private static final int[] pawnpos = {
             0,   0,  0,  0,  0,  0,  0,  0,
             5,  10, 10,-20,-20, 10, 10,  5,
             5,   5,  5,  0,  0, -5,  0,  5,
@@ -51,7 +57,7 @@ public class PositionEval {
             50, 50, 50, 50, 50, 50, 50, 50,
             0,   0,  0,  0,  0,  0,  0,  0,};
     
-    private static int knightpos[] = {
+    private static final int[] knightpos = {
             -50,-40,-30,-30,-30,-30,-40,-50,
             -40,-20,  0,  5,  5,  0,-20,-40,
             -30,  5, 10, 15, 15, 11,  5,-30,
@@ -61,7 +67,7 @@ public class PositionEval {
             -40,-20,  0,  0,  0,  0,-20,-40,
             -50,-40,-30,-30,-30,-30,-40,-50,};
 
-    private static int bishoppos[] = {
+    private static final int[] bishoppos = {
             -20,-10,-10,-10,-10,-10,-10,-20,
             -10,  5,  0,  0,  0,  0,  5,-10,
             -10, 10, 10, 10, 10, 10, 10,-10,
@@ -71,7 +77,7 @@ public class PositionEval {
             -10,  0,  0,  0,  0,  0,  0,-10,
             -20,-10,-10,-10,-10,-10,-10,-20,};
 
-    private static int rookpos[] =   {
+    private static final int[] rookpos =   {
             0,   0,  0,  5,  5,  0,  0,  0,
             5,   0,  0,  0,  0,  0,  0,  5,
             5,   0,  0,  0,  0,  0,  0,  5,
@@ -81,7 +87,7 @@ public class PositionEval {
             5,  10, 10, 10, 10, 10, 10,  5,
             0,   0,  0,  0,  0,  0,  0,  0};
 
-    private static int queenpos[] =   {
+    private static final int[] queenpos =   {
             -20,-10,-10, -5, -5,-10,-10,-20,
             -10,  0,  5,  0,  0,  0,  0,-10,
             -10,  5,  5,  5,  5,  5,  0,-10,
@@ -91,7 +97,7 @@ public class PositionEval {
             -10,  0,  0,  0,  0,  0,  0,-10,
             -20,-10,-10, -5, -5,-10,-10,-20,};
 
-    private static int kingposstart[] =   {
+    private static final int[] kingposstart =   {
             20, 30, 10,  0,  0, 20, 30, 20,
             20, 20,  0,  0,  0,  0, 20, 20,
             -10,-20,-20,-20,-20,-20,-20,-10,

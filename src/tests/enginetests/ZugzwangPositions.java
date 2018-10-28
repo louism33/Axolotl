@@ -15,9 +15,9 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class ZugzwangPositions {
+class ZugzwangPositions {
 
-    static final int timeLimit = 10000;
+    private static final int timeLimit = 10000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -53,7 +53,7 @@ public class ZugzwangPositions {
     }
 
 
-    static String zzTests = "" +
+    private static final String zzTests = "" +
             "8/8/1p1r1k2/p1pPN1p1/P3KnP1/1P6/8/3R4 b - - bm Nxd5; id \"ZPTS.01\"; \n" +
             "4KBkr/7p/6PP/4P3/8/3P1p2/8/8 w - - bm g7; id \"ZPTS.02\"; \n" +
             "8/6B1/p5p1/Pp4kp/1P5r/5P1Q/4q1PK/8 w - - bm Qxh4; id \"ZPTS.03\"; \n" +
@@ -86,7 +86,7 @@ public class ZugzwangPositions {
             "8/3p1N2/8/4B3/2K2p2/b3P3/pP2P3/k7 b - - bm d6; id \"ZPTS.30\";" +
             "";
 
-    static String[] splitUpZZs = zzTests.split("\\\n");
+    private static final String[] splitUpZZs = zzTests.split("\\\n");
 
 }
 
