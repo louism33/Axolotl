@@ -22,7 +22,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int nf6 = MoveParserFromAN.destinationIndex(chessboard, "Nf6");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(nf6, destination);
     }
 
@@ -35,7 +35,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int Qd5 = MoveParserFromAN.destinationIndex(chessboard, "Qd5+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(Qd5, destination);
     }
 
@@ -48,7 +48,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int Qb8 = MoveParserFromAN.destinationIndex(chessboard, "Qb8+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(Qb8, destination);
     }
 
@@ -61,7 +61,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Qd8+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -74,7 +74,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Qxg6+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -87,7 +87,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Nc2+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -100,7 +100,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rxd1+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -113,7 +113,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Qh5+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -126,7 +126,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Qxh6+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -139,7 +139,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Re8+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -152,7 +152,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Nb3+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -165,7 +165,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rxf6+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -178,7 +178,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Qh3+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -192,7 +192,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Nf3");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
     
@@ -205,7 +205,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Qxe6+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -219,7 +219,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rg8+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -233,7 +233,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Qe8+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -246,7 +246,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rxf5+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -259,7 +259,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Qxh2+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -272,7 +272,7 @@ class EngineTestMateInTwo {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rxf8+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
     

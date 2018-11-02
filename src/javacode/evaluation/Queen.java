@@ -35,6 +35,7 @@ class Queen {
         score += queenOnSeventhRank(board, white, myQueens)
                 + queenMobility(board, white, myQueens)
                 + queenProtectorAndAggressor(board, white, myQueens)
+                + queensHelpRooksAndQueens(board, white, myQueens)
         ;
 
         return score;
@@ -44,7 +45,7 @@ class Queen {
         List<Integer> indexOfAllPieces = getIndexOfAllPieces(myQueens);
         long myRooks = white ? board.WHITE_ROOKS : board.BLACK_ROOKS;
         long emptySquares = ~board.ALL_PIECES();
-        
+
         int score = 0;
         for (Integer queenIndex : indexOfAllPieces) {
             long queen = BitManipulations.newPieceOnSquare(queenIndex);

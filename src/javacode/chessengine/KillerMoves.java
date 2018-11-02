@@ -5,6 +5,7 @@ import javacode.chessprogram.chess.Move;
 class KillerMoves {
 
     static final Move[][] killerMoves = new Move[100][2];
+    static final Move[] mateKiller = new Move[100];
 
     static void updateKillerMoves(Move move, int ply){
         /*

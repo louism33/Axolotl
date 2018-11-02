@@ -1,18 +1,22 @@
 package javacode.chessengine;
 
 import javacode.chessprogram.bitboards.BitBoards;
+import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveMaking.StackMoveData;
+import javacode.graphicsandui.Art;
 import org.junit.Assert;
 
 import java.util.Objects;
 import java.util.Random;
 import java.util.Stack;
 
+import static javacode.chessprogram.bitboards.BitBoards.*;
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveMaking.MoveOrganiser.whichPieceOnSquare;
 import static javacode.chessprogram.moveMaking.MoveParser.*;
+import static javacode.chessprogram.moveMaking.StackMoveData.SpecialMove.ENPASSANTVICTIM;
 
 public class ZobristHash {
 
@@ -30,12 +34,16 @@ public class ZobristHash {
         this.boardHash = boardToHash(board);
     }
 
-    void updateWithEPFlags(Chessboard board){
+    long updateWithEPFlags(Chessboard board){
+        Assert.assertTrue(board.moveStack.size() > 0);
+        long hash = 0;
         StackMoveData peek = board.moveStack.peek();
-        if (peek.typeOfSpecialMove == StackMoveData.SpecialMove.ENPASSANTVICTIM) {
+        if (peek.typeOfSpecialMove == ENPASSANTVICTIM) {
             // file one = FILE_A
-            boardHash ^= zobristHashEPFiles[peek.enPassantFile - 1];
+            hash ^= zobristHashEPFiles[peek.enPassantFile - 1];
         }
+        
+        return hash;
     }
 
     void updateHashPostMove(Chessboard board, Move move){
@@ -49,41 +57,73 @@ public class ZobristHash {
         /*
         if move we just made raised EP flag, update hash
         */
-        updateWithEPFlags(board);
+        boardHash ^= updateWithEPFlags(board);
 
         /*
         if castling rights changed, update hash
         */
-        StackMoveData peek = board.moveStack.peek();
-        if (peek.whiteCanCastleK != board.whiteCanCastleK){
-            boardHash ^= zobristHashCastlingRights[1];
-        }
-
-        if (peek.whiteCanCastleQ != board.whiteCanCastleQ){
-            boardHash ^= zobristHashCastlingRights[2];
-        }
-
-        if (peek.blackCanCastleK != board.blackCanCastleK){
-            boardHash ^= zobristHashCastlingRights[4];
-        }
-
-        if (peek.blackCanCastleQ != board.blackCanCastleQ){
-            boardHash ^= zobristHashCastlingRights[8];
-        }
-
+        boardHash ^= postMoveCastlingRights(board);
 
     }
 
+    private long postMoveCastlingRights(Chessboard board){
+        long updatedHashValue = 0;
+        StackMoveData peek = board.moveStack.peek();
+        /*
+        undo previous castling rights
+        */
+        int numTo15Undo = 0;
+        if (peek.whiteCanCastleK){
+            numTo15Undo += 1;
+        }
+        if (peek.whiteCanCastleQ){
+            numTo15Undo += 2;
+        }
+        if (peek.blackCanCastleK){
+            numTo15Undo += 4;
+        }
+        if (peek.blackCanCastleQ){
+            numTo15Undo += 8;
+        }
+        Assert.assertTrue(numTo15Undo >= 0 && numTo15Undo <= 15);
+        updatedHashValue ^= zobristHashCastlingRights[numTo15Undo];
+ 
+        /*
+        update with new castling rights
+        */
+        int numTo15Do = 0;
+        if (board.whiteCanCastleK){
+            numTo15Do  += 1;
+        }
+
+        if (board.whiteCanCastleQ){
+            numTo15Do  += 2;
+        }
+
+        if (board.blackCanCastleK){
+            numTo15Do  += 4;
+        }
+
+        if (board.blackCanCastleQ){
+            numTo15Do  += 8;
+        }
+
+        updatedHashValue ^= zobristHashCastlingRights[numTo15Do];
+        
+        return updatedHashValue;
+    }
+
+
     void updateHashPreMove(Chessboard board, Move move){
-        int sourceSquare = move.getSourceAsPiece();
-        int destinationSquare = move.destination;
+        int sourceSquare = move.getSourceAsPieceIndex();
+        int destinationSquareIndex = move.destinationIndex;
 
         long sourcePiece = newPieceOnSquare(sourceSquare);
         int sourcePieceIdentifier = whichPieceOnSquare(board, sourcePiece) - 1;
         long sourceZH = zobristHashPieces[sourceSquare][sourcePieceIdentifier];
 
-        long destination = newPieceOnSquare(destinationSquare);
-        long destinationZH = zobristHashPieces[destinationSquare][sourcePieceIdentifier];
+        long destinationSquare = newPieceOnSquare(destinationSquareIndex);
+        long destinationZH = zobristHashPieces[destinationSquareIndex][sourcePieceIdentifier];
 
         boardHash ^= sourceZH;
         boardHash ^= destinationZH;
@@ -91,9 +131,12 @@ public class ZobristHash {
         /*
         captures
          */
-        if ((destination & board.ALL_PIECES()) != 0){
-            int destinationPieceIdentifier = whichPieceOnSquare(board, destination) - 1;
-            long victimZH = zobristHashPieces[sourceSquare][destinationPieceIdentifier];
+        if ((destinationSquare & board.ALL_PIECES()) != 0){
+            int destinationPieceIdentifier = whichPieceOnSquare(board, destinationSquare) - 1;
+            /*
+            remove taken piece from hash
+            */
+            long victimZH = zobristHashPieces[destinationSquareIndex][destinationPieceIdentifier];
             boardHash ^= victimZH;
         }
 
@@ -102,54 +145,62 @@ public class ZobristHash {
         */
         Stack<StackMoveData> moveStack = board.moveStack;
         if (moveStack.size() > 0){
-            updateWithEPFlags(board);
+            boardHash ^= updateWithEPFlags(board);
         }
 
-
-
-        long destinationPiece = newPieceOnSquare(move.destination);
+        long destinationPiece = newPieceOnSquare(move.destinationIndex);
 
         if (isSpecialMove(move)){
             if (isCastlingMove(move)) {
-                long originalRook = 0;
-                long newRook = 0;
-                if ((sourcePiece & BitBoards.WHITE_KING) != 0){
-                    if (move.destination == 1){
-                        originalRook = newPieceOnSquare(0);
-                        newRook = newPieceOnSquare(move.destination + 1);
+                int originalRookIndex = 0;
+                int newRookIndex = 0;
+                if ((sourcePiece & WHITE_KING) != 0){
+                    if (move.destinationIndex == 1){
+                        originalRookIndex = 0;
+                        newRookIndex = move.destinationIndex + 1;
                     }
-                    else if (move.destination == 5){
-                        originalRook = newPieceOnSquare(7);
-                        newRook = newPieceOnSquare(move.destination - 1);
+                    else if (move.destinationIndex == 5){
+                        originalRookIndex = 7;
+                        newRookIndex = move.destinationIndex - 1;
                     }
                 }
 
-                else if ((sourcePiece & BitBoards.BLACK_KING) != 0){
-                    if (move.destination == 57){
-                        originalRook = newPieceOnSquare(56);
-                        newRook = newPieceOnSquare(move.destination + 1);
+                else if ((sourcePiece & BLACK_KING) != 0){
+                    if (move.destinationIndex == 57){
+                        originalRookIndex = 56;
+                        newRookIndex = move.destinationIndex + 1;
                     }
-                    else if (move.destination == 61){
-                        originalRook = newPieceOnSquare(63);
-                        newRook = newPieceOnSquare(move.destination - 1);
+                    else if (move.destinationIndex == 61){
+                        originalRookIndex = 63;
+                        newRookIndex = move.destinationIndex - 1;
                     }
                 }
                 else {
                     throw new RuntimeException("Mistake in Zobrist of castling");
                 }
-                boardHash ^= originalRook;
-                boardHash ^= newRook;
+
+                int myRook = whichPieceOnSquare(board, newPieceOnSquare(originalRookIndex)) - 1;
+                long originalRookZH = zobristHashPieces[originalRookIndex][myRook];
+                long newRookZH = zobristHashPieces[newRookIndex][myRook];
+                boardHash ^= originalRookZH;
+                boardHash ^= newRookZH;
             }
 
             else if (isEnPassantMove(move)){
                 if ((sourcePiece & board.WHITE_PAWNS) != 0){
                     long victimPawn = destinationPiece >>> 8;
-                    boardHash ^= victimPawn;
+                    int indexOfVictimPawn = BitIndexing.getIndexOfFirstPiece(victimPawn);
+                    int pieceToKill = whichPieceOnSquare(board, victimPawn) - 1;
+                    long victimPawnZH = zobristHashPieces[indexOfVictimPawn][pieceToKill];
+                    boardHash ^= victimPawnZH;
                 }
 
                 else if  ((sourcePiece & board.BLACK_PAWNS) != 0){
                     long victimPawn = destinationPiece << 8;
-                    boardHash ^= victimPawn;
+                    int indexOfVictimPawn = BitIndexing.getIndexOfFirstPiece(victimPawn);
+                    int pieceToKill = whichPieceOnSquare(board, victimPawn) - 1;
+                    long victimPawnZH = zobristHashPieces[indexOfVictimPawn][pieceToKill];
+                    boardHash ^= victimPawnZH;
                 }
                 else {
                     throw new RuntimeException("false EP move");
@@ -189,7 +240,12 @@ public class ZobristHash {
                     }
                 }
 
-                long promotionZH = zobristHashPieces[destinationSquare][whichPromotingPiece - 1];
+                /*
+                remove my pawn from zh
+                 */
+                boardHash ^= destinationZH;
+                
+                long promotionZH = zobristHashPieces[destinationSquareIndex][whichPromotingPiece - 1];
                 boardHash ^= promotionZH;
             }
         }
@@ -212,6 +268,10 @@ public class ZobristHash {
 
         if (!board.isWhiteTurn()){
             hash ^= zobristHashColourBlack;
+        }
+        
+        if (board.moveStack.size() > 0){
+            hash ^= updateWithEPFlags(board);
         }
 
         return hash;
@@ -251,17 +311,17 @@ public class ZobristHash {
     }
 
     /*
-      create values for every possible combination of castling right
+    create values for every possible combination of castling right
     */
     private static long[] initCastlingHash(){
         Random r = new Random(initHashSeed + 1);
         long[] zobristHash = new long[16];
-        for (int cr = 0; cr < zobristHash.length; cr++){
+        zobristHash[0] = 0;
+        for (int cr = 1; cr < zobristHash.length; cr++){
             zobristHash[cr] = r.nextLong();
         }
         return zobristHash;
     }
-
 
     /*
     create values for every possible EP file
@@ -274,8 +334,9 @@ public class ZobristHash {
         }
         return zobristHash;
     }
+    
     /*
-    create values for the player being black
+    create value for the player being black
     */
     private static long initColourHash(){
         Random r = new Random(initHashSeed + 3);
@@ -316,4 +377,6 @@ public class ZobristHash {
                 ", boardHash=" + boardHash +
                 '}';
     }
+
+
 }

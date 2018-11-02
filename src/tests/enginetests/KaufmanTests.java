@@ -57,8 +57,8 @@ public class KaufmanTests {
             Move move = Engine.search(edpObject.getBoard(), 1000);
             System.out.println(move);
 
-            int destination = move.destination;
-//            Assert.assertEquals(destination, edpObject.getBestMoveDestinationIndex());
+            int destination = move.destinationIndex;
+//            Assert.assertEquals(destinationIndex, edpObject.getBestMoveDestinationIndex());
             
             if (destination == edpObject.getBestMoveDestinationIndex()){
                 System.out.println("SUCCEEDED Kaufman test number "+ (kauf + 1));

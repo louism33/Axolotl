@@ -25,7 +25,7 @@ class EngineTestMisc {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Kxe1");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
     
@@ -40,7 +40,7 @@ class EngineTestMisc {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Nf4");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
 
     }
@@ -57,7 +57,7 @@ class EngineTestMisc {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Kd1");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
 
     }
@@ -72,7 +72,7 @@ class EngineTestMisc {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Kg7");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
 
     }

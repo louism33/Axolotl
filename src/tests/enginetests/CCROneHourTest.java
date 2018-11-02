@@ -46,7 +46,7 @@ public class CCROneHourTest {
         System.out.println(move);
 
         int winningMoveDestination = edpObject.getBestMoveDestinationIndex();
-        int myMoveDestination = move.destination;
+        int myMoveDestination = move.destinationIndex;
 
         assertEquals(winningMoveDestination, myMoveDestination);
     }

@@ -2,6 +2,10 @@ package javacode.chessengine;
 
 import javacode.chessprogram.chess.Move;
 
+import java.util.Collections;
+
+import static javacode.chessengine.MoveOrderer.*;
+
 class HistoryMoves {
     
     /*
@@ -14,12 +18,12 @@ class HistoryMoves {
     square the ply as shallower moves get added many times
      */
     static void updateHistoryMoves(Move move, int ply){
-        historyMoves[move.getSourceAsPiece()][move.destination] += (ply * ply);
+        historyMoves[move.getSourceAsPieceIndex()][move.destinationIndex] += (ply * ply);
     }
-    
+
     static int historyMoveScore(Move move){
-        int maxMoveScoreOfHistory = 250;
-        int historyScore = historyMoves[move.getSourceAsPiece()][move.destination];
+        int maxMoveScoreOfHistory = MAX_HISTORY_MOVE_SCORE;
+        int historyScore = historyMoves[move.getSourceAsPieceIndex()][move.destinationIndex];
         return historyScore > maxMoveScoreOfHistory ? maxMoveScoreOfHistory : historyScore;
     }
 }

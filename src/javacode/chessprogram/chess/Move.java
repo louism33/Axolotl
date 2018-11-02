@@ -9,7 +9,7 @@ public class Move {
 
     public int move;
     private int source;
-    public int destination;
+    public int destinationIndex;
     final private static int
             sourceOffset = 6,
             SOURCE_MASK = 0x00000fc0,
@@ -26,14 +26,14 @@ public class Move {
             ROOK_PROMOTION_MASK = 0x00008000,
             QUEEN_PROMOTION_MASK = 0x0000c000;
 
-    public Move(int source, int destination){
-        makeSourceAndDest(source, destination);
+    public Move(int source, int destinationIndex){
+        makeSourceAndDest(source, destinationIndex);
     }
 
-    public Move(int source, int destination, boolean castling, boolean enPassant, boolean promotion,
-         boolean promoteToKnight, boolean promoteToBishop, boolean promoteToRook, boolean promoteToQueen){
+    public Move(int source, int destinationIndex, boolean castling, boolean enPassant, boolean promotion,
+                boolean promoteToKnight, boolean promoteToBishop, boolean promoteToRook, boolean promoteToQueen){
 
-        makeSourceAndDest(source, destination);
+        makeSourceAndDest(source, destinationIndex);
 
         if (castling) this.move |= CASTLING_MASK;
         if (enPassant) this.move |= ENPASSANT_MASK;
@@ -45,10 +45,10 @@ public class Move {
         }
     }
 
-    public Move(int source, int destination, boolean castling, boolean enPassant, boolean promotion,
+    public Move(int source, int destinationIndex, boolean castling, boolean enPassant, boolean promotion,
                 boolean promoteToKnight, boolean promoteToBishop, boolean promoteToRook, boolean promoteToQueen, int hack){
 
-        makeSourceAndDest(source, destination);
+        makeSourceAndDest(source, destinationIndex);
 
         if (castling) this.move |= CASTLING_MASK;
         if (enPassant) this.move |= ENPASSANT_MASK;
@@ -67,9 +67,9 @@ public class Move {
             throw new RuntimeException("Move: False Move " + s+" "+ d);
         }
         this.source = (s << sourceOffset) & SOURCE_MASK;
-        this.destination = d & DESTINATION_MASK;
+        this.destinationIndex = d & DESTINATION_MASK;
         this.move |= this.source;
-        this.move |= this.destination;
+        this.move |= this.destinationIndex;
     }
 
     @Override
@@ -78,14 +78,14 @@ public class Move {
     }
 
     public String toStringSimple() {
-        return (getSourceAsPiece() +" " +destination);
+        return (getSourceAsPieceIndex() +" " + destinationIndex);
     }
     
     public String toComplicatedString(){
         return Art.makeMoveToString(this.move);
     }
 
-    public int getSourceAsPiece() {
+    public int getSourceAsPieceIndex() {
         return source >>> sourceOffset;
     }
 
@@ -96,11 +96,11 @@ public class Move {
         Move move1 = (Move) o;
         return move == move1.move &&
                 source == move1.source &&
-                destination == move1.destination;
+                destinationIndex == move1.destinationIndex;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(move, source, destination);
+        return Objects.hash(move, source, destinationIndex);
     }
 }

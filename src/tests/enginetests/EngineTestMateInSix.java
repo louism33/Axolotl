@@ -22,7 +22,7 @@ class EngineTestMateInSix {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Nc6");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
     

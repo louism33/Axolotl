@@ -39,7 +39,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Bb5+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -52,7 +52,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Qxh8+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -65,7 +65,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Qxf2+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -78,7 +78,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rxh7+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -92,7 +92,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Nf3+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -106,7 +106,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rxa7+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -119,7 +119,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Ng8+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -133,7 +133,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Nf6+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -147,7 +147,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Ng5");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -160,7 +160,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rb1+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -173,7 +173,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Bg6+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -187,7 +187,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rxf7+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -200,7 +200,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "exf2+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -214,7 +214,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Ne5");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -227,7 +227,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Qxh7+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -240,7 +240,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rc1+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -253,7 +253,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Qe1+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -267,7 +267,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Ng6+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 
@@ -280,7 +280,7 @@ class EngineTestMateInThree {
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Rxf7+");
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         Assert.assertEquals(moveToWin, destination);
     }
 

@@ -1,5 +1,7 @@
 package javacode.evaluation;
 
+import javacode.chessprogram.bitboards.BitBoards;
+import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 
@@ -9,6 +11,7 @@ import static javacode.chessprogram.bitboards.BitBoards.*;
 import static javacode.chessprogram.check.CheckChecker.numberOfPiecesThatLegalThreatenSquare;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
+import static javacode.chessprogram.chess.BitManipulations.*;
 import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapturesTable;
 
 class Pawns {
@@ -25,8 +28,11 @@ class Pawns {
     private static final int PAWN_THREATEN_CENTRE = 10;
     private static final int PAWN_THREATEN_SUPER_CENTRE = 15;
 
+    private static final int STUCK_BACKWARDS_PAWN_PENALTY = -30;
+    private static final int PROTECTED_BACKWARDS_PAWN = 10;
+    private static final int THREATENED_BACKWARDS_PAWN = -40;
+
     private static final int PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES = 50;
-    private static final int PROTECTED_PAWN_ON_SEVEN = 75;
     private static final int FRIENLDY_ATTACK_PROMOTION_SQUARE = 35;
     private static final int FRIENLDY_PROTECT_PROMOTING_PAWN = 35;
     private static final int ENEMY_NOT_ATTACK_PROMOTION_SQUARE = 35;
@@ -42,19 +48,83 @@ class Pawns {
 
         int score = 0;
 
-        score += 
+        score +=
                 pawnCentreBonus(board, white, myPawns)
-                + pawnOnOpenFile(board, white, myPawns, enemyPawns)
-                + pawnStructureBonus(board, white, myPawns)
-                + pawnsThreatenBigThings(board, white, myPawns)
-                + pawnsChainBonus(board, white, myPawns)
-                + doublePawnPenalty(board, white, myPawns)
-                + pawnAttackingCentreBonus(board, white, myPawns)
-                + superAdvancedPawn(board, white, myPawns)
+                        + pawnOnOpenFile(board, white, myPawns, enemyPawns)
+                        + pawnStructureBonus(board, white, myPawns)
+                        + pawnsThreatenBigThings(board, white, myPawns)
+                        + pawnsChainBonus(board, white, myPawns)
+                        + doublePawnPenalty(board, white, myPawns)
+                        + pawnAttackingCentreBonus(board, white, myPawns)
+                        + superAdvancedPawn(board, white, myPawns)
+                        + backwardsPawn(board, white, myPawns)
+                        + blockedPawnPenalty(board, white, myPawns, enemyPawns)
+                        + isolatedPawn(board, white, myPawns)
+                        + passedPawn(board, white, myPawns, enemyPawns)
         ;
 
         return score;
     }
+
+    private static int passedPawn (Chessboard board, boolean white, long myPawns, long enemyPawns) {
+        int score = 0;
+        if (white) {
+            int numberOfAdvancedPawns = populationCount(myPawns & RANK_SIX);
+            if (numberOfAdvancedPawns > 0) {
+                List<Integer> indexOfAllPieces = getIndexOfAllPieces(myPawns & RANK_SIX);
+                for (Integer pawnIndex : indexOfAllPieces) {
+                    long pawn = newPieceOnSquare(pawnIndex);
+                    long blockingSquare = pawn << 8;
+                    long killerSquareL = pawn << 9;
+                    long killerSquareR = pawn << 7;
+
+                    long spotsToBeEmpty;
+                    if ((pawn & FILE_A) != 0){
+                        spotsToBeEmpty = blockingSquare | killerSquareR;
+                    }
+                    else if ((pawn & FILE_H) != 0){
+                        spotsToBeEmpty = blockingSquare | killerSquareL;
+                    }
+                    else {
+                        spotsToBeEmpty = blockingSquare | killerSquareL | killerSquareR;
+                    }
+
+                    if ((enemyPawns & spotsToBeEmpty) == 0){
+                        score += PASSED_PAWN_BONUS;
+                    }
+                }
+            }
+        }
+        else {
+            int numberOfAdvancedPawns = populationCount(myPawns & RANK_THREE);
+            if (numberOfAdvancedPawns > 0) {
+                List<Integer> indexOfAllPieces = getIndexOfAllPieces(myPawns & RANK_THREE);
+                for (Integer pawnIndex : indexOfAllPieces) {
+                    long pawn = newPieceOnSquare(pawnIndex);
+                    long blockingSquare = pawn >>> 8;
+                    long killerSquareL = pawn >>> 9;
+                    long killerSquareR = pawn >>> 7;
+
+                    long spotsToBeEmpty;
+                    if ((pawn & FILE_A) != 0){
+                        spotsToBeEmpty = blockingSquare | killerSquareL;
+                    }
+                    else if ((pawn & FILE_H) != 0){
+                        spotsToBeEmpty = blockingSquare | killerSquareR;
+                    }
+                    else {
+                        spotsToBeEmpty = blockingSquare | killerSquareL | killerSquareR;
+                    }
+
+                    if ((enemyPawns & spotsToBeEmpty) == 0){
+                        score += PASSED_PAWN_BONUS;
+                    }
+                }
+            }
+        }
+        return score;
+    }
+
 
     private static int superAdvancedPawn (Chessboard board, boolean white, long myPawns){
         int score = 0;
@@ -67,7 +137,7 @@ class Pawns {
             if (numberOfPawnsNearPromotion > 0){
                 List<Integer> indexOfAllPieces = getIndexOfAllPieces(myPawns & RANK_SEVEN);
                 for (Integer pawnIndex : indexOfAllPieces){
-                    long pawn = BitManipulations.newPieceOnSquare(pawnIndex);
+                    long pawn = newPieceOnSquare(pawnIndex);
                     long pushPromotingSquare = pawn << 8;
                     long capturePromotingSquareL = pawn << 9;
                     long capturePromotingSquareR = pawn << 7;
@@ -127,7 +197,7 @@ class Pawns {
             if (numberOfPawnsNearPromotion > 0){
                 List<Integer> indexOfAllPieces = getIndexOfAllPieces(myPawns & RANK_TWO);
                 for (Integer pawnIndex : indexOfAllPieces){
-                    long pawn = BitManipulations.newPieceOnSquare(pawnIndex);
+                    long pawn = newPieceOnSquare(pawnIndex);
                     long pushPromotingSquare = pawn >>> 8;
                     long capturePromotingSquareL = pawn >>> 9;
                     long capturePromotingSquareR = pawn >>> 7;
@@ -181,6 +251,56 @@ class Pawns {
         return score;
     }
 
+    private static int backwardsPawn(Chessboard board, boolean white, long myPawns){
+        int score = 0;
+        /*
+        we are only considering the final pawn
+         */
+        List<Integer> indexOfAllPieces = BitIndexing.getIndexOfAllPieces(myPawns);
+        if (white) {
+            int lastPawnIndex = indexOfAllPieces.get(0);
+            long lastPawn = newPieceOnSquare(lastPawnIndex);
+            long advancedPosition = lastPawn << 8;
+
+            int threatsToBackwardsPawn = numberOfPiecesThatLegalThreatenSquare(board, true, lastPawn);
+            if (threatsToBackwardsPawn != 0){
+                score += THREATENED_BACKWARDS_PAWN;
+            }
+
+            int friendsToBackwardsPawn = numberOfPiecesThatLegalThreatenSquare(board, false, lastPawn);
+            if (friendsToBackwardsPawn != 0){
+                score += PROTECTED_BACKWARDS_PAWN;
+            }
+
+
+            int threatsToMoveOutOfBack = numberOfPiecesThatLegalThreatenSquare(board, true, advancedPosition);
+            if (threatsToMoveOutOfBack != 0){
+                score += STUCK_BACKWARDS_PAWN_PENALTY;
+            }
+        }
+        else {
+            int lastPawnIndex = indexOfAllPieces.get(indexOfAllPieces.size()-1);
+            long lastPawn = newPieceOnSquare(lastPawnIndex);
+            long advancedPosition = lastPawn >>> 8;
+
+            int threatsToBackwardsPawn = numberOfPiecesThatLegalThreatenSquare(board, false, lastPawn);
+            if (threatsToBackwardsPawn != 0){
+                score += THREATENED_BACKWARDS_PAWN;
+            }
+
+            int friendsToBackwardsPawn = numberOfPiecesThatLegalThreatenSquare(board, true, lastPawn);
+            if (friendsToBackwardsPawn != 0){
+                score += PROTECTED_BACKWARDS_PAWN;
+            }
+
+            int threatsToMoveOutOfBack = numberOfPiecesThatLegalThreatenSquare(board, false, advancedPosition);
+            if (threatsToMoveOutOfBack != 0){
+                score += STUCK_BACKWARDS_PAWN_PENALTY;
+            }
+        }
+        return score;
+    }
+
     private static int pawnAttackingCentreBonus(Chessboard board, boolean white, long myPawns){
         int score = 0;
         long threatenedSuperCentre = masterPawnCapturesTable(board, white, 0, centreFourSquares);
@@ -204,7 +324,6 @@ class Pawns {
     }
 
     private static int blockedPawnPenalty(Chessboard board, boolean white, long myPawns, long enemyPawns){
-        int fileScore = 0;
         if (white) {
             long blockingEnemyPawns = (myPawns << 8) & enemyPawns;
             return populationCount(blockingEnemyPawns) * BLOCKED_PAWN_PENALTY;

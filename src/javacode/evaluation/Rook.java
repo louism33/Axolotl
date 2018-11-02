@@ -15,7 +15,7 @@ import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleRookCa
 
 class Rook {
 
-    private static final int ROOK_ON_SEVENTH_BONUS = 20;
+    private static final int ROOK_ON_SEVENTH_BONUS = 45;
     private static final int ROOK_MOBILITY_SCORE = 1;
     private static final int ROOK_PROTECTOR_SCORE = 4;
     private static final int ROOK_AGGRESSOR_SCORE = 3;
@@ -41,12 +41,13 @@ class Rook {
                 + rookMobility(board, white, myRooks)
                 + rookProtectorAndAggressor(board, white, myRooks)
                 + rookOnOpenFile(board, white, myRooks, myPawns, enemyPawns)
+                + rookHelpsQueensAndRooks(board, white, myRooks)
         ;
 
         return score;
     }
 
-    private static int RookHelpsQueensAndRooks(Chessboard board, boolean white, long myRooks){
+    private static int rookHelpsQueensAndRooks(Chessboard board, boolean white, long myRooks){
         List<Integer> indexOfAllPieces = getIndexOfAllPieces(myRooks);
         long myQueens = white ? board.WHITE_QUEEN : board.BLACK_QUEEN;
         long emptySquares = ~board.ALL_PIECES();

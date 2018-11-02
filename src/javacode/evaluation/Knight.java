@@ -20,7 +20,7 @@ class Knight {
     private static final int KNIGHT_PROTECTOR_SCORE = 4;
     private static final int KNIGHT_AGGRESSOR_SCORE = 10;
     private static final int UNDEVELOPED_KNIGHT_PENALTY = -35;
-    
+
     static int evalKnightByTurn(Chessboard board, boolean white) {
         long myKnights = white ? board.WHITE_KNIGHTS : board.BLACK_KNIGHTS;
 
@@ -34,7 +34,7 @@ class Knight {
         int score = 0;
 
         score += unDevelopedKnights(board, white, myKnights)
-    + knightOutpostBonus(board, white, myKnights, enemyPawns)
+                + knightOutpostBonus(board, white, myKnights, enemyPawns)
                 + knightMobility(board, white, myKnights)
                 + knightProtectorAndAggressor(board, white, myKnights)
         ;

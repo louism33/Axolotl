@@ -1,26 +1,23 @@
 package javacode.chessengine;
 
-import javacode.chessprogram.check.CheckChecker;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
-import static javacode.chessprogram.moveMaking.MoveParser.isPromotionMove;
-
 class LateMoveReductions {
     
-    static int lateMoveDepthReduction(int ply){
-        return 2;// + ply / 3;
+    static int lateMoveDepthReduction(int depth){
+        return 2 + depth / 3;
     }
 
     static boolean isLateMoveReductionAllowedHere(Chessboard board,
-                                                  Move move, int depth, int numberOfMovesSearched, boolean reducedSearch) {
+                                                  Move move, int depth, int numberOfMovesSearched, boolean reducedSearch,
+                                                  boolean wasPromotionMove, boolean wasCaptureMove) {
 
-        return depth > 2
+        return depth > 3
                 && !reducedSearch
                 && numberOfMovesSearched > 3
-                && !(isPromotionMove(move))
-//                && !moveIsCapture(board, move)
-                && !CheckChecker.boardInCheck(board, board.isWhiteTurn())
+                && !wasPromotionMove
+                && !wasCaptureMove
                 ;
     }
     

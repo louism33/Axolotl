@@ -5,7 +5,8 @@ import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
-import static javacode.chessprogram.moveMaking.StackMoveData.SpecialMove;
+import static javacode.chessprogram.chess.BitManipulations.*;
+import static javacode.chessprogram.moveMaking.StackMoveData.SpecialMove.*;
 
 public class MoveOrganiser {
 
@@ -23,7 +24,7 @@ public class MoveOrganiser {
         if (MoveParser.isSpecialMove(move)){
             if (MoveParser.isCastlingMove(move)) {
                 castlings++;
-                StackMoveData stackMoveData = new StackMoveData(move, board, 50, SpecialMove.CASTLING);
+                StackMoveData stackMoveData = new StackMoveData(move, board, 50, CASTLING);
                 board.moveStack.push(stackMoveData);
                 MoveCastling.makeCastlingMove(board, move);
                 MoveCastling.castleFlagManager(board, move);
@@ -32,30 +33,30 @@ public class MoveOrganiser {
             else if (MoveParser.isEnPassantMove(move)){
                 epNum++;
                 StackMoveData stackMoveData = new StackMoveData
-                        (move, board, 50, SpecialMove.ENPASSANTCAPTURE);
+                        (move, board, 50, ENPASSANTCAPTURE);
                 board.moveStack.push(stackMoveData);
                 MoveEnPassant.makeEnPassantMove(board, move);
                 MoveCastling.castleFlagManager(board, move);
             }
 
             else if (MoveParser.isPromotionMove(move)){
-                int destination = move.destination;
-                long destSquare = BitManipulations.newPieceOnSquare(destination);
+                int destination = move.destinationIndex;
+                long destSquare = newPieceOnSquare(destination);
                 boolean capturePromotion = (destSquare & board.ALL_PIECES()) != 0;
                 if (capturePromotion) {
-                    long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
+                    long destinationPiece = newPieceOnSquare(move.destinationIndex);
                     int takenPiece = whichPieceOnSquare(board, destinationPiece);
 
                     promotions++;
                     captures++;
-                    StackMoveData stackMoveData = new StackMoveData(move, board, 50, SpecialMove.PROMOTION, takenPiece);
+                    StackMoveData stackMoveData = new StackMoveData(move, board, 50, PROMOTION, takenPiece);
                     board.moveStack.push(stackMoveData);
                     MovePromotion.makePromotingMove(board, move);
                     MoveCastling.castleFlagManager(board, move);
                 }
                 else {
                     promotions++;
-                    StackMoveData stackMoveData = new StackMoveData(move, board, 50, SpecialMove.PROMOTION);
+                    StackMoveData stackMoveData = new StackMoveData(move, board, 50, PROMOTION);
                     board.moveStack.push(stackMoveData);
                     MovePromotion.makePromotingMove(board, move);
                     MoveCastling.castleFlagManager(board, move);
@@ -66,36 +67,36 @@ public class MoveOrganiser {
 
 
         else {
-            int destination = move.destination;
-            long destSquare = BitManipulations.newPieceOnSquare(destination);
+            int destination = move.destinationIndex;
+            long destSquare = newPieceOnSquare(destination);
             boolean captureMove = (destSquare & board.ALL_PIECES()) != 0;
             if (captureMove) {
                 captures++;
-                long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
+                long destinationPiece = newPieceOnSquare(move.destinationIndex);
                 int takenPiece = whichPieceOnSquare(board, destinationPiece);
                 StackMoveData stackMoveData = new StackMoveData
-                        (move, board, 50, SpecialMove.BASICCAPTURE, takenPiece);
+                        (move, board, 50, BASICCAPTURE, takenPiece);
                 board.moveStack.push(stackMoveData);
                 MoveRegular.makeRegularMove(board, move);
                 MoveCastling.castleFlagManager(board, move);
             }
             
             else if (enPassantPossibility(board, move)){
-                int sourceAsPiece = move.getSourceAsPiece();
+                int sourceAsPiece = move.getSourceAsPieceIndex();
                 int whichFile = 8 - sourceAsPiece % 8;
                 StackMoveData stackMoveData = new StackMoveData
-                        (move, board, 50, whichFile, SpecialMove.ENPASSANTVICTIM);
+                        (move, board, 50, whichFile, ENPASSANTVICTIM);
                 board.moveStack.push(stackMoveData);
                 MoveRegular.makeRegularMove(board, move);
                 MoveCastling.castleFlagManager(board, move);
             }
 
             else {
-                long destinationPiece = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
+                long destinationPiece = newPieceOnSquare(move.getSourceAsPieceIndex());
                 int movingPiece = whichPieceOnSquare(board, destinationPiece);
                 if (movingPiece == 1 || movingPiece == 7){
                     StackMoveData stackMoveData = new StackMoveData
-                            (move, board, 50, SpecialMove.BASICLOUDPUSH);
+                            (move, board, 50, BASICLOUDPUSH);
                     board.moveStack.push(stackMoveData);
                     MoveRegular.makeRegularMove(board, move);
                     MoveCastling.castleFlagManager(board, move);
@@ -103,7 +104,7 @@ public class MoveOrganiser {
                 else {
                     // increment 50 move rule
                     StackMoveData stackMoveData = new StackMoveData
-                            (move, board, 50, SpecialMove.BASICQUIETPUSH);
+                            (move, board, 50, BASICQUIETPUSH);
                     board.moveStack.push(stackMoveData);
                     MoveRegular.makeRegularMove(board, move);
                     MoveCastling.castleFlagManager(board, move);
@@ -114,8 +115,8 @@ public class MoveOrganiser {
 
     private static boolean enPassantPossibility(Chessboard board, Move move){
         // determine if flag should be added to enable EP on next turn
-        long sourceSquare = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
-        long destinationSquare = BitManipulations.newPieceOnSquare(move.destination);
+        long sourceSquare = newPieceOnSquare(move.getSourceAsPieceIndex());
+        long destinationSquare = newPieceOnSquare(move.destinationIndex);
         long HOME_RANK = (board.isWhiteTurn()) ? BitBoards.RANK_TWO : BitBoards.RANK_SEVEN;
         long MY_PAWNS = (board.isWhiteTurn()) ? board.WHITE_PAWNS : board.BLACK_PAWNS;
         long enPassantPossibilityRank = (board.isWhiteTurn()) ? BitBoards.RANK_FOUR : BitBoards.RANK_FIVE;

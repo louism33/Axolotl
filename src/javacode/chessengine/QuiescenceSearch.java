@@ -2,16 +2,19 @@ package javacode.chessengine;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.chessprogram.moveMaking.MoveUnmaker;
-import javacode.evaluation.Evaluator;
 
 import java.util.List;
 
 import static javacode.chessengine.Engine.ALLOW_TIME_LIMIT;
+import static javacode.chessengine.Engine.DEBUG;
+import static javacode.chessengine.Engine.whichMoveWasTheBestQuiescence;
 import static javacode.chessengine.MoveOrderer.orderMovesQuiescence;
 import static javacode.chessengine.QuiescentSearchUtils.isBoardQuiet;
+import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
+import static javacode.evaluation.Evaluator.IN_CHECKMATE_SCORE_MAX_PLY;
+import static javacode.evaluation.Evaluator.eval;
 
 class QuiescenceSearch {
 
@@ -22,12 +25,13 @@ class QuiescenceSearch {
     static int quiescenceSearch(Chessboard board, ZobristHash zobristHash,
                                 long startTime, long timeLimitMillis,
                                 int alpha, int beta){
-        List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
+        
+        List<Move> moves = generateLegalMoves(board, board.isWhiteTurn());
 
         /*
         the score we get from not making captures anymore
          */
-        int standPatScore = Evaluator.eval(board, board.isWhiteTurn(), moves);
+        int standPatScore = eval(board, board.isWhiteTurn(), moves);
 
         if (ALLOW_TIME_LIMIT) {
             long currentTime = System.currentTimeMillis();
@@ -35,6 +39,18 @@ class QuiescenceSearch {
             if (timeLeft < 0) {
                 return standPatScore;
             }
+        }
+        
+        if (standPatScore > -IN_CHECKMATE_SCORE_MAX_PLY){
+            return standPatScore;
+        }
+        
+        if (standPatScore >= beta){
+            return beta;
+        }
+
+        if (standPatScore > alpha){
+            alpha = standPatScore;
         }
         
         /*
@@ -47,19 +63,13 @@ class QuiescenceSearch {
             return standPatScore;
         }
 
-        if (standPatScore >= beta){
-            return beta;
-        }
+        List<Move> orderedCaptureMoves = orderMovesQuiescence(board, board.isWhiteTurn(), moves);
 
-        if (standPatScore > alpha){
-            alpha = standPatScore;
-        }
-
-        List<Move> orderedCaptureMove = orderMovesQuiescence(board, board.isWhiteTurn(), moves);
-
-        for (Move captureMove : orderedCaptureMove){
+        int numberOfMovesSearched = 0;
+        for (Move captureMove : orderedCaptureMoves){
             MoveOrganiser.makeMoveMaster(board, captureMove);
             MoveOrganiser.flipTurn(board);
+            numberOfMovesSearched++;
 
             if (Engine.DEBUG){
                 Engine.numberOfQuiescentMovesMade++;
@@ -72,6 +82,9 @@ class QuiescenceSearch {
             MoveUnmaker.unMakeMoveMaster(board);
 
             if (score >= beta){
+                if (DEBUG){
+                    whichMoveWasTheBestQuiescence[numberOfMovesSearched-1]++;
+                }
                 return beta;
             }
 

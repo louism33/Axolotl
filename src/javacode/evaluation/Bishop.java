@@ -18,7 +18,7 @@ import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleBishop
 class Bishop {
 
     private static final int PER_ENEMY_PAWN_COLOUR_MODIFIER = 5;
-    private static final int PER_FRIENLY_PAWN_COLOUR_MODIFIFER = 3;
+    private static final int PER_FRIENDLY_PAWN_COLOUR_MODIFIER = 3;
     private static final int DOUBLE_BISHOP_BONUS = 15;
     private static final int BISHOP_OUTPOST_BONUS = 20;
     private static final int BISHOP_MOBILITY_SCORE = 1;
@@ -51,7 +51,7 @@ class Bishop {
                 + bishopProtectorAndAggressor(board, white, myBishops)
                 + doubleBishopScore(myBishops)
                 + bishopOutpostBonus(board, white, myBishops, enemyPawns)
-        + primeDiagonals(board, white, myBishops)
+                + primeDiagonals(board, white, myBishops)
         ;
 
         return score;
@@ -66,7 +66,7 @@ class Bishop {
     private static int primeDiagonals(Chessboard board, boolean white, long myBishops){
         return populationCount(myBishops & (DIAGONAL_SW_NE | DIAGONAL_NW_SE)) * PRIME_DIAGONAL_BONUS;
     }
-    
+
     private static int bishopMobility(Chessboard board, boolean white, long myBishops){
         List<Integer> indexOfAllPieces = getIndexOfAllPieces(myBishops);
         long emptySquares = ~board.ALL_PIECES();
@@ -173,7 +173,7 @@ class Bishop {
         if (iAmWinningUgly(board, white)){
             score *= -1;
         }
-        return score * PER_FRIENLY_PAWN_COLOUR_MODIFIFER;
+        return score * PER_FRIENDLY_PAWN_COLOUR_MODIFIER;
 
     }
 

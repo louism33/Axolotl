@@ -42,7 +42,7 @@ public class Copier {
 
 
     public static Move copyMove (Move move) {
-        Move copyMove = new Move(move.getSourceAsPiece(), move.destination);
+        Move copyMove = new Move(move.getSourceAsPieceIndex(), move.destinationIndex);
 
         if ((move.move & MoveParser.SPECIAL_MOVE_MASK) != 0) {
             if ((move.move & MoveParser.SPECIAL_MOVE_MASK) == MoveParser.CASTLING_MASK) {

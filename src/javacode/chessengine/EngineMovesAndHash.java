@@ -10,7 +10,6 @@ import static javacode.chessprogram.moveMaking.MoveUnmaker.unMakeMoveMaster;
 public class EngineMovesAndHash {
     
     public static void makeMoveAndHashUpdate(Chessboard board, Move move, ZobristHash zobristHash){
-
         zobristHash.zobristStack.push(zobristHash.getBoardHash());
         zobristHash.updateHashPreMove(board, move);
         makeMoveMaster(board, move);

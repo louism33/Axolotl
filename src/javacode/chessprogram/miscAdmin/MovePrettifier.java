@@ -6,10 +6,10 @@ import javacode.chessprogram.moveMaking.MoveParser;
 public class MovePrettifier {
 
     public static String prettyMove(Move move){
-        int sourceAsPiece = move.getSourceAsPiece();
+        int sourceAsPiece = move.getSourceAsPieceIndex();
         String file = getFile(sourceAsPiece);
         String rank = getRank(sourceAsPiece);
-        int destination = move.destination;
+        int destination = move.destinationIndex;
         String destinationFile = getFile(destination);
         String destinationRank = getRank(destination);
         String m = ""+file+ rank+destinationFile+ destinationRank;

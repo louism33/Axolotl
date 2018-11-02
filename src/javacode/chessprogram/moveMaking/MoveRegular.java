@@ -4,11 +4,13 @@ import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
+import static javacode.chessprogram.chess.BitManipulations.*;
+
 class MoveRegular {
 
     static void makeRegularMove(Chessboard board, Move move){
-        long sourcePiece = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
-        long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
+        long sourcePiece = newPieceOnSquare(move.getSourceAsPieceIndex());
+        long destinationPiece = newPieceOnSquare(move.destinationIndex);
 
         if ((sourcePiece & board.WHITE_PAWNS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);

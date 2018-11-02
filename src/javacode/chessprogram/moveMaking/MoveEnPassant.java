@@ -9,14 +9,14 @@ import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 class MoveEnPassant {
     
     static void makeEnPassantMove(Chessboard board, Move move){
-        long sourcePiece = newPieceOnSquare(move.getSourceAsPiece());
-        long destinationPiece = newPieceOnSquare(move.destination);
+        long sourcePiece = newPieceOnSquare(move.getSourceAsPieceIndex());
+        long destinationPiece = newPieceOnSquare(move.destinationIndex);
         
         if ((destinationPiece & board.ALL_PIECES()) != 0) {
             System.out.println("EP MOVE PROBLEM!");
             System.out.println("source");
             Art.printLong(sourcePiece);
-            System.out.println("destination");
+            System.out.println("destinationIndex");
             Art.printLong(destinationPiece);
             System.out.println("all pieces");
             Art.printLong(board.ALL_PIECES());

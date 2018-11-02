@@ -10,10 +10,11 @@ class MaterialEval {
     static int evalMaterialByTurn(Chessboard board, boolean white){
         int score = 0;
         score += pawnScores(board, white)
-                +knightScores(board, white)
-                +bishopScores(board, white)
-                +rookScores(board, white)
-                +queenScores(board, white)
+                + knightScores(board, white)
+                + bishopScores(board, white)
+                + rookScores(board, white)
+                + queenScores(board, white)
+                + kingScores(board, white)
         ;
 
         return score;
@@ -47,6 +48,12 @@ class MaterialEval {
         long myPieces = white ? board.WHITE_QUEEN : board.BLACK_QUEEN;
         int numberOfQueens = BitIndexing.populationCount(myPieces);
         return numberOfQueens * QUEEN_SCORE;
+    }
+
+    private static int kingScores(Chessboard board, boolean white){
+        long myPieces = white ? board.WHITE_KING : board.BLACK_KING;
+        int numberOfQueens = BitIndexing.populationCount(myPieces);
+        return numberOfQueens * KING_SCORE;
     }
 
 }

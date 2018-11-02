@@ -249,7 +249,7 @@ public class MoveParserFromAN {
                 return 0;
             }
             default:
-                System.out.println("problem with Getting destination file");
+                System.out.println("problem with Getting destinationIndex file");
                 return 0;
         }
     }

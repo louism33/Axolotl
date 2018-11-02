@@ -5,14 +5,15 @@ import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.graphicsandui.Art;
 
+import static javacode.chessprogram.chess.BitManipulations.*;
 import static javacode.chessprogram.moveMaking.StackMoveData.SpecialMove.*;
 
 public class MoveUnmaker {
 
     public static void unMakeMoveMaster(Chessboard board) {
         StackMoveData popSMD = board.moveStack.pop();
-        int pieceToMoveBack = popSMD.move.destination;
-        int squareToMoveBackTo = popSMD.move.getSourceAsPiece();
+        int pieceToMoveBack = popSMD.move.destinationIndex;
+        int squareToMoveBackTo = popSMD.move.getSourceAsPieceIndex();
 
         if (popSMD.typeOfSpecialMove == BASICQUIETPUSH){
             Move basicReversedMove = new Move(pieceToMoveBack, squareToMoveBackTo);
@@ -56,10 +57,10 @@ public class MoveUnmaker {
             Move basicReversedMove = new Move(pieceToMoveBack, squareToMoveBackTo);
 
             if (pieceToMoveBack == 1){
-                long originalKing = BitManipulations.newPieceOnSquare(squareToMoveBackTo);
-                long originalRook = BitManipulations.newPieceOnSquare(0);
-                long newRook = BitManipulations.newPieceOnSquare(pieceToMoveBack + 1);
-                long newKing = BitManipulations.newPieceOnSquare(pieceToMoveBack);
+                long originalKing = newPieceOnSquare(squareToMoveBackTo);
+                long originalRook = newPieceOnSquare(0);
+                long newRook = newPieceOnSquare(pieceToMoveBack + 1);
+                long newKing = newPieceOnSquare(pieceToMoveBack);
 
                 MoveMakingUtilities.removePieces(board, newKing, newRook);
                 board.WHITE_KING |= originalKing;
@@ -67,10 +68,10 @@ public class MoveUnmaker {
             }
 
             else if (pieceToMoveBack == 5){
-                long originalKing = BitManipulations.newPieceOnSquare(squareToMoveBackTo);
-                long originalRook = BitManipulations.newPieceOnSquare(7);
-                long newRook = BitManipulations.newPieceOnSquare(pieceToMoveBack - 1);
-                long newKing = BitManipulations.newPieceOnSquare(pieceToMoveBack);
+                long originalKing = newPieceOnSquare(squareToMoveBackTo);
+                long originalRook = newPieceOnSquare(7);
+                long newRook = newPieceOnSquare(pieceToMoveBack - 1);
+                long newKing = newPieceOnSquare(pieceToMoveBack);
 
                 MoveMakingUtilities.removePieces(board, newKing, newRook);
                 board.WHITE_KING |= originalKing;
@@ -78,10 +79,10 @@ public class MoveUnmaker {
             }
 
             else if (pieceToMoveBack == 57){
-                long originalKing = BitManipulations.newPieceOnSquare(squareToMoveBackTo);
-                long originalRook = BitManipulations.newPieceOnSquare(56);
-                long newRook = BitManipulations.newPieceOnSquare(pieceToMoveBack + 1);
-                long newKing = BitManipulations.newPieceOnSquare(pieceToMoveBack);
+                long originalKing = newPieceOnSquare(squareToMoveBackTo);
+                long originalRook = newPieceOnSquare(56);
+                long newRook = newPieceOnSquare(pieceToMoveBack + 1);
+                long newKing = newPieceOnSquare(pieceToMoveBack);
 
                 MoveMakingUtilities.removePieces(board, newKing, newRook);
                 board.BLACK_KING |= originalKing;
@@ -89,10 +90,10 @@ public class MoveUnmaker {
             }
 
             else if (pieceToMoveBack == 61){
-                long originalKing = BitManipulations.newPieceOnSquare(squareToMoveBackTo);
-                long originalRook = BitManipulations.newPieceOnSquare(63);
-                long newRook = BitManipulations.newPieceOnSquare(pieceToMoveBack - 1);
-                long newKing = BitManipulations.newPieceOnSquare(pieceToMoveBack);
+                long originalKing = newPieceOnSquare(squareToMoveBackTo);
+                long originalRook = newPieceOnSquare(63);
+                long newRook = newPieceOnSquare(pieceToMoveBack - 1);
+                long newKing = newPieceOnSquare(pieceToMoveBack);
 
                 MoveMakingUtilities.removePieces(board, newKing, newRook);
                 board.BLACK_KING |= originalKing;
@@ -102,8 +103,8 @@ public class MoveUnmaker {
         }
         
         else if (popSMD.typeOfSpecialMove == PROMOTION){
-            long sourceSquare = BitManipulations.newPieceOnSquare(pieceToMoveBack);
-            long destinationSquare = BitManipulations.newPieceOnSquare(squareToMoveBackTo);
+            long sourceSquare = newPieceOnSquare(pieceToMoveBack);
+            long destinationSquare = newPieceOnSquare(squareToMoveBackTo);
             MoveMakingUtilities.removePieces(board, sourceSquare, destinationSquare);
             if (popSMD.whiteTurn) {
                 addRelevantPieceToSquare(board, 1, squareToMoveBackTo);
@@ -127,7 +128,7 @@ public class MoveUnmaker {
 
 
     private static void addRelevantPieceToSquare(Chessboard board, int pieceToAdd, int placeToAddIt){
-        long placeToAddPiece = BitManipulations.newPieceOnSquare(placeToAddIt);
+        long placeToAddPiece = newPieceOnSquare(placeToAddIt);
 
         if (pieceToAdd == 1){
             board.WHITE_PAWNS |= placeToAddPiece;
@@ -173,8 +174,8 @@ public class MoveUnmaker {
 
 
     private static void makeRegularMove(Chessboard board, Move move){
-        long sourcePiece = BitManipulations.newPieceOnSquare(move.getSourceAsPiece());
-        long destinationPiece = BitManipulations.newPieceOnSquare(move.destination);
+        long sourcePiece = newPieceOnSquare(move.getSourceAsPieceIndex());
+        long destinationPiece = newPieceOnSquare(move.destinationIndex);
 
         if ((sourcePiece & board.WHITE_PAWNS) != 0){
             MoveMakingUtilities.removePieces(board, sourcePiece, destinationPiece);

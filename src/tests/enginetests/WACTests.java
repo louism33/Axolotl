@@ -26,12 +26,21 @@ public class WACTests {
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
+        
+        int counter = 0;
+        int until = 10;
+        
         for (String splitUpWAC : splitUpWACs) {
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EDPObject edpObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
             objectAndName[0] = edpObject;
             objectAndName[1] = edpObject.getId();
             answers.add(objectAndName);
+            counter++;
+            
+            if (counter > until){
+                break;
+            }
         }
         return answers;
     }
@@ -51,22 +60,10 @@ public class WACTests {
         System.out.println(move);
 
         int winningMoveDestination = edpObject.getBestMoveDestinationIndex();
-        int myMoveDestination = move.destination;
+        int myMoveDestination = move.destinationIndex;
 
-        assertEquals(winningMoveDestination, myMoveDestination);
+                assertEquals(winningMoveDestination, myMoveDestination);
     }
-
-
-
-
-    
-
-
-
-
-
-
-
 
     private static final String wacTests = "" +
             "2rr3k/pp3pp1/1nnqbN1p/3pN3/2pP4/2P3Q1/PPB4P/R4RK1 w - - bm Qg6; id \"WAC.001\";\n" +
