@@ -28,7 +28,7 @@ public class Evaluator {
     static final int BISHOP_SCORE = 300;
     static final int ROOK_SCORE = 500;
     static final int QUEEN_SCORE = 900;
-    static final int KING_SCORE = 6000;
+    static final int KING_SCORE = 3000;
 
     public static final int SHORT_MINIMUM = -31000;
     public static final int SHORT_MAXIMUM = 31000;
@@ -38,25 +38,30 @@ public class Evaluator {
     public static final int CHECKMATE_ENEMY_SCORE_MAX_PLY = -IN_CHECKMATE_SCORE_MAX_PLY;
     public static final int IN_STALEMATE_SCORE = 0;
 
+
+    public static int evalWithoutCM(Chessboard board, boolean white, List<Move> moves) {
+        return evalHelper(board, white, moves);
+    }
+    
     public static int eval(Chessboard board, boolean white, List<Move> moves) {
         if (moves == null){
             moves = generateLegalMoves(board, white);
         }
 
         if (DEBUG) {
-            numberOfEvals++;
+            statistics.numberOfEvals++;
         }
 
         if (moves.size() == 0){
             if (boardInCheck(board, white)) {
                 if (DEBUG) {
-                    numberOfCheckmates++;
+                    statistics.numberOfCheckmates++;
                 }
                 return IN_CHECKMATE_SCORE;
             }
             else {
                 if (DEBUG) {
-                    numberOfStalemates++;
+                    statistics.numberOfStalemates++;
                 }
                 return IN_STALEMATE_SCORE;
             }

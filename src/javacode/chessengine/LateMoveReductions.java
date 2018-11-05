@@ -11,13 +11,17 @@ class LateMoveReductions {
 
     static boolean isLateMoveReductionAllowedHere(Chessboard board,
                                                   Move move, int depth, int numberOfMovesSearched, boolean reducedSearch,
-                                                  boolean wasPromotionMove, boolean wasCaptureMove) {
+                                                  boolean wasPromotionMove, boolean wasCaptureMove,
+                                                  boolean givesCheckMove, boolean pawnToSix, boolean pawnToSeven) {
 
         return depth > 3
                 && !reducedSearch
                 && numberOfMovesSearched > 3
                 && !wasPromotionMove
                 && !wasCaptureMove
+                && !givesCheckMove
+                && !pawnToSix
+                && !pawnToSeven
                 ;
     }
     

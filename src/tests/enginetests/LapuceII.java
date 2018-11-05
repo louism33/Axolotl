@@ -4,6 +4,7 @@ import javacode.chessengine.Engine;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.miscAdmin.ExtendedPositionDescriptionParser;
 import javacode.graphicsandui.Art;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -46,15 +47,15 @@ public class LapuceII {
 
     @Test
     public void test() {
-
+        WACTests.reset();
         System.out.println(Art.boardArt(edpObject.getBoard()));
         Move move = Engine.search(edpObject.getBoard(), timeLimit);
         System.out.println(move);
 
-        int winningMoveDestination = edpObject.getBestMoveDestinationIndex();
+        List<Integer> winningMoveDestination = edpObject.getBestMoveDestinationIndex();
         int myMoveDestination = move.destinationIndex;
 
-        assertEquals(winningMoveDestination, myMoveDestination);
+        Assert.assertTrue(winningMoveDestination.contains(myMoveDestination));
     }
 
 

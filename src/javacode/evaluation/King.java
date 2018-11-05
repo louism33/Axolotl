@@ -13,8 +13,8 @@ import static javacode.chessprogram.moveGeneration.PieceMoveKing.singleKingCaptu
 class King {
 
     private static int KING_PAWN_PROTECT_BONUS = 5;
-    private static final int KING_PROTECTOR_SCORE = 20;
-    private static final int KING_AGGRESSOR_SCORE = 3;
+    private static final int KING_PROTECTOR_SCORE = 1;
+    private static final int KING_AGGRESSOR_SCORE = 1;
     
     static int evalKingByTurn(Chessboard board, boolean white) {
         long myKing = white ? board.WHITE_KING : board.BLACK_KING;
@@ -53,6 +53,7 @@ class King {
             protectedFriends += populationCount(pseudoAttackedOrProtectedByKing & myPieces);
             threatenedEnemies += populationCount(pseudoAttackedOrProtectedByKing & enemyPieces);
         }
+
         return protectedFriends * KING_PROTECTOR_SCORE
                 + threatenedEnemies * KING_AGGRESSOR_SCORE;
     }

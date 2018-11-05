@@ -1,9 +1,13 @@
 package tests.enginetests;
 
 import javacode.chessengine.Engine;
+import javacode.chessengine.PrincipleVariationSearch;
+import javacode.chessengine.Statistics;
+import javacode.chessengine.TranspositionTable;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.miscAdmin.ExtendedPositionDescriptionParser;
 import javacode.graphicsandui.Art;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -21,15 +25,15 @@ public class WACTests {
     Arasan = 10 sec.	298/300
      */
 
-    private static final int timeLimit = 10000; 
-    
+    private static final int timeLimit = 10000;
+
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
-        
+
         int counter = 0;
         int until = 10;
-        
+
         for (String splitUpWAC : splitUpWACs) {
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EDPObject edpObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
@@ -37,32 +41,45 @@ public class WACTests {
             objectAndName[1] = edpObject.getId();
             answers.add(objectAndName);
             counter++;
-            
-            if (counter > until){
-                break;
+
+            if (counter >= until){
+//                break;
             }
         }
         return answers;
     }
 
-    
+
     private static ExtendedPositionDescriptionParser.EDPObject edpObject;
 
     public WACTests(Object edp, Object name) {
         edpObject = (ExtendedPositionDescriptionParser.EDPObject) edp;
     }
 
+
+    public static void reset(){
+        TranspositionTable.resetTable();
+        PrincipleVariationSearch.setAiMove(null);
+        Engine.resetEngine();
+    }
+
     @Test
     public void test() {
-
+        WACTests.reset();
         System.out.println(Art.boardArt(edpObject.getBoard()));
+
         Move move = Engine.search(edpObject.getBoard(), timeLimit);
         System.out.println(move);
 
-        int winningMoveDestination = edpObject.getBestMoveDestinationIndex();
+        List<Integer> winningMoveDestination = edpObject.getBestMoveDestinationIndex();
         int myMoveDestination = move.destinationIndex;
 
-                assertEquals(winningMoveDestination, myMoveDestination);
+        Assert.assertTrue(winningMoveDestination.contains(myMoveDestination));
+
+
+        List<Integer> losingMoveDestination = edpObject.getAvoidMoveDestinationIndex();
+
+        Assert.assertFalse(losingMoveDestination.contains(myMoveDestination));
     }
 
     private static final String wacTests = "" +
@@ -370,7 +387,7 @@ public class WACTests {
 
     private static final String[] splitUpWACs = wacTests.split("\\\n");
     static int totalWACS = splitUpWACs.length;
-    
+
 }
     
     

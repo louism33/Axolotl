@@ -8,25 +8,27 @@ import javacode.chessprogram.moveGeneration.PinnedManager;
 import java.util.List;
 
 import static javacode.chessprogram.bitboards.BitBoards.FILES;
+import static javacode.chessprogram.check.CheckChecker.*;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.moveGeneration.PinnedManager.*;
 
 class Misc {
 
-    private static final int MOVE_NUMBER_POINT = 1;
-    private static final int BATTERY_SCORE = 25;
-    private static final int I_CONTROL_OPEN_FILE = 30;
-    private static final int MY_TURN_BONUS = 50;
-    private static final int IN_CHECK_PENALTY = -30;
+    private static final int MOVE_NUMBER_POINT = 1; 
+    private static final int BATTERY_SCORE = 10;
+    private static final int I_CONTROL_OPEN_FILE = 10;
+    private static final int MY_TURN_BONUS = 15;
+    private static final int IN_CHECK_PENALTY = -5;
 
-    private static final int BASIC_PINNED_PIECE_PENALTY_KING = -25;
-    private static final int QUEEN_IS_PINNED = -150;
-    private static final int BASIC_PINNED_PIECE_PENALTY_QUEEN = -25;
+    private static final int BASIC_PINNED_PIECE_PENALTY_KING = -15;
+    private static final int QUEEN_IS_PINNED = -10;
+    private static final int BASIC_PINNED_PIECE_PENALTY_QUEEN = -10;
 
     static int evalMiscByTurn(Chessboard board, boolean white, List<Move> moves) {
         int score = 0;
-        score += moveNumberScores(board, white, moves)
+        score += 
+                moveNumberScores(board, white, moves)
                 + batteryAndFileControl(board, white, moves)
                 + myTurnBonus(board, white, moves)
                 + inCheckPenalty(board, white, moves)
@@ -55,7 +57,7 @@ class Misc {
     }
 
     private static int inCheckPenalty(Chessboard board, boolean white, List<Move> moves) {
-        return CheckChecker.boardInCheck(board, white) ? IN_CHECK_PENALTY : 0;
+        return boardInCheck(board, white) ? IN_CHECK_PENALTY : 0;
     }
 
     private static int myTurnBonus(Chessboard board, boolean white, List<Move> moves) {
@@ -63,7 +65,7 @@ class Misc {
     }
 
     private static int moveNumberScores(Chessboard board, boolean white, List<Move> moves) {
-        return moves.size() * MOVE_NUMBER_POINT;
+        return white == board.isWhiteTurn() ? (moves.size() * MOVE_NUMBER_POINT) / 20 : 0;
     }
 
     private static int batteryAndFileControl(Chessboard board, boolean white, List<Move> moves) {

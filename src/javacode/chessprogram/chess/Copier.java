@@ -1,13 +1,16 @@
 package javacode.chessprogram.chess;
 
 import javacode.chessprogram.moveMaking.MoveParser;
+import javacode.chessprogram.moveMaking.StackMoveData;
+
+import java.util.Stack;
 
 public class Copier {
 
     public static Chessboard copyBoard(Chessboard board, boolean white, boolean ignoreMyKing){
         Chessboard newBoard = new Chessboard();
         
-        newBoard.moveStack = board.moveStack;
+        newBoard.moveStack = (Stack< StackMoveData >) board.moveStack.clone();
         
         newBoard.WHITE_PAWNS = board.WHITE_PAWNS;
         newBoard.WHITE_KNIGHTS = board.WHITE_KNIGHTS;

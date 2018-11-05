@@ -22,6 +22,7 @@ import static javacode.chessengine.HistoryMoves.historyMoveScore;
 import static javacode.chessengine.KillerMoves.killerMoves;
 import static javacode.chessengine.KillerMoves.mateKiller;
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
+import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.*;
 import static javacode.chessprogram.moveMaking.MoveParser.*;
 
 class MoveOrderer {
@@ -32,7 +33,8 @@ class MoveOrderer {
 
     private static final int
             hashScore = 127,
-            mateKillerScore = 126,
+            aiScore = 126,
+            mateKillerScore = 125,
             queenPromotionScore = 109,
             killerOneScore = 102,
             killerTwoScore = 101,
@@ -47,33 +49,39 @@ class MoveOrderer {
     Move Ordering:
     previous Hash Moves, promotions, capture of last moved piece, good captures, killers, killers from earlier plies, 
     castling, bad captures, quiet moves, bad promotions
-    */
-    static List<Move> orderedMoves(Chessboard board, boolean white, int ply, Move hashMove){
+     */
+    static List<Move> orderedMoves(Chessboard board, boolean white, int ply, Move hashMove, Move aiMove){
         return extractMoves(board, white,
-                MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()),
-                ply, hashMove);
+                generateLegalMoves(board, board.isWhiteTurn()),
+                ply, hashMove, aiMove);
     }
 
-    private static List<Move> extractMoves(Chessboard board, boolean white, List<Move> moves, int ply, Move hashMove){
-        List<MoveScore> moveScores = orderedMoveScores(board, white, moves, ply, hashMove);
+    private static List<Move> extractMoves(Chessboard board, boolean white, List<Move> moves, int ply,
+                                           Move hashMove, Move aiMove){
+        List<MoveScore> moveScores = orderedMoveScores(board, white, moves, ply, hashMove, aiMove);
         return moveScores.stream().map(moveScore -> moveScore.move).collect(Collectors.toList());
     }
 
-    private static List<MoveScore> orderedMoveScores(Chessboard board, boolean white, List<Move> moves, int ply, Move hashMove){
-        List<MoveScore> moveScores = scoreMoves(board, white, moves, ply, hashMove);
+    private static List<MoveScore> orderedMoveScores(Chessboard board, boolean white, List<Move> moves, int ply,
+                                                     Move hashMove, Move aiMove){
+        List<MoveScore> moveScores = scoreMoves(board, white, moves, ply, hashMove, aiMove);
         moveScores.sort(Comparator.comparingInt(MoveScore::getScore).reversed());
         return moveScores;
     }
 
-    private static List<MoveScore> scoreMoves(Chessboard board, boolean white, List<Move> moves, int ply, Move hashMove){
+    private static List<MoveScore> scoreMoves(Chessboard board, boolean white, List<Move> moves, int ply, 
+                                              Move hashMove, Move aiMove){
         List<MoveScore> unsortedScoredMoves = new ArrayList<>();
         /*
         captures range from +92 to +108. +100 indicates an equal capture (Bxb, Pxp...)
-        */
+         */
         for (Move move : moves){
             MoveScore moveScore;
             if (move.equals(hashMove)){
                 moveScore = new MoveScore(move, hashScore);
+            }
+            else if (move.equals(aiMove)){
+                moveScore = new MoveScore(move, aiScore);
             }
             else if (mateKiller[ply] != null && move.equals(mateKiller[ply])){
                 moveScore = new MoveScore(move, mateKillerScore);
@@ -113,7 +121,7 @@ class MoveOrderer {
             else if (moveIsCapture(board, move)){
                 moveScore = new MoveScore(move, mvvLVA(board, move));
             }
-            else if (isCastlingMove(move)){
+            else if (MoveParser.isCastlingMove(move)){
                 moveScore = new MoveScore(move, castlingMove);
             }
             else if (ALLOW_HISTORY_MOVES){
@@ -166,14 +174,10 @@ class MoveOrderer {
         }
     }
 
-    private static boolean isCastlingMove (Move move){
-        return (move.move & SPECIAL_MOVE_MASK) == CASTLING_MASK;
-    }
-
     /*
     Quiescence Search ordering:
     order moves by most valuable victim and least valuable aggressor
-    */
+     */
     static List<Move> orderMovesQuiescence (Chessboard board, boolean white, List<Move> allMoves){
         return extractMovesQuiescence(board, white, allMoves);
     }
@@ -225,7 +229,7 @@ class MoveOrderer {
     }
 
     static boolean checkingMove(Chessboard board, Move move){
-        Assert.assertTrue(MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()).contains(move));
+        Assert.assertTrue(generateLegalMoves(board, board.isWhiteTurn()).contains(move));
 
         MoveOrganiser.makeMoveMaster(board, move);
         MoveOrganiser.flipTurn(board);
@@ -234,7 +238,24 @@ class MoveOrderer {
         return checkingMove;
     }
 
-    static boolean moveWillBeAdvancedPawnPushMove(Chessboard board, Move move){
+    static boolean moveWillBePawnPushSix(Chessboard board, Move move){
+        long myPawns = board.isWhiteTurn() ? board.WHITE_PAWNS : board.BLACK_PAWNS;
+
+        if (board.isWhiteTurn()){
+            if ((newPieceOnSquare(move.getSourceAsPieceIndex()) & myPawns) != 0){
+                return false;
+            }
+            return (newPieceOnSquare(move.destinationIndex) & BitBoards.RANK_SIX) != 0;
+        }
+        else {
+            if ((newPieceOnSquare(move.getSourceAsPieceIndex()) & myPawns) != 0){
+                return false;
+            }
+            return (newPieceOnSquare(move.destinationIndex) & BitBoards.RANK_THREE) != 0;
+        }
+    }
+    
+    static boolean moveWillBePawnPushSeven(Chessboard board, Move move){
         long myPawns = board.isWhiteTurn() ? board.WHITE_PAWNS : board.BLACK_PAWNS;
 
         if (board.isWhiteTurn()){

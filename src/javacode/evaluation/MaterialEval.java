@@ -3,6 +3,7 @@ package javacode.evaluation;
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 
+import static javacode.chessprogram.chess.BitIndexing.*;
 import static javacode.evaluation.Evaluator.*;
 
 class MaterialEval {
@@ -22,38 +23,38 @@ class MaterialEval {
     
     private static int pawnScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_PAWNS : board.BLACK_PAWNS;
-        int numberOfPawns = BitIndexing.populationCount(myPieces);
+        int numberOfPawns = populationCount(myPieces);
         return numberOfPawns * PAWN_SCORE;
     }
 
     private static int knightScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_KNIGHTS : board.BLACK_KNIGHTS;
-        int numberOfKnights = BitIndexing.populationCount(myPieces);
+        int numberOfKnights = populationCount(myPieces);
         return numberOfKnights * KNIGHT_SCORE;
     }
 
     private static int bishopScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_BISHOPS : board.BLACK_BISHOPS;
-        int numberOfBishops = BitIndexing.populationCount(myPieces);
+        int numberOfBishops = populationCount(myPieces);
         return numberOfBishops * BISHOP_SCORE;
     }
 
     private static int rookScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_ROOKS : board.BLACK_ROOKS;
-        int numberOfRooks = BitIndexing.populationCount(myPieces);
+        int numberOfRooks = populationCount(myPieces);
         return numberOfRooks * ROOK_SCORE;
     }
 
     private static int queenScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_QUEEN : board.BLACK_QUEEN;
-        int numberOfQueens = BitIndexing.populationCount(myPieces);
+        int numberOfQueens = populationCount(myPieces);
         return numberOfQueens * QUEEN_SCORE;
     }
 
     private static int kingScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_KING : board.BLACK_KING;
-        int numberOfQueens = BitIndexing.populationCount(myPieces);
-        return numberOfQueens * KING_SCORE;
+        int numberOfKings = populationCount(myPieces);
+        return numberOfKings * KING_SCORE;
     }
 
 }

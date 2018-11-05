@@ -4,6 +4,7 @@ import javacode.chessprogram.chess.Chessboard;
 import javacode.evaluation.Evaluator;
 
 import static javacode.chessengine.Engine.*;
+import static javacode.chessengine.PrincipleVariationSearch.getAiMove;
 import static javacode.chessengine.PrincipleVariationSearch.principleVariationSearch;
 import static javacode.evaluation.Evaluator.*;
 import static javacode.evaluation.Evaluator.IN_CHECKMATE_SCORE_MAX_PLY;
@@ -37,7 +38,7 @@ class AspirationSearch {
                     startTime, timeLimitMillis,
                     depth, depth, 0, alpha, beta, 0, false);
 
-            if (score >= -IN_CHECKMATE_SCORE_MAX_PLY){
+            if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
                 return score;
             }
 
@@ -61,7 +62,7 @@ class AspirationSearch {
                     }
                     alphaFac *= 2;
                     if (DEBUG) {
-                        numberOfFailedAspirations++;
+                        statistics.numberOfFailedAspirations++;
                     }
                 } else if (score >= beta) {
                     beta = firstWindow * betaFac;
@@ -70,11 +71,11 @@ class AspirationSearch {
                     }
                     betaFac *= 2;
                     if (DEBUG) {
-                        numberOfFailedAspirations++;
+                        statistics.numberOfFailedAspirations++;
                     }
                 } else {
                     if (DEBUG) {
-                        numberOfSuccessfulAspirations++;
+                        statistics.numberOfSuccessfulAspirations++;
                     }
                     break;
                 }

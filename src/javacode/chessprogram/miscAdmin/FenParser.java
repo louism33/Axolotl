@@ -16,7 +16,7 @@ public class FenParser {
     }
 
     public static Chessboard makeBoardBasedOnFEN(String fen){
-        System.out.println(fen);
+//        System.out.println(fen);
         
         Chessboard board = parseFenString(fen);
         board.setWhiteTurn(isItWhitesTurn(fen));

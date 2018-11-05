@@ -1,6 +1,9 @@
 package javacode.chessprogram.miscAdmin;
 
 import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.moveMaking.StackMoveData;
+
+import java.util.Stack;
 
 class BlankBoard {
     
@@ -22,5 +25,13 @@ class BlankBoard {
         board.BLACK_KING = 0;
         
         return board;
+    }
+
+    static void printMoveStack(Chessboard board){
+        int size = board.moveStack.size();
+        Stack<StackMoveData> copyStack = (Stack<StackMoveData>) board.moveStack.clone();
+        for (int m = 0; m < size; m++){
+            System.out.println(copyStack.pop());
+        }
     }
 }

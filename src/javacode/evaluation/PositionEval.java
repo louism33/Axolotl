@@ -25,13 +25,13 @@ class PositionEval {
             queens = board.BLACK_QUEEN;
             kings = board.BLACK_KING;
         }
-        
+
         return piecePositionScores(pawns, white, pawnpos)
                 + piecePositionScores(knights, white, knightpos)
                 + piecePositionScores(bishops, white, bishoppos)
                 + piecePositionScores(rooks, white, rookpos)
                 + piecePositionScores(queens, white, queenpos)
-                + piecePositionScores(kings, white, kingposstart)
+//                + piecePositionScores(kings, white, kingposstart)
                 ;
     }
     

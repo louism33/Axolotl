@@ -3,6 +3,9 @@ package javacode.chessprogram.miscAdmin;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.graphicsandui.Art;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,15 +31,26 @@ public class ExtendedPositionDescriptionParser {
         
         String id = extractIDString(edpPosition);
         
-        String bm = extractBestMove(edpPosition);
+        String[] bms = extractBestMoves(edpPosition);
 
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN(edpPosition);
         
         String boardFen = extractBoardFen(edpPosition);
 
-        int destinationI = MoveParserFromAN.destinationIndex(chessboard, bm);
+        List<Integer> goodDestinations = new ArrayList<>();
+        for (String bm : bms) {
+            goodDestinations.add(MoveParserFromAN.destinationIndex(chessboard, bm));
+        }
 
-        return new EDPObject(chessboard, destinationI, id, boardFen);
+
+        String[] ams = extractAvoidMoves(edpPosition);
+        System.out.println(Arrays.toString(ams));
+        List<Integer> badDestinations = new ArrayList<>();
+        for (String am : ams) {
+            badDestinations.add(MoveParserFromAN.destinationIndex(chessboard, am));
+        }
+
+        return new EDPObject(chessboard, goodDestinations, id, boardFen, badDestinations);
     }
 
     private static String extractBoardFen(String edpPosition){
@@ -50,6 +64,48 @@ public class ExtendedPositionDescriptionParser {
             ans = m.group();
         }
         return ans;
+    }
+
+    private static String[] extractBestMoves(String edpPosition){
+        String pattern = "bm ([\\w| |+]*);";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(edpPosition);
+
+        String ans = "";
+
+        if (m.find()){
+            ans = m.group(1);
+        }
+
+        String[] s = ans.split(" ");
+        return s;
+    }
+
+    private static String[] extractAvoidMoves(String edpPosition){
+        String bool = "am .*";
+        Pattern p1 = Pattern.compile(bool);
+        Matcher m1 = p1.matcher(edpPosition);
+        
+        
+        if (!m1.find()){
+            return new String[0];
+        }
+
+        System.out.println("-------------------");
+        
+        
+        String pattern = "am ([\\w| |+]*);";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(edpPosition);
+
+        String ans = "";
+
+        if (m.find()){
+            ans = m.group(1);
+        }
+
+        String[] s = ans.split(" ");
+        return s;
     }
 
     private static String extractBestMove(String edpPosition){
@@ -80,27 +136,38 @@ public class ExtendedPositionDescriptionParser {
     
     public static class EDPObject{
         private final Chessboard board;
-        private final int bestMoveDestinationIndex;
+        private final List<Integer> bestMoveDestinationIndex;
+        private final List<Integer> avoidMoveDestinationIndex;
         private final String id;
         private final String boardFen;
 
-        EDPObject(Chessboard board, int bestMoveDestinationIndex, String id, String boardFen) {
+        EDPObject(Chessboard board, List<Integer> bestMoveDestinationIndex, String id,
+                  String boardFen, List<Integer> avoidMoveDestinationIndex) {
             this.board = board;
             this.bestMoveDestinationIndex = bestMoveDestinationIndex;
             this.id = id;
             this.boardFen = boardFen;
+            this.avoidMoveDestinationIndex = avoidMoveDestinationIndex;
         }
 
         public Chessboard getBoard() {
             return board;
         }
 
-        public int getBestMoveDestinationIndex() {
+        public List<Integer> getBestMoveDestinationIndex() {
             return bestMoveDestinationIndex;
         }
 
         public String getId() {
             return id;
+        }
+
+        public List<Integer> getAvoidMoveDestinationIndex() {
+            return avoidMoveDestinationIndex;
+        }
+
+        public String getBoardFen() {
+            return boardFen;
         }
 
         @Override

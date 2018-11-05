@@ -23,7 +23,7 @@ public class Extensions {
 
         if (boardInCheck(board, board.isWhiteTurn())){
             if (DEBUG){
-                numberOfCheckExtensions++;
+                statistics.numberOfCheckExtensions++;
             }
             return 1;
         }
@@ -40,14 +40,14 @@ public class Extensions {
             if (board.isWhiteTurn()) {
                 if ((destinationSquareOfPreviousMove & BitBoards.RANK_TWO & board.BLACK_PAWNS) != 0) {
                     if (DEBUG) {
-                        numberOfPassedPawnExtensions++;
+                        statistics.numberOfPassedPawnExtensions++;
                     }
                     return 1;
                 }
             } else {
                 if ((destinationSquareOfPreviousMove & board.WHITE_PAWNS & BitBoards.RANK_SEVEN) != 0) {
                     if (DEBUG) {
-                        numberOfPassedPawnExtensions++;
+                        statistics.numberOfPassedPawnExtensions++;
                     }
                     return 1;
                 }
@@ -56,7 +56,7 @@ public class Extensions {
         /*
         Singular Reply Extension:
         if only there is only one legal move, search deeper as we are forced situation
-        */
+         */
         if (generateLegalMoves(board, board.isWhiteTurn()).size() == 1){
             return 1;
         }

@@ -2,12 +2,14 @@ package javacode.chessengine;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
+import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.chessprogram.moveMaking.MoveParser;
+import javacode.chessprogram.moveMaking.StackMoveData;
 import javacode.evaluation.Evaluator;
-import javacode.graphicsandui.Art;
 import org.junit.Assert;
 
 import java.util.List;
+import java.util.Stack;
 
 import static javacode.chessengine.Engine.*;
 import static javacode.chessengine.EngineMovesAndHash.*;
@@ -35,12 +37,12 @@ import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.chess.Copier.copyMove;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
 import static javacode.evaluation.Evaluator.*;
-import static javacode.graphicsandui.Art.*;
 
-class PrincipleVariationSearch {
+public class PrincipleVariationSearch {
 
-    private static final TranspositionTable table = getInstance();
+    public static final TranspositionTable table = getInstance();
     private static Move aiMove;
+    static boolean timeUp = false;
 
     static int principleVariationSearch(Chessboard board, ZobristHash zobristHash,
                                         long startTime, long timeLimitMillis,
@@ -49,7 +51,7 @@ class PrincipleVariationSearch {
                                         int nullMoveCounter, boolean reducedSearch){
         int originalAlpha = alpha;
         int bestScore = SHORT_MINIMUM;
-        
+
         if (HEAVY_DEBUG){
             long testBoardHash = new ZobristHash(board).getBoardHash();
             Assert.assertEquals(testBoardHash, zobristHash.getBoardHash());
@@ -63,7 +65,9 @@ class PrincipleVariationSearch {
             long currentTime = System.currentTimeMillis();
             long timeLeft = startTime + timeLimitMillis - currentTime;
             if (timeLeft < 0) {
-                return alpha;
+                int eval = eval(board, board.isWhiteTurn(), MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()));
+                timeUp = true;
+                return eval;
             }
         }
         
@@ -107,20 +111,20 @@ class PrincipleVariationSearch {
                 score = previousTableData.getScore();
                 hashMove = previousTableData.getMove();
                 if (flag == EXACT) {
-                    numberOfExacts++;
+                    statistics.numberOfExacts++;
                     if (ply == 0){
                         aiMove = copyMove(hashMove);
                     }
                     return score;
                 } else if (flag == LOWERBOUND) {
-                    numberOfLowerBounds++;
+                    statistics.numberOfLowerBounds++;
                     alpha = Math.max(alpha, score);
                 } else if (flag == UPPERBOUND) {
-                    numberOfUpperBounds++;
+                    statistics.numberOfUpperBounds++;
                     beta = Math.min(beta, score);
                 }
                 if (alpha >= beta) {
-                    numberOfHashBetaCutoffs++;
+                    statistics.numberOfHashBetaCutoffs++;
                     if (ply == 0){
                         aiMove = copyMove(hashMove);
                     }
@@ -150,7 +154,7 @@ class PrincipleVariationSearch {
                     final int specificBetaRazorMargin = betaRazorMargin[depth];
                     if (staticBoardEval - specificBetaRazorMargin >= beta){
                         if (DEBUG){
-                            numberOfSuccessfulBetaRazors++;
+                            statistics.numberOfSuccessfulBetaRazors++;
                         }
                         return staticBoardEval;
                     }
@@ -171,12 +175,12 @@ class PrincipleVariationSearch {
 
                         if (qScore + specificAlphaRazorMargin <= alpha){
                             if (DEBUG){
-                                numberOfSuccessfulAlphaRazors++;
+                                statistics.numberOfSuccessfulAlphaRazors++;
                             }
                             return qScore;
                         }
                         else if (DEBUG){
-                            numberOfFailedAlphaRazors++;
+                            statistics.numberOfFailedAlphaRazors++;
                         }
                     }
                 }
@@ -213,12 +217,12 @@ class PrincipleVariationSearch {
                         }
 
                         if (DEBUG) {
-                            numberOfNullMoveHits++;
+                            statistics.numberOfNullMoveHits++;
                         }
                         return nullScore;
                     }
                     if (DEBUG) {
-                        numberOfNullMoveMisses++;
+                        statistics.numberOfNullMoveMisses++;
                     }
                 }
             }
@@ -230,14 +234,14 @@ class PrincipleVariationSearch {
          */
         List<Move> orderedMoves;
         if (hashMove != null) {
-            orderedMoves = orderedMoves(board, board.isWhiteTurn(), ply, hashMove);
+            orderedMoves = orderedMoves(board, board.isWhiteTurn(), ply, hashMove, aiMove);
             if (DEBUG) {
-                numberOfSearchesWithHash++;
+                statistics.numberOfSearchesWithHash++;
             }
         }
         else {
             if (DEBUG) {
-                numberOfSearchesWithoutHash++;
+                statistics.numberOfSearchesWithoutHash++;
             }
             
             /*
@@ -248,7 +252,7 @@ class PrincipleVariationSearch {
             if (ALLOW_INTERNAL_ITERATIVE_DEEPENING){
                 if (isIIDAllowedHere(board, depth, reducedSearch, thisIsAPrincipleVariationNode)){
                     if (DEBUG){
-                        numberOfIIDs++;
+                        statistics.numberOfIIDs++;
                     }
 
                     principleVariationSearch(board, zobristHash,
@@ -263,48 +267,36 @@ class PrincipleVariationSearch {
                     }
                 }
             }
-            orderedMoves = orderedMoves(board, board.isWhiteTurn(), ply, moveFromIID);
-        }
-        
-        /*
-        see if checkmate or stalemate
-         */
-        if (orderedMoves.size() == 0) {
-            if (boardInCheck) {
-                if (DEBUG) {
-                    numberOfCheckmates++;
-                }
-                return IN_CHECKMATE_SCORE + ply;
-            }
-            else {
-                if (DEBUG) {
-                    numberOfStalemates++;
-                }
-                return IN_STALEMATE_SCORE;
-            }
+            orderedMoves = orderedMoves(board, board.isWhiteTurn(), ply, moveFromIID, aiMove);
         }
 
         int eval = eval(board, board.isWhiteTurn(), orderedMoves);
-        
-        /*
-        Iterative Deepening
-        first move should always be winner of search at lower depth. Unless we find a better move, this one is returned
-         */
-        Move bestMove = copyMove(orderedMoves.get(0));
-        if (ply == 0){
-            aiMove = copyMove(orderedMoves.get(0));
+
+        if (ALLOW_TIME_LIMIT) {
+            long currentTime = System.currentTimeMillis();
+            long timeLeft = startTime + timeLimitMillis - currentTime;
+            if (timeLeft < 0) {
+                timeUp = true;
+                return eval;
+            }
         }
+
+        Move bestMove = null;
         
         /*
         iterate through fully legal moves
          */
         int numberOfMovesSearched = 0;
-
         for (Move move : orderedMoves){
             // consider getting this from move orderer
             boolean captureMove = moveIsCapture(board, move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
             boolean givesCheckMove = checkingMove(board, move);
+            boolean pawnToSix = moveWillBePawnPushSix(board, move);
+            boolean pawnToSeven = false;
+            if (!pawnToSix){
+                pawnToSeven = moveWillBePawnPushSeven(board, move);
+            }
 
             if (!thisIsAPrincipleVariationNode && !boardInCheck && numberOfMovesSearched > 1) {
                 /*
@@ -313,12 +305,15 @@ class PrincipleVariationSearch {
                  */
                 if (ALLOW_LATE_MOVE_PRUNING) {
                     if (isLateMovePruningMoveOkHere(board, bestScore)) {
-                        if (!moveIsCapture(board, move)
+                        if (!captureMove
+                                && !promotionMove
                                 && !givesCheckMove
-                                && !moveWillBeAdvancedPawnPushMove(board, move)) {
+                                && !pawnToSix
+                                && !pawnToSeven
+                                && numberOfMovesSearched > depth * 4 + 3) {
 
                             if (DEBUG) {
-                                numberOfLateMovePrunings++;
+                                statistics.numberOfLateMovePrunings++;
                             }
                             continue;
                         }
@@ -330,18 +325,19 @@ class PrincipleVariationSearch {
                 if score + margin smaller than alpha, skip this move
                  */
                 if (ALLOW_FUTILITY_PRUNING) {
-                    if (isFutilityPruningAllowedHere(board, move, depth, captureMove)) {
+                    if (isFutilityPruningAllowedHere(board, move, depth,
+                            captureMove, promotionMove, givesCheckMove, pawnToSix, pawnToSeven)) {
                         final int futilityScore = eval + futilityMargin[depth];
                         if (futilityScore <= alpha) {
                             if (DEBUG) {
-                                numberOfSuccessfulFutilities++;
+                                statistics.numberOfSuccessfulFutilities++;
                             }
                             if (futilityScore > bestScore) {
                                 bestScore = futilityScore;
                             }
                             continue;
                         } else if (DEBUG) {
-                            numberOfFailedFutilities++;
+                            statistics.numberOfFailedFutilities++;
                         }
                     }
                 }
@@ -360,7 +356,7 @@ class PrincipleVariationSearch {
             score = alpha + 1;
 
             if (DEBUG){
-                numberOfMovesMade++;
+                statistics.numberOfMovesMade++;
             }
 
             /*
@@ -368,14 +364,14 @@ class PrincipleVariationSearch {
             search later ordered safer moves to a lower depth
              */
             if (ALLOW_LATE_MOVE_REDUCTIONS && isLateMoveReductionAllowedHere(board, move, depth,
-                    numberOfMovesSearched, reducedSearch, captureMove, promotionMove)) {
+                    numberOfMovesSearched, reducedSearch, captureMove, givesCheckMove, promotionMove, pawnToSix, pawnToSeven)) {
                 if (DEBUG) {
-                    numberOfLateMoveReductions++;
+                    statistics.numberOfLateMoveReductions++;
                 }
                 
                 /*
                 lower depth search
-                */
+                 */
                 int lowerDepth = depth - lateMoveDepthReduction(depth) - 1;
                 score = lowerDepth <= 0 ? quiescenceSearch(board, zobristHash,
                         startTime, timeLimitMillis,
@@ -388,19 +384,19 @@ class PrincipleVariationSearch {
 
                /*
                if a lower move seems good, full depth research
-               */
-                if (score > alpha){
+                */
+               if (score > alpha){
                     score = -principleVariationSearch(board, zobristHash,
                             startTime, timeLimitMillis,
                             originalDepth, depth - 1, ply + 1,
                             -alpha - 1, -alpha, 0, false);
 
                     if (DEBUG) {
-                        numberOfLateMoveReductionsMisses++;
+                        statistics.numberOfLateMoveReductionsMisses++;
                     }
                 }
                 else if (DEBUG) {
-                    numberOfLateMoveReductionsHits++;
+                    statistics.numberOfLateMoveReductionsHits++;
                 }
             }
              
@@ -408,7 +404,7 @@ class PrincipleVariationSearch {
             /*
             Principle Variation Search:
             moves that are not favourite (PV) are searched with a null window
-            */
+             */
             else if (ALLOW_PRINCIPLE_VARIATION_SEARCH && numberOfMovesSearched > 1){
 
                 score = -principleVariationSearch(board, zobristHash,
@@ -420,17 +416,16 @@ class PrincipleVariationSearch {
                 if this line of play would improve our score, do full re-search (implemented slightly lower down)
                  */
                 if (score > alpha && DEBUG) {
-                    numberOfPVSMisses++;
+                    statistics.numberOfPVSMisses++;
                 }
                 else{
-                    numberOfPVSHits++;
+                    statistics.numberOfPVSHits++;
                 }
             }
 
-
             /*
             always search PV node fully + full re-search of moves that showed promise
-            */
+             */
             if (score > alpha) {
                 score = -principleVariationSearch(board, zobristHash,
                         startTime, timeLimitMillis,
@@ -441,7 +436,7 @@ class PrincipleVariationSearch {
 
             /*
             record score and move if better than previous ones
-            */
+             */
             if (score > bestScore){
                 bestScore = score;
                 bestMove = copyMove(move);
@@ -449,44 +444,45 @@ class PrincipleVariationSearch {
             if (score > alpha) {
                 alpha = score;
                 if (ply == 0){
-                    Assert.assertTrue(orderedMoves.contains(aiMove));
-                    aiMove = copyMove(move);
+                    if (!timeUp) {
+                        aiMove = copyMove(move);
+                    }
                 }
             }
 
             /*
             Alpha Beta Pruning:
             represents a situation which is too good, or too bad, and will not occur in normal play, so stop searching further
-            */
+             */
             if (alpha >= beta){
 
                 if (DEBUG) {
-                    if (numberOfMovesSearched - 1 < whichMoveWasTheBest.length) {
-                        whichMoveWasTheBest[numberOfMovesSearched - 1]++;
+                    if (numberOfMovesSearched - 1 < statistics.whichMoveWasTheBest.length) {
+                        statistics.whichMoveWasTheBest[numberOfMovesSearched - 1]++;
                     }
 
                     if (move.equals(mateKiller[ply])){
-                        numberOfVictoriousMaters++;
+                        statistics.numberOfVictoriousMaters++;
                     }
 
                     if (move.equals(killerMoves[ply][0])){
-                        numberOfVictoriousKillersOne++;
+                        statistics.numberOfVictoriousKillersOne++;
                     }
                     if (move.equals(killerMoves[ply][1])){
-                        numberOfVictoriousKillersTwo++;
+                        statistics.numberOfVictoriousKillersTwo++;
                     }
 
                     if (ply > 1) {
                         if (move.equals(killerMoves[ply - 2][0])) {
-                            numberOfVeteranVictoriousKillersOne++;
+                            statistics.numberOfVeteranVictoriousKillersOne++;
                         }
                         if (move.equals(killerMoves[ply - 2][1])) {
-                            numberOfVeteranVictoriousKillersTwo++;
+                            statistics.numberOfVeteranVictoriousKillersTwo++;
                         }
                     }
 
                     if (DEBUG) {
-                        numberOfFailHighs++;
+                        statistics.numberOfFailHighs++;
                     }
 
 
@@ -504,7 +500,7 @@ class PrincipleVariationSearch {
                     }
 
                     if (ALLOW_MATE_KILLERS){
-                        if (alpha > Evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
+                        if (alpha > CHECKMATE_ENEMY_SCORE_MAX_PLY){
                             mateKiller[ply] = move;
                         }
                     }
@@ -513,6 +509,24 @@ class PrincipleVariationSearch {
             }
         }
 
+        if (numberOfMovesSearched == 0) {
+            if (boardInCheck) {
+                if (DEBUG) {
+                    statistics.numberOfCheckmates++;
+                }
+
+                return IN_CHECKMATE_SCORE + ply;
+            }
+            else {
+                if (DEBUG) {
+                    statistics.numberOfStalemates++;
+                }
+                return IN_STALEMATE_SCORE;
+            }
+        }
+        
+        
+        
         /*
         Transposition Tables:
         add information to table with flag based on the node type
@@ -532,9 +546,12 @@ class PrincipleVariationSearch {
         return bestScore;
     }
 
+    public static void setAiMove(Move aiMove) {
+        PrincipleVariationSearch.aiMove = aiMove;
+    }
 
-
-    static Move getAiMove() {
+    public static Move getAiMove() {
         return aiMove;
     }
+
 }

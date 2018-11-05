@@ -11,6 +11,7 @@ class Razoring {
 
     static boolean isAlphaRazoringMoveOkHere(Chessboard board, int depth, int alpha){
         return depth < alphaRazorBelowThisDepth
+                && alpha < CHECKMATE_ENEMY_SCORE_MAX_PLY
                 ;
     }
 

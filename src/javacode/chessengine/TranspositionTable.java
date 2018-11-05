@@ -4,7 +4,7 @@ import javacode.chessprogram.chess.Move;
 
 import java.util.HashMap;
 
-class TranspositionTable extends HashMap<Long, TranspositionTable.TableObject> {
+public class TranspositionTable extends HashMap<Long, TranspositionTable.TableObject> {
     
     private static TranspositionTable table = new TranspositionTable();
     
@@ -14,11 +14,15 @@ class TranspositionTable extends HashMap<Long, TranspositionTable.TableObject> {
     Transposition Table:
     a singleton hashmap which gets populated by our search
      */
-    static TranspositionTable getInstance(){
+    public static TranspositionTable getInstance(){
         if (table == null){
             table = new TranspositionTable();
         }
         return table;
+    }
+    
+    public static void resetTable(){
+        table = new TranspositionTable();
     }
 
     public static class TableObject {

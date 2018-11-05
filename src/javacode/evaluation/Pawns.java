@@ -16,14 +16,14 @@ import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapt
 
 class Pawns {
 
-    private static final int PASSED_PAWN_BONUS = 50;
-    private static final int DOUBLE_PAWN_PENALTY = -35;
-    private static final int CENTRE_PAWN = 15;
-    private static final int SUPER_CENTRE_PAWN = 35;
+    private static final int PASSED_PAWN_BONUS = 25;
+    private static final int DOUBLE_PAWN_PENALTY = -10;
+    private static final int CENTRE_PAWN = 10;
+    private static final int SUPER_CENTRE_PAWN = 15;
     private static final int NO_PAWN_BLOCKER_BONUS = 10;
-    private static final int OPEN_FILE_BONUS = 40;
-    private static final int PAWNS_PROTECTED_BY_PAWNS = 10;
-    private static final int DAVID_AND_GOLIATH = 35;
+    private static final int OPEN_FILE_BONUS = 10;
+    private static final int PAWNS_PROTECTED_BY_PAWNS = 5;
+    private static final int DAVID_AND_GOLIATH = 15;
     private static final int BLOCKED_PAWN_PENALTY = -10;
     private static final int PAWN_THREATEN_CENTRE = 10;
     private static final int PAWN_THREATEN_SUPER_CENTRE = 15;
@@ -49,17 +49,17 @@ class Pawns {
         int score = 0;
 
         score +=
-                pawnCentreBonus(board, white, myPawns)
-                        + pawnOnOpenFile(board, white, myPawns, enemyPawns)
-                        + pawnStructureBonus(board, white, myPawns)
-                        + pawnsThreatenBigThings(board, white, myPawns)
+//                pawnCentreBonus(board, white, myPawns)
+//                        + pawnOnOpenFile(board, white, myPawns, enemyPawns)
+//                        + pawnStructureBonus(board, white, myPawns)
+//                        + pawnsThreatenBigThings(board, white, myPawns)
                         + pawnsChainBonus(board, white, myPawns)
-                        + doublePawnPenalty(board, white, myPawns)
-                        + pawnAttackingCentreBonus(board, white, myPawns)
+//                        + doublePawnPenalty(board, white, myPawns)
+//                        + pawnAttackingCentreBonus(board, white, myPawns)
                         + superAdvancedPawn(board, white, myPawns)
-                        + backwardsPawn(board, white, myPawns)
-                        + blockedPawnPenalty(board, white, myPawns, enemyPawns)
-                        + isolatedPawn(board, white, myPawns)
+//                        + backwardsPawn(board, white, myPawns)
+//                        + blockedPawnPenalty(board, white, myPawns, enemyPawns)
+//                        + isolatedPawn(board, white, myPawns)
                         + passedPawn(board, white, myPawns, enemyPawns)
         ;
 

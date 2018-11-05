@@ -33,7 +33,8 @@ class Knight {
 
         int score = 0;
 
-        score += unDevelopedKnights(board, white, myKnights)
+        score += 
+                unDevelopedKnights(board, white, myKnights)
                 + knightOutpostBonus(board, white, myKnights, enemyPawns)
                 + knightMobility(board, white, myKnights)
                 + knightProtectorAndAggressor(board, white, myKnights)
