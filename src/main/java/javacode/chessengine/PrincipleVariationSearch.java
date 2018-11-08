@@ -1,101 +1,103 @@
 package javacode.chessengine;
 
 import javacode.chessprogram.chess.Chessboard;
-import javacode.chessprogram.chess.Copier;
 import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.chessprogram.moveMaking.MoveParser;
-import javacode.chessprogram.moveMaking.StackMoveData;
 import javacode.evaluation.Evaluator;
-import javacode.graphicsandui.Art;
 import org.junit.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
-import static javacode.chessengine.Engine.*;
 import static javacode.chessengine.EngineMovesAndHash.*;
-import static javacode.chessengine.Extensions.extensions;
-import static javacode.chessengine.FutilityPruning.*;
-import static javacode.chessengine.HistoryMoves.updateHistoryMoves;
+import static javacode.chessengine.FutilityPruning.futilityMargin;
+import static javacode.chessengine.FutilityPruning.isFutilityPruningAllowedHere;
 import static javacode.chessengine.InternalIterativeDeepening.iidDepthReduction;
 import static javacode.chessengine.InternalIterativeDeepening.isIIDAllowedHere;
-import static javacode.chessengine.KillerMoves.killerMoves;
 import static javacode.chessengine.KillerMoves.mateKiller;
 import static javacode.chessengine.KillerMoves.updateKillerMoves;
-import static javacode.chessengine.LateMovePruning.isLateMovePruningMoveOkHere;
 import static javacode.chessengine.LateMoveReductions.isLateMoveReductionAllowedHere;
 import static javacode.chessengine.LateMoveReductions.lateMoveDepthReduction;
-import static javacode.chessengine.MoveOrderer.*;
-import static javacode.chessengine.NullMovePruning.isNullMoveOkHere;
-import static javacode.chessengine.NullMovePruning.nullMoveDepthReduction;
-import static javacode.chessengine.QuiescenceSearch.quiescenceSearch;
+import static javacode.chessengine.NullMovePruning.*;
 import static javacode.chessengine.Razoring.*;
-import static javacode.chessengine.SEEPruning.*;
+import static javacode.chessengine.SEEPruning.seeScore;
 import static javacode.chessengine.TranspositionTable.TableObject;
 import static javacode.chessengine.TranspositionTable.TableObject.Flag;
 import static javacode.chessengine.TranspositionTable.TableObject.Flag.*;
-import static javacode.chessengine.TranspositionTable.getInstance;
 import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.chess.Copier.copyMove;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
-import static javacode.evaluation.Evaluator.*;
 
 public class PrincipleVariationSearch {
 
-    public static final TranspositionTable table = getInstance();
-    private static Move aiMove;
-    static boolean timeUp = false;
+    private Engine engine;
+    public TranspositionTable table;
+    private MoveOrderer moveOrderer;
+    private QuiescenceSearch quiescenceSearch;
+    private Move aiMove;
+    private Evaluator evaluator;
+    private Extensions extensions;
+    boolean timeUp = false;
 
-    static int principleVariationSearch(Chessboard board, ZobristHash zobristHash,
-                                        long startTime, long timeLimitMillis,
-                                        int originalDepth, int depth, int ply,
-                                        int alpha, int beta,
-                                        int nullMoveCounter, boolean reducedSearch){
-        int originalAlpha = alpha;
-        int bestScore = SHORT_MINIMUM;
+//    PrincipalVariation principalVariationMoves;
 
-        if (HEAVY_DEBUG){
+    PrincipleVariationSearch(Engine engine, Evaluator evaluator){
+        this.engine = engine;
+        this.table = new TranspositionTable();
+        this.moveOrderer = new MoveOrderer(engine);
+        this.evaluator = evaluator;
+        this.quiescenceSearch = new QuiescenceSearch(engine, moveOrderer, evaluator);
+        this.extensions = new Extensions(engine, this);
+    }
+
+    int principleVariationSearch(Chessboard board, ZobristHash zobristHash,
+                                 long startTime, long timeLimitMillis,
+                                 int originalDepth, int depth, int ply,
+                                 int alpha, int beta,
+                                 int nullMoveCounter, boolean reducedSearch){
+
+        if (this.engine.HEAVY_DEBUG){
             long testBoardHash = new ZobristHash(board).getBoardHash();
             Assert.assertEquals(testBoardHash, zobristHash.getBoardHash());
         }
 
-        depth += extensions(board, ply);
+        depth += this.extensions.extensions(board, ply);
 
         Assert.assertTrue(depth >= 0);
 
+        
         /*
         Quiescent Search:
         if at a leaf node, perform specialised search of captures to avoid horizon effect
          */
         if (depth <= 0){
-            if(ALLOW_EXTENSIONS && originalDepth != 0) {
+            if(this.engine.ALLOW_EXTENSIONS && originalDepth != 0) {
                 Assert.assertTrue(!boardInCheck(board, board.isWhiteTurn()));
             }
-            return quiescenceSearch(board, zobristHash,
+            return this.quiescenceSearch.quiescenceSearch(board, zobristHash,
                     startTime, timeLimitMillis,
                     alpha, beta);
         }
 
         Assert.assertTrue(depth >= 1);
 
-        if (ALLOW_TIME_LIMIT) {
-            long currentTime = System.currentTimeMillis();
-            long timeLeft = startTime + timeLimitMillis - currentTime;
-            if (timeLeft < 0) {
-                int eval = eval(board, board.isWhiteTurn(), MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()));
-                timeUp = true;
-                return eval;
-            }
-        }
+//        if (this.engine.ALLOW_TIME_LIMIT) {
+//            long currentTime = System.currentTimeMillis();
+//            long timeLeft = startTime + timeLimitMillis - currentTime;
+//            if (timeLeft < 0) {
+//                int eval = this.evaluator.eval(board, board.isWhiteTurn(), MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()));
+//                timeUp = true;
+//                return eval;
+//            }
+//        }
         
         /*
         Mate Distance Pruning:
         prefer closer wins and further loses 
          */
-        if (ALLOW_MATE_DISTANCE_PRUNING){
-            alpha = Math.max(alpha, IN_CHECKMATE_SCORE + ply);
-            beta = Math.min(beta, -IN_CHECKMATE_SCORE - ply - 1);
+        if (this.engine.ALLOW_MATE_DISTANCE_PRUNING){
+            alpha = Math.max(alpha, this.evaluator.IN_CHECKMATE_SCORE + ply);
+            beta = Math.min(beta, -this.evaluator.IN_CHECKMATE_SCORE - ply - 1);
             if (alpha >= beta){
                 return alpha;
             }
@@ -105,25 +107,34 @@ public class PrincipleVariationSearch {
         Transposition Table Lookup:
         if possible, retrieve previously found data from singleton transposition table 
          */
+        Move hashMove = null;
         TableObject previousTableData = table.get(zobristHash.getBoardHash());
         int score;
-        if (previousTableData != null) {
+        if (previousTableData != null && ply > 0) {
             score = previousTableData.getScore();
+            hashMove = previousTableData.getMove();
+
             if (previousTableData.getDepth() >= depth) {
                 Flag flag = previousTableData.getFlag();
                 score = previousTableData.getScore();
                 if (flag == EXACT) {
-                    statistics.numberOfExacts++;
+                    this.engine.statistics.numberOfExacts++;
+                    if (ply == 0){
+                        aiMove = copyMove(hashMove);
+                    }
                     return score;
                 } else if (flag == LOWERBOUND) {
-                    statistics.numberOfLowerBounds++;
+                    this.engine.statistics.numberOfLowerBounds++;
                     alpha = Math.max(alpha, score);
                 } else if (flag == UPPERBOUND) {
-                    statistics.numberOfUpperBounds++;
+                    this.engine.statistics.numberOfUpperBounds++;
                     beta = Math.min(beta, score);
                 }
                 if (alpha >= beta) {
-                    statistics.numberOfHashBetaCutoffs++;
+                    this.engine.statistics.numberOfHashBetaCutoffs++;
+                    if (ply == 0){
+                        aiMove = copyMove(hashMove);
+                    }
                     return score;
                 }
             }
@@ -133,13 +144,14 @@ public class PrincipleVariationSearch {
         Principle Variation:
         only perform certain reductions if we are not in the most likely branch of the tree
          */
-        int staticBoardEval = SHORT_MINIMUM;
+        int staticBoardEval = this.evaluator.SHORT_MINIMUM;
         final boolean thisIsAPrincipleVariationNode = beta - alpha != 1;
         final boolean boardInCheck = boardInCheck(board, board.isWhiteTurn());
+        boolean debug = this.engine.DEBUG;
         if (!thisIsAPrincipleVariationNode && !boardInCheck) {
 
             List<Move> moves = generateLegalMoves(board, board.isWhiteTurn());
-            staticBoardEval = eval(board, board.isWhiteTurn(), moves);
+            staticBoardEval = this.evaluator.eval(board, board.isWhiteTurn(), moves);
 
             if(previousTableData != null){
                 if (previousTableData.getFlag() == EXACT
@@ -153,12 +165,12 @@ public class PrincipleVariationSearch {
             Beta Razoring:
             if current node has a very high score, return eval
              */
-            if (ALLOW_BETA_RAZORING){
+            if (this.engine.ALLOW_BETA_RAZORING){
                 if (isBetaRazoringMoveOkHere(board, depth, staticBoardEval)){
                     final int specificBetaRazorMargin = betaRazorMargin[depth];
                     if (staticBoardEval - specificBetaRazorMargin >= beta){
-                        if (DEBUG){
-                            statistics.numberOfSuccessfulBetaRazors++;
+                        if (debug){
+                            this.engine.statistics.numberOfSuccessfulBetaRazors++;
                         }
                         return staticBoardEval;
                     }
@@ -170,21 +182,22 @@ public class PrincipleVariationSearch {
             Alpha Razoring:
             if current node has a very low score, perform Quiescence search to try to find a cutoff
              */
-            if (ALLOW_ALPHA_RAZORING){
+            if (this.engine.ALLOW_ALPHA_RAZORING){
                 if (isAlphaRazoringMoveOkHere(board, depth, alpha)){
                     final int specificAlphaRazorMargin = alphaRazorMargin[depth];
                     if (staticBoardEval + specificAlphaRazorMargin < alpha){
-                        final int qScore = quiescenceSearch(board, zobristHash, startTime, timeLimitMillis,
-                                alpha - specificAlphaRazorMargin, alpha - specificAlphaRazorMargin + 1);
+                        final int qScore = this.quiescenceSearch
+                                .quiescenceSearch(board, zobristHash, startTime, timeLimitMillis,
+                                        alpha - specificAlphaRazorMargin, alpha - specificAlphaRazorMargin + 1);
 
                         if (qScore + specificAlphaRazorMargin <= alpha){
-                            if (DEBUG){
-                                statistics.numberOfSuccessfulAlphaRazors++;
+                            if (debug){
+                                this.engine.statistics.numberOfSuccessfulAlphaRazors++;
                             }
                             return qScore;
                         }
-                        else if (DEBUG){
-                            statistics.numberOfFailedAlphaRazors++;
+                        else if (debug){
+                            this.engine.statistics.numberOfFailedAlphaRazors++;
                         }
                     }
                 }
@@ -194,7 +207,7 @@ public class PrincipleVariationSearch {
             Null Move Pruning:
             if not in dangerous position, forfeit a move and make shallower null window search
              */
-            if (ALLOW_NULL_MOVE_PRUNING) {
+            if (this.engine.ALLOW_NULL_MOVE_PRUNING) {
                 if (nullMoveCounter < 2 && isNullMoveOkHere(board)) {
                     Assert.assertTrue(depth >= 1);
                     Assert.assertTrue(alpha < beta);
@@ -205,7 +218,7 @@ public class PrincipleVariationSearch {
 
                     int nullScore = reducedDepth <= 0 ?
 
-                            -quiescenceSearch(board, zobristHash, startTime, timeLimitMillis,
+                            -this.quiescenceSearch.quiescenceSearch(board, zobristHash, startTime, timeLimitMillis,
                                     -beta, -beta + 1)
 
                             : -principleVariationSearch(board, zobristHash, startTime, timeLimitMillis,
@@ -216,17 +229,17 @@ public class PrincipleVariationSearch {
 
                     if (nullScore >= beta) {
 
-                        if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY){
+                        if (nullScore > this.evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
                             nullScore = beta;
                         }
 
-                        if (DEBUG) {
-                            statistics.numberOfNullMoveHits++;
+                        if (debug) {
+                            this.engine.statistics.numberOfNullMoveHits++;
                         }
                         return nullScore;
                     }
-                    if (DEBUG) {
-                        statistics.numberOfNullMoveMisses++;
+                    if (debug) {
+                        this.engine.statistics.numberOfNullMoveMisses++;
                     }
                 }
             }
@@ -242,10 +255,10 @@ public class PrincipleVariationSearch {
             Internal Iterative Deepening:
             when no hashtable entry, pv node and not endgame, perform shallower search to add a good move to table
              */
-            if (ALLOW_INTERNAL_ITERATIVE_DEEPENING){
+            if (this.engine.ALLOW_INTERNAL_ITERATIVE_DEEPENING){
                 if (isIIDAllowedHere(board, depth, reducedSearch, thisIsAPrincipleVariationNode)){
-                    if (DEBUG){
-                        statistics.numberOfIIDs++;
+                    if (debug){
+                        this.engine.statistics.numberOfIIDs++;
                     }
 
                     int preIIDTableSize = table.size();
@@ -259,37 +272,40 @@ public class PrincipleVariationSearch {
 
                     System.out.println("post bigger than pre? "+(postIIDTableSize > preIIDTableSize));
                     previousTableData = table.get(zobristHash.getBoardHash());
+                    if (previousTableData == null){
+                        this.engine.statistics.numberOfFailedIIDs++;
+                    }
+                    else {
+                        this.engine.statistics.numberOfSuccessfulIIDs++;
+                    }
                 }
             }
         }
 
         if (previousTableData != null) {
-            Move hashMove = previousTableData.getMove();
-
-            orderedMoves = orderedMoves(board, board.isWhiteTurn(), ply, hashMove, aiMove);
-
-            if (DEBUG) {
-                statistics.numberOfSearchesWithHash++;
+            if (debug) {
+                this.engine.statistics.numberOfSearchesWithHash++;
             }
+            orderedMoves = this.moveOrderer.orderedMoves(board, board.isWhiteTurn(), ply, hashMove, aiMove);
         }
         else{
-            if (DEBUG) {
-                statistics.numberOfSearchesWithoutHash++;
+            if (debug) {
+                this.engine.statistics.numberOfSearchesWithoutHash++;
             }
-            orderedMoves = orderedMoves(board, board.isWhiteTurn(), ply, null, aiMove);
+            orderedMoves = this.moveOrderer.orderedMoves(board, board.isWhiteTurn(), ply, null, aiMove);
         }
 
-        int eval = eval(board, board.isWhiteTurn(), orderedMoves);
+//        if (this.engine.ALLOW_TIME_LIMIT) {
+//            long currentTime = System.currentTimeMillis();
+//            long timeLeft = startTime + timeLimitMillis - currentTime;
+//            if (timeLeft < 0) {
+//                timeUp = true;
+//                return eval;
+//            }
+//        }
 
-        if (ALLOW_TIME_LIMIT) {
-            long currentTime = System.currentTimeMillis();
-            long timeLeft = startTime + timeLimitMillis - currentTime;
-            if (timeLeft < 0) {
-                timeUp = true;
-                return eval;
-            }
-        }
-
+        int originalAlpha = alpha;
+        int bestScore = this.evaluator.SHORT_MINIMUM;
         Move bestMove = null;
         
         /*
@@ -298,69 +314,83 @@ public class PrincipleVariationSearch {
         int numberOfMovesSearched = 0;
         for (Move move : orderedMoves){
             // consider getting this from move orderer
-            boolean captureMove = moveIsCapture(board, move);
+            boolean captureMove = this.moveOrderer.moveIsCapture(board, move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
-            boolean givesCheckMove = checkingMove(board, move);
-            boolean pawnToSix = moveWillBePawnPushSix(board, move);
-            boolean pawnToSeven = false;
-            if (!pawnToSix){
-                pawnToSeven = moveWillBePawnPushSeven(board, move);
-            }
+            boolean givesCheckMove = this.moveOrderer.checkingMove(board, move);
+            boolean pawnToSix = this.moveOrderer.moveWillBePawnPushSix(board, move);
+            boolean pawnToSeven = this.moveOrderer.moveWillBePawnPushSeven(board, move);
 
-            if (!thisIsAPrincipleVariationNode && !boardInCheck && numberOfMovesSearched > 1) {
-                /*
-                Late Move Pruning:
-                before making move, see if we can prune this move
-                 */
-                if (ALLOW_LATE_MOVE_PRUNING) {
-                    if (isLateMovePruningMoveOkHere(board, bestScore)) {
-                        if (!captureMove
-                                && !promotionMove
-                                && !givesCheckMove
-                                && !pawnToSix
-                                && !pawnToSeven
-                                && numberOfMovesSearched > depth * 3 + 3) {
+            /*
+            Can we prune this move?
+             */
+            if (!thisIsAPrincipleVariationNode && !boardInCheck && numberOfMovesSearched > 0) {
+                if (!captureMove) {
+                    /*
+                    Late Move Pruning:
+                    before making move, see if we can prune this move
+                     */
+                    if (this.engine.ALLOW_LATE_MOVE_PRUNING) {
+                        if (bestScore < evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY
+                                && !onlyPawnsLeftForPlayer(board, board.isWhiteTurn())) {
+                            if (!promotionMove
+//                                && !givesCheckMove
+//                                && !pawnToSix
+//                                && !pawnToSeven
+                                    && depth <= 4
+                                    && numberOfMovesSearched >= depth * 3 + 3) {
 
-                            if (DEBUG) {
-                                statistics.numberOfLateMovePrunings++;
+                                if (debug) {
+                                    this.engine.statistics.numberOfLateMovePrunings++;
+                                }
+                                continue;
                             }
-                            continue;
                         }
                     }
-                }
                 
                 /*
                 (Extended) Futility Pruning:
                 if score + margin smaller than alpha, skip this move
                  */
-                if (ALLOW_FUTILITY_PRUNING) {
-                    if (isFutilityPruningAllowedHere(board, move, depth,
-                            captureMove, promotionMove, givesCheckMove, pawnToSix, pawnToSeven)) {
-                        final int futilityScore = eval + futilityMargin[depth];
-                        if (futilityScore <= alpha) {
-                            if (DEBUG) {
-                                statistics.numberOfSuccessfulFutilities++;
+                    if (this.engine.ALLOW_FUTILITY_PRUNING) {
+                        if (isFutilityPruningAllowedHere(board, move, depth,
+                                promotionMove, givesCheckMove, pawnToSix, pawnToSeven)) {
+
+                            if (staticBoardEval == this.evaluator.SHORT_MINIMUM) {
+                                staticBoardEval = this.evaluator.eval(board, board.isWhiteTurn(),
+                                        generateLegalMoves(board, board.isWhiteTurn()));
                             }
-                            if (futilityScore > bestScore) {
-                                bestScore = futilityScore;
+
+                            final int futilityScore = staticBoardEval + futilityMargin[depth];
+
+                            if (futilityScore <= alpha) {
+                                if (debug) {
+                                    this.engine.statistics.numberOfSuccessfulFutilities++;
+                                }
+                                if (futilityScore > bestScore) {
+                                    bestScore = futilityScore;
+                                }
+                                continue;
+                            } else if (debug) {
+                                this.engine.statistics.numberOfFailedFutilities++;
                             }
-                            continue;
-                        } else if (DEBUG) {
-                            statistics.numberOfFailedFutilities++;
                         }
                     }
                 }
-                
-                /*
-                Static Exchange Evaluation:
-                if an exchange promises a large loss of material skip it, more if further from root
-                 */
-                if (ALLOW_SEE_PRUNING){
-                    if (isSeePruningMoveOkHere(board, bestScore)){
-                        continue;
+                else {
+                    /*
+                    Static Exchange Evaluation:
+                    if an exchange promises a large loss of material skip it, more if further from root
+                     */
+                    if (this.engine.ALLOW_SEE_PRUNING) {
+                        if (depth <= 5) {
+                            int seeScore = seeScore(board, move, evaluator);
+                            if (seeScore < -100 * depth) {
+                                this.engine.statistics.numberOfSuccessfulSEEs++;
+                                continue;
+                            }
+                        }
                     }
                 }
-
             }
 
             makeMoveAndHashUpdate(board, move, zobristHash);
@@ -374,29 +404,32 @@ public class PrincipleVariationSearch {
              */
             score = alpha + 1;
 
-            if (DEBUG){
-                statistics.numberOfMovesMade++;
+            if (debug){
+                this.engine.statistics.numberOfMovesMade++;
             }
 
             /*
             Late Move Reductions:
             search later ordered safer moves to a lower depth
              */
-            if (ALLOW_LATE_MOVE_REDUCTIONS && isLateMoveReductionAllowedHere(board, move, depth,
-                    numberOfMovesSearched, reducedSearch, captureMove, givesCheckMove, promotionMove, pawnToSix, pawnToSeven)) {
-                if (DEBUG) {
-                    statistics.numberOfLateMoveReductions++;
+            if (this.engine.ALLOW_LATE_MOVE_REDUCTIONS 
+                    && isLateMoveReductionAllowedHere(board, move, depth,
+                    numberOfMovesSearched, reducedSearch, captureMove, 
+                    givesCheckMove, promotionMove, pawnToSix, pawnToSeven)) {
+                
+                if (debug) {
+                    this.engine.statistics.numberOfLateMoveReductions++;
                 }
                 
                 /*
                 lower depth search
                  */
                 int lowerDepth = depth - lateMoveDepthReduction(depth) - 1;
-                score = lowerDepth <= 0 ? quiescenceSearch(board, zobristHash,
-                        startTime, timeLimitMillis,
-                        -alpha - 1, -alpha)
 
-                        : -principleVariationSearch
+                if (lowerDepth <= 0){
+                    lowerDepth = 2;
+                }
+                score = -principleVariationSearch
                         (board, zobristHash, startTime, timeLimitMillis,
                                 originalDepth, lowerDepth, ply + 1,
                                 -alpha - 1, -alpha, 0, true);
@@ -410,21 +443,20 @@ public class PrincipleVariationSearch {
                             originalDepth, depth - 1, ply + 1,
                             -alpha - 1, -alpha, 0, false);
 
-                    if (DEBUG) {
-                        statistics.numberOfLateMoveReductionsMisses++;
+                    if (debug) {
+                        this.engine.statistics.numberOfLateMoveReductionsMisses++;
                     }
                 }
-                else if (DEBUG) {
-                    statistics.numberOfLateMoveReductionsHits++;
+                else if (debug) {
+                    this.engine.statistics.numberOfLateMoveReductionsHits++;
                 }
             }
-             
             
             /*
             Principle Variation Search:
             moves that are not favourite (PV) are searched with a null window
              */
-            else if (ALLOW_PRINCIPLE_VARIATION_SEARCH && numberOfMovesSearched > 1){
+            else if (this.engine.ALLOW_PRINCIPLE_VARIATION_SEARCH && numberOfMovesSearched > 1){
 
                 score = -principleVariationSearch(board, zobristHash,
                         startTime, timeLimitMillis,
@@ -434,11 +466,11 @@ public class PrincipleVariationSearch {
                 /*
                 if this line of play would improve our score, do full re-search (implemented slightly lower down)
                  */
-                if (score > alpha && DEBUG) {
-                    statistics.numberOfPVSMisses++;
+                if (score > alpha && debug) {
+                    this.engine.statistics.numberOfPVSMisses++;
                 }
                 else{
-                    statistics.numberOfPVSHits++;
+                    this.engine.statistics.numberOfPVSHits++;
                 }
             }
 
@@ -448,11 +480,11 @@ public class PrincipleVariationSearch {
             if (score > alpha) {
                 score = -principleVariationSearch(board, zobristHash,
                         startTime, timeLimitMillis,
-                        originalDepth, depth - 1, ply + 1, -beta, -alpha, 0, false);
+                        originalDepth, depth - 1, ply + 1, 
+                        -beta, -alpha, 0, false);
             }
 
             UnMakeMoveAndHashUpdate(board, zobristHash);
-
             
             /*
             record score and move if better than previous ones
@@ -463,14 +495,16 @@ public class PrincipleVariationSearch {
             }
             if (score > alpha) {
                 alpha = score;
-                if (ply == 0){
 
-                    System.out.println("\ntu: "+timeUp+", AI move was: "+aiMove+", will now be: "+move+", score is: "+ score);
+                if (ply == 0) {
+                    Assert.assertTrue(depth == originalDepth);
+
+//                    System.out.println("\ntu: " + timeUp
+//                            + ", AI move was: " + aiMove + ", will now be: " + move + ", score is: " + score);
 
                     if (!timeUp) {
                         aiMove = copyMove(move);
                     }
-
                 }
             }
 
@@ -479,52 +513,24 @@ public class PrincipleVariationSearch {
             represents a situation which is too good, or too bad, and will not occur in normal play, so stop searching further
              */
             if (alpha >= beta){
-
-                if (DEBUG) {
-                    if (numberOfMovesSearched - 1 < statistics.whichMoveWasTheBest.length) {
-                        statistics.whichMoveWasTheBest[numberOfMovesSearched - 1]++;
-                    }
-
-                    if (move.equals(mateKiller[ply])){
-                        statistics.numberOfVictoriousMaters++;
-                    }
-
-                    if (move.equals(killerMoves[ply][0])){
-                        statistics.numberOfVictoriousKillersOne++;
-                    }
-                    if (move.equals(killerMoves[ply][1])){
-                        statistics.numberOfVictoriousKillersTwo++;
-                    }
-
-                    if (ply > 1) {
-                        if (move.equals(killerMoves[ply - 2][0])) {
-                            statistics.numberOfVeteranVictoriousKillersOne++;
-                        }
-                        if (move.equals(killerMoves[ply - 2][1])) {
-                            statistics.numberOfVeteranVictoriousKillersTwo++;
-                        }
-                    }
-
-                    if (DEBUG) {
-                        statistics.numberOfFailHighs++;
-                    }
-
-
+                if (debug) {
+                    this.engine.statistics.statisticsFailHigh(ply, numberOfMovesSearched, move);
                 }
-                if (!moveIsCapture(board, move)){
+
+                if (!this.moveOrderer.moveIsCapture(board, move)){
                     /*
                     Killer Moves:
                     record this cutoff move, because we will try out in sister nodes
                      */
-                    if (ALLOW_KILLERS) {
+                    if (this.engine.ALLOW_KILLERS) {
                         updateKillerMoves(move, ply);
                     }
-                    if (ALLOW_HISTORY_MOVES) {
-                        updateHistoryMoves(move, ply);
+                    if (this.engine.ALLOW_HISTORY_MOVES) {
+                        this.moveOrderer.updateHistoryMoves(move, ply);
                     }
 
-                    if (ALLOW_MATE_KILLERS){
-                        if (alpha > CHECKMATE_ENEMY_SCORE_MAX_PLY){
+                    if (this.engine.ALLOW_MATE_KILLERS){
+                        if (alpha > this.evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
                             mateKiller[ply] = move;
                         }
                     }
@@ -535,22 +541,19 @@ public class PrincipleVariationSearch {
 
         if (numberOfMovesSearched == 0) {
             if (boardInCheck) {
-                if (DEBUG) {
-                    statistics.numberOfCheckmates++;
+                if (debug) {
+                    this.engine.statistics.numberOfCheckmates++;
                 }
-
-                return IN_CHECKMATE_SCORE + ply;
+                return this.evaluator.IN_CHECKMATE_SCORE + ply;
             }
             else {
-                if (DEBUG) {
-                    statistics.numberOfStalemates++;
+                if (debug) {
+                    this.engine.statistics.numberOfStalemates++;
                 }
-                return IN_STALEMATE_SCORE;
+                return this.evaluator.IN_STALEMATE_SCORE;
             }
         }
-        
-        
-        //todo add ply, for mate scores, and age
+
         /*
         Transposition Tables:
         add information to table with flag based on the node type
@@ -563,6 +566,7 @@ public class PrincipleVariationSearch {
         } else {
             flag = EXACT;
         }
+
         table.put(zobristHash.getBoardHash(),
                 new TableObject(bestMove, bestScore, depth,
                         flag));
@@ -570,12 +574,36 @@ public class PrincipleVariationSearch {
         return bestScore;
     }
 
-    public static void setAiMove(Move aiMove) {
-        PrincipleVariationSearch.aiMove = aiMove;
-    }
-
-    public static Move getAiMove() {
+    public Move getAiMove() {
         return aiMove;
     }
+
+    public void retrievePVfromTable(Chessboard board){
+        List<Move> moves = new ArrayList<>();
+        int i = 1;
+        ZobristHash zobristHash = new ZobristHash(board);
+
+        while(i < 50) {
+            TableObject tableObject = table.get(zobristHash.getBoardHash());
+            if (tableObject == null) {
+                break;
+            }
+
+            if (tableObject != null) {
+                Move move = tableObject.getMove();
+                moves.add(move);
+                makeMoveAndHashUpdate(board, move, zobristHash);
+            }
+            i++;
+        }
+
+        for (int x = 0; x < i-1; x++){
+            EngineMovesAndHash.UnMakeMoveAndHashUpdate(board, zobristHash);
+        }
+        System.out.println(moves);
+    }
+
+
+
 
 }

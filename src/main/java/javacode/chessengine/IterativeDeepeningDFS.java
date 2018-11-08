@@ -1,45 +1,49 @@
 package javacode.chessengine;
 
 import javacode.chessprogram.chess.Chessboard;
-import javacode.chessprogram.chess.Copier;
 import javacode.chessprogram.chess.Move;
 import javacode.evaluation.Evaluator;
-import javacode.graphicsandui.Art;
-
-import java.util.List;
-
-import static javacode.chessengine.AspirationSearch.aspirationSearch;
-import static javacode.chessengine.Engine.*;
-import static javacode.chessengine.PrincipleVariationSearch.*;
-import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
-import static javacode.evaluation.Evaluator.*;
-import static javacode.evaluation.Evaluator.IN_CHECKMATE_SCORE;
-import static javacode.evaluation.Evaluator.IN_CHECKMATE_SCORE_MAX_PLY;
 
 class IterativeDeepeningDFS {
 
-    static Move iterativeDeepeningWithAspirationWindows(Chessboard board, ZobristHash zobristHash, long startTime, long timeLimitMillis){
-        int maxDepth = ALLOW_TIME_LIMIT ? 10000 : MAX_DEPTH;
+    private Engine engine;
+    AspirationSearch aspirationSearch;
+    private Evaluator evaluator;
+
+    IterativeDeepeningDFS(Engine engine){
+        this.engine = engine;
+        this.evaluator = new Evaluator(engine);
+        this.aspirationSearch = new AspirationSearch(engine, evaluator);
+    }
+
+    Move iterativeDeepeningWithAspirationWindows(Chessboard board, ZobristHash zobristHash, long startTime, long timeLimitMillis){
+        int maxDepth = this.engine.ALLOW_TIME_LIMIT ? 10000 : this.engine.MAX_DEPTH;
         int aspirationScore = 0;
         int depth = 0;
         boolean outOfTime = false;
         
         /*
         Iterative Deepening Depth First Search:
-        call search function at increasing depths, the data we get from lower depths is easily worth it
+        call searchMyTime function at increasing depths, the data we get from lower depths is easily worth it
          */
         while (!outOfTime && depth < maxDepth){
-            String formattedDepthInfo = String.format("----- depth: %03d, previous best move: %s -----", depth, getAiMove());
+
+            String formattedDepthInfo = String.format("----- depth: %03d, previous best move: %s -----"
+                    , depth, this.aspirationSearch.getAiMove());
             System.out.print(formattedDepthInfo);
-            int score = aspirationSearch(board, startTime, timeLimitMillis, zobristHash, depth, aspirationScore);
-            System.out.println(" current best move: "+getAiMove());
+            int score = this.aspirationSearch.aspirationSearch(board, startTime, timeLimitMillis, zobristHash, depth, aspirationScore);
+            System.out.println(" current best move: "+this.aspirationSearch.getAiMove());
+
+            System.out.println("Current PV: ");
+            this.aspirationSearch.principleVariationSearch.retrievePVfromTable(board);
+            System.out.println();
             
             /*
             stop search when a checkmate has been found, however far away
              */
-            if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
-                if (ALLOW_MATE_DISTANCE_PRUNING) {
-                    int distanceToCheckmate = CHECKMATE_ENEMY_SCORE - score;
+            if (score >= this.evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
+                if (this.engine.ALLOW_MATE_DISTANCE_PRUNING) {
+                    int distanceToCheckmate = this.evaluator.CHECKMATE_ENEMY_SCORE - score;
                     System.out.println("Checkmate found in " + distanceToCheckmate + " plies.");
                 }
                 else{
@@ -48,10 +52,15 @@ class IterativeDeepeningDFS {
                 break;
             }
 
-            if (ALLOW_TIME_LIMIT) {
+            if (this.engine.ALLOW_TIME_LIMIT) {
                 long currentTime = System.currentTimeMillis();
-                long timeLeft = startTime + timeLimitMillis - currentTime;
+                long maxTime = startTime + timeLimitMillis;
+                long timeLeft = maxTime - currentTime;
                 if (timeLeft < 0) {
+                    outOfTime = true;
+                }
+                if (timeLeft < this.engine.PLY_STOP_TIME) {
+                    // not enough time to search another ply
                     outOfTime = true;
                 }
             }
@@ -62,5 +71,8 @@ class IterativeDeepeningDFS {
         return getAiMove();
     }
 
+    public Move getAiMove() {
+        return this.aspirationSearch.getAiMove();
+    }
 
 }

@@ -1,11 +1,12 @@
 package javacode.chessprogram.check;
 
-import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.moveGeneration.PieceMoveKing;
 import javacode.chessprogram.moveGeneration.PieceMoveKnight;
 import javacode.chessprogram.moveGeneration.PieceMovePawns;
 import javacode.chessprogram.moveGeneration.PieceMoveSliding;
+
+import static javacode.chessprogram.chess.BitIndexing.populationCount;
 
 public class CheckChecker {
 
@@ -37,37 +38,37 @@ public class CheckChecker {
         int numberOfThreats = 0;
 
         if (pawns != 0) {
-            numberOfThreats += BitIndexing.populationCount(PieceMovePawns.singlePawnCaptures(board, square, myColour, pawns));
+            numberOfThreats += populationCount(PieceMovePawns.singlePawnCaptures(board, square, myColour, pawns));
         }
         if (numberOfThreats > 1){
             return numberOfThreats;
         }
         if (knights != 0) {
-            numberOfThreats += BitIndexing.populationCount(PieceMoveKnight.singleKnightCaptures(board, square, myColour, knights));
+            numberOfThreats += populationCount(PieceMoveKnight.singleKnightCaptures(board, square, myColour, knights));
         }
         if (numberOfThreats > 1){
             return numberOfThreats;
         }
         if (bishops != 0) {
-            numberOfThreats += BitIndexing.populationCount(PieceMoveSliding.singleBishopCaptures(board, square, myColour, bishops));
+            numberOfThreats += populationCount(PieceMoveSliding.singleBishopCaptures(board, square, myColour, bishops));
         }
         if (numberOfThreats > 1){
             return numberOfThreats;
         }
         if (rooks != 0) {
-            numberOfThreats += BitIndexing.populationCount(PieceMoveSliding.singleRookCaptures(board, square, myColour, rooks));
+            numberOfThreats += populationCount(PieceMoveSliding.singleRookCaptures(board, square, myColour, rooks));
         }
         if (numberOfThreats > 1){
             return numberOfThreats;
         }
         if (queens != 0) {
-            numberOfThreats += BitIndexing.populationCount(PieceMoveSliding.singleQueenCaptures(board, square, myColour, queens));
+            numberOfThreats += populationCount(PieceMoveSliding.singleQueenCaptures(board, square, myColour, queens));
         }
         if (numberOfThreats > 1){
             return numberOfThreats;
         }
         if (king != 0) {
-            numberOfThreats += BitIndexing.populationCount(PieceMoveKing.singleKingCaptures(board, square, myColour, king));
+            numberOfThreats += populationCount(PieceMoveKing.singleKingCaptures(board, square, myColour, king));
         }
 
         return numberOfThreats;

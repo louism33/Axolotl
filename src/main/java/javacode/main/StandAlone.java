@@ -1,4 +1,4 @@
-package javacode;
+package javacode.main;
 
 import javacode.chessengine.Engine;
 import javacode.chessprogram.check.CheckChecker;
@@ -86,7 +86,7 @@ class StandAlone {
                             break;
                         case "go":
 
-                            move = Engine.search(board, timeLimit);
+                            move = engine.searchFixedTime(board, timeLimit);
 
                             break label;
                         case "quit":

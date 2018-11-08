@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 @RunWith(Parameterized.class)
 public class Arasan20 {
     /*
@@ -48,7 +46,7 @@ public class Arasan20 {
     public void test() {
         WACTests.reset();
         System.out.println(Art.boardArt(edpObject.getBoard()));
-        Move move = Engine.search(edpObject.getBoard(), timeLimit);
+        Move move = new Engine().searchFixedTime(edpObject.getBoard(), timeLimit);
         System.out.println(move);
 
         List<Integer> winningMoveDestination = edpObject.getBestMoveDestinationIndex();
@@ -111,7 +109,7 @@ public class Arasan20 {
             "r1b1rk2/p1pq2p1/1p1b1p1p/n2P4/2P1NP2/P2B1R2/1BQ3PP/R6K w - - bm Nxf6; id \"arasan20.47\";\n" +
             "r2qr3/2p1b1pk/p5pp/1p2p3/nP2P1P1/1BP2RP1/P3QPK1/R1B5 w - - bm Bxh6; id \"arasan20.48\";\n" +
             "1rbq1rk1/p5bp/3p2p1/2pP4/1p1n1BP1/3P3P/PP2N1B1/1R1Q1RK1 b - - bm Bxg4; id \"arasan20.49\";\n" +
-            "k1b4r/1p3p2/pq2pNp1/5n1p/P3QP2/1P1R1BPP/2P5/1K6 b - - am Nxg3; id \"arasan20.50\";\n" +
+//            "k1b4r/1p3p2/pq2pNp1/5n1p/P3QP2/1P1R1BPP/2P5/1K6 b - - am Nxg3; id \"arasan20.50\";\n" +
             "7b/8/kq6/8/8/1N2R3/K2P4/8 w - - bm Nd4; id \"arasan20.51\";\n" +
             "q3nrk1/4bppp/3p4/r3nPP1/4P2P/NpQ1B3/1P4B1/1K1R3R b - - bm Nc7; id \"arasan20.52\";\n" +
             "2r5/8/6k1/P1p3p1/2R5/1P1q4/1K4Q1/8 w - - bm a6; id \"arasan20.53\";\n" +
@@ -202,7 +200,7 @@ public class Arasan20 {
             "r2r2k1/3bb1Pp/3pp1p1/p1q5/1p2PP2/P1N5/1PPQ4/1K1R1B1R w - - bm Nd5; id \"arasan20.138\";\n" +
             "8/2R5/3p4/3P4/3k3P/2p3K1/1r4P1/8 w - - bm Kf3; id \"arasan20.139\";\n" +
             "r1bq2k1/1pp2ppp/3prn2/p3n3/2P5/PQN1PP2/1P1PB2P/R1B2R1K b - - bm Nfg4; id \"arasan20.140\";\n" +
-            "2kr3r/pp4pp/4pp2/2pq4/P1Nn4/4Q3/KP2B1PP/2RR4 b - - am Qxg2; id \"arasan20.141\";\n" +
+//            "2kr3r/pp4pp/4pp2/2pq4/P1Nn4/4Q3/KP2B1PP/2RR4 b - - am Qxg2; id \"arasan20.141\";\n" +
             "5r2/1p4k1/pP1pP1pp/2rP2q1/4Qp2/3Bb3/P5PP/4RR1K w - - bm Rf3; id \"arasan20.142\";\n" +
             "r2qr1k1/1b1pppbp/1p4p1/pP2P1B1/3N4/R7/1PP2PPP/3QR1K1 w - a6 bm Nf5; id \"arasan20.143\";\n" +
             "4k3/1R6/Pb3p2/1P1n4/5p2/8/4K3/8 w - - bm Kd3; id \"arasan20.144\";\n" +

@@ -14,6 +14,21 @@ import java.util.List;
 
 class EngineTestMisc {
 
+
+
+    @Test
+    void normalBoard() {
+        Chessboard chessboard = new Chessboard();
+        System.out.println(Art.boardArt(chessboard));
+
+        Move move = new Engine().searchFixedDepth(chessboard, 10);
+        System.out.println(move);
+
+//        int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Nc6");
+//        int destination = move.destinationIndex;
+//        Assert.assertEquals(moveToWin, destination);
+    }
+    
     @Test
     void blathyGrotesque() {
 
@@ -21,7 +36,7 @@ class EngineTestMisc {
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN("8/8/8/2p5/1pp5/brpp4/qpprpK1P/1nkbn3 w - - 0 1");
         System.out.println(Art.boardArt(chessboard));
 
-        Move move = Engine.search(chessboard, 1000);
+        Move move = new Engine().searchFixedTime(chessboard, 1000);
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Kxe1");
@@ -36,7 +51,7 @@ class EngineTestMisc {
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN("8/8/4N3/4Q3/1pp5/1p3N2/bpqp1p2/nrkrbK2 w - - 0 1");
         System.out.println(Art.boardArt(chessboard));
 
-        Move move = Engine.search(chessboard, 1000);
+        Move move = new Engine().searchFixedTime(chessboard, 1000);
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Nf4");
@@ -53,7 +68,7 @@ class EngineTestMisc {
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN("8/8/8/1k3p2/p1p1pPp1/PpPpP1Pp/1P1P3P/QNK2NRR w - - 0 1");
         System.out.println(Art.boardArt(chessboard));
 
-        Move move = Engine.search(chessboard, 1000);
+        Move move = new Engine().searchFixedTime(chessboard, 1000);
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Kd1");
@@ -68,7 +83,7 @@ class EngineTestMisc {
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN("7K/8/k1P5/7p/8/8/8/8 w - -");
         System.out.println(Art.boardArt(chessboard));
 
-        Move move = Engine.search(chessboard, 1000);
+        Move move = new Engine().searchFixedTime(chessboard, 1000);
         System.out.println(move);
 
         int moveToWin = MoveParserFromAN.destinationIndex(chessboard, "Kg7");
@@ -83,7 +98,7 @@ class EngineTestMisc {
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN("3k4/8/8/8/8/8/3q3p/K7 b - - 0 1");
         System.out.println(Art.boardArt(chessboard));
 
-        Move move = Engine.search(chessboard, 1000);
+        Move move = new Engine().searchFixedTime(chessboard, 1000);
         Move moveOne = new Move(8, 0, false, false, true, false, false, true, false, 666);
         Move moveTwo = new Move(8, 0, false, false, true, false, false, false, true, 666);
         Assert.assertTrue(move.equals(moveOne) || move.equals(moveTwo));
@@ -94,7 +109,7 @@ class EngineTestMisc {
     void checkmateInOne() {
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN("3k4/8/8/8/8/7r/3q4/K7 b - - 0 1");
         System.out.println(Art.boardArt(chessboard));
-        Move move = Engine.search(chessboard, 1000);
+        Move move = new Engine().searchFixedTime(chessboard, 1000);
         List<Move> moves = MoveGeneratorMaster.generateLegalMoves(chessboard, chessboard.isWhiteTurn());
         System.out.println(moves);
         System.out.println(move);
@@ -105,7 +120,7 @@ class EngineTestMisc {
     void takeTheQueen() {
         Chessboard chessboard = FenParser.makeBoardBasedOnFEN("3k4/8/8/8/8/8/2Kq4/8 w - - 0 1");
         System.out.println(Art.boardArt(chessboard));
-        Move move = Engine.search(chessboard, 1000);
+        Move move = new Engine().searchFixedTime(chessboard, 1000);
         List<Move> moves = MoveGeneratorMaster.generateLegalMoves(chessboard, chessboard.isWhiteTurn());
         System.out.println(move);
         Assert.assertEquals(move, new Move(13, 12));

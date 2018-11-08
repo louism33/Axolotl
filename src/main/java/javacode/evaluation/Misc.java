@@ -1,17 +1,15 @@
 package javacode.evaluation;
 
-import javacode.chessprogram.check.CheckChecker;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.moveGeneration.PinnedManager;
 
 import java.util.List;
 
 import static javacode.chessprogram.bitboards.BitBoards.FILES;
-import static javacode.chessprogram.check.CheckChecker.*;
+import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
-import static javacode.chessprogram.moveGeneration.PinnedManager.*;
+import static javacode.chessprogram.moveGeneration.PinnedManager.whichPiecesArePinned;
 
 class Misc {
 
@@ -29,8 +27,8 @@ class Misc {
         int score = 0;
         score += 
                 moveNumberScores(board, white, moves)
-//                + batteryAndFileControl(board, white, moves)
-//                + myTurnBonus(board, white, moves)
+                + batteryAndFileControl(board, white, moves)
+                + myTurnBonus(board, white, moves)
                 + inCheckPenalty(board, white, moves)
                 + pinnedPiecesPenalty(board, white, moves)
         ;

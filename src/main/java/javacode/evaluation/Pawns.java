@@ -1,8 +1,6 @@
 package javacode.evaluation;
 
-import javacode.chessprogram.bitboards.BitBoards;
 import javacode.chessprogram.chess.BitIndexing;
-import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 
 import java.util.List;
@@ -11,7 +9,7 @@ import static javacode.chessprogram.bitboards.BitBoards.*;
 import static javacode.chessprogram.check.CheckChecker.numberOfPiecesThatLegalThreatenSquare;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
-import static javacode.chessprogram.chess.BitManipulations.*;
+import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapturesTable;
 
 class Pawns {
@@ -48,19 +46,19 @@ class Pawns {
 
         int score = 0;
 
-        score += 0
-//                pawnCentreBonus(board, white, myPawns)
-//                        + pawnOnOpenFile(board, white, myPawns, enemyPawns)
-//                        + pawnStructureBonus(board, white, myPawns)
-//                        + pawnsThreatenBigThings(board, white, myPawns)
-//                        + pawnsChainBonus(board, white, myPawns)
-//                        + doublePawnPenalty(board, white, myPawns)
-//                        + pawnAttackingCentreBonus(board, white, myPawns)
-//                        + superAdvancedPawn(board, white, myPawns)
-//                        + backwardsPawn(board, white, myPawns)
-//                        + blockedPawnPenalty(board, white, myPawns, enemyPawns)
-//                        + isolatedPawn(board, white, myPawns)
-//                        + passedPawn(board, white, myPawns, enemyPawns)
+        score += 0 +
+                pawnCentreBonus(board, white, myPawns)
+                        + pawnOnOpenFile(board, white, myPawns, enemyPawns)
+                        + pawnStructureBonus(board, white, myPawns)
+                        + pawnsThreatenBigThings(board, white, myPawns)
+                        + pawnsChainBonus(board, white, myPawns)
+                        + doublePawnPenalty(board, white, myPawns)
+                        + pawnAttackingCentreBonus(board, white, myPawns)
+                        + superAdvancedPawn(board, white, myPawns)
+                        + backwardsPawn(board, white, myPawns)
+                        + blockedPawnPenalty(board, white, myPawns, enemyPawns)
+                        + isolatedPawn(board, white, myPawns)
+                        + passedPawn(board, white, myPawns, enemyPawns)
         ;
 
         return score;

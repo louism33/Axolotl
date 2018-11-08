@@ -1,51 +1,61 @@
 package javacode.chessengine;
 
 import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.chess.Move;
 import javacode.evaluation.Evaluator;
-
-import static javacode.chessengine.Engine.*;
-import static javacode.chessengine.PrincipleVariationSearch.getAiMove;
-import static javacode.chessengine.PrincipleVariationSearch.principleVariationSearch;
-import static javacode.evaluation.Evaluator.*;
-import static javacode.evaluation.Evaluator.IN_CHECKMATE_SCORE_MAX_PLY;
-import static javacode.evaluation.Evaluator.SHORT_MAXIMUM;
 
 class AspirationSearch {
 
-    static int aspirationSearch(Chessboard board, long startTime, long timeLimitMillis,
+    private Engine engine;
+    PrincipleVariationSearch principleVariationSearch;
+    private Evaluator evaluator;
+
+    AspirationSearch(Engine engine, Evaluator evaluator){
+        this.engine = engine;
+        this.evaluator = evaluator;
+        this.principleVariationSearch = new PrincipleVariationSearch(engine, evaluator);
+    }
+    
+    int aspirationSearch(Chessboard board, long startTime, long timeLimitMillis,
                                 ZobristHash zobristHash, int depth, int aspirationScore){
 
         int firstWindow = 100, alpha, beta, alphaFac = 2, betaFac = 2;
-        if (ALLOW_ASPIRATION_WINDOWS) {
+        if (this.engine.ALLOW_ASPIRATION_WINDOWS) {
             firstWindow = 100;
             alpha = aspirationScore - firstWindow;
             beta = aspirationScore + firstWindow;
         }
         else {
-            alpha = SHORT_MINIMUM;
-            beta = SHORT_MAXIMUM;
+            alpha = this.evaluator.SHORT_MINIMUM;
+            beta = this.evaluator.SHORT_MAXIMUM;
         }
         int score = aspirationScore;
 
         boolean outOfTime = false;
-
+        
         while (!outOfTime){
+            
             /*
             Aspiration Search:
             call main search function with artificially small windows, hoping for more cutoffs
              */
-            score = principleVariationSearch(board, zobristHash,
+            score = this.principleVariationSearch.principleVariationSearch(board, zobristHash,
                     startTime, timeLimitMillis,
                     depth, depth, 0, alpha, beta, 0, false);
 
-            if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
+            if (score >= this.evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
                 return score;
             }
 
-            if (ALLOW_TIME_LIMIT) {
+            if (this.engine.ALLOW_TIME_LIMIT) {
                 long currentTime = System.currentTimeMillis();
-                long timeLeft = startTime + timeLimitMillis - currentTime;
+                long maxTime = startTime + timeLimitMillis;
+                long timeLeft = maxTime - currentTime;
                 if (timeLeft < 0) {
+                    outOfTime = true;
+                }
+                if (timeLeft < this.engine.PLY_STOP_TIME) {
+                    // not enough time to search another ply
                     outOfTime = true;
                 }
             }
@@ -54,29 +64,30 @@ class AspirationSearch {
             Aspiration Search Miss:
             if score outside of window, widen window and increase speed of widening
              */
-            if (ALLOW_ASPIRATION_WINDOWS) {
+            if (this.engine.ALLOW_ASPIRATION_WINDOWS) {
                 if (score <= alpha) {
                     alpha = -firstWindow * alphaFac;
                     if (alphaFac >= 4){
-                        alpha = SHORT_MINIMUM;
+                        alpha = this.evaluator.SHORT_MINIMUM;
                     }
                     alphaFac *= 2;
-                    if (DEBUG) {
-                        statistics.numberOfFailedAspirations++;
+                    if (this.engine.DEBUG) {
+                        this.engine.statistics.numberOfFailedAspirations++;
                     }
                 } else if (score >= beta) {
                     beta = firstWindow * betaFac;
                     if (betaFac >= 4){
-                        beta = SHORT_MAXIMUM;
+                        beta = this.evaluator.SHORT_MAXIMUM;
                     }
                     betaFac *= 2;
-                    if (DEBUG) {
-                        statistics.numberOfFailedAspirations++;
+                    if (this.engine.DEBUG) {
+                        this.engine.statistics.numberOfFailedAspirations++;
                     }
                 } else {
-                    if (DEBUG) {
-                        statistics.numberOfSuccessfulAspirations++;
+                    if (this.engine.DEBUG) {
+                        this.engine.statistics.numberOfSuccessfulAspirations++;
                     }
+
                     break;
                 }
             }
@@ -85,6 +96,10 @@ class AspirationSearch {
             }
         }
         return score;
+    }
+
+    public Move getAiMove() {
+        return this.principleVariationSearch.getAiMove();
     }
 
 }

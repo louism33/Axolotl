@@ -1,18 +1,17 @@
 package javacode.chessengine;
 
-import javacode.chessprogram.bitboards.BitBoards;
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveMaking.StackMoveData;
-import javacode.graphicsandui.Art;
 import org.junit.Assert;
 
 import java.util.Objects;
 import java.util.Random;
 import java.util.Stack;
 
-import static javacode.chessprogram.bitboards.BitBoards.*;
+import static javacode.chessprogram.bitboards.BitBoards.BLACK_KING;
+import static javacode.chessprogram.bitboards.BitBoards.WHITE_KING;
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveMaking.MoveOrganiser.whichPieceOnSquare;
 import static javacode.chessprogram.moveMaking.MoveParser.*;

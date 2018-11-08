@@ -13,13 +13,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 @RunWith(Parameterized.class )
 public class QuickTest {
 
     private static final int timeLimit = 10000;
-
+    private static Engine engine = null;
+    
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -44,7 +43,7 @@ public class QuickTest {
     public void test() {
         WACTests.reset();
         System.out.println(Art.boardArt(edpObject.getBoard()));
-        Move move = Engine.search(edpObject.getBoard(), timeLimit);
+        Move move = engine.searchFixedTime(edpObject.getBoard(), timeLimit);
         System.out.println(move);
 
         List<Integer> winningMoveDestination = edpObject.getBestMoveDestinationIndex();

@@ -1,11 +1,10 @@
 package javacode.chessprogram.moveMaking;
 
 import javacode.chessprogram.bitboards.BitBoards;
-import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
-import static javacode.chessprogram.chess.BitManipulations.*;
+import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveMaking.StackMoveData.SpecialMove.*;
 
 public class MoveOrganiser {

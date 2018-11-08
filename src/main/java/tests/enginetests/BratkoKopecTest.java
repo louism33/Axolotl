@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 @RunWith(Parameterized.class)
 public class BratkoKopecTest {
 
@@ -44,7 +42,7 @@ public class BratkoKopecTest {
     public void test() {
         WACTests.reset();
         System.out.println(Art.boardArt(edpObject.getBoard()));
-        Move move = Engine.search(edpObject.getBoard(), timeLimit);
+        Move move = new Engine().searchFixedTime(edpObject.getBoard(), timeLimit);
         System.out.println(move);
 
         List<Integer> winningMoveDestination = edpObject.getBestMoveDestinationIndex();

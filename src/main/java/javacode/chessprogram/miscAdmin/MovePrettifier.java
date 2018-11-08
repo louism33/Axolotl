@@ -15,26 +15,26 @@ public class MovePrettifier {
         String m = ""+file+ rank+destinationFile+ destinationRank;
 
         if (MoveParser.isCastlingMove(move)){
-            m += "-C";
+            m += "";
         }
         else if (MoveParser.isEnPassantMove(move)){
-            m += "-Ep";
+            m += "";
         }
 
         else if (MoveParser.isPromotionMove(move)){
-            m += "-P";
+            m += "";
 
             if (MoveParser.isPromotionToKnight(move)){
-                m += "-N";
+                m += "N";
             }
             else if (MoveParser.isPromotionToBishop(move)){
-                m += "-B";
+                m += "B";
             }
             else if (MoveParser.isPromotionToRook(move)){
-                m += "-R";
+                m += "R";
             }
             else if (MoveParser.isPromotionToQueen(move)){
-                m += "-Q";
+                m += "Q";
             }
         }
         return m;

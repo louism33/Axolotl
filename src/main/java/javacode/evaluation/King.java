@@ -27,7 +27,7 @@ class King {
         int score = 0;
 
         score += kingSafetyBonus(board, white, myKing)
-//                + kingProtectorAndAggressor(board, white, myKing)
+                + kingProtectorAndAggressor(board, white, myKing)
         ;
 
         return score;

@@ -5,23 +5,23 @@ import javacode.chessprogram.chess.Move;
 
 import java.util.List;
 
-import static javacode.chessengine.MoveOrderer.moveIsCapture;
-
 class QuiescentSearchUtils {
 
+    private MoveOrderer moveOrderer;
+    
+    QuiescentSearchUtils(MoveOrderer moveOrderer) {
+        this.moveOrderer = moveOrderer;
+    }
     /*
     a board is quiet when there are no more captures that can be made
      */
-    static boolean isBoardQuiet(Chessboard board, List<Move> moves){
+    boolean isBoardQuiet(Chessboard board, List<Move> moves){
         for (Move move : moves){
-            if(moveIsCapture(board, move)){
+            if(this.moveOrderer.moveIsCapture(board, move)){
                 return false;
             }
         }
         return true;
     }
-    
-
-    
     
 }

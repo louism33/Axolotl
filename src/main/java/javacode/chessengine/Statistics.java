@@ -1,18 +1,18 @@
 package javacode.chessengine;
 
+import javacode.chessprogram.chess.Move;
+
 import java.util.Arrays;
 
-import static javacode.chessengine.Engine.*;
+import static javacode.chessengine.KillerMoves.killerMoves;
+import static javacode.chessengine.KillerMoves.mateKiller;
 
 public class Statistics {
     
-    public void resetStatistics(){
-        statistics = new Statistics();
-        System.out.println(numberOfMovesMade);
-    }
-    
-    public Statistics (){
-        
+    private Engine engine;
+
+    public Statistics(Engine engine) {
+        this.engine = engine;
     }
 
     public int[] whichMoveWasTheBest = new int[60];
@@ -39,12 +39,19 @@ public class Statistics {
     public int numberOfFailedFutilities = 0;
     public int numberOfSuccessfulQuiescenceFutilities = 0;
     public int numberOfFailedQuiescenceFutilities = 0;
+
+    public int numberOfSuccessfulSEEs = 0;
+    public int numberOfSuccessfulQuiescentSEEs = 0;
+    
     public int numberOfSuccessfulAlphaRazors = 0;
     public int numberOfFailedAlphaRazors = 0;
     public int numberOfSuccessfulBetaRazors = 0;
     public int numberOfSuccessfulAspirations = 0;
     public int numberOfFailedAspirations = 0;
+    
     public int numberOfIIDs = 0;
+    public int numberOfSuccessfulIIDs = 0;
+    public int numberOfFailedIIDs = 0;
 
     public int numberOfVictoriousKillersOne = 0;
     public int numberOfVictoriousKillersTwo = 0;
@@ -66,29 +73,33 @@ public class Statistics {
         System.out.println("------");
 
         System.out.println("Modifications:" +
-                "\nALLOW_PRINCIPLE_VARIATION_SEARCH = "     + ALLOW_PRINCIPLE_VARIATION_SEARCH +
-                "\nALLOW_MATE_DISTANCE_PRUNING = "          + ALLOW_MATE_DISTANCE_PRUNING +
-                "\nALLOW_EXTENSIONS = "                     + ALLOW_EXTENSIONS +
-                "\nALLOW_LATE_MOVE_REDUCTIONS = "           + ALLOW_LATE_MOVE_REDUCTIONS +
-                "\nALLOW_LATE_MOVE_PRUNING = "              + ALLOW_LATE_MOVE_PRUNING +
-                "\nALLOW_NULL_MOVE_PRUNING = "              + ALLOW_NULL_MOVE_PRUNING +
-                "\nALLOW_ALPHA_RAZORING = "                 + ALLOW_ALPHA_RAZORING +
-                "\nALLOW_BETA_RAZORING = "                  + ALLOW_BETA_RAZORING +
-                "\nALLOW_FUTILITY_PRUNING = "               + ALLOW_FUTILITY_PRUNING +
-                "\nALLOW_QUIESCENCE_FUTILITY_PRUNING = "    + ALLOW_QUIESCENCE_FUTILITY_PRUNING +
-                "\nALLOW_KILLERS = "                        + ALLOW_KILLERS +
-                "\nALLOW_HISTORY_MOVES = "                  + ALLOW_HISTORY_MOVES +
-                "\nALLOW_ASPIRATION_WINDOWS = "             + ALLOW_ASPIRATION_WINDOWS +
-                "\nALLOW_INTERNAL_ITERATIVE_DEEPENING = "   + ALLOW_INTERNAL_ITERATIVE_DEEPENING +
+                "\nALLOW_PRINCIPLE_VARIATION_SEARCH = "     + this.engine.ALLOW_PRINCIPLE_VARIATION_SEARCH +
+                "\nALLOW_MATE_DISTANCE_PRUNING = "          + this.engine.ALLOW_MATE_DISTANCE_PRUNING +
+                "\nALLOW_EXTENSIONS = "                     + this.engine.ALLOW_EXTENSIONS +
+                "\nALLOW_LATE_MOVE_REDUCTIONS = "           + this.engine.ALLOW_LATE_MOVE_REDUCTIONS +
+                "\nALLOW_LATE_MOVE_PRUNING = "              + this.engine.ALLOW_LATE_MOVE_PRUNING +
+                "\nALLOW_NULL_MOVE_PRUNING = "              + this.engine.ALLOW_NULL_MOVE_PRUNING +
+                "\nALLOW_ALPHA_RAZORING = "                 + this.engine.ALLOW_ALPHA_RAZORING +
+                "\nALLOW_BETA_RAZORING = "                  + this.engine.ALLOW_BETA_RAZORING +
+                "\nALLOW_FUTILITY_PRUNING = "               + this.engine.ALLOW_FUTILITY_PRUNING +
+                "\nALLOW_QUIESCENCE_FUTILITY_PRUNING = "    + this.engine.ALLOW_QUIESCENCE_FUTILITY_PRUNING +
+                
+                "\nALLOW_SEE_PRUNING = "                    + this.engine.ALLOW_SEE_PRUNING +
+                "\nALLOW_QUIESCENCE_SEE_PRUNING = "         + this.engine.ALLOW_QUIESCENCE_SEE_PRUNING +
+                
+                "\nALLOW_KILLERS = "                        + this.engine.ALLOW_KILLERS +
+                "\nALLOW_HISTORY_MOVES = "                  + this.engine.ALLOW_HISTORY_MOVES +
+                "\nALLOW_ASPIRATION_WINDOWS = "             + this.engine.ALLOW_ASPIRATION_WINDOWS +
+                "\nALLOW_INTERNAL_ITERATIVE_DEEPENING = "   + this.engine.ALLOW_INTERNAL_ITERATIVE_DEEPENING +
                 "");
 
         System.out.println();
-        if (ALLOW_PRINCIPLE_VARIATION_SEARCH) {
+        if (this.engine.ALLOW_PRINCIPLE_VARIATION_SEARCH) {
             System.out.println("number of PVS hits: " + numberOfPVSHits);
             System.out.println("number of PVS misses: " + numberOfPVSMisses);
             System.out.println();
         }
-        if (ALLOW_ASPIRATION_WINDOWS) {
+        if (this.engine.ALLOW_ASPIRATION_WINDOWS) {
             System.out.println("Number of successful aspirations: " + numberOfSuccessfulAspirations);
             System.out.println("Number of failed aspirations: " + numberOfFailedAspirations);
             System.out.println();
@@ -103,7 +114,7 @@ public class Statistics {
         System.out.println("numberOfHashBetaCutoffs: " + numberOfHashBetaCutoffs);
         System.out.println();
 
-        if (ALLOW_KILLERS){
+        if (this.engine.ALLOW_KILLERS){
             System.out.println("numberOfVictoriousKillersOne: " + numberOfVictoriousKillersOne);
             System.out.println("numberOfVictoriousKillersTwo: " + numberOfVictoriousKillersTwo);
             System.out.println("numberOfVeteranVictoriousKillersOne: " + numberOfVeteranVictoriousKillersOne);
@@ -111,55 +122,67 @@ public class Statistics {
             System.out.println();
         }
 
-        if (ALLOW_MATE_KILLERS){
+        if (this.engine.ALLOW_MATE_KILLERS){
             System.out.println("numberOfVictoriousMaters: " + numberOfVictoriousMaters);
             System.out.println();
         }
 
-        if (ALLOW_EXTENSIONS) {
+        if (this.engine.ALLOW_EXTENSIONS) {
             System.out.println("number of Check Extensions " + numberOfCheckExtensions);
             System.out.println();
         }
-        if (ALLOW_LATE_MOVE_REDUCTIONS) {
+        if (this.engine.ALLOW_LATE_MOVE_REDUCTIONS) {
             System.out.println("number of late move reductions: " + numberOfLateMoveReductions);
             System.out.println("number of late move reduction hits: " + numberOfLateMoveReductionsHits);
             System.out.println("number of late move reduction misses: " + numberOfLateMoveReductionsMisses);
             System.out.println();
         }
-        if (ALLOW_LATE_MOVE_PRUNING) {
+        if (this.engine.ALLOW_LATE_MOVE_PRUNING) {
             System.out.println("number of late move prunings: " + numberOfLateMovePrunings);
             System.out.println();
         }
-        if (ALLOW_NULL_MOVE_PRUNING){
+        if (this.engine.ALLOW_NULL_MOVE_PRUNING){
             System.out.println("number of null move hits: " + numberOfNullMoveHits);
             System.out.println("number of null move misses: " + numberOfNullMoveMisses);
             System.out.println();
         }
-        if (ALLOW_ALPHA_RAZORING) {
+        if (this.engine.ALLOW_ALPHA_RAZORING) {
             System.out.println("Number of successful alpha razors: " + numberOfSuccessfulAlphaRazors);
             System.out.println("Number of failed alpha razors: " + numberOfFailedAlphaRazors);
             System.out.println();
         }
 
-        if (ALLOW_BETA_RAZORING) {
+        if (this.engine.ALLOW_BETA_RAZORING) {
             System.out.println("Number of successful beta razors: " + numberOfSuccessfulBetaRazors);
             System.out.println();
         }
 
-        if (ALLOW_FUTILITY_PRUNING) {
+        if (this.engine.ALLOW_FUTILITY_PRUNING) {
             System.out.println("Number of successful futilities: " + numberOfSuccessfulFutilities);
             System.out.println("Number of failed futilities: " + numberOfFailedFutilities);
             System.out.println();
+        }   
+        
+        if (this.engine.ALLOW_SEE_PRUNING) {
+            System.out.println("Number of successful SEEs: " + numberOfSuccessfulSEEs);
+            System.out.println();
+        }            
+        
+        if (this.engine.ALLOW_QUIESCENCE_SEE_PRUNING) {
+            System.out.println("Number of successful quiescent SEEs: " + numberOfSuccessfulQuiescentSEEs);
+            System.out.println();
         }        
         
-        if (ALLOW_QUIESCENCE_FUTILITY_PRUNING) {
+        if (this.engine.ALLOW_QUIESCENCE_FUTILITY_PRUNING) {
             System.out.println("Number of successful Q futilities: " + numberOfSuccessfulQuiescenceFutilities);
             System.out.println("Number of failed Q futilities: " + numberOfFailedQuiescenceFutilities);
             System.out.println();
         }
 
-        if (ALLOW_INTERNAL_ITERATIVE_DEEPENING) {
+        if (this.engine.ALLOW_INTERNAL_ITERATIVE_DEEPENING) {
             System.out.println("Number of IIDS: " + numberOfIIDs);
+            System.out.println("Number of successful IIDS: " + numberOfSuccessfulIIDs);
+            System.out.println("Number of failed IIDS: " + numberOfFailedIIDs);
             System.out.println();
         }
 
@@ -174,7 +197,6 @@ public class Statistics {
 
         System.out.println("number of checkmates found: " + numberOfCheckmates);
         System.out.println("number of stalemates found: " + numberOfStalemates);
-        System.out.println("transposition table size: "+ TranspositionTable.getInstance().size());
 
 
         System.out.println();
@@ -221,6 +243,34 @@ public class Statistics {
             collectivePercents[i] = runningTotal;
         }
         return collectivePercents;
+    }
+
+
+    void statisticsFailHigh(int ply, int numberOfMovesSearched, Move move) {
+        if (numberOfMovesSearched - 1 < this.engine.statistics.whichMoveWasTheBest.length) {
+            this.engine.statistics.whichMoveWasTheBest[numberOfMovesSearched - 1]++;
+        }
+
+        if (move.equals(mateKiller[ply])){
+            this.engine.statistics.numberOfVictoriousMaters++;
+        }
+
+        if (move.equals(killerMoves[ply][0])){
+            this.engine.statistics.numberOfVictoriousKillersOne++;
+        }
+        if (move.equals(killerMoves[ply][1])){
+            this.engine.statistics.numberOfVictoriousKillersTwo++;
+        }
+
+        if (ply > 1) {
+            if (move.equals(killerMoves[ply - 2][0])) {
+                this.engine.statistics.numberOfVeteranVictoriousKillersOne++;
+            }
+            if (move.equals(killerMoves[ply - 2][1])) {
+                this.engine.statistics.numberOfVeteranVictoriousKillersTwo++;
+            }
+        }
+        this.engine.statistics.numberOfFailHighs++;
     }
 
 }

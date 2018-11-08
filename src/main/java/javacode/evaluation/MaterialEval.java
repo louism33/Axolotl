@@ -1,14 +1,48 @@
 package javacode.evaluation;
 
-import javacode.chessprogram.chess.BitIndexing;
+import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.chess.Move;
+import javacode.chessprogram.moveMaking.MoveParser;
 
-import static javacode.chessprogram.chess.BitIndexing.*;
-import static javacode.evaluation.Evaluator.*;
+import static javacode.chessprogram.chess.BitIndexing.populationCount;
 
 class MaterialEval {
 
-    static int evalMaterialByTurn(Chessboard board, boolean white){
+    private Evaluator evaluator;
+
+    public MaterialEval(Evaluator evaluator) {
+        this.evaluator = evaluator;
+    }
+    
+    int getScoreOfDestinationPiece(Chessboard board, Move move){
+        long victim = BitManipulations.newPieceOnSquare(move.destinationIndex);
+        if (MoveParser.isPromotionToQueen(move)){
+            return this.evaluator.QUEEN_SCORE;
+        }
+        if ((victim & board.WHITE_PAWNS) != 0 || (victim & board.BLACK_PAWNS) != 0){
+            return this.evaluator.PAWN_SCORE;
+        }
+        if ((victim & board.WHITE_KNIGHTS) != 0 || (victim & board.BLACK_KNIGHTS) != 0){
+            return this.evaluator.KNIGHT_SCORE;
+        }
+        if ((victim & board.WHITE_BISHOPS) != 0 || (victim & board.BLACK_BISHOPS) != 0){
+            return this.evaluator.BISHOP_SCORE;
+        }
+        if ((victim & board.WHITE_ROOKS) != 0 || (victim & board.BLACK_ROOKS) != 0){
+            return this.evaluator.ROOK_SCORE;
+        }
+        if ((victim & board.WHITE_QUEEN) != 0 || (victim & board.BLACK_QUEEN) != 0){
+            return this.evaluator.QUEEN_SCORE;
+        }
+        if ((victim & board.WHITE_KING) != 0 || (victim & board.BLACK_KING) != 0){
+            System.out.println("Capture of king ???");
+            return 0;
+        }
+        throw new RuntimeException("not a capture move");
+    }
+
+    int evalMaterialByTurn(Chessboard board, boolean white){
         int score = 0;
         score += pawnScores(board, white)
                 + knightScores(board, white)
@@ -18,44 +52,43 @@ class MaterialEval {
                 + kingScores(board, white)
         ;
 
-//        System.out.println("Material score, white: "+ white+", is: "+score);
         return score;
     }
     
-    private static int pawnScores(Chessboard board, boolean white){
+    private int pawnScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_PAWNS : board.BLACK_PAWNS;
         int numberOfPawns = populationCount(myPieces);
-        return numberOfPawns * PAWN_SCORE;
+        return numberOfPawns * this.evaluator.PAWN_SCORE;
     }
 
-    private static int knightScores(Chessboard board, boolean white){
+    private int knightScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_KNIGHTS : board.BLACK_KNIGHTS;
         int numberOfKnights = populationCount(myPieces);
-        return numberOfKnights * KNIGHT_SCORE;
+        return numberOfKnights * this.evaluator.KNIGHT_SCORE;
     }
 
-    private static int bishopScores(Chessboard board, boolean white){
+    private int bishopScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_BISHOPS : board.BLACK_BISHOPS;
         int numberOfBishops = populationCount(myPieces);
-        return numberOfBishops * BISHOP_SCORE;
+        return numberOfBishops * this.evaluator.BISHOP_SCORE;
     }
 
-    private static int rookScores(Chessboard board, boolean white){
+    private int rookScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_ROOKS : board.BLACK_ROOKS;
         int numberOfRooks = populationCount(myPieces);
-        return numberOfRooks * ROOK_SCORE;
+        return numberOfRooks * this.evaluator.ROOK_SCORE;
     }
 
-    private static int queenScores(Chessboard board, boolean white){
+    private int queenScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_QUEEN : board.BLACK_QUEEN;
         int numberOfQueens = populationCount(myPieces);
-        return numberOfQueens * QUEEN_SCORE;
+        return numberOfQueens * this.evaluator.QUEEN_SCORE;
     }
 
-    private static int kingScores(Chessboard board, boolean white){
+    private int kingScores(Chessboard board, boolean white){
         long myPieces = white ? board.WHITE_KING : board.BLACK_KING;
         int numberOfKings = populationCount(myPieces);
-        return numberOfKings * KING_SCORE;
+        return numberOfKings * this.evaluator.KING_SCORE;
     }
 
 }

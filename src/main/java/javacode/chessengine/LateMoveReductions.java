@@ -16,7 +16,7 @@ class LateMoveReductions {
 
         return depth > 3
                 && !reducedSearch
-                && numberOfMovesSearched > 3
+                && numberOfMovesSearched > 2
                 && !wasPromotionMove
                 && !wasCaptureMove
                 && !givesCheckMove

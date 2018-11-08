@@ -2,6 +2,8 @@ package javacode.chessprogram.chess;
 
 import javacode.chessprogram.moveMaking.StackMoveData;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -9,6 +11,16 @@ public class Chessboard {
 
     public Stack<StackMoveData> moveStack = new Stack<>();
 
+    public List<Move> stackMoves(Stack<StackMoveData> stack){
+        List<Move> moves = new ArrayList<>();
+        Stack<StackMoveData> clone = (Stack<StackMoveData>) stack.clone();
+        for (int s = 0; s < stack.size(); s++){
+            Move move = clone.pop().move;
+            moves.add(move);
+        }
+        return moves;
+    }
+    
     private boolean whiteTurn = true;
     public boolean whiteCanCastleK = true, whiteCanCastleQ = true, blackCanCastleK = true, blackCanCastleQ = true;
 

@@ -23,10 +23,11 @@ class ZobristHashTest {
 
         final ZobristHash testHash = new ZobristHash(chessboard);
 
-        Move move = Engine.search(chessboard, 1000);
+        Engine engine = new Engine();
+        Move move = engine.searchFixedTime(chessboard, 1000);
         System.out.println(move);
 
-        ZobristHash zobristHash = Engine.zobristHash;
+        ZobristHash zobristHash = engine.zobristHash;
         System.out.println("ZobristHash: \n"+zobristHash);
         System.out.println("TestHash: \n" + testHash);
         Assert.assertEquals(zobristHash, testHash);

@@ -2,27 +2,34 @@ package javacode.chessengine;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.chessprogram.moveMaking.MoveUnmaker;
+import javacode.evaluation.Evaluator;
 
 import java.util.List;
 
-import static javacode.chessengine.Engine.*;
-import static javacode.chessengine.FutilityPruning.*;
-import static javacode.chessengine.MoveOrderer.orderMovesQuiescence;
-import static javacode.chessengine.QuiescentSearchUtils.isBoardQuiet;
-import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.*;
+import static javacode.chessengine.FutilityPruning.quiescenceFutilityMargin;
+import static javacode.chessengine.SEEPruning.seeScore;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
-import static javacode.evaluation.Evaluator.*;
 
 class QuiescenceSearch {
 
+    private Engine engine;
+    private MoveOrderer moveOrderer;
+    private QuiescentSearchUtils quiescentSearchUtils;
+    private Evaluator evaluator;
+    
+    QuiescenceSearch(Engine engine, MoveOrderer moveOrderer, Evaluator evaluator){
+        this.engine = engine;
+        this.moveOrderer = moveOrderer;
+        this.evaluator = evaluator;
+        this.quiescentSearchUtils = new QuiescentSearchUtils(moveOrderer);
+    }
     /*
     Quiescence Search: 
-    special search for captures only
+    special searchMyTime for captures only
      */
-    static int quiescenceSearch(Chessboard board, ZobristHash zobristHash,
+    int quiescenceSearch(Chessboard board, ZobristHash zobristHash,
                                 long startTime, long timeLimitMillis,
                                 int alpha, int beta){
 
@@ -31,9 +38,9 @@ class QuiescenceSearch {
         /*
         the score we get from not making captures anymore
          */
-        int standPatScore = evalWithoutCM(board, board.isWhiteTurn(), moves);
+        int standPatScore = this.evaluator.evalWithoutCM(board, board.isWhiteTurn(), moves);
 
-        if (standPatScore > CHECKMATE_ENEMY_SCORE_MAX_PLY){
+        if (standPatScore > this.evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
             System.out.println("checkmate in QSearch ????? " + standPatScore);
         }
 
@@ -45,38 +52,39 @@ class QuiescenceSearch {
             alpha = standPatScore;
         }
 
-        if (ALLOW_TIME_LIMIT) {
-            long currentTime = System.currentTimeMillis();
-            long timeLeft = startTime + timeLimitMillis - currentTime;
-            if (timeLeft < 0) {
-                System.out.println("Time up in Q search, score is: "+standPatScore+ ", aiMove is: "+ PrincipleVariationSearch.getAiMove());
-                return standPatScore;
-            }
-        }
-        
         /*
         no more captures to make or no more moves at all
          */
-        if (isBoardQuiet(board, moves) || moves.size() == 0){
-            if (Engine.DEBUG) {
-                statistics.numberOfQuiescentEvals++;
+        if (this.quiescentSearchUtils.isBoardQuiet(board, moves) || moves.size() == 0){
+            if (this.engine.DEBUG) {
+                this.engine.statistics.numberOfQuiescentEvals++;
             }
             return standPatScore;
         }
 
-        List<Move> orderedCaptureMoves = orderMovesQuiescence(board, board.isWhiteTurn(), moves);
+        List<Move> orderedCaptureMoves = this.moveOrderer.orderMovesQuiescence(board, board.isWhiteTurn(), moves);
 
         int numberOfMovesSearched = 0;
         for (Move captureMove : orderedCaptureMoves){
 
-            if (ALLOW_QUIESCENCE_FUTILITY_PRUNING){
+            /*
+            Quiescence Futility Pruning:
+            if this is a particularly low scoring situation skip this move
+             */
+            if (this.engine.ALLOW_QUIESCENCE_FUTILITY_PRUNING){
                 if (quiescenceFutilityMargin
                         + standPatScore
+                        + this.evaluator.getScoreOfDestinationPiece(board, captureMove)
                         < alpha){
-                    /*
-                    add lazy eval for move
-                     */
-//                    continue;
+                    continue;
+                }
+            }
+            
+            if (this.engine.ALLOW_QUIESCENCE_SEE_PRUNING){
+                int seeScore = seeScore(board, captureMove, evaluator);
+                if (seeScore <= -300) {
+                    this.engine.statistics.numberOfSuccessfulQuiescentSEEs++;
+                    continue;
                 }
             }
             
@@ -85,8 +93,8 @@ class QuiescenceSearch {
             MoveOrganiser.flipTurn(board);
             numberOfMovesSearched++;
 
-            if (Engine.DEBUG){
-                statistics.numberOfQuiescentMovesMade++;
+            if (this.engine.DEBUG){
+                this.engine.statistics.numberOfQuiescentMovesMade++;
             }
 
             int score = -quiescenceSearch(board, zobristHash,
@@ -96,8 +104,8 @@ class QuiescenceSearch {
             MoveUnmaker.unMakeMoveMaster(board);
 
             if (score >= beta){
-                if (DEBUG){
-                    statistics.whichMoveWasTheBestQuiescence[numberOfMovesSearched-1]++;
+                if (this.engine.DEBUG){
+                    this.engine.statistics.whichMoveWasTheBestQuiescence[numberOfMovesSearched-1]++;
                 }
                 return score;
             }

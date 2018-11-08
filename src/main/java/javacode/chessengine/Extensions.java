@@ -5,15 +5,22 @@ import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveMaking.StackMoveData;
 
-import static javacode.chessengine.Engine.*;
 import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
 
 public class Extensions {
 
-    static int extensions(Chessboard board, int ply){
-        if (!ALLOW_EXTENSIONS){
+    private Engine engine;
+    private PrincipleVariationSearch principleVariationSearch;
+
+    public Extensions(Engine engine, PrincipleVariationSearch principleVariationSearch) {
+        this.engine = engine;
+        this.principleVariationSearch = principleVariationSearch;
+    }
+
+    int extensions(Chessboard board, int ply){
+        if (!this.engine.ALLOW_EXTENSIONS){
             return 0;
         }
 
@@ -22,8 +29,8 @@ public class Extensions {
         }
 
         if (boardInCheck(board, board.isWhiteTurn())){
-            if (DEBUG){
-                statistics.numberOfCheckExtensions++;
+            if (this.engine.DEBUG){
+                this.engine.statistics.numberOfCheckExtensions++;
             }
             return 1;
         }
@@ -39,15 +46,15 @@ public class Extensions {
 
             if (board.isWhiteTurn()) {
                 if ((destinationSquareOfPreviousMove & BitBoards.RANK_TWO & board.BLACK_PAWNS) != 0) {
-                    if (DEBUG) {
-                        statistics.numberOfPassedPawnExtensions++;
+                    if (this.engine.DEBUG) {
+                        this.engine.statistics.numberOfPassedPawnExtensions++;
                     }
                     return 1;
                 }
             } else {
                 if ((destinationSquareOfPreviousMove & board.WHITE_PAWNS & BitBoards.RANK_SEVEN) != 0) {
-                    if (DEBUG) {
-                        statistics.numberOfPassedPawnExtensions++;
+                    if (this.engine.DEBUG) {
+                        this.engine.statistics.numberOfPassedPawnExtensions++;
                     }
                     return 1;
                 }
@@ -55,7 +62,7 @@ public class Extensions {
         }
         /*
         Singular Reply Extension:
-        if only there is only one legal move, search deeper as we are forced situation
+        if only there is only one legal move, searchMyTime deeper as we are forced situation
          */
         if (generateLegalMoves(board, board.isWhiteTurn()).size() == 1){
             return 1;

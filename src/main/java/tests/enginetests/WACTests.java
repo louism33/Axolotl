@@ -1,9 +1,6 @@
 package tests.enginetests;
 
 import javacode.chessengine.Engine;
-import javacode.chessengine.PrincipleVariationSearch;
-import javacode.chessengine.Statistics;
-import javacode.chessengine.TranspositionTable;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.miscAdmin.ExtendedPositionDescriptionParser;
 import javacode.graphicsandui.Art;
@@ -17,14 +14,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 @RunWith(Parameterized.class)
 public class WACTests {
     /*
     Arasan = 10 sec.	298/300
      */
 
+    private static Engine engine = null;
+    
     private static final int timeLimit = 15000;
 
     @Parameters(name = "{index} Test: {1}")
@@ -58,9 +55,7 @@ public class WACTests {
 
 
     public static void reset(){
-        TranspositionTable.resetTable();
-        PrincipleVariationSearch.setAiMove(null);
-        Engine.resetEngine();
+        engine = new Engine();
     }
 
     @Test
@@ -68,7 +63,7 @@ public class WACTests {
         WACTests.reset();
         System.out.println(Art.boardArt(edpObject.getBoard()));
 
-        Move move = Engine.search(edpObject.getBoard(), timeLimit);
+        Move move = engine.searchFixedTime(edpObject.getBoard(), timeLimit);
         System.out.println(move);
 
         List<Integer> winningMoveDestination = edpObject.getBestMoveDestinationIndex();
