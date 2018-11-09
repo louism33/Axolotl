@@ -3,6 +3,7 @@ package javacode.chessprogram.moveMaking;
 import javacode.chessprogram.bitboards.BitBoards;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
+import javacode.graphicsandui.Art;
 
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveMaking.StackMoveData.SpecialMove.*;
@@ -20,6 +21,12 @@ public class MoveOrganiser {
     
     public static void makeMoveMaster(Chessboard board, Move move) {
 
+        if(move== null){
+            System.out.println(Art.boardArt(board));
+            System.out.println("null move passed to makeMove Master");
+            return;
+        }
+        
         if (MoveParser.isSpecialMove(move)){
             if (MoveParser.isCastlingMove(move)) {
                 castlings++;

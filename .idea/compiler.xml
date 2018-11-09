@@ -19,7 +19,7 @@
         <module name="chessPlusPlus" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="8">
       <module name="chessPlusPlus" target="10" />
     </bytecodeTargetLevel>
   </component>

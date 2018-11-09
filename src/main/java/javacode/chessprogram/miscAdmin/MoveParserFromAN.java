@@ -11,10 +11,6 @@ import java.util.regex.Pattern;
 
 public class MoveParserFromAN {
 
-    MoveParserFromAN(){
-        
-    }
-
     public static int destinationIndex(Chessboard board, String algebraicNotation){
         return rankAndFile(board, algebraicNotation);
     }
@@ -180,13 +176,6 @@ public class MoveParserFromAN {
         }
     }
     
-    
-    public static void main (String[] args){
-        Art.printLong((BitBoards.centreNineSquares ^ BitBoards.centreFourSquares));
-        int i = rankAndFile(new Chessboard(), "c2+");
-        System.out.println(i);
-    }
-
     private static int rankAndFile(Chessboard board, String algebraicNotation){
         int f = whichDestinationFile(board, algebraicNotation);
         int r = whichDestinationRank(board, algebraicNotation);

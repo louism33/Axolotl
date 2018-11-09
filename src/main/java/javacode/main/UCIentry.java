@@ -7,11 +7,11 @@ import com.fluxchess.jcpi.models.GenericMove;
 import javacode.chessengine.Engine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.miscAdmin.FenParser;
 
 import java.util.List;
 
 import static javacode.main.UCIBoardParser.convertGenericBoardToChessboard;
+import static javacode.main.UCIBoardParser.convertGenericBoardToChessboardDelta;
 import static javacode.main.UCIBoardParser.convertMyMoveToGenericMove;
 
 public class UCIentry extends AbstractEngine {
@@ -55,6 +55,10 @@ public class UCIentry extends AbstractEngine {
 
     @Override
     public void receive(EngineNewGameCommand command) {
+        engine = new Engine();
+        moves = null;
+        board = null;
+        genericBoard = null;
         System.out.println("New Game");
     }
 
@@ -66,9 +70,12 @@ public class UCIentry extends AbstractEngine {
         genericBoard = command.board;
         moves = command.moves;
         System.out.println("The board fen is:\n"+ genericBoard +"\nWith moves: "+moves);
-        System.out.println("Analysis not yet supported though.");
 
-        board = convertGenericBoardToChessboard(genericBoard);
+        if (board != null){
+            board = convertGenericBoardToChessboardDelta(board, moves);
+        }
+        
+        board = convertGenericBoardToChessboard(genericBoard, moves);
     }
 
     // go movetime 30000
@@ -89,7 +96,7 @@ public class UCIentry extends AbstractEngine {
         long clock = timeOnClock(command);
 
         if (board == null) {
-            board = convertGenericBoardToChessboard(genericBoard);
+            board = convertGenericBoardToChessboard(genericBoard, null);
         }
 
         if (clock != 0){

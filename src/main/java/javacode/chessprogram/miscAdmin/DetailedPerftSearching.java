@@ -1,11 +1,13 @@
 package javacode.chessprogram.miscAdmin;
 
+import com.fluxchess.jcpi.models.GenericMove;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.chessprogram.moveMaking.MoveUnmaker;
 import javacode.graphicsandui.Art;
+import javacode.main.UCIBoardParser;
 
 import java.util.ArrayList;
 import java.util.List;

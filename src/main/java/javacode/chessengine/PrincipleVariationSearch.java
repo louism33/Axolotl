@@ -39,8 +39,6 @@ public class PrincipleVariationSearch {
     private Extensions extensions;
     boolean timeUp = false;
 
-//    PrincipalVariation principalVariationMoves;
-
     PrincipleVariationSearch(Engine engine, Evaluator evaluator){
         this.engine = engine;
         this.table = new TranspositionTable();
@@ -64,7 +62,6 @@ public class PrincipleVariationSearch {
         depth += this.extensions.extensions(board, ply);
 
         Assert.assertTrue(depth >= 0);
-
         
         /*
         Quiescent Search:
@@ -81,16 +78,6 @@ public class PrincipleVariationSearch {
 
         Assert.assertTrue(depth >= 1);
 
-//        if (this.engine.ALLOW_TIME_LIMIT) {
-//            long currentTime = System.currentTimeMillis();
-//            long timeLeft = startTime + timeLimitMillis - currentTime;
-//            if (timeLeft < 0) {
-//                int eval = this.evaluator.eval(board, board.isWhiteTurn(), MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()));
-//                timeUp = true;
-//                return eval;
-//            }
-//        }
-        
         /*
         Mate Distance Pruning:
         prefer closer wins and further loses 
@@ -113,7 +100,6 @@ public class PrincipleVariationSearch {
         if (previousTableData != null && ply > 0) {
             score = previousTableData.getScore();
             hashMove = previousTableData.getMove();
-
             if (previousTableData.getDepth() >= depth) {
                 Flag flag = previousTableData.getFlag();
                 score = previousTableData.getScore();
@@ -166,7 +152,7 @@ public class PrincipleVariationSearch {
             if current node has a very high score, return eval
              */
             if (this.engine.ALLOW_BETA_RAZORING){
-                if (isBetaRazoringMoveOkHere(board, depth, staticBoardEval)){
+                if (isBetaRazoringMoveOkHere(board, evaluator, depth, staticBoardEval)){
                     final int specificBetaRazorMargin = betaRazorMargin[depth];
                     if (staticBoardEval - specificBetaRazorMargin >= beta){
                         if (debug){
@@ -183,7 +169,7 @@ public class PrincipleVariationSearch {
             if current node has a very low score, perform Quiescence search to try to find a cutoff
              */
             if (this.engine.ALLOW_ALPHA_RAZORING){
-                if (isAlphaRazoringMoveOkHere(board, depth, alpha)){
+                if (isAlphaRazoringMoveOkHere(board, evaluator, depth, alpha)){
                     final int specificAlphaRazorMargin = alphaRazorMargin[depth];
                     if (staticBoardEval + specificAlphaRazorMargin < alpha){
                         final int qScore = this.quiescenceSearch
@@ -247,7 +233,7 @@ public class PrincipleVariationSearch {
         
         /*
         Move Ordering:
-        place moves most likely to cause cutoffs at the front of the move list (hashmoves, killers, captures)
+        place moves most likely to cause cutoffs at the front of the move list (hashmoves, killers,0 captures)0
          */
         List<Move> orderedMoves;
         if (previousTableData == null) {
@@ -261,16 +247,11 @@ public class PrincipleVariationSearch {
                         this.engine.statistics.numberOfIIDs++;
                     }
 
-                    int preIIDTableSize = table.size();
-
                     int iidScore = principleVariationSearch(board, zobristHash,
                             startTime, timeLimitMillis, originalDepth,
                             depth - iidDepthReduction - 1, ply,
                             alpha, beta, nullMoveCounter, true);
 
-                    int postIIDTableSize = table.size();
-
-                    System.out.println("post bigger than pre? "+(postIIDTableSize > preIIDTableSize));
                     previousTableData = table.get(zobristHash.getBoardHash());
                     if (previousTableData == null){
                         this.engine.statistics.numberOfFailedIIDs++;
