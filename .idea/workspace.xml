@@ -11,14 +11,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="69d40d9d-8980-4bb2-9941-56e4fd504839" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Test Results all on - WACTests.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Test Results, only material eval  - WACTests.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/QuiescenceSearch.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/chessengine/QuiescenceSearch.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/evaluation/Evaluator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/javacode/evaluation/Evaluator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/enginetests/WACTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/chessPlusPlus/tests/enginetests/WACTests.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/chessengine/QuiescenceSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/chessengine/QuiescenceSearch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/evaluation/Evaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/evaluation/Evaluator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -103,13 +95,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="6" />
-          <entry key="java" value="178380" />
+          <entry key="java" value="178383" />
           <entry key="xml" value="200" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="178380" />
+          <entry key="JAVA" value="178383" />
           <entry key="PLAIN_TEXT" value="6" />
           <entry key="XML" value="200" />
         </counts>
@@ -123,7 +115,7 @@
           <entry key="iml" value="5" />
           <entry key="java" value="2594" />
           <entry key="md" value="1" />
-          <entry key="xml" value="10" />
+          <entry key="xml" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -135,7 +127,7 @@
           <entry key="Manifest" value="2" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="XML" value="10" />
+          <entry key="XML" value="12" />
         </counts>
       </usages-collector>
     </session>
@@ -148,10 +140,24 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
+            <state relative-caret-position="180">
+              <caret line="24" column="47" lean-forward="true" selection-start-line="24" selection-start-column="47" selection-end-line="24" selection-end-column="47" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Test Results, only material eval  - WACTests.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="6" column="32" lean-forward="true" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Test Results all on - WACTests.xml">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -366,7 +372,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="5">
+  <component name="ProjectFrameBounds" extendedState="4">
     <option name="x" value="-1" />
     <option name="width" value="806" />
     <option name="height" value="741" />
@@ -663,7 +669,7 @@
     <property name="SearchEverywhereHistoryKey" value="move or&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/java/javacode/chessengine/MoveOrderer.java&#10;move orde&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/java/javacode/chessengine/MoveOrderer.java&#10;check&#9;PSI&#9;JAVA://javacode.chessprogram.check.CheckChecker&#10;checkChe&#9;PSI&#9;JAVA://javacode.chessprogram.check.CheckChecker&#10;movePa&#9;PSI&#9;JAVA://javacode.chessprogram.moveMaking.MoveParser&#10;moveor&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/java/javacode/chessengine/MoveOrderer.java&#10;statistic&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/java/javacode/chessengine/Statistics.java&#10;movepars&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/java/javacode/chessprogram/miscAdmin/MoveParserFromAN.java&#10;MoveP&#9;PSI&#9;JAVA://javacode.chessprogram.miscAdmin.MoveParserFromAN&#10;Move&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/java/javacode/chessprogram/chess/Move.java&#10;standalone&#9;PSI&#9;JAVA://javacode.StandAlone&#10;Copier&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/chess/Copier.java&#10;check chec&#9;PSI&#9;JAVA://javacode.chessprogram.check.CheckChecker&#10;Gener&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java&#10;Move Gene&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java&#10;Move F&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/miscAdmin/MoveParserFromAN.java&#10;Move or&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveMaking/MoveOrganiser.java&#10;unmak&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveMaking/MoveUnmaker.java&#10;unma&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/tests/programtests/MoveUnmakerTest.java&#10;moveOr&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveMaking/MoveOrganiser.java&#10;or&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/check/CheckMoveOrganiser.java&#10;MoveO&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveMaking/MoveOrganiser.java&#10;promot&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveGeneration/MoveGeneratorPromotion.java&#10;move prom&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveGeneration/MoveGeneratorPromotion.java&#10;promotion&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveGeneration/MoveGeneratorPromotion.java&#10;unmake&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveMaking/MoveUnmaker.java&#10;Morg&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/javacode/chessprogram/moveMaking/MoveOrganiser.java&#10;){&#9;null&#9;null&#10;pretti&#9;PSI&#9;JAVA://javacode.chessprogram.miscAdmin.MovePrettifier&#10;chessbo&#9;PSI&#9;JAVA://javacode.chessprogram.chess.Chessboard&#10;Mo&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/java/graphicsandui/MovePrettifier.java&#10;parse&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/MoveParser.java&#10;movegenma&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveGeneration/MoveGeneratorMaster.java&#10;movegen&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveGeneration/MoveGeneratorMaster.java&#10;moveorg&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/MoveOrganiser.java&#10;Stac&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/StackMoveData.java&#10;random&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/utils/RandomBoard.java&#10;MovePar&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/moveMaking/MoveParser.java&#10;art&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/chess/Art.java&#10;Art&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/main/chess/Art.java&#10;chessb&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/chess/Chessboard.java&#10;main&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/chess/Main.java&#10;knight&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/moveGeneration/PieceMoveKnight.java&#10;Mani&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/chess/BitManipulations.java&#10;movepawn&#9;FILE&#9;file:///home/louis/IdeaProjects/chessPlusPlus/src/moveGeneration/MoveGeneratorPawns.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541965753197" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541969414014" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Arquillian JUnit4" value="" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
@@ -709,7 +715,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.WACTests">
+  <component name="RunManager" selected="JUnit.WACTests (1)">
     <configuration name="MoveOrderer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="javacode.chessengine.MoveOrderer" />
       <module name="chessPlusPlus" />
@@ -793,8 +799,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.WACTests" />
         <item itemvalue="JUnit.WACTests (1)" />
+        <item itemvalue="JUnit.WACTests" />
         <item itemvalue="JUnit.WacTwoBreakdown" />
         <item itemvalue="JUnit.WacTwoBreakdown (1)" />
         <item itemvalue="Application.MoveOrderer" />
@@ -884,14 +890,11 @@
       <workItem from="1541658948858" duration="38698000" />
       <workItem from="1541749399446" duration="25313000" />
       <workItem from="1541841275612" duration="42793000" />
-      <workItem from="1541929260055" duration="22497000" />
+      <workItem from="1541929260055" duration="22908000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="WACTests - 2018.11.11 at 16h 38m 27s.xml">
-      <configuration name="WACTests" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="WACTests_(1) - 2018.11.11 at 16h 40m 17s.xml">
       <configuration name="WACTests (1)" configurationId="JUnit" />
     </history-entry>
@@ -919,9 +922,12 @@
     <history-entry file="WACTests - 2018.11.11 at 20h 45m 11s.xml">
       <configuration name="WACTests" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="WACTests - 2018.11.11 at 21h 45m 34s.xml">
+      <configuration name="WACTests" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1086655000" />
+    <option name="totallyTimeSpent" value="1087066000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -933,10 +939,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="0" width="806" height="741" extended-state="5" />
+    <frame x="-1" y="0" width="806" height="741" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.489603" visible="true" weight="0.47889182" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.489603" visible="true" weight="0.25461742" />
       <window_info id="Structure" order="1" sideWeight="0.51039696" side_tool="true" weight="0.26666668" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1104,20 +1110,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/miscAdmin/MovePrettifier.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="29" column="44" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="58" column="15" lean-forward="true" selection-start-line="58" selection-start-column="15" selection-end-line="58" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/chess/Move.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="38">
@@ -1502,10 +1494,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Test Results, only material eval  - WACTests.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="6" column="32" lean-forward="true" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Test Results all on - WACTests.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
+        <state relative-caret-position="180">
+          <caret line="24" column="47" lean-forward="true" selection-start-line="24" selection-start-column="47" selection-end-line="24" selection-end-column="47" />
         </state>
       </provider>
     </entry>
