@@ -9,6 +9,14 @@ import java.util.List;
 
 import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
+import static javacode.evaluation.Bishop.evalBishopByTurn;
+import static javacode.evaluation.King.evalKingByTurn;
+import static javacode.evaluation.Knight.evalKnightByTurn;
+import static javacode.evaluation.Misc.evalMiscByTurn;
+import static javacode.evaluation.Pawns.evalPawnsByTurn;
+import static javacode.evaluation.PositionEval.evalPositionByTurn;
+import static javacode.evaluation.Queen.evalQueenByTurn;
+import static javacode.evaluation.Rook.evalRookByTurn;
 
 public class Evaluator {
 
@@ -85,14 +93,14 @@ public class Evaluator {
         score += 
                 this.materialEval.evalMaterialByTurn(board, white)
                         
-//                + evalPositionByTurn(board, white)
-//                + evalPawnsByTurn(board, white)
-//                + evalBishopByTurn(board, white)
-//                + evalKnightByTurn(board, white)
-//                + evalRookByTurn(board, white)
-//                + evalQueenByTurn(board, white)
-//                + evalKingByTurn(board, white)
-//                + evalMiscByTurn(board, white, moves)
+                + evalPositionByTurn(board, white)
+                + evalPawnsByTurn(board, white)
+                + evalBishopByTurn(board, white)
+                + evalKnightByTurn(board, white)
+                + evalRookByTurn(board, white)
+                + evalQueenByTurn(board, white)
+                + evalKingByTurn(board, white)
+                + evalMiscByTurn(board, white, moves)
         ;
         return score;
     }

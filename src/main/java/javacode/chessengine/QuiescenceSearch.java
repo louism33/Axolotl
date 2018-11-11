@@ -66,8 +66,10 @@ class QuiescenceSearch {
         int numberOfMovesSearched = 0;
         for (Move loudMove : orderedCaptureMoves){
 
-            Assert.assertTrue(this.moveOrderer.moveIsCapture(board, loudMove)
-                    || MoveParser.isPromotionMove(loudMove));
+            final boolean captureMove = this.moveOrderer.moveIsCapture(board, loudMove);
+            final boolean promotionMove = MoveParser.isPromotionMove(loudMove);
+            
+            Assert.assertTrue(captureMove || promotionMove);
             
             /*
             Quiescence Futility Pruning:
@@ -82,7 +84,7 @@ class QuiescenceSearch {
                 }
             }
 
-            if (this.engine.ALLOW_QUIESCENCE_SEE_PRUNING){
+            if (this.engine.ALLOW_QUIESCENCE_SEE_PRUNING && captureMove){
                 int seeScore = seeScore(board, loudMove, evaluator);
                 if (seeScore <= -300) {
                     this.engine.statistics.numberOfSuccessfulQuiescentSEEs++;

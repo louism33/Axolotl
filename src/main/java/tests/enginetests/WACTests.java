@@ -22,7 +22,7 @@ public class WACTests {
 
     private static Engine engine = null;
     
-    private static final int timeLimit = 10_000;
+    private static final int timeLimit = 60_000;
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
