@@ -6,9 +6,9 @@ import javacode.evaluation.Evaluator;
 
 class AspirationSearch {
 
-    private Engine engine;
-    PrincipleVariationSearch principleVariationSearch;
-    private Evaluator evaluator;
+    private final Engine engine;
+    final PrincipleVariationSearch principleVariationSearch;
+    private final Evaluator evaluator;
 
     AspirationSearch(Engine engine, Evaluator evaluator){
         this.engine = engine;

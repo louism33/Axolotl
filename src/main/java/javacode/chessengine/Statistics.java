@@ -9,22 +9,22 @@ import static javacode.chessengine.KillerMoves.mateKiller;
 
 public class Statistics {
     
-    private Engine engine;
+    private final Engine engine;
 
     public Statistics(Engine engine) {
         this.engine = engine;
     }
 
-    public int[] whichMoveWasTheBest = new int[60];
-    public int[] whichMoveWasTheBestQuiescence = new int[60];
+    private final int[] whichMoveWasTheBest = new int[60];
+    public final int[] whichMoveWasTheBestQuiescence = new int[60];
 
     public long numberOfMovesMade = 0;
     public long numberOfQuiescentMovesMade = 0;
-    public long numberOfEvals = 0;
+    private final long numberOfEvals = 0;
     public long numberOfQuiescentEvals = 0;
     public int numberOfCheckmates = 0;
     public int numberOfStalemates = 0;
-    public int numberOfFailHighs = 0;
+    private int numberOfFailHighs = 0;
     public int numberOfNullMoveHits = 0;
     public int numberOfNullMoveMisses = 0;
     public int numberOfPVSHits = 0;
@@ -37,8 +37,8 @@ public class Statistics {
     public int numberOfPassedPawnExtensions = 0;
     public int numberOfSuccessfulFutilities = 0;
     public int numberOfFailedFutilities = 0;
-    public int numberOfSuccessfulQuiescenceFutilities = 0;
-    public int numberOfFailedQuiescenceFutilities = 0;
+    private final int numberOfSuccessfulQuiescenceFutilities = 0;
+    private final int numberOfFailedQuiescenceFutilities = 0;
 
     public int numberOfSuccessfulSEEs = 0;
     public int numberOfSuccessfulQuiescentSEEs = 0;
@@ -53,12 +53,12 @@ public class Statistics {
     public int numberOfSuccessfulIIDs = 0;
     public int numberOfFailedIIDs = 0;
 
-    public int numberOfVictoriousKillersOne = 0;
-    public int numberOfVictoriousKillersTwo = 0;
-    public int numberOfVeteranVictoriousKillersOne = 0;
-    public int numberOfVeteranVictoriousKillersTwo = 0;
+    private int numberOfVictoriousKillersOne = 0;
+    private int numberOfVictoriousKillersTwo = 0;
+    private int numberOfVeteranVictoriousKillersOne = 0;
+    private int numberOfVeteranVictoriousKillersTwo = 0;
 
-    public int numberOfVictoriousMaters = 0;
+    private int numberOfVictoriousMaters = 0;
 
     public int numberOfSearchesWithHash = 0;
     public int numberOfSearchesWithoutHash = 0;

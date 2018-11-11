@@ -14,7 +14,7 @@ import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateL
 import static javacode.chessprogram.moveMaking.MoveOrganiser.flipTurn;
 import static javacode.chessprogram.moveMaking.MoveOrganiser.makeMoveMaster;
 
-public class UCIBoardParser {
+class UCIBoardParser {
     
     public static GenericMove convertMyMoveToGenericMove(Move move){
         GenericMove genericMove = null;

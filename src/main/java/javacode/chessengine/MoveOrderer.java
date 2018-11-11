@@ -22,9 +22,9 @@ import static javacode.chessprogram.moveMaking.MoveParser.*;
 
 class MoveOrderer {
 
-    private Engine engine;
-    private HistoryMoves historyMoves;
-    
+    private final Engine engine;
+    private final HistoryMoves historyMoves;
+
     final int MAX_HISTORY_MOVE_SCORE = 90;
     private final int CAPTURE_BIAS = 100;
     private final int CAPTURE_BIAS_LAST_MOVED_PIECE = 5;
@@ -39,15 +39,16 @@ class MoveOrderer {
             giveCheckMove = 100,
             oldKillerScoreOne = 99,
             oldKillerScoreTwo = 98,
-            knightPromotionScore = 91,
             castlingMove = 10,
-            uninterestingMove = 0;
+            knightPromotionScore = 2,
+            uninterestingMove = 1,
+            uninterestingPromotion = 0;
 
     MoveOrderer(Engine engine){
         this.engine = engine;
         this.historyMoves = new HistoryMoves(this);
     }
-    
+
     /*
     Move Ordering:
     previous Hash Moves, promotions, capture of last moved piece, good captures, killers, killers from earlier plies, 
@@ -60,50 +61,50 @@ class MoveOrderer {
     }
 
     private List<Move> extractMoves(Chessboard board, boolean white, List<Move> moves, int ply,
-                                           Move hashMove, Move aiMove){
+                                    Move hashMove, Move aiMove){
         List<MoveScore> moveScores = orderedMoveScores(board, white, moves, ply, hashMove, aiMove);
-        return moveScores.stream().map(moveScore -> moveScore.move).collect(Collectors.toList());
+        List<Move> collect = moveScores.stream().map(moveScore -> moveScore.move).collect(Collectors.toList());
+        return collect;
     }
 
     private List<MoveScore> orderedMoveScores(Chessboard board, boolean white, List<Move> moves, int ply,
-                                                     Move hashMove, Move aiMove){
+                                              Move hashMove, Move aiMove){
         List<MoveScore> moveScores = scoreMoves(board, white, moves, ply, hashMove, aiMove);
         moveScores.sort(Comparator.comparingInt(MoveScore::getScore).reversed());
         return moveScores;
     }
 
-    private List<MoveScore> scoreMoves(Chessboard board, boolean white, List<Move> moves, int ply, 
-                                              Move hashMove, Move aiMove){
+    private List<MoveScore> scoreMoves(Chessboard board, boolean white, List<Move> moves, int ply,
+                                       Move hashMove, Move aiMove){
         List<MoveScore> unsortedScoredMoves = new ArrayList<>();
         /*
         captures range from +92 to +108. +100 indicates an equal capture (Bxb, Pxp...)
          */
         for (Move move : moves){
             MoveScore moveScore;
-            if (move.equals(hashMove)){
+            if (hashMove != null && move.equals(hashMove)){
                 moveScore = new MoveScore(move, hashScore);
             }
-            else if (ply == 0 && move.equals(aiMove)){
+            else if (aiMove != null && ply == 0 && move.equals(aiMove)){
                 moveScore = new MoveScore(move, aiScore);
             }
-            else if (mateKiller[ply] != null && move.equals(mateKiller[ply])){
+            else if (this.engine.ALLOW_MATE_KILLERS && mateKiller[ply] != null && move.equals(mateKiller[ply])){
                 moveScore = new MoveScore(move, mateKillerScore);
             }
             else if (moveIsCaptureOfLastMovePiece(board, move)){
                 moveScore = new MoveScore(move, CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, move));
             }
-            else if (isPromotionMove(move)){
-                if (isPromotionToQueen(move)) {
-                    moveScore = new MoveScore(move, queenPromotionScore);
-                }
-                else if (isPromotionToKnight(move)){
-                    moveScore = new MoveScore(move, knightPromotionScore);
-                }
-                else {
-                    // promotions to rook and bishop are considered right at the end
-                    moveScore = new MoveScore(move, uninterestingMove - 1);
-                }
+            else if (isPromotionToQueen(move)) {
+                moveScore = new MoveScore(move, queenPromotionScore);
             }
+            else if (isPromotionToKnight(move)){
+                moveScore = new MoveScore(move, knightPromotionScore);
+            }
+            else if (isPromotionToBishop(move) || isPromotionToRook(move)){
+//                 promotions to rook and bishop are considered right at the end
+                moveScore = new MoveScore(move, uninterestingPromotion);
+            }
+            
             else if (this.engine.ALLOW_KILLERS && killerMoves[ply][0] != null && killerMoves[ply][0].equals(move)){
                 moveScore = new MoveScore(move, killerOneScore);
             }
@@ -136,6 +137,7 @@ class MoveOrderer {
 
             unsortedScoredMoves.add(moveScore);
         }
+
         return unsortedScoredMoves;
     }
 
@@ -205,7 +207,7 @@ class MoveOrderer {
             if (moveIsCapture(board, move)){
                 if (isPromotionMove(move)) {
                     /*
-                    ignore under promotions in Q searchMyTime
+                    ignore under promotions in Q search
                      */
                     if (isPromotionToQueen(move)) {
                         unsortedScoredMoves.add(new MoveScore(move, queenPromotionScore + 1));
@@ -260,7 +262,7 @@ class MoveOrderer {
             return (newPieceOnSquare(move.destinationIndex) & BitBoards.RANK_THREE) != 0;
         }
     }
-    
+
     boolean moveWillBePawnPushSeven(Chessboard board, Move move){
         long myPawns = board.isWhiteTurn() ? board.WHITE_PAWNS : board.BLACK_PAWNS;
 
@@ -277,7 +279,7 @@ class MoveOrderer {
             return (newPieceOnSquare(move.destinationIndex) & BitBoards.RANK_TWO) != 0;
         }
     }
-    
+
     void updateHistoryMoves(Move move, int ply){
         this.historyMoves.updateHistoryMoves(move, ply);
     }

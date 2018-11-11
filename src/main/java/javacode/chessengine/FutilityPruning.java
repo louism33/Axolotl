@@ -15,8 +15,8 @@ class FutilityPruning {
                                                 boolean pawnToSix, boolean pawnToSeven){
         return depth < futilityBelowThisDepth
                 && !promotionMove
-//                && !givesCheckMove
-//                && !pawnToSix
+                && !givesCheckMove
+                && !pawnToSix
                 && !pawnToSeven
                 ;
     }

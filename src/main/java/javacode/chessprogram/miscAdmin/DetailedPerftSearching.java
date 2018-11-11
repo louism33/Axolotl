@@ -1,116 +1,16 @@
 package javacode.chessprogram.miscAdmin;
 
-import com.fluxchess.jcpi.models.GenericMove;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.chessprogram.moveMaking.MoveUnmaker;
 import javacode.graphicsandui.Art;
-import javacode.main.UCIBoardParser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DetailedPerftSearching {
-
-    public static void main(String[] args) {
-        new DetailedPerftSearching();
-    }
-
-    private DetailedPerftSearching(){
-        breakDown();
-    }
-
-    private void breakDown(){
-        int correctAtDepthSix = 71179139;
-        int depth = 6;
-
-        Chessboard board = FenParser.makeBoardBasedOnFEN("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - -");
-//        runPerftTestWithBoard(depth, board, correctAtDepthSix);
-        
-        /*
-        error in g2h1 q
-        
-        e2f2, e2e3, both king moves
-         */
-        if (true) {
-            List<MoveNLong> moveNLongs1 = childrenNumbersAndMoves(board, depth);
-            MoveOrganiser.makeMoveMaster(board, moveNLongs1.get(19).move);
-            MoveOrganiser.flipTurn(board);
-        }
-
-        if (true) {
-            List<MoveNLong> moveNLongs2 = childrenNumbersAndMoves(board, depth - 1);
-//        System.out.println(moveNLongs2);
-            MoveOrganiser.makeMoveMaster(board, moveNLongs2.get(1).move);
-            MoveOrganiser.flipTurn(board);
-        }
-
-        if (true) {
-            List<MoveNLong> moveNLongs3 = childrenNumbersAndMoves(board, depth - 2);
-            System.out.println(moveNLongs3);
-            MoveOrganiser.makeMoveMaster(board, moveNLongs3.get(9).move);
-            MoveOrganiser.flipTurn(board);
-        }
-
-        if (true) {
-            List<MoveNLong> moveNLongs3 = childrenNumbersAndMoves(board, depth - 3);
-            System.out.println(moveNLongs3);
-            MoveOrganiser.makeMoveMaster(board, moveNLongs3.get(2).move);
-            MoveOrganiser.flipTurn(board);
-        }
-        
-        if (true) {
-            List<MoveNLong> moveNLongs3 = childrenNumbersAndMoves(board, depth - 4);
-            System.out.println(moveNLongs3);
-            MoveOrganiser.makeMoveMaster(board, moveNLongs3.get(27).move);
-            MoveOrganiser.flipTurn(board);
-        }
-        
-        List<MoveNLong> moveNLongs3 = childrenNumbersAndMoves(board, depth - 5);
-        System.out.println(moveNLongs3);
-//        MoveOrganiser.makeMoveMaster(board, moveNLongs3.get(27).move);
-//        MoveOrganiser.flipTurn(board);
-
-        int[] stockfish1 = new int[]{
-              1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-        };
-
-        List<Long> stockFish11 = new ArrayList<>();
-        for (int i : stockfish1){
-            stockFish11.add((long) i);
-        }
-        System.out.println("stockfish: ");
-        System.out.println(stockFish11);
-
-
-        List<Long> scores = new ArrayList<>();
-        for (MoveNLong moveNLong : moveNLongs3){
-            scores.add(moveNLong.number);
-        }
-        System.out.println("me: ");
-        System.out.println(scores);
-
-
-        System.out.println("ODD ONES OUT");
-        List<Long> longs = oddOnesOut(scores, stockFish11);
-        System.out.println("-----------");
-        System.out.println(longs);
-
-        List<Long> longs2 = oddOnesOut(stockFish11, scores);
-        System.out.println("-----------");
-        System.out.println(longs2);
-
-
-//        Move move2 = childrenNumbersAndMoves(board, depth-1).get(0);
-//        MoveOrganiser.makeMoveMaster(board, move2);
-//        MoveOrganiser.flipTurn(board);
-//
-//        Move move3 = childrenNumbersAndMoves(board, depth-2).get(0);
-//        MoveOrganiser.makeMoveMaster(board, move3);
-//        MoveOrganiser.flipTurn(board);
-    }
 
     class MoveNLong {
         final long number;

@@ -10,19 +10,17 @@ import javacode.chessprogram.chess.Move;
 
 import java.util.List;
 
-import static javacode.main.UCIBoardParser.convertGenericBoardToChessboard;
-import static javacode.main.UCIBoardParser.convertGenericBoardToChessboardDelta;
-import static javacode.main.UCIBoardParser.convertMyMoveToGenericMove;
+import static javacode.main.UCIBoardParser.*;
 
 public class UCIentry extends AbstractEngine {
 
-    Engine engine;
-    Chessboard board;
-    GenericBoard genericBoard;
-    List<GenericMove> moves;
+    private Engine engine;
+    private Chessboard board;
+    private GenericBoard genericBoard;
+    private List<GenericMove> moves;
     GenericMove bestMove;
 
-    UCIentry(){
+    private UCIentry(){
         super();
     }
 

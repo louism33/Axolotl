@@ -10,48 +10,52 @@ import java.util.Random;
 
 public class Engine {
 
-    public Chessboard testBoard;
-    public ZobristHash testHash;
+    private Chessboard testBoard;
+    private ZobristHash testHash;
     
     Chessboard board;
     public Statistics statistics;
-    IterativeDeepeningDFS iterativeDeepeningDFS;
+    private IterativeDeepeningDFS iterativeDeepeningDFS;
     public ZobristHash zobristHash;
 
-    boolean setup = false;
+    private boolean setup = false;
 
     public final boolean HEAVY_DEBUG = false;
-    public boolean DEBUG = false;
+    public final boolean DEBUG = true;
 
     /*
     max depth only works is time limit is false
      */
-    public int MAX_DEPTH = 1;
+    public int MAX_DEPTH = 100;
     public boolean ALLOW_TIME_LIMIT = true;
 
     final boolean ALLOW_PRINCIPLE_VARIATION_SEARCH   = true;
     final boolean ALLOW_MATE_DISTANCE_PRUNING        = true;
     final boolean ALLOW_EXTENSIONS                   = true;
+    
     final boolean ALLOW_LATE_MOVE_REDUCTIONS         = true;
     final boolean ALLOW_LATE_MOVE_PRUNING            = true;
     final boolean ALLOW_NULL_MOVE_PRUNING            = true;
 
-    final boolean ALLOW_ALPHA_RAZORING               = true;
-    final boolean ALLOW_BETA_RAZORING                = true;
-    final boolean ALLOW_FUTILITY_PRUNING             = true;
-    final boolean ALLOW_QUIESCENCE_FUTILITY_PRUNING  = true;
+    final boolean ALLOW_ALPHA_RAZORING               = true; 
+    final boolean ALLOW_BETA_RAZORING                = true; 
+    final boolean ALLOW_FUTILITY_PRUNING             = true; 
+    
     final boolean ALLOW_SEE_PRUNING                  = true;
-    final boolean ALLOW_QUIESCENCE_SEE_PRUNING       = false;
-
-    final boolean ALLOW_KILLERS                      = true;
+    
+    final boolean ALLOW_QUIESCENCE_SEE_PRUNING       = true;
+    final boolean ALLOW_QUIESCENCE_FUTILITY_PRUNING  = true;
+    
+    final boolean ALLOW_KILLERS                      = true; 
     final boolean ALLOW_MATE_KILLERS                 = true;
     final boolean ALLOW_HISTORY_MOVES                = true;
     final boolean ALLOW_ASPIRATION_WINDOWS           = true;
+    
     final boolean ALLOW_INTERNAL_ITERATIVE_DEEPENING = true;
 
     long PLY_STOP_TIME;
     
-    public void setup(){
+    private void setup(){
         statistics = new Statistics(this);
         iterativeDeepeningDFS = new IterativeDeepeningDFS(this);
         setup = true;
@@ -127,13 +131,16 @@ public class Engine {
         if (DEBUG) {
 
             statistics.printStatistics();
-            System.out.println("time taken millis: " + (endTime - startTime));
+            long time = endTime - startTime;
+            System.out.println("time taken millis: " + time);
             System.out.println("------");
 
-            System.out.println("Moves per second: " +
-                    ((1000 * (statistics.numberOfMovesMade + statistics.numberOfQuiescentMovesMade)) / (endTime - startTime)));
-            System.out.println("------");
-
+            if (time > 0) {
+                System.out.println("Moves per second: " +
+                        ((1000 * (statistics.numberOfMovesMade + statistics.numberOfQuiescentMovesMade)) / time));
+                System.out.println("------");
+            }
+            
             System.out.println("best move: " + move);
             System.out.println("------");
         }

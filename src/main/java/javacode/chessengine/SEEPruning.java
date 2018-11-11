@@ -1,6 +1,5 @@
 package javacode.chessengine;
 
-import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.PieceMoveKing;
@@ -8,30 +7,26 @@ import javacode.chessprogram.moveGeneration.PieceMoveKnight;
 import javacode.chessprogram.moveGeneration.PieceMovePawns;
 import javacode.chessprogram.moveGeneration.PieceMoveSliding;
 import javacode.evaluation.Evaluator;
-import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
+import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 
 public class SEEPruning {
 
-    // todo, xray attacks
-    
     enum Piece {
         WHITE_PAWN, WHITE_KNIGHT, WHITE_BISHOP, WHITE_ROOK, WHITE_QUEEN, WHITE_KING,
         BLACK_PAWN, BLACK_KNIGHT, BLACK_BISHOP, BLACK_ROOK, BLACK_QUEEN, BLACK_KING
     }
 
     static int seeScore(Chessboard board, Move move, Evaluator evaluator){
-        long destinationSquare = BitManipulations.newPieceOnSquare(move.destinationIndex);
+        long destinationSquare = newPieceOnSquare(move.destinationIndex);
         boolean iAmWhite = board.isWhiteTurn();
         List<Piece> myPieces = myPiecesThatThreatenSquare(board, iAmWhite, destinationSquare);
         List<Piece> enemyPieces = myPiecesThatThreatenSquare(board, !iAmWhite, destinationSquare);
 
-        Assert.assertTrue(myPieces.size() > 0);
-        
         if (enemyPieces.size() > 0) {
             return seeHelper(board, evaluator, move, myPieces, enemyPieces, destinationSquare);
         }

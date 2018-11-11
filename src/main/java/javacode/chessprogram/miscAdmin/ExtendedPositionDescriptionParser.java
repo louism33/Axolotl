@@ -9,10 +9,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExtendedPositionDescriptionParser {
-
-
-    // todo
-    // Currently no support for avoid moves
     // add castling 0-0 and 0-0-0
     
     ExtendedPositionDescriptionParser(){

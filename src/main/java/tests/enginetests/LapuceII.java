@@ -22,7 +22,7 @@ public class LapuceII {
      */
 
     private static final int timeLimit = 600000;
-    private static Engine engine = null;
+    private static final Engine engine = null;
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {

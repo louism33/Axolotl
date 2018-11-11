@@ -1,6 +1,7 @@
 package javacode.chessengine;
 
 import javacode.chessprogram.chess.Move;
+import javacode.evaluation.Evaluator;
 
 import java.util.HashMap;
 
@@ -29,7 +30,13 @@ public class TranspositionTable extends HashMap<Long, TranspositionTable.TableOb
             return move;
         }
 
-        int getScore() {
+        int getScore(int ply) {
+            if (score > Evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
+                return score - ply;
+            }
+            else if (score < Evaluator.IN_CHECKMATE_SCORE_MAX_PLY){
+                return score + ply;
+            }
             return score;
         }
 

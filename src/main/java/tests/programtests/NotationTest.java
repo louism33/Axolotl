@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static javacode.chessprogram.miscAdmin.DetailedPerftSearching.runPerftTestWithBoard;
 
-public class NotationTest {
+class NotationTest {
 
     @Test
     void test1() {

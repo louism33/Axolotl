@@ -1,6 +1,5 @@
 package javacode.chessprogram.miscAdmin;
 
-import javacode.chessprogram.bitboards.BitBoards;
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;

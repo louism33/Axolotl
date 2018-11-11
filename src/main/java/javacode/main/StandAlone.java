@@ -15,13 +15,9 @@ import java.util.List;
 class StandAlone {
 
     private static int totalMoves = 1;
-    private static long timeLimit = 20000;
+    private static final long timeLimit = 20000;
 
     public static void main(String[] args) throws IOException {
-        
-        
-        
-        
         InputStreamReader stdin;
 
         stdin = new InputStreamReader(System.in);

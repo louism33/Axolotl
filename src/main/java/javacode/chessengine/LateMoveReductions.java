@@ -15,6 +15,7 @@ class LateMoveReductions {
                                                   boolean givesCheckMove, boolean pawnToSix, boolean pawnToSeven) {
 
         return depth > 3
+                && (depth - lateMoveDepthReduction(depth) - 1) >= 2
                 && !reducedSearch
                 && numberOfMovesSearched > 2
                 && !wasPromotionMove

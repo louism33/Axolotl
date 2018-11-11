@@ -1,10 +1,13 @@
 package javacode.chessprogram.check;
 
+import javacode.chessengine.ZobristHash;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.moveGeneration.PieceMoveKing;
 import javacode.chessprogram.moveGeneration.PieceMoveKnight;
 import javacode.chessprogram.moveGeneration.PieceMovePawns;
 import javacode.chessprogram.moveGeneration.PieceMoveSliding;
+
+import java.util.Stack;
 
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 
@@ -72,5 +75,48 @@ public class CheckChecker {
         }
 
         return numberOfThreats;
+    }
+
+    public static boolean isDrawByRepetition(Chessboard board, ZobristHash zobristHash){
+        Stack<Long> zobristStack = (Stack<Long>) zobristHash.getZobristStack().clone();
+        long zobristHashToMatch = zobristHash.getBoardHash();
+        int howManyMovesToSearchToMax = 50;
+        int limit = Math.min(howManyMovesToSearchToMax, zobristStack.size());
+        
+        int counter = 0;
+        for (int previousBoardHashIndex = limit - 1; previousBoardHashIndex >= 0; previousBoardHashIndex--){
+            Long pop = zobristStack.pop();
+            if (pop == zobristHashToMatch){
+                counter++;
+            }
+            if (counter > 0){
+                return true;
+            }
+        }
+        return counter > 0;
+    }
+
+    public static boolean isDrawByInsufficientMaterial(Chessboard board){
+        boolean drawByMaterial = false;
+        int totalPieces = populationCount(board.ALL_PIECES());
+
+        switch (totalPieces){
+            case 2:
+                drawByMaterial = true;
+                break;
+            case 3:
+                if (populationCount(board.BLACK_BISHOPS)
+                        + populationCount(board.WHITE_BISHOPS)
+                        + populationCount(board.BLACK_KNIGHTS)
+                        +populationCount(board.WHITE_KNIGHTS) != 0) {
+                    
+                    drawByMaterial = true;
+                }
+                break;
+            case 4:
+                break;
+        }
+
+        return drawByMaterial;
     }
 }

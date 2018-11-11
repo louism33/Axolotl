@@ -22,14 +22,14 @@ public class WACTests {
 
     private static Engine engine = null;
     
-    private static final int timeLimit = 20000;
+    private static final int timeLimit = 10_000;
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
         int counter = 0;
-        int until = 10;
+        int until = 3;
 
         for (String splitUpWAC : splitUpWACs) {
             Object[] objectAndName = new Object[2];

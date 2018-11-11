@@ -7,7 +7,7 @@ import java.util.List;
 
 class QuiescentSearchUtils {
 
-    private MoveOrderer moveOrderer;
+    private final MoveOrderer moveOrderer;
     
     QuiescentSearchUtils(MoveOrderer moveOrderer) {
         this.moveOrderer = moveOrderer;

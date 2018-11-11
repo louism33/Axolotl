@@ -9,7 +9,7 @@ import static javacode.chessprogram.chess.BitIndexing.populationCount;
 
 class MaterialEval {
 
-    private Evaluator evaluator;
+    private final Evaluator evaluator;
 
     public MaterialEval(Evaluator evaluator) {
         this.evaluator = evaluator;
@@ -44,7 +44,8 @@ class MaterialEval {
 
     int evalMaterialByTurn(Chessboard board, boolean white){
         int score = 0;
-        score += pawnScores(board, white)
+        score += 
+                pawnScores(board, white)
                 + knightScores(board, white)
                 + bishopScores(board, white)
                 + rookScores(board, white)

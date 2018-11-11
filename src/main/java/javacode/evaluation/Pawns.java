@@ -32,7 +32,7 @@ class Pawns {
 
     private static final int PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES = 50;
     private static final int FRIENLDY_ATTACK_PROMOTION_SQUARE = 35;
-    private static final int FRIENLDY_PROTECT_PROMOTING_PAWN = 35;
+    private static final int FRIENLDY_PROTECT_PROMOTING_PAWN = 75;
     private static final int ENEMY_NOT_ATTACK_PROMOTION_SQUARE = 35;
     private static final int ENEMY_NOT_ATTACK_PROMOTING_PAWN = 35;
 
@@ -46,19 +46,19 @@ class Pawns {
 
         int score = 0;
 
-        score += 0 +
-                pawnCentreBonus(board, white, myPawns)
-                        + pawnOnOpenFile(board, white, myPawns, enemyPawns)
-                        + pawnStructureBonus(board, white, myPawns)
-                        + pawnsThreatenBigThings(board, white, myPawns)
-                        + pawnsChainBonus(board, white, myPawns)
-                        + doublePawnPenalty(board, white, myPawns)
-                        + pawnAttackingCentreBonus(board, white, myPawns)
-                        + superAdvancedPawn(board, white, myPawns)
-                        + backwardsPawn(board, white, myPawns)
-                        + blockedPawnPenalty(board, white, myPawns, enemyPawns)
-                        + isolatedPawn(board, white, myPawns)
-                        + passedPawn(board, white, myPawns, enemyPawns)
+        score += 0
+                + pawnCentreBonus(board, white, myPawns)
+                + pawnOnOpenFile(board, white, myPawns, enemyPawns)
+                + pawnStructureBonus(board, white, myPawns)
+                + pawnsThreatenBigThings(board, white, myPawns)
+                + pawnsChainBonus(board, white, myPawns)
+                + doublePawnPenalty(board, white, myPawns)
+                + pawnAttackingCentreBonus(board, white, myPawns)
+                + superAdvancedPawn(board, white, myPawns)
+                + backwardsPawn(board, white, myPawns)
+                + blockedPawnPenalty(board, white, myPawns, enemyPawns)
+                + isolatedPawn(board, white, myPawns)
+                + passedPawn(board, white, myPawns, enemyPawns)
         ;
 
         return score;

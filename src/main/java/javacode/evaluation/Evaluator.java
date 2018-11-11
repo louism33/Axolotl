@@ -3,24 +3,17 @@ package javacode.evaluation;
 import javacode.chessengine.Engine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
+import org.junit.Assert;
 
 import java.util.List;
 
 import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
-import static javacode.evaluation.Bishop.evalBishopByTurn;
-import static javacode.evaluation.King.evalKingByTurn;
-import static javacode.evaluation.Knight.evalKnightByTurn;
-import static javacode.evaluation.Misc.evalMiscByTurn;
-import static javacode.evaluation.Pawns.evalPawnsByTurn;
-import static javacode.evaluation.PositionEval.evalPositionByTurn;
-import static javacode.evaluation.Queen.evalQueenByTurn;
-import static javacode.evaluation.Rook.evalRookByTurn;
 
 public class Evaluator {
 
-    private Engine engine;
-    private MaterialEval materialEval;
+    private final Engine engine;
+    private final MaterialEval materialEval;
     
     public Evaluator(Engine engine){
         this.engine = engine;
@@ -36,11 +29,11 @@ public class Evaluator {
 
     public final int SHORT_MINIMUM = -31000;
     public final int SHORT_MAXIMUM = 31000;
-    public final int IN_CHECKMATE_SCORE = -30000;
-    public final int CHECKMATE_ENEMY_SCORE = -IN_CHECKMATE_SCORE;
-    public final int IN_CHECKMATE_SCORE_MAX_PLY = IN_CHECKMATE_SCORE + 100;
-    public final int CHECKMATE_ENEMY_SCORE_MAX_PLY = -IN_CHECKMATE_SCORE_MAX_PLY;
-    public final int IN_STALEMATE_SCORE = 0;
+    public static final int IN_CHECKMATE_SCORE = -30000;
+    public static final int CHECKMATE_ENEMY_SCORE = -IN_CHECKMATE_SCORE;
+    public static final int IN_CHECKMATE_SCORE_MAX_PLY = IN_CHECKMATE_SCORE + 100;
+    public static final int CHECKMATE_ENEMY_SCORE_MAX_PLY = -IN_CHECKMATE_SCORE_MAX_PLY;
+    public static final int IN_STALEMATE_SCORE = 0;
 
     public int lazyEval(Chessboard board, boolean white) {
         return lazyEvalHelper(board, white);
@@ -56,7 +49,7 @@ public class Evaluator {
         }
 
         if (this.engine.DEBUG) {
-            this.engine.statistics.numberOfEvals++;
+//            this.engine.statistics.numberOfEvals++;
         }
 
         if (moves.size() == 0){
@@ -74,6 +67,11 @@ public class Evaluator {
             }
         }
         else{
+            if (this.engine.HEAVY_DEBUG){
+                Assert.assertEquals(evalHelper(board, white, moves), -evalHelper(board, !white, moves));
+            }
+
+            Assert.assertEquals(evalHelper(board, white, moves), -evalHelper(board, !white, moves));
             return evalHelper(board, white, moves);
         }
     }
@@ -87,14 +85,14 @@ public class Evaluator {
         score += 
                 this.materialEval.evalMaterialByTurn(board, white)
                         
-                + evalPositionByTurn(board, white)
-                + evalPawnsByTurn(board, white)
-                + evalBishopByTurn(board, white)
-                + evalKnightByTurn(board, white)
-                + evalRookByTurn(board, white)
-                + evalQueenByTurn(board, white)
-                + evalKingByTurn(board, white)
-                + evalMiscByTurn(board, white, moves)
+//                + evalPositionByTurn(board, white)
+//                + evalPawnsByTurn(board, white)
+//                + evalBishopByTurn(board, white)
+//                + evalKnightByTurn(board, white)
+//                + evalRookByTurn(board, white)
+//                + evalQueenByTurn(board, white)
+//                + evalKingByTurn(board, white)
+//                + evalMiscByTurn(board, white, moves)
         ;
         return score;
     }

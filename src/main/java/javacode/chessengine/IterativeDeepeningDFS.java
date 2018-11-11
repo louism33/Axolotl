@@ -4,11 +4,14 @@ import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.evaluation.Evaluator;
 
+import static javacode.evaluation.Evaluator.CHECKMATE_ENEMY_SCORE;
+import static javacode.evaluation.Evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+
 class IterativeDeepeningDFS {
 
-    private Engine engine;
-    AspirationSearch aspirationSearch;
-    private Evaluator evaluator;
+    private final Engine engine;
+    final AspirationSearch aspirationSearch;
+    private final Evaluator evaluator;
 
     IterativeDeepeningDFS(Engine engine){
         this.engine = engine;
@@ -28,22 +31,27 @@ class IterativeDeepeningDFS {
          */
         while (!outOfTime && depth < maxDepth){
 
-            String formattedDepthInfo = String.format("----- depth: %03d, previous best move: %s -----"
-                    , depth, this.aspirationSearch.getAiMove());
-            System.out.print(formattedDepthInfo);
-            int score = this.aspirationSearch.aspirationSearch(board, startTime, timeLimitMillis, zobristHash, depth, aspirationScore);
-            System.out.println(" current best move: "+this.aspirationSearch.getAiMove());
+            if (this.engine.DEBUG && depth > 0) {
+                String formattedDepthInfo = String.format("----- depth: %03d, previous best move: %s -----"
+                        , depth, this.aspirationSearch.getAiMove());
+                System.out.print(formattedDepthInfo);
+            }
 
-            System.out.println("Current PV: ");
-            this.aspirationSearch.principleVariationSearch.retrievePVfromTable(board);
-            System.out.println();
+            int score = this.aspirationSearch.aspirationSearch(board, startTime, timeLimitMillis, zobristHash, depth, aspirationScore);
+
+            if (this.engine.DEBUG && depth > 0) {
+                System.out.println(" current best move: " + this.aspirationSearch.getAiMove());
+                System.out.println("Current PV: ");
+                this.aspirationSearch.principleVariationSearch.retrievePVfromTable(board);
+                System.out.println();
+            }
             
             /*
             stop search when a checkmate has been found, however far away
              */
-            if (score >= this.evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
+            if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
                 if (this.engine.ALLOW_MATE_DISTANCE_PRUNING) {
-                    int distanceToCheckmate = this.evaluator.CHECKMATE_ENEMY_SCORE - score;
+                    int distanceToCheckmate = CHECKMATE_ENEMY_SCORE - score;
                     System.out.println("Checkmate found in " + distanceToCheckmate + " plies.");
                 }
                 else{
@@ -64,7 +72,13 @@ class IterativeDeepeningDFS {
                     outOfTime = true;
                 }
             }
-            
+
+            if (outOfTime){
+                System.out.println("Current PV: ");
+                this.aspirationSearch.principleVariationSearch.retrievePVfromTable(board);
+                System.out.println();
+            }
+
             aspirationScore = score;
             depth++;
         }

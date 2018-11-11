@@ -4,7 +4,7 @@ import javacode.chessprogram.chess.Move;
 
 class HistoryMoves {
     
-    private MoveOrderer moveOrderer;
+    private final MoveOrderer moveOrderer;
 
     public HistoryMoves(MoveOrderer moveOrderer) {
         this.moveOrderer = moveOrderer;

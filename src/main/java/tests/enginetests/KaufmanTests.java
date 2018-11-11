@@ -17,7 +17,7 @@ import java.util.List;
 public class KaufmanTests {
 
     private static final int timeLimit = 10000;
-    private static Engine engine = null;
+    private static final Engine engine = null;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {

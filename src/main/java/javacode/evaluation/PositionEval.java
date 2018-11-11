@@ -31,7 +31,7 @@ class PositionEval {
                 + piecePositionScores(bishops, white, bishoppos)
                 + piecePositionScores(rooks, white, rookpos)
                 + piecePositionScores(queens, white, queenpos)
-//                + piecePositionScores(kings, white, kingposstart)
+                + piecePositionScores(kings, white, kingposstart)
                 ;
     }
 
@@ -47,11 +47,19 @@ class PositionEval {
         return answer;
     }
 
+//    public static void main (String[] args){
+//        Chessboard board = FenParser.makeBoardBasedOnFEN("k1K5/7P/8/8/8/8/7p/8 w - -");
+//        System.out.println(Art.boardArt(board));
+//        int w = evalPositionByTurn(board, board.isWhiteTurn());
+//        int b = evalPositionByTurn(board, !board.isWhiteTurn());
+//        System.out.println(w + "  b: "+ b);
+//    }
+    
     private static final int[] pawnpos = {
               0,    0,  0,  0,  0,  0,  0,  0,
             164,  156,174,218,218,174,156,164,
-             12,   26, 66, 58, 58, 66, 26, 12,
-            -16,   -4, -2, 14, 14, -2, -4,-16,
+             12,   56, 66, 58, 58, 66, 56, 12,
+            -16,   14, -2, 14, 14, -2, 14,-16,
             -32,  -28,-12,  2,  2,-12,-28,-32,
             -30,  -20,-16,-16,-16,-16,-20,-30,
             -24,    4,-16,-10,-10,-16,  4,-24,

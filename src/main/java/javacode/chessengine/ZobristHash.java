@@ -18,9 +18,6 @@ import static javacode.chessprogram.moveMaking.MoveParser.*;
 import static javacode.chessprogram.moveMaking.StackMoveData.SpecialMove.ENPASSANTVICTIM;
 
 public class ZobristHash {
-
-    // todo add separate hash for pawns (used in eval for structure), material
-
     private static final long initHashSeed = 100;
     final Stack<Long> zobristStack = new Stack<>();
     private static final long[][] zobristHashPieces = initPieceHash();

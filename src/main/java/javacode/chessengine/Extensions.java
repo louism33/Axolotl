@@ -9,14 +9,12 @@ import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
 
-public class Extensions {
+class Extensions {
 
-    private Engine engine;
-    private PrincipleVariationSearch principleVariationSearch;
+    private final Engine engine;
 
-    public Extensions(Engine engine, PrincipleVariationSearch principleVariationSearch) {
+    public Extensions(Engine engine) {
         this.engine = engine;
-        this.principleVariationSearch = principleVariationSearch;
     }
 
     int extensions(Chessboard board, int ply){
