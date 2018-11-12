@@ -7,7 +7,7 @@ import java.util.List;
 
 class PositionEval {
 
-    static int evalPositionByTurn(Chessboard board, boolean white){
+    static int evalPositionByTurn(Chessboard board, boolean white, boolean naiveEndgame){
         long pawns, knights, bishops, rooks, queens, kings;
         if (white){
             pawns = board.WHITE_PAWNS;
@@ -31,7 +31,7 @@ class PositionEval {
                 + piecePositionScores(bishops, white, bishoppos)
                 + piecePositionScores(rooks, white, rookpos)
                 + piecePositionScores(queens, white, queenpos)
-                + piecePositionScores(kings, white, kingposstart)
+                + piecePositionScores(kings, white, naiveEndgame ? kingposend : kingposstart)
                 ;
     }
 
@@ -47,14 +47,6 @@ class PositionEval {
         return answer;
     }
 
-//    public static void main (String[] args){
-//        Chessboard board = FenParser.makeBoardBasedOnFEN("k1K5/7P/8/8/8/8/7p/8 w - -");
-//        System.out.println(Art.boardArt(board));
-//        int w = evalPositionByTurn(board, board.isWhiteTurn());
-//        int b = evalPositionByTurn(board, !board.isWhiteTurn());
-//        System.out.println(w + "  b: "+ b);
-//    }
-    
     private static final int[] pawnpos = {
               0,    0,  0,  0,  0,  0,  0,  0,
             164,  156,174,218,218,174,156,164,
@@ -110,25 +102,25 @@ class PositionEval {
              14,  6, 12, 24, 24, 12,  6, 14,
     };
 
-    private static final int[] kingposstart =   {
-            -50,180,-26,  2,  2,-26,180,-50,
-             48,-10,-64,-24,-24,-64,-10, 48,
-             42, 52, 44,-44,-44, 44, 52, 42,
-            -40,-22,-46,-92,-92,-46,-22,-40,
-            -40,-20,-20,-76,-76,-20,-20,-40,
-             14, 16,  2,-10,-10,  2, 16, 14,
-             30, 10,-40,-56,-56,-40, 10, 30,
-             34, 44,  8, 18, 18,  8, 44, 34,
+    private static int kingposstart[] =   {
+             20, 30, 10,  0,  0, 20, 30, 20,
+             20, 20,  0,  0,  0,  0, 20, 20,
+            -10,-20,-20,-20,-20,-20,-20,-10,
+            -20,-30,-30,-40,-40,-30,-30,-20,
+            -30,-40,-40,-50,-50,-40,-40,-30,
+            -30,-40,-40,-50,-50,-40,-40,-30,
+            -30,-40,-40,-50,-50,-40,-40,-30,
+            -30,-40,-40,-50,-50,-40,-40,-30
     };
 
     private static int kingposend[] =   {
-            -90,-90, -2,-56,-56, -2,-90,-90,
-            -34, 14, 40, 24, 24, 40, 14,-34,
-             -8, 32, 36, 38, 38, 36, 32, -8,
-              0, 38, 44, 50, 50, 44, 38,  0,
-            -12, 14, 28, 44, 44, 28, 14,-12,
-            -18,  8, 18, 24, 24, 18,  8,-18,
-            -40, -4, 16, 24, 24, 16, -4,-40,
-            -74,-44,-24,-34,-34,-24,-44,-74,
+            -50,-30,-30,-30,-30,-30,-30,-50,
+            -30,-30,  0,  0,  0,  0,-30,-30,
+            -30,-10, 20, 30, 30, 20,-10,-30,
+            -30,-10, 30, 40, 40, 30,-10,-30,
+            -30,-10, 30, 40, 40, 30,-10,-30,
+            -30,-10, 20, 30, 30, 20,-10,-30,
+            -30,-20,-10,  0,  0,-10,-20,-30,
+            -50,-40,-30,-20,-20,-30,-40,-50
     };
 }

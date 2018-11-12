@@ -6,6 +6,7 @@ import javacode.chessprogram.chess.Move;
 class FutilityPruning {
 
     static final int quiescenceFutilityMargin = 200;
+    
     static final int[] futilityMargin = {0, 100, 200, 300, 400, 500, 600};
     private static final int futilityBelowThisDepth = futilityMargin.length;
     

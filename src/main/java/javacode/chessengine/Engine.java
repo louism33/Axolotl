@@ -3,6 +3,7 @@ package javacode.chessengine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Copier;
 import javacode.chessprogram.chess.Move;
+import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import org.junit.Assert;
 
 import java.util.List;
@@ -30,8 +31,16 @@ public class Engine {
     public boolean ALLOW_TIME_LIMIT = true;
 
     final boolean ALLOW_PRINCIPLE_VARIATION_SEARCH   = true;
+    final boolean ALLOW_ASPIRATION_WINDOWS           = true;
+    
+    final boolean ALLOW_KILLERS                      = true;
+    final boolean ALLOW_MATE_KILLERS                 = true;
+    final boolean ALLOW_HISTORY_MOVES                = true;
+    
     final boolean ALLOW_MATE_DISTANCE_PRUNING        = true;
     final boolean ALLOW_EXTENSIONS                   = true;
+
+    final boolean ALLOW_INTERNAL_ITERATIVE_DEEPENING = true;
     
     final boolean ALLOW_LATE_MOVE_REDUCTIONS         = true;
     final boolean ALLOW_LATE_MOVE_PRUNING            = true;
@@ -46,13 +55,6 @@ public class Engine {
     final boolean ALLOW_QUIESCENCE_SEE_PRUNING       = true;
     final boolean ALLOW_QUIESCENCE_FUTILITY_PRUNING  = true;
     
-    final boolean ALLOW_KILLERS                      = true; 
-    final boolean ALLOW_MATE_KILLERS                 = true;
-    final boolean ALLOW_HISTORY_MOVES                = true;
-    final boolean ALLOW_ASPIRATION_WINDOWS           = true;
-    
-    final boolean ALLOW_INTERNAL_ITERATIVE_DEEPENING = true;
-
     long PLY_STOP_TIME;
     
     private void setup(){
@@ -74,7 +76,7 @@ public class Engine {
     }
 
     private long allocateTime(Chessboard board, long maxTime){
-        return maxTime;
+        return maxTime / 30;
     }
 
     public Move searchFixedDepth (Chessboard board, int depth){
@@ -114,6 +116,12 @@ public class Engine {
         long startTime = System.currentTimeMillis();
         
         this.PLY_STOP_TIME = maxTime / 2;
+
+        final List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
+        if (moves.size() == 1){
+            return moves.get(0);
+        }
+        
         Move move = this.iterativeDeepeningDFS.iterativeDeepeningWithAspirationWindows(board, zobristHash, startTime, maxTime);
 
         long endTime = System.currentTimeMillis();
@@ -158,4 +166,8 @@ public class Engine {
         return this.iterativeDeepeningDFS.aspirationSearch.getAiMove();
     }
 
+    public PVLine getPV (Chessboard board){
+        return PVLine.retrievePVfromTable(board,
+                this.iterativeDeepeningDFS.aspirationSearch.principleVariationSearch.table);
+    }
 }

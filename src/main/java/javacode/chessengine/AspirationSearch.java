@@ -9,6 +9,7 @@ class AspirationSearch {
     private final Engine engine;
     final PrincipleVariationSearch principleVariationSearch;
     private final Evaluator evaluator;
+    private UCIPrinter uciPrinter;
 
     AspirationSearch(Engine engine, Evaluator evaluator){
         this.engine = engine;

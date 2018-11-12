@@ -1,8 +1,11 @@
 package javacode.chessengine;
 
+import com.fluxchess.jcpi.commands.ProtocolBestMoveCommand;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.evaluation.Evaluator;
+
+import java.util.List;
 
 import static javacode.evaluation.Evaluator.CHECKMATE_ENEMY_SCORE;
 import static javacode.evaluation.Evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY;
@@ -42,8 +45,12 @@ class IterativeDeepeningDFS {
             if (this.engine.DEBUG && depth > 0) {
                 System.out.println(" current best move: " + this.aspirationSearch.getAiMove());
                 System.out.println("Current PV: ");
-                this.aspirationSearch.principleVariationSearch.retrievePVfromTable(board);
+                final PVLine pvLine = PVLine.retrievePVfromTable(board, this.aspirationSearch.principleVariationSearch.table);
+                final List<Move> moves = pvLine.getPvMoves();
+                final int pvScore = pvLine.getScore();
+                System.out.println(pvScore +" : " + moves);
                 System.out.println();
+
             }
             
             /*
@@ -75,7 +82,10 @@ class IterativeDeepeningDFS {
 
             if (outOfTime){
                 System.out.println("Current PV: ");
-                this.aspirationSearch.principleVariationSearch.retrievePVfromTable(board);
+                final PVLine pvLine = PVLine.retrievePVfromTable(board, this.aspirationSearch.principleVariationSearch.table);
+                final List<Move> moves = pvLine.getPvMoves();
+                final int pvScore = pvLine.getScore();
+                System.out.println(pvScore +" : " + moves);
                 System.out.println();
             }
 

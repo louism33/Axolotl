@@ -5,6 +5,7 @@ import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
 import javacode.chessengine.Engine;
+import javacode.chessengine.PVLine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
@@ -40,10 +41,12 @@ public class UCIentry extends AbstractEngine {
 
     @Override
     public void receive(EngineSetOptionCommand command) {
+        System.out.println("This is not possible yet");
     }
 
     @Override
     public void receive(EngineDebugCommand command) {
+        System.out.println("I'm sorry, I cannot do that");
     }
 
     @Override
@@ -79,18 +82,24 @@ public class UCIentry extends AbstractEngine {
     // go movetime 30000
     @Override
     public void receive(EngineStartCalculatingCommand command) {
-        calculatingHepler(command);
+        calculatingHelper(command);
 
         Move aiMove = engine.bestMove();
+
+        final PVLine pv = engine.getPV(board);
+        final int score = pv.getScore();
+        final List<Move> pvMoves = pv.getPvMoves();
+
         System.out.println(aiMove);
+        
         if (aiMove != null){
             this.getProtocol().send(
                     new ProtocolBestMoveCommand(convertMyMoveToGenericMove(aiMove), null));
         }
-
     }
 
-    private void calculatingHepler(EngineStartCalculatingCommand command) {
+    
+    private void calculatingHelper(EngineStartCalculatingCommand command) {
         long clock = timeOnClock(command);
 
         if (board == null) {
@@ -132,15 +141,13 @@ public class UCIentry extends AbstractEngine {
     @Override
     public void receive(EngineStopCalculatingCommand command) {
         Move aiMove = engine.getAiMove();
-        System.out.println("Not currently supported");
+        this.getProtocol().send(new ProtocolBestMoveCommand(convertMyMoveToGenericMove(aiMove), null));
     }
 
     @Override
     public void receive(EnginePonderHitCommand command) {
+        System.out.println("I don't know how to ponder :(");
     }
-
-
-
 
     public static void main(String[] args) {
         System.out.println("Starting everything");
@@ -148,4 +155,5 @@ public class UCIentry extends AbstractEngine {
         Thread thread = new Thread( new UCIentry() );
         thread.start();
     }
+
 }

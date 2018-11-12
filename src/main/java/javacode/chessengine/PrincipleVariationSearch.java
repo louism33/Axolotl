@@ -550,32 +550,4 @@ class PrincipleVariationSearch {
         return aiMove;
     }
 
-    public void retrievePVfromTable(Chessboard board){
-        List<Move> moves = new ArrayList<>();
-        int i = 1;
-        ZobristHash zobristHash = new ZobristHash(board);
-        int nodeScore = 0;
-
-        while(i < 50) {
-            TableObject tableObject = table.get(zobristHash.getBoardHash());
-            if (tableObject == null) {
-                break;
-            }
-            int score = tableObject.getScore(i-1);
-            if (i == 1){
-                nodeScore = score;
-            }
-            Move move = tableObject.getMove();
-            moves.add(move);
-            makeMoveAndHashUpdate(board, move, zobristHash);
-            i++;
-        }
-
-        for (int x = 0; x < i-1; x++){
-            EngineMovesAndHash.UnMakeMoveAndHashUpdate(board, zobristHash);
-        }
-
-        System.out.println(nodeScore + " : " + moves);
-    }
-
 }

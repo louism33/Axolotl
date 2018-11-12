@@ -1,6 +1,7 @@
 package javacode.evaluation;
 
 import javacode.chessengine.Engine;
+import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import org.junit.Assert;
@@ -83,6 +84,10 @@ public class Evaluator {
             return evalHelper(board, white, moves);
         }
     }
+    
+    private boolean naiveEndgame (Chessboard board){
+        return BitIndexing.populationCount(board.ALL_PIECES()) < 8;
+    }
 
     private int evalHelper(Chessboard board, boolean white, List<Move> moves) {
         return evalTurn(board, white, moves) - evalTurn(board, !white, moves);
@@ -93,7 +98,7 @@ public class Evaluator {
         score += 
                 this.materialEval.evalMaterialByTurn(board, white)
                         
-                + evalPositionByTurn(board, white)
+                + evalPositionByTurn(board, white, naiveEndgame(board))
                 + evalPawnsByTurn(board, white)
                 + evalBishopByTurn(board, white)
                 + evalKnightByTurn(board, white)

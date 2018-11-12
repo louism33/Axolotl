@@ -65,10 +65,9 @@ class QuiescenceSearch {
 
         int numberOfMovesSearched = 0;
         for (Move loudMove : orderedCaptureMoves){
-
             final boolean captureMove = this.moveOrderer.moveIsCapture(board, loudMove);
             final boolean promotionMove = MoveParser.isPromotionMove(loudMove);
-            
+
             Assert.assertTrue(captureMove || promotionMove);
             
             /*
@@ -76,7 +75,8 @@ class QuiescenceSearch {
             if this is a particularly low scoring situation skip this move
              */
             if (this.engine.ALLOW_QUIESCENCE_FUTILITY_PRUNING){
-                if (quiescenceFutilityMargin
+                if (captureMove
+                        && quiescenceFutilityMargin
                         + standPatScore
                         + this.evaluator.getScoreOfDestinationPiece(board, loudMove)
                         < alpha){
@@ -84,7 +84,7 @@ class QuiescenceSearch {
                 }
             }
 
-            if (this.engine.ALLOW_QUIESCENCE_SEE_PRUNING && captureMove){
+            if (captureMove && this.engine.ALLOW_QUIESCENCE_SEE_PRUNING){
                 int seeScore = seeScore(board, loudMove, evaluator);
                 if (seeScore <= -300) {
                     this.engine.statistics.numberOfSuccessfulQuiescentSEEs++;
