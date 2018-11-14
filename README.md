@@ -6,6 +6,8 @@ Also includes various Parsers for FEN notation, EDP and Algebraic notation. Vari
 Many options for improvement and speedup exist, this is only version one. 
 As external libraries, JCPI is used for the UCI protocol.
 
+There is support for Blitz tournaments, and fixed time per move. Other, less common modes will be implemented in later versions.
+
 The JAR file is targetted to Java 8, but the project is written under Java 10. 
 
 For information about the UCI protocol, please refer to: 
@@ -19,4 +21,3 @@ You are free to use Axolotl however you see fit. If you have any questions, simp
 
 Louis
  
-  
