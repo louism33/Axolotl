@@ -8,12 +8,13 @@ import javacode.chessengine.Engine;
 import javacode.chessengine.PVLine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
+import javacode.graphicsandui.Art;
 
 import java.util.List;
 
 import static javacode.main.UCIBoardParser.*;
 
-public class UCIentry extends AbstractEngine {
+public class UCIEntry extends AbstractEngine {
 
     private Engine engine;
     private Chessboard board;
@@ -21,7 +22,7 @@ public class UCIentry extends AbstractEngine {
     private List<GenericMove> moves;
     GenericMove bestMove;
 
-    private UCIentry(){
+    private UCIEntry(){
         super();
     }
 
@@ -29,7 +30,7 @@ public class UCIentry extends AbstractEngine {
     @Override
     public void receive(EngineInitializeRequestCommand command) {
         System.out.println("Starting Engine");
-        this.getProtocol().send(new ProtocolInitializeAnswerCommand("Engine", "Louis James Mackenzie-Smith"));
+        this.getProtocol().send(new ProtocolInitializeAnswerCommand("Axolotl", "Louis James Mackenzie-Smith"));
     }
 
     @Override
@@ -56,7 +57,7 @@ public class UCIentry extends AbstractEngine {
 
     @Override
     public void receive(EngineNewGameCommand command) {
-        engine = new Engine();
+        engine = new Engine(this);
         moves = null;
         board = null;
         genericBoard = null;
@@ -67,38 +68,32 @@ public class UCIentry extends AbstractEngine {
     // position fen N7/P3pk1p/3p2p1/r4p2/8/4b2B/4P1KP/1R6 w - - 0 34
     @Override
     public void receive(EngineAnalyzeCommand command) {
-        this.engine = new Engine();
+        this.engine = new Engine(this);
         genericBoard = command.board;
         moves = command.moves;
-        System.out.println("The board fen is:\n"+ genericBoard +"\nWith moves: "+moves);
+        System.out.println("The initial board fen is:\n"+ genericBoard +"\nWith moves: "+moves);
 
         if (board != null){
             board = convertGenericBoardToChessboardDelta(board, moves);
         }
-        
+
         board = convertGenericBoardToChessboard(genericBoard, moves);
+
+        System.out.println(Art.boardArt(board));
     }
 
     // go movetime 30000
     @Override
     public void receive(EngineStartCalculatingCommand command) {
         calculatingHelper(command);
-
         Move aiMove = engine.bestMove();
-
-        final PVLine pv = engine.getPV(board);
-        final int score = pv.getScore();
-        final List<Move> pvMoves = pv.getPvMoves();
-
         System.out.println(aiMove);
-        
         if (aiMove != null){
             this.getProtocol().send(
                     new ProtocolBestMoveCommand(convertMyMoveToGenericMove(aiMove), null));
         }
     }
 
-    
     private void calculatingHelper(EngineStartCalculatingCommand command) {
         long clock = timeOnClock(command);
 
@@ -149,10 +144,15 @@ public class UCIentry extends AbstractEngine {
         System.out.println("I don't know how to ponder :(");
     }
 
+    public void sendInformation(ProtocolInformationCommand protocolInformationCommand){
+        this.getProtocol().send(protocolInformationCommand);
+    }
+
+
     public static void main(String[] args) {
         System.out.println("Starting everything");
         // start the Engine
-        Thread thread = new Thread( new UCIentry() );
+        Thread thread = new Thread( new UCIEntry() );
         thread.start();
     }
 

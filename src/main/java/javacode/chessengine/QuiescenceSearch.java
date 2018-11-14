@@ -54,7 +54,7 @@ class QuiescenceSearch {
         no more captures to make or no more moves at all
          */
         if (this.quiescentSearchUtils.isBoardQuiet(board, moves) || moves.size() == 0){
-            if (this.engine.DEBUG) {
+            if (this.engine.INFO_LOG) {
                 this.engine.statistics.numberOfQuiescentEvals++;
             }
             return standPatScore;
@@ -96,7 +96,7 @@ class QuiescenceSearch {
             MoveOrganiser.flipTurn(board);
             numberOfMovesSearched++;
 
-            if (this.engine.DEBUG){
+            if (this.engine.INFO_LOG){
                 this.engine.statistics.numberOfQuiescentMovesMade++;
             }
 
@@ -105,7 +105,7 @@ class QuiescenceSearch {
             MoveUnmaker.unMakeMoveMaster(board);
 
             if (score >= beta){
-                if (this.engine.DEBUG){
+                if (this.engine.INFO_LOG){
                     this.engine.statistics.whichMoveWasTheBestQuiescence[numberOfMovesSearched-1]++;
                 }
                 return score;

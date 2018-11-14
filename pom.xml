@@ -29,9 +29,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
-                <configuration>
+                <configuration> 
                     <source>10</source>
-                    <target>8</target>
+                    <target>10</target>
                 </configuration>
             </plugin>
         </plugins>

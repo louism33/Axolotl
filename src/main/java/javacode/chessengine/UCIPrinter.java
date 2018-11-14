@@ -1,5 +1,57 @@
 package javacode.chessengine;
 
+import com.fluxchess.jcpi.commands.ProtocolInformationCommand;
+import com.fluxchess.jcpi.models.GenericMove;
+import javacode.chessprogram.chess.Move;
+import javacode.main.UCIBoardParser;
+import javacode.main.UCIEntry;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class UCIPrinter {
-    //todo, print cp and pv to uci
+    UCIEntry uciEntry;
+    Engine engine;
+
+    public UCIPrinter(UCIEntry uciEntry, Engine engine) {
+        this.uciEntry = uciEntry;
+        this.engine = engine;
+    }
+
+    public void acceptPVLine(PVLine pvLine, int depth, boolean mateFound, int distance, long timeTaken){
+        final List<Move> pvMoves = pvLine.getPvMoves();
+        final int nodeScore = pvLine.getScore();
+        
+        sendInfoCommand(pvMoves, nodeScore, depth, mateFound, distance, timeTaken);
+    }
+
+    private void sendInfoCommand(List<Move> moves, int nodeScore, int depth, 
+                                 boolean mateFound, int distanceToMate, long timeTaken){
+        if (this.engine.INFO_LOG) {
+            ProtocolInformationCommand protocolInformationCommand = new ProtocolInformationCommand();
+
+            final List<GenericMove> genericMovesPV = moves.stream()
+                    .map(UCIBoardParser::convertMyMoveToGenericMove)
+                    .collect(Collectors.toList());
+            
+            protocolInformationCommand.setMoveList(genericMovesPV);
+            protocolInformationCommand.setDepth(depth);
+            if (genericMovesPV.size() != 0) {
+                protocolInformationCommand.setCurrentMove(genericMovesPV.get(0));
+            }
+            protocolInformationCommand.setNodes(this.engine.statistics.numberOfMovesMade);
+            if (timeTaken != 0) {
+                protocolInformationCommand.setNps(this.engine.statistics.numberOfMovesMade * 1000 / timeTaken);
+            }
+            if (mateFound){
+                protocolInformationCommand.setMate(distanceToMate);
+            }
+            else {
+                protocolInformationCommand.setCentipawns(nodeScore);
+            }
+
+            this.uciEntry.sendInformation(protocolInformationCommand);
+        }
+        
+    }
 }

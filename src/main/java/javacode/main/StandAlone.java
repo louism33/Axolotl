@@ -27,13 +27,10 @@ class StandAlone {
         String command, prompt;
         Move move;
         Engine engine = new Engine();
-//        System.out.println("Computer player: "+player.getName());
 
         while(true) {
-//            player.newGame(5*60*1000, 0);
 
             while (true) {
-//                b = player.getBoard();
 
                 if (board.isWhiteTurn()){
                     prompt = "White"; 
@@ -75,15 +72,8 @@ class StandAlone {
                     System.out.println("This is move number " + totalMoves + ".");
 
                     switch (command) {
-                        
-                        case "isready\\n":
-                        case "setoption\\n":
-                            System.out.println("initialising.");
-                            break;
                         case "go":
-
                             move = engine.searchFixedTime(board, timeLimit);
-
                             break label;
                         case "quit":
                             System.out.println("QUIT.\n");

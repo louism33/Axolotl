@@ -7,7 +7,6 @@ import javacode.chessprogram.moveMaking.MoveParser;
 import javacode.evaluation.Evaluator;
 import org.junit.Assert;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static javacode.chessengine.EngineMovesAndHash.*;
@@ -130,7 +129,7 @@ class PrincipleVariationSearch {
         int staticBoardEval = this.evaluator.SHORT_MINIMUM;
         final boolean thisIsAPrincipleVariationNode = beta - alpha != 1;
         final boolean boardInCheck = boardInCheck(board, board.isWhiteTurn());
-        boolean debug = this.engine.DEBUG;
+        boolean debug = this.engine.INFO_LOG;
         if (!thisIsAPrincipleVariationNode && !boardInCheck) {
             List<Move> moves = generateLegalMoves(board, board.isWhiteTurn());
             staticBoardEval = this.evaluator.eval(board, board.isWhiteTurn(), moves);

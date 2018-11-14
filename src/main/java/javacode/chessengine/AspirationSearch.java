@@ -72,7 +72,7 @@ class AspirationSearch {
                         alpha = this.evaluator.SHORT_MINIMUM;
                     }
                     alphaFac *= 2;
-                    if (this.engine.DEBUG) {
+                    if (this.engine.INFO_LOG) {
                         this.engine.statistics.numberOfFailedAspirations++;
                     }
                 } else if (score >= beta) {
@@ -81,11 +81,11 @@ class AspirationSearch {
                         beta = this.evaluator.SHORT_MAXIMUM;
                     }
                     betaFac *= 2;
-                    if (this.engine.DEBUG) {
+                    if (this.engine.INFO_LOG) {
                         this.engine.statistics.numberOfFailedAspirations++;
                     }
                 } else {
-                    if (this.engine.DEBUG) {
+                    if (this.engine.INFO_LOG) {
                         this.engine.statistics.numberOfSuccessfulAspirations++;
                     }
 

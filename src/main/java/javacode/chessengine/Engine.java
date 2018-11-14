@@ -4,6 +4,7 @@ import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Copier;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
+import javacode.main.UCIEntry;
 import org.junit.Assert;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Random;
 
 public class Engine {
 
+    private UCIEntry uciEntry;
     private Chessboard testBoard;
     private ZobristHash testHash;
     
@@ -22,7 +24,9 @@ public class Engine {
     private boolean setup = false;
 
     public final boolean HEAVY_DEBUG = false;
-    public final boolean DEBUG = true;
+    
+    public final boolean INFO_LOG = true;
+    public final boolean HEAVY_INFO_LOG = false;
 
     /*
     max depth only works is time limit is false
@@ -40,9 +44,9 @@ public class Engine {
     final boolean ALLOW_MATE_DISTANCE_PRUNING        = true;
     final boolean ALLOW_EXTENSIONS                   = true;
 
-    final boolean ALLOW_INTERNAL_ITERATIVE_DEEPENING = true;
+    final boolean ALLOW_INTERNAL_ITERATIVE_DEEPENING = false;
     
-    final boolean ALLOW_LATE_MOVE_REDUCTIONS         = true;
+    final boolean ALLOW_LATE_MOVE_REDUCTIONS         = false;
     final boolean ALLOW_LATE_MOVE_PRUNING            = true;
     final boolean ALLOW_NULL_MOVE_PRUNING            = true;
 
@@ -50,10 +54,10 @@ public class Engine {
     final boolean ALLOW_BETA_RAZORING                = true; 
     final boolean ALLOW_FUTILITY_PRUNING             = true; 
     
-    final boolean ALLOW_SEE_PRUNING                  = true;
+    final boolean ALLOW_SEE_PRUNING                  = false;
     
-    final boolean ALLOW_QUIESCENCE_SEE_PRUNING       = true;
-    final boolean ALLOW_QUIESCENCE_FUTILITY_PRUNING  = true;
+    final boolean ALLOW_QUIESCENCE_SEE_PRUNING       = false;
+    final boolean ALLOW_QUIESCENCE_FUTILITY_PRUNING  = false;
     
     long PLY_STOP_TIME;
     
@@ -76,7 +80,7 @@ public class Engine {
     }
 
     private long allocateTime(Chessboard board, long maxTime){
-        return maxTime / 30;
+        return maxTime / 25;
     }
 
     public Move searchFixedDepth (Chessboard board, int depth){
@@ -87,7 +91,7 @@ public class Engine {
 
     public Move searchMyTime (Chessboard board, long maxTime){
         long timeLimit = allocateTime(board, maxTime);
-        return searchFixedTime(board, maxTime);
+        return searchFixedTime(board, timeLimit);
     }
 
     public Move searchFixedTime(Chessboard board, long maxTime){
@@ -126,7 +130,9 @@ public class Engine {
 
         long endTime = System.currentTimeMillis();
 
-        Assert.assertTrue(move != null);
+        if (move == null){
+            return randomMove(board, MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn()));
+        }
 
         if (HEAVY_DEBUG) {
             Assert.assertTrue(copyHash.equals(zobristHash));
@@ -136,9 +142,12 @@ public class Engine {
         System.out.println("Table size:");
         System.out.println(this.iterativeDeepeningDFS.aspirationSearch.principleVariationSearch.table.size());
         
-        if (DEBUG) {
-
+        
+        if (HEAVY_INFO_LOG){
             statistics.printStatistics();
+        }
+        
+        if (INFO_LOG) {
             long time = endTime - startTime;
             System.out.println("time taken millis: " + time);
             System.out.println("------");
@@ -169,5 +178,16 @@ public class Engine {
     public PVLine getPV (Chessboard board){
         return PVLine.retrievePVfromTable(board,
                 this.iterativeDeepeningDFS.aspirationSearch.principleVariationSearch.table);
+    }
+
+    public Engine() {
+    }
+
+    public Engine(UCIEntry uciEntry) {
+        this.uciEntry = uciEntry;
+    }
+
+    public UCIEntry getUciEntry() {
+        return uciEntry;
     }
 }

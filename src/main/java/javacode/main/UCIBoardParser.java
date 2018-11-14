@@ -14,7 +14,7 @@ import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateL
 import static javacode.chessprogram.moveMaking.MoveOrganiser.flipTurn;
 import static javacode.chessprogram.moveMaking.MoveOrganiser.makeMoveMaster;
 
-class UCIBoardParser {
+public class UCIBoardParser {
     
     public static GenericMove convertMyMoveToGenericMove(Move move){
         GenericMove genericMove = null;
@@ -28,14 +28,14 @@ class UCIBoardParser {
     }
 
     static Chessboard convertGenericBoardToChessboard(GenericBoard genericBoard, List<GenericMove> moves){
+        if (genericBoard == null || moves == null){
+            return null;
+        }
         Chessboard board = FenParser.makeBoardBasedOnFEN(genericBoard.toString());
-//        System.out.println(Art.boardArt(board));
-//        System.out.println("Now making moves: "+ moves);
         for (GenericMove genericMove : moves){
             makeMoveMaster(board, moveFromGenericMove(board, genericMove));
             flipTurn(board);
         }
-        System.out.println(Art.boardArt(board));
         
         return board;
     }

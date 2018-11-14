@@ -57,19 +57,19 @@ public class Evaluator {
             moves = generateLegalMoves(board, white);
         }
 
-        if (this.engine.DEBUG) {
+        if (this.engine.INFO_LOG) {
 //            this.engine.statistics.numberOfEvals++;
         }
 
         if (moves.size() == 0){
             if (boardInCheck(board, white)) {
-                if (this.engine.DEBUG) {
+                if (this.engine.INFO_LOG) {
                     this.engine.statistics.numberOfCheckmates++;
                 }
                 return IN_CHECKMATE_SCORE;
             }
             else {
-                if (this.engine.DEBUG) {
+                if (this.engine.INFO_LOG) {
                     this.engine.statistics.numberOfStalemates++;
                 }
                 return IN_STALEMATE_SCORE;
@@ -104,7 +104,7 @@ public class Evaluator {
                 + evalKnightByTurn(board, white)
                 + evalRookByTurn(board, white)
                 + evalQueenByTurn(board, white)
-                + evalKingByTurn(board, white)
+//                + evalKingByTurn(board, white)
                 + evalMiscByTurn(board, white, moves)
         ;
         return score;
