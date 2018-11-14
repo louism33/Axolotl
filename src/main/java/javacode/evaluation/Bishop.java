@@ -20,7 +20,7 @@ class Bishop {
     private static final int PER_ENEMY_PAWN_COLOUR_MODIFIER = 5;
     private static final int PER_FRIENDLY_PAWN_COLOUR_MODIFIER = 3;
     private static final int DOUBLE_BISHOP_BONUS = 15;
-    private static final int BISHOP_OUTPOST_BONUS = 20;
+    private static final int BISHOP_OUTPOST_BONUS = 10;
     private static final int BISHOP_MOBILITY_SCORE = 1;
     private static final int BISHOP_PROTECTOR_SCORE = 2;
     private static final int BISHOP_AGGRESSOR_SCORE = 5;

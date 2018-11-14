@@ -41,7 +41,7 @@ public class UCIBoardParser {
     }
 
     static Chessboard convertGenericBoardToChessboardDelta(Chessboard board, List<GenericMove> moves){
-        System.out.println(Art.boardArt(board));
+//        System.out.println(Art.boardArt(board));
 
         for (int i = moves.size() - 2; i < moves.size(); i++) {
             GenericMove genericMove = moves.get(i);

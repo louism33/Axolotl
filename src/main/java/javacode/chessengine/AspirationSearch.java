@@ -34,7 +34,7 @@ class AspirationSearch {
 
         boolean outOfTime = false;
         
-        while (!outOfTime){
+        while (!this.engine.isStopInstruction() && !outOfTime){
             
             /*
             Aspiration Search:

@@ -19,6 +19,9 @@ public class UCIPrinter {
     }
 
     public void acceptPVLine(PVLine pvLine, int depth, boolean mateFound, int distance, long timeTaken){
+        if (pvLine == null || pvLine.getPvMoves() == null || pvLine.getPvMoves().size() == 0){
+            return;
+        }
         final List<Move> pvMoves = pvLine.getPvMoves();
         final int nodeScore = pvLine.getScore();
         
@@ -29,7 +32,7 @@ public class UCIPrinter {
                                  boolean mateFound, int distanceToMate, long timeTaken){
         if (this.engine.INFO_LOG) {
             ProtocolInformationCommand protocolInformationCommand = new ProtocolInformationCommand();
-
+    
             final List<GenericMove> genericMovesPV = moves.stream()
                     .map(UCIBoardParser::convertMyMoveToGenericMove)
                     .collect(Collectors.toList());

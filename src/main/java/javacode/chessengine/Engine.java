@@ -61,14 +61,18 @@ public class Engine {
     
     long PLY_STOP_TIME;
     
+    private boolean stopInstruction;
+    
     private void setup(){
         statistics = new Statistics(this);
         iterativeDeepeningDFS = new IterativeDeepeningDFS(this);
+        stopInstruction = false;
         setup = true;
     }
 
     public void resetEngine(){
         statistics = new Statistics(this);
+        stopInstruction = false;
     }
 
     public Move stop(){
@@ -90,6 +94,11 @@ public class Engine {
     }
 
     public Move searchMyTime (Chessboard board, long maxTime){
+        ALLOW_TIME_LIMIT = true;
+        
+        if (maxTime < 5000){
+            return searchFixedDepth(board, 2);
+        }
         long timeLimit = allocateTime(board, maxTime);
         return searchFixedTime(board, timeLimit);
     }
@@ -181,13 +190,23 @@ public class Engine {
     }
 
     public Engine() {
+        this.stopInstruction = false;
     }
 
     public Engine(UCIEntry uciEntry) {
         this.uciEntry = uciEntry;
+        this.stopInstruction = false;
     }
 
     public UCIEntry getUciEntry() {
         return uciEntry;
+    }
+
+    public boolean isStopInstruction() {
+        return stopInstruction;
+    }
+
+    public void setStopInstruction(boolean stopInstruction) {
+        this.stopInstruction = stopInstruction;
     }
 }

@@ -14,7 +14,7 @@ import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleQueenP
 
 class Queen {
 
-    private static final int QUEEN_ON_SEVENTH_BONUS = 15;
+    private static final int QUEEN_ON_SEVENTH_BONUS = 10;
     private static final int QUEEN_MOBILITY_SCORE = 1;
     private static final int QUEEN_PROTECTOR_SCORE = 2;
     private static final int QUEEN_AGGRESSOR_SCORE = 5;

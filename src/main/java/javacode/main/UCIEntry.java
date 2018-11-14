@@ -20,7 +20,6 @@ public class UCIEntry extends AbstractEngine {
     private Chessboard board;
     private GenericBoard genericBoard;
     private List<GenericMove> moves;
-    GenericMove bestMove;
 
     private UCIEntry(){
         super();
@@ -62,6 +61,7 @@ public class UCIEntry extends AbstractEngine {
         board = null;
         genericBoard = null;
         System.out.println("New Game");
+
     }
 
     // ex:
@@ -75,18 +75,18 @@ public class UCIEntry extends AbstractEngine {
 
         if (board != null){
             board = convertGenericBoardToChessboardDelta(board, moves);
+//            System.out.println(Art.boardArt(board));
+            return;
         }
 
         board = convertGenericBoardToChessboard(genericBoard, moves);
-
-        System.out.println(Art.boardArt(board));
+//        System.out.println(Art.boardArt(board));
     }
 
     // go movetime 30000
     @Override
     public void receive(EngineStartCalculatingCommand command) {
-        calculatingHelper(command);
-        Move aiMove = engine.bestMove();
+        Move aiMove = calculatingHelper(command);
         System.out.println(aiMove);
         if (aiMove != null){
             this.getProtocol().send(
@@ -94,20 +94,20 @@ public class UCIEntry extends AbstractEngine {
         }
     }
 
-    private void calculatingHelper(EngineStartCalculatingCommand command) {
+    private Move calculatingHelper(EngineStartCalculatingCommand command) {
         long clock = timeOnClock(command);
-
+        Move aiMove;
         if (board == null) {
             board = convertGenericBoardToChessboard(genericBoard, null);
         }
 
         if (clock != 0){
             System.out.println("Search for move, clock time: " + clock);
-            engine.searchMyTime(board, clock);
+            aiMove = engine.searchMyTime(board, clock);
         }
         else if (command.getMoveTime() != 0){
             System.out.println("Search for move, fixed time: " + command.getMoveTime());
-            engine.searchFixedTime(board, command.getMoveTime());
+            aiMove = engine.searchFixedTime(board, command.getMoveTime());
         }
         else {
             int searchDepth = engine.MAX_DEPTH;
@@ -118,8 +118,9 @@ public class UCIEntry extends AbstractEngine {
                 searchDepth = command.getDepth();
             }
             System.out.println("Search for move, fixed depth: " + command.getDepth());
-            engine.searchFixedDepth(board, searchDepth);
+            aiMove = engine.searchFixedDepth(board, searchDepth);
         }
+        return aiMove;
     }
 
     private long timeOnClock(EngineStartCalculatingCommand command){
@@ -136,7 +137,12 @@ public class UCIEntry extends AbstractEngine {
     @Override
     public void receive(EngineStopCalculatingCommand command) {
         Move aiMove = engine.getAiMove();
-        this.getProtocol().send(new ProtocolBestMoveCommand(convertMyMoveToGenericMove(aiMove), null));
+        System.out.println("Time to stop calculating, aiMove: " + aiMove);
+        if (aiMove != null) {
+            this.getProtocol().send(
+                    new ProtocolBestMoveCommand(convertMyMoveToGenericMove(aiMove), null));
+        }
+        engine.setStopInstruction(true);
     }
 
     @Override
@@ -147,7 +153,6 @@ public class UCIEntry extends AbstractEngine {
     public void sendInformation(ProtocolInformationCommand protocolInformationCommand){
         this.getProtocol().send(protocolInformationCommand);
     }
-
 
     public static void main(String[] args) {
         System.out.println("Starting everything");

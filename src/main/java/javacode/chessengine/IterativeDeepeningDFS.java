@@ -6,8 +6,7 @@ import javacode.evaluation.Evaluator;
 
 import java.util.List;
 
-import static javacode.evaluation.Evaluator.CHECKMATE_ENEMY_SCORE;
-import static javacode.evaluation.Evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static javacode.evaluation.Evaluator.*;
 
 class IterativeDeepeningDFS {
 
@@ -36,7 +35,7 @@ class IterativeDeepeningDFS {
         Iterative Deepening Depth First Search:
         call searchMyTime function at increasing depths, the data we get from lower depths is easily worth it
          */
-        while (!outOfTime && depth < maxDepth){
+        while (!this.engine.isStopInstruction() && !outOfTime && depth < maxDepth){
 
             if (this.engine.INFO_LOG && depth > 0 && this.uciPrinter == null) {
                 String formattedDepthInfo = String.format("----- depth: %03d, previous best move: %s -----"
@@ -78,6 +77,17 @@ class IterativeDeepeningDFS {
                 }
                 else{
                     System.out.println("Checkmate found.");
+                }
+                break;
+            }
+
+            if (score <= IN_CHECKMATE_SCORE_MAX_PLY){
+                if (this.engine.ALLOW_MATE_DISTANCE_PRUNING) {
+                    int distanceToCheckmate = score - IN_CHECKMATE_SCORE;
+                    System.out.println("I will lose in " + distanceToCheckmate + " plies.");
+                }
+                else{
+                    System.out.println("I have lost this game.");
                 }
                 break;
             }

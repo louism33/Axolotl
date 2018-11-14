@@ -31,7 +31,7 @@ public class Evaluator {
 
     public final int PAWN_SCORE = 100;
     public final int KNIGHT_SCORE = 300;
-    public final int BISHOP_SCORE = 300;
+    public final int BISHOP_SCORE = 310;
     public final int ROOK_SCORE = 500;
     public final int QUEEN_SCORE = 900;
     public final int KING_SCORE = 3000;

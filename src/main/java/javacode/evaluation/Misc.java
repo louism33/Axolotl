@@ -16,7 +16,7 @@ class Misc {
     private static final int MOVE_NUMBER_POINT = 1; 
     private static final int BATTERY_SCORE = 10;
     private static final int I_CONTROL_OPEN_FILE = 10;
-    private static final int MY_TURN_BONUS = 15;
+    private static final int MY_TURN_BONUS = 10;
     private static final int IN_CHECK_PENALTY = -5;
 
     private static final int BASIC_PINNED_PIECE_PENALTY_KING = -15;

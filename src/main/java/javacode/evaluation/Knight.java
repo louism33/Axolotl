@@ -15,11 +15,11 @@ import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapt
 
 class Knight {
 
-    private static final int KNIGHT_OUTPOST_BONUS = 25;
+    private static final int KNIGHT_OUTPOST_BONUS = 20;
     private static final int KNIGHT_MOBILITY_SCORE = 3;
     private static final int KNIGHT_PROTECTOR_SCORE = 4;
-    private static final int KNIGHT_AGGRESSOR_SCORE = 10;
-    private static final int UNDEVELOPED_KNIGHT_PENALTY = -35;
+    private static final int KNIGHT_AGGRESSOR_SCORE = 6;
+    private static final int UNDEVELOPED_KNIGHT_PENALTY = -20;
 
     static int evalKnightByTurn(Chessboard board, boolean white) {
         long myKnights = white ? board.WHITE_KNIGHTS : board.BLACK_KNIGHTS;

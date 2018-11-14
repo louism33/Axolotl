@@ -14,27 +14,27 @@ import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapt
 
 class Pawns {
 
-    private static final int PASSED_PAWN_BONUS = 25;
+    private static final int PASSED_PAWN_BONUS = 15;
     private static final int DOUBLE_PAWN_PENALTY = -10;
-    private static final int CENTRE_PAWN = 10;
-    private static final int SUPER_CENTRE_PAWN = 15;
+    private static final int CENTRE_PAWN = 5;
+    private static final int SUPER_CENTRE_PAWN = 10;
     private static final int NO_PAWN_BLOCKER_BONUS = 10;
     private static final int OPEN_FILE_BONUS = 10;
     private static final int PAWNS_PROTECTED_BY_PAWNS = 5;
-    private static final int DAVID_AND_GOLIATH = 15;
-    private static final int BLOCKED_PAWN_PENALTY = -10;
-    private static final int PAWN_THREATEN_CENTRE = 10;
-    private static final int PAWN_THREATEN_SUPER_CENTRE = 15;
+    private static final int DAVID_AND_GOLIATH = 10;
+    private static final int BLOCKED_PAWN_PENALTY = -5;
+    private static final int PAWN_THREATEN_CENTRE = 5;
+    private static final int PAWN_THREATEN_SUPER_CENTRE = 10;
 
-    private static final int STUCK_BACKWARDS_PAWN_PENALTY = -30;
+    private static final int STUCK_BACKWARDS_PAWN_PENALTY = -15;
     private static final int PROTECTED_BACKWARDS_PAWN = 10;
-    private static final int THREATENED_BACKWARDS_PAWN = -40;
+    private static final int THREATENED_BACKWARDS_PAWN = -25;
 
-    private static final int PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES = 50;
-    private static final int FRIENLDY_ATTACK_PROMOTION_SQUARE = 35;
-    private static final int FRIENLDY_PROTECT_PROMOTING_PAWN = 75;
-    private static final int ENEMY_NOT_ATTACK_PROMOTION_SQUARE = 35;
-    private static final int ENEMY_NOT_ATTACK_PROMOTING_PAWN = 35;
+    private static final int PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES = 35;
+    private static final int FRIENLDY_ATTACK_PROMOTION_SQUARE = 25;
+    private static final int FRIENLDY_PROTECT_PROMOTING_PAWN = 50;
+    private static final int ENEMY_NOT_ATTACK_PROMOTION_SQUARE = 25;
+    private static final int ENEMY_NOT_ATTACK_PROMOTING_PAWN = 25;
 
     static int evalPawnsByTurn(Chessboard board, boolean white) {
         long myPawns = white ? board.WHITE_PAWNS : board.BLACK_PAWNS;
