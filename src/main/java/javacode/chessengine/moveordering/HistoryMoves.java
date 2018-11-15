@@ -1,8 +1,9 @@
 package javacode.chessengine;
 
+import javacode.chessengine.moveordering.MoveOrderer;
 import javacode.chessprogram.chess.Move;
 
-class HistoryMoves {
+public class HistoryMoves {
     
     private final MoveOrderer moveOrderer;
 
@@ -19,11 +20,11 @@ class HistoryMoves {
     /*
     square the ply as shallower moves get added many times
      */
-    void updateHistoryMoves(Move move, int ply){
+    public void updateHistoryMoves(Move move, int ply){
         historyMoves[move.getSourceAsPieceIndex()][move.destinationIndex] += (ply * ply);
     }
 
-    int historyMoveScore(Move move){
+    public int historyMoveScore(Move move){
         int maxMoveScoreOfHistory = this.moveOrderer.MAX_HISTORY_MOVE_SCORE;
         int historyScore = historyMoves[move.getSourceAsPieceIndex()][move.destinationIndex];
         return historyScore > maxMoveScoreOfHistory ? maxMoveScoreOfHistory : historyScore;

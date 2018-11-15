@@ -1,5 +1,7 @@
 package javacode.chessengine;
 
+import javacode.chessengine.protocolutils.PVLine;
+import javacode.chessengine.protocolutils.UCIPrinter;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.evaluation.Evaluator;

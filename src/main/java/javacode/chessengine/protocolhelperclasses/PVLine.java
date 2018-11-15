@@ -1,5 +1,8 @@
-package javacode.chessengine;
+package javacode.chessengine.protocolutils;
 
+import javacode.chessengine.EngineMovesAndHash;
+import javacode.chessengine.TranspositionTable;
+import javacode.chessengine.ZobristHash;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 

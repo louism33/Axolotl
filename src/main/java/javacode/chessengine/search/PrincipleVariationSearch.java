@@ -1,5 +1,6 @@
 package javacode.chessengine;
 
+import javacode.chessengine.moveordering.MoveOrderer;
 import javacode.chessprogram.check.CheckChecker;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
@@ -14,8 +15,8 @@ import static javacode.chessengine.FutilityPruning.futilityMargin;
 import static javacode.chessengine.FutilityPruning.isFutilityPruningAllowedHere;
 import static javacode.chessengine.InternalIterativeDeepening.iidDepthReduction;
 import static javacode.chessengine.InternalIterativeDeepening.isIIDAllowedHere;
-import static javacode.chessengine.KillerMoves.mateKiller;
-import static javacode.chessengine.KillerMoves.updateKillerMoves;
+import static javacode.chessengine.moveordering.KillerMoves.mateKiller;
+import static javacode.chessengine.moveordering.KillerMoves.updateKillerMoves;
 import static javacode.chessengine.LateMoveReductions.isLateMoveReductionAllowedHere;
 import static javacode.chessengine.LateMoveReductions.lateMoveDepthReduction;
 import static javacode.chessengine.NullMovePruning.*;

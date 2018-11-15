@@ -1,4 +1,4 @@
-package javacode.main;
+package javacode.chessengine.protocolutils;
 
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
@@ -26,7 +26,7 @@ public class UCIBoardParser {
         return genericMove;
     }
 
-    static Chessboard convertGenericBoardToChessboard(GenericBoard genericBoard, List<GenericMove> moves){
+    public static Chessboard convertGenericBoardToChessboard(GenericBoard genericBoard, List<GenericMove> moves){
         if (genericBoard == null || moves == null){
             return null;
         }
@@ -38,7 +38,7 @@ public class UCIBoardParser {
         return board;
     }
 
-    static Chessboard convertGenericBoardToChessboardDelta(Chessboard board, List<GenericMove> moves){
+    public static Chessboard convertGenericBoardToChessboardDelta(Chessboard board, List<GenericMove> moves){
 
         for (int i = moves.size() - 2; i < moves.size(); i++) {
             GenericMove genericMove = moves.get(i);

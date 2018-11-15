@@ -30,7 +30,7 @@ public class TranspositionTable extends HashMap<Long, TranspositionTable.TableOb
             return move;
         }
 
-        int getScore(int ply) {
+        public int getScore(int ply) {
             if (score > Evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
                 return score - ply;
             }

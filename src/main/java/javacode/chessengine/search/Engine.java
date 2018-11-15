@@ -1,10 +1,13 @@
 package javacode.chessengine;
 
+import javacode.chessengine.protocolutils.PVLine;
+import javacode.chessengine.timemanagement.TimeAllocator;
+import javacode.chessengine.utilities.Statistics;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Copier;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
-import javacode.main.UCIEntry;
+import javacode.chessengine.main.UCIEntry;
 import org.junit.Assert;
 
 import java.util.List;
@@ -20,6 +23,7 @@ public class Engine {
     public Statistics statistics;
     private IterativeDeepeningDFS iterativeDeepeningDFS;
     public ZobristHash zobristHash;
+    private TimeAllocator timeAllocator;
 
     private boolean setup = false;
 
@@ -34,30 +38,30 @@ public class Engine {
     public int MAX_DEPTH = 100;
     public boolean ALLOW_TIME_LIMIT = true;
 
-    final boolean ALLOW_PRINCIPLE_VARIATION_SEARCH   = true;
-    final boolean ALLOW_ASPIRATION_WINDOWS           = true;
-    
-    final boolean ALLOW_KILLERS                      = true;
-    final boolean ALLOW_MATE_KILLERS                 = true;
-    final boolean ALLOW_HISTORY_MOVES                = true;
-    
-    final boolean ALLOW_MATE_DISTANCE_PRUNING        = true;
-    final boolean ALLOW_EXTENSIONS                   = true;
+    public final boolean ALLOW_PRINCIPLE_VARIATION_SEARCH   = true;
+    public final boolean ALLOW_ASPIRATION_WINDOWS           = true;
 
-    final boolean ALLOW_INTERNAL_ITERATIVE_DEEPENING = false;
-    
-    final boolean ALLOW_LATE_MOVE_REDUCTIONS         = false;
-    final boolean ALLOW_LATE_MOVE_PRUNING            = true;
-    final boolean ALLOW_NULL_MOVE_PRUNING            = true;
+    public final boolean ALLOW_KILLERS               = true;
+    public final boolean ALLOW_MATE_KILLERS          = true;
+    public final boolean ALLOW_HISTORY_MOVES         = true;
 
-    final boolean ALLOW_ALPHA_RAZORING               = true; 
-    final boolean ALLOW_BETA_RAZORING                = true; 
-    final boolean ALLOW_FUTILITY_PRUNING             = true; 
-    
-    final boolean ALLOW_SEE_PRUNING                  = true;
-    
-    final boolean ALLOW_QUIESCENCE_SEE_PRUNING       = false;
-    final boolean ALLOW_QUIESCENCE_FUTILITY_PRUNING  = false;
+    public final boolean ALLOW_MATE_DISTANCE_PRUNING        = true;
+    public final boolean ALLOW_EXTENSIONS                   = true;
+
+    public final boolean ALLOW_INTERNAL_ITERATIVE_DEEPENING = false;
+
+    public final boolean ALLOW_LATE_MOVE_REDUCTIONS         = false;
+    public final boolean ALLOW_LATE_MOVE_PRUNING            = true;
+    public final boolean ALLOW_NULL_MOVE_PRUNING            = true;
+
+    public final boolean ALLOW_ALPHA_RAZORING               = true;
+    public final boolean ALLOW_BETA_RAZORING                = true;
+    public final boolean ALLOW_FUTILITY_PRUNING             = true;
+
+    public final boolean ALLOW_SEE_PRUNING                  = true;
+
+    public final boolean ALLOW_QUIESCENCE_SEE_PRUNING       = false;
+    public final boolean ALLOW_QUIESCENCE_FUTILITY_PRUNING  = false;
     
     long PLY_STOP_TIME;
     
@@ -83,10 +87,6 @@ public class Engine {
         return iterativeDeepeningDFS.getAiMove();
     }
 
-    private long allocateTime(Chessboard board, long maxTime){
-        return maxTime / 25;
-    }
-
     public Move searchFixedDepth (Chessboard board, int depth){
         ALLOW_TIME_LIMIT = false;
         MAX_DEPTH = depth;
@@ -102,7 +102,7 @@ public class Engine {
         if (maxTime < 1000){
             return searchFixedDepth(board, 1);
         }
-        long timeLimit = allocateTime(board, maxTime);
+        long timeLimit = timeAllocator.allocateTime(board, maxTime);
         return searchFixedTime(board, timeLimit);
     }
 
@@ -194,6 +194,7 @@ public class Engine {
 
     public Engine() {
         this.stopInstruction = false;
+        this.timeAllocator = new TimeAllocator();
     }
 
     public Engine(UCIEntry uciEntry) {

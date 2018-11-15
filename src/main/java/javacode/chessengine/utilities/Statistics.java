@@ -4,8 +4,8 @@ import javacode.chessprogram.chess.Move;
 
 import java.util.Arrays;
 
-import static javacode.chessengine.KillerMoves.killerMoves;
-import static javacode.chessengine.KillerMoves.mateKiller;
+import static javacode.chessengine.moveordering.KillerMoves.killerMoves;
+import static javacode.chessengine.moveordering.KillerMoves.mateKiller;
 
 public class Statistics {
     

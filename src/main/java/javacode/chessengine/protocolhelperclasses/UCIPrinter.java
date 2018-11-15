@@ -1,10 +1,12 @@
-package javacode.chessengine;
+package javacode.chessengine.protocolutils;
 
 import com.fluxchess.jcpi.commands.ProtocolInformationCommand;
 import com.fluxchess.jcpi.models.GenericMove;
+import javacode.chessengine.Engine;
+import javacode.chessengine.protocolutils.PVLine;
 import javacode.chessprogram.chess.Move;
-import javacode.main.UCIBoardParser;
-import javacode.main.UCIEntry;
+import javacode.chessengine.protocolutils.UCIBoardParser;
+import javacode.chessengine.main.UCIEntry;
 
 import java.util.List;
 import java.util.stream.Collectors;

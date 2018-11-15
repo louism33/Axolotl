@@ -5,10 +5,8 @@ import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
 import javacode.chessengine.Engine;
-import javacode.chessengine.PVLine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.graphicsandui.Art;
 
 import java.util.List;
 
