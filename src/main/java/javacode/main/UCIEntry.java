@@ -5,13 +5,14 @@ import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
 import javacode.chessengine.Engine;
+import javacode.chessengine.PVLine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
+import javacode.graphicsandui.Art;
 
 import java.util.List;
 
-import static javacode.main.UCIBoardParser.convertGenericBoardToChessboard;
-import static javacode.main.UCIBoardParser.convertMyMoveToGenericMove;
+import static javacode.main.UCIBoardParser.*;
 
 public class UCIEntry extends AbstractEngine {
 
@@ -28,7 +29,7 @@ public class UCIEntry extends AbstractEngine {
     @Override
     public void receive(EngineInitializeRequestCommand command) {
         System.out.println("Starting Engine");
-        this.getProtocol().send(new ProtocolInitializeAnswerCommand("Axolotl v1.0", "Louis James Mackenzie-Smith"));
+        this.getProtocol().send(new ProtocolInitializeAnswerCommand("Axolotl", "Louis James Mackenzie-Smith"));
     }
 
     @Override
@@ -70,8 +71,16 @@ public class UCIEntry extends AbstractEngine {
         this.engine = new Engine(this);
         genericBoard = command.board;
         moves = command.moves;
+        System.out.println("The initial board fen is:\n"+ genericBoard +"\nWith moves: "+moves);
+
+        if (board != null){
+            board = convertGenericBoardToChessboardDelta(board, moves);
+//            System.out.println(Art.boardArt(board));
+            return;
+        }
+
         board = convertGenericBoardToChessboard(genericBoard, moves);
-        System.out.println("Board fen: "+ command.board.toString() +", with moves: "+command.moves);
+//        System.out.println(Art.boardArt(board));
     }
 
     // go movetime 30000
