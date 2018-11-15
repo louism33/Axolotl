@@ -29,7 +29,7 @@ public class UCIEntry extends AbstractEngine {
     @Override
     public void receive(EngineInitializeRequestCommand command) {
         System.out.println("Starting Engine");
-        this.getProtocol().send(new ProtocolInitializeAnswerCommand("Axolotl", "Louis James Mackenzie-Smith"));
+        this.getProtocol().send(new ProtocolInitializeAnswerCommand("Axolotl-v1.1", "Louis James Mackenzie-Smith"));
     }
 
     @Override
