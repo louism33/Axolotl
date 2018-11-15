@@ -44,7 +44,10 @@ public class UCIPrinter {
             }
             protocolInformationCommand.setNodes(this.engine.statistics.numberOfMovesMade);
             if (timeTaken != 0) {
-                protocolInformationCommand.setNps(this.engine.statistics.numberOfMovesMade * 1000 / timeTaken);
+                final long nps = this.engine.statistics.numberOfMovesMade * 1000 / timeTaken;
+                if (nps > 0) {
+                    protocolInformationCommand.setNps(nps);
+                }
             }
             if (mateFound){
                 protocolInformationCommand.setMate(distanceToMate);
