@@ -6,7 +6,6 @@ import com.fluxchess.jcpi.models.IllegalNotationException;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.miscAdmin.FenParser;
-import javacode.graphicsandui.Art;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class UCIBoardParser {
         try {
             genericMove = new GenericMove(move.toString());
         } catch (IllegalNotationException e) {
-            System.out.println("Problem with :" +move);
+            System.out.println("Problem with: " +move);
             e.printStackTrace();
         }
         return genericMove;
@@ -36,12 +35,10 @@ public class UCIBoardParser {
             makeMoveMaster(board, moveFromGenericMove(board, genericMove));
             flipTurn(board);
         }
-        
         return board;
     }
 
     static Chessboard convertGenericBoardToChessboardDelta(Chessboard board, List<GenericMove> moves){
-//        System.out.println(Art.boardArt(board));
 
         for (int i = moves.size() - 2; i < moves.size(); i++) {
             GenericMove genericMove = moves.get(i);
@@ -57,11 +54,14 @@ public class UCIBoardParser {
         List<Move> moves = generateLegalMoves(board, board.isWhiteTurn());
         Move move = null;
         
-        for (Move aMoveArray : moves) {
-            if (s.equals(aMoveArray.toString())) {
-                move = aMoveArray;
+        for (Move myMove : moves) {
+            if (s.equalsIgnoreCase(myMove.toString())) {
+                move = myMove;
                 break;
             }
+        }
+        if (move == null){
+            throw new RuntimeException("Could not parse move: "+ s);
         }
         return move;
     }

@@ -28,9 +28,9 @@ public class WacTwoBreakdown {
 
         for (String splitUpWAC : splitUpWACs) {
             Object[] objectAndName = new Object[2];
-            ExtendedPositionDescriptionParser.EDPObject edpObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
-            objectAndName[0] = edpObject;
-            objectAndName[1] = edpObject.getId();
+            ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
+            objectAndName[0] = EPDObject;
+            objectAndName[1] = EPDObject.getId();
             answers.add(objectAndName);
         }
 
@@ -38,10 +38,10 @@ public class WacTwoBreakdown {
     }
 
 
-    private static ExtendedPositionDescriptionParser.EDPObject edpObject;
+    private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
     public WacTwoBreakdown(Object edp, Object name) {
-        edpObject = (ExtendedPositionDescriptionParser.EDPObject) edp;
+        EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
     }
 
 
@@ -52,7 +52,7 @@ public class WacTwoBreakdown {
     @org.junit.Test
     public void test() {
         Engine engine = new Engine();
-        Chessboard board = edpObject.getBoard();
+        Chessboard board = EPDObject.getBoard();
         System.out.println(Art.boardArt(board));
 
         System.out.println("base score: ");
@@ -70,13 +70,13 @@ public class WacTwoBreakdown {
 
 
 
-        List<Integer> winningMoveDestination = edpObject.getBestMoveDestinationIndex();
+        List<Integer> winningMoveDestination = EPDObject.getBestMoveDestinationIndex();
         int myMoveDestination = move.destinationIndex;
 
         Assert.assertTrue(winningMoveDestination.contains(myMoveDestination));
 
 
-        List<Integer> losingMoveDestination = edpObject.getAvoidMoveDestinationIndex();
+        List<Integer> losingMoveDestination = EPDObject.getAvoidMoveDestinationIndex();
 
         Assert.assertFalse(losingMoveDestination.contains(myMoveDestination));
     }

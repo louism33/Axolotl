@@ -22,29 +22,29 @@ public class BS2830Test {
         List<Object[]> answers = new ArrayList<>();
         for (String splitUpBS : splitUpBSs) {
             Object[] objectAndName = new Object[2];
-            ExtendedPositionDescriptionParser.EDPObject edpObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpBS);
-            objectAndName[0] = edpObject;
-            objectAndName[1] = edpObject.getId();
+            ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpBS);
+            objectAndName[0] = EPDObject;
+            objectAndName[1] = EPDObject.getId();
             answers.add(objectAndName);
         }
         return answers;
     }
 
 
-    private static ExtendedPositionDescriptionParser.EDPObject edpObject;
+    private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
     public BS2830Test(Object edp, Object name) {
-        edpObject = (ExtendedPositionDescriptionParser.EDPObject) edp;
+        EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
     }
 
     @Test
     public void test() {
         WACTests.reset();
-        System.out.println(Art.boardArt(edpObject.getBoard()));
-        Move move = new Engine().searchFixedTime(edpObject.getBoard(), timeLimit);
+        System.out.println(Art.boardArt(EPDObject.getBoard()));
+        Move move = new Engine().searchFixedTime(EPDObject.getBoard(), timeLimit);
         System.out.println(move);
 
-        List<Integer> winningMoveDestination = edpObject.getBestMoveDestinationIndex();
+        List<Integer> winningMoveDestination = EPDObject.getBestMoveDestinationIndex();
         int myMoveDestination = move.destinationIndex;
 
         Assert.assertTrue(winningMoveDestination.contains(myMoveDestination));

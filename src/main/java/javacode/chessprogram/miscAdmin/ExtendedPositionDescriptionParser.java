@@ -1,6 +1,9 @@
 package javacode.chessprogram.miscAdmin;
 
+import javacode.chessengine.Engine;
 import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.chess.Move;
+import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.graphicsandui.Art;
 
 import java.util.ArrayList;
@@ -9,20 +12,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExtendedPositionDescriptionParser {
-    // add castling 0-0 and 0-0-0
     
-    ExtendedPositionDescriptionParser(){
-
-        EDPObject edpObject1 = parseEDPPosition("rn1qkb1r/pp2pppp/5n2/3p1b2/3P4/2N1P3/PP3PPP/R1BQKBNR w KQkq - 0 1 id \"CCR01\"; bm Qb3;");
-        EDPObject edpObject = parseEDPPosition("1rbq1rk1/p1b1nppp/1p2p3/8/1B1pN3/P2B4/1P3PPP/2RQ1R1K w - - bm Nf6+; id \"position 01\";");
-
-        System.out.println(edpObject.getId());
-        System.out.println(edpObject.bestMoveDestinationIndex);
-        System.out.println(Art.boardArt(edpObject.getBoard()));
-    }
-    
-    public static EDPObject parseEDPPosition(String edpPosition){
-        System.out.println(edpPosition);
+    public static EPDObject parseEDPPosition(String edpPosition){
         
         String id = extractIDString(edpPosition);
         
@@ -44,7 +35,7 @@ public class ExtendedPositionDescriptionParser {
             badDestinations.add(MoveParserFromAN.destinationIndex(chessboard, am));
         }
 
-        return new EDPObject(chessboard, goodDestinations, id, boardFen, badDestinations);
+        return new EPDObject(chessboard, goodDestinations, id, boardFen, badDestinations);
     }
 
     private static String extractBoardFen(String edpPosition){
@@ -126,14 +117,14 @@ public class ExtendedPositionDescriptionParser {
         return ans;
     }
     
-    public static class EDPObject{
+    public static class EPDObject {
         private final Chessboard board;
         private final List<Integer> bestMoveDestinationIndex;
         private final List<Integer> avoidMoveDestinationIndex;
         private final String id;
         private final String boardFen;
 
-        EDPObject(Chessboard board, List<Integer> bestMoveDestinationIndex, String id,
+        EPDObject(Chessboard board, List<Integer> bestMoveDestinationIndex, String id,
                   String boardFen, List<Integer> avoidMoveDestinationIndex) {
             this.board = board;
             this.bestMoveDestinationIndex = bestMoveDestinationIndex;
@@ -164,7 +155,7 @@ public class ExtendedPositionDescriptionParser {
 
         @Override
         public String toString() {
-            return "EDPObject{" +
+            return "EPDObject{" +
                     "bestMoveDestinationIndex=" + bestMoveDestinationIndex +
                     ", id='" + id + '\'' +
                     ", boardFen='" + boardFen + '\'' +
