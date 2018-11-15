@@ -72,15 +72,7 @@ public class UCIEntry extends AbstractEngine {
         genericBoard = command.board;
         moves = command.moves;
         System.out.println("The initial board fen is:\n"+ genericBoard +"\nWith moves: "+moves);
-
-        if (board != null){
-            board = convertGenericBoardToChessboardDelta(board, moves);
-//            System.out.println(Art.boardArt(board));
-            return;
-        }
-
         board = convertGenericBoardToChessboard(genericBoard, moves);
-//        System.out.println(Art.boardArt(board));
     }
 
     // go movetime 30000
