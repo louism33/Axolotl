@@ -54,7 +54,7 @@ public class Engine {
     final boolean ALLOW_BETA_RAZORING                = true; 
     final boolean ALLOW_FUTILITY_PRUNING             = true; 
     
-    final boolean ALLOW_SEE_PRUNING                  = false;
+    final boolean ALLOW_SEE_PRUNING                  = true;
     
     final boolean ALLOW_QUIESCENCE_SEE_PRUNING       = false;
     final boolean ALLOW_QUIESCENCE_FUTILITY_PRUNING  = false;
@@ -98,6 +98,9 @@ public class Engine {
         
         if (maxTime < 5000){
             return searchFixedDepth(board, 2);
+        }
+        if (maxTime < 1000){
+            return searchFixedDepth(board, 1);
         }
         long timeLimit = allocateTime(board, maxTime);
         return searchFixedTime(board, timeLimit);

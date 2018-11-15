@@ -45,7 +45,7 @@ class IterativeDeepeningDFS {
 
             int score = this.aspirationSearch.aspirationSearch(board, startTime, timeLimitMillis, zobristHash, depth, aspirationScore);
 
-            long timeTaken = startTime - System.currentTimeMillis();
+            long timeTaken = System.currentTimeMillis() - startTime;
             
             final PVLine pvLine = PVLine.retrievePVfromTable(board, this.aspirationSearch.principleVariationSearch.table);
             if (this.engine.INFO_LOG && depth > 0 && this.uciPrinter == null) {

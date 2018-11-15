@@ -11,7 +11,6 @@ import java.util.List;
 import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
 import static javacode.evaluation.Bishop.evalBishopByTurn;
-import static javacode.evaluation.King.evalKingByTurn;
 import static javacode.evaluation.Knight.evalKnightByTurn;
 import static javacode.evaluation.Misc.evalMiscByTurn;
 import static javacode.evaluation.Pawns.evalPawnsByTurn;

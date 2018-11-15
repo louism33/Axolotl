@@ -28,9 +28,9 @@ public class KaufmanTests {
 
         for (String splitUpWAC : splitUpWACs) {
             Object[] objectAndName = new Object[2];
-            ExtendedPositionDescriptionParser.EDPObject edpObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
-            objectAndName[0] = edpObject;
-            objectAndName[1] = edpObject.getId();
+            ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
+            objectAndName[0] = EPDObject;
+            objectAndName[1] = EPDObject.getId();
             answers.add(objectAndName);
             counter++;
 
@@ -42,26 +42,26 @@ public class KaufmanTests {
     }
 
 
-    private static ExtendedPositionDescriptionParser.EDPObject edpObject;
+    private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
     public KaufmanTests(Object edp, Object name) {
-        edpObject = (ExtendedPositionDescriptionParser.EDPObject) edp;
+        EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
     }
 
     @Test
     public void test() {
         WACTests.reset();
-        System.out.println(Art.boardArt(edpObject.getBoard()));
+        System.out.println(Art.boardArt(EPDObject.getBoard()));
 
-        Move move = engine.searchFixedTime(edpObject.getBoard(), timeLimit);
+        Move move = engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
         System.out.println(move);
 
-        List<Integer> winningMoveDestination = edpObject.getBestMoveDestinationIndex();
+        List<Integer> winningMoveDestination = EPDObject.getBestMoveDestinationIndex();
         int myMoveDestination = move.destinationIndex;
 
         Assert.assertTrue(winningMoveDestination.contains(myMoveDestination));
 
-        List<Integer> losingMoveDestination = edpObject.getAvoidMoveDestinationIndex();
+        List<Integer> losingMoveDestination = EPDObject.getAvoidMoveDestinationIndex();
 
         Assert.assertFalse(losingMoveDestination.contains(myMoveDestination));
     }
