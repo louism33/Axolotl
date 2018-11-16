@@ -1,15 +1,16 @@
-package javacode.chessengine;
+package javacode.chessengine.search;
 
-import javacode.chessengine.protocolutils.UCIPrinter;
+import javacode.chessengine.evaluation.Evaluator;
+import javacode.chessengine.protocolhelperclasses.UCIPrinter;
+import javacode.chessengine.transpositiontable.ZobristHash;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.evaluation.Evaluator;
 
-class AspirationSearch {
+public class AspirationSearch {
 
-    private final Engine engine;
-    final PrincipleVariationSearch principleVariationSearch;
-    private final Evaluator evaluator;
+    private Engine engine;
+    PrincipleVariationSearch principleVariationSearch;
+    private Evaluator evaluator;
     private UCIPrinter uciPrinter;
 
     AspirationSearch(Engine engine, Evaluator evaluator){
@@ -19,10 +20,10 @@ class AspirationSearch {
     }
     
     int aspirationSearch(Chessboard board, long startTime, long timeLimitMillis,
-                                ZobristHash zobristHash, int depth, int aspirationScore){
+                         ZobristHash zobristHash, int depth, int aspirationScore){
 
         int firstWindow = 100, alpha, beta, alphaFac = 2, betaFac = 2;
-        if (this.engine.ALLOW_ASPIRATION_WINDOWS) {
+        if (this.engine.getEngineSpecifications().ALLOW_ASPIRATION_WINDOWS) {
             firstWindow = 100;
             alpha = aspirationScore - firstWindow;
             beta = aspirationScore + firstWindow;
@@ -49,7 +50,7 @@ class AspirationSearch {
                 return score;
             }
 
-            if (this.engine.ALLOW_TIME_LIMIT) {
+            if (this.engine.getEngineSpecifications().ALLOW_TIME_LIMIT) {
                 long currentTime = System.currentTimeMillis();
                 long maxTime = startTime + timeLimitMillis;
                 long timeLeft = maxTime - currentTime;
@@ -66,7 +67,7 @@ class AspirationSearch {
             Aspiration Search Miss:
             if score outside of window, widen window and increase speed of widening
              */
-            if (this.engine.ALLOW_ASPIRATION_WINDOWS) {
+            if (this.engine.getEngineSpecifications().ALLOW_ASPIRATION_WINDOWS) {
                 if (score <= alpha) {
                     alpha = -firstWindow * alphaFac;
                     if (alphaFac >= 4){

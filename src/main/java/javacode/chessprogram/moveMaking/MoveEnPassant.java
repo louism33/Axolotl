@@ -2,7 +2,7 @@ package javacode.chessprogram.moveMaking;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.graphicsandui.Art;
+import javacode.chessprogram.graphicsandui.Art;
 
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 
@@ -13,17 +13,6 @@ class MoveEnPassant {
         long destinationPiece = newPieceOnSquare(move.destinationIndex);
         
         if ((destinationPiece & board.ALL_PIECES()) != 0) {
-            System.out.println("EP MOVE PROBLEM!");
-            System.out.println("source");
-            Art.printLong(sourcePiece);
-            System.out.println("destinationIndex");
-            Art.printLong(destinationPiece);
-            System.out.println("all pieces");
-            Art.printLong(board.ALL_PIECES());
-            System.out.println(Art.boardArt(board));
-            System.out.println(move);
-            System.out.println("white move: "+board.isWhiteTurn());
-            
             throw new RuntimeException("EP move Problem");
         }
         

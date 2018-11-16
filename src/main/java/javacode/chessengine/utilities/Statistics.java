@@ -1,5 +1,6 @@
-package javacode.chessengine;
+package javacode.chessengine.utilities;
 
+import javacode.chessengine.search.Engine;
 import javacode.chessprogram.chess.Move;
 
 import java.util.Arrays;
@@ -9,18 +10,18 @@ import static javacode.chessengine.moveordering.KillerMoves.mateKiller;
 
 public class Statistics {
     
-    private final Engine engine;
+    private Engine engine;
 
     public Statistics(Engine engine) {
         this.engine = engine;
     }
 
-    private final int[] whichMoveWasTheBest = new int[60];
-    public final int[] whichMoveWasTheBestQuiescence = new int[60];
+    private int[] whichMoveWasTheBest = new int[60];
+    public int[] whichMoveWasTheBestQuiescence = new int[60];
 
     public long numberOfMovesMade = 0;
     public long numberOfQuiescentMovesMade = 0;
-    private final long numberOfEvals = 0;
+    private long numberOfEvals = 0;
     public long numberOfQuiescentEvals = 0;
     public int numberOfCheckmates = 0;
     public int numberOfStalemates = 0;
@@ -37,8 +38,8 @@ public class Statistics {
     public int numberOfPassedPawnExtensions = 0;
     public int numberOfSuccessfulFutilities = 0;
     public int numberOfFailedFutilities = 0;
-    private final int numberOfSuccessfulQuiescenceFutilities = 0;
-    private final int numberOfFailedQuiescenceFutilities = 0;
+    private int numberOfSuccessfulQuiescenceFutilities = 0;
+    private int numberOfFailedQuiescenceFutilities = 0;
 
     public int numberOfSuccessfulSEEs = 0;
     public int numberOfSuccessfulQuiescentSEEs = 0;
@@ -68,38 +69,38 @@ public class Statistics {
     public int numberOfUpperBounds = 0;
     public int numberOfHashBetaCutoffs = 0;
 
-    void printStatistics(){
+    public void printStatistics(){
         System.out.println();
         System.out.println("------");
 
         System.out.println("Modifications:" +
-                "\nALLOW_PRINCIPLE_VARIATION_SEARCH = "     + this.engine.ALLOW_PRINCIPLE_VARIATION_SEARCH +
-                "\nALLOW_MATE_DISTANCE_PRUNING = "          + this.engine.ALLOW_MATE_DISTANCE_PRUNING +
-                "\nALLOW_EXTENSIONS = "                     + this.engine.ALLOW_EXTENSIONS +
-                "\nALLOW_LATE_MOVE_REDUCTIONS = "           + this.engine.ALLOW_LATE_MOVE_REDUCTIONS +
-                "\nALLOW_LATE_MOVE_PRUNING = "              + this.engine.ALLOW_LATE_MOVE_PRUNING +
-                "\nALLOW_NULL_MOVE_PRUNING = "              + this.engine.ALLOW_NULL_MOVE_PRUNING +
-                "\nALLOW_ALPHA_RAZORING = "                 + this.engine.ALLOW_ALPHA_RAZORING +
-                "\nALLOW_BETA_RAZORING = "                  + this.engine.ALLOW_BETA_RAZORING +
-                "\nALLOW_FUTILITY_PRUNING = "               + this.engine.ALLOW_FUTILITY_PRUNING +
-                "\nALLOW_QUIESCENCE_FUTILITY_PRUNING = "    + this.engine.ALLOW_QUIESCENCE_FUTILITY_PRUNING +
+                "\nALLOW_PRINCIPLE_VARIATION_SEARCH = "     + this.engine.getEngineSpecifications().ALLOW_PRINCIPLE_VARIATION_SEARCH +
+                "\nALLOW_MATE_DISTANCE_PRUNING = "          + this.engine.getEngineSpecifications().ALLOW_MATE_DISTANCE_PRUNING +
+                "\nALLOW_EXTENSIONS = "                     + this.engine.getEngineSpecifications().ALLOW_EXTENSIONS +
+                "\nALLOW_LATE_MOVE_REDUCTIONS = "           + this.engine.getEngineSpecifications().ALLOW_LATE_MOVE_REDUCTIONS +
+                "\nALLOW_LATE_MOVE_PRUNING = "              + this.engine.getEngineSpecifications().ALLOW_LATE_MOVE_PRUNING +
+                "\nALLOW_NULL_MOVE_PRUNING = "              + this.engine.getEngineSpecifications().ALLOW_NULL_MOVE_PRUNING +
+                "\nALLOW_ALPHA_RAZORING = "                 + this.engine.getEngineSpecifications().ALLOW_ALPHA_RAZORING +
+                "\nALLOW_BETA_RAZORING = "                  + this.engine.getEngineSpecifications().ALLOW_BETA_RAZORING +
+                "\nALLOW_FUTILITY_PRUNING = "               + this.engine.getEngineSpecifications().ALLOW_FUTILITY_PRUNING +
+                "\nALLOW_QUIESCENCE_FUTILITY_PRUNING = "    + this.engine.getEngineSpecifications().ALLOW_QUIESCENCE_FUTILITY_PRUNING +
                 
-                "\nALLOW_SEE_PRUNING = "                    + this.engine.ALLOW_SEE_PRUNING +
-                "\nALLOW_QUIESCENCE_SEE_PRUNING = "         + this.engine.ALLOW_QUIESCENCE_SEE_PRUNING +
+                "\nALLOW_SEE_PRUNING = "                    + this.engine.getEngineSpecifications().ALLOW_SEE_PRUNING +
+                "\nALLOW_QUIESCENCE_SEE_PRUNING = "         + this.engine.getEngineSpecifications().ALLOW_QUIESCENCE_SEE_PRUNING +
                 
-                "\nALLOW_KILLERS = "                        + this.engine.ALLOW_KILLERS +
-                "\nALLOW_HISTORY_MOVES = "                  + this.engine.ALLOW_HISTORY_MOVES +
-                "\nALLOW_ASPIRATION_WINDOWS = "             + this.engine.ALLOW_ASPIRATION_WINDOWS +
-                "\nALLOW_INTERNAL_ITERATIVE_DEEPENING = "   + this.engine.ALLOW_INTERNAL_ITERATIVE_DEEPENING +
+                "\nALLOW_KILLERS = "                        + this.engine.getEngineSpecifications().ALLOW_KILLERS +
+                "\nALLOW_HISTORY_MOVES = "                  + this.engine.getEngineSpecifications().ALLOW_HISTORY_MOVES +
+                "\nALLOW_ASPIRATION_WINDOWS = "             + this.engine.getEngineSpecifications().ALLOW_ASPIRATION_WINDOWS +
+                "\nALLOW_INTERNAL_ITERATIVE_DEEPENING = "   + this.engine.getEngineSpecifications().ALLOW_INTERNAL_ITERATIVE_DEEPENING +
                 "");
 
         System.out.println();
-        if (this.engine.ALLOW_PRINCIPLE_VARIATION_SEARCH) {
+        if (this.engine.getEngineSpecifications().ALLOW_PRINCIPLE_VARIATION_SEARCH) {
             System.out.println("number of PVS hits: " + numberOfPVSHits);
             System.out.println("number of PVS misses: " + numberOfPVSMisses);
             System.out.println();
         }
-        if (this.engine.ALLOW_ASPIRATION_WINDOWS) {
+        if (this.engine.getEngineSpecifications().ALLOW_ASPIRATION_WINDOWS) {
             System.out.println("Number of successful aspirations: " + numberOfSuccessfulAspirations);
             System.out.println("Number of failed aspirations: " + numberOfFailedAspirations);
             System.out.println();
@@ -114,7 +115,7 @@ public class Statistics {
         System.out.println("numberOfHashBetaCutoffs: " + numberOfHashBetaCutoffs);
         System.out.println();
 
-        if (this.engine.ALLOW_KILLERS){
+        if (this.engine.getEngineSpecifications().ALLOW_KILLERS){
             System.out.println("numberOfVictoriousKillersOne: " + numberOfVictoriousKillersOne);
             System.out.println("numberOfVictoriousKillersTwo: " + numberOfVictoriousKillersTwo);
             System.out.println("numberOfVeteranVictoriousKillersOne: " + numberOfVeteranVictoriousKillersOne);
@@ -122,64 +123,64 @@ public class Statistics {
             System.out.println();
         }
 
-        if (this.engine.ALLOW_MATE_KILLERS){
+        if (this.engine.getEngineSpecifications().ALLOW_MATE_KILLERS){
             System.out.println("numberOfVictoriousMaters: " + numberOfVictoriousMaters);
             System.out.println();
         }
 
-        if (this.engine.ALLOW_EXTENSIONS) {
+        if (this.engine.getEngineSpecifications().ALLOW_EXTENSIONS) {
             System.out.println("number of Check Extensions " + numberOfCheckExtensions);
             System.out.println();
         }
-        if (this.engine.ALLOW_LATE_MOVE_REDUCTIONS) {
+        if (this.engine.getEngineSpecifications().ALLOW_LATE_MOVE_REDUCTIONS) {
             System.out.println("number of late move reductions: " + numberOfLateMoveReductions);
             System.out.println("number of late move reduction hits: " + numberOfLateMoveReductionsHits);
             System.out.println("number of late move reduction misses: " + numberOfLateMoveReductionsMisses);
             System.out.println();
         }
-        if (this.engine.ALLOW_LATE_MOVE_PRUNING) {
+        if (this.engine.getEngineSpecifications().ALLOW_LATE_MOVE_PRUNING) {
             System.out.println("number of late move prunings: " + numberOfLateMovePrunings);
             System.out.println();
         }
-        if (this.engine.ALLOW_NULL_MOVE_PRUNING){
+        if (this.engine.getEngineSpecifications().ALLOW_NULL_MOVE_PRUNING){
             System.out.println("number of null move hits: " + numberOfNullMoveHits);
             System.out.println("number of null move misses: " + numberOfNullMoveMisses);
             System.out.println();
         }
-        if (this.engine.ALLOW_ALPHA_RAZORING) {
+        if (this.engine.getEngineSpecifications().ALLOW_ALPHA_RAZORING) {
             System.out.println("Number of successful alpha razors: " + numberOfSuccessfulAlphaRazors);
             System.out.println("Number of failed alpha razors: " + numberOfFailedAlphaRazors);
             System.out.println();
         }
 
-        if (this.engine.ALLOW_BETA_RAZORING) {
+        if (this.engine.getEngineSpecifications().ALLOW_BETA_RAZORING) {
             System.out.println("Number of successful beta razors: " + numberOfSuccessfulBetaRazors);
             System.out.println();
         }
 
-        if (this.engine.ALLOW_FUTILITY_PRUNING) {
+        if (this.engine.getEngineSpecifications().ALLOW_FUTILITY_PRUNING) {
             System.out.println("Number of successful futilities: " + numberOfSuccessfulFutilities);
             System.out.println("Number of failed futilities: " + numberOfFailedFutilities);
             System.out.println();
         }   
         
-        if (this.engine.ALLOW_SEE_PRUNING) {
+        if (this.engine.getEngineSpecifications().ALLOW_SEE_PRUNING) {
             System.out.println("Number of successful SEEs: " + numberOfSuccessfulSEEs);
             System.out.println();
         }            
         
-        if (this.engine.ALLOW_QUIESCENCE_SEE_PRUNING) {
+        if (this.engine.getEngineSpecifications().ALLOW_QUIESCENCE_SEE_PRUNING) {
             System.out.println("Number of successful quiescent SEEs: " + numberOfSuccessfulQuiescentSEEs);
             System.out.println();
         }        
         
-        if (this.engine.ALLOW_QUIESCENCE_FUTILITY_PRUNING) {
+        if (this.engine.getEngineSpecifications().ALLOW_QUIESCENCE_FUTILITY_PRUNING) {
             System.out.println("Number of successful Q futilities: " + numberOfSuccessfulQuiescenceFutilities);
             System.out.println("Number of failed Q futilities: " + numberOfFailedQuiescenceFutilities);
             System.out.println();
         }
 
-        if (this.engine.ALLOW_INTERNAL_ITERATIVE_DEEPENING) {
+        if (this.engine.getEngineSpecifications().ALLOW_INTERNAL_ITERATIVE_DEEPENING) {
             System.out.println("Number of IIDS: " + numberOfIIDs);
             System.out.println("Number of successful IIDS: " + numberOfSuccessfulIIDs);
             System.out.println("Number of failed IIDS: " + numberOfFailedIIDs);
@@ -246,7 +247,7 @@ public class Statistics {
     }
 
 
-    void statisticsFailHigh(int ply, int numberOfMovesSearched, Move move) {
+    public void statisticsFailHigh(int ply, int numberOfMovesSearched, Move move) {
         if (numberOfMovesSearched - 1 < this.engine.statistics.whichMoveWasTheBest.length) {
             this.engine.statistics.whichMoveWasTheBest[numberOfMovesSearched - 1]++;
         }

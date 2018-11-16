@@ -1,21 +1,21 @@
-package javacode.main;
+package javacode.chessengine.main;
 
-import javacode.chessengine.Engine;
+import javacode.chessengine.search.Engine;
 import javacode.chessprogram.check.CheckChecker;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
+import javacode.chessprogram.graphicsandui.Art;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.chessprogram.moveMaking.MoveOrganiser;
-import javacode.graphicsandui.Art;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-class StandAlone {
+public class StandAlone {
 
     private static int totalMoves = 1;
-    private static final long timeLimit = 20000;
+    private static long timeLimit = 20000;
 
     public static void main(String[] args) throws IOException {
         InputStreamReader stdin;
@@ -112,7 +112,7 @@ class StandAlone {
         }
     }
     private static String readCommand(InputStreamReader stdin) throws IOException {
-        final int MAX = 100;
+        int MAX = 100;
         int len = 0;
         char[] cbuf = new char[MAX];
         //len = stdin.read(cbuf, 0, MAX);

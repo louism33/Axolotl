@@ -1,4 +1,4 @@
-package javacode.evaluation;
+package javacode.chessengine.evaluation;
 
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
@@ -12,29 +12,29 @@ import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapturesTable;
 
-class Pawns {
+public class Pawns {
 
-    private static final int PASSED_PAWN_BONUS = 15;
-    private static final int DOUBLE_PAWN_PENALTY = -10;
-    private static final int CENTRE_PAWN = 5;
-    private static final int SUPER_CENTRE_PAWN = 10;
-    private static final int NO_PAWN_BLOCKER_BONUS = 10;
-    private static final int OPEN_FILE_BONUS = 10;
-    private static final int PAWNS_PROTECTED_BY_PAWNS = 5;
-    private static final int DAVID_AND_GOLIATH = 10;
-    private static final int BLOCKED_PAWN_PENALTY = -5;
-    private static final int PAWN_THREATEN_CENTRE = 5;
-    private static final int PAWN_THREATEN_SUPER_CENTRE = 10;
+    private static int PASSED_PAWN_BONUS = 15;
+    private static int DOUBLE_PAWN_PENALTY = -10;
+    private static int CENTRE_PAWN = 5;
+    private static int SUPER_CENTRE_PAWN = 10;
+    private static int NO_PAWN_BLOCKER_BONUS = 10;
+    private static int OPEN_FILE_BONUS = 10;
+    private static int PAWNS_PROTECTED_BY_PAWNS = 5;
+    private static int DAVID_AND_GOLIATH = 10;
+    private static int BLOCKED_PAWN_PENALTY = -5;
+    private static int PAWN_THREATEN_CENTRE = 5;
+    private static int PAWN_THREATEN_SUPER_CENTRE = 10;
 
-    private static final int STUCK_BACKWARDS_PAWN_PENALTY = -15;
-    private static final int PROTECTED_BACKWARDS_PAWN = 10;
-    private static final int THREATENED_BACKWARDS_PAWN = -25;
+    private static int STUCK_BACKWARDS_PAWN_PENALTY = -15;
+    private static int PROTECTED_BACKWARDS_PAWN = 10;
+    private static int THREATENED_BACKWARDS_PAWN = -25;
 
-    private static final int PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES = 35;
-    private static final int FRIENLDY_ATTACK_PROMOTION_SQUARE = 25;
-    private static final int FRIENLDY_PROTECT_PROMOTING_PAWN = 50;
-    private static final int ENEMY_NOT_ATTACK_PROMOTION_SQUARE = 25;
-    private static final int ENEMY_NOT_ATTACK_PROMOTING_PAWN = 25;
+    private static int PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES = 35;
+    private static int FRIENLDY_ATTACK_PROMOTION_SQUARE = 25;
+    private static int FRIENLDY_PROTECT_PROMOTING_PAWN = 50;
+    private static int ENEMY_NOT_ATTACK_PROMOTION_SQUARE = 25;
+    private static int ENEMY_NOT_ATTACK_PROMOTING_PAWN = 25;
 
     static int evalPawnsByTurn(Chessboard board, boolean white) {
         long myPawns = white ? board.WHITE_PAWNS : board.BLACK_PAWNS;
@@ -252,7 +252,7 @@ class Pawns {
     private static int backwardsPawn(Chessboard board, boolean white, long myPawns){
         int score = 0;
         /*
-        we are only considering the final pawn
+        we are only considering the pawn
          */
         List<Integer> indexOfAllPieces = BitIndexing.getIndexOfAllPieces(myPawns);
         if (white) {

@@ -1,4 +1,4 @@
-package javacode.graphicsandui;
+package javacode.chessprogram.graphicsandui;
 
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;

@@ -1,20 +1,21 @@
-package javacode.chessengine;
+package javacode.chessengine.search;
 
-import javacode.chessengine.protocolutils.PVLine;
-import javacode.chessengine.protocolutils.UCIPrinter;
+import javacode.chessengine.evaluation.Evaluator;
+import javacode.chessengine.protocolhelperclasses.PVLine;
+import javacode.chessengine.protocolhelperclasses.UCIPrinter;
+import javacode.chessengine.transpositiontable.ZobristHash;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.evaluation.Evaluator;
 
 import java.util.List;
 
-import static javacode.evaluation.Evaluator.*;
+import static javacode.chessengine.evaluation.Evaluator.*;
 
-class IterativeDeepeningDFS {
+public class IterativeDeepeningDFS {
 
-    private final Engine engine;
-    final AspirationSearch aspirationSearch;
-    private final Evaluator evaluator;
+    private Engine engine;
+    AspirationSearch aspirationSearch;
+    private Evaluator evaluator;
     private UCIPrinter uciPrinter = null;
 
     IterativeDeepeningDFS(Engine engine){
@@ -28,7 +29,7 @@ class IterativeDeepeningDFS {
     }
 
     Move iterativeDeepeningWithAspirationWindows(Chessboard board, ZobristHash zobristHash, long startTime, long timeLimitMillis){
-        int maxDepth = this.engine.ALLOW_TIME_LIMIT ? 10000 : this.engine.MAX_DEPTH;
+        int maxDepth = this.engine.getEngineSpecifications().ALLOW_TIME_LIMIT ? 10000 : this.engine.MAX_DEPTH;
         int aspirationScore = 0;
         int depth = 0;
         boolean outOfTime = false;
@@ -49,20 +50,20 @@ class IterativeDeepeningDFS {
 
             long timeTaken = System.currentTimeMillis() - startTime;
             
-            final PVLine pvLine = PVLine.retrievePVfromTable(board, this.aspirationSearch.principleVariationSearch.table);
+            PVLine pvLine = PVLine.retrievePVfromTable(board, this.aspirationSearch.principleVariationSearch.table);
             if (this.engine.INFO_LOG && depth > 0 && this.uciPrinter == null) {
                 System.out.println(" current best move: " + this.aspirationSearch.getAiMove());
                 System.out.println("Current PV: ");
                 
-                final List<Move> moves = pvLine.getPvMoves();
-                final int pvScore = pvLine.getScore();
+                List<Move> moves = pvLine.getPvMoves();
+                int pvScore = pvLine.getScore();
                 System.out.println(pvScore +" : " + moves);
                 System.out.println();
 
             }
             else if (this.uciPrinter != null){
                 if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
-                    final int distanceToCheckmate = CHECKMATE_ENEMY_SCORE - score;
+                    int distanceToCheckmate = CHECKMATE_ENEMY_SCORE - score;
                     this.uciPrinter.acceptPVLine(pvLine, depth, true, distanceToCheckmate, timeTaken);
                 } else {
                     this.uciPrinter.acceptPVLine(pvLine, depth, false, 0, timeTaken);
@@ -73,7 +74,7 @@ class IterativeDeepeningDFS {
             stop search when a checkmate has been found, however far away
              */
             if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
-                if (this.engine.ALLOW_MATE_DISTANCE_PRUNING) {
+                if (this.engine.getEngineSpecifications().ALLOW_MATE_DISTANCE_PRUNING) {
                     int distanceToCheckmate = CHECKMATE_ENEMY_SCORE - score;
                     System.out.println("Checkmate found in " + distanceToCheckmate + " plies.");
                 }
@@ -84,7 +85,7 @@ class IterativeDeepeningDFS {
             }
 
             if (score <= IN_CHECKMATE_SCORE_MAX_PLY){
-                if (this.engine.ALLOW_MATE_DISTANCE_PRUNING) {
+                if (this.engine.getEngineSpecifications().ALLOW_MATE_DISTANCE_PRUNING) {
                     int distanceToCheckmate = score - IN_CHECKMATE_SCORE;
                     System.out.println("I will lose in " + distanceToCheckmate + " plies.");
                 }
@@ -94,7 +95,7 @@ class IterativeDeepeningDFS {
                 break;
             }
 
-            if (this.engine.ALLOW_TIME_LIMIT) {
+            if (this.engine.getEngineSpecifications().ALLOW_TIME_LIMIT) {
                 long currentTime = System.currentTimeMillis();
                 long maxTime = startTime + timeLimitMillis;
                 long timeLeft = maxTime - currentTime;
@@ -109,8 +110,8 @@ class IterativeDeepeningDFS {
 
             if (outOfTime && this.uciPrinter == null){
                 System.out.println("Current PV: ");
-                final List<Move> moves = pvLine.getPvMoves();
-                final int pvScore = pvLine.getScore();
+                List<Move> moves = pvLine.getPvMoves();
+                int pvScore = pvLine.getScore();
                 System.out.println(pvScore +" : " + moves);
                 System.out.println();
 

@@ -1,4 +1,4 @@
-package javacode.chessengine;
+package javacode.chessengine.search;
 
 import javacode.chessprogram.bitboards.BitBoards;
 import javacode.chessprogram.chess.Chessboard;
@@ -9,16 +9,16 @@ import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
 
-class Extensions {
+public class Extensions {
 
-    private final Engine engine;
+    private Engine engine;
 
     public Extensions(Engine engine) {
         this.engine = engine;
     }
 
     int extensions(Chessboard board, int ply){
-        if (!this.engine.ALLOW_EXTENSIONS){
+        if (!this.engine.getEngineSpecifications().ALLOW_EXTENSIONS){
             return 0;
         }
 

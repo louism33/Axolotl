@@ -1,4 +1,4 @@
-package javacode.chessengine;
+package javacode.chessengine.search;
 
 import javacode.chessengine.moveordering.MoveOrderer;
 import javacode.chessprogram.chess.Chessboard;
@@ -6,9 +6,9 @@ import javacode.chessprogram.chess.Move;
 
 import java.util.List;
 
-class QuiescentSearchUtils {
+public class QuiescentSearchUtils {
 
-    private final MoveOrderer moveOrderer;
+    private MoveOrderer moveOrderer;
     
     QuiescentSearchUtils(MoveOrderer moveOrderer) {
         this.moveOrderer = moveOrderer;

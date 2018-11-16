@@ -2,8 +2,8 @@ package javacode.chessprogram.miscAdmin;
 
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.graphicsandui.Art;
 import javacode.chessprogram.moveMaking.StackMoveData;
-import javacode.graphicsandui.Art;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,4 +1,4 @@
-package javacode.evaluation;
+package javacode.chessengine.evaluation;
 
 import javacode.chessprogram.bitboards.BitBoards;
 import javacode.chessprogram.chess.BitIndexing;
@@ -13,16 +13,16 @@ import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleRookCaptures;
 
-class Rook {
+public class Rook {
 
-    private static final int ROOK_ON_SEVENTH_BONUS = 25;
-    private static final int ROOK_MOBILITY_SCORE = 1;
-    private static final int ROOK_PROTECTOR_SCORE = 2;
-    private static final int ROOK_AGGRESSOR_SCORE = 2;
-    private static final int UNDEVELOPED_ROOK_PENALTY = -5;
-    private static final int OPEN_FILE_BONUS = 15;
-    private static final int SEMI_OPEN_FILE_BONUS = 10;
-    private static final int ROOK_PROTECTS_QUEEN = 5;
+    private static int ROOK_ON_SEVENTH_BONUS = 25;
+    private static int ROOK_MOBILITY_SCORE = 1;
+    private static int ROOK_PROTECTOR_SCORE = 2;
+    private static int ROOK_AGGRESSOR_SCORE = 2;
+    private static int UNDEVELOPED_ROOK_PENALTY = -5;
+    private static int OPEN_FILE_BONUS = 15;
+    private static int SEMI_OPEN_FILE_BONUS = 10;
+    private static int ROOK_PROTECTS_QUEEN = 5;
 
     static int evalRookByTurn(Chessboard board, boolean white) {
         long myRooks = white ? board.WHITE_ROOKS : board.BLACK_ROOKS;

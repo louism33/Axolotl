@@ -1,16 +1,17 @@
-package javacode.main;
+package javacode.chessengine.main;
 
 import com.fluxchess.jcpi.AbstractEngine;
 import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
-import javacode.chessengine.Engine;
+import javacode.chessengine.search.Engine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
 import java.util.List;
 
-import static javacode.main.UCIBoardParser.*;
+import static javacode.chessengine.protocolhelperclasses.UCIBoardParser.convertGenericBoardToChessboard;
+import static javacode.chessengine.protocolhelperclasses.UCIBoardParser.convertMyMoveToGenericMove;
 
 public class UCIEntry extends AbstractEngine {
 

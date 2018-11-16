@@ -1,7 +1,7 @@
 package javacode.chessprogram.bitboards;
 
 import javacode.chessprogram.chess.Chessboard;
-import javacode.graphicsandui.Art;
+import javacode.chessprogram.graphicsandui.Art;
 
 import java.util.ArrayList;
 import java.util.List;

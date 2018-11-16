@@ -1,13 +1,13 @@
-package javacode.chessengine;
+package javacode.chessengine.search;
 
 import javacode.chessprogram.chess.Chessboard;
 
-import static javacode.chessengine.NullMovePruning.maybeInEndgame;
-import static javacode.chessengine.NullMovePruning.onlyPawnsLeftForPlayer;
+import static javacode.chessengine.search.NullMovePruning.maybeInEndgame;
+import static javacode.chessengine.search.NullMovePruning.onlyPawnsLeftForPlayer;
 
-class InternalIterativeDeepening {
+public class InternalIterativeDeepening {
 
-    static final int iidDepthReduction = 2;
+    public static int iidDepthReduction = 2;
 
     static boolean isIIDAllowedHere(Chessboard board, int depth, boolean reducedSearch, boolean thisIsAPrincipleVariationNode){
         return true

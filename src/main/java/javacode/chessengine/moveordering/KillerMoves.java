@@ -1,15 +1,15 @@
-package javacode.chessengine;
+package javacode.chessengine.moveordering;
 
 import javacode.chessprogram.chess.Move;
 
 import static javacode.chessprogram.chess.Copier.copyMove;
 
-class KillerMoves {
+public class KillerMoves {
 
-    static final Move[][] killerMoves = new Move[100][2];
-    static final Move[] mateKiller = new Move[100];
+    public static Move[][] killerMoves = new Move[100][2];
+    public static Move[] mateKiller = new Move[100];
 
-    static void updateKillerMoves(Move move, int ply){
+    public static void updateKillerMoves(Move move, int ply){
         /*
         if we have a new killer move, shift killers to the right
          */

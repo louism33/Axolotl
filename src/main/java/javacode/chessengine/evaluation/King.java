@@ -1,4 +1,4 @@
-package javacode.evaluation;
+package javacode.chessengine.evaluation;
 
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
@@ -10,11 +10,11 @@ import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.moveGeneration.PieceMoveKing.singleKingCaptures;
 
-class King {
+public class King {
 
     private static int KING_PAWN_PROTECT_BONUS = 5;
-    private static final int KING_PROTECTOR_SCORE = 1;
-    private static final int KING_AGGRESSOR_SCORE = 1;
+    private static int KING_PROTECTOR_SCORE = 1;
+    private static int KING_AGGRESSOR_SCORE = 1;
     
     static int evalKingByTurn(Chessboard board, boolean white) {
         long myKing = white ? board.WHITE_KING : board.BLACK_KING;

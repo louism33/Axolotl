@@ -1,6 +1,5 @@
-package javacode.chessengine.search;
+package javacode.chessengine.transpositiontable;
 
-import javacode.chessengine.transpositiontable.ZobristHash;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 

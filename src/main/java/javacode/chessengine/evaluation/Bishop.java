@@ -1,4 +1,4 @@
-package javacode.evaluation;
+package javacode.chessengine.evaluation;
 
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.BitManipulations;
@@ -15,17 +15,17 @@ import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapt
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleBishopCaptures;
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleBishopPushes;
 
-class Bishop {
+public class Bishop {
 
-    private static final int PER_ENEMY_PAWN_COLOUR_MODIFIER = 5;
-    private static final int PER_FRIENDLY_PAWN_COLOUR_MODIFIER = 3;
-    private static final int DOUBLE_BISHOP_BONUS = 15;
-    private static final int BISHOP_OUTPOST_BONUS = 10;
-    private static final int BISHOP_MOBILITY_SCORE = 1;
-    private static final int BISHOP_PROTECTOR_SCORE = 2;
-    private static final int BISHOP_AGGRESSOR_SCORE = 5;
-    private static final int UNDEVELOPED_BISHOP_PENALTY = -20;
-    private static final int PRIME_DIAGONAL_BONUS = 20;
+    private static int PER_ENEMY_PAWN_COLOUR_MODIFIER = 5;
+    private static int PER_FRIENDLY_PAWN_COLOUR_MODIFIER = 3;
+    private static int DOUBLE_BISHOP_BONUS = 15;
+    private static int BISHOP_OUTPOST_BONUS = 10;
+    private static int BISHOP_MOBILITY_SCORE = 1;
+    private static int BISHOP_PROTECTOR_SCORE = 2;
+    private static int BISHOP_AGGRESSOR_SCORE = 5;
+    private static int UNDEVELOPED_BISHOP_PENALTY = -20;
+    private static int PRIME_DIAGONAL_BONUS = 20;
 
     static int evalBishopByTurn(Chessboard board, boolean white){
         long myBishops = white ? board.WHITE_BISHOPS : board.BLACK_BISHOPS;

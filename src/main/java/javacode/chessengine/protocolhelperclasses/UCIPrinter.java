@@ -1,19 +1,17 @@
-package javacode.chessengine.protocolutils;
+package javacode.chessengine.protocolhelperclasses;
 
 import com.fluxchess.jcpi.commands.ProtocolInformationCommand;
 import com.fluxchess.jcpi.models.GenericMove;
-import javacode.chessengine.Engine;
-import javacode.chessengine.protocolutils.PVLine;
-import javacode.chessprogram.chess.Move;
-import javacode.chessengine.protocolutils.UCIBoardParser;
 import javacode.chessengine.main.UCIEntry;
+import javacode.chessengine.search.Engine;
+import javacode.chessprogram.chess.Move;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class UCIPrinter {
-    UCIEntry uciEntry;
-    Engine engine;
+    private UCIEntry uciEntry;
+    private Engine engine;
 
     public UCIPrinter(UCIEntry uciEntry, Engine engine) {
         this.uciEntry = uciEntry;
@@ -24,8 +22,8 @@ public class UCIPrinter {
         if (pvLine == null || pvLine.getPvMoves() == null || pvLine.getPvMoves().size() == 0){
             return;
         }
-        final List<Move> pvMoves = pvLine.getPvMoves();
-        final int nodeScore = pvLine.getScore();
+        List<Move> pvMoves = pvLine.getPvMoves();
+        int nodeScore = pvLine.getScore();
         
         sendInfoCommand(pvMoves, nodeScore, depth, mateFound, distance, timeTaken);
     }
@@ -35,7 +33,7 @@ public class UCIPrinter {
         if (this.engine.INFO_LOG) {
             ProtocolInformationCommand protocolInformationCommand = new ProtocolInformationCommand();
     
-            final List<GenericMove> genericMovesPV = moves.stream()
+            List<GenericMove> genericMovesPV = moves.stream()
                     .map(UCIBoardParser::convertMyMoveToGenericMove)
                     .collect(Collectors.toList());
             
@@ -46,7 +44,7 @@ public class UCIPrinter {
             }
             protocolInformationCommand.setNodes(this.engine.statistics.numberOfMovesMade);
             if (timeTaken != 0) {
-                final long nps = this.engine.statistics.numberOfMovesMade * 1000 / timeTaken;
+                long nps = this.engine.statistics.numberOfMovesMade * 1000 / timeTaken;
                 if (nps > 0) {
                     protocolInformationCommand.setNps(nps);
                 }

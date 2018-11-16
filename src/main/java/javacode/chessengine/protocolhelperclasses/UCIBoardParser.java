@@ -1,4 +1,4 @@
-package javacode.chessengine.protocolutils;
+package javacode.chessengine.protocolhelperclasses;
 
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;

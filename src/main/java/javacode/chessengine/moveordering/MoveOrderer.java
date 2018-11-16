@@ -1,5 +1,6 @@
-package javacode.chessengine;
+package javacode.chessengine.moveordering;
 
+import javacode.chessengine.search.Engine;
 import javacode.chessprogram.bitboards.BitBoards;
 import javacode.chessprogram.check.CheckChecker;
 import javacode.chessprogram.chess.Chessboard;
@@ -14,22 +15,22 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static javacode.chessengine.KillerMoves.killerMoves;
-import static javacode.chessengine.KillerMoves.mateKiller;
+import static javacode.chessengine.moveordering.KillerMoves.killerMoves;
+import static javacode.chessengine.moveordering.KillerMoves.mateKiller;
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
 import static javacode.chessprogram.moveMaking.MoveParser.*;
 
-class MoveOrderer {
+public class MoveOrderer {
 
-    private final Engine engine;
-    private final HistoryMoves historyMoves;
+    private Engine engine;
+    private HistoryMoves historyMoves;
 
-    final int MAX_HISTORY_MOVE_SCORE = 90;
-    private final int CAPTURE_BIAS = 100;
-    private final int CAPTURE_BIAS_LAST_MOVED_PIECE = 5;
+    int MAX_HISTORY_MOVE_SCORE = 90;
+    private int CAPTURE_BIAS = 100;
+    private int CAPTURE_BIAS_LAST_MOVED_PIECE = 5;
 
-    private final int
+    private int
             hashScore = 127,
             aiScore = 126,
             mateKillerScore = 125,
@@ -44,7 +45,7 @@ class MoveOrderer {
             uninterestingMove = 1,
             uninterestingPromotion = 0;
 
-    MoveOrderer(Engine engine){
+    public MoveOrderer(Engine engine){
         this.engine = engine;
         this.historyMoves = new HistoryMoves(this);
     }
@@ -54,7 +55,7 @@ class MoveOrderer {
     previous Hash Moves, promotions, capture of last moved piece, good captures, killers, killers from earlier plies, 
     castling, bad captures, quiet moves, bad promotions
      */
-    List<Move> orderedMoves(Chessboard board, boolean white, int ply, Move hashMove, Move aiMove){
+    public List<Move> orderedMoves(Chessboard board, boolean white, int ply, Move hashMove, Move aiMove){
         return extractMoves(board, white,
                 generateLegalMoves(board, board.isWhiteTurn()),
                 ply, hashMove, aiMove);
@@ -88,7 +89,7 @@ class MoveOrderer {
             else if (aiMove != null && ply == 0 && move.equals(aiMove)){
                 moveScore = new MoveScore(move, aiScore);
             }
-            else if (this.engine.ALLOW_MATE_KILLERS && mateKiller[ply] != null && move.equals(mateKiller[ply])){
+            else if (this.engine.getEngineSpecifications().ALLOW_MATE_KILLERS && mateKiller[ply] != null && move.equals(mateKiller[ply])){
                 moveScore = new MoveScore(move, mateKillerScore);
             }
             else if (moveIsCaptureOfLastMovePiece(board, move)){
@@ -105,17 +106,17 @@ class MoveOrderer {
                 moveScore = new MoveScore(move, uninterestingPromotion);
             }
             
-            else if (this.engine.ALLOW_KILLERS && killerMoves[ply][0] != null && killerMoves[ply][0].equals(move)){
+            else if (this.engine.getEngineSpecifications().ALLOW_KILLERS && killerMoves[ply][0] != null && killerMoves[ply][0].equals(move)){
                 moveScore = new MoveScore(move, killerOneScore);
             }
-            else if (this.engine.ALLOW_KILLERS && killerMoves[ply][1] != null && killerMoves[ply][1].equals(move)){
+            else if (this.engine.getEngineSpecifications().ALLOW_KILLERS && killerMoves[ply][1] != null && killerMoves[ply][1].equals(move)){
                 moveScore = new MoveScore(move, killerTwoScore);
             }
-            else if (this.engine.ALLOW_KILLERS && ply >= 2 && killerMoves.length > 2
+            else if (this.engine.getEngineSpecifications().ALLOW_KILLERS && ply >= 2 && killerMoves.length > 2
                     && killerMoves[ply - 2][0] != null && killerMoves[ply - 2][0].equals(move)){
                 moveScore = new MoveScore(move, oldKillerScoreOne);
             }
-            else if (this.engine.ALLOW_KILLERS && ply >= 2 && killerMoves.length > 2
+            else if (this.engine.getEngineSpecifications().ALLOW_KILLERS && ply >= 2 && killerMoves.length > 2
                     && killerMoves[ply - 2][1] != null && killerMoves[ply - 2][1].equals(move)){
                 moveScore = new MoveScore(move, oldKillerScoreTwo);
             }
@@ -128,7 +129,7 @@ class MoveOrderer {
             else if (MoveParser.isCastlingMove(move)){
                 moveScore = new MoveScore(move, castlingMove);
             }
-            else if (this.engine.ALLOW_HISTORY_MOVES){
+            else if (this.engine.getEngineSpecifications().ALLOW_HISTORY_MOVES){
                 moveScore = new MoveScore(move, this.historyMoves.historyMoveScore(move));
             }
             else {
@@ -186,7 +187,7 @@ class MoveOrderer {
     Quiescence Search ordering:
     order moves by most valuable victim and least valuable aggressor
      */
-    List<Move> orderMovesQuiescence (Chessboard board, boolean white, List<Move> allMoves){
+    public List<Move> orderMovesQuiescence(Chessboard board, boolean white, List<Move> allMoves){
         return extractMovesQuiescence(board, white, allMoves);
     }
 
@@ -230,13 +231,13 @@ class MoveOrderer {
         return unsortedScoredMoves;
     }
 
-    boolean moveIsCapture(Chessboard board, Move move){
+    public boolean moveIsCapture(Chessboard board, Move move){
         long ENEMY_PIECES = board.isWhiteTurn() ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES();
         long destinationSquare = newPieceOnSquare(move.destinationIndex);
         return (destinationSquare & ENEMY_PIECES) != 0;
     }
 
-    boolean checkingMove(Chessboard board, Move move){
+    public boolean checkingMove(Chessboard board, Move move){
         Assert.assertTrue(generateLegalMoves(board, board.isWhiteTurn()).contains(move));
 
         MoveOrganiser.makeMoveMaster(board, move);
@@ -246,7 +247,7 @@ class MoveOrderer {
         return checkingMove;
     }
 
-    boolean moveWillBePawnPushSix(Chessboard board, Move move){
+    public boolean moveWillBePawnPushSix(Chessboard board, Move move){
         long myPawns = board.isWhiteTurn() ? board.WHITE_PAWNS : board.BLACK_PAWNS;
 
         if (board.isWhiteTurn()){
@@ -263,7 +264,7 @@ class MoveOrderer {
         }
     }
 
-    boolean moveWillBePawnPushSeven(Chessboard board, Move move){
+    public boolean moveWillBePawnPushSeven(Chessboard board, Move move){
         long myPawns = board.isWhiteTurn() ? board.WHITE_PAWNS : board.BLACK_PAWNS;
 
         if (board.isWhiteTurn()){
@@ -280,13 +281,13 @@ class MoveOrderer {
         }
     }
 
-    void updateHistoryMoves(Move move, int ply){
+    public void updateHistoryMoves(Move move, int ply){
         this.historyMoves.updateHistoryMoves(move, ply);
     }
 
     private class MoveScore {
-        private final Move move;
-        private final int score;
+        private Move move;
+        private int score;
 
         MoveScore(Move move, int score) {
             this.move = move;

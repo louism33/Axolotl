@@ -1,4 +1,4 @@
-package javacode.evaluation;
+package javacode.chessengine.evaluation;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
@@ -11,17 +11,17 @@ import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.moveGeneration.PinnedManager.whichPiecesArePinned;
 
-class Misc {
+public class Misc {
 
-    private static final int MOVE_NUMBER_POINT = 1; 
-    private static final int BATTERY_SCORE = 10;
-    private static final int I_CONTROL_OPEN_FILE = 10;
-    private static final int MY_TURN_BONUS = 10;
-    private static final int IN_CHECK_PENALTY = -5;
+    private static int MOVE_NUMBER_POINT = 1; 
+    private static int BATTERY_SCORE = 10;
+    private static int I_CONTROL_OPEN_FILE = 10;
+    private static int MY_TURN_BONUS = 10;
+    private static int IN_CHECK_PENALTY = -5;
 
-    private static final int BASIC_PINNED_PIECE_PENALTY_KING = -15;
-    private static final int QUEEN_IS_PINNED = -10;
-    private static final int BASIC_PINNED_PIECE_PENALTY_QUEEN = -10;
+    private static int BASIC_PINNED_PIECE_PENALTY_KING = -15;
+    private static int QUEEN_IS_PINNED = -10;
+    private static int BASIC_PINNED_PIECE_PENALTY_QUEEN = -10;
 
     static int evalMiscByTurn(Chessboard board, boolean white, List<Move> moves) {
         int score = 0;

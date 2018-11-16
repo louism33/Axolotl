@@ -1,7 +1,7 @@
 package javacode.chessprogram.chess;
 
+import javacode.chessprogram.graphicsandui.Art;
 import javacode.chessprogram.miscAdmin.MovePrettifier;
-import javacode.graphicsandui.Art;
 
 import java.util.Objects;
 

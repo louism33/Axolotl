@@ -1,26 +1,26 @@
-package javacode.chessengine;
+package javacode.chessengine.search;
 
+import javacode.chessengine.evaluation.Evaluator;
 import javacode.chessengine.moveordering.MoveOrderer;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.chessprogram.moveMaking.MoveParser;
 import javacode.chessprogram.moveMaking.MoveUnmaker;
-import javacode.evaluation.Evaluator;
 import org.junit.Assert;
 
 import java.util.List;
 
-import static javacode.chessengine.FutilityPruning.quiescenceFutilityMargin;
-import static javacode.chessengine.SEEPruning.seeScore;
+import static javacode.chessengine.evaluation.Evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static javacode.chessengine.search.FutilityPruning.quiescenceFutilityMargin;
+import static javacode.chessengine.search.SEEPruning.seeScore;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
-import static javacode.evaluation.Evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 
-class QuiescenceSearch {
-    private final Engine engine;
-    private final MoveOrderer moveOrderer;
-    private final QuiescentSearchUtils quiescentSearchUtils;
-    private final Evaluator evaluator;
+public class QuiescenceSearch {
+    private Engine engine;
+    private MoveOrderer moveOrderer;
+    private QuiescentSearchUtils quiescentSearchUtils;
+    private Evaluator evaluator;
 
     QuiescenceSearch(Engine engine, MoveOrderer moveOrderer, Evaluator evaluator){
         this.engine = engine;
@@ -66,8 +66,8 @@ class QuiescenceSearch {
 
         int numberOfMovesSearched = 0;
         for (Move loudMove : orderedCaptureMoves){
-            final boolean captureMove = this.moveOrderer.moveIsCapture(board, loudMove);
-            final boolean promotionMove = MoveParser.isPromotionMove(loudMove);
+            boolean captureMove = this.moveOrderer.moveIsCapture(board, loudMove);
+            boolean promotionMove = MoveParser.isPromotionMove(loudMove);
 
             Assert.assertTrue(captureMove || promotionMove);
             
@@ -75,7 +75,7 @@ class QuiescenceSearch {
             Quiescence Futility Pruning:
             if this is a particularly low scoring situation skip this move
              */
-            if (this.engine.ALLOW_QUIESCENCE_FUTILITY_PRUNING){
+            if (this.engine.getEngineSpecifications().ALLOW_QUIESCENCE_FUTILITY_PRUNING){
                 if (captureMove
                         && quiescenceFutilityMargin
                         + standPatScore
@@ -85,7 +85,7 @@ class QuiescenceSearch {
                 }
             }
 
-            if (captureMove && this.engine.ALLOW_QUIESCENCE_SEE_PRUNING){
+            if (captureMove && this.engine.getEngineSpecifications().ALLOW_QUIESCENCE_SEE_PRUNING){
                 int seeScore = seeScore(board, loudMove, evaluator);
                 if (seeScore <= -300) {
                     this.engine.statistics.numberOfSuccessfulQuiescentSEEs++;

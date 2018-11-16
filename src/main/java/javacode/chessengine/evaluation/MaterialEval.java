@@ -1,4 +1,4 @@
-package javacode.evaluation;
+package javacode.chessengine.evaluation;
 
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
@@ -7,9 +7,9 @@ import javacode.chessprogram.moveMaking.MoveParser;
 
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 
-class MaterialEval {
+public class MaterialEval {
 
-    private final Evaluator evaluator;
+    private Evaluator evaluator;
 
     public MaterialEval(Evaluator evaluator) {
         this.evaluator = evaluator;

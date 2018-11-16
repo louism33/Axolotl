@@ -1,11 +1,11 @@
-package javacode.evaluation;
+package javacode.chessengine.evaluation;
 
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 
 import java.util.List;
 
-class PositionEval {
+public class PositionEval {
 
     static int evalPositionByTurn(Chessboard board, boolean white, boolean naiveEndgame){
         long pawns, knights, bishops, rooks, queens, kings;
@@ -47,7 +47,7 @@ class PositionEval {
         return answer;
     }
 
-    private static final int[] pawnpos = {
+    private static int[] pawnpos = {
               0,    0,  0,  0,  0,  0,  0,  0,
             164,  156,174,218,218,174,156,164,
              12,   56, 66, 58, 58, 66, 56, 12,
@@ -58,7 +58,7 @@ class PositionEval {
               0,    0,  0,  0,  0,  0,  0,  0,
     };
 
-    private static final int[] knightpos = {
+    private static int[] knightpos = {
             -214,-112,-130,-34,-34,-130,-112,-214,
              -80, -62,   2,-34,-34,   2, -62, -80,
              -24,  44,  18, 36, 36,  18,  44, -24,
@@ -69,7 +69,7 @@ class PositionEval {
              -30,   6,  -4, 20, 20,  -4,   6, -30,
     };
 
-    private static final int[] bishoppos = {
+    private static int[] bishoppos = {
             -18, 12,-92,-84,-84,-92, 12,-18,
             -44, -8,  0,-18,-18,  0, -8,-44,
              40, 48, 42, 34, 34, 42, 48, 40,
@@ -80,7 +80,7 @@ class PositionEval {
              8,  32, 30, 48, 48, 30, 32,  8,
     };
 
-    private static final int[] rookpos =   {
+    private static int[] rookpos =   {
             -36,-26,-72, -4, -4,-72,-26,-36,
             -36,-20, 14, 22, 22, 14,-20,-36,
             -28,  2, -2, -8, -8, -2,  2,-28,
@@ -91,7 +91,7 @@ class PositionEval {
             -10,-12,  0, 14, 14,  0,-12,-10,
     };
 
-    private static final int[] queenpos =   {
+    private static int[] queenpos =   {
             -72,-44,-78,-66,-66,-78,-44,-72,
             -38,-88,-70,-82,-82,-70,-88,-38,
              -8,-38,-44,-64,-64,-44,-38, -8,
@@ -102,7 +102,7 @@ class PositionEval {
              14,  6, 12, 24, 24, 12,  6, 14,
     };
 
-    private static int kingposstart[] =   {
+    private static int[] kingposstart =   {
              20, 30, 10,  0,  0, 20, 30, 20,
              20, 20,  0,  0,  0,  0, 20, 20,
             -10,-20,-20,-20,-20,-20,-20,-10,
@@ -113,7 +113,7 @@ class PositionEval {
             -30,-40,-40,-50,-50,-40,-40,-30
     };
 
-    private static int kingposend[] =   {
+    private static int[] kingposend =   {
             -50,-30,-30,-30,-30,-30,-30,-50,
             -30,-30,  0,  0,  0,  0,-30,-30,
             -30,-10, 20, 30, 30, 20,-10,-30,

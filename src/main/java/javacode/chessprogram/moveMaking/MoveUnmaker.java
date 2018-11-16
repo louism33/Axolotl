@@ -2,7 +2,7 @@ package javacode.chessprogram.moveMaking;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.graphicsandui.Art;
+import javacode.chessprogram.graphicsandui.Art;
 
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveMaking.StackMoveData.SpecialMove.*;
@@ -226,8 +226,6 @@ public class MoveUnmaker {
             board.BLACK_KING |= destinationPiece;
         }
         else {
-            System.out.println(Art.boardArt(board));
-            System.out.println(move);
             throw new RuntimeException("unMakeMoveMaster: false move " + move);
         }
     }

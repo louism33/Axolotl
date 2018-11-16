@@ -1,9 +1,9 @@
-package javacode.chessengine;
+package javacode.chessengine.search;
 
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 
-class NullMovePruning {
+public class NullMovePruning {
     
     static int nullMoveDepthReduction(int depth){
         return 2 + depth / 3;
@@ -19,7 +19,7 @@ class NullMovePruning {
                 ;
     }
 
-    static boolean maybeInEndgame(Chessboard board){
+    public static boolean maybeInEndgame(Chessboard board){
         return BitIndexing.populationCount(board.ALL_PIECES()) < 9;
     }
 
@@ -39,7 +39,7 @@ class NullMovePruning {
         return BitIndexing.populationCount(allMyPieces ^ (myPawns | myKing)) <= 1;
     }
 
-    static boolean onlyPawnsLeftForPlayer(Chessboard board, boolean white){
+    public static boolean onlyPawnsLeftForPlayer(Chessboard board, boolean white){
         long myPawns, myKing, allMyPieces;
         if (white){
             allMyPieces = board.ALL_WHITE_PIECES();

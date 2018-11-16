@@ -1,11 +1,11 @@
-package javacode.chessengine;
+package javacode.chessengine.search;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
-class LateMoveReductions {
+public class LateMoveReductions {
     
-    static int lateMoveDepthReduction(int depth){
+    public static int lateMoveDepthReduction(int depth){
         return 2 + depth / 3;
     }
 

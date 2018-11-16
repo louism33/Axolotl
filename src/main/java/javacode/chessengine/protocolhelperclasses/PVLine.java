@@ -1,22 +1,22 @@
-package javacode.chessengine.protocolutils;
+package javacode.chessengine.protocolhelperclasses;
 
-import javacode.chessengine.EngineMovesAndHash;
-import javacode.chessengine.TranspositionTable;
-import javacode.chessengine.ZobristHash;
+import javacode.chessengine.transpositiontable.EngineMovesAndHash;
+import javacode.chessengine.transpositiontable.TranspositionTable;
+import javacode.chessengine.transpositiontable.ZobristHash;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static javacode.chessengine.EngineMovesAndHash.makeMoveAndHashUpdate;
+import static javacode.chessengine.transpositiontable.EngineMovesAndHash.makeMoveAndHashUpdate;
 
 public class PVLine {
     
     private int score;
     private List<Move> pvMoves;
 
-    public PVLine(int score, List<Move> pvMoves) {
+    private PVLine(int score, List<Move> pvMoves) {
         this.score = score;
         this.pvMoves = pvMoves;
     }

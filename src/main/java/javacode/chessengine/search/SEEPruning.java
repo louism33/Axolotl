@@ -1,12 +1,12 @@
-package javacode.chessengine;
+package javacode.chessengine.search;
 
+import javacode.chessengine.evaluation.Evaluator;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveGeneration.PieceMoveKing;
 import javacode.chessprogram.moveGeneration.PieceMoveKnight;
 import javacode.chessprogram.moveGeneration.PieceMovePawns;
 import javacode.chessprogram.moveGeneration.PieceMoveSliding;
-import javacode.evaluation.Evaluator;
 
 import java.util.ArrayList;
 import java.util.List;

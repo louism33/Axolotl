@@ -1,14 +1,14 @@
-package javacode.chessengine;
+package javacode.chessengine.search;
 
+import javacode.chessengine.evaluation.Evaluator;
 import javacode.chessprogram.chess.Chessboard;
-import javacode.evaluation.Evaluator;
 
-import static javacode.evaluation.Evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static javacode.chessengine.evaluation.Evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 
-class Razoring {
+public class Razoring {
     
-    static final int[] alphaRazorMargin = {0, 300, 450, 600}; 
-    private static final int alphaRazorBelowThisDepth = alphaRazorMargin.length;
+    public static int[] alphaRazorMargin = {0, 300, 450, 600}; 
+    private static int alphaRazorBelowThisDepth = alphaRazorMargin.length;
 
     static boolean isAlphaRazoringMoveOkHere(Chessboard board, Evaluator evaluator, int depth, int alpha){
         return depth < alphaRazorBelowThisDepth
@@ -16,8 +16,8 @@ class Razoring {
                 ;
     }
 
-    static final int[] betaRazorMargin = {0, 100, 200, 300, 400, 600, 700};
-    private static final int betaRazorBelowThisDepth = betaRazorMargin.length;
+    public static int[] betaRazorMargin = {0, 100, 200, 300, 400, 600, 700};
+    private static int betaRazorBelowThisDepth = betaRazorMargin.length;
     
     static boolean isBetaRazoringMoveOkHere(Chessboard board, Evaluator evaluator, int depth, int staticBoardEval){
         return depth < betaRazorBelowThisDepth

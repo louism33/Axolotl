@@ -1,11 +1,11 @@
 package tests.enginetests;
 
-import javacode.chessengine.Engine;
+import javacode.chessengine.search.Engine;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
+import javacode.chessprogram.graphicsandui.Art;
 import javacode.chessprogram.miscAdmin.FenParser;
 import javacode.chessprogram.miscAdmin.MoveParserFromAN;
-import javacode.graphicsandui.Art;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 

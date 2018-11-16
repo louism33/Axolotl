@@ -1,4 +1,4 @@
-package javacode.evaluation;
+package javacode.chessengine.evaluation;
 
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
@@ -12,13 +12,13 @@ import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleQueenCaptures;
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleQueenPushes;
 
-class Queen {
+public class Queen {
 
-    private static final int QUEEN_ON_SEVENTH_BONUS = 10;
-    private static final int QUEEN_MOBILITY_SCORE = 1;
-    private static final int QUEEN_PROTECTOR_SCORE = 2;
-    private static final int QUEEN_AGGRESSOR_SCORE = 5;
-    private static final int QUEEN_PROTECTS_ROOK = 10;
+    private static int QUEEN_ON_SEVENTH_BONUS = 10;
+    private static int QUEEN_MOBILITY_SCORE = 1;
+    private static int QUEEN_PROTECTOR_SCORE = 2;
+    private static int QUEEN_AGGRESSOR_SCORE = 5;
+    private static int QUEEN_PROTECTS_ROOK = 10;
 
     static int evalQueenByTurn(Chessboard board, boolean white) {
         long myQueens = white ? board.WHITE_QUEEN : board.BLACK_QUEEN;

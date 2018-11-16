@@ -1,11 +1,10 @@
-package javacode.chessengine;
+package javacode.chessengine.moveordering;
 
-import javacode.chessengine.moveordering.MoveOrderer;
 import javacode.chessprogram.chess.Move;
 
 public class HistoryMoves {
     
-    private final MoveOrderer moveOrderer;
+    private MoveOrderer moveOrderer;
 
     public HistoryMoves(MoveOrderer moveOrderer) {
         this.moveOrderer = moveOrderer;
@@ -15,7 +14,7 @@ public class HistoryMoves {
     History Moves:
     one int for every from-square to-square combination. Incremented every time this move is found to produce cutoffs
      */
-    private final int[][] historyMoves = new int[64][64];
+    private int[][] historyMoves = new int[64][64];
     
     /*
     square the ply as shallower moves get added many times

@@ -1,25 +1,25 @@
-package javacode.chessengine;
+package javacode.chessengine.transpositiontable;
 
+import javacode.chessengine.evaluation.Evaluator;
 import javacode.chessprogram.chess.Move;
-import javacode.evaluation.Evaluator;
 
 import java.util.HashMap;
 
 public class TranspositionTable extends HashMap<Long, TranspositionTable.TableObject> {
-    
-    TranspositionTable(){}
+
+    public TranspositionTable(){}
     
     public static class TableObject {
-        private final Move move;
-        private final int score;
-        private final int depth;
-        private final Flag flag;
+        private Move move;
+        private int score;
+        private int depth;
+        private Flag flag;
         
         public enum Flag {
                 EXACT, LOWERBOUND, UPPERBOUND
         }
 
-        TableObject(Move move, int score, int depth, Flag flag) {
+        public TableObject(Move move, int score, int depth, Flag flag) {
             this.move = move;
             this.score = score;
             this.depth = depth;
@@ -40,11 +40,11 @@ public class TranspositionTable extends HashMap<Long, TranspositionTable.TableOb
             return score;
         }
 
-        Flag getFlag() {
+        public Flag getFlag() {
             return flag;
         }
 
-        int getDepth() {
+        public int getDepth() {
             return depth;
         }
 

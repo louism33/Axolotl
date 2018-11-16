@@ -1,14 +1,14 @@
-package javacode.chessengine;
+package javacode.chessengine.search;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
-class FutilityPruning {
+public class FutilityPruning {
 
-    static final int quiescenceFutilityMargin = 200;
+    static int quiescenceFutilityMargin = 200;
     
-    static final int[] futilityMargin = {0, 100, 200, 300, 400, 500, 600};
-    private static final int futilityBelowThisDepth = futilityMargin.length;
+    public static int[] futilityMargin = {0, 100, 200, 300, 400, 500, 600};
+    private static int futilityBelowThisDepth = futilityMargin.length;
     
     static boolean isFutilityPruningAllowedHere(Chessboard board, Move move, int depth,
                                                 boolean promotionMove,

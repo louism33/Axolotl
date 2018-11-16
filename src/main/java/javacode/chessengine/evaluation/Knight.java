@@ -1,4 +1,4 @@
-package javacode.evaluation;
+package javacode.chessengine.evaluation;
 
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
@@ -13,13 +13,13 @@ import static javacode.chessprogram.moveGeneration.PieceMoveKnight.singleKnightC
 import static javacode.chessprogram.moveGeneration.PieceMoveKnight.singleKnightPushes;
 import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapturesTable;
 
-class Knight {
+public class Knight {
 
-    private static final int KNIGHT_OUTPOST_BONUS = 20;
-    private static final int KNIGHT_MOBILITY_SCORE = 3;
-    private static final int KNIGHT_PROTECTOR_SCORE = 4;
-    private static final int KNIGHT_AGGRESSOR_SCORE = 6;
-    private static final int UNDEVELOPED_KNIGHT_PENALTY = -20;
+    private static int KNIGHT_OUTPOST_BONUS = 20;
+    private static int KNIGHT_MOBILITY_SCORE = 3;
+    private static int KNIGHT_PROTECTOR_SCORE = 4;
+    private static int KNIGHT_AGGRESSOR_SCORE = 6;
+    private static int UNDEVELOPED_KNIGHT_PENALTY = -20;
 
     static int evalKnightByTurn(Chessboard board, boolean white) {
         long myKnights = white ? board.WHITE_KNIGHTS : board.BLACK_KNIGHTS;
