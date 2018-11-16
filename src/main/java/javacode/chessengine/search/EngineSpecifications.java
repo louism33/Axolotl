@@ -18,9 +18,9 @@ public class EngineSpecifications {
     public boolean ALLOW_MATE_DISTANCE_PRUNING          = true;
     public boolean ALLOW_EXTENSIONS                     = true;
 
-    public boolean ALLOW_INTERNAL_ITERATIVE_DEEPENING   = false;
+    public boolean ALLOW_INTERNAL_ITERATIVE_DEEPENING   = true;
 
-    public boolean ALLOW_LATE_MOVE_REDUCTIONS           = false;
+    public boolean ALLOW_LATE_MOVE_REDUCTIONS           = true;
     public boolean ALLOW_LATE_MOVE_PRUNING              = true;
     public boolean ALLOW_NULL_MOVE_PRUNING              = true;
 
@@ -30,6 +30,6 @@ public class EngineSpecifications {
 
     public boolean ALLOW_SEE_PRUNING                    = true;
 
-    public boolean ALLOW_QUIESCENCE_SEE_PRUNING         = false;
-    public boolean ALLOW_QUIESCENCE_FUTILITY_PRUNING    = false;
+    public boolean ALLOW_QUIESCENCE_SEE_PRUNING         = true;
+    public boolean ALLOW_QUIESCENCE_FUTILITY_PRUNING    = true;
 }

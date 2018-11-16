@@ -109,7 +109,7 @@ public class Evaluator {
         ;
         return score;
     }
-
+    
     private int lazyEvalHelper(Chessboard board, boolean white) {
         return this.materialEval.evalMaterialByTurn(board, white) - this.materialEval.evalMaterialByTurn(board, !white);
     }
