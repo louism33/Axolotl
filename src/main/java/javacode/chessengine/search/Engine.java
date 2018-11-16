@@ -17,13 +17,13 @@ import java.util.Random;
 public class Engine {
 
     private UCIEntry uciEntry;
-    private EngineSpecifications engineSpecifications;
+    private EngineSpecifications engineSpecifications = new EngineSpecifications();
     
     Chessboard board;
     public Statistics statistics;
     private IterativeDeepeningDFS iterativeDeepeningDFS;
     private ZobristHash zobristHash;
-    private TimeAllocator timeAllocator;
+    private TimeAllocator timeAllocator = new TimeAllocator();
 
     private boolean setup = false;
 
@@ -35,7 +35,7 @@ public class Engine {
     /*
     max depth only works is time limit is false
      */
-    public int MAX_DEPTH = 100;
+    public int MAX_DEPTH = 10;
 
     
     long PLY_STOP_TIME;
@@ -71,11 +71,11 @@ public class Engine {
     public Move searchMyTime (Chessboard board, long maxTime){
         engineSpecifications.ALLOW_TIME_LIMIT = true;
         
-        if (maxTime < 5000){
-            return searchFixedDepth(board, 2);
-        }
         if (maxTime < 1000){
             return searchFixedDepth(board, 1);
+        }
+        if (maxTime < 5000){
+            return searchFixedDepth(board, 2);
         }
         long timeLimit = timeAllocator.allocateTime(board, maxTime);
         return searchFixedTime(board, timeLimit);

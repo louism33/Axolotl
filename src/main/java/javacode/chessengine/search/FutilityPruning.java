@@ -7,7 +7,7 @@ public class FutilityPruning {
 
     static int quiescenceFutilityMargin = 200;
     
-    public static int[] futilityMargin = {0, 100, 200, 300, 400, 500, 600};
+    public static int[] futilityMargin = {0, 150, 250, 350, 450, 550, 650};
     private static int futilityBelowThisDepth = futilityMargin.length;
     
     static boolean isFutilityPruningAllowedHere(Chessboard board, Move move, int depth,

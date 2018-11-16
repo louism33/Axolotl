@@ -6,7 +6,7 @@ import javacode.chessprogram.chess.Move;
 public class LateMoveReductions {
     
     public static int lateMoveDepthReduction(int depth){
-        return 2 + depth / 3;
+        return 2;
     }
 
     static boolean isLateMoveReductionAllowedHere(Chessboard board,

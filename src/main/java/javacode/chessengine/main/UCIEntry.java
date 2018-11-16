@@ -28,7 +28,7 @@ public class UCIEntry extends AbstractEngine {
     @Override
     public void receive(EngineInitializeRequestCommand command) {
         System.out.println("Starting Engine");
-        this.getProtocol().send(new ProtocolInitializeAnswerCommand("Axolotl-v1.1", "Louis James Mackenzie-Smith"));
+        this.getProtocol().send(new ProtocolInitializeAnswerCommand("Axolotl-v1.2", "Louis James Mackenzie-Smith"));
     }
 
     @Override
@@ -88,6 +88,9 @@ public class UCIEntry extends AbstractEngine {
     private Move calculatingHelper(EngineStartCalculatingCommand command) {
         long clock = timeOnClock(command);
         Move aiMove;
+        if (engine == null){
+            engine = new Engine(this);
+        }
         if (board == null) {
             board = convertGenericBoardToChessboard(genericBoard, null);
         }
@@ -103,7 +106,7 @@ public class UCIEntry extends AbstractEngine {
         else {
             int searchDepth = engine.MAX_DEPTH;
             if (command.getInfinite()){
-
+                return engine.searchFixedDepth(board, engine.MAX_DEPTH);
             }
             else if (command.getDepth() != null){
                 searchDepth = command.getDepth();

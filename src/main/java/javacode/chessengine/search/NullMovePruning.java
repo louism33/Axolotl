@@ -6,7 +6,7 @@ import javacode.chessprogram.chess.Chessboard;
 public class NullMovePruning {
     
     static int nullMoveDepthReduction(int depth){
-        return 2 + depth / 3;
+        return 2;
     }
     
     /*

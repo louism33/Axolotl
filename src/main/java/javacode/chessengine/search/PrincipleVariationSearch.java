@@ -12,6 +12,7 @@ import org.junit.Assert;
 
 import java.util.List;
 
+import static javacode.chessengine.evaluation.Evaluator.*;
 import static javacode.chessengine.moveordering.KillerMoves.mateKiller;
 import static javacode.chessengine.moveordering.KillerMoves.updateKillerMoves;
 import static javacode.chessengine.search.FutilityPruning.futilityMargin;
@@ -27,6 +28,7 @@ import static javacode.chessengine.transpositiontable.EngineMovesAndHash.*;
 import static javacode.chessengine.transpositiontable.TranspositionTable.TableObject.Flag.EXACT;
 import static javacode.chessengine.transpositiontable.TranspositionTable.TableObject.Flag.LOWERBOUND;
 import static javacode.chessengine.transpositiontable.TranspositionTable.TableObject.Flag.UPPERBOUND;
+import static javacode.chessprogram.check.CheckChecker.*;
 import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.chess.Copier.copyMove;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
@@ -83,8 +85,8 @@ public class PrincipleVariationSearch {
         prefer closer wins and further loses 
          */
         if (this.engine.getEngineSpecifications().ALLOW_MATE_DISTANCE_PRUNING){
-            alpha = Math.max(alpha, this.evaluator.IN_CHECKMATE_SCORE + ply);
-            beta = Math.min(beta, -this.evaluator.IN_CHECKMATE_SCORE - ply - 1);
+            alpha = Math.max(alpha, IN_CHECKMATE_SCORE + ply);
+            beta = Math.min(beta, -IN_CHECKMATE_SCORE - ply - 1);
             if (alpha >= beta){
                 return alpha;
             }
@@ -193,7 +195,7 @@ public class PrincipleVariationSearch {
             if not in dangerous position, forfeit a move and make shallower null window search
              */
             if (this.engine.getEngineSpecifications().ALLOW_NULL_MOVE_PRUNING) {
-                if (nullMoveCounter < 2 && isNullMoveOkHere(board)) {
+                if (nullMoveCounter < 2 && !reducedSearch && isNullMoveOkHere(board)) {
                     Assert.assertTrue(depth >= 1);
                     Assert.assertTrue(alpha < beta);
 
@@ -215,7 +217,7 @@ public class PrincipleVariationSearch {
 
                     if (nullScore >= beta) {
 
-                        if (nullScore > this.evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
+                        if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY){
                             nullScore = beta;
                         }
 
@@ -248,9 +250,10 @@ public class PrincipleVariationSearch {
                     }
 
                     int reducedIIDDepth = depth - iidDepthReduction - 1;
-                    int iidScore = principleVariationSearch(board, zobristHash,
+                    
+                    principleVariationSearch(board, zobristHash,
                             startTime, timeLimitMillis, originalDepth,
-                            depth - iidDepthReduction - 1, ply,
+                            reducedIIDDepth, ply,
                             alpha, beta, nullMoveCounter, true);
 
                     previousTableData = table.get(zobristHash.getBoardHash());
@@ -277,7 +280,6 @@ public class PrincipleVariationSearch {
             }
 
             orderedMoves = this.moveOrderer.orderedMoves(board, board.isWhiteTurn(), ply, null, aiMove);
-
         }
 
         int originalAlpha = alpha;
@@ -313,14 +315,14 @@ public class PrincipleVariationSearch {
                     before making move, see if we can prune this move
                      */
                     if (this.engine.getEngineSpecifications().ALLOW_LATE_MOVE_PRUNING) {
-                        if (bestScore < evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY
+                        if (bestScore < CHECKMATE_ENEMY_SCORE_MAX_PLY
                                 && !onlyPawnsLeftForPlayer(board, board.isWhiteTurn())) {
                             if (!promotionMove
                                     && !givesCheckMove
                                     && !pawnToSix
                                     && !pawnToSeven
                                     && depth <= 4
-                                    && numberOfMovesSearched >= depth * 3 + 3) {
+                                    && numberOfMovesSearched >= depth * 3 + 4) {
 
                                 if (debug) {
                                     this.engine.statistics.numberOfLateMovePrunings++;
@@ -384,8 +386,8 @@ public class PrincipleVariationSearch {
 
             boolean enemyInCheck = boardInCheck(board, board.isWhiteTurn());
 
-            if (CheckChecker.isDrawByRepetition(board, zobristHash) || CheckChecker.isDrawByInsufficientMaterial(board)){
-                score = this.evaluator.IN_STALEMATE_SCORE;
+            if (isDrawByRepetition(board, zobristHash) || isDrawByInsufficientMaterial(board)){
+                score = IN_STALEMATE_SCORE;
             }
             else { 
                 /*
@@ -411,9 +413,6 @@ public class PrincipleVariationSearch {
                      */
                     int lowerDepth = depth - lateMoveDepthReduction(depth) - 1;
 
-                    if (lowerDepth <= 0) {
-                        lowerDepth = 2;
-                    }
                     score = -principleVariationSearch
                             (board, zobristHash, startTime, timeLimitMillis,
                                     originalDepth, lowerDepth, ply + 1,
@@ -440,7 +439,8 @@ public class PrincipleVariationSearch {
                 Principle Variation Search:
                 moves that are not favourite (PV) are searched with a null window
                  */
-                else if (this.engine.getEngineSpecifications().ALLOW_PRINCIPLE_VARIATION_SEARCH && numberOfMovesSearched > 1) {
+                else if (this.engine.getEngineSpecifications().ALLOW_PRINCIPLE_VARIATION_SEARCH 
+                        && numberOfMovesSearched > 1) {
 
                     score = -principleVariationSearch(board, zobristHash,
                             startTime, timeLimitMillis,
@@ -504,7 +504,7 @@ public class PrincipleVariationSearch {
                     }
 
                     if (this.engine.getEngineSpecifications().ALLOW_MATE_KILLERS){
-                        if (alpha > this.evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
+                        if (alpha > CHECKMATE_ENEMY_SCORE_MAX_PLY){
                             mateKiller[ply] = copyMove(move);
                         }
                     }
@@ -518,13 +518,13 @@ public class PrincipleVariationSearch {
                 if (debug) {
                     this.engine.statistics.numberOfCheckmates++;
                 }
-                return this.evaluator.IN_CHECKMATE_SCORE + ply;
+                return IN_CHECKMATE_SCORE + ply;
             }
             else {
                 if (debug) {
                     this.engine.statistics.numberOfStalemates++;
                 }
-                return this.evaluator.IN_STALEMATE_SCORE;
+                return IN_STALEMATE_SCORE;
             }
         }
 

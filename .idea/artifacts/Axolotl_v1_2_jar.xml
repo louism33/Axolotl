@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="Axolotl-v1.1:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/Axolotl_v1_1_jar</output-path>
+  <artifact type="jar" name="Axolotl-v1.2:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Axolotl_v1_2_jar</output-path>
     <root id="archive" name="Axolotl.jar">
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" />
