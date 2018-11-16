@@ -2,10 +2,10 @@ package javacode.chessprogram.miscAdmin;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
+import javacode.chessprogram.graphicsandui.Art;
 import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
 import javacode.chessprogram.moveMaking.MoveOrganiser;
 import javacode.chessprogram.moveMaking.MoveUnmaker;
-import javacode.graphicsandui.Art;
 
 import java.util.ArrayList;
 import java.util.List;

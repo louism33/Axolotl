@@ -1,10 +1,6 @@
 package javacode.chessprogram.miscAdmin;
 
-import javacode.chessengine.Engine;
 import javacode.chessprogram.chess.Chessboard;
-import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.moveMaking.MoveOrganiser;
-import javacode.graphicsandui.Art;
 
 import java.util.ArrayList;
 import java.util.List;

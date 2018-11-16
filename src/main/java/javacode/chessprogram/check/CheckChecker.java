@@ -1,6 +1,6 @@
 package javacode.chessprogram.check;
 
-import javacode.chessengine.ZobristHash;
+import javacode.chessengine.transpositiontable.ZobristHash;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.moveGeneration.PieceMoveKing;
 import javacode.chessprogram.moveGeneration.PieceMoveKnight;

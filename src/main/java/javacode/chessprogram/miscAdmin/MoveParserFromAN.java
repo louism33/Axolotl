@@ -3,7 +3,7 @@ package javacode.chessprogram.miscAdmin;
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.graphicsandui.Art;
+import javacode.chessprogram.graphicsandui.Art;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
