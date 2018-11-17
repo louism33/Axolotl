@@ -7,86 +7,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8807346a-cf9d-4333-98e2-880bdb09ab35" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Axolotl.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Axolotl.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/bitboards/BitBoards.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/bitboards/King.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/bitboards/Knight.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/bitboards/PawnCaptures.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/bitboards/RandomBoard.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/check/CheckChecker.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/check/CheckMoveOrganiser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/check/CheckUtilities.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/check/KingLegalMoves.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/chess/BitExtractor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/chess/BitIndexing.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/chess/BitManipulations.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/chess/Chessboard.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/chess/Copier.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/chess/Move.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/miscAdmin/BlankBoard.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/miscAdmin/DetailedPerftSearching$MoveNLong.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/miscAdmin/DetailedPerftSearching.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/miscAdmin/ExtendedPositionDescriptionParser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/miscAdmin/FenParser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/miscAdmin/MoveParserFromAN$Piece.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/miscAdmin/MoveParserFromAN.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/miscAdmin/MovePrettifier.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/MoveGenerationUtilities.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/MoveGeneratorCastling.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/MoveGeneratorEnPassant.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/MoveGeneratorKnight.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/MoveGeneratorMaster.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/MoveGeneratorPawns.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/MoveGeneratorPromotion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/MoveGeneratorPseudo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/MoveGeneratorSliding.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/PieceMoveKing.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/PieceMoveKnight.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/PieceMovePawns.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/PieceMoveSliding.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveGeneration/PinnedManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveMaking/MoveCastling.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveMaking/MoveEnPassant.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveMaking/MoveMakingUtilities.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveMaking/MoveOrganiser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveMaking/MoveParser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveMaking/MovePromotion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveMaking/MoveRegular.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveMaking/MoveUnmaker.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveMaking/StackMoveData$SpecialMove.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/javacode/chessprogram/moveMaking/StackMoveData.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/Arasan20.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/ArasanTestSuite.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/BS2830Test.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/BT2630.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/BratkoKopecTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/CCROneHourTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/EET.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/EngineTestMateInFive.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/EngineTestMateInFour.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/EngineTestMateInSix.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/EngineTestMateInThree.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/EngineTestMateInTwo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/EngineTestMisc.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/KaufmanTests.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/LapuceII.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/Pet.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/QuickTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/ReflectionTests.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/SCHACKNYTTtests.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/WACTests.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/WacTwoBreakdown.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/enginetests/ZugzwangPositions.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/programtests/CheckCheckerTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/programtests/ChessboardTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/programtests/DetailedPerftSearchingTestSuite.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/programtests/MoveUnmakerTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/programtests/NotationTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/programtests/PerftSuiteTwo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/tests/programtests/ZobristHashTest.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -142,13 +67,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="java" value="649" />
-          <entry key="xml" value="11" />
+          <entry key="xml" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="649" />
-          <entry key="XML" value="11" />
+          <entry key="XML" value="17" />
         </counts>
       </usages-collector>
     </session>
@@ -188,8 +113,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
-              <caret line="55" column="16" selection-end-line="60" selection-end-column="10" />
+            <state relative-caret-position="690">
+              <caret line="46" column="32" lean-forward="true" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -229,7 +154,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99">
+            <state relative-caret-position="2430">
               <caret line="179" column="42" selection-start-line="179" selection-start-column="42" selection-end-line="179" selection-end-column="42" />
             </state>
           </provider>
@@ -285,8 +210,8 @@
       <find>MAX</find>
       <find>false</find>
       <find>//</find>
-      <find>91</find>
       <find>stop</find>
+      <find>91</find>
     </findStrings>
     <replaceStrings>
       <replace>black</replace>
@@ -422,9 +347,9 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="509" />
-    <option name="width" value="858" />
+  <component name="ProjectFrameBounds" extendedState="4">
+    <option name="x" value="512" />
+    <option name="width" value="855" />
     <option name="height" value="741" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -554,9 +479,9 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542455351490" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542457227901" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
-    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
@@ -574,7 +499,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.WACTests">
+  <component name="RunManager" selected="JAR Application.Axolotl-v1.2.jar">
     <configuration name="WACTests (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Axolotl" />
       <extension name="coverage">
@@ -665,25 +590,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Axolotl.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/Axolotl_v1_2_jar/Axolotl.jar" />
+    <configuration name="Axolotl-v1.2.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/Axolotl_v1_2_jar/Axolotl-v1.2.jar" />
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="JUnit.WACTests" />
-      <item itemvalue="JAR Application.Axolotl.jar" />
       <item itemvalue="JUnit.WACTests (1)" />
       <item itemvalue="JUnit.WACTests (2)" />
       <item itemvalue="JUnit.WACTests,test" />
       <item itemvalue="JUnit.WACTests.test" />
+      <item itemvalue="JAR Application.Axolotl-v1.2.jar" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JAR Application.Axolotl-v1.2.jar" />
         <item itemvalue="JUnit.WACTests (1)" />
         <item itemvalue="JUnit.WACTests.test" />
         <item itemvalue="JUnit.WACTests,test" />
         <item itemvalue="JUnit.WACTests (2)" />
-        <item itemvalue="JUnit.WACTests" />
       </list>
     </recent_temporary>
   </component>
@@ -782,7 +707,7 @@
       <workItem from="1542218573746" duration="12259000" />
       <workItem from="1542264635743" duration="607000" />
       <workItem from="1542312268288" duration="400000" />
-      <workItem from="1542448371599" duration="5188000" />
+      <workItem from="1542448371599" duration="6019000" />
     </task>
     <servers />
   </component>
@@ -819,7 +744,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28298000" />
+    <option name="totallyTimeSpent" value="29129000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -834,7 +759,7 @@
     <frame x="-1" y="0" width="1368" height="741" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.489603" visible="true" weight="0.22424242" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.489603" visible="true" weight="0.22424242" />
       <window_info id="Structure" order="1" sideWeight="0.51039696" side_tool="true" weight="0.26666668" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -844,7 +769,7 @@
       <window_info id="Favorites" order="7" sideWeight="0.5068182" side_tool="true" weight="0.26287878" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.33009708" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49772727" visible="true" weight="0.38187703" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49772727" visible="true" weight="0.017799353" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.28317153" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1253,13 +1178,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="179" column="42" selection-start-line="179" selection-start-column="42" selection-end-line="179" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Evaluator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="211">
@@ -1291,10 +1209,17 @@
     <entry file="file://$PROJECT_DIR$/.travis.yml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2430">
+          <caret line="179" column="42" selection-start-line="179" selection-start-column="42" selection-end-line="179" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="55" column="16" selection-end-line="60" selection-end-column="10" />
+        <state relative-caret-position="690">
+          <caret line="46" column="32" lean-forward="true" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="32" />
         </state>
       </provider>
     </entry>
@@ -1340,7 +1265,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>10</last-edited>
+          <last-edited>11</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
