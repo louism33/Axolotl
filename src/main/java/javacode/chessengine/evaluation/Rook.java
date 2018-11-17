@@ -37,12 +37,12 @@ public class Rook {
         int score = 0;
 
         score += 
-                unDevelopedRooks(board, white, myRooks)
+//                unDevelopedRooks(board, white, myRooks)
                 + rookOnSeventhRank(board, white, myRooks)
-                + rookMobility(board, white, myRooks)
-                + rookProtectorAndAggressor(board, white, myRooks)
-                + rookOnOpenFile(board, white, myRooks, myPawns, enemyPawns)
-                + rookHelpsQueensAndRooks(board, white, myRooks)
+//                + rookMobility(board, white, myRooks)
+//                + rookProtectorAndAggressor(board, white, myRooks)
+//                + rookOnOpenFile(board, white, myRooks, myPawns, enemyPawns)
+//                + rookHelpsQueensAndRooks(board, white, myRooks)
         ;
 
         return score;

@@ -47,17 +47,17 @@ public class Pawns {
         int score = 0;
 
         score += 0
-                + pawnCentreBonus(board, white, myPawns)
-                + pawnOnOpenFile(board, white, myPawns, enemyPawns)
-                + pawnStructureBonus(board, white, myPawns)
-                + pawnsThreatenBigThings(board, white, myPawns)
-                + pawnsChainBonus(board, white, myPawns)
-                + doublePawnPenalty(board, white, myPawns)
-                + pawnAttackingCentreBonus(board, white, myPawns)
+//                + pawnCentreBonus(board, white, myPawns)
+//                + pawnOnOpenFile(board, white, myPawns, enemyPawns)
+//                + pawnStructureBonus(board, white, myPawns)
+//                + pawnsThreatenBigThings(board, white, myPawns)
+//                + pawnsChainBonus(board, white, myPawns)
+//                + doublePawnPenalty(board, white, myPawns)
+//                + pawnAttackingCentreBonus(board, white, myPawns)
                 + superAdvancedPawn(board, white, myPawns)
-                + backwardsPawn(board, white, myPawns)
-                + blockedPawnPenalty(board, white, myPawns, enemyPawns)
-                + isolatedPawn(board, white, myPawns)
+//                + backwardsPawn(board, white, myPawns)
+//                + blockedPawnPenalty(board, white, myPawns, enemyPawns)
+//                + isolatedPawn(board, white, myPawns)
                 + passedPawn(board, white, myPawns, enemyPawns)
         ;
 

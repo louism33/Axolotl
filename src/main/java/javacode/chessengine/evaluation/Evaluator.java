@@ -100,11 +100,11 @@ public class Evaluator {
                         
                 + evalPositionByTurn(board, white, naiveEndgame(board))
                 + evalPawnsByTurn(board, white)
-                + evalBishopByTurn(board, white)
-                + evalKnightByTurn(board, white)
+//                + evalBishopByTurn(board, white)
+//                + evalKnightByTurn(board, white)
                 + evalRookByTurn(board, white)
-                + evalQueenByTurn(board, white)
-                + evalKingByTurn(board, white)
+//                + evalQueenByTurn(board, white)
+//                + evalKingByTurn(board, white)
                 + evalMiscByTurn(board, white, moves)
         ;
         return score;
