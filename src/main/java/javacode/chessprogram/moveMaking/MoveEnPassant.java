@@ -2,7 +2,6 @@ package javacode.chessprogram.moveMaking;
 
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.graphicsandui.Art;
 
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 

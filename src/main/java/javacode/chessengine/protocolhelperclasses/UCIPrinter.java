@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UCIPrinter {
-    private UCIEntry uciEntry;
-    private Engine engine;
+    private final UCIEntry uciEntry;
+    private final Engine engine;
 
     public UCIPrinter(UCIEntry uciEntry, Engine engine) {
         this.uciEntry = uciEntry;
@@ -30,7 +30,7 @@ public class UCIPrinter {
 
     private void sendInfoCommand(List<Move> moves, int nodeScore, int depth,
                                  boolean mateFound, int distanceToMate, long timeTaken){
-        if (this.engine.INFO_LOG) {
+        if (this.engine.getEngineSpecifications().INFO_LOG) {
             ProtocolInformationCommand protocolInformationCommand = new ProtocolInformationCommand();
 
             List<GenericMove> genericMovesPV = moves.stream()
@@ -57,7 +57,12 @@ public class UCIPrinter {
                 protocolInformationCommand.setCentipawns(nodeScore);
             }
 
-            this.uciEntry.sendInformation(protocolInformationCommand);
+            if (this.uciEntry != null) {
+                this.uciEntry.sendInformation(protocolInformationCommand);
+            }
+            else{
+                System.out.println(protocolInformationCommand.getCentipawns() +" : " + protocolInformationCommand.getMoveList());
+            }
         }
 
     }

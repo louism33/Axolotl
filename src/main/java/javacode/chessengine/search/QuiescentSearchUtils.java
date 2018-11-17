@@ -6,9 +6,9 @@ import javacode.chessprogram.chess.Move;
 
 import java.util.List;
 
-public class QuiescentSearchUtils {
+class QuiescentSearchUtils {
 
-    private MoveOrderer moveOrderer;
+    private final MoveOrderer moveOrderer;
     
     QuiescentSearchUtils(MoveOrderer moveOrderer) {
         this.moveOrderer = moveOrderer;

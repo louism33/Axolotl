@@ -5,6 +5,7 @@ import javacode.chessprogram.chess.Chessboard;
 
 import java.util.List;
 
+import static javacode.chessengine.evaluation.EvaluationConstants.*;
 import static javacode.chessprogram.bitboards.BitBoards.RANK_SEVEN;
 import static javacode.chessprogram.bitboards.BitBoards.RANK_TWO;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
@@ -12,13 +13,7 @@ import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleQueenCaptures;
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleQueenPushes;
 
-public class Queen {
-
-    private static int QUEEN_ON_SEVENTH_BONUS = 10;
-    private static int QUEEN_MOBILITY_SCORE = 1;
-    private static int QUEEN_PROTECTOR_SCORE = 2;
-    private static int QUEEN_AGGRESSOR_SCORE = 5;
-    private static int QUEEN_PROTECTS_ROOK = 10;
+class Queen {
 
     static int evalQueenByTurn(Chessboard board, boolean white) {
         long myQueens = white ? board.WHITE_QUEEN : board.BLACK_QUEEN;

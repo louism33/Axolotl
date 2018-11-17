@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import javax.lang.model.element.NestingKind;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,7 +22,7 @@ public class WACTests {
 
     private static Engine engine = null;
     
-    private static final int timeLimit = 120_000;
+    private static final int timeLimit = 60_000;
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -38,7 +37,7 @@ public class WACTests {
             counter++;
             
             if (counter < from){
-                continue;
+//                continue;
             }
             
             Object[] objectAndName = new Object[2];
@@ -49,7 +48,7 @@ public class WACTests {
             
 
             if (counter >= until){
-                break;
+//                break;
             }
         }
         return answers;

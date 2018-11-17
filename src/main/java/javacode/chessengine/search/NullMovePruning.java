@@ -3,7 +3,7 @@ package javacode.chessengine.search;
 import javacode.chessprogram.chess.BitIndexing;
 import javacode.chessprogram.chess.Chessboard;
 
-public class NullMovePruning {
+class NullMovePruning {
     
     static int nullMoveDepthReduction(int depth){
         return 2;

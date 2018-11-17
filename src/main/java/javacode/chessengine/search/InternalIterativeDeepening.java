@@ -5,9 +5,9 @@ import javacode.chessprogram.chess.Chessboard;
 import static javacode.chessengine.search.NullMovePruning.maybeInEndgame;
 import static javacode.chessengine.search.NullMovePruning.onlyPawnsLeftForPlayer;
 
-public class InternalIterativeDeepening {
+class InternalIterativeDeepening {
 
-    public static int iidDepthReduction = 2;
+    public static final int iidDepthReduction = 2;
 
     static boolean isIIDAllowedHere(Chessboard board, int depth, boolean reducedSearch, boolean thisIsAPrincipleVariationNode){
         return !reducedSearch

@@ -6,6 +6,7 @@ import javacode.chessprogram.chess.Chessboard;
 
 import java.util.List;
 
+import static javacode.chessengine.evaluation.EvaluationConstants.*;
 import static javacode.chessprogram.bitboards.BitBoards.*;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
@@ -15,17 +16,7 @@ import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapt
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleBishopCaptures;
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleBishopPushes;
 
-public class Bishop {
-
-    private static int PER_ENEMY_PAWN_COLOUR_MODIFIER = 5;
-    private static int PER_FRIENDLY_PAWN_COLOUR_MODIFIER = 3;
-    private static int DOUBLE_BISHOP_BONUS = 15;
-    private static int BISHOP_OUTPOST_BONUS = 10;
-    private static int BISHOP_MOBILITY_SCORE = 1;
-    private static int BISHOP_PROTECTOR_SCORE = 2;
-    private static int BISHOP_AGGRESSOR_SCORE = 5;
-    private static int UNDEVELOPED_BISHOP_PENALTY = -20;
-    private static int PRIME_DIAGONAL_BONUS = 20;
+class Bishop {
 
     static int evalBishopByTurn(Chessboard board, boolean white){
         long myBishops = white ? board.WHITE_BISHOPS : board.BLACK_BISHOPS;
@@ -60,11 +51,11 @@ public class Bishop {
     private static int unDevelopedBishops(Chessboard board, boolean white, long myBishops){
         long originalBishops = white ? WHITE_BISHOPS : BLACK_BISHOPS;
         return BitIndexing.populationCount(originalBishops & myBishops)
-                * UNDEVELOPED_BISHOP_PENALTY;
+                * BISHOP_UNDEVELOPED_PENALTY;
     }
 
     private static int primeDiagonals(Chessboard board, boolean white, long myBishops){
-        return populationCount(myBishops & (DIAGONAL_SW_NE | DIAGONAL_NW_SE)) * PRIME_DIAGONAL_BONUS;
+        return populationCount(myBishops & (DIAGONAL_SW_NE | DIAGONAL_NW_SE)) * BISHOPS_PRIME_DIAGONAL_BONUS;
     }
 
     private static int bishopMobility(Chessboard board, boolean white, long myBishops){
@@ -148,13 +139,13 @@ public class Bishop {
 
 
     private static int doubleBishopScore (long bishops){
-        return populationCount(bishops) > 1 ? DOUBLE_BISHOP_BONUS : 0;
+        return populationCount(bishops) > 1 ? BISHOP_DOUBLE_BONUS : 0;
     }
 
     private static int bishopEnemyPawnColourScore(long myBishop, long enemyPawns, long bishopSquares){
         return (populationCount(enemyPawns & ~bishopSquares)
                 - populationCount(enemyPawns & bishopSquares))
-                * PER_ENEMY_PAWN_COLOUR_MODIFIER;
+                * BISHOP_PER_ENEMY_PAWN_ON_COLOUR;
     }
 
     private static int bishopFriendlyPawnColourScore(Chessboard board, boolean white,
@@ -173,7 +164,7 @@ public class Bishop {
         if (iAmWinningUgly(board, white)){
             score *= -1;
         }
-        return score * PER_FRIENDLY_PAWN_COLOUR_MODIFIER;
+        return score * BISHOP_PER_FRIENDLY_PAWN_ON_COLOUR;
 
     }
 

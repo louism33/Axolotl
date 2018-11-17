@@ -5,6 +5,7 @@ import javacode.chessprogram.chess.Chessboard;
 
 import java.util.List;
 
+import static javacode.chessengine.evaluation.EvaluationConstants.*;
 import static javacode.chessprogram.bitboards.BitBoards.*;
 import static javacode.chessprogram.check.CheckChecker.numberOfPiecesThatLegalThreatenSquare;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
@@ -12,29 +13,7 @@ import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapturesTable;
 
-public class Pawns {
-
-    private static int PASSED_PAWN_BONUS = 15;
-    private static int DOUBLE_PAWN_PENALTY = -10;
-    private static int CENTRE_PAWN = 5;
-    private static int SUPER_CENTRE_PAWN = 10;
-    private static int NO_PAWN_BLOCKER_BONUS = 10;
-    private static int OPEN_FILE_BONUS = 10;
-    private static int PAWNS_PROTECTED_BY_PAWNS = 5;
-    private static int DAVID_AND_GOLIATH = 10;
-    private static int BLOCKED_PAWN_PENALTY = -5;
-    private static int PAWN_THREATEN_CENTRE = 5;
-    private static int PAWN_THREATEN_SUPER_CENTRE = 10;
-
-    private static int STUCK_BACKWARDS_PAWN_PENALTY = -15;
-    private static int PROTECTED_BACKWARDS_PAWN = 10;
-    private static int THREATENED_BACKWARDS_PAWN = -25;
-
-    private static int PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES = 35;
-    private static int FRIENLDY_ATTACK_PROMOTION_SQUARE = 25;
-    private static int FRIENLDY_PROTECT_PROMOTING_PAWN = 50;
-    private static int ENEMY_NOT_ATTACK_PROMOTION_SQUARE = 25;
-    private static int ENEMY_NOT_ATTACK_PROMOTING_PAWN = 25;
+class Pawns {
 
     static int evalPawnsByTurn(Chessboard board, boolean white) {
         long myPawns = white ? board.WHITE_PAWNS : board.BLACK_PAWNS;
@@ -88,7 +67,7 @@ public class Pawns {
                     }
 
                     if ((enemyPawns & spotsToBeEmpty) == 0){
-                        score += PASSED_PAWN_BONUS;
+                        score += PAWN_PASSED;
                     }
                 }
             }
@@ -115,7 +94,7 @@ public class Pawns {
                     }
 
                     if ((enemyPawns & spotsToBeEmpty) == 0){
-                        score += PASSED_PAWN_BONUS;
+                        score += PAWN_PASSED;
                     }
                 }
             }
@@ -141,47 +120,47 @@ public class Pawns {
                     long capturePromotingSquareR = pawn << 7;
 
                     if ((pushPromotingSquare & board.ALL_PIECES()) == 0){
-                        score += PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES;
+                        score += PAWN_SEVEN_PROMOTION_POSSIBLE;
                     }
 
                     if ((pawn & FILE_A) != 0){
                         if ((capturePromotingSquareR & board.ALL_PIECES()) == 0){
-                            score += PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES;
+                            score += PAWN_SEVEN_PROMOTION_POSSIBLE;
                         }
                     }
                     else if ((pawn & FILE_H) != 0){
                         if ((capturePromotingSquareL & board.ALL_PIECES()) == 0){
-                            score += PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES;
+                            score += PAWN_SEVEN_PROMOTION_POSSIBLE;
                         }
                     }
                     else {
                         if ((capturePromotingSquareR & board.ALL_PIECES()) == 0){
-                            score += PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES;
+                            score += PAWN_SEVEN_PROMOTION_POSSIBLE;
                         }
 
                         if ((capturePromotingSquareL & board.ALL_PIECES()) == 0){
-                            score += PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES;
+                            score += PAWN_SEVEN_PROMOTION_POSSIBLE;
                         }
                     }
 
                     int enemyThreatsToPromotionSquare = numberOfPiecesThatLegalThreatenSquare(board, true, pushPromotingSquare);
                     if (enemyThreatsToPromotionSquare == 0){
-                        score += ENEMY_NOT_ATTACK_PROMOTION_SQUARE;
+                        score += PAWN_P_SQUARE_UNTHREATENED;
                     }
 
                     int friendlyThreatsToPromotionSquare = numberOfPiecesThatLegalThreatenSquare(board, false, pushPromotingSquare);
                     if (friendlyThreatsToPromotionSquare != 0){
-                        score += FRIENLDY_ATTACK_PROMOTION_SQUARE;
+                        score += PAWN_P_SQUARE_SUPPORTED;
                     }
 
                     int threatsToPromotingPawn = numberOfPiecesThatLegalThreatenSquare(board, true, pawn);
                     if (threatsToPromotingPawn == 0){
-                        score += ENEMY_NOT_ATTACK_PROMOTING_PAWN;
+                        score += PAWN_P_UNTHREATENED;
                     }
 
                     int friendsToPromotingPawn = numberOfPiecesThatLegalThreatenSquare(board, false, pawn);
                     if (friendsToPromotingPawn != 0){
-                        score += FRIENLDY_PROTECT_PROMOTING_PAWN;
+                        score += PAWN_P_PROTECTED;
                     }
                 }
             }
@@ -201,47 +180,47 @@ public class Pawns {
                     long capturePromotingSquareR = pawn >>> 7;
 
                     if ((pushPromotingSquare & board.ALL_PIECES()) == 0){
-                        score += PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES;
+                        score += PAWN_SEVEN_PROMOTION_POSSIBLE;
                     }
 
                     if ((pawn & FILE_A) != 0){
                         if ((capturePromotingSquareL & board.ALL_PIECES()) == 0){
-                            score += PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES;
+                            score += PAWN_SEVEN_PROMOTION_POSSIBLE;
                         }
                     }
                     else if ((pawn & FILE_H) != 0){
                         if ((capturePromotingSquareR & board.ALL_PIECES()) == 0){
-                            score += PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES;
+                            score += PAWN_SEVEN_PROMOTION_POSSIBLE;
                         }
                     }
                     else {
                         if ((capturePromotingSquareR & board.ALL_PIECES()) == 0){
-                            score += PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES;
+                            score += PAWN_SEVEN_PROMOTION_POSSIBLE;
                         }
 
                         if ((capturePromotingSquareL & board.ALL_PIECES()) == 0){
-                            score += PAWN_ON_SEVEN_PROMOTION_OPPORTUNITIES;
+                            score += PAWN_SEVEN_PROMOTION_POSSIBLE;
                         }
                     }
 
                     int enemyThreatsToPromotionSquare = numberOfPiecesThatLegalThreatenSquare(board, false, pushPromotingSquare);
                     if (enemyThreatsToPromotionSquare == 0){
-                        score += ENEMY_NOT_ATTACK_PROMOTION_SQUARE;
+                        score += PAWN_P_SQUARE_UNTHREATENED;
                     }
 
                     int friendlyThreatsToPromotionSquare = numberOfPiecesThatLegalThreatenSquare(board, true, pushPromotingSquare);
                     if (friendlyThreatsToPromotionSquare != 0){
-                        score += FRIENLDY_ATTACK_PROMOTION_SQUARE;
+                        score += PAWN_P_SQUARE_SUPPORTED;
                     }
 
                     int threatsToPromotingPawn = numberOfPiecesThatLegalThreatenSquare(board, false, pawn);
                     if (threatsToPromotingPawn == 0){
-                        score += ENEMY_NOT_ATTACK_PROMOTING_PAWN;
+                        score += PAWN_P_UNTHREATENED;
                     }
 
                     int friendsToPromotingPawn = numberOfPiecesThatLegalThreatenSquare(board, true, pawn);
                     if (friendsToPromotingPawn != 0){
-                        score += FRIENLDY_PROTECT_PROMOTING_PAWN;
+                        score += PAWN_P_PROTECTED;
                     }
                 }
             }
@@ -262,18 +241,18 @@ public class Pawns {
 
             int threatsToBackwardsPawn = numberOfPiecesThatLegalThreatenSquare(board, true, lastPawn);
             if (threatsToBackwardsPawn != 0){
-                score += THREATENED_BACKWARDS_PAWN;
+                score += PAWN_HANGING_UNDER_THREAT;
             }
 
             int friendsToBackwardsPawn = numberOfPiecesThatLegalThreatenSquare(board, false, lastPawn);
             if (friendsToBackwardsPawn != 0){
-                score += PROTECTED_BACKWARDS_PAWN;
+                score += PAWN_HANGING_PROTECTED;
             }
 
 
             int threatsToMoveOutOfBack = numberOfPiecesThatLegalThreatenSquare(board, true, advancedPosition);
             if (threatsToMoveOutOfBack != 0){
-                score += STUCK_BACKWARDS_PAWN_PENALTY;
+                score += PAWN_HANGING;
             }
         }
         else {
@@ -283,17 +262,17 @@ public class Pawns {
 
             int threatsToBackwardsPawn = numberOfPiecesThatLegalThreatenSquare(board, false, lastPawn);
             if (threatsToBackwardsPawn != 0){
-                score += THREATENED_BACKWARDS_PAWN;
+                score += PAWN_HANGING_UNDER_THREAT;
             }
 
             int friendsToBackwardsPawn = numberOfPiecesThatLegalThreatenSquare(board, true, lastPawn);
             if (friendsToBackwardsPawn != 0){
-                score += PROTECTED_BACKWARDS_PAWN;
+                score += PAWN_HANGING_PROTECTED;
             }
 
             int threatsToMoveOutOfBack = numberOfPiecesThatLegalThreatenSquare(board, false, advancedPosition);
             if (threatsToMoveOutOfBack != 0){
-                score += STUCK_BACKWARDS_PAWN_PENALTY;
+                score += PAWN_HANGING;
             }
         }
         return score;
@@ -314,21 +293,21 @@ public class Pawns {
         int answer = 0;
         answer += populationCount(
                 centreFourSquares & myPawns)
-                * SUPER_CENTRE_PAWN;
+                * PAWN_ON_SUPER_CENTRE;
         answer += populationCount(
                 (centreNineSquares ^ centreFourSquares) & myPawns)
-                * CENTRE_PAWN;
+                * PAWN_ON_CENTRE;
         return answer;
     }
 
     private static int blockedPawnPenalty(Chessboard board, boolean white, long myPawns, long enemyPawns){
         if (white) {
             long blockingEnemyPawns = (myPawns << 8) & enemyPawns;
-            return populationCount(blockingEnemyPawns) * BLOCKED_PAWN_PENALTY;
+            return populationCount(blockingEnemyPawns) * PAWN_BLOCKED;
         }
         else {
             long blockingEnemyPawns = (myPawns >>> 8) & enemyPawns;
-            return populationCount(blockingEnemyPawns) * BLOCKED_PAWN_PENALTY;
+            return populationCount(blockingEnemyPawns) * PAWN_BLOCKED;
         }
     }
 
@@ -342,26 +321,26 @@ public class Pawns {
                 continue;
             }
             if ((file & enemyPawns) != 0) {
-                fileScore += NO_PAWN_BLOCKER_BONUS;
+                fileScore += PAWN_UNBLOCKED;
                 continue;
             }
             if (i == 0) {
                 if ((files[i+1] & enemyPawns) == 0) {
-                    fileScore += OPEN_FILE_BONUS;
+                    fileScore += PAWN_ON_OPEN_FILE;
                     continue;
                 }
                 continue;
             }
             if (i == 7) {
                 if ((files[i-1] & enemyPawns) == 0) {
-                    fileScore += OPEN_FILE_BONUS;
+                    fileScore += PAWN_ON_OPEN_FILE;
                     continue;
                 }
                 continue;
             }
 
             if (((files[i+1] & enemyPawns) == 0) && ((files[i-1] & enemyPawns) == 0)){
-                fileScore += OPEN_FILE_BONUS;
+                fileScore += PAWN_ON_OPEN_FILE;
             }
         }
         return fileScore;
@@ -383,19 +362,19 @@ public class Pawns {
         long enemyBigPieces = white ? board.ALL_BLACK_PIECES() ^ board.BLACK_PAWNS
                 : board.ALL_WHITE_PIECES() ^ board.WHITE_PAWNS;
         long protectedPawns = masterPawnCapturesTable(board, white, 0, enemyBigPieces);
-        return populationCount(protectedPawns) * DAVID_AND_GOLIATH;
+        return populationCount(protectedPawns) * PAWN_THREATENS_BIG_THINGS;
     }
 
     private static int pawnsChainBonus(Chessboard board, boolean white, long myPawns){
         long protectedPawns = masterPawnCapturesTable(board, white, 0, myPawns);
-        return populationCount(protectedPawns) * PAWNS_PROTECTED_BY_PAWNS;
+        return populationCount(protectedPawns) * PAWN_PROTECTED_BY_PAWNS;
     }
 
     private static int doublePawnPenalty(Chessboard board, boolean white, long myPawns){
         int fileScore = 0;
         for (long file : FILES) {
             if (populationCount(file & myPawns) > 1){
-                fileScore += DOUBLE_PAWN_PENALTY;
+                fileScore += PAWN_DOUBLED;
             }
         }
         return fileScore;

@@ -11,16 +11,16 @@ import org.junit.Assert;
 
 import java.util.List;
 
-import static javacode.chessengine.evaluation.Evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static javacode.chessengine.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static javacode.chessengine.search.FutilityPruning.quiescenceFutilityMargin;
 import static javacode.chessengine.search.SEEPruning.seeScore;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
 
-public class QuiescenceSearch {
-    private Engine engine;
-    private MoveOrderer moveOrderer;
-    private QuiescentSearchUtils quiescentSearchUtils;
-    private Evaluator evaluator;
+class QuiescenceSearch {
+    private final Engine engine;
+    private final MoveOrderer moveOrderer;
+    private final QuiescentSearchUtils quiescentSearchUtils;
+    private final Evaluator evaluator;
 
     QuiescenceSearch(Engine engine, MoveOrderer moveOrderer, Evaluator evaluator){
         this.engine = engine;
@@ -55,9 +55,7 @@ public class QuiescenceSearch {
         no more captures to make or no more moves at all
          */
         if (this.quiescentSearchUtils.isBoardQuiet(board, moves) || moves.size() == 0){
-            if (this.engine.INFO_LOG) {
-                this.engine.statistics.numberOfQuiescentEvals++;
-            }
+            this.engine.statistics.numberOfQuiescentEvals++;
             return standPatScore;
         }
 
@@ -81,7 +79,11 @@ public class QuiescenceSearch {
                         + standPatScore
                         + this.evaluator.getScoreOfDestinationPiece(board, loudMove)
                         < alpha){
+                    this.engine.statistics.numberOfSuccessfulQuiescenceFutilities++;
                     continue;
+                }
+                else {
+                    this.engine.statistics.numberOfFailedQuiescenceFutilities++;
                 }
             }
 
@@ -96,19 +98,14 @@ public class QuiescenceSearch {
             MoveOrganiser.makeMoveMaster(board, loudMove);
             MoveOrganiser.flipTurn(board);
             numberOfMovesSearched++;
-
-            if (this.engine.INFO_LOG){
-                this.engine.statistics.numberOfQuiescentMovesMade++;
-            }
+            this.engine.statistics.numberOfQuiescentMovesMade++;
 
             int score = -quiescenceSearch(board, -beta, -alpha);
 
             MoveUnmaker.unMakeMoveMaster(board);
 
             if (score >= beta){
-                if (this.engine.INFO_LOG){
-                    this.engine.statistics.whichMoveWasTheBestQuiescence[numberOfMovesSearched-1]++;
-                }
+                this.engine.statistics.whichMoveWasTheBestQuiescence[numberOfMovesSearched-1]++;
                 return score;
             }
 

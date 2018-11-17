@@ -8,21 +8,13 @@ import javacode.chessprogram.moveGeneration.PieceMoveSliding;
 
 import java.util.List;
 
+import static javacode.chessengine.evaluation.EvaluationConstants.*;
 import static javacode.chessprogram.bitboards.BitBoards.*;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.moveGeneration.PieceMoveSliding.singleRookCaptures;
 
-public class Rook {
-
-    private static int ROOK_ON_SEVENTH_BONUS = 25;
-    private static int ROOK_MOBILITY_SCORE = 1;
-    private static int ROOK_PROTECTOR_SCORE = 2;
-    private static int ROOK_AGGRESSOR_SCORE = 2;
-    private static int UNDEVELOPED_ROOK_PENALTY = -5;
-    private static int OPEN_FILE_BONUS = 15;
-    private static int SEMI_OPEN_FILE_BONUS = 10;
-    private static int ROOK_PROTECTS_QUEEN = 5;
+class Rook {
 
     static int evalRookByTurn(Chessboard board, boolean white) {
         long myRooks = white ? board.WHITE_ROOKS : board.BLACK_ROOKS;
@@ -69,10 +61,10 @@ public class Rook {
                 continue;
             }
             if ((file & enemyPawns) != 0){
-                fileScore += SEMI_OPEN_FILE_BONUS;
+                fileScore += ROOK_ON_SEMI_OPEN_FILE_BONUS;
                 continue;
             }
-            fileScore += OPEN_FILE_BONUS;
+            fileScore += ROOK_OPEN_FILE_BONUS;
         }
         return fileScore;
     }
@@ -80,7 +72,7 @@ public class Rook {
     private static int unDevelopedRooks(Chessboard board, boolean white, long myRooks){
         long originalRooks = white ? WHITE_ROOKS : BLACK_ROOKS;
         return populationCount(originalRooks & myRooks)
-                * UNDEVELOPED_ROOK_PENALTY;
+                * ROOK_NOT_DEVELOPED;
     }
 
 

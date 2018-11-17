@@ -18,8 +18,6 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class WacTwoBreakdown {
 
-    private static Engine engine = null;
-
     private static final int timeLimit = 25_000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
@@ -46,7 +44,7 @@ public class WacTwoBreakdown {
 
 
     public static void reset(){
-        engine = new Engine();
+        Engine engine = new Engine();
     }
 
     @org.junit.Test

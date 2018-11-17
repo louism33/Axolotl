@@ -10,18 +10,18 @@ import static javacode.chessengine.moveordering.KillerMoves.mateKiller;
 
 public class Statistics {
     
-    private Engine engine;
+    private final Engine engine;
 
     public Statistics(Engine engine) {
         this.engine = engine;
     }
 
-    private int[] whichMoveWasTheBest = new int[60];
-    public int[] whichMoveWasTheBestQuiescence = new int[60];
+    private final int[] whichMoveWasTheBest = new int[60];
+    public final int[] whichMoveWasTheBestQuiescence = new int[60];
 
     public long numberOfMovesMade = 0;
     public long numberOfQuiescentMovesMade = 0;
-    private long numberOfEvals = 0;
+    public long numberOfEvals = 0;
     public long numberOfQuiescentEvals = 0;
     public int numberOfCheckmates = 0;
     public int numberOfStalemates = 0;
@@ -38,8 +38,8 @@ public class Statistics {
     public int numberOfPassedPawnExtensions = 0;
     public int numberOfSuccessfulFutilities = 0;
     public int numberOfFailedFutilities = 0;
-    private int numberOfSuccessfulQuiescenceFutilities = 0;
-    private int numberOfFailedQuiescenceFutilities = 0;
+    public int numberOfSuccessfulQuiescenceFutilities = 0;
+    public int numberOfFailedQuiescenceFutilities = 0;
 
     public int numberOfSuccessfulSEEs = 0;
     public int numberOfSuccessfulQuiescentSEEs = 0;
@@ -69,6 +69,21 @@ public class Statistics {
     public int numberOfUpperBounds = 0;
     public int numberOfHashBetaCutoffs = 0;
 
+    public void infoLog(long endTime, long startTime, Move move){
+        long time = endTime - startTime;
+        System.out.println("time taken millis: " + time);
+        System.out.println("------");
+
+        if (time > 0) {
+            System.out.println("Moves per second: " +
+                    ((1000 * (this.numberOfMovesMade + this.numberOfQuiescentMovesMade)) / time));
+            System.out.println("------");
+        }
+
+        System.out.println("best move: " + move);
+        System.out.println("------");
+    }
+    
     public void printStatistics(){
         System.out.println();
         System.out.println("------");
@@ -214,7 +229,6 @@ public class Statistics {
         System.out.println("By collective percent:");
         System.out.println(Arrays.toString(toCollectivePercent(toPercent(whichMoveWasTheBest))));
         System.out.println();
-        
     }
 
 

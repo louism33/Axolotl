@@ -6,8 +6,8 @@ import static javacode.chessprogram.chess.Copier.copyMove;
 
 public class KillerMoves {
 
-    public static Move[][] killerMoves = new Move[100][2];
-    public static Move[] mateKiller = new Move[100];
+    public static final Move[][] killerMoves = new Move[100][2];
+    public static final Move[] mateKiller = new Move[100];
 
     public static void updateKillerMoves(Move move, int ply){
         /*
