@@ -17,33 +17,16 @@ import java.util.stream.Collectors;
 
 import static javacode.chessengine.moveordering.KillerMoves.killerMoves;
 import static javacode.chessengine.moveordering.KillerMoves.mateKiller;
+import static javacode.chessengine.moveordering.MoveOrderingConstants.*;
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
 import static javacode.chessprogram.moveMaking.MoveParser.*;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class MoveOrderer {
 
-    private Engine engine;
-    private HistoryMoves historyMoves;
-
-    int MAX_HISTORY_MOVE_SCORE = 90;
-    private int CAPTURE_BIAS = 100;
-    private int CAPTURE_BIAS_LAST_MOVED_PIECE = 5;
-
-    private int
-            hashScore = 127,
-            aiScore = 126,
-            mateKillerScore = 125,
-            queenPromotionScore = 109,
-            killerOneScore = 102,
-            killerTwoScore = 101,
-            giveCheckMove = 100,
-            oldKillerScoreOne = 99,
-            oldKillerScoreTwo = 98,
-            castlingMove = 10,
-            knightPromotionScore = 2,
-            uninterestingMove = 1,
-            uninterestingPromotion = 0;
+    private final Engine engine;
+    private final HistoryMoves historyMoves;
 
     public MoveOrderer(Engine engine){
         this.engine = engine;
@@ -64,8 +47,7 @@ public class MoveOrderer {
     private List<Move> extractMoves(Chessboard board, boolean white, List<Move> moves, int ply,
                                     Move hashMove, Move aiMove){
         List<MoveScore> moveScores = orderedMoveScores(board, white, moves, ply, hashMove, aiMove);
-        List<Move> collect = moveScores.stream().map(moveScore -> moveScore.move).collect(Collectors.toList());
-        return collect;
+        return moveScores.stream().map(moveScore -> moveScore.move).collect(Collectors.toList());
     }
 
     private List<MoveScore> orderedMoveScores(Chessboard board, boolean white, List<Move> moves, int ply,
@@ -83,10 +65,10 @@ public class MoveOrderer {
          */
         for (Move move : moves){
             MoveScore moveScore;
-            if (hashMove != null && move.equals(hashMove)){
+            if (move.equals(hashMove)){
                 moveScore = new MoveScore(move, hashScore);
             }
-            else if (aiMove != null && ply == 0 && move.equals(aiMove)){
+            else if (ply == 0 && move.equals(aiMove)){
                 moveScore = new MoveScore(move, aiScore);
             }
             else if (this.engine.getEngineSpecifications().ALLOW_MATE_KILLERS && mateKiller[ply] != null && move.equals(mateKiller[ply])){
@@ -286,8 +268,8 @@ public class MoveOrderer {
     }
 
     private class MoveScore {
-        private Move move;
-        private int score;
+        private final Move move;
+        private final int score;
 
         MoveScore(Move move, int score) {
             this.move = move;

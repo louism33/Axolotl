@@ -6,16 +6,14 @@ import org.junit.Assert;
 
 import java.util.List;
 
+import static javacode.chessengine.evaluation.EvaluationConstants.KING_AGGRESSOR_SCORE;
+import static javacode.chessengine.evaluation.EvaluationConstants.KING_PROTECTOR_SCORE;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.moveGeneration.PieceMoveKing.singleKingCaptures;
 
-public class King {
+class King {
 
-    private static int KING_PAWN_PROTECT_BONUS = 5;
-    private static int KING_PROTECTOR_SCORE = 1;
-    private static int KING_AGGRESSOR_SCORE = 1;
-    
     static int evalKingByTurn(Chessboard board, boolean white) {
         long myKing = white ? board.WHITE_KING : board.BLACK_KING;
 

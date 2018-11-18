@@ -1,19 +1,21 @@
 package javacode.chessengine.transpositiontable;
 
-import javacode.chessengine.evaluation.Evaluator;
 import javacode.chessprogram.chess.Move;
 
 import java.util.HashMap;
+
+import static javacode.chessengine.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static javacode.chessengine.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY;
 
 public class TranspositionTable extends HashMap<Long, TranspositionTable.TableObject> {
 
     public TranspositionTable(){}
     
     public static class TableObject {
-        private Move move;
-        private int score;
-        private int depth;
-        private Flag flag;
+        private final Move move;
+        private final int score;
+        private final int depth;
+        private final Flag flag;
         
         public enum Flag {
                 EXACT, LOWERBOUND, UPPERBOUND
@@ -31,10 +33,10 @@ public class TranspositionTable extends HashMap<Long, TranspositionTable.TableOb
         }
 
         public int getScore(int ply) {
-            if (score > Evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
+            if (score > CHECKMATE_ENEMY_SCORE_MAX_PLY){
                 return score - ply;
             }
-            else if (score < Evaluator.IN_CHECKMATE_SCORE_MAX_PLY){
+            else if (score < IN_CHECKMATE_SCORE_MAX_PLY){
                 return score + ply;
             }
             return score;

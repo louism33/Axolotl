@@ -20,8 +20,12 @@ public class UCIEntry extends AbstractEngine {
     private GenericBoard genericBoard;
     private List<GenericMove> moves;
 
-    private UCIEntry(){
+    public UCIEntry(){
         super();
+    }
+    public UCIEntry(Engine engine){
+        super();
+        this.engine = engine;
     }
 
     // "uci"

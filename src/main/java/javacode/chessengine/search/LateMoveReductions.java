@@ -3,7 +3,7 @@ package javacode.chessengine.search;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
-public class LateMoveReductions {
+class LateMoveReductions {
     
     public static int lateMoveDepthReduction(int depth){
         return 2;

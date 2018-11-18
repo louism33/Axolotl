@@ -7,9 +7,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8807346a-cf9d-4333-98e2-880bdb09ab35" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Evaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Evaluator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/EngineSpecifications.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/EngineSpecifications.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/axolotl_logo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wac, one minute" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/bitboards/BitBoards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/bitboards/BitBoards.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -31,42 +32,52 @@
       <FILTER>javacode.main.*</FILTER>
     </SUITE>
   </component>
+  <component name="ExportTestResults" outputFolder="$PROJECT_DIR$" userTempatePath="" />
   <component name="FUSProjectUsageTrigger">
     <session id="-975693011">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="3" />
+          <entry key="project.open.time.17" value="2" />
           <entry key="project.open.time.18" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="LICENSE" value="1" />
-          <entry key="gitignore" value="3" />
+          <entry key="gitignore" value="5" />
           <entry key="iml" value="1" />
-          <entry key="java" value="105" />
+          <entry key="java" value="190" />
+          <entry key="jpg" value="1" />
           <entry key="md" value="1" />
-          <entry key="xml" value="2" />
+          <entry key="xml" value="3" />
+          <entry key="yml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="IDEA_MODULE" value="1" />
-          <entry key="JAVA" value="105" />
+          <entry key="Image" value="1" />
+          <entry key="JAVA" value="190" />
           <entry key="Markdown" value="1" />
-          <entry key="PLAIN_TEXT" value="4" />
-          <entry key="XML" value="2" />
+          <entry key="PLAIN_TEXT" value="6" />
+          <entry key="XML" value="3" />
+          <entry key="YAML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="505" />
+          <entry key="java" value="3506" />
+          <entry key="xml" value="17" />
+          <entry key="yml" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="505" />
+          <entry key="JAVA" value="3506" />
+          <entry key="XML" value="17" />
+          <entry key="YAML" value="4" />
         </counts>
       </usages-collector>
     </session>
@@ -77,28 +88,37 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Evaluator.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/main/UCIEntry.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-14">
-              <caret line="87" column="40" lean-forward="true" selection-start-line="87" selection-start-column="40" selection-end-line="90" />
+            <state relative-caret-position="780">
+              <caret line="69" column="10" selection-start-line="69" selection-start-column="10" selection-end-line="69" selection-end-column="10" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="43">
-              <caret line="43" column="13" lean-forward="true" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
+            <state relative-caret-position="225">
+              <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/bitboards/BitBoards.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1080">
+              <caret line="72" column="24" selection-start-line="72" selection-start-column="24" selection-end-line="72" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/EngineSpecifications.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/bitboards/King.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="17" column="63" lean-forward="true" selection-start-line="17" selection-start-column="63" selection-end-line="17" selection-end-column="63" />
+            <state relative-caret-position="315">
+              <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -116,36 +136,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>calculating</find>
-      <find>movet</find>
-      <find>stop</find>
-      <find>search</find>
-      <find>res</find>
-      <find>send</find>
-      <find>bestmovecomm</find>
-      <find>not s</find>
-      <find>Engine</find>
-      <find>inCheck</find>
-      <find>moves.si</find>
-      <find>println(A</find>
-      <find>print</find>
-      <find>size</find>
-      <find>bestM</find>
-      <find>bestmove</find>
-      <find>ProtocolBestMoveCommand</find>
-      <find>this is</find>
-      <find>i will</find>
-      <find>table</find>
-      <find>final</find>
-      <find>class</find>
-      <find>this.engine</find>
-      <find>..</find>
-      <find>posi</find>
-      <find>myTime</find>
       <find>calculatingH</find>
       <find>searchMy</find>
       <find>MAX</find>
       <find>false</find>
+      <find>//</find>
+      <find>91</find>
+      <find>OPEN_FILE_BONUS</find>
+      <find>private</find>
+      <find>this.evaluator.</find>
+      <find>evaluator.</find>
+      <find>_SCORE</find>
+      <find>_PENALTY</find>
+      <find>stop</find>
+      <find>pVL</find>
+      <find>outOfTime</find>
+      <find>uci</find>
+      <find>timel</find>
+      <find>uciEntry</find>
+      <find>ucie</find>
+      <find>uciEn</find>
+      <find>check</find>
+      <find>debug</find>
+      <find>info</find>
+      <find>evaluator</find>
+      <find>log</find>
+      <find>engine.</find>
+      <find>numberOfSuccessfulQuiescenceFutilities</find>
+      <find>futili</find>
+      <find>onlypawns</find>
+      <find>alpha &gt;</find>
     </findStrings>
     <replaceStrings>
       <replace>black</replace>
@@ -196,32 +216,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/AspirationSearch.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/moveordering/MoveOrderer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/timemanagement/TimeAllocator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/SEEPruning.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/QuiescenceSearch.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/IterativeDeepeningDFS.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/utilities/Statistics.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/transpositiontable/TranspositionTable.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/WacTwoBreakdown.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/programtests/ZobristHashTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/programtests/MoveUnmakerTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/QuickTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/ArasanTestSuite.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/BratkoKopecTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/BS2830Test.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInFive.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/CCROneHourTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInThree.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMisc.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/KaufmanTests.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/LapuceII.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/Pet.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessprogram/chess/Move.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInTwo.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInFour.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/BT2630.java" />
         <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/ZugzwangPositions.java" />
         <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/Arasan20.java" />
         <option value="$PROJECT_DIR$/src/main/java/javacode/chessprogram/miscAdmin/DetailedPerftSearching.java" />
@@ -233,22 +227,53 @@
         <option value="$PROJECT_DIR$/src/main/java/javacode/chessprogram/miscAdmin/FenParser.java" />
         <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInSix.java" />
         <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/EET.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Extensions.java" />
         <option value="$PROJECT_DIR$/src/main/java/javacode/chessprogram/bitboards/RandomBoard.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/protocolhelperclasses/UCIPrinter.java" />
         <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/NullMovePruning.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Razoring.java" />
         <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/InternalIterativeDeepening.java" />
         <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/FutilityPruning.java" />
         <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/LateMoveReductions.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/PrincipleVariationSearch.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Engine.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/main/UCIEntry.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/.travis.yml" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Bishop.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Queen.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Rook.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/King.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Knight.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Razoring.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/SEEPruning.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/transpositiontable/TranspositionTable.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Pawns.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/EvaluationConstants.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Misc.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/EvaluatorPositionConstant.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/PositionEval.java" />
         <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/timemanagement/TimeAllocator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/main/UCIEntry.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/MateDistancePruning.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Extensions.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/PrincipleVariationSearch.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/AspirationSearch.java" />
         <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Evaluator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Engine.java" />
         <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/EngineSpecifications.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/protocolhelperclasses/UCIPrinter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/IterativeDeepeningDFS.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/MaterialEval.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/moveordering/MoveOrderingConstants.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/moveordering/MoveOrderer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/QuiescenceSearch.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/utilities/Statistics.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/moveordering/HistoryMoves.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessprogram/bitboards/BitBoards.java" />
       </list>
     </option>
+  </component>
+  <component name="JavaAutoRunManager">
+    <enabled-run-configurations>
+      <run-configuration type="JUnit" name="WACTests" />
+    </enabled-run-configurations>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -277,8 +302,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="509" />
-    <option name="width" value="858" />
+    <option name="x" value="-1" />
+    <option name="width" value="684" />
     <option name="height" value="741" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -290,6 +315,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -300,24 +326,6 @@
             <path>
               <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
               <item name="Axolotl" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Axolotl" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Axolotl" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
-              <item name="Axolotl_v1_2_jar" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Axolotl" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -357,8 +365,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="javacode" type="462c0819:PsiDirectoryNode" />
-              <item name="chessengine" type="462c0819:PsiDirectoryNode" />
-              <item name="evaluation" type="462c0819:PsiDirectoryNode" />
+              <item name="chessprogram" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
@@ -367,54 +374,38 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="javacode" type="462c0819:PsiDirectoryNode" />
-              <item name="chessengine" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="chessprogram" type="462c0819:PsiDirectoryNode" />
+              <item name="bitboards" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
               <item name="Axolotl" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="javacode" type="462c0819:PsiDirectoryNode" />
-              <item name="chessengine" type="462c0819:PsiDirectoryNode" />
-              <item name="search" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Axolotl" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Axolotl" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
-              <item name="enginetests" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542396878481" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542493908430" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="terminal" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -428,50 +419,21 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JAR Application.Axolotl.jar">
-    <configuration name="EngineTestMateInFour" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JAR Application.Axolotl-v1.2.jar">
+    <configuration name="UCIEntry" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="javacode.chessengine.main.UCIEntry" />
       <module name="Axolotl" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="tests.enginetests.*" />
+          <option name="PATTERN" value="javacode.chessengine.main.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="tests.enginetests" />
-      <option name="MAIN_CLASS_NAME" value="tests.enginetests.EngineTestMateInFour" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EngineTestMateInSix" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Axolotl" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="tests.enginetests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="tests.enginetests" />
-      <option name="MAIN_CLASS_NAME" value="tests.enginetests.EngineTestMateInSix" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EngineTestMateInThree" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Axolotl" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="tests.enginetests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="tests.enginetests" />
-      <option name="MAIN_CLASS_NAME" value="tests.enginetests.EngineTestMateInThree" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="WACTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="WACTests (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Axolotl" />
       <extension name="coverage">
         <pattern>
@@ -481,28 +443,88 @@
       </extension>
       <option name="PACKAGE_NAME" value="tests.enginetests" />
       <option name="MAIN_CLASS_NAME" value="tests.enginetests.WACTests" />
+      <option name="PARAMETERS" value="[1 Test: WAC.002]" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Axolotl.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/Axolotl_v1_2_jar/Axolotl.jar" />
+    <configuration name="WACTests" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+      <module name="Axolotl" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.enginetests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tests.enginetests" />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="pattern" />
+      <option name="PARAMETERS" value="[70 Test: WAC.071]" />
+      <patterns>
+        <pattern testClass="tests.enginetests.WACTests" />
+      </patterns>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WACTests,test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Axolotl" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.enginetests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tests.enginetests" />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="pattern" />
+      <option name="PARAMETERS" value="[70 Test: WAC.071]" />
+      <patterns>
+        <pattern testClass="tests.enginetests.WACTests,test" />
+      </patterns>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WACTests.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Axolotl" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.enginetests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tests.enginetests" />
+      <option name="MAIN_CLASS_NAME" value="tests.enginetests.WACTests" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="PARAMETERS" value="[70 Test: WAC.071]" />
+      <patterns>
+        <pattern testClass="tests.enginetests.WACTests,test" />
+      </patterns>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Axolotl-v1.2.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/Axolotl_v1_2_jar/Axolotl-v1.2.jar" />
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="JUnit.EngineTestMateInThree" />
-      <item itemvalue="JUnit.EngineTestMateInFour" />
-      <item itemvalue="JUnit.EngineTestMateInSix" />
       <item itemvalue="JUnit.WACTests" />
-      <item itemvalue="JAR Application.Axolotl.jar" />
+      <item itemvalue="JUnit.WACTests (1)" />
+      <item itemvalue="JUnit.WACTests,test" />
+      <item itemvalue="JAR Application.Axolotl-v1.2.jar" />
+      <item itemvalue="Application.UCIEntry" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JAR Application.Axolotl.jar" />
-        <item itemvalue="JUnit.WACTests" />
-        <item itemvalue="JUnit.EngineTestMateInSix" />
-        <item itemvalue="JUnit.EngineTestMateInFour" />
-        <item itemvalue="JUnit.EngineTestMateInThree" />
+        <item itemvalue="JAR Application.Axolotl-v1.2.jar" />
+        <item itemvalue="JUnit.WACTests,test" />
+        <item itemvalue="JUnit.WACTests (1)" />
+        <item itemvalue="Application.UCIEntry" />
       </list>
     </recent_temporary>
   </component>
@@ -601,40 +623,45 @@
       <workItem from="1542218573746" duration="12259000" />
       <workItem from="1542264635743" duration="607000" />
       <workItem from="1542312268288" duration="400000" />
+      <workItem from="1542448371599" duration="28132000" />
+      <workItem from="1542534577523" duration="416000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="EngineTestMateInTwo - 2018.11.16 at 14h 47m 44s.xml">
-      <configuration name="EngineTestMateInTwo" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="EngineTestMateInThree - 2018.11.16 at 14h 48m 01s.xml">
-      <configuration name="EngineTestMateInThree" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="EngineTestMateInFour - 2018.11.16 at 14h 48m 45s.xml">
-      <configuration name="EngineTestMateInFour" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="EngineTestMateInSix - 2018.11.16 at 14h 49m 46s.xml">
-      <configuration name="EngineTestMateInSix" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="WACTests - 2018.11.16 at 15h 27m 11s.xml">
+    <history-entry file="WACTests - 2018.11.17 at 15h 59m 33s.xml">
       <configuration name="WACTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="WACTests - 2018.11.16 at 19h 31m 44s.xml">
+    <history-entry file="WACTests - 2018.11.17 at 15h 59m 55s.xml">
       <configuration name="WACTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="WACTests - 2018.11.16 at 20h 03m 56s.xml">
+    <history-entry file="WACTests - 2018.11.17 at 16h 01m 14s.xml">
       <configuration name="WACTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="WACTests - 2018.11.16 at 20h 17m 10s.xml">
+    <history-entry file="WACTests_test - 2018.11.17 at 16h 01m 53s.xml">
+      <configuration name="WACTests.test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="WACTests,test - 2018.11.17 at 16h 03m 40s.xml">
+      <configuration name="WACTests,test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="WACTests,test - 2018.11.17 at 16h 04m 28s.xml">
+      <configuration name="WACTests,test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="WACTests,test - 2018.11.17 at 16h 05m 43s.xml">
+      <configuration name="WACTests,test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="WACTests,test - 2018.11.17 at 16h 05m 57s.xml">
+      <configuration name="WACTests,test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="WACTests - 2018.11.17 at 16h 07m 37s.xml">
       <configuration name="WACTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="WACTests - 2018.11.16 at 20h 25m 22s.xml">
+    <history-entry file="WACTests - 2018.11.17 at 22h 27m 21s.xml">
       <configuration name="WACTests" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17138000" />
+    <option name="totallyTimeSpent" value="51658000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -649,7 +676,7 @@
     <frame x="-1" y="0" width="1368" height="741" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.489603" visible="true" weight="0.12878788" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.489603" visible="true" weight="0.40530303" />
       <window_info id="Structure" order="1" sideWeight="0.51039696" side_tool="true" weight="0.26666668" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -659,8 +686,8 @@
       <window_info id="Favorites" order="7" sideWeight="0.5068182" side_tool="true" weight="0.26287878" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.33009708" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49772727" visible="true" weight="0.42071196" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.28317153" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49772727" weight="0.29288027" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.021035599" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32847896" />
@@ -670,7 +697,7 @@
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5022727" side_tool="true" weight="0.32847896" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.17152104" />
       <window_info anchor="bottom" id="Statistic" order="12" weight="0.6569579" />
-      <window_info anchor="bottom" id="Inspection Results" order="13" weight="0.0" />
+      <window_info anchor="bottom" id="Inspection Results" order="13" weight="0.55016184" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="1" weight="0.25" />
       <window_info anchor="right" id="Palette" order="2" />
@@ -680,7 +707,7 @@
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info anchor="right" id="Database" order="7" weight="0.32954547" />
       <window_info anchor="right" id="Coverage" order="8" side_tool="true" weight="0.17121212" />
-      <window_info anchor="right" id="Maven Projects" order="9" weight="0.3287879" />
+      <window_info anchor="right" id="Maven Projects" order="9" weight="0.32841328" />
     </layout>
     <layout-to-restore>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.489603" visible="true" weight="0.19242424" />
@@ -723,219 +750,16 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Engine.java</url>
-          <line>71</line>
-          <properties />
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>new UCIPrinter(this.engine.getUciEntry(), this.engine)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/IterativeDeepeningDFS.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="88" column="62" selection-start-line="88" selection-start-column="62" selection-end-line="88" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/transpositiontable/TranspositionTable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="18" column="23" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/WacTwoBreakdown.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="105" column="64" selection-start-line="105" selection-start-column="64" selection-end-line="105" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/programtests/ZobristHashTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="23" column="26" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/programtests/MoveUnmakerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="58" column="20" selection-start-line="58" selection-start-column="20" selection-end-line="58" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/QuickTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="45" column="27" selection-start-line="45" selection-start-column="27" selection-end-line="45" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/ArasanTestSuite.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="43" column="27" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/BratkoKopecTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="47" column="12" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="12" />
-          <folding>
-            <element signature="e#1145#1146#0" expanded="true" />
-            <element signature="e#1222#1223#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/BS2830Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="42" column="27" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInFive.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/CCROneHourTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="42" column="28" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInThree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="101" column="71" selection-start-line="101" selection-start-column="71" selection-end-line="101" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMisc.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="23" column="26" lean-forward="true" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/KaufmanTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/LapuceII.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="49" column="27" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/Pet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="47" column="27" selection-start-line="47" selection-start-column="27" selection-end-line="47" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/chess/Move.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="17" column="12" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
-          <folding>
-            <element signature="e#2960#2961#0" expanded="true" />
-            <element signature="e#3014#3015#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInTwo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="18" column="29" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInFour.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="24" column="24" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/BT2630.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="99" column="64" selection-start-line="99" selection-start-column="64" selection-end-line="99" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/ZugzwangPositions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="87" column="62" selection-start-line="87" selection-start-column="62" selection-end-line="87" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/miscAdmin/DetailedPerftSearching.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1065">
-          <caret line="33" column="28" lean-forward="true" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/Arasan20.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="47" column="27" selection-start-line="47" selection-start-column="27" selection-end-line="47" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/miscAdmin/MoveParserFromAN.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/moveMaking/MoveEnPassant.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/moveMaking/MoveUnmaker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/programtests/NotationTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tests/programtests/DetailedPerftSearchingTestSuite.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
@@ -978,48 +802,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Extensions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="20" column="45" lean-forward="true" selection-start-line="20" selection-start-column="45" selection-end-line="20" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/bitboards/RandomBoard.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="145">
           <caret line="35" column="56" selection-start-line="35" selection-start-column="56" selection-end-line="35" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/protocolhelperclasses/UCIPrinter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="44" column="102" lean-forward="true" selection-start-line="44" selection-start-column="102" selection-end-line="44" selection-end-column="102" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/PositionEval.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-855">
-          <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/utilities/Statistics.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="171" column="61" selection-start-line="171" selection-start-column="61" selection-end-line="171" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/QuiescenceSearch.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="87" column="69" selection-start-line="87" selection-start-column="69" selection-end-line="87" selection-end-column="69" />
         </state>
       </provider>
     </entry>
@@ -1051,17 +837,257 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/SEEPruning.java">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="23" column="15" selection-start-line="23" selection-start-column="15" selection-end-line="23" selection-end-column="15" />
+        <state relative-caret-position="216">
+          <caret line="47" column="21" lean-forward="true" selection-start-line="47" selection-start-column="21" selection-end-line="47" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.travis.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Queen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="80" column="34" selection-start-line="80" selection-start-column="34" selection-end-line="80" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Rook.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="78" column="23" selection-start-line="78" selection-start-column="23" selection-end-line="78" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Knight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="75" column="34" selection-start-line="75" selection-start-column="34" selection-end-line="75" selection-end-column="34" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Razoring.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="59" selection-start-line="9" selection-start-column="59" selection-end-line="9" selection-end-column="59" />
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/SEEPruning.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Pawns.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="212" column="56" selection-start-line="212" selection-start-column="56" selection-end-line="212" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Misc.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="65" selection-start-line="65" selection-end-line="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Bishop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2205">
+          <caret line="183" column="1" lean-forward="true" selection-start-line="183" selection-start-column="1" selection-end-line="183" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/EvaluatorPositionConstant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="59" column="30" selection-start-line="59" selection-start-column="30" selection-end-line="59" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/PositionEval.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="43" column="23" lean-forward="true" selection-start-line="43" selection-start-column="23" selection-end-line="43" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/EvaluationConstants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="92" column="26" selection-start-line="92" selection-start-column="26" selection-end-line="92" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/King.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="28" column="9" lean-forward="true" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="78" selection-start-line="78" selection-end-line="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/timemanagement/TimeAllocator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="19" column="23" lean-forward="true" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#302#303#0" expanded="true" />
+            <element signature="e#347#348#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/MateDistancePruning.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Extensions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="56" column="72" lean-forward="true" selection-start-line="56" selection-start-column="72" selection-end-line="56" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/transpositiontable/TranspositionTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-71">
+          <caret line="26" column="31" lean-forward="true" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/transpositiontable/EngineMovesAndHash.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Evaluator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="55" column="42" lean-forward="true" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/EngineSpecifications.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="5" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Engine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1395">
+          <caret line="103" column="5" lean-forward="true" selection-start-line="103" selection-start-column="5" selection-end-line="103" selection-end-column="5" />
+          <folding>
+            <element signature="e#4848#4849#0" expanded="true" />
+            <element signature="e#4879#4880#0" expanded="true" />
+            <element signature="e#4921#4922#0" expanded="true" />
+            <element signature="e#4959#4960#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/AspirationSearch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="17" column="44" selection-start-line="17" selection-start-column="44" selection-end-line="17" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/IterativeDeepeningDFS.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/moveordering/MoveOrderingConstants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="11" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/moveordering/MoveOrderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="187" column="75" selection-start-line="187" selection-start-column="75" selection-end-line="187" selection-end-column="75" />
+          <folding>
+            <element signature="e#952#988#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/protocolhelperclasses/UCIPrinter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="59" column="40" selection-start-line="59" selection-start-column="40" selection-end-line="59" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/main/StandAlone.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="75" column="42" selection-start-line="75" selection-start-column="42" selection-end-line="75" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/MaterialEval.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/QuiescenceSearch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/PrincipleVariationSearch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="455" column="49" selection-start-line="455" selection-start-column="49" selection-end-line="455" selection-end-column="49" />
+          <folding>
+            <element signature="e#22793#22794#0" expanded="true" />
+            <element signature="e#22822#22823#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/moveordering/HistoryMoves.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="74">
+          <caret line="26" column="58" selection-start-line="26" selection-start-column="58" selection-end-line="26" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tests/programtests/NotationTest.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/utilities/Statistics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="27" column="11" selection-start-line="27" selection-start-column="11" selection-end-line="27" selection-end-column="11" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1070,54 +1096,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/LateMoveReductions.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="17" column="61" selection-start-line="17" selection-start-column="61" selection-end-line="17" selection-end-column="61" />
+        <state relative-caret-position="13">
+          <caret line="13" column="10" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
           <folding>
-            <element signature="e#221#222#0" expanded="true" />
-            <element signature="e#245#246#0" expanded="true" />
+            <element signature="e#214#215#0" expanded="true" />
+            <element signature="e#238#239#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/PrincipleVariationSearch.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="47">
-          <caret line="533" column="11" lean-forward="true" selection-start-line="533" selection-start-column="11" selection-end-line="533" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Engine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="37" column="29" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/main/UCIEntry.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="79" column="17" selection-start-line="79" selection-start-column="17" selection-end-line="79" selection-end-column="17" />
+        <state relative-caret-position="780">
+          <caret line="69" column="10" selection-start-line="69" selection-start-column="10" selection-end-line="69" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="43">
-          <caret line="43" column="13" lean-forward="true" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
+        <state relative-caret-position="225">
+          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Evaluator.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/bitboards/BitBoards.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-14">
-          <caret line="87" column="40" lean-forward="true" selection-start-line="87" selection-start-column="40" selection-end-line="90" />
+        <state relative-caret-position="1080">
+          <caret line="72" column="24" selection-start-line="72" selection-start-column="24" selection-end-line="72" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/search/EngineSpecifications.java">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/axolotl_logo.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/bitboards/King.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="17" column="63" lean-forward="true" selection-start-line="17" selection-start-column="63" selection-end-line="17" selection-end-column="63" />
+        <state relative-caret-position="315">
+          <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -1163,7 +1178,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>10</last-edited>
+          <last-edited>11</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

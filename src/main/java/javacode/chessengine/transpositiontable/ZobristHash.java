@@ -18,12 +18,12 @@ import static javacode.chessprogram.moveMaking.MoveParser.*;
 import static javacode.chessprogram.moveMaking.StackMoveData.SpecialMove.ENPASSANTVICTIM;
 
 public class ZobristHash {
-    private static long initHashSeed = 100;
-    Stack<Long> zobristStack = new Stack<>();
-    private static long[][] zobristHashPieces = initPieceHash();
-    private static long[] zobristHashCastlingRights = initCastlingHash();
-    private static long[] zobristHashEPFiles = initEPHash();
-    static long zobristHashColourBlack = initColourHash();
+    private static final long initHashSeed = 100;
+    final Stack<Long> zobristStack = new Stack<>();
+    private static final long[][] zobristHashPieces = initPieceHash();
+    private static final long[] zobristHashCastlingRights = initCastlingHash();
+    private static final long[] zobristHashEPFiles = initEPHash();
+    static final long zobristHashColourBlack = initColourHash();
     private long boardHash;
 
     public ZobristHash(Chessboard board) {

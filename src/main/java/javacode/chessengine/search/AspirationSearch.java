@@ -1,24 +1,28 @@
 package javacode.chessengine.search;
 
 import javacode.chessengine.evaluation.Evaluator;
-import javacode.chessengine.protocolhelperclasses.UCIPrinter;
+import javacode.chessengine.timemanagement.TimeAllocator;
 import javacode.chessengine.transpositiontable.ZobristHash;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 
-public class AspirationSearch {
+import static javacode.chessengine.evaluation.EvaluationConstants.*;
 
-    private Engine engine;
-    PrincipleVariationSearch principleVariationSearch;
-    private Evaluator evaluator;
-    private UCIPrinter uciPrinter;
+class AspirationSearch {
+
+    private final Engine engine;
+    final PrincipleVariationSearch principleVariationSearch;
 
     AspirationSearch(Engine engine, Evaluator evaluator){
         this.engine = engine;
-        this.evaluator = evaluator;
         this.principleVariationSearch = new PrincipleVariationSearch(engine, evaluator);
     }
-    
+
+    private boolean stopSearch(boolean outOfTime){
+        return this.engine.isStopInstruction()
+                || (this.engine.getEngineSpecifications().ALLOW_TIME_LIMIT && outOfTime);
+    }
+
     int aspirationSearch(Chessboard board, long startTime, long timeLimitMillis,
                          ZobristHash zobristHash, int depth, int aspirationScore){
 
@@ -29,14 +33,14 @@ public class AspirationSearch {
             beta = aspirationScore + firstWindow;
         }
         else {
-            alpha = this.evaluator.SHORT_MINIMUM;
-            beta = this.evaluator.SHORT_MAXIMUM;
+            alpha = SHORT_MINIMUM;
+            beta = SHORT_MAXIMUM;
         }
         int score = aspirationScore;
 
         boolean outOfTime = false;
-        
-        while (!this.engine.isStopInstruction() && !outOfTime){
+
+        while (!stopSearch(outOfTime)){
             
             /*
             Aspiration Search:
@@ -46,21 +50,12 @@ public class AspirationSearch {
                     startTime, timeLimitMillis,
                     depth, depth, 0, alpha, beta, 0, false);
 
-            if (score >= this.evaluator.CHECKMATE_ENEMY_SCORE_MAX_PLY){
+            if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
                 return score;
             }
 
-            if (this.engine.getEngineSpecifications().ALLOW_TIME_LIMIT) {
-                long currentTime = System.currentTimeMillis();
-                long maxTime = startTime + timeLimitMillis;
-                long timeLeft = maxTime - currentTime;
-                if (timeLeft < 0) {
-                    outOfTime = true;
-                }
-                if (timeLeft < this.engine.PLY_STOP_TIME) {
-                    // not enough time to search another ply
-                    outOfTime = true;
-                }
+            if (TimeAllocator.outOfTime(engine, startTime, timeLimitMillis)) {
+                outOfTime = true;
             }
             
             /*
@@ -71,25 +66,19 @@ public class AspirationSearch {
                 if (score <= alpha) {
                     alpha = -firstWindow * alphaFac;
                     if (alphaFac >= 4){
-                        alpha = this.evaluator.SHORT_MINIMUM;
+                        alpha = SHORT_MINIMUM;
                     }
                     alphaFac *= 2;
-                    if (this.engine.INFO_LOG) {
-                        this.engine.statistics.numberOfFailedAspirations++;
-                    }
+                    this.engine.statistics.numberOfFailedAspirations++;
                 } else if (score >= beta) {
                     beta = firstWindow * betaFac;
                     if (betaFac >= 4){
-                        beta = this.evaluator.SHORT_MAXIMUM;
+                        beta = SHORT_MAXIMUM;
                     }
                     betaFac *= 2;
-                    if (this.engine.INFO_LOG) {
-                        this.engine.statistics.numberOfFailedAspirations++;
-                    }
+                    this.engine.statistics.numberOfFailedAspirations++;
                 } else {
-                    if (this.engine.INFO_LOG) {
-                        this.engine.statistics.numberOfSuccessfulAspirations++;
-                    }
+                    this.engine.statistics.numberOfSuccessfulAspirations++;
 
                     break;
                 }
@@ -101,7 +90,7 @@ public class AspirationSearch {
         return score;
     }
 
-    public Move getAiMove() {
+    Move getAiMove() {
         return this.principleVariationSearch.getAiMove();
     }
 

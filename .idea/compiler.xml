@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Axolotl" target="8" />
+      <module name="Axolotl" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

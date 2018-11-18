@@ -5,6 +5,7 @@ import javacode.chessprogram.chess.Chessboard;
 
 import java.util.List;
 
+import static javacode.chessengine.evaluation.EvaluationConstants.*;
 import static javacode.chessprogram.bitboards.BitBoards.*;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
@@ -13,13 +14,7 @@ import static javacode.chessprogram.moveGeneration.PieceMoveKnight.singleKnightC
 import static javacode.chessprogram.moveGeneration.PieceMoveKnight.singleKnightPushes;
 import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapturesTable;
 
-public class Knight {
-
-    private static int KNIGHT_OUTPOST_BONUS = 20;
-    private static int KNIGHT_MOBILITY_SCORE = 3;
-    private static int KNIGHT_PROTECTOR_SCORE = 4;
-    private static int KNIGHT_AGGRESSOR_SCORE = 6;
-    private static int UNDEVELOPED_KNIGHT_PENALTY = -20;
+class Knight {
 
     static int evalKnightByTurn(Chessboard board, boolean white) {
         long myKnights = white ? board.WHITE_KNIGHTS : board.BLACK_KNIGHTS;
@@ -46,7 +41,7 @@ public class Knight {
     private static int unDevelopedKnights(Chessboard board, boolean white, long myKnights){
         long originalKnights = white ? WHITE_KNIGHTS : BLACK_KNIGHTS;
         return populationCount(originalKnights & myKnights)
-                * UNDEVELOPED_KNIGHT_PENALTY;
+                * KNIGHT_UNDEVELOPED_PENALTY;
     }
 
     private static int knightMobility(Chessboard board, boolean white, long myKnights){

@@ -11,6 +11,7 @@ import javacode.chessprogram.moveGeneration.PieceMoveSliding;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javacode.chessengine.evaluation.EvaluationConstants.*;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.chess.BitManipulations.newPieceOnSquare;
 
@@ -62,22 +63,22 @@ public class SEEPruning {
 
     private static int scoreByPiece(Evaluator evaluator, Piece piece){
         if (piece.equals(Piece.BLACK_PAWN) || piece.equals(Piece.WHITE_PAWN)){
-            return evaluator.PAWN_SCORE;
+            return PAWN_SCORE;
         }
         if (piece.equals(Piece.BLACK_KNIGHT) || piece.equals(Piece.WHITE_KNIGHT)){
-            return evaluator.KNIGHT_SCORE;
+            return KNIGHT_SCORE;
         }
         if (piece.equals(Piece.BLACK_BISHOP) || piece.equals(Piece.WHITE_BISHOP)){
-            return evaluator.BISHOP_SCORE;
+            return BISHOP_SCORE;
         }
         if (piece.equals(Piece.BLACK_ROOK) || piece.equals(Piece.WHITE_ROOK)){
-            return evaluator.ROOK_SCORE;
+            return ROOK_SCORE;
         }
         if (piece.equals(Piece.BLACK_QUEEN) || piece.equals(Piece.WHITE_QUEEN)){
-            return evaluator.QUEEN_SCORE;
+            return QUEEN_SCORE;
         }
         if (piece.equals(Piece.BLACK_KING) || piece.equals(Piece.WHITE_KING)){
-            return evaluator.KING_SCORE;
+            return KING_SCORE;
         }
         throw new RuntimeException("piece problem");
     }

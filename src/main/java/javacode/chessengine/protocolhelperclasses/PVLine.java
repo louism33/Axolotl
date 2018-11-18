@@ -13,8 +13,8 @@ import static javacode.chessengine.transpositiontable.EngineMovesAndHash.makeMov
 
 public class PVLine {
     
-    private int score;
-    private List<Move> pvMoves;
+    private final int score;
+    private final List<Move> pvMoves;
 
     private PVLine(int score, List<Move> pvMoves) {
         this.score = score;

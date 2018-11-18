@@ -70,7 +70,7 @@ public class BitBoards {
             (FILE_C |FILE_D | FILE_E | FILE_F);
 
     public static final long noMansLand = (RANK_THREE | RANK_FOUR | RANK_FIVE | RANK_SIX);
-    public static long eastWestHighway = (RANK_FOUR | RANK_FIVE);
+    public static final long eastWestHighway = (RANK_FOUR | RANK_FIVE);
     public static final long northSouthHighway = (FILE_D | FILE_E);
 
     public static final long DIAGONAL_NW_SE = 0x8040201008040201L;

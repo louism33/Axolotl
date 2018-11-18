@@ -58,8 +58,7 @@ public class ExtendedPositionDescriptionParser {
             ans = m.group(1);
         }
 
-        String[] s = ans.split(" ");
-        return s;
+        return ans.split(" ");
     }
 
     private static String[] extractAvoidMoves(String edpPosition){
@@ -83,8 +82,7 @@ public class ExtendedPositionDescriptionParser {
             ans = m.group(1);
         }
 
-        String[] s = ans.split(" ");
-        return s;
+        return ans.split(" ");
     }
 
     private static String extractBestMove(String edpPosition){

@@ -4,7 +4,6 @@ import javacode.chessengine.evaluation.Evaluator;
 import javacode.chessengine.moveordering.MoveOrderer;
 import javacode.chessengine.transpositiontable.TranspositionTable;
 import javacode.chessengine.transpositiontable.ZobristHash;
-import javacode.chessprogram.check.CheckChecker;
 import javacode.chessprogram.chess.Chessboard;
 import javacode.chessprogram.chess.Move;
 import javacode.chessprogram.moveMaking.MoveParser;
@@ -12,7 +11,7 @@ import org.junit.Assert;
 
 import java.util.List;
 
-import static javacode.chessengine.evaluation.Evaluator.*;
+import static javacode.chessengine.evaluation.EvaluationConstants.*;
 import static javacode.chessengine.moveordering.KillerMoves.mateKiller;
 import static javacode.chessengine.moveordering.KillerMoves.updateKillerMoves;
 import static javacode.chessengine.search.FutilityPruning.futilityMargin;
@@ -25,23 +24,20 @@ import static javacode.chessengine.search.NullMovePruning.*;
 import static javacode.chessengine.search.Razoring.*;
 import static javacode.chessengine.search.SEEPruning.seeScore;
 import static javacode.chessengine.transpositiontable.EngineMovesAndHash.*;
-import static javacode.chessengine.transpositiontable.TranspositionTable.TableObject.Flag.EXACT;
-import static javacode.chessengine.transpositiontable.TranspositionTable.TableObject.Flag.LOWERBOUND;
-import static javacode.chessengine.transpositiontable.TranspositionTable.TableObject.Flag.UPPERBOUND;
+import static javacode.chessengine.transpositiontable.TranspositionTable.TableObject.Flag.*;
 import static javacode.chessprogram.check.CheckChecker.*;
-import static javacode.chessprogram.check.CheckChecker.boardInCheck;
 import static javacode.chessprogram.chess.Copier.copyMove;
 import static javacode.chessprogram.moveGeneration.MoveGeneratorMaster.generateLegalMoves;
 
-public class PrincipleVariationSearch {
+class PrincipleVariationSearch {
 
-    private Engine engine;
-    public TranspositionTable table;
-    private MoveOrderer moveOrderer;
-    private QuiescenceSearch quiescenceSearch;
+    private final Engine engine;
+    public final TranspositionTable table;
+    private final MoveOrderer moveOrderer;
+    private final QuiescenceSearch quiescenceSearch;
     private Move aiMove;
-    private Evaluator evaluator;
-    private Extensions extensions;
+    private final Evaluator evaluator;
+    private final Extensions extensions;
 
     PrincipleVariationSearch(Engine engine, Evaluator evaluator){
         this.engine = engine;
@@ -58,12 +54,11 @@ public class PrincipleVariationSearch {
                                  int alpha, int beta,
                                  int nullMoveCounter, boolean reducedSearch){
 
-        if (this.engine.HEAVY_DEBUG){
-            long testBoardHash = new ZobristHash(board).getBoardHash();
-            Assert.assertEquals(testBoardHash, zobristHash.getBoardHash());
-        }
+        boolean boardInCheck = boardInCheck(board, board.isWhiteTurn());
 
-        depth += this.extensions.extensions(board, ply);
+        if (this.engine.getEngineSpecifications().ALLOW_EXTENSIONS) {
+            depth += this.extensions.extensions(board, ply, boardInCheck);
+        }
 
         Assert.assertTrue(depth >= 0);
         
@@ -98,7 +93,7 @@ public class PrincipleVariationSearch {
          */
         Move hashMove = null;
         TranspositionTable.TableObject previousTableData = table.get(zobristHash.getBoardHash());
-        int score = 0;
+        int score;
         if (previousTableData != null && ply > 0) {
             score = previousTableData.getScore(ply);
             hashMove = previousTableData.getMove();
@@ -131,10 +126,8 @@ public class PrincipleVariationSearch {
         Principle Variation:
         only perform certain reductions if we are not in the most likely branch of the tree
          */
-        int staticBoardEval = this.evaluator.SHORT_MINIMUM;
-        boolean thisIsAPrincipleVariationNode = beta - alpha != 1;
-        boolean boardInCheck = boardInCheck(board, board.isWhiteTurn());
-        boolean debug = this.engine.INFO_LOG;
+        int staticBoardEval = SHORT_MINIMUM;
+        boolean thisIsAPrincipleVariationNode = (beta - alpha != 1);
         if (!thisIsAPrincipleVariationNode && !boardInCheck) {
             List<Move> moves = generateLegalMoves(board, board.isWhiteTurn());
             staticBoardEval = this.evaluator.eval(board, board.isWhiteTurn(), moves);
@@ -155,9 +148,7 @@ public class PrincipleVariationSearch {
                 if (isBetaRazoringMoveOkHere(board, evaluator, depth, staticBoardEval)){
                     int specificBetaRazorMargin = betaRazorMargin[depth];
                     if (staticBoardEval - specificBetaRazorMargin >= beta){
-                        if (debug){
-                            this.engine.statistics.numberOfSuccessfulBetaRazors++;
-                        }
+                        this.engine.statistics.numberOfSuccessfulBetaRazors++;
                         return staticBoardEval;
                     }
                 }
@@ -173,19 +164,15 @@ public class PrincipleVariationSearch {
                     int specificAlphaRazorMargin = alphaRazorMargin[depth];
                     if (staticBoardEval + specificAlphaRazorMargin < alpha){
                         int qScore = this.quiescenceSearch
-                                .quiescenceSearch(board, 
-                                        alpha - specificAlphaRazorMargin, 
+                                .quiescenceSearch(board,
+                                        alpha - specificAlphaRazorMargin,
                                         alpha - specificAlphaRazorMargin + 1);
 
                         if (qScore + specificAlphaRazorMargin <= alpha){
-                            if (debug){
-                                this.engine.statistics.numberOfSuccessfulAlphaRazors++;
-                            }
+                            this.engine.statistics.numberOfSuccessfulAlphaRazors++;
                             return qScore;
                         }
-                        else if (debug){
-                            this.engine.statistics.numberOfFailedAlphaRazors++;
-                        }
+                        this.engine.statistics.numberOfFailedAlphaRazors++;
                     }
                 }
             }
@@ -205,7 +192,7 @@ public class PrincipleVariationSearch {
 
                     int nullScore = reducedDepth <= 0 ?
 
-                            -this.quiescenceSearch.quiescenceSearch(board, 
+                            -this.quiescenceSearch.quiescenceSearch(board,
                                     -beta,
                                     -beta + 1)
 
@@ -221,14 +208,10 @@ public class PrincipleVariationSearch {
                             nullScore = beta;
                         }
 
-                        if (debug) {
-                            this.engine.statistics.numberOfNullMoveHits++;
-                        }
+                        this.engine.statistics.numberOfNullMoveHits++;
                         return nullScore;
                     }
-                    if (debug) {
-                        this.engine.statistics.numberOfNullMoveMisses++;
-                    }
+                    this.engine.statistics.numberOfNullMoveMisses++;
                 }
             }
         }
@@ -245,12 +228,9 @@ public class PrincipleVariationSearch {
              */
             if (this.engine.getEngineSpecifications().ALLOW_INTERNAL_ITERATIVE_DEEPENING){
                 if (isIIDAllowedHere(board, depth, reducedSearch, thisIsAPrincipleVariationNode)){
-                    if (debug){
-                        this.engine.statistics.numberOfIIDs++;
-                    }
-
+                    this.engine.statistics.numberOfIIDs++;
                     int reducedIIDDepth = depth - iidDepthReduction - 1;
-                    
+
                     principleVariationSearch(board, zobristHash,
                             startTime, timeLimitMillis, originalDepth,
                             reducedIIDDepth, ply,
@@ -268,22 +248,18 @@ public class PrincipleVariationSearch {
         }
 
         if (previousTableData != null) {
-            if (debug) {
-                this.engine.statistics.numberOfSearchesWithHash++;
-            }
+            this.engine.statistics.numberOfSearchesWithHash++;
             orderedMoves = this.moveOrderer.orderedMoves(board, board.isWhiteTurn(), ply, hashMove, aiMove);
 
         }
         else{
-            if (debug) {
-                this.engine.statistics.numberOfSearchesWithoutHash++;
-            }
+            this.engine.statistics.numberOfSearchesWithoutHash++;
 
             orderedMoves = this.moveOrderer.orderedMoves(board, board.isWhiteTurn(), ply, null, aiMove);
         }
 
         int originalAlpha = alpha;
-        int bestScore = this.evaluator.SHORT_MINIMUM;
+        int bestScore = SHORT_MINIMUM;
         Move bestMove = null;
         
         /*
@@ -324,9 +300,7 @@ public class PrincipleVariationSearch {
                                     && depth <= 4
                                     && numberOfMovesSearched >= depth * 3 + 4) {
 
-                                if (debug) {
-                                    this.engine.statistics.numberOfLateMovePrunings++;
-                                }
+                                this.engine.statistics.numberOfLateMovePrunings++;
                                 continue;
                             }
                         }
@@ -340,7 +314,7 @@ public class PrincipleVariationSearch {
                         if (isFutilityPruningAllowedHere(board, move, depth,
                                 promotionMove, givesCheckMove, pawnToSix, pawnToSeven)) {
 
-                            if (staticBoardEval == this.evaluator.SHORT_MINIMUM) {
+                            if (staticBoardEval == SHORT_MINIMUM) {
                                 staticBoardEval = this.evaluator.eval(board, board.isWhiteTurn(),
                                         generateLegalMoves(board, board.isWhiteTurn()));
                             }
@@ -348,14 +322,12 @@ public class PrincipleVariationSearch {
                             int futilityScore = staticBoardEval + futilityMargin[depth];
 
                             if (futilityScore <= alpha) {
-                                if (debug) {
-                                    this.engine.statistics.numberOfSuccessfulFutilities++;
-                                }
+                                this.engine.statistics.numberOfSuccessfulFutilities++;
                                 if (futilityScore > bestScore) {
                                     bestScore = futilityScore;
                                 }
                                 continue;
-                            } else if (debug) {
+                            } else {
                                 this.engine.statistics.numberOfFailedFutilities++;
                             }
                         }
@@ -380,9 +352,7 @@ public class PrincipleVariationSearch {
 
             makeMoveAndHashUpdate(board, move, zobristHash);
             numberOfMovesSearched++;
-            if (debug){
-                this.engine.statistics.numberOfMovesMade++;
-            }
+            this.engine.statistics.numberOfMovesMade++;
 
             boolean enemyInCheck = boardInCheck(board, board.isWhiteTurn());
 
@@ -404,9 +374,7 @@ public class PrincipleVariationSearch {
                         numberOfMovesSearched, reducedSearch, captureMove,
                         givesCheckMove, promotionMove, pawnToSix, pawnToSeven)) {
 
-                    if (debug) {
-                        this.engine.statistics.numberOfLateMoveReductions++;
-                    }
+                    this.engine.statistics.numberOfLateMoveReductions++;
                 
                     /*
                     lower depth search
@@ -427,10 +395,8 @@ public class PrincipleVariationSearch {
                                 originalDepth, depth - 1, ply + 1,
                                 -alpha - 1, -alpha, 0, false);
 
-                        if (debug) {
-                            this.engine.statistics.numberOfLateMoveReductionsMisses++;
-                        }
-                    } else if (debug) {
+                        this.engine.statistics.numberOfLateMoveReductionsMisses++;
+                    } else {
                         this.engine.statistics.numberOfLateMoveReductionsHits++;
                     }
                 }
@@ -439,7 +405,7 @@ public class PrincipleVariationSearch {
                 Principle Variation Search:
                 moves that are not favourite (PV) are searched with a null window
                  */
-                else if (this.engine.getEngineSpecifications().ALLOW_PRINCIPLE_VARIATION_SEARCH 
+                else if (this.engine.getEngineSpecifications().ALLOW_PRINCIPLE_VARIATION_SEARCH
                         && numberOfMovesSearched > 1) {
 
                     score = -principleVariationSearch(board, zobristHash,
@@ -450,7 +416,7 @@ public class PrincipleVariationSearch {
                     /*
                     if this line of play would improve our score, do full re-search (implemented slightly lower down)
                      */
-                    if (score > alpha && debug) {
+                    if (score > alpha) {
                         this.engine.statistics.numberOfPVSMisses++;
                     } else {
                         this.engine.statistics.numberOfPVSHits++;
@@ -487,9 +453,7 @@ public class PrincipleVariationSearch {
             represents a situation which is too good, or too bad, and will not occur in normal play, so stop searching further
              */
             if (alpha >= beta){
-                if (debug) {
-                    this.engine.statistics.statisticsFailHigh(ply, numberOfMovesSearched, move);
-                }
+                this.engine.statistics.statisticsFailHigh(ply, numberOfMovesSearched, move);
 
                 if (!this.moveOrderer.moveIsCapture(board, move)){
                     /*
@@ -515,15 +479,11 @@ public class PrincipleVariationSearch {
 
         if (numberOfMovesSearched == 0) {
             if (boardInCheck) {
-                if (debug) {
-                    this.engine.statistics.numberOfCheckmates++;
-                }
+                this.engine.statistics.numberOfCheckmates++;
                 return IN_CHECKMATE_SCORE + ply;
             }
             else {
-                if (debug) {
-                    this.engine.statistics.numberOfStalemates++;
-                }
+                this.engine.statistics.numberOfStalemates++;
                 return IN_STALEMATE_SCORE;
             }
         }
@@ -548,7 +508,7 @@ public class PrincipleVariationSearch {
         return bestScore;
     }
 
-    public Move getAiMove() {
+    Move getAiMove() {
         return aiMove;
     }
 

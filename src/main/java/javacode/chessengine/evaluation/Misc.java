@@ -5,23 +5,13 @@ import javacode.chessprogram.chess.Move;
 
 import java.util.List;
 
+import static javacode.chessengine.evaluation.EvaluationConstants.*;
 import static javacode.chessprogram.bitboards.BitBoards.FILES;
 import static javacode.chessprogram.check.CheckChecker.boardInCheck;
-import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.moveGeneration.PinnedManager.whichPiecesArePinned;
 
-public class Misc {
-
-    private static int MOVE_NUMBER_POINT = 1; 
-    private static int BATTERY_SCORE = 10;
-    private static int I_CONTROL_OPEN_FILE = 10;
-    private static int MY_TURN_BONUS = 10;
-    private static int IN_CHECK_PENALTY = -5;
-
-    private static int BASIC_PINNED_PIECE_PENALTY_KING = -15;
-    private static int QUEEN_IS_PINNED = -10;
-    private static int BASIC_PINNED_PIECE_PENALTY_QUEEN = -10;
+class Misc {
 
     static int evalMiscByTurn(Chessboard board, boolean white, List<Move> moves) {
         int score = 0;
@@ -44,12 +34,12 @@ public class Misc {
         long pinnedPiecesToKing = whichPiecesArePinned(board, white, myKing);
 
         score += populationCount(pinnedPiecesToKing) * BASIC_PINNED_PIECE_PENALTY_KING;
-//        if ((pinnedPiecesToKing & myQueen) != 0){
-//            score += QUEEN_IS_PINNED;
-//        }
+        if ((pinnedPiecesToKing & myQueen) != 0){
+            score += QUEEN_IS_PINNED;
+        }
 
         long pinnedPiecesToQueen = whichPiecesArePinned(board, white, myQueen);
-//        score += populationCount(pinnedPiecesToQueen) * BASIC_PINNED_PIECE_PENALTY_QUEEN;
+        score += populationCount(pinnedPiecesToQueen) * BASIC_PINNED_PIECE_PENALTY_QUEEN;
 
         return score;
     }
@@ -71,9 +61,6 @@ public class Misc {
         long myRooks = white ? board.WHITE_ROOKS : board.BLACK_ROOKS;
         long myBatteryPieces = myQueens | myRooks;
         long enemyPieces = white ? board.ALL_BLACK_PIECES() : board.ALL_WHITE_PIECES();
-
-        List<Integer> indexOfAllPieces = getIndexOfAllPieces(myRooks);
-        long emptySquares = ~board.ALL_PIECES();
 
         int batteryAndFileControlScore = 0;
         for (long file : FILES) {
