@@ -6,17 +6,14 @@ Also includes various Parsers for FEN notation, EDP and Algebraic notation. Vari
 Many options for improvement and speedup exist, this is only version one. 
 As external libraries, JCPI is used for the UCI protocol.
 
-There is support for Blitz tournaments, and fixed time per move. Other, less common modes will be implemented in later versions.
+There is support for Blitz tournaments, fixed time per move, and "infinite" depth. Other, less common modes will be implemented in later versions.
 
-The JAR file is targetted to Java 8, but the project is written under Java 10. 
+You will need the latest JRE, JRE 11 to run Axolotl.
 
 For information about the UCI protocol, please refer to: 
   http://wbec-ridderkerk.nl/html/UCIProtocol.html
   https://chess.stackexchange.com/questions/12580/working-with-uci-protocol-coding
-  
-For connection to Arena assistance, in particular how to make the Axolotl_jar executable, this might be useful:
-  https://coderwall.com/p/ssuaxa/how-to-make-a-jar-file-linux-executable
-  
+    
 You are free to use Axolotl however you see fit. If you have any questions, simply open an issue and I will try to get back to you.
 
 Louis
