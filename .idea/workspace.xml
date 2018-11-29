@@ -11,13 +11,25 @@
   <component name="ChangeListManager">
     <list default="true" id="8807346a-cf9d-4333-98e2-880bdb09ab35" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessCore/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/eDetailedPerftSearching.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/eDetailedPerftSearching.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessCore/src/test/java/programtests/CheckCheckerTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessCore/src/test/java/programtests/ChessboardTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessCore/src/test/java/programtests/MoveUnmakerTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessCore/src/test/java/programtests/PerftSuiteTwo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessCore/src/test/java/programtests/eDetailedPerftSearchingTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/src/test/java/PerftTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Knight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/SEEPruning.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/SEEPruning.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/check/CheckChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/check/CheckChecker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/check/CheckMoveOrganiser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/check/CheckMoveOrganiser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/chess/BitIndexing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/chess/BitIndexing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/miscAdmin/DetailedPerftSearching.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/miscAdmin/DetailedPerftSearching.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/moveGeneration/MoveGeneratorKnight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/moveGeneration/MoveGeneratorKnight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/moveGeneration/PieceMoveKnight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/javacode/chessprogram/moveGeneration/PieceMoveKnight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorEnPassant.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorEnPassant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorMaster.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorMaster.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChessCore/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/ChessboardHashTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/ChessboardHashTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/NullMoveTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/NullMoveTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/PerftTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/PerftTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/SquareTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/SquareTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/TEST-ChessboardHashTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/TEST-ChessboardHashTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/TEST-NullMoveTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/TEST-NullMoveTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/TEST-PerftTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/TEST-PerftTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/TEST-SquareTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessCore/target/surefire-reports/TEST-SquareTest.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -36,6 +48,9 @@
     <SUITE FILE_PATH="coverage/chessPlusPlus$MoveUnmakerTest_unMakeMoveMaster.ic" NAME="MoveUnmakerTest.unMakeMoveMaster Coverage Results" MODIFIED="1539250031897" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>tests.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/Axolotl$DetailedPerftSearchingTestSuite_test3.ic" NAME="DetailedPerftSearchingTestSuite.test3 Coverage Results" MODIFIED="1542735665200" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>tests.programtests.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/chessPlusPlus$Main__2_.ic" NAME="Main (2) Coverage Results" MODIFIED="1539720297125" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>javacode.main.*</FILTER>
     </SUITE>
@@ -49,23 +64,34 @@
     <session id="-975693011">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="6" />
-          <entry key="project.open.time.16" value="1" />
+          <entry key="project.closed" value="24" />
+          <entry key="project.open.time.14" value="1" />
+          <entry key="project.open.time.15" value="2" />
+          <entry key="project.open.time.16" value="2" />
           <entry key="project.open.time.17" value="2" />
-          <entry key="project.open.time.18" value="1" />
-          <entry key="project.open.time.20" value="1" />
+          <entry key="project.open.time.18" value="2" />
+          <entry key="project.open.time.19" value="4" />
+          <entry key="project.open.time.20" value="4" />
+          <entry key="project.open.time.24" value="3" />
+          <entry key="project.open.time.28" value="1" />
+          <entry key="project.open.time.36" value="1" />
           <entry key="project.open.time.38" value="1" />
-          <entry key="project.opened" value="6" />
+          <entry key="project.open.time.53" value="1" />
+          <entry key="project.opened" value="24" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="LICENSE" value="1" />
+          <entry key="RookMagics" value="1" />
+          <entry key="RookVariations" value="2" />
           <entry key="gitignore" value="5" />
           <entry key="iml" value="1" />
-          <entry key="java" value="383" />
+          <entry key="java" value="882" />
           <entry key="jpg" value="1" />
+          <entry key="jtxt" value="1" />
           <entry key="md" value="1" />
+          <entry key="txt" value="20" />
           <entry key="xml" value="9" />
           <entry key="yml" value="2" />
         </counts>
@@ -74,26 +100,26 @@
         <counts>
           <entry key="IDEA_MODULE" value="1" />
           <entry key="Image" value="1" />
-          <entry key="JAVA" value="383" />
+          <entry key="JAVA" value="882" />
           <entry key="Markdown" value="1" />
-          <entry key="PLAIN_TEXT" value="6" />
+          <entry key="PLAIN_TEXT" value="30" />
           <entry key="XML" value="9" />
           <entry key="YAML" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="dummy" value="57" />
-          <entry key="java" value="7913" />
-          <entry key="txt" value="34" />
+          <entry key="dummy" value="168" />
+          <entry key="java" value="44412" />
+          <entry key="txt" value="61" />
           <entry key="xml" value="56" />
           <entry key="yml" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7913" />
-          <entry key="PLAIN_TEXT" value="91" />
+          <entry key="JAVA" value="44412" />
+          <entry key="PLAIN_TEXT" value="229" />
           <entry key="XML" value="56" />
           <entry key="YAML" value="4" />
         </counts>
@@ -105,26 +131,56 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../ChessCore/src/test/java/PerftTest.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMoveSliding.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
-              <caret line="133" column="9" lean-forward="true" selection-start-line="133" selection-start-column="9" selection-end-line="133" selection-end-column="9" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="855">
+              <caret line="61" selection-start-line="61" selection-end-line="61" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/dummy/Dummy.java">
+        <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorPseudo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="14" column="4" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="330">
+              <caret line="26" column="43" selection-start-line="26" selection-start-column="43" selection-end-line="26" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMovePawns.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="32" column="9" selection-start-line="26" selection-start-column="8" selection-end-line="32" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorEnPassant.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="495">
+              <caret line="39" selection-start-line="39" selection-end-line="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorMaster.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="514">
+              <caret line="87" column="11" selection-start-line="87" selection-start-column="11" selection-end-line="87" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGenerationUtilities.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="420">
+              <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -142,54 +198,38 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>White</find>
-      <find>BLACK</find>
-      <find>_</find>
-      <find>MoveUnmaker</find>
-      <find>unm</find>
-      <find>utili</find>
-      <find>flip</find>
-      <find>unmake</find>
-      <find>MoveUnmaker.unMakeMoveMaster(b);</find>
-      <find>MoveUnmaker.unMakeMoveMaster(b)</find>
-      <find>moveUn</find>
-      <find>generateL</find>
-      <find>ax</find>
-      <find>chessprogram</find>
-      <find>newPiece</find>
-      <find>details</find>
-      <find>Genera</find>
-      <find>MoveGeneratorMas</find>
-      <find>genera</find>
-      <find>public class</find>
-      <find>boardRe</find>
-      <find>parseFen</find>
-      <find>epfl</find>
-      <find>board.</find>
-      <find>board</find>
-      <find>toStr</find>
-      <find>maven.</find>
-      <find>org.apa</find>
-      <find>pack</find>
-      <find>testS</find>
+      <find>size</find>
+      <find>get r</find>
+      <find>bishopp</find>
+      <find>bishop</find>
+      <find>bishopC</find>
+      <find>rookma</find>
+      <find>rookc</find>
+      <find>singleRookMagicMoves</find>
+      <find>singleBishopMagicMoves</find>
+      <find>getIndex</find>
+      <find>inch</find>
+      <find>inchec</find>
+      <find>checkmate</find>
+      <find>quarec</find>
+      <find>Piece p</find>
+      <find>sq2Bb</find>
+      <find>&quot;here</find>
+      <find>rank</find>
+      <find>ray</find>
+      <find>init()</find>
+      <find>inifini</find>
+      <find>todo</find>
+      <find>infinit</find>
+      <find>trailin</find>
+      <find>board.allp</find>
+      <find>pinne</find>
+      <find>singleQueenTable</find>
+      <find>allEnemyPawnsInPosition</find>
+      <find>enemyPawnsInPosition</find>
+      <find>for (long</find>
     </findStrings>
     <replaceStrings>
-      <replace>&quot; +</replace>
-      <replace>\\n&quot; +</replace>
-      <replace>Beta</replace>
-      <replace>search</replace>
-      <replace>engine</replace>
-      <replace>new Engine()</replace>
-      <replace>KNIGHTS</replace>
-      <replace>BISHOPS</replace>
-      <replace>ROOKS</replace>
-      <replace>BLACK</replace>
-      <replace>false</replace>
-      <replace>public class</replace>
-      <replace>this.engine.engineSpecifications.</replace>
-      <replace>this.engine.getEngineSpecifications().</replace>
-      <replace>this.engine.getEngineSpecifications()</replace>
-      <replace>.</replace>
       <replace>true</replace>
       <replace />
       <replace>this.move</replace>
@@ -204,6 +244,21 @@
       <replace>class</replace>
       <replace>this.</replace>
       <replace>this</replace>
+      <replace>new Chessboard</replace>
+      <replace>;</replace>
+      <replace>BitOperations.</replace>
+      <replace>BitOperations</replace>
+      <replace>verifyHashToDepth</replace>
+      <replace>BLACK</replace>
+      <replace>,</replace>
+      <replace>11</replace>
+      <replace>54</replace>
+      <replace>4</replace>
+      <replace>5</replace>
+      <replace>PieceMoveSliding.singleRookTable(board,</replace>
+      <replace>PieceMoveSliding.singleBishopTable</replace>
+      <replace>Square</replace>
+      <replace>Square.toBitboard</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src/main/miscAdmin</dir>
@@ -213,6 +268,8 @@
       <dir>$PROJECT_DIR$/../ChessCore/src/test/java/programtests</dir>
       <dir>$PROJECT_DIR$/src/main/java/javacode/chessengine</dir>
       <dir>$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram</dir>
+      <dir>$PROJECT_DIR$/src/main/java/javacode</dir>
+      <dir>$PROJECT_DIR$/../ChessCore/src/main/java</dir>
       <dir>$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god</dir>
     </dirStrings>
   </component>
@@ -227,61 +284,62 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/check/CheckChecker.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/MagicGenerator.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/moveMaking/MoveEnPassant.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/check/KingLegalMoves.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/check/CheckMoveOrganiser.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/chess/Move.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/test/java/programtests/DetailedPerftSearchingTestSuite.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/move/MoveParser.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/chess/Copier.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/moveGeneration/MoveGeneratorPromotion.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/zobrist/ZobristHash.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/miscAdmin/RandomBoard.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/moveMaking/MoveOrganiser.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/chessboard/ChessboardDetails.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/moveMaking/MoveCastling.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/chessboard/Copier.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/moveGeneration/MoveGeneratorEnPassant.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/moveMaking/MoveMakingUtilities.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/check/CheckChecker.java" />
-        <option value="$PROJECT_DIR$/src/main/java/javacode/chessengine/search/Engine.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/graphicsandui/Art.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/bitboards/BitBoardUtils.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/bitboards/BitManipulations.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/miscAdmin/DetailedPerftSearching.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/moveMaking/MovePromotion.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/move/MovePrettifier.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/move/Move.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/chessboard/dummmy/Dummmy.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/chessboard/Chessboard.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/move/fMoveUnmaker.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/move/MoveUnmaker.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/eRandomBoard.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/rookdb.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/RookVariationsA1.txt" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/test.txt" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/RookDatabase.java" />
         <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Art.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/ZobristHash.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/StackMoveData.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PinnedManager.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMoveSliding.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMovePawns.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/test/java/programtests/CheckCheckerTest.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/test/java/programtests/MoveUnmakerTest.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/test/java/programtests/ChessboardTest.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/eFenParser.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Chessboard.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/H1.txt" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/RookDatabaseH1.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/xxA8.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/RookDatabaseA8.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/rookdb/Database.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/test/java/SquareTest.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/rookdb/RookDatabaseMaster.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/Temp.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/Utils.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/RookMagics.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/MagicGenerator.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/Helper.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/test/java/MagicTest.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/MagicConstants.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/Magic.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessprogram/chess/BitIndexing.java" />
+        <option value="$PROJECT_DIR$/src/main/java/javacode/chessprogram/moveGeneration/PieceMoveKnight.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveConstantsKing.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMoveTableKnight.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveConstantsKnight.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveConstantsPawnCapture.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveConstants.java" />
         <option value="$PROJECT_DIR$/../ChessCore/src/main/java/dummy/Dummy.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Move.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/test/java/programtests/PerftTest.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/test/java/Testmvn.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/pom.xml" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/test/java/TestPerft.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/test/java/PerftTest.java" />
-        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/eDetailedPerftSearching.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Chessboard.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/CheckHelper.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/BitboardResources.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/test/java/RayPinnedTest.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Magic.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorCheck.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PinnedManager.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/BitOperations.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorKnight.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorPseudo.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorSliding.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorKingLegal.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorPawns.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorPromotion.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMovePawns.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGenerationUtilities.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMoveKnight.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMoveKing.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Square.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorCastling.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMoveSliding.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorEnPassant.java" />
+        <option value="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorMaster.java" />
       </list>
     </option>
   </component>
@@ -316,9 +374,9 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="4">
-    <option name="x" value="519" />
-    <option name="width" value="848" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-1" />
+    <option name="width" value="838" />
     <option name="height" value="741" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -336,10 +394,6 @@
           <expand>
             <path>
               <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Axolotl" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
               <item name="ChessCore" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -359,6 +413,32 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ChessCore" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="chessprogram" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ChessCore" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="chessprogram" type="462c0819:PsiDirectoryNode" />
+              <item name="god" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ChessCore" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="chessprogram" type="462c0819:PsiDirectoryNode" />
+              <item name="magic" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
@@ -368,6 +448,19 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="dummy" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ChessCore" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ChessCore" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -376,9 +469,10 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value="square&#9;FILE&#9;file:///home/louis/IdeaProjects/ChessCore/src/main/java/chessprogram/god/Square.java&#10;MoveGenerat&#9;FILE&#9;file:///home/louis/IdeaProjects/ChessCore/src/main/java/chessprogram/god/MoveGeneratorSliding.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542657343852" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543442588603" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../ChessCore/src/main/java" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -387,21 +481,27 @@
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/../ChessCore/src/test/java/programtests" />
-      <recent name="$PROJECT_DIR$/../ChessCore/src/test" />
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="chessprogram.magic.Magic" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
     </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="chessprogram.zobrist" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god" />
       <recent name="$PROJECT_DIR$/../ChessCore" />
       <recent name="$PROJECT_DIR$/../ChessCore/src/test/java" />
       <recent name="$PROJECT_DIR$/../ChessCore/src/main/java" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="chessprogram.zobrist" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic" />
+      <recent name="$PROJECT_DIR$/../ChessCore/src/main/resources" />
+      <recent name="$PROJECT_DIR$/../ChessCore/src/test/java/programtests" />
+      <recent name="$PROJECT_DIR$/../ChessCore/src/test" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -416,70 +516,47 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration name="Dummy" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="dummy.Dummy" />
+  <component name="RunManager" selected="JUnit.PerftTest">
+    <configuration name="PerftTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ChessCore" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="dummy.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="PerftTest" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PerftTest.test1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PerftTestTinyDepths" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ChessCore" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="programtests.MoveUnmakerTest" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="PerftTest" />
-      <option name="METHOD_NAME" value="test1" />
+      <option name="MAIN_CLASS_NAME" value="PerftTestTinyDepths" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RayPinnedTest.adjTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ChessCore" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="RayPinnedTest" />
+      <option name="METHOD_NAME" value="adjTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PerftTest.test15" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RayPinnedTest.rayTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ChessCore" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value=".*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="PerftTest" />
-      <option name="METHOD_NAME" value="test15" />
+      <option name="MAIN_CLASS_NAME" value="RayPinnedTest" />
+      <option name="METHOD_NAME" value="rayTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Testmvn" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SquareTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ChessCore" />
-      <option name="PACKAGE_NAME" value="programtests" />
-      <option name="MAIN_CLASS_NAME" value="Testmvn" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="WACTests (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Axolotl" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="tests.enginetests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="tests.enginetests" />
-      <option name="MAIN_CLASS_NAME" value="tests.enginetests.WACTests" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="SquareTest" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -506,19 +583,19 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.WACTests" />
-      <item itemvalue="JUnit.PerftTest.test1" />
-      <item itemvalue="JUnit.WACTests (1)" />
-      <item itemvalue="Application.Dummy" />
-      <item itemvalue="JUnit.PerftTest.test15" />
-      <item itemvalue="JUnit.Testmvn" />
+      <item itemvalue="JUnit.PerftTestTinyDepths" />
+      <item itemvalue="JUnit.RayPinnedTest.rayTest" />
+      <item itemvalue="JUnit.RayPinnedTest.adjTest" />
+      <item itemvalue="JUnit.PerftTest" />
+      <item itemvalue="JUnit.SquareTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PerftTest.test1" />
-        <item itemvalue="JUnit.Testmvn" />
-        <item itemvalue="JUnit.PerftTest.test15" />
-        <item itemvalue="Application.Dummy" />
-        <item itemvalue="JUnit.WACTests (1)" />
+        <item itemvalue="JUnit.PerftTest" />
+        <item itemvalue="JUnit.SquareTest" />
+        <item itemvalue="JUnit.PerftTestTinyDepths" />
+        <item itemvalue="JUnit.RayPinnedTest.adjTest" />
+        <item itemvalue="JUnit.RayPinnedTest.rayTest" />
       </list>
     </recent_temporary>
   </component>
@@ -621,7 +698,25 @@
       <workItem from="1542534577523" duration="10292000" />
       <workItem from="1542545367718" duration="12179000" />
       <workItem from="1542612104809" duration="2060000" />
-      <workItem from="1542649304195" duration="4806000" />
+      <workItem from="1542649304195" duration="11801000" />
+      <workItem from="1542696415733" duration="3234000" />
+      <workItem from="1542735436561" duration="1248000" />
+      <workItem from="1542736737596" duration="8891000" />
+      <workItem from="1542786509053" duration="10531000" />
+      <workItem from="1542822205306" duration="2090000" />
+      <workItem from="1542826856535" duration="9448000" />
+      <workItem from="1542882885600" duration="19185000" />
+      <workItem from="1542959310806" duration="25232000" />
+      <workItem from="1543049274204" duration="2691000" />
+      <workItem from="1543053113007" duration="24936000" />
+      <workItem from="1543136808063" duration="16053000" />
+      <workItem from="1543215135856" duration="4920000" />
+      <workItem from="1543254971088" duration="11134000" />
+      <workItem from="1543348519211" duration="526000" />
+      <workItem from="1543349155994" duration="7124000" />
+      <workItem from="1543388682230" duration="11170000" />
+      <workItem from="1543432501721" duration="10389000" />
+      <workItem from="1543483144386" duration="510000" />
     </task>
     <task id="LOCAL-00001" summary="moving packages">
       <created>1542576957823</created>
@@ -658,43 +753,50 @@
       <option name="project" value="LOCAL" />
       <updated>1542650362040</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="clean up!">
+      <created>1542657381484</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1542657381484</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="DetailedPerftSearchingTestSuite_test1 - 2018.11.18 at 21h 47m 16s.xml">
-      <configuration name="DetailedPerftSearchingTestSuite.test1" configurationId="JUnit" />
+    <history-entry file="PerftTest - 2018.11.28 at 22h 50m 59s.xml">
+      <configuration name="PerftTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DetailedPerftSearchingTestSuite_test1 - 2018.11.18 at 22h 10m 59s.xml">
-      <configuration name="DetailedPerftSearchingTestSuite.test1" configurationId="JUnit" />
+    <history-entry file="PerftTest - 2018.11.28 at 22h 52m 21s.xml">
+      <configuration name="PerftTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DetailedPerftSearchingTestSuite_test1 - 2018.11.18 at 22h 12m 11s.xml">
-      <configuration name="DetailedPerftSearchingTestSuite.test1" configurationId="JUnit" />
+    <history-entry file="PerftTest - 2018.11.28 at 22h 55m 11s.xml">
+      <configuration name="PerftTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="eDetailedPerftSearchingTestSuite_test1 - 2018.11.18 at 22h 23m 17s.xml">
-      <configuration name="eDetailedPerftSearchingTestSuite.test1" configurationId="JUnit" />
+    <history-entry file="PerftTest - 2018.11.28 at 22h 55m 51s.xml">
+      <configuration name="PerftTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="eDetailedPerftSearchingTestSuite_test1 - 2018.11.19 at 08h 26m 29s.xml">
-      <configuration name="eDetailedPerftSearchingTestSuite.test1" configurationId="JUnit" />
+    <history-entry file="PerftTest - 2018.11.28 at 22h 56m 30s.xml">
+      <configuration name="PerftTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="eDetailedPerftSearchingTestSuite_test15 - 2018.11.19 at 18h 53m 05s.xml">
-      <configuration name="eDetailedPerftSearchingTestSuite.test15" configurationId="JUnit" />
+    <history-entry file="PerftTest - 2018.11.28 at 22h 58m 47s.xml">
+      <configuration name="PerftTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="Testmvn - 2018.11.19 at 20h 42m 13s.xml">
-      <configuration name="Testmvn" configurationId="JUnit" />
+    <history-entry file="PerftTest - 2018.11.28 at 22h 59m 14s.xml">
+      <configuration name="PerftTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PerftTest_test1 - 2018.11.19 at 20h 51m 32s.xml">
-      <configuration name="PerftTest.test1" configurationId="JUnit" />
+    <history-entry file="PerftTest - 2018.11.28 at 23h 01m 05s.xml">
+      <configuration name="PerftTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PerftTest_test1 - 2018.11.19 at 20h 51m 58s.xml">
-      <configuration name="PerftTest.test1" configurationId="JUnit" />
+    <history-entry file="PerftTest - 2018.11.28 at 23h 02m 11s.xml">
+      <configuration name="PerftTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PerftTest_test1 - 2018.11.19 at 20h 52m 34s.xml">
-      <configuration name="PerftTest.test1" configurationId="JUnit" />
+    <history-entry file="PerftTest - 2018.11.28 at 23h 03m 06s.xml">
+      <configuration name="PerftTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="80579000" />
+    <option name="totallyTimeSpent" value="256886000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -706,31 +808,31 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="519" y="0" width="848" height="741" extended-state="4" />
+    <frame x="-1" y="0" width="1368" height="741" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.489603" visible="true" weight="0.34125" />
-      <window_info id="Structure" order="1" sideWeight="0.51039696" side_tool="true" weight="0.26666668" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48322147" visible="true" weight="0.23030303" />
+      <window_info id="Structure" order="1" sideWeight="0.5167785" side_tool="true" weight="0.1590909" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="UI Designer" order="5" />
       <window_info id="Learn" order="6" weight="0.32954547" />
-      <window_info id="Favorites" order="7" sideWeight="0.5068182" side_tool="true" weight="0.26287878" />
+      <window_info id="Favorites" order="7" sideWeight="0.513347" side_tool="true" weight="0.15681818" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Run" order="1" sideWeight="0.49545455" visible="true" weight="0.0631068" />
-      <window_info anchor="bottom" id="Debug" order="2" weight="0.021035599" />
+      <window_info anchor="bottom" id="Run" order="1" sideWeight="0.49545455" weight="0.14401294" />
+      <window_info anchor="bottom" id="Debug" order="2" weight="0.302589" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="5" weight="0.32847896" />
+      <window_info anchor="bottom" id="TODO" order="5" weight="0.0" />
       <window_info anchor="bottom" id="Terminal" order="6" weight="0.0" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32847896" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.0" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50454545" side_tool="true" weight="0.28317153" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.14886731" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.1828479" />
       <window_info anchor="bottom" id="Statistic" order="11" weight="0.0" />
       <window_info anchor="bottom" id="Inspection Results" order="12" weight="0.55016184" />
-      <window_info anchor="bottom" id="Find" order="13" weight="0.32847896" />
+      <window_info anchor="bottom" id="Find" order="13" weight="0.6763754" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="1" weight="0.25" />
       <window_info anchor="right" id="Palette" order="2" />
@@ -743,28 +845,28 @@
       <window_info anchor="right" id="Maven Projects" order="9" weight="0.3280303" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.489603" visible="true" weight="0.23333333" />
-      <window_info id="Structure" order="1" sideWeight="0.51039696" side_tool="true" weight="0.26666668" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48665297" visible="true" weight="0.15681818" />
+      <window_info id="Structure" order="1" sideWeight="0.5142119" side_tool="true" weight="0.27727273" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="UI Designer" order="5" />
       <window_info id="Learn" order="6" weight="0.32954547" />
-      <window_info id="Favorites" order="7" sideWeight="0.5068182" side_tool="true" weight="0.26287878" />
+      <window_info id="Favorites" order="7" sideWeight="0.513347" side_tool="true" weight="0.15681818" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Run" order="1" sideWeight="0.49545455" weight="0.32847896" />
-      <window_info anchor="bottom" id="Debug" order="2" weight="0.021035599" />
+      <window_info active="true" anchor="bottom" id="Run" order="1" sideWeight="0.49545455" visible="true" weight="0.2961165" />
+      <window_info anchor="bottom" id="Debug" order="2" weight="0.302589" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="5" weight="0.32847896" />
+      <window_info anchor="bottom" id="TODO" order="5" weight="0.0" />
       <window_info anchor="bottom" id="Terminal" order="6" weight="0.0" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.103559874" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.0" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50454545" side_tool="true" weight="0.28317153" />
-      <window_info active="true" anchor="bottom" id="Messages" order="10" visible="true" weight="0.14886731" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.1828479" />
       <window_info anchor="bottom" id="Statistic" order="11" weight="0.0" />
       <window_info anchor="bottom" id="Inspection Results" order="12" weight="0.55016184" />
-      <window_info anchor="bottom" id="Find" order="13" weight="0.32847896" />
+      <window_info anchor="bottom" id="Find" order="13" weight="0.6763754" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="1" weight="0.25" />
       <window_info anchor="right" id="Palette" order="2" />
@@ -785,7 +887,23 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="moving packages" />
-    <option name="LAST_COMMIT_MESSAGE" value="moving packages" />
+    <MESSAGE value="clean up!" />
+    <option name="LAST_COMMIT_MESSAGE" value="clean up!" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../ChessCore/src/test/java/NullMoveTest.java</url>
+          <line>94</line>
+          <properties />
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+    </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
@@ -797,394 +915,395 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorKnight.java">
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/test/java/SquareTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorMaster.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorPawns.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorPromotion.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        <state relative-caret-position="333">
+          <caret line="41" column="27" lean-forward="true" selection-start-line="41" selection-start-column="27" selection-end-line="41" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorPseudo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorSliding.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMoveKing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveCastling.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="7" column="6" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveEnPassant.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="6" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveMakingUtilities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveOrganiser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MovePromotion.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveRegular.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MovePrettifier.java">
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/test/java/PerftTestDetail.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
-          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveUnmaker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/eBlankBoard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/eExtendedPositionDescriptionParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/eMoveParserFromAN.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/eRandomBoard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/ChessboardDetails.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/dBitExtractor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/dBitIndexing.java">
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/test/java/PerftTestTinyDepths.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        <state relative-caret-position="94">
+          <caret line="51" selection-start-line="51" selection-end-line="53" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/dCopier.java">
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/RookDatabaseA8.java" />
+    <entry file="jar:///usr/lib/jvm/jdk-11.0.1/lib/src.zip!/java.base/java/lang/Long.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        <state relative-caret-position="-14619">
+          <caret line="58" column="19" selection-start-line="58" selection-start-column="19" selection-end-line="58" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/cCheckChecker.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/chess/BitIndexing.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="150">
+          <caret line="11" column="35" lean-forward="true" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/cCheckMoveOrganiser.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/chess/Chessboard.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        <state relative-caret-position="165">
+          <caret line="28" column="23" selection-start-line="28" selection-start-column="23" selection-end-line="28" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/cCheckUtilities.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/MaterialEval.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+        <state relative-caret-position="150">
+          <caret line="70" column="74" lean-forward="true" selection-start-line="70" selection-start-column="74" selection-end-line="70" selection-end-column="74" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/cKingLegalMoves.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/moveGeneration/MoveGeneratorKnight.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        <state relative-caret-position="193">
+          <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/bBitBoardUtils.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/moveGeneration/PieceMoveKnight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="20" column="34" lean-forward="true" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveConstantsKing.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/bBitManipulations.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/bKing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/bKnight.java">
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveConstantsKnight.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/bPawnCaptures.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="22" lean-forward="true" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+          <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/ZobristHash.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="60">
+          <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/StackMoveData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
+          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PinnedManager.java">
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Perft.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMoveSliding.java">
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveRegular.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMovePawns.java">
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveConstantsPawnCapture.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="20" column="31" selection-start-line="20" selection-start-column="31" selection-end-line="20" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/test/java/programtests/CheckCheckerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="21" column="50" lean-forward="true" selection-start-column="2" selection-end-line="55" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/test/java/programtests/MoveUnmakerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="245" column="25" lean-forward="true" selection-start-column="2" selection-end-line="265" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/test/java/programtests/ChessboardTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="40" lean-forward="true" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/eFenParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="73" column="24" selection-start-line="73" selection-start-column="24" selection-end-line="73" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Art.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="11" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Chessboard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="298" column="11" selection-start-line="298" selection-start-column="11" selection-end-line="298" selection-end-column="11" />
-          <folding>
-            <element signature="e#762#763#0" expanded="true" />
-            <element signature="e#844#845#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Move.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-315">
-          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/.travis.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/test/java/programtests/Testmvn.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#110#111#0" expanded="true" />
-            <element signature="e#145#146#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/test/java/programtests/PerftSuiteTwo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1455">
+        <state relative-caret-position="30">
           <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/pom.xml">
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MakeMoveAndHashUpdate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        <state relative-caret-position="60">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessengine/evaluation/Bishop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1214">
+          <caret line="134" column="9" lean-forward="true" selection-start-line="134" selection-start-column="9" selection-end-line="134" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/javacode/chessprogram/chess/BitManipulations.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="10" column="34" lean-forward="true" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/dummy/Dummy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="14" column="4" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="395">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/eDetailedPerftSearching.java">
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/test/java/RayPinnedTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="4" />
+        <state relative-caret-position="276">
+          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
           <folding>
-            <element signature="e#5084#5085#0" expanded="true" />
-            <element signature="e#5115#5116#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../ChessCore/src/test/java/PerftTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="133" column="9" lean-forward="true" selection-start-line="133" selection-start-column="9" selection-end-line="133" selection-end-column="9" />
+        <state relative-caret-position="219">
+          <caret line="84" column="18" lean-forward="true" selection-start-line="84" selection-start-column="18" selection-end-line="84" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Magic.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="37" column="16" selection-start-line="37" selection-start-column="16" selection-end-line="37" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Art.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/BitboardResources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="71" lean-forward="true" selection-start-line="11" selection-start-column="71" selection-end-line="11" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/CheckHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="119" column="7" selection-start-line="119" selection-start-column="7" selection-end-line="119" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Chessboard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="369" column="10" selection-start-line="369" selection-start-column="10" selection-end-line="369" selection-end-column="10" />
+          <folding>
+            <element signature="e#1301#1302#0" expanded="true" />
+            <element signature="e#1383#1384#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/eExtendedPositionDescriptionParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="7" column="3" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Move.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="10" column="7" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveConstants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorCheck.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="43" column="8" selection-start-line="43" selection-start-column="8" selection-end-line="43" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorSliding.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="20" lean-forward="true" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorKnight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorKingLegal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorPawns.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="26" column="16" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorPromotion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/BitOperations.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="397">
+          <caret line="46" column="23" selection-start-line="46" selection-start-column="23" selection-end-line="46" selection-end-column="23" />
+          <folding>
+            <element signature="e#1324#1325#0" expanded="true" />
+            <element signature="e#1367#1368#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMoveKing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMoveKnight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="22" column="35" lean-forward="true" selection-start-line="22" selection-start-column="35" selection-end-line="22" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PinnedManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="69" selection-start-line="16" selection-start-column="69" selection-end-line="16" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/Square.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="47" column="4" lean-forward="true" selection-start-line="47" selection-start-column="4" selection-end-line="47" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1650#1651#0" expanded="true" />
+            <element signature="e#1705#1706#0" expanded="true" />
+            <element signature="e#1761#1762#0" expanded="true" />
+            <element signature="e#1818#1819#0" expanded="true" />
+            <element signature="e#1850#1851#0" expanded="true" />
+            <element signature="e#1891#1892#0" expanded="true" />
+            <element signature="e#1990#1991#0" expanded="true" />
+            <element signature="e#2031#2032#0" expanded="true" />
+            <element signature="e#2062#2063#0" expanded="true" />
+            <element signature="e#2110#2111#0" expanded="true" />
+            <element signature="e#2142#2143#0" expanded="true" />
+            <element signature="e#2190#2191#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/magic/Utils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1177">
+          <caret line="402" column="8" selection-start-line="402" selection-start-column="8" selection-end-line="402" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorCastling.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="382">
+          <caret line="72" selection-start-line="72" selection-end-line="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMoveSliding.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="855">
+          <caret line="61" selection-start-line="61" selection-end-line="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorPseudo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="26" column="43" selection-start-line="26" selection-start-column="43" selection-end-line="26" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/PieceMovePawns.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="32" column="9" selection-start-line="26" selection-start-column="8" selection-end-line="32" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorEnPassant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGenerationUtilities.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChessCore/src/main/java/chessprogram/god/MoveGeneratorMaster.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="514">
+          <caret line="87" column="11" selection-start-line="87" selection-start-column="11" selection-end-line="87" selection-end-column="11" />
         </state>
       </provider>
     </entry>

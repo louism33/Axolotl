@@ -12,6 +12,8 @@ import java.util.List;
 
 public class DetailedPerftSearching {
 
+    private static int nps = 0;
+    
     class MoveNLong {
         final long number;
         final Move move;
@@ -133,7 +135,7 @@ public class DetailedPerftSearching {
         long seconds = t / 1000;
         System.out.println("Depth " + depth + " took " + seconds + " seconds (" + t+" milliseconds).");
         if (t > 0) {
-            System.out.println("Veeeery roughly " + (ii / t) * 1000 + " (final) nodes per second.");
+            System.out.println("NPS: " + ((nps / t) * 1000));
         }
         return ii;
     }
@@ -145,11 +147,14 @@ public class DetailedPerftSearching {
         }
         List<Move> moves = MoveGeneratorMaster.generateLegalMoves(board, board.isWhiteTurn());
         if (depth == 1){
-            return moves.size();
+            final int size = moves.size();
+            nps += size;
+            return size;
         }
         for (Move move : moves) {
             MoveOrganiser.makeMoveMaster(board, move);
             MoveOrganiser.flipTurn(board);
+            nps++;
             long movesAtDepth = countFinalNodesAtDepthHelper(board, depth - 1);
             temp += movesAtDepth;
             MoveUnmaker.unMakeMoveMaster(board);
@@ -158,6 +163,7 @@ public class DetailedPerftSearching {
     }
 
     private static void reset(){
+        nps = 0;
         MoveGeneratorMaster.numberOfChecks = 0;
         MoveGeneratorMaster.numberOfCheckMates = 0;
         MoveGeneratorMaster.numberOfStaleMates = 0;
