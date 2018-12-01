@@ -23,6 +23,7 @@ public class UCIEntry extends AbstractEngine {
     public UCIEntry(){
         super();
     }
+    
     public UCIEntry(Engine engine){
         super();
         this.engine = engine;

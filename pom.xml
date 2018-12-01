@@ -13,14 +13,28 @@
             <id>maven.fluxchess.com</id>
             <url>http://maven.fluxchess.com/release</url>
         </repository>
+
+        <repository>
+            <id>com.github.louism33</id>
+            <!--<url>https://github.com/louism33/ChessCore</url>-->
+            <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/chesscore/1.0-SNAPSHOT</url>
+        </repository>
     </repositories>
     
     <dependencies>
+
+        <dependency>
+            <groupId>com.github.louism33</groupId>
+            <artifactId>chesscore</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        
         <dependency>
             <groupId>com.fluxchess</groupId>
             <artifactId>jcpi</artifactId>
             <version>1.4.0</version>
         </dependency>
+        
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
