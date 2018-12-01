@@ -126,7 +126,7 @@ public class SEEPruning {
             }
         }
         if (knights != 0) {
-            int numberOfThreats = populationCount(PieceMoveKnight.singleKnightCaptures(board, square, myColour, knights));
+            int numberOfThreats = populationCount(PieceMoveKnight.singleKnightTable(board, square, myColour, knights));
             for (int num = 0; num < numberOfThreats; num++){
                 pieces.add(n);
             }

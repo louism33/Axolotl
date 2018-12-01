@@ -2,6 +2,7 @@ package javacode.chessengine.evaluation;
 
 import javacode.chessprogram.chess.BitManipulations;
 import javacode.chessprogram.chess.Chessboard;
+import javacode.chessprogram.moveGeneration.PieceMoveKnight;
 
 import java.util.List;
 
@@ -10,8 +11,7 @@ import static javacode.chessprogram.bitboards.BitBoards.*;
 import static javacode.chessprogram.chess.BitIndexing.getIndexOfAllPieces;
 import static javacode.chessprogram.chess.BitIndexing.populationCount;
 import static javacode.chessprogram.chess.BitManipulations.squareCentredOnIndexNaive;
-import static javacode.chessprogram.moveGeneration.PieceMoveKnight.singleKnightCaptures;
-import static javacode.chessprogram.moveGeneration.PieceMoveKnight.singleKnightPushes;
+import static javacode.chessprogram.moveGeneration.PieceMoveKnight.singleKnightTable;
 import static javacode.chessprogram.moveGeneration.PieceMovePawns.masterPawnCapturesTable;
 
 class Knight {
@@ -52,7 +52,7 @@ class Knight {
         int mobilitySquares = 0;
         for (Integer knightIndex : indexOfAllPieces) {
             long knight = BitManipulations.newPieceOnSquare(knightIndex);
-            long pseudoAvailableSquares = singleKnightPushes(board, knight, white, emptySquares);
+            long pseudoAvailableSquares = singleKnightTable(board, knight, white, emptySquares);
             mobilitySquares += populationCount(pseudoAvailableSquares);
         }
         return mobilitySquares * KNIGHT_MOBILITY_SCORE;
@@ -68,7 +68,7 @@ class Knight {
         int threatenedEnemies = 0;
         for (Integer knightIndex : indexOfAllPieces) {
             long knight = BitManipulations.newPieceOnSquare(knightIndex);
-            long pseudoAttackedOrProtectedByKnight = singleKnightCaptures(board, knight, white, board.ALL_PIECES());
+            long pseudoAttackedOrProtectedByKnight = PieceMoveKnight.singleKnightTable(board, knight, white, board.ALL_PIECES());
 
             protectedFriends += populationCount(pseudoAttackedOrProtectedByKnight & myPieces);
             threatenedEnemies += populationCount(pseudoAttackedOrProtectedByKnight & enemyPieces);

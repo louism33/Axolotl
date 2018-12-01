@@ -47,7 +47,7 @@ public class CheckChecker {
             return numberOfThreats;
         }
         if (knights != 0) {
-            numberOfThreats += populationCount(PieceMoveKnight.singleKnightCaptures(board, square, myColour, knights));
+            numberOfThreats += populationCount(PieceMoveKnight.singleKnightTable(board, square, myColour, knights));
         }
         if (numberOfThreats > 1){
             return numberOfThreats;

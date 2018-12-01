@@ -315,7 +315,7 @@ public class CheckMoveOrganiser {
         if (possiblePawn != 0) {
             return possiblePawn;
         }
-        long possibleKnight = PieceMoveKnight.singleKnightCaptures(board, myKing, white, UNIVERSE) & knights;
+        long possibleKnight = PieceMoveKnight.singleKnightTable(board, myKing, white, UNIVERSE) & knights;
         if (possibleKnight != 0) {
             return possibleKnight;
         }
