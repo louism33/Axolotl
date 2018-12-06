@@ -1,12 +1,12 @@
 package tests.enginetests;
 
-import javacode.chessengine.evaluation.Evaluator;
-import javacode.chessengine.search.Engine;
-import javacode.chessprogram.chess.Chessboard;
-import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.graphicsandui.Art;
-import javacode.chessprogram.miscAdmin.ExtendedPositionDescriptionParser;
-import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
+import com.github.louism33.axolotl.evaluation.Evaluator;
+import com.github.louism33.axolotl.search.Engine;
+import old.chessprogram.chess.Chessboard;
+import old.chessprogram.chess.Move;
+import old.chessprogram.graphicsandui.Art;
+import old.chessprogram.miscAdmin.ExtendedPositionDescriptionParser;
+import old.chessprogram.moveGeneration.MoveGeneratorMaster;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

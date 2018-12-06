@@ -1,9 +1,8 @@
 package tests.enginetests;
 
-import javacode.chessengine.search.Engine;
-import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.graphicsandui.Art;
-import javacode.chessprogram.miscAdmin.ExtendedPositionDescriptionParser;
+import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
+import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,12 +44,12 @@ public class Arasan20 {
     @Test
     public void test() {
         WACTests.reset();
-        System.out.println(Art.boardArt(EPDObject.getBoard()));
-        Move move = new Engine().searchFixedTime(EPDObject.getBoard(), timeLimit);
+        System.out.println(EPDObject.getBoard());
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
         System.out.println(move);
 
         List<Integer> winningMoveDestination = EPDObject.getBestMoveDestinationIndex();
-        int myMoveDestination = move.destinationIndex;
+        int myMoveDestination = MoveParser.getDestinationIndex(move);
 
         Assert.assertTrue(winningMoveDestination.contains(myMoveDestination));
 

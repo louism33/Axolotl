@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: javacode.chessengine.main.UCIEntry
+Main-Class: com.github.louism33.axolotl.main.UCIEntry
 

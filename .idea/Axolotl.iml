@@ -11,7 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="ChessCore" />
+    <orderEntry type="library" name="Maven: com.github.louism33:chesscore:1.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.fluxchess:jcpi:1.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.junit.jupiter:junit-jupiter-api:5.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.apiguardian:apiguardian-api:1.0.0" level="project" />

@@ -1,12 +1,12 @@
 package tests.enginetests;
 
-import javacode.chessengine.search.Engine;
-import javacode.chessprogram.chess.Chessboard;
-import javacode.chessprogram.chess.Move;
-import javacode.chessprogram.graphicsandui.Art;
-import javacode.chessprogram.miscAdmin.FenParser;
-import javacode.chessprogram.miscAdmin.MoveParserFromAN;
-import javacode.chessprogram.moveGeneration.MoveGeneratorMaster;
+import com.github.louism33.axolotl.search.Engine;
+import old.chessprogram.chess.Chessboard;
+import old.chessprogram.chess.Move;
+import old.chessprogram.graphicsandui.Art;
+import old.chessprogram.miscAdmin.FenParser;
+import old.chessprogram.miscAdmin.MoveParserFromAN;
+import old.chessprogram.moveGeneration.MoveGeneratorMaster;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
