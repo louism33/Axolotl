@@ -1,4 +1,4 @@
-package com.github.louism33.axolotl.evaluation;
+package challenges;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;

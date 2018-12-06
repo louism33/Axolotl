@@ -9,6 +9,10 @@ public class TranspositionTable extends HashMap<Long, TranspositionTable.TableOb
 
     public TranspositionTable(){}
     
+    // todo replace with long
+    
+    
+    
     public static class TableObject {
         private final int move;
         private final int score;
