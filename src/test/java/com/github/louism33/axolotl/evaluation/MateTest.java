@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class MateTests {
+public class MateTest {
 
     private static final int timeLimit = 10_000;
 
@@ -34,7 +34,7 @@ public class MateTests {
 
     private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
-    public MateTests(Object edp, Object name) {
+    public MateTest(Object edp, Object name) {
         EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
     }
 

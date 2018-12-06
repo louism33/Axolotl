@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class WACTests {
+public class WACTest {
 
     private static final int timeLimit = 5_000;
 
@@ -36,7 +36,7 @@ public class WACTests {
 
     private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
-    public WACTests(Object edp, Object name) {
+    public WACTest(Object edp, Object name) {
         EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
     }
 
