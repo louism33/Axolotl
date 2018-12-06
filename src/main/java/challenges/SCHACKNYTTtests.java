@@ -1,6 +1,55 @@
-package tests.enginetests;
+package challenges;
+
+import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
+import com.github.louism33.chesscore.MoveParser;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runners.Parameterized;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 class SCHACKNYTTtests {
+
+
+    private static final int timeLimit = 60_000;
+
+    @Parameterized.Parameters(name = "{index} Test: {1}")
+    public static Collection<Object[]> data() {
+        List<Object[]> answers = new ArrayList<>();
+
+        for (int i = 0; i < splitUpWACs.length; i++) {
+            String pos = splitUpWACs[i];
+            Object[] objectAndName = new Object[2];
+            ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(pos);
+            objectAndName[0] = EPDObject;
+            objectAndName[1] = EPDObject.getId();
+            answers.add(objectAndName);
+        }
+        return answers;
+    }
+
+    private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
+
+    public Arasan20(Object edp, Object name) {
+        EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
+    }
+
+    @Test
+    public void test() {
+        List<Integer> winningMoveDestination = EPDObject.getBestMoves();
+        System.out.println();
+        System.out.println(EPDObject.getBoardFen());
+        System.out.println("Move to get: " + MoveParser.toString(winningMoveDestination.get(0)));
+
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+
+        Assert.assertTrue(winningMoveDestination.contains(move));
+    }
+    
+    
 }
 
 /*

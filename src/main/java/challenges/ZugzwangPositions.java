@@ -1,6 +1,8 @@
-package tests.enginetests;
+package challenges;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
+import com.github.louism33.chesscore.MoveParser;
 import old.chessprogram.chess.Move;
 import old.chessprogram.graphicsandui.Art;
 import old.chessprogram.miscAdmin.ExtendedPositionDescriptionParser;
@@ -17,13 +19,16 @@ import java.util.List;
 public class ZugzwangPositions {
 
     private static final int timeLimit = 10000;
+    private static final int timeLimit = 60_000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
-        for (String splitUpZZ : splitUpZZs) {
+
+        for (int i = 0; i < splitUpWACs.length; i++) {
+            String pos = splitUpWACs[i];
             Object[] objectAndName = new Object[2];
-            ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpZZ);
+            ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(pos);
             objectAndName[0] = EPDObject;
             objectAndName[1] = EPDObject.getId();
             answers.add(objectAndName);
@@ -31,26 +36,23 @@ public class ZugzwangPositions {
         return answers;
     }
 
-
     private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
-    public ZugzwangPositions(Object edp, Object name) {
+    public Arasan20(Object edp, Object name) {
         EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
     }
 
     @Test
     public void test() {
-        WACTests.reset();
-        System.out.println(Art.boardArt(EPDObject.getBoard()));
-        Move move = new Engine().searchFixedTime(EPDObject.getBoard(), timeLimit);
-        System.out.println(move);
+        List<Integer> winningMoveDestination = EPDObject.getBestMoves();
+        System.out.println();
+        System.out.println(EPDObject.getBoardFen());
+        System.out.println("Move to get: " + MoveParser.toString(winningMoveDestination.get(0)));
 
-        List<Integer> winningMoveDestination = EPDObject.getBestMoveDestinationIndex();
-        int myMoveDestination = move.destinationIndex;
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
-        Assert.assertTrue(winningMoveDestination.contains(myMoveDestination));
+        Assert.assertTrue(winningMoveDestination.contains(move));
     }
-
 
     private static final String zzTests = "" +
             "8/8/1p1r1k2/p1pPN1p1/P3KnP1/1P6/8/3R4 b - - bm Nxd5; id \"ZPTS.01\"; \n" +

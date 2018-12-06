@@ -41,6 +41,7 @@ public class MateTests {
     @Test
     public void test() {
         List<Integer> winningMoveDestination = EPDObject.getBestMoves();
+        System.out.println();
         System.out.println(EPDObject.getBoardFen());
         System.out.println("Move to get: " + MoveParser.toString(winningMoveDestination.get(0)));
         

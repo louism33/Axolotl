@@ -65,14 +65,13 @@ public class Statistics {
 
     public void infoLog(long endTime, long startTime, int move){
         long time = endTime - startTime;
-//        System.out.println("time taken millis: " + time);
-//        System.out.println("------");
         
-        System.out.print("\nbest move: " + MoveParser.toString(move));
-        if (time > 0) {
-            System.out.println(", nps: " +
+        if (time > 1000) {
+            System.out.println("Best move: "+MoveParser.toString(move)+", nps: " +
                     ((1000 * (this.numberOfMovesMade + this.numberOfQuiescentMovesMade)) / time));
-//            System.out.println("------");
+        } 
+        else {
+            System.out.println("Best move: " + MoveParser.toString(move));
         }
 
        

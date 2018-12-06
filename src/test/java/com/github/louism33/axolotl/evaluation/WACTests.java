@@ -1,4 +1,4 @@
-package com.github.louism33.axolotl.main;
+package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
@@ -10,45 +10,26 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 @RunWith(Parameterized.class)
 public class WACTests {
-    /*
-    Arasan = 10 sec.	298/300
-     */
 
-    private static Engine engine = null;
-    
     private static final int timeLimit = 5_000;
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        // inclusive
-        int counter = 0;
-        int until = 1;
-        int from = 0;
-        
-        for (String splitUpWAC : splitUpWACs) {
-            counter++;
-            
-            if (counter < from){
-//                continue;
-            }
-            
+        for (int i = 0; i < splitUpWACs.length; i++) {
+            String splitUpWAC = splitUpWACs[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
             objectAndName[0] = EPDObject;
             objectAndName[1] = EPDObject.getId();
             answers.add(objectAndName);
-            
-
-            if (counter >= until){
-                break;
-            }
         }
         return answers;
     }
@@ -61,9 +42,12 @@ public class WACTests {
 
     @Test
     public void test() {
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
-
         List<Integer> winningMoveDestination = EPDObject.getBestMoves();
+        System.out.println();
+        System.out.println("Move to get: " + Arrays.toString(MoveParser.toString(winningMoveDestination)));
+        System.out.println(EPDObject.getBoardFen());
+        
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         Assert.assertTrue(winningMoveDestination.contains(move));
 
