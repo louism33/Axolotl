@@ -13,31 +13,29 @@
     <list default="true" id="8807346a-cf9d-4333-98e2-880bdb09ab35" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/main/EngineTestMateInSix.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/main/WACTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/evaluation/WACTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/utilities/Statistics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/utilities/Statistics.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/Arasan20.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/Arasan20.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/ArasanTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/ArasanTestSuite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/BS2830Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/BS2830Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/BT2630.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/BT2630.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/BratkoKopecTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/BratkoKopecTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/CCROneHourTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/CCROneHourTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/EET.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/EET.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInThree.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInTwo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMisc.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/KaufmanTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/KaufmanTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/LapuceII.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/LapuceII.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/Pet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/Pet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/QuickTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/QuickTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/ReflectionTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/ReflectionTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/SCHACKNYTTtests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/SCHACKNYTTtests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/WacTwoBreakdown.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tests/enginetests/ZugzwangPositions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/ZugzwangPositions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/evaluation/EvaluatorTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/evaluation/MateTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/evaluation/MateTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/evaluation/WACSanityTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/Arasan20.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/Arasan20.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/ArasanTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/ArasanTestSuite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/BS2830Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/BS2830Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/BT2630.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/BT2630.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/BratkoKopecTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/BratkoKopecTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/CCROneHourTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/CCROneHourTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/KaufmanTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/KaufmanTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/LapuceII.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/LapuceII.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/Pet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/Pet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/QuickTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/QuickTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/ReflectionTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/ReflectionTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/SCHACKNYTTtests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/SCHACKNYTTtests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/ZugzwangPositions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/ZugzwangPositions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Bishop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Evaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Evaluator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/King.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Knight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Pawns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Pawns.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/PositionEval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/PositionEval.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Rook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/AspirationSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/AspirationSearch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/IterativeDeepeningDFS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/IterativeDeepeningDFS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/Razoring.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/Razoring.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -74,32 +72,15 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/challenges/BratkoKopecTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="27" column="39" lean-forward="true" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/challenges/BS2830Test.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="38" column="21" selection-start-line="38" selection-start-column="21" selection-end-line="38" selection-end-column="21" />
-              <folding>
-                <element signature="e#1373#1374#0" expanded="true" />
-                <element signature="e#1450#1451#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/challenges/BT2630.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="97" lean-forward="true" selection-start-line="97" selection-end-line="97" />
+            <state relative-caret-position="300">
+              <caret line="59" column="3" selection-start-line="59" selection-start-column="3" selection-end-line="59" selection-end-column="47" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1296#1297#0" expanded="true" />
+                <element signature="e#1373#1374#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -107,8 +88,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/challenges/CCROneHourTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
-              <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
+            <state relative-caret-position="180">
+              <caret line="22" column="38" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -126,7 +107,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/challenges/KaufmanTests.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="390">
-              <caret line="39" column="23" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
+              <caret line="36" column="23" selection-start-line="36" selection-start-column="23" selection-end-line="36" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -135,7 +116,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/challenges/LapuceII.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1260">
-              <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
+              <caret line="96" selection-start-line="96" selection-end-line="96" />
             </state>
           </provider>
         </entry>
@@ -143,8 +124,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/challenges/Pet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="394">
-              <caret line="111" selection-start-line="111" selection-end-line="111" selection-end-column="71" />
+            <state relative-caret-position="317">
+              <caret line="107" selection-start-line="107" selection-end-line="107" selection-end-column="71" />
             </state>
           </provider>
         </entry>
@@ -153,19 +134,45 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/challenges/QuickTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="210">
-              <caret line="27" column="35" selection-start-line="27" selection-start-column="35" selection-end-line="27" selection-end-column="35" />
+              <caret line="24" column="35" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/challenges/ReflectionTests.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="181">
+              <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1795#1796#0" expanded="true" />
+                <element signature="e#1872#1873#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/challenges/ZugzwangPositions.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="25" column="51" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
+              <folding>
+                <element signature="e#1430#1431#0" expanded="true" />
+                <element signature="e#1507#1508#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/challenges/ReflectionTests.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/challenges/SCHACKNYTTtests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="349">
-              <caret line="27" column="44" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
+            <state relative-caret-position="1200">
+              <caret line="67" column="176" selection-start-line="67" selection-start-column="176" selection-end-line="67" selection-end-column="176" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1917#1918#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -312,12 +319,9 @@
         <option value="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/utilities/Statistics.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/evaluation/WACTests.java" />
         <option value="$PROJECT_DIR$/src/main/java/challenges/ArasanTestSuite.java" />
-        <option value="$PROJECT_DIR$/src/main/java/challenges/SCHACKNYTTtests.java" />
-        <option value="$PROJECT_DIR$/src/main/java/challenges/ZugzwangPositions.java" />
         <option value="$PROJECT_DIR$/src/main/java/challenges/Arasan20.java" />
         <option value="$PROJECT_DIR$/src/main/java/challenges/BratkoKopecTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/challenges/BS2830Test.java" />
-        <option value="$PROJECT_DIR$/src/main/java/challenges/BT2630.java" />
         <option value="$PROJECT_DIR$/src/main/java/challenges/CCROneHourTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/challenges/EET.java" />
         <option value="$PROJECT_DIR$/src/main/java/challenges/KaufmanTests.java" />
@@ -325,6 +329,9 @@
         <option value="$PROJECT_DIR$/src/main/java/challenges/Pet.java" />
         <option value="$PROJECT_DIR$/src/main/java/challenges/QuickTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/challenges/ReflectionTests.java" />
+        <option value="$PROJECT_DIR$/src/main/java/challenges/BT2630.java" />
+        <option value="$PROJECT_DIR$/src/main/java/challenges/ZugzwangPositions.java" />
+        <option value="$PROJECT_DIR$/src/main/java/challenges/SCHACKNYTTtests.java" />
       </list>
     </option>
   </component>
@@ -368,6 +375,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -434,18 +443,16 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="movemaker&#9;FILE&#9;file:///home/louis/IdeaProjects/ChessCore/src/main/java/chessprogram/god/MoveMaker.java&#10;square&#9;FILE&#9;file:///home/louis/IdeaProjects/ChessCore/src/main/java/chessprogram/god/Square.java&#10;MoveGenerat&#9;FILE&#9;file:///home/louis/IdeaProjects/ChessCore/src/main/java/chessprogram/god/MoveGeneratorSliding.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544127508903" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544131879899" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/challenges" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
@@ -740,7 +747,8 @@
       <workItem from="1543652596395" duration="9500000" />
       <workItem from="1544045932693" duration="4306000" />
       <workItem from="1544082129773" duration="14345000" />
-      <workItem from="1544121881663" duration="5610000" />
+      <workItem from="1544121881663" duration="5783000" />
+      <workItem from="1544131313444" duration="560000" />
     </task>
     <task id="LOCAL-00001" summary="moving packages">
       <created>1542576957823</created>
@@ -827,7 +835,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="355891000" />
+    <option name="totallyTimeSpent" value="356624000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -840,9 +848,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1368" height="741" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48322147" visible="true" weight="0.14772727" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48322147" visible="true" weight="0.15" />
       <window_info id="Structure" order="1" sideWeight="0.5167785" side_tool="true" weight="0.1590909" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -851,7 +858,7 @@
       <window_info id="Learn" order="6" weight="0.32954547" />
       <window_info id="Favorites" order="7" sideWeight="0.513347" side_tool="true" weight="0.15681818" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Run" order="1" sideWeight="0.49545455" weight="0.07754443" />
+      <window_info active="true" anchor="bottom" id="Run" order="1" sideWeight="0.49545455" visible="true" weight="0.07754443" />
       <window_info anchor="bottom" id="Debug" order="2" weight="0.4514563" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
@@ -1031,13 +1038,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/main/EngineTestMateInSix.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="21" column="20" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/main/EngineTestMateInSix.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInFive.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInFour.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/EngineTestMateInSix.java" />
@@ -1048,13 +1049,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/challenges/EngineTestMateInThree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="275" column="122" selection-start-line="275" selection-start-column="63" selection-end-line="275" selection-end-column="122" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/challenges/EngineTestMateInThree.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/evaluation/CheckmateTest.java" />
     <entry file="jar://$MAVEN_REPOSITORY$/com/github/louism33/chesscore/1.1-SNAPSHOT/chesscore-1.1-SNAPSHOT.jar!/com/github/louism33/chesscore/ExtendedPositionDescriptionParser.class">
       <provider selected="true" editor-type-id="text-editor">
@@ -1097,30 +1092,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/evaluation/EvaluatorTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="67" lean-forward="true" selection-end-line="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/evaluation/WACSanityTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="26" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/main/WACTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="69" selection-start-line="69" selection-end-line="69" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/evaluation/EvaluatorTest.java" />
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/evaluation/WACSanityTest.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/main/WACTests.java" />
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="237">
@@ -1170,20 +1144,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/challenges/EngineTestMisc.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1294">
-          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tests/enginetests/WACTests.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/challenges/EngineTestMisc.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/evaluation/WACTests.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -1198,23 +1160,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/challenges/SCHACKNYTTtests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
-          <caret line="51" column="4" selection-start-line="51" selection-start-column="4" selection-end-line="51" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/challenges/ZugzwangPositions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="54" column="5" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -1235,14 +1180,14 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/challenges/BratkoKopecTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
-          <caret line="27" column="39" lean-forward="true" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
+          <caret line="27" column="39" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/challenges/BS2830Test.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
-          <caret line="38" column="21" selection-start-line="38" selection-start-column="21" selection-end-line="38" selection-end-column="21" />
+          <caret line="35" column="21" selection-start-line="35" selection-start-column="21" selection-end-line="35" selection-end-column="21" />
           <folding>
             <element signature="e#1373#1374#0" expanded="true" />
             <element signature="e#1450#1451#0" expanded="true" />
@@ -1250,17 +1195,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/challenges/BT2630.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="97" lean-forward="true" selection-start-line="97" selection-end-line="97" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/challenges/CCROneHourTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
+        <state relative-caret-position="180">
+          <caret line="22" column="38" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -1274,38 +1212,72 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/challenges/KaufmanTests.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
-          <caret line="39" column="23" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
+          <caret line="36" column="23" selection-start-line="36" selection-start-column="23" selection-end-line="36" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/challenges/LapuceII.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1260">
-          <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
+          <caret line="96" selection-start-line="96" selection-end-line="96" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/challenges/QuickTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
-          <caret line="27" column="35" selection-start-line="27" selection-start-column="35" selection-end-line="27" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/challenges/Pet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="111" selection-start-line="111" selection-end-line="111" selection-end-column="71" />
+          <caret line="24" column="35" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/challenges/ReflectionTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="27" column="44" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
+        <state relative-caret-position="181">
+          <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1917#1918#0" expanded="true" />
+            <element signature="e#1795#1796#0" expanded="true" />
+            <element signature="e#1872#1873#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/challenges/ZugzwangPositions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="25" column="51" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
+          <folding>
+            <element signature="e#1430#1431#0" expanded="true" />
+            <element signature="e#1507#1508#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/challenges/BT2630.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="59" column="3" selection-start-line="59" selection-start-column="3" selection-end-line="59" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1296#1297#0" expanded="true" />
+            <element signature="e#1373#1374#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/challenges/Pet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="317">
+          <caret line="107" selection-start-line="107" selection-end-line="107" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/challenges/SCHACKNYTTtests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1200">
+          <caret line="67" column="176" selection-start-line="67" selection-start-column="176" selection-end-line="67" selection-end-column="176" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

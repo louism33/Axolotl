@@ -3,14 +3,10 @@ package challenges;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
 import com.github.louism33.chesscore.MoveParser;
-import old.chessprogram.chess.Move;
-import old.chessprogram.graphicsandui.Art;
-import old.chessprogram.miscAdmin.ExtendedPositionDescriptionParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,7 +41,7 @@ public class BT2630 {
 
     private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
-    public Arasan20(Object edp, Object name) {
+    public BT2630(Object edp, Object name) {
         EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
     }
 
@@ -94,7 +90,7 @@ public class BT2630 {
             "2k5/2p3Rp/p1pb4/1p2p3/4P3/PN1P1P2/1P2KP1r/8 w - - bm f4; id \"test 30\";\n" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\\\n");
+    private static final String[] splitUpWACs = wacTests.split("\n");
 
 }
     

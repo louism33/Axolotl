@@ -3,8 +3,6 @@ package com.github.louism33.axolotl.evaluation;
 import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 
-import java.util.List;
-
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.*;
 
 class PositionEval {

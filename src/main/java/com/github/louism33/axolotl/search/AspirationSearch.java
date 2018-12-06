@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;

@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.chesscore.Chessboard;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;

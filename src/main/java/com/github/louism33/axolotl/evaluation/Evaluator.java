@@ -1,7 +1,5 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.utilities.Statistics;
 import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 
@@ -10,7 +8,7 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHEC
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_STALEMATE_SCORE;
 import static com.github.louism33.axolotl.evaluation.King.evalKingByTurn;
 import static com.github.louism33.axolotl.evaluation.Knight.evalKnightByTurn;
-import static com.github.louism33.axolotl.evaluation.MaterialEval.*;
+import static com.github.louism33.axolotl.evaluation.MaterialEval.evalMaterialByTurn;
 import static com.github.louism33.axolotl.evaluation.Misc.evalMiscByTurn;
 import static com.github.louism33.axolotl.evaluation.Pawns.evalPawnsByTurn;
 import static com.github.louism33.axolotl.evaluation.PositionEval.evalPositionByTurn;

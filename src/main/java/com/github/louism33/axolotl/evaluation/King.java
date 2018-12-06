@@ -5,8 +5,6 @@ import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.PieceMove;
 import org.junit.Assert;
 
-import java.util.List;
-
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.KING_AGGRESSOR_SCORE;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.KING_PROTECTOR_SCORE;
 import static com.github.louism33.chesscore.BitOperations.populationCount;

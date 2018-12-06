@@ -1,15 +1,9 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.PieceMove;
 
-import java.util.List;
-
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.chesscore.BitOperations.*;
-import static com.github.louism33.chesscore.BitboardResources.*;
-import static com.github.louism33.chesscore.PieceMove.singleKnightTable;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.KNIGHT_UNDEVELOPED_PENALTY;
+import static com.github.louism33.chesscore.BitOperations.populationCount;
 
 class Knight {
 

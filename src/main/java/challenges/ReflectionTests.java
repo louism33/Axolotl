@@ -6,7 +6,6 @@ import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
@@ -23,13 +22,13 @@ class ReflectionTests {
     public void compare(){
         System.out.println(Arrays.deepToString(successOrFailure));
         for (int x = 0; x < successOrFailure.length; x++){
-            
+
             if (x > 0){
-            Assert.assertTrue(Arrays.deepEquals(successOrFailure[x], successOrFailure[x-1]);
+                Assert.assertArrayEquals(successOrFailure[x], successOrFailure[x - 1]);
             }
-            
+
             for (int y = 0; y < successOrFailure[x].length; y++){
-                
+
             }
         }
     }
@@ -68,7 +67,7 @@ class ReflectionTests {
 
         int x = i / 47;
         int y = i % 47;
-        
+
         successOrFailure[x][y] = winningMoveDestination.contains(move);
 
         Assert.assertTrue(winningMoveDestination.contains(move));

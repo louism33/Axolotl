@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.protocolhelperclasses.PVLine;
 import com.github.louism33.axolotl.protocolhelperclasses.UCIPrinter;
 import com.github.louism33.chesscore.Chessboard;
