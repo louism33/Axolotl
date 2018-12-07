@@ -67,11 +67,14 @@ public class Statistics {
         long time = endTime - startTime;
         
         if (time > 1000) {
-            System.out.println("Best move: "+MoveParser.toString(move)+", nps: " +
-                    ((1000 * (this.numberOfMovesMade + this.numberOfQuiescentMovesMade)) / time));
+//            System.out.println("Best move: "+MoveParser.toString(move)+", nps: " +
+//                    ((1000 * (this.numberOfMovesMade + this.numberOfQuiescentMovesMade)) / time));  
+            
+//            System.out.println("Nps: " +
+//                    ((1000 * (this.numberOfMovesMade + this.numberOfQuiescentMovesMade)) / time));
         } 
         else {
-            System.out.println("Best move: " + MoveParser.toString(move));
+//            System.out.println("Best move: " + MoveParser.toString(move));
         }
 
        

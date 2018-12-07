@@ -44,20 +44,18 @@ class QuiescenceSearch {
             return standPatScore;
         }
 
-        MoveOrderer.MoveScore[] orderedCaptureMoves = MoveOrderer
-                .orderMovesQuiescence(board, board.isWhiteTurn(), moves);
+        MoveOrderer.orderMovesQuiescence(moves, board, board.isWhiteTurn());
 
         int numberOfMovesSearched = 0;
-        for (int i = 0; i < orderedCaptureMoves.length; i++) {
-            final MoveOrderer.MoveScore moveScore = orderedCaptureMoves[i];
+        for (int i = 0; i < moves.length; i++) {
             
-            if (moveScore == null){
+            if (moves[i] == 0){
                 break;
             }
             
-            int loudMove = moveScore.getMove();
+            int loudMove = moves[i];
             
-            boolean captureMove = MoveOrderer.moveIsCapture(board, loudMove);
+            boolean captureMove = MoveParser.isCaptureMove(loudMove);
             boolean promotionMove = MoveParser.isPromotionMove(loudMove);
 
             Assert.assertTrue(captureMove || promotionMove);

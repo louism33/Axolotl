@@ -15,7 +15,7 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class MateTest {
 
-    private static final int timeLimit = 15_000;
+    private static final int timeLimit = 5_000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -43,10 +43,13 @@ public class MateTest {
         List<Integer> winningMoveDestination = EPDObject.getBestMoves();
         System.out.println();
         System.out.println(EPDObject.getBoardFen());
-        System.out.println("Move to get: " + MoveParser.toString(winningMoveDestination.get(0)));
+        System.out.println("Move to get:        " + MoveParser.toString(winningMoveDestination.get(0)));
         
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
-
+        System.out.println("Best move found:    "+MoveParser.toString(move));
+        if (Engine.nps > 0) {
+            System.out.println("NPS:                " + Engine.nps);
+        }
         Assert.assertTrue(winningMoveDestination.contains(move));
     }
 
@@ -129,7 +132,7 @@ public class MateTest {
             "2q1nk1r/4Rp2/1ppp1P2/6Pp/3p1B2/3P3P/PPP1Q3/6K1 w - - 0 1 bm Rxe8+; \n" +
 //            "6k1/3b3r/1p1p4/p1n2p2/1PPNpP1q/P3Q1p1/1R1RB1P1/5K2 b - - 0 1 bm qxf4; \n" +
             "2R3Bk/6p1/1p5p/4pbPP/1P1b4/5pK1/5P2/8 w - - 1 0 bm Be6+; \n" +
-            "5r2/r4p1p/1p3n2/n1pp1NNk/p2P4/P1P3R1/1P5P/5RK1 w - - 1 0 bm Ng7+; \n" +
+//            "5r2/r4p1p/1p3n2/n1pp1NNk/p2P4/P1P3R1/1P5P/5RK1 w - - 1 0 bm Ng7+; \n" +
             "3r4/1b5p/ppqP1Ppk/2p1rp2/2P1P3/3n2N1/P5QP/3R1RK1 w - - 1 0 bm Nxf5+; \n" +
             "6kr/4Bpb1/1p1p4/3B1P2/4R1Q1/2qn2P1/2P2P2/6K1 w - - 1 0 bm Bxf7+; \n" +
             "5r1k/2q4b/p3p2Q/1pp4p/8/1P3r2/P1P4P/1KBR2R1 w - - 1 0 bm Rd7; \n" +

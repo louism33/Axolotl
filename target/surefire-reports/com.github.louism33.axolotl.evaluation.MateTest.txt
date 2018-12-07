@@ -1,0 +1,25 @@
+-------------------------------------------------------------------------------
+Test set: com.github.louism33.axolotl.evaluation.MateTest
+-------------------------------------------------------------------------------
+Tests run: 150, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 98.168 sec <<< FAILURE! - in com.github.louism33.axolotl.evaluation.MateTest
+test[81 Test: ](com.github.louism33.axolotl.evaluation.MateTest)  Time elapsed: 0.833 sec  <<< FAILURE!
+java.lang.AssertionError: null
+	at org.junit.Assert.fail(Assert.java:87)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertTrue(Assert.java:53)
+	at com.github.louism33.axolotl.evaluation.MateTest.test(MateTest.java:50)
+
+test[85 Test: ](com.github.louism33.axolotl.evaluation.MateTest)  Time elapsed: 26.856 sec  <<< FAILURE!
+java.lang.AssertionError: null
+	at org.junit.Assert.fail(Assert.java:87)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertTrue(Assert.java:53)
+	at com.github.louism33.axolotl.evaluation.MateTest.test(MateTest.java:50)
+
+test[101 Test: ](com.github.louism33.axolotl.evaluation.MateTest)  Time elapsed: 10.279 sec  <<< FAILURE!
+java.lang.AssertionError: null
+	at org.junit.Assert.fail(Assert.java:87)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertTrue(Assert.java:53)
+	at com.github.louism33.axolotl.evaluation.MateTest.test(MateTest.java:50)
+

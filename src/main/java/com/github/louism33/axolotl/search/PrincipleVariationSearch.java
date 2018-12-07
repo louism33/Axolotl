@@ -199,7 +199,7 @@ class PrincipleVariationSearch {
         Move Ordering:
         place moves most likely to cause cutoffs at the front of the move list (hashmoves, killers, captures)
          */
-        MoveOrderer.MoveScore[] orderedMoves;
+        int[] moves;
         if (previousTableData == null) {
             /*
             Internal Iterative Deepening:
@@ -228,13 +228,14 @@ class PrincipleVariationSearch {
 
         if (previousTableData != null) {
             Engine.statistics.numberOfSearchesWithHash++;
-            orderedMoves = MoveOrderer.orderedMoves(board, board.isWhiteTurn(), ply, hashMove, aiMove);
+            moves = board.generateLegalMoves();
+            MoveOrderer.orderedMoves(moves, board, board.isWhiteTurn(), ply, hashMove, aiMove);
 
         }
         else{
             Engine.statistics.numberOfSearchesWithoutHash++;
-
-            orderedMoves = MoveOrderer.orderedMoves(board, board.isWhiteTurn(), ply, 0, aiMove);
+            moves = board.generateLegalMoves();
+            MoveOrderer.orderedMoves(moves, board, board.isWhiteTurn(), ply, 0, aiMove);
         }
 
         int originalAlpha = alpha;
@@ -245,20 +246,18 @@ class PrincipleVariationSearch {
         iterate through fully legal moves
          */
         int numberOfMovesSearched = 0;
-        for (int i = 0; i < orderedMoves.length; i++) {
-            MoveOrderer.MoveScore moveScore = orderedMoves[i];
-            int move = moveScore.getMove();
+        for (int i = 0; i < moves.length; i++) {
+            int move = moves[i];
             
             if (move == 0) {
                 break;
             }
 
-            // consider getting this from move orderer
-            boolean captureMove = MoveOrderer.moveIsCapture(board, move);
+            boolean captureMove = MoveParser.isCaptureMove(move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
             boolean givesCheckMove = MoveOrderer.checkingMove(board, move);
-            boolean pawnToSix = MoveOrderer.moveWillBePawnPushSix(board, move);
-            boolean pawnToSeven = MoveOrderer.moveWillBePawnPushSeven(board, move);
+            boolean pawnToSix = MoveParser.moveIsPawnPushSix(move);
+            boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(move);
 
             if (!maybeInEndgame(board)
                     && (MoveParser.isPromotionToKnight(move) ||
@@ -438,7 +437,7 @@ class PrincipleVariationSearch {
             if (alpha >= beta) {
                 Engine.statistics.statisticsFailHigh(ply, numberOfMovesSearched, move);
 
-                if (!MoveOrderer.moveIsCapture(board, move)) {
+                if (!MoveParser.isCaptureMove(move)) {
                     /*
                     Killer Moves:
                     record this cutoff move, because we will try out in sister nodes

@@ -1,6 +1,7 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.main.UCIEntry;
+import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
 import com.github.louism33.axolotl.utilities.Statistics;
 import com.github.louism33.chesscore.Chessboard;
@@ -13,17 +14,18 @@ public class Engine {
     private static final boolean HEAVY_INFO_LOG = false;
     public static final boolean PRINT_INFO = false;
     public static int MAX_DEPTH = 12;
-    
+    public static long nps;
+
     private static UCIEntry uciEntry;
     private static final EngineSpecifications engineSpecifications = new EngineSpecifications();
-    
+
     private static boolean stopInstruction;
     private static boolean setup = false;
 
     public Engine(UCIEntry uciEntry) {
         Engine.uciEntry = uciEntry;
     }
-    
+
     private static void setup(){
         stopInstruction = false;
         setup = true;
@@ -37,7 +39,7 @@ public class Engine {
 
     public static int searchMyTime (Chessboard board, long maxTime){
         engineSpecifications.ALLOW_TIME_LIMIT = true;
-        
+
         if (maxTime < 1000){
             return searchFixedDepth(board, 1);
         }
@@ -54,13 +56,15 @@ public class Engine {
         }
 
         long startTime = System.currentTimeMillis();
-        
+
         int[] moves = board.generateLegalMoves();
-        
+
         if (moves.length == 1){
             return moves[0];
         }
 
+        nps = 0;
+        
         int move = 0;
         try {
             move = IterativeDeepeningDFS.iterativeDeepeningWithAspirationWindows
@@ -70,15 +74,22 @@ public class Engine {
         }
 
         Assert.assertNotEquals(move, 0);
-        
+
         if (HEAVY_INFO_LOG){
             statistics.printStatistics();
         }
-        
+
         long endTime = System.currentTimeMillis();
-            statistics.infoLog(endTime, startTime, move);
+        statistics.infoLog(endTime, startTime, move);
+
+
+        long time = endTime - startTime;
         
-        return move;
+        if (time > 1000) {
+            nps = ((1000 * (statistics.numberOfMovesMade + statistics.numberOfQuiescentMovesMade)) / time);
+        }
+        
+        return move & MoveOrderer.MOVE_MASK;
     }
 
     public static int getAiMove(){

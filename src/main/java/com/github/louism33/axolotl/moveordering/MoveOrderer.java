@@ -1,9 +1,9 @@
 package com.github.louism33.axolotl.moveordering;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.chesscore.*;
-
-import java.util.Comparator;
+import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.IllegalUnmakeException;
+import com.github.louism33.chesscore.MoveParser;
 
 import static com.github.louism33.axolotl.moveordering.KillerMoves.killerMoves;
 import static com.github.louism33.axolotl.moveordering.KillerMoves.mateKiller;
@@ -14,18 +14,14 @@ import static com.github.louism33.chesscore.MoveParser.*;
 @SuppressWarnings("FieldCanBeLocal")
 public class MoveOrderer {
     
-    public static void main (String[] args){
-        Chessboard board = new Chessboard();
-        int[] ints = board.generateCleanLegalMoves();
-
-        int move = ints[0];
-        Art.printLong(move);
-        Art.printLong(buildMoveScore(move, 1));
+    public static final int MOVE_MASK = ~MOVE_SCORE_MASK;
+    
+    static int getMoveScore (int moveScore){
+        return (moveScore & MOVE_SCORE_MASK) >>> moveScoreOffset;
     }
     
-    private static int moveScoreOffset = 32;
-    static long buildMoveScore(int move, int score){
-        return (long) move | (score << moveScoreOffset);
+    static int buildMoveScore(int move, int score){
+        return move | (score << moveScoreOffset);
     }
 
     /*
@@ -33,84 +29,79 @@ public class MoveOrderer {
     previous Hash Moves, promotions, capture of last moved piece, good captures, killers, killers from earlier plies, 
     castling, bad captures, quiet moves, bad promotions
      */
-    public static MoveScore[] orderedMoves(Chessboard board, boolean white, int ply, int hashMove, int aiMove){
-        return extractMoves(board, white,
-                board.generateLegalMoves(),
+    public static void orderedMoves(int[] moves, Chessboard board, boolean white, int ply, int hashMove, int aiMove){
+        extractMoves(moves, board, white,
                 ply, hashMove, aiMove);
     }
 
-    private static MoveScore[] extractMoves(Chessboard board, boolean white, int[] moves, int ply,
+    private static void extractMoves(int[] moves, Chessboard board, boolean white, int ply,
                                          int hashMove, int aiMove){
-        return orderedMoveScores(board, white, moves, ply, hashMove, aiMove);
+        orderedMoveScores(moves, board, white, ply, hashMove, aiMove);
     }
 
-    private static MoveScore[] orderedMoveScores(Chessboard board, boolean white, int[] moves, int ply,
+    private static void orderedMoveScores(int[] moves, Chessboard board, boolean white, int ply,
                                               int hashMove, int aiMove){
-        MoveScore[] moveScores = new MoveScore[0];
         try {
-            moveScores = scoreMoves(board, white, moves, ply, hashMove, aiMove);
+            scoreMoves(moves, board, white, ply, hashMove, aiMove);
         } catch (IllegalUnmakeException e) {
             e.printStackTrace();
         }
-//        moveScores.sort(Comparator.comparingInt(MoveScore::getScore).reversed());
-        return moveScores;
     }
 
-    private static MoveScore[] scoreMoves(Chessboard board, boolean white, int[] moves, int ply,
+    private static void scoreMoves(int[] moves, Chessboard board, boolean white, int ply,
                                        int hashMove, int aiMove) throws IllegalUnmakeException {
-        MoveScore[] unsortedScoredMoves = new MoveScore[MoveParser.numberOfRealMoves(moves)];
-        /*
-        captures range from +92 to +108. +100 indicates an equal capture (Bxb, Pxp...)
-         */
+ 
         for (int i = 0; i < moves.length; i++) {
-            int move = moves[i];
-            if (move == 0){
+            if (moves[i] == 0){
                 break;
             }
-            MoveScore moveScore;
-            if (move == hashMove) {
-                moveScore = new MoveScore(move, hashScore);
-            } else if (ply == 0 && move == aiMove) {
-                moveScore = new MoveScore(move, aiScore);
-            } else if (Engine.getEngineSpecifications().ALLOW_MATE_KILLERS && mateKiller[ply] != 0 && move == (mateKiller[ply])) {
-                moveScore = new MoveScore(move, mateKillerScore);
-            } else if (board.moveIsCaptureOfLastMovePiece(move)) {
-                moveScore = new MoveScore(move, CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, move));
-            } else if (isPromotionToQueen(move)) {
-                moveScore = new MoveScore(move, queenPromotionScore);
-            } else if (isPromotionToKnight(move)) {
-                moveScore = new MoveScore(move, knightPromotionScore);
-            } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
+            if (moves[i] == hashMove) {
+                moves[i] = buildMoveScore(moves[i], hashScore);
+            } else if (ply == 0 && moves[i] == aiMove) {
+                moves[i] = buildMoveScore(moves[i], aiScore);
+            } else if (Engine.getEngineSpecifications().ALLOW_MATE_KILLERS && mateKiller[ply] != 0 && moves[i] == (mateKiller[ply])) {
+                moves[i] = buildMoveScore(moves[i], mateKillerScore);
+            } else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, moves[i]));
+            } else if (isPromotionToQueen(moves[i])) {
+                if (isCaptureMove(moves[i])) {
+                    moves[i] = buildMoveScore(moves[i], queenCapturePromotionScore);
+                }
+                else {
+                    moves[i] = buildMoveScore(moves[i], queenQuietPromotionScore);
+                }
+            } else if (isPromotionToKnight(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], knightPromotionScore);
+            } else if (isPromotionToBishop(moves[i]) || isPromotionToRook(moves[i])) {
 //                 promotions to rook and bishop are considered right at the end
-                moveScore = new MoveScore(move, uninterestingPromotion);
-            } else if (Engine.getEngineSpecifications().ALLOW_KILLERS && killerMoves[ply][0] != 0 && killerMoves[ply][0] == move) {
-                moveScore = new MoveScore(move, killerOneScore);
-            } else if (Engine.getEngineSpecifications().ALLOW_KILLERS && killerMoves[ply][1] != 0 && killerMoves[ply][1] == move) {
-                moveScore = new MoveScore(move, killerTwoScore);
+                moves[i] = buildMoveScore(moves[i], uninterestingPromotion);
+            } else if (Engine.getEngineSpecifications().ALLOW_KILLERS && killerMoves[ply][0] != 0 && killerMoves[ply][0] == moves[i]) {
+                moves[i] = buildMoveScore(moves[i], killerOneScore);
+            } else if (Engine.getEngineSpecifications().ALLOW_KILLERS && killerMoves[ply][1] != 0 && killerMoves[ply][1] == moves[i]) {
+                moves[i] = buildMoveScore(moves[i], killerTwoScore);
             } else if (Engine.getEngineSpecifications().ALLOW_KILLERS && ply >= 2 && killerMoves.length > 2
-                    && killerMoves[ply - 2][0] != 0 && killerMoves[ply - 2][0] == move) {
-                moveScore = new MoveScore(move, oldKillerScoreOne);
+                    && killerMoves[ply - 2][0] != 0 && killerMoves[ply - 2][0] == moves[i]) {
+                moves[i] = buildMoveScore(moves[i], oldKillerScoreOne);
             } else if (Engine.getEngineSpecifications().ALLOW_KILLERS && ply >= 2 && killerMoves.length > 2
-                    && killerMoves[ply - 2][1] != 0 && killerMoves[ply - 2][1] == (move)) {
-                moveScore = new MoveScore(move, oldKillerScoreTwo);
-            } else if (checkingMove(board, move)) {
-                moveScore = new MoveScore(move, giveCheckMove);
-            } else if (moveIsCapture(board, move)) {
-                moveScore = new MoveScore(move, mvvLVA(board, move));
-            } else if (MoveParser.isCastlingMove(move)) {
-                moveScore = new MoveScore(move, castlingMove);
+                    && killerMoves[ply - 2][1] != 0 && killerMoves[ply - 2][1] == (moves[i])) {
+                moves[i] = buildMoveScore(moves[i], oldKillerScoreTwo);
+            } else if (checkingMove(board, moves[i])) {
+                moves[i] = buildMoveScore(moves[i], giveCheckMove);
+            } else if (MoveParser.isCaptureMove(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], mvvLVA(board, moves[i]));
+            } else if (MoveParser.isCastlingMove(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], castlingMove);
             } else if (Engine.getEngineSpecifications().ALLOW_HISTORY_MOVES) {
-                moveScore = new MoveScore(move, HistoryMoves.historyMoveScore(move));
+                moves[i] = buildMoveScore(moves[i], HistoryMoves.historyMoveScore(moves[i]));
             } else {
-                moveScore = new MoveScore(move, uninterestingMove);
+                moves[i] = buildMoveScore(moves[i], uninterestingMove);
             }
-
-            unsortedScoredMoves[i] = moveScore;
         }
-
-        return unsortedScoredMoves;
     }
-
+    
+    static boolean positiveCapture(int moveScore){
+        return getMoveScore(moveScore) > CAPTURE_BIAS;
+    }
 
     private static int mvvLVA (Chessboard board, int move){
         int sourceScore = scoreByPiece(board, move, newPieceOnSquare(MoveParser.getSourceIndex(move)));
@@ -146,50 +137,44 @@ public class MoveOrderer {
     Quiescence Search ordering:
     order moves by most valuable victim and least valuable aggressor
      */
-    public static MoveScore[] orderMovesQuiescence(Chessboard board, boolean white, int[] allMoves){
-        return extractMovesQuiescence(board, white, allMoves);
+    public static void orderMovesQuiescence(int[] moves, Chessboard board, boolean white){
+        extractMovesQuiescence(moves, board, white);
     }
 
-    private static MoveScore[] extractMovesQuiescence(Chessboard board, boolean white, int[] moves){
-        return orderedMoveScoresQuiescence(board, white, moves);
+    private static void extractMovesQuiescence(int[] moves, Chessboard board, boolean white){
+        orderedintsQuiescence(moves, board, white);
     }
 
-    private static MoveScore[] orderedMoveScoresQuiescence(Chessboard board, boolean white, int[] moves){
-        MoveScore[] moveScores = scoreMovesQuiescence(board, white, moves);
-//        moveScores.sort(Comparator.comparingInt(MoveScore::getScore).reversed());
-        return moveScores;
+    private static void orderedintsQuiescence(int[] moves, Chessboard board, boolean white){
+        scoreMovesQuiescence(moves, board, white);
     }
 
-    private static MoveScore[] scoreMovesQuiescence(Chessboard board, boolean white, int[] moves){
-        MoveScore[] unsortedScoredMoves = new MoveScore[MoveParser.numberOfRealMoves(moves)];
-        for (int i = 0; i < unsortedScoredMoves.length; i++) {
-            int move = moves[i];
-            if (moveIsCapture(board, move)) {
-                if (isPromotionMove(move)) {
+    private static void scoreMovesQuiescence(int[] moves, Chessboard board, boolean white){
+        for (int i = 0; i < moves.length; i++) {
+            if (moves[i] == 0){
+                break;
+            }
+            if (MoveParser.isCaptureMove(moves[i])) {
+                if (isPromotionMove(moves[i])) {
                     /*
                     ignore under promotions in Q search
                      */
-                    if (isPromotionToQueen(move)) {
-                        unsortedScoredMoves[i] = new MoveScore(move, queenPromotionScore + 1);
+                    if (isPromotionToQueen(moves[i])) {
+                        moves[i] = buildMoveScore(moves[i], queenCapturePromotionScore);
                     }
-                } else if (board.moveIsCaptureOfLastMovePiece(move)) {
-                    unsortedScoredMoves[i] = new MoveScore(move, CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, move));
+                } else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
+                    moves[i] = buildMoveScore(moves[i], CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, moves[i]));
                 } else {
-                    unsortedScoredMoves[i] = new MoveScore(move, mvvLVA(board, move));
+                    moves[i] = buildMoveScore(moves[i], mvvLVA(board, moves[i]));
                 }
-            } else if (isPromotionMove(move)) {
-                if (isPromotionToQueen(move)) {
-                    unsortedScoredMoves[i] = new MoveScore(move, queenPromotionScore);
+            } else if (isPromotionMove(moves[i])) {
+                if (isPromotionToQueen(moves[i])) {
+                    moves[i] = buildMoveScore(moves[i], queenQuietPromotionScore);
                 }
+            } else {
+                moves[i] = 0;
             }
         }
-        return unsortedScoredMoves;
-    }
-
-    public static boolean moveIsCapture(Chessboard board, int move){
-        long ENEMY_PIECES = board.isWhiteTurn() ? board.blackPieces() : board.whitePieces();
-        long destinationSquare = newPieceOnSquare(MoveParser.getDestinationIndex(move));
-        return (destinationSquare & ENEMY_PIECES) != 0;
     }
 
     public static boolean checkingMove(Chessboard board, int move) throws IllegalUnmakeException {
@@ -199,77 +184,7 @@ public class MoveOrderer {
         return checkingMove;
     }
 
-    public static boolean moveWillBePawnPushSix(Chessboard board, int move){
-        long myPawns = board.isWhiteTurn() ? board.getWhitePawns() : board.getBlackPawns();
-
-        if (board.isWhiteTurn()){
-            if ((newPieceOnSquare(MoveParser.getSourceIndex(move)) & myPawns) != 0){
-                return false;
-            }
-            return (MoveParser.getDestinationIndex(move) & BitboardResources.RANK_SIX) != 0;
-        }
-        else {
-            if ((newPieceOnSquare(MoveParser.getSourceIndex(move)) & myPawns) != 0){
-                return false;
-            }
-            return (newPieceOnSquare(MoveParser.getDestinationIndex(move)) & BitboardResources.RANK_THREE) != 0;
-        }
-    }
-
-    public static boolean moveWillBePawnPushSeven(Chessboard board, int move){
-        long myPawns = board.isWhiteTurn() ? board.getWhitePawns() : board.getBlackPawns();
-
-        if (board.isWhiteTurn()){
-            if ((newPieceOnSquare(MoveParser.getSourceIndex(move)) & myPawns) != 0){
-                return false;
-            }
-            return (newPieceOnSquare(MoveParser.getDestinationIndex(move)) & BitboardResources.RANK_SEVEN) != 0;
-        }
-        else {
-            if ((newPieceOnSquare(MoveParser.getSourceIndex(move)) & myPawns) != 0){
-                return false;
-            }
-            return (newPieceOnSquare(MoveParser.getDestinationIndex(move)) & BitboardResources.RANK_TWO) != 0;
-        }
-    }
-
     public static void updateHistoryMoves(int move, int ply){
         HistoryMoves.updateHistoryMoves(move, ply);
-    }
-
-    // todo delete
-    public static class MoveScore {
-        private final int move;
-        private final int score;
-
-        MoveScore(int move, int score) {
-            this.move = move;
-            this.score = score;
-        }
-
-        public int getMove() {
-            return move;
-        }
-
-        int getScore() {
-            return score;
-        }
-
-        @Override
-        public String toString() {
-            return "MoveScore{" +
-                    "move=" + move +
-                    ", score=" + score +
-                    '}';
-        }
-    }
-
-    public static int numberOfRealMoves(int[] moves){
-        int index = 0;
-        while (moves[index] != 0){
-            index++;
-        }
-
-        return index;
     }
 }

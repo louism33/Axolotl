@@ -1,3 +1,4 @@
+/home/louis/IdeaProjects/Axolotl/src/main/java/com/github/louism33/axolotl/transpositiontable/TranspositionTableUtil.java
 /home/louis/IdeaProjects/Axolotl/src/main/java/challenges/ReflectionTests.java
 /home/louis/IdeaProjects/Axolotl/src/main/java/challenges/Arasan20.java
 /home/louis/IdeaProjects/Axolotl/src/main/java/com/github/louism33/axolotl/main/UCIBoardParser.java
@@ -6,6 +7,7 @@
 /home/louis/IdeaProjects/Axolotl/src/main/java/challenges/LapuceII.java
 /home/louis/IdeaProjects/Axolotl/src/main/java/com/github/louism33/axolotl/moveordering/HistoryMoves.java
 /home/louis/IdeaProjects/Axolotl/src/main/java/challenges/BratkoKopecTest.java
+/home/louis/IdeaProjects/Axolotl/src/main/java/com/github/louism33/axolotl/transpositiontable/TranspositionTableConstants.java
 /home/louis/IdeaProjects/Axolotl/src/main/java/com/github/louism33/axolotl/protocolhelperclasses/PVLine.java
 /home/louis/IdeaProjects/Axolotl/src/main/java/com/github/louism33/axolotl/search/SEEPruning.java
 /home/louis/IdeaProjects/Axolotl/src/main/java/challenges/EET.java
