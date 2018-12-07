@@ -1,3 +1,9 @@
 language: java
 jdk:
   - openjdk11
+jobs:
+  include:
+    - stage: MateTest
+      script: ./MateTest
+    - stage: WACSanityTest1
+      script: ./WACSanityTest1
