@@ -3,7 +3,10 @@ jdk:
   - openjdk11
 jobs:
   include:
-    - stage: MateTest
-      script: ./MateTest
-    - stage: WACSanityTest1
+    - stage: "Finding checkmates test"
+      script: ./src/test/java/com/github/louism33/axolotl/evaluation/MateTest.java
+    - stage: "WAC sanity test" 
       script: ./WACSanityTest1
+      
+after_success:
+  - echo "Test Success - Branch($TRAVIS_BRANCH) Pull Request($TRAVIS_PULL_REQUEST) Tag($TRAVIS_TAG)"
