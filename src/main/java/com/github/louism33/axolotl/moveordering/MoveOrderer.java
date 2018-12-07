@@ -1,10 +1,9 @@
 package com.github.louism33.axolotl.moveordering;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.chesscore.BitboardResources;
-import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.IllegalUnmakeException;
-import com.github.louism33.chesscore.MoveParser;
+import com.github.louism33.chesscore.*;
+
+import java.util.Comparator;
 
 import static com.github.louism33.axolotl.moveordering.KillerMoves.killerMoves;
 import static com.github.louism33.axolotl.moveordering.KillerMoves.mateKiller;
@@ -14,6 +13,20 @@ import static com.github.louism33.chesscore.MoveParser.*;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class MoveOrderer {
+    
+    public static void main (String[] args){
+        Chessboard board = new Chessboard();
+        int[] ints = board.generateCleanLegalMoves();
+
+        int move = ints[0];
+        Art.printLong(move);
+        Art.printLong(buildMoveScore(move, 1));
+    }
+    
+    private static int moveScoreOffset = 32;
+    static long buildMoveScore(int move, int score){
+        return (long) move | (score << moveScoreOffset);
+    }
 
     /*
     Move Ordering:
@@ -224,6 +237,7 @@ public class MoveOrderer {
         HistoryMoves.updateHistoryMoves(move, ply);
     }
 
+    // todo delete
     public static class MoveScore {
         private final int move;
         private final int score;
