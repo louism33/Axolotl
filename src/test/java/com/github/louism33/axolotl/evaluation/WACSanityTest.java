@@ -18,12 +18,12 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class WACSanityTest {
 
-    private static final int timeLimit = 3_000;
+    private static final int timeLimit = 10_000;
     private static int successes = 0;
 
     @AfterClass
     public static void finalSuccessTally(){
-        System.out.println("Successful tests: " + successes);
+        System.out.println("Successful WAC sanity tests: " + successes);
         Assert.assertTrue(successes > 200);
     }
 
@@ -52,6 +52,7 @@ public class WACSanityTest {
     public void test() {
         List<Integer> winningMoves = EPDObject.getBestMoves();
         List<Integer> losingMoves = EPDObject.getAvoidMoves();
+        System.out.println(EPDObject.getId()+": ");
         System.out.println(EPDObject.getBoardFen());
         System.out.println("Move(s) to get:     " + Arrays.toString(MoveParser.toString(winningMoves)));
 
@@ -72,6 +73,7 @@ public class WACSanityTest {
             System.out.println("failure");
         }
 
+        System.out.println("total successes: " + successes);
         System.out.println();
     }
 

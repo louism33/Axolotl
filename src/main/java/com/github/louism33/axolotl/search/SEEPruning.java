@@ -77,6 +77,7 @@ public class SEEPruning {
         throw new RuntimeException("piece problem");
     }
 
+    // todo
     private static List<Piece> myPiecesThatThreatenSquare(Chessboard board, boolean myColour, long square){
         List<Piece> pieces = new ArrayList<>();
 

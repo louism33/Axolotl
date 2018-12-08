@@ -1,0 +1,20 @@
+-------------------------------------------------------------------------------
+Test set: com.github.louism33.axolotl.moveordering.MoveOrdererTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.024 sec <<< FAILURE! - in com.github.louism33.axolotl.moveordering.MoveOrdererTest
+positiveMoves(com.github.louism33.axolotl.moveordering.MoveOrdererTest)  Time elapsed: 0.014 sec  <<< FAILURE!
+java.lang.AssertionError: null
+	at org.junit.Assert.fail(Assert.java:87)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertTrue(Assert.java:53)
+	at com.github.louism33.axolotl.moveordering.MoveOrderer.buildMoveScore(MoveOrderer.java:30)
+	at com.github.louism33.axolotl.moveordering.MoveOrdererTest.positiveMoves(MoveOrdererTest.java:48)
+
+moveScore(com.github.louism33.axolotl.moveordering.MoveOrdererTest)  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.AssertionError: null
+	at org.junit.Assert.fail(Assert.java:87)
+	at org.junit.Assert.assertTrue(Assert.java:42)
+	at org.junit.Assert.assertTrue(Assert.java:53)
+	at com.github.louism33.axolotl.moveordering.MoveOrderer.buildMoveScore(MoveOrderer.java:30)
+	at com.github.louism33.axolotl.moveordering.MoveOrdererTest.moveScore(MoveOrdererTest.java:21)
+

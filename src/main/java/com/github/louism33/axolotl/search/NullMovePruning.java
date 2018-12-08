@@ -20,7 +20,7 @@ class NullMovePruning {
                 ;
     }
 
-    public static boolean maybeInEndgame(Chessboard board){
+    static boolean maybeInEndgame(Chessboard board){
         return populationCount(board.allPieces()) < 9;
     }
 
@@ -40,7 +40,7 @@ class NullMovePruning {
         return populationCount(allMyPieces ^ (myPawns | myKing)) <= 1;
     }
 
-    public static boolean onlyPawnsLeftForPlayer(Chessboard board, boolean white){
+    static boolean onlyPawnsLeftForPlayer(Chessboard board, boolean white){
         long myPawns, myKing, allMyPieces;
         if (white){
             allMyPieces = board.whitePieces();

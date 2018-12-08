@@ -7,7 +7,7 @@ import static com.github.louism33.axolotl.search.NullMovePruning.onlyPawnsLeftFo
 
 class InternalIterativeDeepening {
 
-    public static final int iidDepthReduction = 2;
+    static final int iidDepthReduction = 2;
 
     static boolean isIIDAllowedHere(Chessboard board, int depth, boolean reducedSearch, boolean thisIsAPrincipleVariationNode){
         return !reducedSearch

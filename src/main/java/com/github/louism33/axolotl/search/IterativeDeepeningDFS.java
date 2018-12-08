@@ -16,7 +16,7 @@ class IterativeDeepeningDFS {
                 || (!Engine.getEngineSpecifications().ALLOW_TIME_LIMIT && (depth > maxDepth));
     }
 
-    static int iterativeDeepeningWithAspirationWindows(Chessboard board, long startTime, long timeLimitMillis) throws IllegalUnmakeException {
+    static void iterativeDeepeningWithAspirationWindows(Chessboard board, long startTime, long timeLimitMillis) throws IllegalUnmakeException {
         int aspirationScore = 0;
         int depth = 0;
         boolean outOfTime = false;
@@ -61,11 +61,7 @@ class IterativeDeepeningDFS {
             aspirationScore = score;
             depth++;
         }
-        return getAiMove();
-    }
-
-    private static int getAiMove() {
-        return AspirationSearch.getAiMove();
+//        return getAiMove();
     }
 
 }

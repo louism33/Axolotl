@@ -352,8 +352,9 @@ class Pawns {
 
     private static int doublePawnPenalty(Chessboard board, boolean white, long myPawns){
         int fileScore = 0;
-        for (long file : FILES) {
-            if (populationCount(file & myPawns) > 1){
+        for (int i = 0; i < FILES.length; i++) {
+            long file = FILES[i];
+            if (populationCount(file & myPawns) > 1) {
                 fileScore += PAWN_DOUBLED;
             }
         }

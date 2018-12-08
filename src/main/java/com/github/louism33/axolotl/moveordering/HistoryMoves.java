@@ -1,6 +1,8 @@
 package com.github.louism33.axolotl.moveordering;
 
-import com.github.louism33.chesscore.MoveParser;
+import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.MAX_HISTORY_MOVE_SCORE;
+import static com.github.louism33.chesscore.MoveParser.getDestinationIndex;
+import static com.github.louism33.chesscore.MoveParser.getSourceIndex;
 
 class HistoryMoves {
     
@@ -11,15 +13,15 @@ class HistoryMoves {
     private static final int[][] historyMoves = new int[64][64];
     
     /*
-    square the ply as shallower moves get added many times
+    increase the score as shallower moves get added many times
      */
     public static void updateHistoryMoves(int move, int ply){
-        historyMoves[MoveParser.getSourceIndex(move)][MoveParser.getDestinationIndex(move)] += (ply * ply);
+        historyMoves[getSourceIndex(move)][getDestinationIndex(move)] += (2 * ply);
     }
 
     public static int historyMoveScore(int move){
-        int maxMoveScoreOfHistory = MoveOrderingConstants.MAX_HISTORY_MOVE_SCORE;
-        int historyScore = historyMoves[MoveParser.getSourceIndex(move)][MoveParser.getDestinationIndex(move)];
+        int maxMoveScoreOfHistory = MAX_HISTORY_MOVE_SCORE;
+        int historyScore = historyMoves[getSourceIndex(move)][getDestinationIndex(move)];
         return historyScore > maxMoveScoreOfHistory ? maxMoveScoreOfHistory : historyScore;
     }
 }

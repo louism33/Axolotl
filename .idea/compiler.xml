@@ -22,6 +22,7 @@
     <bytecodeTargetLevel>
       <module name="Axolotl" target="11" />
       <module name="ChessCore" target="11" />
+      <module name="chesscore" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

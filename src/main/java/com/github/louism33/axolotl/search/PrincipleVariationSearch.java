@@ -2,10 +2,12 @@ package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
+import com.github.louism33.axolotl.timemanagement.TimeAllocator;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
 import com.github.louism33.chesscore.MoveParser;
+import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
@@ -20,12 +22,11 @@ import static com.github.louism33.axolotl.search.LateMoveReductions.lateMoveDept
 import static com.github.louism33.axolotl.search.NullMovePruning.*;
 import static com.github.louism33.axolotl.search.Razoring.*;
 import static com.github.louism33.axolotl.search.SEEPruning.seeScore;
-import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.TableObject.Flag.*;
+import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 
 class PrincipleVariationSearch {
 
     public static final TranspositionTable table = new TranspositionTable();
-    private static int aiMove;
 
     static int principleVariationSearch(Chessboard board,
                                  long startTime, long timeLimitMillis,
@@ -41,14 +42,15 @@ class PrincipleVariationSearch {
 
         Assert.assertTrue(depth >= 0);
         
+        if (TimeAllocator.outOfTime(startTime, timeLimitMillis)) {
+            return QuiescenceSearch.quiescenceSearch(board, alpha, beta);
+        }
+        
         /*
         Quiescent Search:
         if at a leaf node, perform specialised search of captures to avoid horizon effect
          */
         if (depth <= 0){
-            if(Engine.getEngineSpecifications().ALLOW_EXTENSIONS && originalDepth != 0) {
-                Assert.assertTrue(!board.inCheck(board.isWhiteTurn()));
-            }
             return QuiescenceSearch.quiescenceSearch(board, alpha, beta);
         }
 
@@ -71,18 +73,15 @@ class PrincipleVariationSearch {
         if possible, retrieve previously found data from singleton transposition table 
          */
         int hashMove = 0;
-        TranspositionTable.TableObject previousTableData = table.get(board.getBoardHash());
         int score;
-        if (previousTableData != null && ply > 0) {
-            score = previousTableData.getScore(ply);
-            hashMove = previousTableData.getMove();
-            if (previousTableData.getDepth() >= depth) {
-                TranspositionTable.TableObject.Flag flag = previousTableData.getFlag();
+        long previousTableData = TranspositionTable.retrieveFromTable(board.getZobrist());
+        if (previousTableData != 0 && ply > 0 && previousTableData == board.getZobrist()) {
+            score = TranspositionTable.getScore(previousTableData);
+            hashMove = TranspositionTable.getMove(previousTableData);
+            if (TranspositionTable.getDepth(previousTableData) >= depth) {
+                int flag = TranspositionTable.getFlag(previousTableData);
                 if (flag == EXACT) {
                     Engine.statistics.numberOfExacts++;
-                    if (ply == 0){
-                        aiMove = hashMove;
-                    }
                     return score;
                 } else if (flag == LOWERBOUND) {
                     Engine.statistics.numberOfLowerBounds++;
@@ -93,9 +92,6 @@ class PrincipleVariationSearch {
                 }
                 if (alpha >= beta) {
                     Engine.statistics.numberOfHashBetaCutoffs++;
-                    if (ply == 0){
-                        aiMove = hashMove;
-                    }
                     return score;
                 }
             }
@@ -111,11 +107,13 @@ class PrincipleVariationSearch {
             int[] moves = board.generateLegalMoves();
             staticBoardEval = Evaluator.eval(board, board.isWhiteTurn(), moves);
 
-            if(previousTableData != null){
-                if (previousTableData.getFlag() == EXACT
-                        || (previousTableData.getFlag() == UPPERBOUND && previousTableData.getScore(ply) < staticBoardEval)
-                        || (previousTableData.getFlag() == LOWERBOUND && previousTableData.getScore(ply) > staticBoardEval)){
-                    staticBoardEval = previousTableData.getScore(ply);
+            if (previousTableData != 0){
+                int flag = TranspositionTable.getFlag(previousTableData);
+                int tableScore = TranspositionTable.getScore(previousTableData);
+                if (flag == EXACT
+                        || (flag == UPPERBOUND && tableScore < staticBoardEval)
+                        || (flag == LOWERBOUND && tableScore > staticBoardEval)){
+                    staticBoardEval = tableScore;
                 }
             }
             
@@ -200,7 +198,7 @@ class PrincipleVariationSearch {
         place moves most likely to cause cutoffs at the front of the move list (hashmoves, killers, captures)
          */
         int[] moves;
-        if (previousTableData == null) {
+        if (previousTableData == 0) {
             /*
             Internal Iterative Deepening:
             when no hashtable entry, pv node and not endgame, perform shallower search to add a good move to table
@@ -215,8 +213,9 @@ class PrincipleVariationSearch {
                             reducedIIDDepth, ply,
                             alpha, beta, nullMoveCounter, true);
 
-                    previousTableData = table.get(board.getBoardHash());
-                    if (previousTableData == null){
+//                    previousTableData = table.get(board.getBoardHash());
+                    previousTableData = TranspositionTable.retrieveFromTable(board.getZobrist());
+                    if (previousTableData == 0){
                         Engine.statistics.numberOfFailedIIDs++;
                     }
                     else {
@@ -226,16 +225,16 @@ class PrincipleVariationSearch {
             }
         }
 
-        if (previousTableData != null) {
+        if (previousTableData != 0) {
             Engine.statistics.numberOfSearchesWithHash++;
             moves = board.generateLegalMoves();
-            MoveOrderer.orderedMoves(moves, board, board.isWhiteTurn(), ply, hashMove, aiMove);
+            MoveOrderer.scoreMoves(moves, board, board.isWhiteTurn(), ply, hashMove);
 
         }
         else{
             Engine.statistics.numberOfSearchesWithoutHash++;
             moves = board.generateLegalMoves();
-            MoveOrderer.orderedMoves(moves, board, board.isWhiteTurn(), ply, 0, aiMove);
+            MoveOrderer.scoreMoves(moves, board, board.isWhiteTurn(), ply, 0);
         }
 
         int originalAlpha = alpha;
@@ -245,12 +244,22 @@ class PrincipleVariationSearch {
         /*
         iterate through fully legal moves
          */
+        int realMoves = MoveParser.numberOfRealMoves(moves);
+        Ints.sortDescending(moves, 0, realMoves);
         int numberOfMovesSearched = 0;
         for (int i = 0; i < moves.length; i++) {
+
+            if (moves[i] == 0) {
+                break;
+            }
+            
             int move = moves[i];
             
-            if (move == 0) {
-                break;
+            if (i == 0){
+                Assert.assertTrue(move >= moves[i+1]);
+            } else {
+                Assert.assertTrue(move <= moves[i - 1]);
+                Assert.assertTrue(move >= moves[i + 1]);
             }
 
             boolean captureMove = MoveParser.isCaptureMove(move);
@@ -426,7 +435,8 @@ class PrincipleVariationSearch {
                 bestMove = move;
                 alpha = Math.max(alpha, score);
                 if (ply == 0) {
-                    aiMove = move;
+//                    aiMove = move;
+                    Engine.aiMove = move;
                 }
             }
 
@@ -474,7 +484,7 @@ class PrincipleVariationSearch {
         Transposition Tables:
         add information to table with flag based on the node type
          */
-        TranspositionTable.TableObject.Flag flag;
+        int flag;
         if (bestScore <= originalAlpha){
             flag = UPPERBOUND;
         } else if (bestScore >= beta) {
@@ -483,15 +493,14 @@ class PrincipleVariationSearch {
             flag = EXACT;
         }
 
-        table.put(board.getBoardHash(),
-                new TranspositionTable.TableObject(bestMove, bestScore, depth,
-                        flag));
-
+        TranspositionTable.addToTable(board.getZobrist(), 
+                TranspositionTable.buildTableEntry(bestMove, bestScore, depth, flag, ply));
+        
         return bestScore;
     }
 
-    static int getAiMove() {
-        return aiMove;
-    }
+//    static int getAiMove() {
+//        return aiMove;
+//    }
 
 }

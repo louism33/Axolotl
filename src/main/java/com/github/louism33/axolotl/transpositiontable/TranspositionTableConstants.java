@@ -2,10 +2,10 @@ package com.github.louism33.axolotl.transpositiontable;
 
 public class TranspositionTableConstants {
     
-    // 13 free bits
+    // 7 free bits
     /*
-    00000000
-    00000111
+    00000001
+    11111111
     11111111
     11111111
     11111111
@@ -13,24 +13,24 @@ public class TranspositionTableConstants {
     11111111
     11111111
      */
+    
+    public static final int LOWERBOUND = 0;
+    public static final int EXACT = 1;
+    public static final int UPPERBOUND = 2;
      
-    public static final long SMD_MOVE_MASK = 0xffffffffL;
+    public static final long MOVE_MASK = 0xffffffffL;
     
-    public static final long SMD_FIFTY_MOVES = 0x3f00000000L;
-    public static final int smdFiftyPieceOffset = 32;
+    public static final long SCORE_CLEANER = 0xffffL;
+    public static final long SCORE_MASK = 0xffff00000000L;
+    public static final int scoreOffset = 32;
 
-    public static final long SMD_SPECIAL_MOVE = 0x3c000000000L;
-    public static final int smdSpecialOffset = 38;
+    static final int twoFifteen = 1 << 15;
+    static final int twoSixteen = 1 << 16;
 
-    // 0 should mean no ep
-    public static final long SMD_EP_FILE = 0x3c0000000000L;
-    public static final int smdEPOffset = 42;
+    public static final long DEPTH_MASK = 0x7f000000000000L;
+    public static final int depth_offset = 48;
 
-    public static final long SMD_CASTLE_FLAGS = 0x3c00000000000L;
-    public static final int smdCastleOffset = 46;
+    public static final long FLAG_MASK = 0x180000000000000L;
+    public static final int flagOffset = 55;
 
-    public static final long SMD_TURN = 0x4000000000000L;
-    public static final int smdTurnOffset = 50;
-    
-    
 }

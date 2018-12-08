@@ -27,7 +27,8 @@ public class UCIBoardParser {
         }
         Chessboard board = new Chessboard(genericBoard.toString());
         for (GenericMove genericMove : moves){
-            board.makeMoveAndFlipTurn(moveFromGenericMove(board, genericMove));
+//            board.makeMoveAndFlipTurn(moveFromGenericMove(board, genericMove));
+            board.makeMoveAndFlipTurn(MoveParser.newMove(board, genericMove.toString()));
         }
         return board;
     }
@@ -36,7 +37,8 @@ public class UCIBoardParser {
 
         for (int i = moves.size() - 2; i < moves.size(); i++) {
             GenericMove genericMove = moves.get(i);
-            board.makeMoveAndFlipTurn(moveFromGenericMove(board, genericMove));
+//            board.makeMoveAndFlipTurn(moveFromGenericMove(board, genericMove));
+            board.makeMoveAndFlipTurn(MoveParser.newMove(board, genericMove.toString()));
         }
         return board;
     }

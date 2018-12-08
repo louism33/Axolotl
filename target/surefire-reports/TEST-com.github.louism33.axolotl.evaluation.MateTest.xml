@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.github.louism33.axolotl.evaluation.MateTest" time="97.617" tests="150" errors="0" skipped="0" failures="3">
+<testsuite name="com.github.louism33.axolotl.evaluation.MateTest" time="331.107" tests="151" errors="0" skipped="0" failures="2">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="11.0.1+13-LTS"/>
@@ -59,190 +59,181 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="test[0 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.15"/>
-  <testcase name="test[1 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.04"/>
-  <testcase name="test[2 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.015"/>
-  <testcase name="test[3 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.011"/>
-  <testcase name="test[4 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.007"/>
-  <testcase name="test[5 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.009"/>
-  <testcase name="test[6 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.009"/>
+  <testcase name="test[0 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.162"/>
+  <testcase name="test[1 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.037"/>
+  <testcase name="test[2 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.01"/>
+  <testcase name="test[3 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.021"/>
+  <testcase name="test[4 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.009"/>
+  <testcase name="test[5 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.012"/>
+  <testcase name="test[6 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.004"/>
   <testcase name="test[7 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.007"/>
-  <testcase name="test[8 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.004"/>
-  <testcase name="test[9 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.006"/>
-  <testcase name="test[10 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.004"/>
-  <testcase name="test[11 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.005"/>
+  <testcase name="test[8 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.005"/>
+  <testcase name="test[9 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.004"/>
+  <testcase name="test[10 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.006"/>
+  <testcase name="test[11 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.006"/>
   <testcase name="test[12 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.01"/>
-  <testcase name="test[13 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.005"/>
-  <testcase name="test[14 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.004"/>
-  <testcase name="test[15 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.009"/>
-  <testcase name="test[16 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.019"/>
-  <testcase name="test[17 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.011"/>
-  <testcase name="test[18 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0"/>
-  <testcase name="test[19 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.009"/>
-  <testcase name="test[20 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.005"/>
-  <testcase name="test[21 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.162"/>
-  <testcase name="test[22 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.005"/>
-  <testcase name="test[23 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.007"/>
-  <testcase name="test[24 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.011"/>
-  <testcase name="test[25 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.017"/>
-  <testcase name="test[26 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.012"/>
-  <testcase name="test[27 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.156"/>
-  <testcase name="test[28 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.014"/>
-  <testcase name="test[29 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.008"/>
-  <testcase name="test[30 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.01"/>
-  <testcase name="test[31 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.006"/>
-  <testcase name="test[32 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.006"/>
-  <testcase name="test[33 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.005"/>
+  <testcase name="test[13 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.003"/>
+  <testcase name="test[14 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.003"/>
+  <testcase name="test[15 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.005"/>
+  <testcase name="test[16 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.003"/>
+  <testcase name="test[17 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.004"/>
+  <testcase name="test[18 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.004"/>
+  <testcase name="test[19 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.007"/>
+  <testcase name="test[20 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.003"/>
+  <testcase name="test[21 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.021"/>
+  <testcase name="test[22 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.006"/>
+  <testcase name="test[23 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.006"/>
+  <testcase name="test[24 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.002"/>
+  <testcase name="test[25 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.004"/>
+  <testcase name="test[26 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.004"/>
+  <testcase name="test[27 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.047"/>
+  <testcase name="test[28 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.003"/>
+  <testcase name="test[29 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.004"/>
+  <testcase name="test[30 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.007"/>
+  <testcase name="test[31 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.002"/>
+  <testcase name="test[32 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.017"/>
+  <testcase name="test[33 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.009"/>
   <testcase name="test[34 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.008"/>
-  <testcase name="test[35 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.02"/>
-  <testcase name="test[36 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.073"/>
-  <testcase name="test[37 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.025"/>
-  <testcase name="test[38 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.011"/>
-  <testcase name="test[39 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.021"/>
-  <testcase name="test[40 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.023"/>
-  <testcase name="test[41 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.02"/>
-  <testcase name="test[42 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.025"/>
-  <testcase name="test[43 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.056"/>
-  <testcase name="test[44 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.057"/>
-  <testcase name="test[45 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.271"/>
-  <testcase name="test[46 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.079"/>
-  <testcase name="test[47 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.05"/>
-  <testcase name="test[48 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.051"/>
-  <testcase name="test[49 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.036"/>
-  <testcase name="test[50 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.125"/>
-  <testcase name="test[51 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.027"/>
-  <testcase name="test[52 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.051"/>
-  <testcase name="test[53 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.028"/>
-  <testcase name="test[54 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.086"/>
-  <testcase name="test[55 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.142"/>
-  <testcase name="test[56 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.071"/>
-  <testcase name="test[57 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.602"/>
-  <testcase name="test[58 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.052"/>
-  <testcase name="test[59 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.092"/>
-  <testcase name="test[60 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.05"/>
-  <testcase name="test[61 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.032"/>
-  <testcase name="test[62 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.052"/>
-  <testcase name="test[63 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.231"/>
-  <testcase name="test[64 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.037"/>
-  <testcase name="test[65 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.101"/>
-  <testcase name="test[66 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.059"/>
-  <testcase name="test[67 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.112"/>
-  <testcase name="test[68 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.105"/>
-  <testcase name="test[69 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.028"/>
-  <testcase name="test[70 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.092"/>
-  <testcase name="test[71 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.021"/>
-  <testcase name="test[72 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.035"/>
-  <testcase name="test[73 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.03"/>
-  <testcase name="test[74 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.13"/>
-  <testcase name="test[75 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.096"/>
-  <testcase name="test[76 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.023"/>
-  <testcase name="test[77 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="7.345"/>
-  <testcase name="test[78 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="7.854"/>
-  <testcase name="test[79 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.102"/>
-  <testcase name="test[80 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="7.73"/>
-  <testcase name="test[81 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.833">
+  <testcase name="test[35 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.01"/>
+  <testcase name="test[36 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.048"/>
+  <testcase name="test[37 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.029"/>
+  <testcase name="test[38 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.008"/>
+  <testcase name="test[39 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.016"/>
+  <testcase name="test[40 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.01"/>
+  <testcase name="test[41 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.023"/>
+  <testcase name="test[42 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.016"/>
+  <testcase name="test[43 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.015"/>
+  <testcase name="test[44 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.061"/>
+  <testcase name="test[45 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.246"/>
+  <testcase name="test[46 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.023"/>
+  <testcase name="test[47 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.028"/>
+  <testcase name="test[48 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.004"/>
+  <testcase name="test[49 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.008"/>
+  <testcase name="test[50 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.004"/>
+  <testcase name="test[51 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.014"/>
+  <testcase name="test[52 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.035"/>
+  <testcase name="test[53 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.018"/>
+  <testcase name="test[54 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.03"/>
+  <testcase name="test[55 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.087"/>
+  <testcase name="test[56 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.035"/>
+  <testcase name="test[57 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="1.807"/>
+  <testcase name="test[58 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.028"/>
+  <testcase name="test[59 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.018"/>
+  <testcase name="test[60 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.026"/>
+  <testcase name="test[61 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.025"/>
+  <testcase name="test[62 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.069"/>
+  <testcase name="test[63 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.102"/>
+  <testcase name="test[64 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.042"/>
+  <testcase name="test[65 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.1"/>
+  <testcase name="test[66 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.098"/>
+  <testcase name="test[67 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.277"/>
+  <testcase name="test[68 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.062"/>
+  <testcase name="test[69 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.111"/>
+  <testcase name="test[70 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.021"/>
+  <testcase name="test[71 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.083"/>
+  <testcase name="test[72 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.023"/>
+  <testcase name="test[73 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.035"/>
+  <testcase name="test[74 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.215"/>
+  <testcase name="test[75 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.014"/>
+  <testcase name="test[76 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="6.662"/>
+  <testcase name="test[77 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.025"/>
+  <testcase name="test[78 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="1.537"/>
+  <testcase name="test[79 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="10.573"/>
+  <testcase name="test[80 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.108"/>
+  <testcase name="test[81 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="3.837"/>
+  <testcase name="test[82 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="5.843"/>
+  <testcase name="test[83 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.136"/>
+  <testcase name="test[84 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.107"/>
+  <testcase name="test[85 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.214"/>
+  <testcase name="test[86 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="165.163">
     <failure type="java.lang.AssertionError:">java.lang.AssertionError: null
 	at org.junit.Assert.fail(Assert.java:87)
 	at org.junit.Assert.assertTrue(Assert.java:42)
 	at org.junit.Assert.assertTrue(Assert.java:53)
-	at com.github.louism33.axolotl.evaluation.MateTest.test(MateTest.java:50)
-</failure>
-    <system-out><![CDATA[
-7k/1p2r1p1/pPq4p/7R/1P1Nn2P/P5p1/1B3r2/3Q2K1 
-Move to get: g7g5
-Best move: e4g5
-]]></system-out>
-  </testcase>
-  <testcase name="test[82 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.12"/>
-  <testcase name="test[83 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.012"/>
-  <testcase name="test[84 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.131"/>
-  <testcase name="test[85 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="26.856">
-    <failure type="java.lang.AssertionError:">java.lang.AssertionError: null
-	at org.junit.Assert.fail(Assert.java:87)
-	at org.junit.Assert.assertTrue(Assert.java:42)
-	at org.junit.Assert.assertTrue(Assert.java:53)
-	at com.github.louism33.axolotl.evaluation.MateTest.test(MateTest.java:50)
+	at com.github.louism33.axolotl.evaluation.MateTest.test(MateTest.java:53)
 </failure>
     <system-out><![CDATA[
 2r3k1/p2R1p2/1p5Q/4N3/7P/4P3/b5PK/5q2 
-Move to get: e5c6
-Best move: h6g5, nps: 382031
+Move to get:        e5c6
+Best move found:    h6g5
+NPS:                212231
 ]]></system-out>
   </testcase>
-  <testcase name="test[86 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.174"/>
-  <testcase name="test[87 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.068"/>
-  <testcase name="test[88 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.016"/>
-  <testcase name="test[89 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="7.597"/>
-  <testcase name="test[90 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.01"/>
-  <testcase name="test[91 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.018"/>
-  <testcase name="test[92 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.017"/>
-  <testcase name="test[93 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.024"/>
-  <testcase name="test[94 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.215"/>
-  <testcase name="test[95 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.134"/>
-  <testcase name="test[96 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.009"/>
-  <testcase name="test[97 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.034"/>
-  <testcase name="test[98 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.021"/>
-  <testcase name="test[99 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.028"/>
-  <testcase name="test[100 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.022"/>
-  <testcase name="test[101 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="10.279">
+  <testcase name="test[87 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.027"/>
+  <testcase name="test[88 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.019"/>
+  <testcase name="test[89 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.318"/>
+  <testcase name="test[90 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="4.731"/>
+  <testcase name="test[91 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.017"/>
+  <testcase name="test[92 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.018"/>
+  <testcase name="test[93 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.016"/>
+  <testcase name="test[94 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.149"/>
+  <testcase name="test[95 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.253"/>
+  <testcase name="test[96 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.055"/>
+  <testcase name="test[97 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.195"/>
+  <testcase name="test[98 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.019"/>
+  <testcase name="test[99 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.056"/>
+  <testcase name="test[100 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.021"/>
+  <testcase name="test[101 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.191"/>
+  <testcase name="test[102 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="11.531"/>
+  <testcase name="test[103 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.246"/>
+  <testcase name="test[104 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.011"/>
+  <testcase name="test[105 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.052"/>
+  <testcase name="test[106 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.029"/>
+  <testcase name="test[107 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.321"/>
+  <testcase name="test[108 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.473"/>
+  <testcase name="test[109 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.061"/>
+  <testcase name="test[110 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.337"/>
+  <testcase name="test[111 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.342"/>
+  <testcase name="test[112 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.038"/>
+  <testcase name="test[113 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.23"/>
+  <testcase name="test[114 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.026"/>
+  <testcase name="test[115 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.047"/>
+  <testcase name="test[116 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.498"/>
+  <testcase name="test[117 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.068"/>
+  <testcase name="test[118 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.175"/>
+  <testcase name="test[119 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="94.038"/>
+  <testcase name="test[120 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.533"/>
+  <testcase name="test[121 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.437"/>
+  <testcase name="test[122 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.11"/>
+  <testcase name="test[123 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.961"/>
+  <testcase name="test[124 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.068"/>
+  <testcase name="test[125 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.528"/>
+  <testcase name="test[126 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.065"/>
+  <testcase name="test[127 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.4"/>
+  <testcase name="test[128 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="3.433"/>
+  <testcase name="test[129 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.46"/>
+  <testcase name="test[130 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.092"/>
+  <testcase name="test[131 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.407"/>
+  <testcase name="test[132 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.078"/>
+  <testcase name="test[133 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="1.377"/>
+  <testcase name="test[134 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.019"/>
+  <testcase name="test[135 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.115"/>
+  <testcase name="test[136 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.361"/>
+  <testcase name="test[137 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.448"/>
+  <testcase name="test[138 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="4.538"/>
+  <testcase name="test[139 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.038"/>
+  <testcase name="test[140 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.023"/>
+  <testcase name="test[141 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.282"/>
+  <testcase name="test[142 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.038"/>
+  <testcase name="test[143 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.051"/>
+  <testcase name="test[144 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="1.928">
     <failure type="java.lang.AssertionError:">java.lang.AssertionError: null
 	at org.junit.Assert.fail(Assert.java:87)
 	at org.junit.Assert.assertTrue(Assert.java:42)
 	at org.junit.Assert.assertTrue(Assert.java:53)
-	at com.github.louism33.axolotl.evaluation.MateTest.test(MateTest.java:50)
+	at com.github.louism33.axolotl.evaluation.MateTest.test(MateTest.java:53)
 </failure>
     <system-out><![CDATA[
-r1r3k1/1bq2pbR/p5p1/1pnpp1B1/3NP3/3B1P2/PPPQ4/1K5R 
-Move to get: g5f6
-Best move: h7g7, nps: 1300836
+rr4Rb/2pnqb1k/np1p1p1B/3PpP2/p1P1P2P/2N3R1/PP2BP2/1KQ5 
+Move to get:        h6g7
+Best move found:    g8h8
+NPS:                23813531
 ]]></system-out>
   </testcase>
-  <testcase name="test[102 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.035"/>
-  <testcase name="test[103 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.024"/>
-  <testcase name="test[104 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.008"/>
-  <testcase name="test[105 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.027"/>
-  <testcase name="test[106 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.038"/>
-  <testcase name="test[107 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.051"/>
-  <testcase name="test[108 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.024"/>
-  <testcase name="test[109 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.022"/>
-  <testcase name="test[110 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.196"/>
-  <testcase name="test[111 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.053"/>
-  <testcase name="test[112 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.021"/>
-  <testcase name="test[113 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.27"/>
-  <testcase name="test[114 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.054"/>
-  <testcase name="test[115 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.028"/>
-  <testcase name="test[116 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.027"/>
-  <testcase name="test[117 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.046"/>
-  <testcase name="test[118 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="12.03"/>
-  <testcase name="test[119 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.012"/>
-  <testcase name="test[120 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.04"/>
-  <testcase name="test[121 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.027"/>
-  <testcase name="test[122 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.034"/>
-  <testcase name="test[123 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.028"/>
-  <testcase name="test[124 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.019"/>
-  <testcase name="test[125 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.173"/>
-  <testcase name="test[126 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.066"/>
-  <testcase name="test[127 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="6.336"/>
-  <testcase name="test[128 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.118"/>
-  <testcase name="test[129 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.024"/>
-  <testcase name="test[130 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.013"/>
-  <testcase name="test[131 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.062"/>
-  <testcase name="test[132 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="2.002"/>
-  <testcase name="test[133 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.017"/>
-  <testcase name="test[134 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.018"/>
-  <testcase name="test[135 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.08"/>
-  <testcase name="test[136 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.013"/>
-  <testcase name="test[137 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.033"/>
-  <testcase name="test[138 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.018"/>
-  <testcase name="test[139 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.015"/>
-  <testcase name="test[140 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.023"/>
-  <testcase name="test[141 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.011"/>
-  <testcase name="test[142 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.013"/>
-  <testcase name="test[143 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="1.425"/>
-  <testcase name="test[144 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.012"/>
-  <testcase name="test[145 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.019"/>
-  <testcase name="test[146 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.024"/>
-  <testcase name="test[147 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.008"/>
-  <testcase name="test[148 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.045"/>
-  <testcase name="test[149 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.192"/>
+  <testcase name="test[145 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.329"/>
+  <testcase name="test[146 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.019"/>
+  <testcase name="test[147 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.031"/>
+  <testcase name="test[148 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.276"/>
+  <testcase name="test[149 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.414"/>
+  <testcase name="test[150 Test: ]" classname="com.github.louism33.axolotl.evaluation.MateTest" time="0.046"/>
 </testsuite>

@@ -80,8 +80,4 @@ class AspirationSearch {
         return score;
     }
 
-    static int getAiMove() {
-        return PrincipleVariationSearch.getAiMove();
-    }
-
 }

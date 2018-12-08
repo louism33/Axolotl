@@ -3,6 +3,7 @@ package com.github.louism33.axolotl.search;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
+import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.axolotl.utilities.Statistics;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
@@ -21,12 +22,15 @@ public class Engine {
 
     private static boolean stopInstruction;
     private static boolean setup = false;
+    
+    static int aiMove;
 
     public Engine(UCIEntry uciEntry) {
         Engine.uciEntry = uciEntry;
     }
 
     private static void setup(){
+        TranspositionTable.initTable(EngineSpecifications.DEFAULT_TABLE_SIZE);
         stopInstruction = false;
         setup = true;
     }
@@ -67,13 +71,13 @@ public class Engine {
         
         int move = 0;
         try {
-            move = IterativeDeepeningDFS.iterativeDeepeningWithAspirationWindows
+            IterativeDeepeningDFS.iterativeDeepeningWithAspirationWindows
                     (board, startTime, maxTime);
         } catch (IllegalUnmakeException e) {
             e.printStackTrace();
         }
 
-        Assert.assertNotEquals(move, 0);
+//        Assert.assertNotEquals(move, 0);
 
         if (HEAVY_INFO_LOG){
             statistics.printStatistics();
@@ -89,11 +93,13 @@ public class Engine {
             nps = ((1000 * (statistics.numberOfMovesMade + statistics.numberOfQuiescentMovesMade)) / time);
         }
         
-        return move & MoveOrderer.MOVE_MASK;
+//        return move & MoveOrderer.MOVE_MASK;
+        return aiMove & MoveOrderer.MOVE_MASK;
     }
 
     public static int getAiMove(){
-        return AspirationSearch.getAiMove();
+//        return PrincipleVariationSearch.getAiMove();
+        return aiMove;
     }
 
     public static UCIEntry getUciEntry() {

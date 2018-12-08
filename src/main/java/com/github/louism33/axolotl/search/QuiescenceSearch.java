@@ -44,7 +44,7 @@ class QuiescenceSearch {
             return standPatScore;
         }
 
-        MoveOrderer.orderMovesQuiescence(moves, board, board.isWhiteTurn());
+        MoveOrderer.scoreMovesQuiescence(moves, board, board.isWhiteTurn());
 
         int numberOfMovesSearched = 0;
         for (int i = 0; i < moves.length; i++) {

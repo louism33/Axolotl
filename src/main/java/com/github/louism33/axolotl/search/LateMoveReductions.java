@@ -4,7 +4,7 @@ import com.github.louism33.chesscore.Chessboard;
 
 class LateMoveReductions {
     
-    public static int lateMoveDepthReduction(int depth){
+    static int lateMoveDepthReduction(int depth){
         return 2;
     }
 
