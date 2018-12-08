@@ -2,11 +2,12 @@ language: java
 jdk:
   - openjdk11
 deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-  keep-history: true
+  provider: releases
+  file_glob: true
+  file: out/artifacts/axolotl*.jar
+  api_key: $GITHUB_API_KEY
+  skip_cleanup: true
   on:
-    branch: master
+    tags: true
 after_success:
   - echo "Test Success - Branch($TRAVIS_BRANCH) Pull Request($TRAVIS_PULL_REQUEST) Tag($TRAVIS_TAG)"
