@@ -1,13 +1,16 @@
 language: java
 jdk:
-  - openjdk11
+- openjdk11
+branches:
+  only:
+  - master
+  - "/v\\d+\\.\\d+\\.\\d+/"
 deploy:
   provider: releases
-  file_glob: true
-  file: out/artifacts/axolotl*.jar
-  api_key: $GITHUB_API_KEY
-  skip_cleanup: true
+  api_key:
+    secure: c+9zbxVuV9Rg8DXFBFe37RDhRRq+qlvH0YVg355VcpNWwQbhpryx1pHfFH1e4zdb4eIaaUDOv6Szti96ivEnhvcaI8+Y2S2IORLpQZfB6gi+7bVESmGelmIGno8TFqH1JmqrvCi/2n0lT/KyawSrVmWxmvVsPc0HHPbD627Pc1YfpVLex3B3HjnWKVmIRw8K5CAWTrh+1qmtl+ky0qPes96IYSPgpA6L27TMHRy/vQ+qVermEUzvbYoS3LHqhUJvVXWxEoLVP1/7kzCXcWo1HtXZqO1w+O+dmPGsCQ0sIQcpDZk+bZfwI/iXQkZtTk7AHE2V6BFZXtYHKrd5vtltiQo59+EO4uP1GXJXj1tEY7YJ1jULxMmYtIvykWshq+bMWp8quZHB10RwPtncUjwVHbBD1gucWw9KGW+bRKHOJTYYcE9/V6eD8Xvz96Vbya/pcp+2pb/gM0dCxYPjrHgFRtwnNuJs00+WJuePNzezF1UTMUvKKFaelvv90eOCZeL7qSbKJpYNOU1wP6iYJ93MuooZQAGlFQzP9C8Wmh7s92eYq9jRThIA6mknxF50fD4LpvKDdJpkqNk3mBgW9SBmnP2gcyqzpaSkyJR/jV03/3Nbl8xU74Lyray+/1vKAbmXEDEeSHKVDLBmvSgFPPwn3KFuV5Xfl8wFDQKC4I8JZuQ=
+  file: axolotl.jar
   on:
-    tags: true
+    repo: louism33/Axolotl
 after_success:
-  - echo "Test Success - Branch($TRAVIS_BRANCH) Pull Request($TRAVIS_PULL_REQUEST) Tag($TRAVIS_TAG)"
+- echo "Test Success - Branch($TRAVIS_BRANCH) Pull Request($TRAVIS_PULL_REQUEST) Tag($TRAVIS_TAG)"

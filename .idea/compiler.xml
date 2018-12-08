@@ -16,11 +16,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Axolotl" />
+        <module name="axolotl" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Axolotl" target="11" />
+      <module name="axolotl" target="11" />
       <module name="ChessCore" target="11" />
       <module name="chesscore" target="11" />
     </bytecodeTargetLevel>
