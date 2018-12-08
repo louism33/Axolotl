@@ -16,7 +16,6 @@
 
         <repository>
             <id>com.github.louism33</id>
-            <!--<url>https://github.com/louism33/ChessCore</url>-->
             <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/chesscore/1.0-SNAPSHOT</url>
         </repository>
     </repositories>
@@ -26,7 +25,13 @@
         <dependency>
             <groupId>com.github.louism33</groupId>
             <artifactId>chesscore</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>27.0.1-jre</version>
         </dependency>
         
         <dependency>
