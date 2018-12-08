@@ -17,7 +17,7 @@ public class Engine {
     public static int MAX_DEPTH = 12;
     public static long nps;
 
-    private static UCIEntry uciEntry;
+    public static UCIEntry uciEntry;
     private static final EngineSpecifications engineSpecifications = new EngineSpecifications();
 
     private static boolean stopInstruction;
@@ -29,6 +29,10 @@ public class Engine {
         Engine.uciEntry = uciEntry;
     }
 
+    public static void setup(UCIEntry entry){
+        uciEntry = entry;
+    }
+    
     private static void setup(){
         TranspositionTable.initTable(EngineSpecifications.DEFAULT_TABLE_SIZE);
         stopInstruction = false;
@@ -77,8 +81,6 @@ public class Engine {
             e.printStackTrace();
         }
 
-//        Assert.assertNotEquals(move, 0);
-
         if (HEAVY_INFO_LOG){
             statistics.printStatistics();
         }
@@ -86,14 +88,12 @@ public class Engine {
         long endTime = System.currentTimeMillis();
         statistics.infoLog(endTime, startTime, move);
 
-
         long time = endTime - startTime;
         
         if (time > 1000) {
             nps = ((1000 * (statistics.numberOfMovesMade + statistics.numberOfQuiescentMovesMade)) / time);
         }
         
-//        return move & MoveOrderer.MOVE_MASK;
         return aiMove & MoveOrderer.MOVE_MASK;
     }
 

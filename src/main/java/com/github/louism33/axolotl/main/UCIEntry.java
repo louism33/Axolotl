@@ -14,7 +14,6 @@ import static com.github.louism33.axolotl.main.UCIBoardParser.convertMyMoveToGen
 
 public class UCIEntry extends AbstractEngine {
 
-    private Engine engine;
     private Chessboard board;
     private GenericBoard genericBoard;
     private List<GenericMove> moves;
@@ -25,13 +24,13 @@ public class UCIEntry extends AbstractEngine {
     
     public UCIEntry(Engine engine){
         super();
-        this.engine = engine;
     }
 
     // "uci"
     @Override
     public void receive(EngineInitializeRequestCommand command) {
         System.out.println("Starting Engine");
+        Engine.setup(this);
         this.getProtocol().send(new ProtocolInitializeAnswerCommand("Axolotl-v1.2", "Louis James Mackenzie-Smith"));
     }
 
@@ -40,7 +39,6 @@ public class UCIEntry extends AbstractEngine {
         System.out.println("Quitting");
         System.exit(1);
     }
-
 
     @Override
     public void receive(EngineSetOptionCommand command) {
@@ -59,22 +57,20 @@ public class UCIEntry extends AbstractEngine {
 
     @Override
     public void receive(EngineNewGameCommand command) {
-        engine = new Engine(this);
         moves = null;
         board = null;
         genericBoard = null;
+        Engine.setup(this);
         System.out.println("New Game");
-
     }
 
     // ex:
     // position fen N7/P3pk1p/3p2p1/r4p2/8/4b2B/4P1KP/1R6 w - - 0 34
     @Override
     public void receive(EngineAnalyzeCommand command) {
-        this.engine = new Engine(this);
         genericBoard = command.board;
         moves = command.moves;
-        System.out.println("The initial board fen is:\n"+ genericBoard +"\nWith moves: "+moves);
+//        System.out.println("The initial board fen is:\n"+ genericBoard +"\nWith moves: "+moves);
         board = convertGenericBoardToChessboard(genericBoard, moves);
     }
 
@@ -82,7 +78,6 @@ public class UCIEntry extends AbstractEngine {
     @Override
     public void receive(EngineStartCalculatingCommand command) {
         int aiMove = calculatingHelper(command);
-        System.out.println(aiMove);
         if (aiMove != 0){
             this.getProtocol().send(
                     new ProtocolBestMoveCommand(convertMyMoveToGenericMove(aiMove), null));
@@ -91,34 +86,28 @@ public class UCIEntry extends AbstractEngine {
 
     private int calculatingHelper(EngineStartCalculatingCommand command) {
         long clock = timeOnClock(command);
-        int aiMove;
-        if (engine == null){
-            engine = new Engine(this);
-        }
-        if (board == null) {
-            board = convertGenericBoardToChessboard(genericBoard, null);
-        }
-
         if (clock != 0){
             System.out.println("Search for move, clock time: " + clock);
-            aiMove = engine.searchMyTime(board, clock);
+            return Engine.searchMyTime(board, clock);
         }
         else if (command.getMoveTime() != 0){
             System.out.println("Search for move, fixed time: " + command.getMoveTime());
-            aiMove = engine.searchFixedTime(board, command.getMoveTime());
+            return Engine.searchFixedTime(board, command.getMoveTime());
         }
         else {
-            int searchDepth = engine.MAX_DEPTH;
+            int searchDepth = Engine.MAX_DEPTH;
             if (command.getInfinite()){
-                return engine.searchFixedDepth(board, engine.MAX_DEPTH);
+                return Engine.searchFixedDepth(board, searchDepth);
             }
             else if (command.getDepth() != null){
                 searchDepth = command.getDepth();
+                System.out.println("Search for move, fixed depth: " + command.getDepth());
+                return Engine.searchFixedDepth(board, searchDepth);
             }
-            System.out.println("Search for move, fixed depth: " + command.getDepth());
-            aiMove = engine.searchFixedDepth(board, searchDepth);
+            else {
+                throw new RuntimeException("I do not know how I should search for a move");
+            }
         }
-        return aiMove;
     }
 
     private long timeOnClock(EngineStartCalculatingCommand command){
@@ -134,13 +123,13 @@ public class UCIEntry extends AbstractEngine {
 
     @Override
     public void receive(EngineStopCalculatingCommand command) {
-        int aiMove = engine.getAiMove();
+        int aiMove = Engine.getAiMove();
         System.out.println("Time to stop calculating, aiMove: " + aiMove);
         if (aiMove != 0) {
             this.getProtocol().send(
                     new ProtocolBestMoveCommand(convertMyMoveToGenericMove(aiMove), null));
         }
-        engine.setStopInstruction(true);
+        Engine.setStopInstruction(true);
     }
 
     @Override

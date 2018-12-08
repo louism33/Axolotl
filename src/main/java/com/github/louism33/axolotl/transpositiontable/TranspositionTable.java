@@ -20,7 +20,7 @@ public class TranspositionTable extends HashMap<Long, TranspositionTable.TableOb
         int index = Integer.numberOfTrailingZeros(mb);
         Assert.assertTrue(Integer.bitCount(mb) == 1
                 && index < 16);
-        int size = mb; // * 8_000_000 / (64 + 64);
+        int size = mb; 
         keys = new long[size];
         entries = new long[size];
         shiftAmount = 64 - index;

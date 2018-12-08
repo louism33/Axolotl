@@ -32,7 +32,6 @@ com/github/louism33/axolotl/evaluation/Rook.class
 com/github/louism33/axolotl/protocolhelperclasses/PVLine.class
 com/github/louism33/axolotl/moveordering/MoveOrderingConstants.class
 com/github/louism33/axolotl/timemanagement/TimeAllocator.class
-com/github/louism33/axolotl/moveordering/MoveOrderer$MoveScore.class
 com/github/louism33/axolotl/utilities/Statistics.class
 com/github/louism33/axolotl/evaluation/Pawns.class
 com/github/louism33/axolotl/moveordering/HistoryMoves.class

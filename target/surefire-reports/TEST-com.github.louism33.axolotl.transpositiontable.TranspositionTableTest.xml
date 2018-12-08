@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.github.louism33.axolotl.moveordering.MoveOrdererTest" time="0.02" tests="2" errors="0" skipped="0" failures="1">
+<testsuite name="com.github.louism33.axolotl.transpositiontable.TranspositionTableTest" time="0.093" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="11.0.1+13-LTS"/>
@@ -59,14 +59,5 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="positiveMoves" classname="com.github.louism33.axolotl.moveordering.MoveOrdererTest" time="0.02">
-    <failure type="java.lang.AssertionError:">java.lang.AssertionError: null
-	at org.junit.Assert.fail(Assert.java:87)
-	at org.junit.Assert.assertTrue(Assert.java:42)
-	at org.junit.Assert.assertTrue(Assert.java:53)
-	at com.github.louism33.axolotl.moveordering.MoveOrderer.buildMoveScore(MoveOrderer.java:30)
-	at com.github.louism33.axolotl.moveordering.MoveOrdererTest.positiveMoves(MoveOrdererTest.java:42)
-</failure>
-  </testcase>
-  <testcase name="moveScore" classname="com.github.louism33.axolotl.moveordering.MoveOrdererTest" time="0"/>
+  <testcase name="buildTableEntryTest" classname="com.github.louism33.axolotl.transpositiontable.TranspositionTableTest" time="0.093"/>
 </testsuite>

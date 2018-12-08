@@ -42,7 +42,7 @@ class PrincipleVariationSearch {
 
         Assert.assertTrue(depth >= 0);
         
-        if (TimeAllocator.outOfTime(startTime, timeLimitMillis)) {
+        if (TimeAllocator.outOfTime(startTime, timeLimitMillis) || Engine.isStopInstruction()) {
             return QuiescenceSearch.quiescenceSearch(board, alpha, beta);
         }
         

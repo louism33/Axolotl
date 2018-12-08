@@ -21,13 +21,12 @@ public class UCIBoardParser {
         return genericMove;
     }
 
-    public static Chessboard convertGenericBoardToChessboard(GenericBoard genericBoard, List<GenericMove> moves){
+    static Chessboard convertGenericBoardToChessboard(GenericBoard genericBoard, List<GenericMove> moves){
         if (genericBoard == null || moves == null){
             return null;
         }
         Chessboard board = new Chessboard(genericBoard.toString());
         for (GenericMove genericMove : moves){
-//            board.makeMoveAndFlipTurn(moveFromGenericMove(board, genericMove));
             board.makeMoveAndFlipTurn(MoveParser.newMove(board, genericMove.toString()));
         }
         return board;
@@ -37,30 +36,11 @@ public class UCIBoardParser {
 
         for (int i = moves.size() - 2; i < moves.size(); i++) {
             GenericMove genericMove = moves.get(i);
-//            board.makeMoveAndFlipTurn(moveFromGenericMove(board, genericMove));
             board.makeMoveAndFlipTurn(MoveParser.newMove(board, genericMove.toString()));
         }
         return board;
     }
     
-    //avoid move gen if possible
-    private static int moveFromGenericMove(Chessboard board, GenericMove genericMove){
-        String s = genericMove.toString();
-        int[] moves = board.generateLegalMoves();
-        int move = 0;
-
-        for (int i = 0; i < moves.length; i++) {
-            int myMove = moves[i];
-            if (s.equalsIgnoreCase(MoveParser.toString(myMove))) {
-                move = myMove;
-                break;
-            }
-        }
-        if (move == 0){
-            throw new RuntimeException("Could not parse move: "+ s);
-        }
-        return move;
-    }
 }
 
 

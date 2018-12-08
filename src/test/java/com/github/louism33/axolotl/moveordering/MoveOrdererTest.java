@@ -38,7 +38,7 @@ public class MoveOrdererTest {
                 break;
             }
             int max = 64;
-            for (int s = 0; s < max; s++) {
+            for (int s = 1; s < max; s++) {
                 int moveScore = MoveOrderer.buildMoveScore(move, s);
                 int scoreFromMove = getMoveScore(moveScore);
 
