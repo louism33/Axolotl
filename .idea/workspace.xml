@@ -72,8 +72,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="24" selection-start-line="24" selection-end-line="24" />
+            <state relative-caret-position="300">
+              <caret line="20" selection-start-line="20" selection-end-line="20" />
             </state>
           </provider>
         </entry>
@@ -325,11 +325,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="axolotl" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Axolotl" type="462c0819:PsiDirectoryNode" />
-              <item name="target" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -342,7 +337,7 @@
     <property name="SearchEverywhereHistoryKey" value="movemaker&#9;FILE&#9;file:///home/louis/IdeaProjects/ChessCore/src/main/java/chessprogram/god/MoveMaker.java&#10;square&#9;FILE&#9;file:///home/louis/IdeaProjects/ChessCore/src/main/java/chessprogram/god/Square.java&#10;MoveGenerat&#9;FILE&#9;file:///home/louis/IdeaProjects/ChessCore/src/main/java/chessprogram/god/MoveGeneratorSliding.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544290948663" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544291188753" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
@@ -692,7 +687,7 @@
       <workItem from="1544131313444" duration="4399000" />
       <workItem from="1544169356354" duration="10472000" />
       <workItem from="1544191932439" duration="24980000" />
-      <workItem from="1544258623883" duration="24749000" />
+      <workItem from="1544258623883" duration="24989000" />
     </task>
     <task id="LOCAL-00001" summary="moving packages">
       <created>1542576957823</created>
@@ -820,7 +815,14 @@
       <option name="project" value="LOCAL" />
       <updated>1544290846192</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="ci issues">
+      <created>1544290954816</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1544290954816</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -856,7 +858,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="420664000" />
+    <option name="totallyTimeSpent" value="420904000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1396,8 +1398,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
+        <state relative-caret-position="300">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
         </state>
       </provider>
     </entry>
