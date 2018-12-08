@@ -19,6 +19,7 @@
 
 # Folders #
 .idea/
+idea/
 out/
 target/
 
