@@ -19,7 +19,7 @@
 
 /.idea
 .idea
-out/
+
 target
 target/
 /target
