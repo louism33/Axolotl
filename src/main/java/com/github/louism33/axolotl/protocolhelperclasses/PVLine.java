@@ -1,18 +1,17 @@
 package com.github.louism33.axolotl.protocolhelperclasses;
 
+import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.Assert;
 
 public class PVLine {
     
     private final int score;
-    private final List<Integer> pvMoves;
+    private final int[] pvMoves;
 
-    private PVLine(int score, List<Integer> pvMoves) {
+    private PVLine(int score, int[] pvMoves) {
         this.score = score;
         this.pvMoves = pvMoves;
     }
@@ -21,40 +20,94 @@ public class PVLine {
     public String toString() {
         return "PVLine{" +
                 "score=" + score +
-                ", pvMoves=" + pvMoves +
+//                ", pvMoves=" + Arrays.toString(pvMoves) +
                 '}';
     }
 
-    public static PVLine retrievePVfromTable(Chessboard board, TranspositionTable table) throws IllegalUnmakeException {
-        Chessboard copyBoard = new Chessboard(board);
-        List<Integer> moves = new ArrayList<>();
-        int i = 1;
+    public static PVLine retrievePVfromTable(Chessboard board) throws IllegalUnmakeException {
+        Chessboard initial = new Chessboard(board);
+        
+        int maxPVLength = 20;
+        int[] moves = new int[maxPVLength];
+        int i = 0, finalI;
         int nodeScore = 0;
 
-        while(i < 50) {
-            TranspositionTable.TableObject tableObject = table.get(copyBoard.getBoardHash());
-            if (tableObject == null) {
+//        System.out.println(Arrays.toString(TranspositionTable.keys));
+//        System.out.println(Arrays.toString(TranspositionTable.entries));
+
+//        System.out.println();
+//        System.out.println("transposition table entry: " + blub);
+//        System.out.println("score: "+nodeScore);
+        
+        
+//        System.out.println(Arrays.toString(MoveParser.toString(board.generateLegalMoves())));
+        
+        while(i < maxPVLength) {
+            long entry = TranspositionTable.retrieveFromTable(board.getZobrist());
+            if (entry == 0) {
                 break;
             }
-            int score = tableObject.getScore(i-1);
-            if (i == 1){
-                nodeScore = score;
+
+            long blub = TranspositionTable.retrieveFromTable(board.getZobrist());
+            
+            if (i == 0) {
+                nodeScore = TranspositionTable.getScore(blub);
             }
-            int move = tableObject.getMove();
-            moves.add(move);
-            copyBoard.makeMoveAndFlipTurn(move);
-            i++;
+            
+            int move = TranspositionTable.getMove(entry) & MoveOrderer.MOVE_MASK;
+            
+            if (verifyMove(board, move)) {
+                moves[i] = move;
+                board.makeMoveAndFlipTurn(move);
+                i++;
+            }
+            else {
+                break;
+            }
+        }
+        finalI = Math.min(i, maxPVLength);
+        for (int x = 0; x < finalI; x++){
+            board.unMakeMoveAndFlipTurn();
         }
 
+        Assert.assertEquals(initial, board);
+        
         return new PVLine(nodeScore, moves);
     }
 
+    public static boolean verifyMove(Chessboard board, int move, int[] moves){
+        for (int j = 0; j < moves.length; j++) {
+            int possibleMove = moves[j];
+            if (possibleMove == 0) {
+                break;
+            }
+            if (move == possibleMove) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
+    public static boolean verifyMove(Chessboard board, int move){
+        int[] legalMoves = board.generateLegalMoves();
+        for (int j = 0; j < legalMoves.length; j++) {
+            int possibleMove = legalMoves[j];
+            if (possibleMove == 0) {
+                break;
+            }
+            if (move == possibleMove) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public int getScore() {
         return score;
     }
 
-    public List<Integer> getPvMoves() {
+    public int[] getPvMoves() {
         return pvMoves;
     }
 }
