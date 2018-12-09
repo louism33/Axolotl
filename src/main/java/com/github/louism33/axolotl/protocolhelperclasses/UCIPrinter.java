@@ -2,14 +2,10 @@ package com.github.louism33.axolotl.protocolhelperclasses;
 
 import com.fluxchess.jcpi.commands.ProtocolInformationCommand;
 import com.fluxchess.jcpi.models.GenericMove;
-import com.github.louism33.axolotl.main.UCIBoardParser;
-import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.search.Engine;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;

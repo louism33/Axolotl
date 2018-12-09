@@ -9,7 +9,6 @@ import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.axolotl.utilities.Statistics;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
-import org.junit.Assert;
 
 public class Engine {
 
@@ -19,7 +18,7 @@ public class Engine {
     public static int MAX_DEPTH = 12;
     public static long nps;
 
-    public static UCIEntry uciEntry = null;
+    private static UCIEntry uciEntry = null;
     private static final EngineSpecifications engineSpecifications = new EngineSpecifications();
 
     private static boolean stopInstruction;
@@ -118,8 +117,8 @@ public class Engine {
         return stopInstruction;
     }
 
-    public static void setStopInstruction(boolean stopInstruction) {
-        stopInstruction = stopInstruction;
+    public static void setStopInstruction(boolean sI) {
+        stopInstruction = sI;
     }
 
     public static EngineSpecifications getEngineSpecifications() {

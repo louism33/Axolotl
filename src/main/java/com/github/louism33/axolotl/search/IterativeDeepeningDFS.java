@@ -1,13 +1,8 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.protocolhelperclasses.PVLine;
-import com.github.louism33.axolotl.protocolhelperclasses.UCIPrinter;
-import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
 import org.junit.Assert;
-
-import java.util.Arrays;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;

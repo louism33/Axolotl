@@ -14,7 +14,7 @@ import static com.github.louism33.chesscore.BitOperations.newPieceOnSquare;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.Piece.*;
 
-public class SEEPruning {
+class SEEPruning {
     
     static int seeScore(Chessboard board, int move){
         long destinationSquare = newPieceOnSquare(MoveParser.getDestinationIndex(move));
@@ -77,7 +77,6 @@ public class SEEPruning {
         throw new RuntimeException("piece problem");
     }
 
-    // todo
     private static List<Piece> myPiecesThatThreatenSquare(Chessboard board, boolean myColour, long square){
         List<Piece> pieces = new ArrayList<>();
 

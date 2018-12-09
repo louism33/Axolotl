@@ -4,10 +4,7 @@ import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
-import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
-
-import java.util.Arrays;
 
 public class PVLine {
     

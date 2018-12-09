@@ -11,8 +11,6 @@ import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
-import java.util.Arrays;
-
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.moveordering.KillerMoves.mateKiller;
 import static com.github.louism33.axolotl.moveordering.KillerMoves.updateKillerMoves;
