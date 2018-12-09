@@ -6,6 +6,7 @@ import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MoveParser;
 
 import java.util.List;
 
@@ -77,6 +78,9 @@ public class UCIEntry extends AbstractEngine {
     // go movetime 30000
     @Override
     public void receive(EngineStartCalculatingCommand command) {
+        if (command == null){
+            return;
+        }
         int aiMove = calculatingHelper(command);
         if (aiMove != 0){
             this.getProtocol().send(
@@ -142,10 +146,16 @@ public class UCIEntry extends AbstractEngine {
     }
 
     public static void main(String[] args) {
+
+        Chessboard board = new Chessboard();
+        System.out.println(board);
+        int move = Engine.searchFixedDepth(board, 6);
+        System.out.println(MoveParser.toString(move));
+        
         System.out.println("Starting everything");
         // start the Engine
-        Thread thread = new Thread( new UCIEntry() );
-        thread.start();
+//        Thread thread = new Thread( new UCIEntry() );
+//        thread.start();
     }
 
 }

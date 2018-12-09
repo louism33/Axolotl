@@ -2,6 +2,8 @@ package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
+import com.github.louism33.axolotl.protocolhelperclasses.PVLine;
+import com.github.louism33.axolotl.protocolhelperclasses.UCIPrinter;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.axolotl.utilities.Statistics;
@@ -13,11 +15,11 @@ public class Engine {
 
     public static final Statistics statistics = new Statistics();
     private static final boolean HEAVY_INFO_LOG = false;
-    public static final boolean PRINT_INFO = false;
+    public static final boolean PRINT_INFO = true;
     public static int MAX_DEPTH = 12;
     public static long nps;
 
-    public static UCIEntry uciEntry;
+    public static UCIEntry uciEntry = null;
     private static final EngineSpecifications engineSpecifications = new EngineSpecifications();
 
     private static boolean stopInstruction;
@@ -62,7 +64,9 @@ public class Engine {
         if (!setup){
             setup();
         }
-
+        
+        PVLine pvLine = null;
+        
         long startTime = System.currentTimeMillis();
 
         int[] moves = board.generateLegalMoves();
@@ -77,6 +81,8 @@ public class Engine {
         try {
             IterativeDeepeningDFS.iterativeDeepeningWithAspirationWindows
                     (board, startTime, maxTime);
+            
+            pvLine = PVLine.retrievePVfromTable(board);
         } catch (IllegalUnmakeException e) {
             e.printStackTrace();
         }
@@ -93,6 +99,8 @@ public class Engine {
         if (time > 1000) {
             nps = ((1000 * (statistics.numberOfMovesMade + statistics.numberOfQuiescentMovesMade)) / time);
         }
+
+        UCIPrinter.acceptPVLine(pvLine, time);
         
         return aiMove & MoveOrderer.MOVE_MASK;
     }
@@ -118,4 +126,7 @@ public class Engine {
         return engineSpecifications;
     }
 
+    public static void setUciEntry(UCIEntry uciEntry) {
+        Engine.uciEntry = uciEntry;
+    }
 }

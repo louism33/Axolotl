@@ -15,7 +15,7 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class MateTest {
 
-    private static final int timeLimit = 10_000;
+    private static final int timeLimit = 20_000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -131,17 +131,17 @@ public class MateTest {
             "2r1rk2/p1q3pQ/4p3/1pppP1N1/7p/4P2P/PP3P2/1K4R1 w - - 1 0 bm Nxe6+; \n" +
             "6r1/p3p1rk/1p1pPp1p/q3n2R/4P3/3BR2P/PPP2QP1/7K w - - 0 1 bm Rxh6+; \n" +
             "2q1nk1r/4Rp2/1ppp1P2/6Pp/3p1B2/3P3P/PPP1Q3/6K1 w - - 0 1 bm Rxe8+; \n" +
-            "6k1/3b3r/1p1p4/p1n2p2/1PPNpP1q/P3Q1p1/1R1RB1P1/5K2 b - - 0 1 bm qxf4; \n" +
+            "6k1/3b3r/1p1p4/p1n2p2/1PPNpP1q/P3Q1p1/1R1RB1P1/5K2 b - - 0 1 bm qxf4; \n" + // m5
             "2R3Bk/6p1/1p5p/4pbPP/1P1b4/5pK1/5P2/8 w - - 1 0 bm Be6+; \n" +
             "5r2/r4p1p/1p3n2/n1pp1NNk/p2P4/P1P3R1/1P5P/5RK1 w - - 1 0 bm Ng7+; \n" +
-            "3r4/1b5p/ppqP1Ppk/2p1rp2/2P1P3/3n2N1/P5QP/3R1RK1 w - - 1 0 bm Nxf5+; \n" +
+            "3r4/1b5p/ppqP1Ppk/2p1rp2/2P1P3/3n2N1/P5QP/3R1RK1 w - - 1 0 bm Nxf5+; \n" + // m5
             "6kr/4Bpb1/1p1p4/3B1P2/4R1Q1/2qn2P1/2P2P2/6K1 w - - 1 0 bm Bxf7+; \n" +
             "5r1k/2q4b/p3p2Q/1pp4p/8/1P3r2/P1P4P/1KBR2R1 w - - 1 0 bm Rd7; \n" +
-            "7k/1p2r1p1/pPq4p/7R/1P1Nn2P/P5p1/1B3r2/3Q2K1 b - - 0 1 bm ng5; \n" +
+            "7k/1p2r1p1/pPq4p/7R/1P1Nn2P/P5p1/1B3r2/3Q2K1 b - - 0 1 bm ng5; \n" + // m5
             "6k1/1P3p1p/3b2p1/2NQ2n1/8/2P2p1P/5PP1/4qBK1 b - - 0 1 bm nxh3+; \n" +
             "r4bk1/q5pp/3N1p2/2p5/1p2PB2/1Pp2PP1/4Q2P/1K1R4 b - - 0 1 bm c2+; \n" +
             "3kr3/pp2r3/2n2Q1p/2Rp4/2p2B2/2P3P1/2q2P1P/4R1K1 w - - 1 0 bm Qd6+; \n" +
-            "2r3k1/p2R1p2/1p5Q/4N3/7P/4P3/b5PK/5q2 w - - 1 0 bm Nc6; \n" +
+            "2r3k1/p2R1p2/1p5Q/4N3/7P/4P3/b5PK/5q2 w - - 1 0 bm Nc6; \n" + //m6
             "5Q2/8/6p1/2p4k/p1Bpq2P/6PK/P2b4/8 w - - 1 0 bm Qh8+; \n" +
             "2Rr1qk1/5ppp/p2N4/P7/5Q2/8/1r4PP/5BK1 w - - 1 0 bm Qxf7+; \n" +
             "2qk1r2/Q3pr2/3p2pn/7p/5P2/4B2P/P1P3P1/1R4K1 w - - 1 0 bm Bb6+; \n" +
@@ -174,7 +174,7 @@ public class MateTest {
             "5r2/1pP1b1p1/pqn1k2p/4p3/QP2BP2/P3P1PK/3R4/3R4 w - - 1 0 bm Qb3+; \n" +
             "4r3/2B4B/2p1b3/ppk5/5R2/P2P3p/1PP5/1K5R w - - 1 0 bm b4+; \n" +
             "1r3r1k/6R1/1p2Qp1p/p1p4N/3pP3/3P1P2/PP2q2P/5R1K w - - 1 0 bm Rh7+; \n" +
-            "r1bq1rk1/4np1p/1p3RpB/p1Q5/2Bp4/3P4/PPP3PP/R5K1 w - - 1 0 bm Qe5; \n" +
+            "r1bq1rk1/4np1p/1p3RpB/p1Q5/2Bp4/3P4/PPP3PP/R5K1 w - - 1 0 bm Qe5; \n" + // m4
             "2rr3k/1p1b1pq1/4pNp1/Pp2Q2p/3P4/7R/5PPP/4R1K1 w - - 1 0 bm Rxh5+; \n" +
             "3rnn2/p1r2pkp/1p2pN2/2p1P3/5Q1N/2P3P1/PP2qPK1/R6R w - - 1 0 bm Qg5+; \n" +
             "r3r1n1/pp3pk1/2q2p1p/P2NP3/2p1QP2/8/1P5P/1B1R3K w - - 1 0 bm Rg1+; \n" +
@@ -199,7 +199,7 @@ public class MateTest {
             "5r1k/p1p1q1pp/1p1p4/8/2PPn3/B1P1P3/P1Q1P2p/1R5K b - - 0 1 bm Nf2+; \n" +
             "2b5/3qr2k/5Q1p/P3B3/1PB1PPp1/4K1P1/8/8 w - - 1 0 bm Bg8+; \n" +
             "r1bq1bkr/6pp/p1p3P1/1p1p3Q/4P3/8/PPP3PP/RNB2RK1 w - - 1 0 bm gxh7+; \n" +
-            "rr4Rb/2pnqb1k/np1p1p1B/3PpP2/p1P1P2P/2N3R1/PP2BP2/1KQ5 w - - 1 0 bm Bg7; \n" +
+            "rr4Rb/2pnqb1k/np1p1p1B/3PpP2/p1P1P2P/2N3R1/PP2BP2/1KQ5 w - - 1 0 bm Bg7; \n" + // m4
             "r4b1r/pp1n2k1/1qp1p2p/3pP1pQ/1P6/2BP2N1/P4PPP/R4RK1 w - - 1 0 bm Nf5+; \n" +
             "5k2/r3pp1p/6p1/q1pP3R/5B2/2b3PP/PQ3PK1/R7 w - - 1 0 bm Qb8+; \n" +
             "r3r1k1/pp3pb1/3pb1p1/q5B1/1n2N3/3B1N2/PPP2PPQ/2K4R w - - 1 0 bm Qh7+; \n" +

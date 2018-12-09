@@ -5,7 +5,7 @@ public class EngineSpecifications {
     public final boolean INFO_LOG = true;
     public boolean ALLOW_TIME_LIMIT = true;
 
-    public static final int DEFAULT_TABLE_SIZE                = 1 << 10;
+    public static final int DEFAULT_TABLE_SIZE                = 1 << 15;
     
     public final boolean ALLOW_PRINCIPLE_VARIATION_SEARCH     = true;
     public final boolean ALLOW_ASPIRATION_WINDOWS             = true;

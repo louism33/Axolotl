@@ -3,18 +3,14 @@ package com.github.louism33.axolotl.transpositiontable;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import org.junit.Assert;
 
-import java.util.HashMap;
-
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 
-public class TranspositionTable extends HashMap<Long, TranspositionTable.TableObject> {
+public class TranspositionTable {
 
-    public static long[] keys;
-    public static long[] entries;
-    public static boolean tableReady = false;
-    public static int shiftAmount;
+    private static long[] keys;
+    private static long[] entries;
+    private static boolean tableReady = false;
+    private static int shiftAmount;
 
     public static void initTable(int mb){
         int index = Integer.numberOfTrailingZeros(mb);
@@ -32,7 +28,7 @@ public class TranspositionTable extends HashMap<Long, TranspositionTable.TableOb
         if (!tableReady){
             initTable(EngineSpecifications.DEFAULT_TABLE_SIZE);
         }
-        int index = (int) key >>> shiftAmount;
+        int index = (int) (key >>> shiftAmount);
         keys[index] = key;
         entries[index] = entry;
     }
@@ -85,54 +81,4 @@ public class TranspositionTable extends HashMap<Long, TranspositionTable.TableOb
 
     public TranspositionTable(){}
 
-
-    public static class TableObject {
-        private final int move;
-        private final int score;
-        private final int depth;
-        private final Flag flag;
-
-        public enum Flag {
-            EXACT, LOWERBOUND, UPPERBOUND
-        }
-
-        public TableObject(int move, int score, int depth, Flag flag) {
-            this.move = move;
-            this.score = score;
-            this.depth = depth;
-            this.flag = flag;
-        }
-
-        public int getMove() {
-            return move;
-        }
-
-        public int getScore(int ply) {
-            if (score > CHECKMATE_ENEMY_SCORE_MAX_PLY){
-                return score - ply;
-            }
-            else if (score < IN_CHECKMATE_SCORE_MAX_PLY){
-                return score + ply;
-            }
-            return score;
-        }
-
-        public Flag getFlag() {
-            return flag;
-        }
-
-        public int getDepth() {
-            return depth;
-        }
-
-        @Override
-        public String toString() {
-            return "TableObject{" +
-                    "move=" + move +
-                    ", score=" + score +
-                    ", depth=" + depth +
-                    ", flag=" + flag +
-                    '}';
-        }
-    }
 }
