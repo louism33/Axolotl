@@ -3,24 +3,15 @@ package com.github.louism33.axolotl.evaluation;
 import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 
-import static com.github.louism33.axolotl.evaluation.Bishop.evalBishopByTurn;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_STALEMATE_SCORE;
-import static com.github.louism33.axolotl.evaluation.King.evalKingByTurn;
-import static com.github.louism33.axolotl.evaluation.Knight.evalKnightByTurn;
 import static com.github.louism33.axolotl.evaluation.MaterialEval.evalMaterialByTurn;
-import static com.github.louism33.axolotl.evaluation.Misc.evalMiscByTurn;
-import static com.github.louism33.axolotl.evaluation.Pawns.evalPawnsByTurn;
-import static com.github.louism33.axolotl.evaluation.PositionEval.evalPositionByTurn;
-import static com.github.louism33.axolotl.evaluation.Queen.evalQueenByTurn;
-import static com.github.louism33.axolotl.evaluation.Rook.evalRookByTurn;
 
 public class Evaluator {
 
     public static int lazyEval(Chessboard board, boolean white) {
         return lazyEvalHelper(board, white);
     }
-
 
     public static int eval(Chessboard board, boolean white, int[] moves) {
         if (moves == null){
@@ -121,14 +112,14 @@ public class Evaluator {
         score +=
                 evalMaterialByTurn(board, white)
 
-                        + evalPositionByTurn(board, white, naiveEndgame(board))
-                        + evalPawnsByTurn(board, white, myPawns, enemyPawns)
-                        + evalKnightByTurn(board, white, myPawns, myKnights, enemyPawns)
-                        + evalBishopByTurn(board, white, myPawns, myBishops, enemyPawns)
-                        + evalRookByTurn(board, white, myPawns, myRooks, enemyPawns)
-                        + evalQueenByTurn(board, white, myPawns, enemyPawns)
-                        + evalKingByTurn(board, white, myKing, enemies, friends, allPieces)
-                        + evalMiscByTurn(board, white, moves)
+//                        + evalPositionByTurn(board, white, naiveEndgame(board))
+//                        + evalPawnsByTurn(board, white, myPawns, enemyPawns)
+//                        + evalKnightByTurn(board, white, myPawns, myKnights, enemyPawns)
+//                        + evalBishopByTurn(board, white, myPawns, myBishops, enemyPawns)
+//                        + evalRookByTurn(board, white, myPawns, myRooks, enemyPawns)
+//                        + evalQueenByTurn(board, white, myPawns, enemyPawns)
+//                        + evalKingByTurn(board, white, myKing, enemies, friends, allPieces)
+//                        + evalMiscByTurn(board, white, moves)
         ;
         return score;
     }

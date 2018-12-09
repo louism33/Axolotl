@@ -2,6 +2,7 @@ package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
+import com.github.louism33.axolotl.utilities.Statistics;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
 import com.github.louism33.chesscore.MoveParser;
@@ -21,9 +22,6 @@ class QuiescenceSearch {
 
         int[] moves = board.generateLegalMoves();
 
-        /*
-        the score we get from not making captures anymore
-         */
         int standPatScore = Evaluator.eval(board, board.isWhiteTurn(), moves);
 
         Assert.assertFalse(standPatScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
@@ -40,7 +38,7 @@ class QuiescenceSearch {
         no more captures to make or no more moves at all
          */
         if (QuiescentSearchUtils.isBoardQuiet(board, moves) || moves.length == 0){
-            Engine.statistics.numberOfQuiescentEvals++;
+            Statistics.numberOfQuiescentEvals++;
             return standPatScore;
         }
 
@@ -60,41 +58,16 @@ class QuiescenceSearch {
 
             Assert.assertTrue(captureMove || promotionMove);
             
-            /*
-            Quiescence Futility Pruning:
-            if this is a particularly low scoring situation skip this move
-             */
-            if (Engine.getEngineSpecifications().ALLOW_QUIESCENCE_FUTILITY_PRUNING) {
-                if (captureMove
-                        && quiescenceFutilityMargin
-                        + standPatScore
-                        + Evaluator.getScoreOfDestinationPiece(board, loudMove)
-                        < alpha) {
-                    Engine.statistics.numberOfSuccessfulQuiescenceFutilities++;
-                    continue;
-                } else {
-                    Engine.statistics.numberOfFailedQuiescenceFutilities++;
-                }
-            }
-
-            if (captureMove && Engine.getEngineSpecifications().ALLOW_QUIESCENCE_SEE_PRUNING) {
-                int seeScore = seeScore(board, loudMove);
-                if (seeScore <= -300) {
-                    Engine.statistics.numberOfSuccessfulQuiescentSEEs++;
-                    continue;
-                }
-            }
-
             board.makeMoveAndFlipTurn(loudMove);
             numberOfMovesSearched++;
-            Engine.statistics.numberOfQuiescentMovesMade++;
+            Engine.quiescentMovesMade++;
 
             int score = -quiescenceSearch(board, -beta, -alpha);
 
             board.unMakeMoveAndFlipTurn();
 
             if (score >= beta) {
-                Engine.statistics.whichMoveWasTheBestQuiescence[numberOfMovesSearched - 1]++;
+//                Statistics.whichMoveWasTheBestQuiescence[numberOfMovesSearched - 1]++;
                 return score;
             }
 

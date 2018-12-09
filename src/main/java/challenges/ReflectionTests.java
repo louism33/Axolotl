@@ -1,6 +1,7 @@
 package challenges;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
@@ -63,7 +64,7 @@ class ReflectionTests {
         System.out.println(EPDObject.getBoardFen());
         System.out.println("Move to get: " + MoveParser.toString(winningMoveDestination.get(0)));
 
-        int move = Engine.searchFixedDepth(EPDObject.getBoard(), Engine.MAX_DEPTH);
+        int move = Engine.searchFixedDepth(EPDObject.getBoard(), EngineSpecifications.MAX_DEPTH);
 
         int x = i / 47;
         int y = i % 47;

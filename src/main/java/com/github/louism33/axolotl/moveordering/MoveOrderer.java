@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.moveordering;
 
-import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
 import com.github.louism33.chesscore.MoveParser;
@@ -62,7 +62,7 @@ public class MoveOrderer {
                 moves[i] = buildMoveScore(moves[i], hashScore);
 //            } else if (ply == 0 && moves[i] == aiMove) {
 //                moves[i] = buildMoveScore(moves[i], aiScore);
-            } else if (Engine.getEngineSpecifications().ALLOW_MATE_KILLERS && mateKiller[ply] != 0 && moves[i] == (mateKiller[ply])) {
+            } else if (EngineSpecifications.ALLOW_MATE_KILLERS && mateKiller[ply] != 0 && moves[i] == (mateKiller[ply])) {
                 moves[i] = buildMoveScore(moves[i], mateKillerScore);
             } else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, moves[i]));
@@ -78,14 +78,14 @@ public class MoveOrderer {
             } else if (isPromotionToBishop(moves[i]) || isPromotionToRook(moves[i])) {
 //                 promotions to rook and bishop are considered right at the end
                 moves[i] = buildMoveScore(moves[i], uninterestingPromotion);
-            } else if (Engine.getEngineSpecifications().ALLOW_KILLERS && killerMoves[ply][0] != 0 && killerMoves[ply][0] == moves[i]) {
+            } else if (EngineSpecifications.ALLOW_KILLERS && killerMoves[ply][0] != 0 && killerMoves[ply][0] == moves[i]) {
                 moves[i] = buildMoveScore(moves[i], killerOneScore);
-            } else if (Engine.getEngineSpecifications().ALLOW_KILLERS && killerMoves[ply][1] != 0 && killerMoves[ply][1] == moves[i]) {
+            } else if (EngineSpecifications.ALLOW_KILLERS && killerMoves[ply][1] != 0 && killerMoves[ply][1] == moves[i]) {
                 moves[i] = buildMoveScore(moves[i], killerTwoScore);
-            } else if (Engine.getEngineSpecifications().ALLOW_KILLERS && ply >= 2 && killerMoves.length > 2
+            } else if (EngineSpecifications.ALLOW_KILLERS && ply >= 2 && killerMoves.length > 2
                     && killerMoves[ply - 2][0] != 0 && killerMoves[ply - 2][0] == moves[i]) {
                 moves[i] = buildMoveScore(moves[i], oldKillerScoreOne);
-            } else if (Engine.getEngineSpecifications().ALLOW_KILLERS && ply >= 2 && killerMoves.length > 2
+            } else if (EngineSpecifications.ALLOW_KILLERS && ply >= 2 && killerMoves.length > 2
                     && killerMoves[ply - 2][1] != 0 && killerMoves[ply - 2][1] == (moves[i])) {
                 moves[i] = buildMoveScore(moves[i], oldKillerScoreTwo);
             } else if (checkingMove(board, moves[i])) {
@@ -94,7 +94,7 @@ public class MoveOrderer {
                 moves[i] = buildMoveScore(moves[i], mvvLVA(board, moves[i]));
             } else if (MoveParser.isCastlingMove(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], castlingMove);
-            } else if (Engine.getEngineSpecifications().ALLOW_HISTORY_MOVES) {
+            } else if (EngineSpecifications.ALLOW_HISTORY_MOVES) {
                 moves[i] = buildMoveScore(moves[i], Math.max(historyMoveScore(moves[i]), uninterestingMove));
             } else {
                 moves[i] = buildMoveScore(moves[i], uninterestingMove);

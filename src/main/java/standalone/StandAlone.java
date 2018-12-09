@@ -1,4 +1,4 @@
-package com.github.louism33.axolotl.main;
+package standalone;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.Chessboard;
@@ -21,10 +21,8 @@ class StandAlone {
         Chessboard board = new Chessboard();
         String command, prompt;
         int move;
-//        Engine engine = new Engine();
 
         while(true) {
-
             while (true) {
 
                 if (board.isWhiteTurn()){

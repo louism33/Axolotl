@@ -1,4 +1,4 @@
-package com.github.louism33.axolotl.protocolhelperclasses;
+package com.github.louism33.axolotl.helper.protocolhelperclasses;
 
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;

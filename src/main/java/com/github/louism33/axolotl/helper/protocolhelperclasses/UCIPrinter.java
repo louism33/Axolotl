@@ -1,8 +1,9 @@
-package com.github.louism33.axolotl.protocolhelperclasses;
+package com.github.louism33.axolotl.helper.protocolhelperclasses;
 
 import com.fluxchess.jcpi.commands.ProtocolInformationCommand;
 import com.fluxchess.jcpi.models.GenericMove;
-import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.utilities.Statistics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class UCIPrinter {
 
     private static void sendInfoCommand(int[] moves, int nodeScore, int depth,
                                         boolean mateFound, int distanceToMate, long timeTaken){
-        if (Engine.getEngineSpecifications().INFO_LOG) {
+        if (EngineSpecifications.INFO_LOG) {
             ProtocolInformationCommand protocolInformationCommand = new ProtocolInformationCommand();
 
             List<GenericMove> genericMovesPV = new ArrayList<>(moves.length);
@@ -58,7 +59,7 @@ public class UCIPrinter {
             if (genericMovesPV.size() != 0) {
                 protocolInformationCommand.setCurrentMove(genericMovesPV.get(0));
             }
-            final long totalMovesMade = Engine.statistics.numberOfMovesMade + Engine.statistics.numberOfQuiescentMovesMade;
+            final long totalMovesMade = Statistics.numberOfMovesMade + Statistics.numberOfQuiescentMovesMade;
 
             protocolInformationCommand.setNodes(totalMovesMade);
 
@@ -71,10 +72,10 @@ public class UCIPrinter {
             }
             protocolInformationCommand.setCentipawns(nodeScore);
 
-            if (Engine.getUciEntry() != null) {
-                Engine.getUciEntry().sendInformation(protocolInformationCommand);
-            }
-            else if (Engine.PRINT_INFO) {
+//            if (Engine.getUciEntry() != null) {
+//                Engine.getUciEntry().sendInformation(protocolInformationCommand);
+//            }
+            if (EngineSpecifications.INFO_LOG) {
                 if (mateFound) {
                     System.out.println("m"+distanceToMate + " : " + protocolInformationCommand.getMoveList());
                 }

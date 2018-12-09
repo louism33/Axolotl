@@ -5,6 +5,7 @@ import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 
@@ -31,7 +32,7 @@ public class UCIEntry extends AbstractEngine {
     @Override
     public void receive(EngineInitializeRequestCommand command) {
         System.out.println("Starting Engine");
-        Engine.setup(this);
+        Engine.setup();
         this.getProtocol().send(new ProtocolInitializeAnswerCommand("axolotl", "Louis James Mackenzie-Smith"));
     }
 
@@ -61,7 +62,7 @@ public class UCIEntry extends AbstractEngine {
         moves = null;
         board = null;
         genericBoard = null;
-        Engine.setup(this);
+        Engine.setup();
         System.out.println("New Game");
     }
 
@@ -99,7 +100,7 @@ public class UCIEntry extends AbstractEngine {
             return Engine.searchFixedTime(board, command.getMoveTime());
         }
         else {
-            int searchDepth = Engine.MAX_DEPTH;
+            int searchDepth = EngineSpecifications.MAX_DEPTH;
             if (command.getInfinite()){
                 return Engine.searchFixedDepth(board, searchDepth);
             }

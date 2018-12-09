@@ -1,6 +1,5 @@
-package com.github.louism33.axolotl.evaluation;
+package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.AfterClass;

@@ -2,7 +2,6 @@ package com.github.louism33.axolotl.moveordering;
 
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
-import com.github.louism33.chesscore.Perft;
 import org.junit.Assert;
 import org.junit.Test;
 

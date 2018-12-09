@@ -1,6 +1,6 @@
-package com.github.louism33.axolotl.timemanagement;
+package com.github.louism33.axolotl.helper.timemanagement;
 
-import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 
 public class TimeAllocator {
@@ -16,7 +16,7 @@ public class TimeAllocator {
     public static boolean outOfTime(long startTime, long timeLimitMillis){
         boolean outOfTime = false;
         
-        if (!Engine.getEngineSpecifications().ALLOW_TIME_LIMIT){
+        if (!EngineSpecifications.ALLOW_TIME_LIMIT){
             return false;
         }
         
