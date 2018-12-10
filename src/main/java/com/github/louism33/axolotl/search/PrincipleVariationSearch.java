@@ -12,7 +12,7 @@
 //import org.junit.Assert;
 //
 //import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-//import static com.github.louism33.axolotl.moveordering.KillerMoves.mateKiller;
+//import static com.github.louism33.axolotl.moveordering.KillerMoves.mateKillers;
 //import static com.github.louism33.axolotl.moveordering.KillerMoves.updateKillerMoves;
 //import static com.github.louism33.axolotl.search.FutilityPruning.futilityMargin;
 //import static com.github.louism33.axolotl.search.FutilityPruning.isFutilityPruningAllowedHere;

@@ -3,12 +3,16 @@ package com.github.louism33.axolotl.evaluation;
 import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 
+import static com.github.louism33.axolotl.evaluation.Bishop.evalBishopByTurn;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_STALEMATE_SCORE;
+import static com.github.louism33.axolotl.evaluation.King.evalKingByTurn;
+import static com.github.louism33.axolotl.evaluation.Knight.evalKnightByTurn;
 import static com.github.louism33.axolotl.evaluation.MaterialEval.evalMaterialByTurn;
 import static com.github.louism33.axolotl.evaluation.Misc.evalMiscByTurn;
 import static com.github.louism33.axolotl.evaluation.Pawns.evalPawnsByTurn;
 import static com.github.louism33.axolotl.evaluation.PositionEval.evalPositionByTurn;
+import static com.github.louism33.axolotl.evaluation.Queen.evalQueenByTurn;
 import static com.github.louism33.axolotl.evaluation.Rook.evalRookByTurn;
 import static com.github.louism33.chesscore.BitOperations.getIndexOfFirstPiece;
 import static com.github.louism33.chesscore.BitboardResources.FILES;
@@ -77,12 +81,15 @@ public class Evaluator {
             }
 
             long allPieces = friends | enemies;
-
+        
+            long pinnedPieces = board.pinnedPieces;
+            boolean inCheck = board.inCheckRecorder;
 
             return evalHelper(moves, board, white,
                     myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
                     enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                    enemies, friends, allPieces);
+                    enemies, friends, allPieces,
+                    pinnedPieces, inCheck);
         }
     }
 
@@ -93,44 +100,64 @@ public class Evaluator {
     private static int evalHelper(int[] moves, Chessboard board, boolean white,
                                   long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
                                   long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
-                                  long enemies, long friends, long allPieces) {
+                                  long enemies, long friends, long allPieces,
+                                  long pinnedPieces, boolean inCheck) {
 
         return evalTurn(moves, board, white,
                 myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
                 enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                enemies, friends, allPieces) -
+                enemies, friends, allPieces,
+                pinnedPieces, inCheck) -
 
                 evalTurn(moves, board, !white,
                         enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
                         myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                        enemies, friends, allPieces);
+                        enemies, friends, allPieces,
+                        pinnedPieces, inCheck);
     }
 
     private static int evalTurn (int[] moves, Chessboard board, boolean white,
                                  long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
                                  long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
-                                 long enemies, long friends, long allPieces){
+                                 long enemies, long friends, long allPieces,
+                                 long pinnedPieces, boolean inCheck){
 
         int score = 0;
         score +=
                 evalMaterialByTurn(board, white)
 
                         + evalPositionByTurn(board, white, naiveEndgame(board))
-                        
+
                         + evalPawnsByTurn(board, white, myPawns, myRooks, enemyPawns,
                         friends, enemies, allPieces)
-                        
-//                        + evalKnightByTurn(board, white, myPawns, myKnights, enemyPawns)
-                        
-//                        + evalBishopByTurn(board, white, myPawns, myBishops, enemyPawns)
-                        
-                        + evalRookByTurn(board, white, myPawns, myRooks, myQueens, enemyPawns, allPieces)
-                        
-//                        + evalQueenByTurn(board, white, myPawns, enemyPawns)
-                        
-//                        + evalKingByTurn(board, white, myKing, enemies, friends, allPieces)
-                        
-                        + evalMiscByTurn(board, white, moves)
+
+                        + evalKnightByTurn(moves, board, white,
+                        myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
+                        enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
+                        enemies, friends, allPieces,
+                        pinnedPieces, inCheck)
+
+                        + evalBishopByTurn(moves, board, white,
+                        myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
+                        enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
+                        enemies, friends, allPieces,
+                        pinnedPieces, inCheck)
+
+                        + evalRookByTurn(board, white, myPawns, myRooks, myQueens, enemyPawns, friends, enemies, allPieces)
+
+                        + evalQueenByTurn(moves, board, white,
+                        myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
+                        enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
+                        enemies, friends, allPieces,
+                        pinnedPieces, inCheck)
+
+                        + evalKingByTurn(moves, board, white,
+                        myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
+                        enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
+                        enemies, friends, allPieces,
+                        pinnedPieces, inCheck)
+
+                        + evalMiscByTurn(board, white, moves, pinnedPieces, inCheck)
         ;
         return score;
     }

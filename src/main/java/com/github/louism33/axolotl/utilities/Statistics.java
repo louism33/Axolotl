@@ -4,9 +4,6 @@ import com.github.louism33.axolotl.search.EngineSpecifications;
 
 import java.util.Arrays;
 
-import static com.github.louism33.axolotl.moveordering.KillerMoves.killerMoves;
-import static com.github.louism33.axolotl.moveordering.KillerMoves.mateKiller;
-
 public class Statistics {
     
     private final int[] whichMoveWasTheBest = new int[60];
@@ -241,25 +238,25 @@ public class Statistics {
             whichMoveWasTheBest[numberOfMovesSearched - 1]++;
         }
 
-        if (move == (mateKiller[ply])){
-            Statistics.numberOfVictoriousMaters++;
-        }
-
-        if (move == (killerMoves[ply][0])){
-            Statistics.numberOfVictoriousKillersOne++;
-        }
-        if (move == (killerMoves[ply][1])){
-            Statistics.numberOfVictoriousKillersTwo++;
-        }
-
-        if (ply > 1) {
-            if (move == (killerMoves[ply - 2][0])) {
-                Statistics.numberOfVeteranVictoriousKillersOne++;
-            }
-            if (move == (killerMoves[ply - 2][1])) {
-                Statistics.numberOfVeteranVictoriousKillersTwo++;
-            }
-        }
+//        if (move == (mateKillers[ply])){
+//            Statistics.numberOfVictoriousMaters++;
+//        }
+//
+//        if (move == (killerMoves[ply][0])){
+//            Statistics.numberOfVictoriousKillersOne++;
+//        }
+//        if (move == (killerMoves[ply][1])){
+//            Statistics.numberOfVictoriousKillersTwo++;
+//        }
+//
+//        if (ply > 1) {
+//            if (move == (killerMoves[ply - 2][0])) {
+//                Statistics.numberOfVeteranVictoriousKillersOne++;
+//            }
+//            if (move == (killerMoves[ply - 2][1])) {
+//                Statistics.numberOfVeteranVictoriousKillersTwo++;
+//            }
+//        }
         Statistics.numberOfFailHighs++;
     }
 

@@ -1,20 +1,21 @@
 package com.github.louism33.axolotl.moveordering;
 
 import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
-import static com.github.louism33.axolotl.moveordering.HistoryMoves.historyMoveScore;
-import static com.github.louism33.axolotl.moveordering.KillerMoves.killerMoves;
-import static com.github.louism33.axolotl.moveordering.KillerMoves.mateKiller;
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
 import static com.github.louism33.chesscore.MoveParser.*;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class MoveOrderer {
 
+    public static final int[] mateKillers = new int[128];
+    public static final int[][] killerMoves = new int[128][2];
+    public static final int[][] historyMoves = new int[64][64];
+    
     public static final int MOVE_MASK = ~MOVE_SCORE_MASK;
 
     public static int getMoveScore (int moveScore){
@@ -38,11 +39,6 @@ public class MoveOrderer {
         return i;
     }
 
-    /*
-    Move Ordering:
-    previous Hash Moves, promotions, capture of last moved piece, good captures, killers, killers from earlier plies, 
-    castling, bad captures, quiet moves, bad promotions
-     */
     public static void scoreMoves(int[] moves, Chessboard board, boolean white, int ply,
                                   int hashMove){
         try {
@@ -55,58 +51,95 @@ public class MoveOrderer {
     private static void scoreMovesHelper(int[] moves, Chessboard board, boolean white, int ply,
                                          int hashMove) throws IllegalUnmakeException {
 
-//        System.out.println("            Hash: " + MoveParser.toString(hashMove) + "     mv: "+hashMove);
         for (int i = 0; i < moves.length; i++) {
             if (moves[i] == 0){
                 break;
             }
             
-            int move = moves[i] & MOVE_MASK;
+            int move = moves[i];
+
+            if (move > MOVE_SIZE_LIMIT){
+                System.out.println("h " + MoveParser.toString(hashMove));
+                MoveParser.printMoves(moves);
+                System.out.println(MoveParser.toString(move) + "    "+move);
+                Art.printLong(move);
+            }
             
-//            System.out.print("--- "+ MoveParser.toString(move) + " " + move + " ---");
+            Assert.assertTrue(move < MOVE_SIZE_LIMIT);
+            
             if (move == hashMove) {
-//                System.out.println("move equals hashmove ! ");
+                
                 moves[i] = buildMoveScore(moves[i], hashScore);
-//            } else if (ply == 0 && moves[i] == aiMove) {
-//                moves[i] = buildMoveScore(moves[i], aiScore);
-            } else if (EngineSpecifications.ALLOW_MATE_KILLERS && mateKiller[ply] != 0 && moves[i] == (mateKiller[ply])) {
+            } 
+            else if (EngineSpecifications.ALLOW_MATE_KILLERS && mateKillers[ply] != 0 && moves[i] == mateKillers[ply]) {
+
+                Assert.assertTrue(mateKillers[ply] < MOVE_SIZE_LIMIT);
+                
                 moves[i] = buildMoveScore(moves[i], mateKillerScore);
-            } else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
+            }
+            else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
+                
+                
                 moves[i] = buildMoveScore(moves[i], CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, moves[i]));
-            } else if (isPromotionToQueen(moves[i])) {
+            }
+            else if (isPromotionToQueen(moves[i])) {
                 if (isCaptureMove(moves[i])) {
                     moves[i] = buildMoveScore(moves[i], queenCapturePromotionScore);
                 }
                 else {
                     moves[i] = buildMoveScore(moves[i], queenQuietPromotionScore);
                 }
-            } else if (isPromotionToKnight(moves[i])) {
+            } 
+            else if (isPromotionToKnight(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], knightPromotionScore);
-            } else if (isPromotionToBishop(moves[i]) || isPromotionToRook(moves[i])) {
-//                 promotions to rook and bishop are considered right at the end
+            } 
+            else if (isPromotionToBishop(moves[i]) || isPromotionToRook(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], uninterestingPromotion);
-            } else if (EngineSpecifications.ALLOW_KILLERS && killerMoves[ply][0] != 0 && killerMoves[ply][0] == moves[i]) {
+            } 
+            else if (killerMoves[ply][0] != 0 && killerMoves[ply][0] == moves[i]) {
+
+                Assert.assertTrue(killerMoves[ply][0] < MOVE_SIZE_LIMIT);
+                
                 moves[i] = buildMoveScore(moves[i], killerOneScore);
-            } else if (EngineSpecifications.ALLOW_KILLERS && killerMoves[ply][1] != 0 && killerMoves[ply][1] == moves[i]) {
+            } 
+            else if (EngineSpecifications.ALLOW_KILLERS && killerMoves[ply][1] != 0 && killerMoves[ply][1] == moves[i]) {
+               
+                Assert.assertTrue(killerMoves[ply][1] < MOVE_SIZE_LIMIT);
+                
                 moves[i] = buildMoveScore(moves[i], killerTwoScore);
-            } else if (EngineSpecifications.ALLOW_KILLERS && ply >= 2 && killerMoves.length > 2
-                    && killerMoves[ply - 2][0] != 0 && killerMoves[ply - 2][0] == moves[i]) {
+            } 
+            else if (ply >= 2 && killerMoves[ply - 2][0] != 0 && killerMoves[ply - 2][0] == moves[i]) {
+
+                Assert.assertTrue(killerMoves[ply - 2][0] < MOVE_SIZE_LIMIT);
+                
                 moves[i] = buildMoveScore(moves[i], oldKillerScoreOne);
-            } else if (EngineSpecifications.ALLOW_KILLERS && ply >= 2 && killerMoves.length > 2
-                    && killerMoves[ply - 2][1] != 0 && killerMoves[ply - 2][1] == (moves[i])) {
+            } 
+            else if (ply >= 2 && killerMoves[ply - 2][1] != 0 && killerMoves[ply - 2][1] == (moves[i])) {
+
+                Assert.assertTrue(killerMoves[ply - 2][1] < MOVE_SIZE_LIMIT);
+                
                 moves[i] = buildMoveScore(moves[i], oldKillerScoreTwo);
-            } else if (checkingMove(board, moves[i])) {
+            } 
+            else if (checkingMove(board, moves[i])) {
                 moves[i] = buildMoveScore(moves[i], giveCheckMove);
-            } else if (MoveParser.isCaptureMove(moves[i])) {
+            } 
+            else if (MoveParser.isCaptureMove(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], mvvLVA(board, moves[i]));
-            } else if (MoveParser.isCastlingMove(moves[i])) {
+            } 
+            else if (MoveParser.isCastlingMove(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], castlingMove);
-            } else if (EngineSpecifications.ALLOW_HISTORY_MOVES) {
+            } 
+            else {
                 moves[i] = buildMoveScore(moves[i], Math.max(historyMoveScore(moves[i]), uninterestingMove));
-            } else {
-                moves[i] = buildMoveScore(moves[i], uninterestingMove);
+                
             }
         }
+
+
+//        MoveParser.printMoves(moves);
+
+
+        
     }
 
     static boolean positiveCapture(int moveScore){
@@ -159,7 +192,19 @@ public class MoveOrderer {
             if (moves[i] == 0){
                 break;
             }
-            if (MoveParser.isCaptureMove(moves[i])) {
+
+            int move = moves[i];
+            
+            if (move > MOVE_SIZE_LIMIT){
+                MoveParser.printMoves(moves);
+                System.out.println(MoveParser.toString(move) + "    "+move);
+                Art.printLong(move);
+            }
+
+            Assert.assertTrue(move < MOVE_SIZE_LIMIT);
+
+
+            if (MoveParser.isCaptureMove(move)) {
                 if (isPromotionMove(moves[i])) {
                     /*
                     ignore under promotions in Q search
@@ -190,6 +235,34 @@ public class MoveOrderer {
     }
 
     public static void updateHistoryMoves(int move, int ply){
-        HistoryMoves.updateHistoryMoves(move, ply);
+        historyMoves[getSourceIndex(move)][getDestinationIndex(move)] += (2 * ply);
     }
+
+    public static int historyMoveScore(int move){
+        int maxMoveScoreOfHistory = MAX_HISTORY_MOVE_SCORE;
+        int historyScore = historyMoves[getSourceIndex(move)][getDestinationIndex(move)];
+        return historyScore > maxMoveScoreOfHistory ? maxMoveScoreOfHistory : historyScore;
+    }
+    
+    
+    public static void updateKillerMoves(int move, int ply){
+
+        Assert.assertTrue(move < MOVE_SIZE_LIMIT);
+        
+        /*
+        if we have a new killer move, shift killers to the right
+         */
+        if (move != killerMoves[ply][0]){
+            if (killerMoves[ply][0] != 0) {
+                killerMoves[ply][1] = killerMoves[ply][0];
+            }
+            killerMoves[ply][0] = move;
+        }
+    }
+
+    public static void updateMateKillerMoves(int move, int ply){
+        mateKillers[ply] = move;
+    }
+    
+    
 }

@@ -63,6 +63,10 @@ public class MateTest {
         if (Engine.nps > 0) {
             System.out.println("NPS:                " + Engine.nps);
         }
+        
+        System.out.println("Amount of flipflopping: " + Engine.flipflop);
+        System.out.println("Realistic flip flop   : " + Engine.realisticflipflop);
+        
         Assert.assertTrue(winningMoveDestination.contains(move));
     }
 

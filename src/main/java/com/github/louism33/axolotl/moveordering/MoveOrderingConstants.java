@@ -9,6 +9,7 @@ class MoveOrderingConstants {
     xxxxxxxx
      */
     private static int bestMoveScorePossible = 63;
+    public final static int MOVE_SIZE_LIMIT = 0x2000000;
     static int moveScoreOffset = 25;
     static int MOVE_SCORE_MASK = 0xfe000000;
 

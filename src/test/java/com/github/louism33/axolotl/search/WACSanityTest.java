@@ -85,6 +85,10 @@ public class WACSanityTest {
 
         System.out.println("total successes: " + successes);
         System.out.println();
+        
+        System.out.println("Amount of flipflopping: " + Engine.flipflop);
+        System.out.println("Realistic flip flop   : " + Engine.realisticflipflop);
+        
         Assert.assertTrue(winningMoves.contains(move));
         Assert.assertTrue(!losingMoves.contains(move));
     }

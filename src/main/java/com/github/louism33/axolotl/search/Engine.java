@@ -16,11 +16,16 @@ import org.junit.Assert;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.helper.timemanagement.TimeAllocator.allocateTime;
 import static com.github.louism33.axolotl.helper.timemanagement.TimeAllocator.outOfTime;
+import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateKillerMoves;
+import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateMateKillerMoves;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 
 public class Engine {
+
+    public static int flipflop = 0;
+    public static int realisticflipflop = 0;
 
     private static int aiMove;
     private static int aiMoveScore;
@@ -34,6 +39,11 @@ public class Engine {
 
     public static int getAiMove() {
         return aiMove;
+    }
+
+    private static void setAiMove(int aiMove) {
+        flipflop++;
+        Engine.aiMove = aiMove;
     }
 
     public static boolean isStopInstruction() {
@@ -92,6 +102,8 @@ public class Engine {
         quiescentMovesMade = 0;
         aiMove = 0;
         aiMoveScore = SHORT_MINIMUM;
+        flipflop = 0;
+        realisticflipflop = 0;
     }
 
     public static int searchFixedDepth(Chessboard board, int depth) {
@@ -146,14 +158,22 @@ public class Engine {
         int aspirationScore = 0;
         int depth = 0;
 
+
         while (!stopSearch(startTime, timeLimitMillis, depth, MAX_DEPTH)) {
 
+            int preAI = aiMove;
+
             System.out.println("----- Depth: " + depth + ", aiMove at start: " + MoveParser.toString(aiMove));
-            
+
             int score = aspirationSearch(board, startTime, timeLimitMillis, depth, aspirationScore);
 
             System.out.println("ai move at end: " + MoveParser.toString(aiMove));
             System.out.println();
+
+            if (preAI != aiMove){
+                realisticflipflop++;
+            }
+
             if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
                 break;
             }
@@ -205,9 +225,12 @@ public class Engine {
                                                 int alpha, int beta,
                                                 int nullMoveCounter, boolean reducedSearch) throws IllegalUnmakeException {
 
-        boolean boardInCheck = board.inCheck(board.isWhiteTurn());
+
         int originalAlpha = alpha;
-        int[] moves = null;
+        int[] moves = board.generateLegalMoves();
+        boolean boardInCheck = board.inCheckRecorder;
+
+        Assert.assertEquals(boardInCheck, board.inCheck(board.isWhiteTurn()));
 
         depth += Extensions.extensions(board, ply, boardInCheck);
 
@@ -215,12 +238,10 @@ public class Engine {
 
         if (outOfTime(startTime, timeLimitMillis) || Engine.isStopInstruction()) {
             return QuiescenceSearch.quiescenceSearch(board, alpha, beta);
-//            return Evaluator.eval(board, board.isWhiteTurn(), moves);
         }
 
         if (depth <= 0){
             return QuiescenceSearch.quiescenceSearch(board, alpha, beta);
-//            return Evaluator.eval(board, board.isWhiteTurn(), moves);
         }
 
         alpha = Math.max(alpha, IN_CHECKMATE_SCORE + ply);
@@ -236,31 +257,34 @@ public class Engine {
         if (previousTableData != 0) {
             score = TranspositionTable.getScore(previousTableData);
             hashMove = TranspositionTable.getMove(previousTableData);
-            if (TranspositionTable.getDepth(previousTableData) >= depth){
+            if (TranspositionTable.getDepth(previousTableData) >= depth
+                    && PVLine.verifyMove(board, hashMove, moves)){
                 moves = board.generateLegalMoves();
-                if (PVLine.verifyMove(board, hashMove, moves)) {
-                    int flag = TranspositionTable.getFlag(previousTableData);
-                    if (flag == EXACT) {
-                        if (ply == 0){
+                int flag = TranspositionTable.getFlag(previousTableData);
+                if (flag == EXACT) {
+                    if (ply == 0){
 //                            System.out.println("TTExact, change aiMove from " + MoveParser.toString(aiMove) + " to " +MoveParser.toString(hashMove));
-                            aiMove = hashMove;
-                            aiMoveScore = score;
-                        }
-                        return score;
-                    } else if (flag == LOWERBOUND) {
-                        alpha = Math.max(alpha, score);
-                    } else if (flag == UPPERBOUND) {
-                        beta = Math.min(beta, score);
+                        setAiMove(hashMove);
+                        aiMoveScore = score;
                     }
-                    if (alpha >= beta) {
-                        if (ply == 0){
-//                            System.out.println("TT AB, change aiMove from " + MoveParser.toString(aiMove) + " to " +MoveParser.toString(hashMove));
-                            aiMove = hashMove;
-                            aiMoveScore = score;
-                        }
-                        return score;
-                    }
+                    return score;
+                } else if (flag == LOWERBOUND) {
+                    alpha = Math.max(alpha, score);
+                } else if (flag == UPPERBOUND) {
+                    beta = Math.min(beta, score);
                 }
+                if (alpha >= beta) {
+                    if (ply == 0){
+//                            System.out.println("TT AB, change aiMove from " + MoveParser.toString(aiMove) + " to " +MoveParser.toString(hashMove));
+                        setAiMove(hashMove);
+                        aiMoveScore = score;
+                    }
+                    return score;
+                }
+            }
+            else {
+                hashMove = 0;
+                score = 0;
             }
         }
 
@@ -282,25 +306,25 @@ public class Engine {
              */
             if (nullMoveCounter < 2 && depth > 3 && !(populationCount(board.allPieces()) < 9)){
                 int R = 2;
-                
+
                 Chessboard initial = new Chessboard(board);
-                
+
                 board.makeNullMoveAndFlipTurn();
-                
-                int nullScore = -principleVariationSearch(board, 
+
+                int nullScore = -principleVariationSearch(board,
                         startTime, timeLimitMillis,
                         originalDepth, depth - R - 1, ply + 1,
                         -beta, -beta + 1, nullMoveCounter + 1, false);
-                
+
                 board.unMakeNullMoveAndFlipTurn();
-                
+
                 Assert.assertEquals(initial, board);
-                
+
                 if (nullScore >= beta){
                     if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY){
                         nullScore = beta;
                     }
-                    
+
                     return nullScore;
                 }
             }
@@ -311,15 +335,15 @@ public class Engine {
         }
 
 //        MoveParser.printMoves(moves);
-        
-//        if (ply == 0){
-//            Assert.assertEquals(aiMove, hashMove);
-//        }
-        
+
+        if (ply == 0 && aiMove != 0 && hashMove != 0){
+            Assert.assertEquals(aiMove, hashMove);
+        }
+
         MoveOrderer.scoreMoves(moves, board, board.isWhiteTurn(), ply, hashMove);
 
 //        MoveParser.printMoves(moves);
-        
+
         int bestScore = SHORT_MINIMUM;
         int bestMove = 0;
         int realMoves = MoveParser.numberOfRealMoves(moves);
@@ -327,22 +351,36 @@ public class Engine {
         int numberOfMovesSearched = 0;
 
 //        MoveParser.printMoves(moves);
-        
+
+
+
+
+        if (hashMove != 0){
+//        PVLine.verifyMove(board, hashMove, moves)){
+            if ((moves[0] & MoveOrderer.MOVE_MASK) != hashMove){
+                int fmove = moves[0];
+                int firstMove = fmove & MoveOrderer.MOVE_MASK;
+                System.out.println("hash move      : " + MoveParser.toString(hashMove) +"   "+ hashMove);
+                System.out.println("first 2 search : " + MoveParser.toString(firstMove)+"   " + firstMove);
+                System.out.println("Is it contained? "+PVLine.verifyMove(board, hashMove, moves));
+                MoveParser.printMoves(moves);
+                System.out.println(board);
+            }
+            Assert.assertEquals((moves[0] & MoveOrderer.MOVE_MASK), hashMove);
+        }
+
+
+
         for (int i = 0; i < moves.length; i++) {
             if (moves[i] == 0) {
                 break;
             }
 
-            if (i == 0){
-//                System.out.println("FIRST MOVE TO TRY: " + MoveParser.toString(moves[i]));
-//                System.out.println("hashMove is " + MoveParser.toString(hashMove));
-//                System.out.println("aiMove is " + MoveParser.toString(aiMove));
-//                System.out.println();
-            }
-            
+
+
             int move = moves[i];
             int moveScore = MoveOrderer.getMoveScore(moves[i]);
-            
+
             if (i == 0){
                 Assert.assertTrue(move >= moves[i+1]);
             } else {
@@ -382,7 +420,7 @@ public class Engine {
 
 
                         if (score > alpha) {
-                            
+
                             score = -principleVariationSearch(board,
                                     startTime, timeLimitMillis,
                                     originalDepth, depth - 1, ply + 1,
@@ -413,7 +451,6 @@ public class Engine {
             board.unMakeMoveAndFlipTurn();
 
             if (score > bestScore) {
-                int plop = bestScore;
                 bestScore = score;
                 bestMove = move & MoveOrderer.MOVE_MASK;
                 alpha = Math.max(alpha, score);
@@ -422,12 +459,21 @@ public class Engine {
 //                    System.out.println("      AI score improvement, change aiMove from " + MoveParser.toString(aiMove) + " to " +MoveParser.toString(move));
 //                    System.out.println("    aiscore was " + aiMoveScore +" is now " + score + " (bestscore was "+ plop+")");
 //                    
+                    setAiMove(bestMove);
                     aiMoveScore = score;
-                    aiMove = bestMove;
                 }
             }
 
             if (alpha >= beta) {
+                int justMove = move & MoveOrderer.MOVE_MASK;
+                if (alpha > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+                    updateMateKillerMoves(justMove, ply);
+                } else {
+                    updateKillerMoves(justMove, ply);
+                }
+
+                MoveOrderer.updateHistoryMoves(justMove, ply);
+
                 break;
             }
         }

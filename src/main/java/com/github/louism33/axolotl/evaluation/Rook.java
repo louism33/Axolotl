@@ -15,7 +15,7 @@ class Rook {
     static int evalRookByTurn(Chessboard board, boolean white,
                               long myPawns, long myRooks, long myQueen,
                               long enemyPawns,
-                              long allPieces) {
+                              long friends, long enemies, long allPieces) {
 
 
         long originalRooks = white ? board.getWhiteRooks() : board.getBlackRooks();
@@ -27,7 +27,7 @@ class Rook {
 
         while(myRooks != 0){
             long rook = BitOperations.getFirstPiece(myRooks);
-            score += rookScore(rook, myPawns, myRooks, myQueen, enemyPawns, allPieces, originalRooks, seventhRank);
+            score += rookScore(rook, myPawns, myRooks, myQueen, enemyPawns, friends, enemies, allPieces, originalRooks, seventhRank);
             myRooks &= myRooks - 1;
         }
 
@@ -36,6 +36,7 @@ class Rook {
 
     private static int rookScore(long rook, long myPawns, long myRooks, long myQueen,
                                  long enemyPawns,
+                                 long friends, long enemyPieces, 
                                  long allPieces,
                                  long originalRooks, long seventhRank){
         int score = 0;
@@ -45,6 +46,10 @@ class Rook {
             score += ROOK_ON_SEMI_OPEN_FILE_BONUS;
         }
 
+        if ((file & enemyPieces) == 0) {
+            score += I_CONTROL_OPEN_FILE;
+        }
+        
         if ((file & enemyPawns) == 0) {
             score += ROOK_OPEN_FILE_BONUS;
         }
