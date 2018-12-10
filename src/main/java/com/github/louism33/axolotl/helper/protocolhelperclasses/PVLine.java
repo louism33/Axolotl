@@ -1,63 +1,38 @@
 package com.github.louism33.axolotl.helper.protocolhelperclasses;
 
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
 import org.junit.Assert;
 
 public class PVLine {
-    
-    private final int score;
-    private final int[] pvMoves;
 
-    private PVLine(int score, int[] pvMoves) {
-        this.score = score;
-        this.pvMoves = pvMoves;
-    }
+    private static int maxPVLength = 20;
+    private static int nodeScore;
+    static int nps;
+    private static int[] pvMoves = new int[maxPVLength];
 
-    @Override
-    public String toString() {
-        return "PVLine{" +
-                "score=" + score +
-//                ", pvMoves=" + Arrays.toString(pvMoves) +
-                '}';
-    }
-
-    public static PVLine retrievePVfromTable(Chessboard board) throws IllegalUnmakeException {
+    public static void retrievePV(Chessboard board) throws IllegalUnmakeException {
         Chessboard initial = new Chessboard(board);
-        
-        int maxPVLength = 20;
-        int[] moves = new int[maxPVLength];
+       
         int i = 0, finalI;
-        int nodeScore = 0;
 
-//        System.out.println(Arrays.toString(TranspositionTable.keys));
-//        System.out.println(Arrays.toString(TranspositionTable.entries));
-
-//        System.out.println();
-//        System.out.println("transposition table entry: " + blub);
-//        System.out.println("score: "+nodeScore);
-        
-        
-//        System.out.println(Arrays.toString(MoveParser.toString(board.generateLegalMoves())));
-        
         while(i < maxPVLength) {
             long entry = TranspositionTable.retrieveFromTable(board.getZobrist());
             if (entry == 0) {
                 break;
             }
 
-            long blub = TranspositionTable.retrieveFromTable(board.getZobrist());
-            
             if (i == 0) {
-                nodeScore = TranspositionTable.getScore(blub);
+                nodeScore = TranspositionTable.getScore(entry);
             }
-            
+
             int move = TranspositionTable.getMove(entry) & MoveOrderer.MOVE_MASK;
-            
+
             if (verifyMove(board, move)) {
-                moves[i] = move;
+                pvMoves[i] = move;
                 board.makeMoveAndFlipTurn(move);
                 i++;
             }
@@ -69,10 +44,10 @@ public class PVLine {
         for (int x = 0; x < finalI; x++){
             board.unMakeMoveAndFlipTurn();
         }
-
-        Assert.assertEquals(initial, board);
         
-        return new PVLine(nodeScore, moves);
+        Engine.calculateNPS();
+        
+        Assert.assertEquals(board, initial);
     }
 
     public static boolean verifyMove(Chessboard board, int move, int[] moves){
@@ -88,7 +63,7 @@ public class PVLine {
         return false;
     }
 
-    
+
     public static boolean verifyMove(Chessboard board, int move){
         int[] legalMoves = board.generateLegalMoves();
         for (int j = 0; j < legalMoves.length; j++) {
@@ -103,11 +78,15 @@ public class PVLine {
         return false;
     }
 
-    public int getScore() {
-        return score;
+    public static int getNodeScore() {
+        return nodeScore;
     }
 
-    public int[] getPvMoves() {
+    public static int[] getPvMoves() {
         return pvMoves;
+    }
+
+    public static long getNps() {
+        return Engine.nps;
     }
 }

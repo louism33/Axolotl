@@ -25,10 +25,10 @@ public class EvaluationConstants {
     static final int I_CONTROL_OPEN_FILE                  = 10;
     static final int MY_TURN_BONUS                        = 10;
     static final int IN_CHECK_PENALTY                     = -5;
-    static final int BASIC_PINNED_PIECE_PENALTY_KING = -15;
-    static final int QUEEN_IS_PINNED = -10;
-    static final int BASIC_PINNED_PIECE_PENALTY_QUEEN = -10;
-    static int MY_SPACE                             = 2;
+    static final int BASIC_PINNED_PIECE_PENALTY_KING      = -15;
+    static final int QUEEN_IS_PINNED                      = -10;
+    static final int BASIC_PINNED_PIECE_PENALTY_QUEEN     = -10;
+    static int MY_SPACE                                   = 2;
 
     // pawn valuation
     static final int PAWN_PASSED                          = 15;
@@ -43,10 +43,13 @@ public class EvaluationConstants {
     static final int PAWN_THREATEN_CENTRE                 = 5;
     static final int PAWN_THREATEN_SUPER_CENTRE           = 10;
     // backward pawns
+    static final int PAWN_ISOLATED                        = -15;
     static final int PAWN_HANGING                         = -15;
     static final int PAWN_HANGING_PROTECTED               = 10;
     static final int PAWN_HANGING_UNDER_THREAT            = -25;
     // promoting pawns
+    static final int PAWN_SEVEN                           = 25;
+    static final int PAWN_SIX                             = 15;
     static final int PAWN_SEVEN_PROMOTION_POSSIBLE        = 35;
     static final int PAWN_P_SQUARE_SUPPORTED              = 25;
     static final int PAWN_P_SQUARE_UNTHREATENED           = 25;
@@ -80,6 +83,7 @@ public class EvaluationConstants {
     static final int ROOK_OPEN_FILE_BONUS                 = 15;
     static final int ROOK_ON_SEMI_OPEN_FILE_BONUS         = 10;
     static final int ROOK_PROTECTS_QUEEN                  = 5;
+    static final int ROOK_SAME_ROW                      = 5;
     
     // queen valuation
     static final int QUEEN_ON_SEVENTH_BONUS               = 10;

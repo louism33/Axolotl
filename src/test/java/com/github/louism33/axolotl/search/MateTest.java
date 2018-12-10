@@ -19,7 +19,7 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMA
 @RunWith(Parameterized.class)
 public class MateTest {
 
-    private static final int timeLimit = 120_000;
+    private static final int timeLimit = 10_000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -56,7 +56,7 @@ public class MateTest {
         System.out.print("Best move found:    "+MoveParser.toString(move));
         
         if (Engine.getAiMoveScore() >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
-            System.out.println(", mate in: " + (CHECKMATE_ENEMY_SCORE - Engine.getAiMoveScore())+" half plies.");
+            System.out.println(", mate in " + (CHECKMATE_ENEMY_SCORE - Engine.getAiMoveScore())+" half plies.");
         }else {
             System.out.println(", score: "+Engine.getAiMoveScore());
         }

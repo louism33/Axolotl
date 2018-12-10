@@ -9,15 +9,9 @@ import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
-import static com.github.louism33.axolotl.search.FutilityPruning.quiescenceFutilityMargin;
-import static com.github.louism33.axolotl.search.SEEPruning.seeScore;
 
 class QuiescenceSearch {
 
-    /*
-    Quiescence Search: 
-    special search for captures only
-     */
     static int quiescenceSearch(Chessboard board, int alpha, int beta) throws IllegalUnmakeException {
 
         int[] moves = board.generateLegalMoves();

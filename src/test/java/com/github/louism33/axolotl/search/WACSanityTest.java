@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+
 @RunWith(Parameterized.class)
 public class WACSanityTest {
 
@@ -53,6 +56,7 @@ public class WACSanityTest {
         List<Integer> losingMoves = EPDObject.getAvoidMoves();
         System.out.println(EPDObject.getId()+": ");
         System.out.println(EPDObject.getBoardFen());
+        System.out.println(EPDObject.getBoard());
         System.out.println("Move(s) to get:     " + Arrays.toString(MoveParser.toString(winningMoves)));
 
         if (losingMoves.size() > 0){
@@ -60,10 +64,17 @@ public class WACSanityTest {
         }
 
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
-        System.out.println("Best move found:    "+MoveParser.toString(move));
+        System.out.print("Best move found:    "+MoveParser.toString(move));
+        
+        if (Engine.getAiMoveScore() >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
+            System.out.println(", mate in " + (CHECKMATE_ENEMY_SCORE - Engine.getAiMoveScore())+" half plies.");
+        }else {
+            System.out.println(", score: "+Engine.getAiMoveScore());
+        }
         if (Engine.nps > 0) {
             System.out.println("NPS:                " + Engine.nps);
         }
+        
         if (winningMoves.contains(move) && !losingMoves.contains(move)){
             System.out.println("success");
             successes++;
@@ -74,6 +85,8 @@ public class WACSanityTest {
 
         System.out.println("total successes: " + successes);
         System.out.println();
+        Assert.assertTrue(winningMoves.contains(move));
+        Assert.assertTrue(!losingMoves.contains(move));
     }
 
 

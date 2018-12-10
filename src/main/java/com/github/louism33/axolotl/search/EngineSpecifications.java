@@ -2,11 +2,12 @@ package com.github.louism33.axolotl.search;
 
 public class EngineSpecifications {
     
-    public static final boolean INFO_LOG = true;
-    public static int MAX_DEPTH = 12;
-    public static boolean ALLOW_TIME_LIMIT = true;
+    public static final boolean INFO_LOG                             = true;
+    public static final int PRINT_FREQUENCY_MS                       = 3000;
+    public static int MAX_DEPTH                                      = 12;
+    public static boolean ALLOW_TIME_LIMIT                           = true;
 
-    public static final int DEFAULT_TABLE_SIZE                = 1 << 15;
+    public static final int DEFAULT_TABLE_SIZE                       = 1 << 15;
     
     public static final boolean ALLOW_PRINCIPLE_VARIATION_SEARCH     = true;
     public static final boolean ALLOW_ASPIRATION_WINDOWS             = true;

@@ -83,27 +83,6 @@ public class Statistics {
         System.out.println();
         System.out.println("------");
 
-        System.out.println("Modifications:" +
-                "\nALLOW_PRINCIPLE_VARIATION_SEARCH =           "     + EngineSpecifications.ALLOW_PRINCIPLE_VARIATION_SEARCH +
-                "\nALLOW_MATE_DISTANCE_PRUNING =                "          + EngineSpecifications.ALLOW_MATE_DISTANCE_PRUNING +
-                "\nALLOW_EXTENSIONS =                           "                     + EngineSpecifications.ALLOW_EXTENSIONS +
-                "\nALLOW_LATE_MOVE_REDUCTIONS =                 "           + EngineSpecifications.ALLOW_LATE_MOVE_REDUCTIONS +
-                "\nALLOW_LATE_MOVE_PRUNING =                    "              + EngineSpecifications.ALLOW_LATE_MOVE_PRUNING +
-                "\nALLOW_NULL_MOVE_PRUNING =                    "              + EngineSpecifications.ALLOW_NULL_MOVE_PRUNING +
-                "\nALLOW_ALPHA_RAZORING =                       "                 + EngineSpecifications.ALLOW_ALPHA_RAZORING +
-                "\nALLOW_BETA_RAZORING =                        "                  + EngineSpecifications.ALLOW_BETA_RAZORING +
-                "\nALLOW_FUTILITY_PRUNING =                     "               + EngineSpecifications.ALLOW_FUTILITY_PRUNING +
-                "\nALLOW_QUIESCENCE_FUTILITY_PRUNING =          "    + EngineSpecifications.ALLOW_QUIESCENCE_FUTILITY_PRUNING +
-                
-                "\nALLOW_SEE_PRUNING =                          "                    + EngineSpecifications.ALLOW_SEE_PRUNING +
-                "\nALLOW_QUIESCENCE_SEE_PRUNING =               "         + EngineSpecifications.ALLOW_QUIESCENCE_SEE_PRUNING +
-                
-                "\nALLOW_KILLERS =                              "                        + EngineSpecifications.ALLOW_KILLERS +
-                "\nALLOW_HISTORY_MOVES =                        "                  + EngineSpecifications.ALLOW_HISTORY_MOVES +
-                "\nALLOW_ASPIRATION_WINDOWS =                   "             + EngineSpecifications.ALLOW_ASPIRATION_WINDOWS +
-                "\nALLOW_INTERNAL_ITERATIVE_DEEPENING =         "   + EngineSpecifications.ALLOW_INTERNAL_ITERATIVE_DEEPENING +
-                "");
-
         System.out.println();
         if (EngineSpecifications.ALLOW_PRINCIPLE_VARIATION_SEARCH) {
             System.out.println("number of PVS hits:             " + numberOfPVSHits);

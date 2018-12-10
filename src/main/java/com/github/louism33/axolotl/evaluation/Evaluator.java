@@ -6,6 +6,13 @@ import com.github.louism33.chesscore.Chessboard;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_STALEMATE_SCORE;
 import static com.github.louism33.axolotl.evaluation.MaterialEval.evalMaterialByTurn;
+import static com.github.louism33.axolotl.evaluation.Misc.evalMiscByTurn;
+import static com.github.louism33.axolotl.evaluation.Pawns.evalPawnsByTurn;
+import static com.github.louism33.axolotl.evaluation.PositionEval.evalPositionByTurn;
+import static com.github.louism33.axolotl.evaluation.Rook.evalRookByTurn;
+import static com.github.louism33.chesscore.BitOperations.getIndexOfFirstPiece;
+import static com.github.louism33.chesscore.BitboardResources.FILES;
+import static com.github.louism33.chesscore.BitboardResources.ROWS;
 
 public class Evaluator {
 
@@ -18,15 +25,11 @@ public class Evaluator {
             moves = board.generateLegalMoves();
         }
 
-//        statistics.numberOfEvals++;
-
         if (moves.length == 0){
             if (board.inCheck(white)) {
-//                statistics.numberOfCheckmates++;
                 return IN_CHECKMATE_SCORE;
             }
             else {
-//                statistics.numberOfStalemates++;
                 return IN_STALEMATE_SCORE;
             }
         }
@@ -91,12 +94,12 @@ public class Evaluator {
                                   long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
                                   long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
                                   long enemies, long friends, long allPieces) {
-        
+
         return evalTurn(moves, board, white,
                 myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
                 enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
                 enemies, friends, allPieces) -
-                
+
                 evalTurn(moves, board, white,
                         enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
                         myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
@@ -107,19 +110,27 @@ public class Evaluator {
                                  long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
                                  long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
                                  long enemies, long friends, long allPieces){
-        
+
         int score = 0;
         score +=
                 evalMaterialByTurn(board, white)
 
-//                        + evalPositionByTurn(board, white, naiveEndgame(board))
-//                        + evalPawnsByTurn(board, white, myPawns, enemyPawns)
+                        + evalPositionByTurn(board, white, naiveEndgame(board))
+                        
+                        + evalPawnsByTurn(board, white, myPawns, myRooks, enemyPawns,
+                        friends, enemies, allPieces)
+                        
 //                        + evalKnightByTurn(board, white, myPawns, myKnights, enemyPawns)
+                        
 //                        + evalBishopByTurn(board, white, myPawns, myBishops, enemyPawns)
-//                        + evalRookByTurn(board, white, myPawns, myRooks, enemyPawns)
+                        
+                        + evalRookByTurn(board, white, myPawns, myRooks, myQueens, enemyPawns, allPieces)
+                        
 //                        + evalQueenByTurn(board, white, myPawns, enemyPawns)
+                        
 //                        + evalKingByTurn(board, white, myKing, enemies, friends, allPieces)
-//                        + evalMiscByTurn(board, white, moves)
+                        
+                        + evalMiscByTurn(board, white, moves)
         ;
         return score;
     }
@@ -130,6 +141,15 @@ public class Evaluator {
 
     public static int getScoreOfDestinationPiece(Chessboard board, int move){
         return MaterialEval.getScoreOfDestinationPiece(board, move);
+    }
+
+
+    public static long getRow(long piece){
+        return ROWS[getIndexOfFirstPiece(piece)  / 8];
+    }
+
+    public static long getFile(long piece) {
+        return FILES[getIndexOfFirstPiece(piece) % 8];
     }
 
 

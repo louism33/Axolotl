@@ -1,10 +1,11 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
+import com.github.louism33.axolotl.helper.protocolhelperclasses.PVLine;
 import com.github.louism33.axolotl.helper.timemanagement.TimeAllocator;
+import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
-import com.github.louism33.axolotl.utilities.Statistics;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
 import com.github.louism33.chesscore.MoveParser;
@@ -12,8 +13,11 @@ import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.helper.timemanagement.TimeAllocator.*;
+import static com.github.louism33.axolotl.helper.timemanagement.TimeAllocator.allocateTime;
+import static com.github.louism33.axolotl.helper.timemanagement.TimeAllocator.outOfTime;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
+import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
+import static com.github.louism33.chesscore.BitOperations.populationCount;
 
 public class Engine {
 
@@ -24,6 +28,8 @@ public class Engine {
     public static long nps;
     public static long regularMovesMade;
     public static long quiescentMovesMade;
+    public static long startTime = 0;
+    private static UCIEntry uciEntry;
 
     public static int getAiMove() {
         return aiMove;
@@ -41,6 +47,29 @@ public class Engine {
         return aiMoveScore;
     }
 
+    public static void calculateNPS(){
+        long time = System.currentTimeMillis() - startTime;
+        if (time < 1000){
+            nps = 0;
+        }
+        else {
+            nps = ((1000 * (regularMovesMade + quiescentMovesMade)) / time);
+        }
+    }
+
+    public static long getNps() {
+        calculateNPS();
+        return nps;
+    }
+
+    public static UCIEntry getUciEntry() {
+        return uciEntry;
+    }
+
+    public static void setUciEntry(UCIEntry uciEntry) {
+        Engine.uciEntry = uciEntry;
+    }
+
     private static boolean stopSearch(long startTime, long timeLimiMillis, int depth, int maxDepth) {
         return Engine.isStopInstruction()
                 || (EngineSpecifications.ALLOW_TIME_LIMIT && outOfTime(startTime, timeLimiMillis))
@@ -52,12 +81,15 @@ public class Engine {
         stopInstruction = false;
         isReady = true;
         nps = 0;
+        reset();
     }
 
     private static void reset() {
         nps = 0;
         regularMovesMade = 0;
         stopInstruction = false;
+        regularMovesMade = 0;
+        quiescentMovesMade = 0;
     }
 
     public static int searchFixedDepth(Chessboard board, int depth) {
@@ -87,7 +119,7 @@ public class Engine {
 
         reset();
 
-        long startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
 
         try {
             iterativeDeepeningWithAspirationWindows(board, startTime, maxTime);
@@ -98,10 +130,12 @@ public class Engine {
         long endTime = System.currentTimeMillis();
 
         long time = endTime - startTime;
-        
+
         if (time != 0) {
-            nps = ((1000 * (regularMovesMade + quiescentMovesMade)) / time);
+            calculateNPS();
         }
+
+        TimeAllocator.printManager(board, true);
 
         return aiMove & MoveOrderer.MOVE_MASK;
     }
@@ -112,6 +146,8 @@ public class Engine {
 
         while (!stopSearch(startTime, timeLimitMillis, depth, MAX_DEPTH)) {
 
+            System.out.println("----- Depth: " + depth + ", aiMove: " + MoveParser.toString(aiMove));
+            
             int score = aspirationSearch(board, startTime, timeLimitMillis, depth, aspirationScore);
 
             if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
@@ -136,6 +172,8 @@ public class Engine {
             score = principleVariationSearch(board,
                     startTime, timeLimitMillis,
                     depth, depth, 0, alpha, beta, 0, false);
+
+            TimeAllocator.printManager(board, false);
 
             if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
                 return score;
@@ -164,7 +202,7 @@ public class Engine {
                                                 int nullMoveCounter, boolean reducedSearch) throws IllegalUnmakeException {
 
         boolean boardInCheck = board.inCheck(board.isWhiteTurn());
-
+        int originalAlpha = alpha;
         int[] moves = null;
 
         depth += Extensions.extensions(board, ply, boardInCheck);
@@ -187,6 +225,39 @@ public class Engine {
 
         int hashMove = 0;
         int score;
+
+        long previousTableData = TranspositionTable.retrieveFromTable(board.getZobrist());
+        if (previousTableData != 0) {
+            score = TranspositionTable.getScore(previousTableData);
+            hashMove = TranspositionTable.getMove(previousTableData);
+            if (TranspositionTable.getDepth(previousTableData) >= depth){
+                moves = board.generateLegalMoves();
+                if (PVLine.verifyMove(board, hashMove, moves)) {
+                    int flag = TranspositionTable.getFlag(previousTableData);
+                    if (flag == EXACT) {
+                        if (ply == 0){
+                            aiMove = hashMove;
+                            aiMoveScore = score;
+                        }
+                        return score;
+                    } else if (flag == LOWERBOUND) {
+                        alpha = Math.max(alpha, score);
+                    } else if (flag == UPPERBOUND) {
+                        beta = Math.min(beta, score);
+                    }
+                    if (alpha >= beta) {
+                        if (ply == 0){
+                            aiMove = hashMove;
+                            aiMoveScore = score;
+                        }
+                        return score;
+                    }
+                }
+            }
+        }
+
+
+
         int staticBoardEval = SHORT_MINIMUM;
 
         boolean thisIsAPrincipleVariationNode = (beta - alpha != 1);
@@ -196,6 +267,35 @@ public class Engine {
                 moves = board.generateLegalMoves();
             }
             staticBoardEval = Evaluator.eval(board, board.isWhiteTurn(), moves);
+            
+            
+            /*
+            null move pruning
+             */
+            if (nullMoveCounter < 2 && depth > 3 && !(populationCount(board.allPieces()) < 9)){
+                int R = 2;
+                
+                Chessboard initial = new Chessboard(board);
+                
+                board.makeNullMoveAndFlipTurn();
+                
+                int nullScore = -principleVariationSearch(board, 
+                        startTime, timeLimitMillis,
+                        originalDepth, depth - R - 1, ply + 1,
+                        -beta, -beta + 1, nullMoveCounter + 1, false);
+                
+                board.unMakeNullMoveAndFlipTurn();
+                
+                Assert.assertEquals(initial, board);
+                
+                if (nullScore >= beta){
+                    if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY){
+                        nullScore = beta;
+                    }
+                    
+                    return nullScore;
+                }
+            }
         }
 
         if (moves == null){
@@ -240,12 +340,40 @@ public class Engine {
                 score = alpha + 1;
 
                 if (numberOfMovesSearched > 1) {
+                    
+                    
+                    /*
+                    late move reductions
+                     */
+                    if (depth > 2 && numberOfMovesSearched > 3 && !captureMove && !promotionMove && !pawnToSeven && !boardInCheck && !givesCheckMove) {
 
-                    score = -principleVariationSearch(board,
-                            startTime, timeLimitMillis,
-                            originalDepth, depth - 1, ply + 1,
-                            -alpha - 1, -alpha, 0, reducedSearch);
+                        int R = 2;
 
+                        score = -principleVariationSearch(board,
+                                startTime, timeLimitMillis,
+                                originalDepth, depth - R - 1, ply + 1,
+                                -alpha - 1, -alpha, nullMoveCounter, true);
+
+
+                        if (score > alpha) {
+                            
+                            score = -principleVariationSearch(board,
+                                    startTime, timeLimitMillis,
+                                    originalDepth, depth - 1, ply + 1,
+                                    -alpha - 1, -alpha, 0, false);
+
+                        }
+                    }
+                    /*
+                    principle variation
+                     */
+                    else {
+                        score = -principleVariationSearch(board,
+                                startTime, timeLimitMillis,
+                                originalDepth, depth - 1, ply + 1,
+                                -alpha - 1, -alpha, 0, reducedSearch);
+
+                    }
                 }
 
                 if (score > alpha) {
@@ -257,7 +385,7 @@ public class Engine {
             }
 
             board.unMakeMoveAndFlipTurn();
-            
+
             if (score > bestScore) {
                 bestScore = score;
                 bestMove = move;
@@ -281,6 +409,19 @@ public class Engine {
                 return IN_STALEMATE_SCORE;
             }
         }
+
+        int flag;
+        if (bestScore <= originalAlpha){
+            flag = UPPERBOUND;
+        } else if (bestScore >= beta) {
+            flag = LOWERBOUND;
+        } else {
+            flag = EXACT;
+        }
+
+        TranspositionTable.addToTable(board.getZobrist(),
+                TranspositionTable.buildTableEntry(bestMove, bestScore, depth, flag, ply));
+
 
         return bestScore;
     }
