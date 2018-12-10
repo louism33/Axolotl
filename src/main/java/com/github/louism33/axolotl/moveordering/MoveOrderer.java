@@ -54,11 +54,18 @@ public class MoveOrderer {
 
     private static void scoreMovesHelper(int[] moves, Chessboard board, boolean white, int ply,
                                          int hashMove) throws IllegalUnmakeException {
+
+//        System.out.println("            Hash: " + MoveParser.toString(hashMove) + "     mv: "+hashMove);
         for (int i = 0; i < moves.length; i++) {
             if (moves[i] == 0){
                 break;
             }
-            if (moves[i] == hashMove) {
+            
+            int move = moves[i] & MOVE_MASK;
+            
+//            System.out.print("--- "+ MoveParser.toString(move) + " " + move + " ---");
+            if (move == hashMove) {
+//                System.out.println("move equals hashmove ! ");
                 moves[i] = buildMoveScore(moves[i], hashScore);
 //            } else if (ply == 0 && moves[i] == aiMove) {
 //                moves[i] = buildMoveScore(moves[i], aiScore);

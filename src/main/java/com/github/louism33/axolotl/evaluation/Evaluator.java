@@ -100,7 +100,7 @@ public class Evaluator {
                 enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
                 enemies, friends, allPieces) -
 
-                evalTurn(moves, board, white,
+                evalTurn(moves, board, !white,
                         enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
                         myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
                         enemies, friends, allPieces);
