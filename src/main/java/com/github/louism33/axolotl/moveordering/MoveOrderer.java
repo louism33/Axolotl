@@ -15,7 +15,7 @@ public class MoveOrderer {
     public static final int[] mateKillers = new int[128];
     public static final int[][] killerMoves = new int[128][2];
     public static final int[][] historyMoves = new int[64][64];
-    
+
     public static final int MOVE_MASK = ~MOVE_SCORE_MASK;
 
     public static int getMoveScore (int moveScore){
@@ -55,31 +55,26 @@ public class MoveOrderer {
             if (moves[i] == 0){
                 break;
             }
-            
+
             int move = moves[i];
 
             if (move > MOVE_SIZE_LIMIT){
                 System.out.println("h " + MoveParser.toString(hashMove));
-                MoveParser.printMoves(moves);
+                printMoves(moves);
                 System.out.println(MoveParser.toString(move) + "    "+move);
                 Art.printLong(move);
             }
-            
-            Assert.assertTrue(move < MOVE_SIZE_LIMIT);
-            
-            if (move == hashMove) {
-                
-                moves[i] = buildMoveScore(moves[i], hashScore);
-            } 
-            else if (EngineSpecifications.ALLOW_MATE_KILLERS && mateKillers[ply] != 0 && moves[i] == mateKillers[ply]) {
 
+            Assert.assertTrue(move < MOVE_SIZE_LIMIT);
+
+            if (move == hashMove) {
+                moves[i] = buildMoveScore(moves[i], hashScore);
+            }
+            else if (EngineSpecifications.ALLOW_MATE_KILLERS && mateKillers[ply] != 0 && moves[i] == mateKillers[ply]) {
                 Assert.assertTrue(mateKillers[ply] < MOVE_SIZE_LIMIT);
-                
                 moves[i] = buildMoveScore(moves[i], mateKillerScore);
             }
             else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
-                
-                
                 moves[i] = buildMoveScore(moves[i], CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, moves[i]));
             }
             else if (isPromotionToQueen(moves[i])) {
@@ -89,57 +84,42 @@ public class MoveOrderer {
                 else {
                     moves[i] = buildMoveScore(moves[i], queenQuietPromotionScore);
                 }
-            } 
+            }
             else if (isPromotionToKnight(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], knightPromotionScore);
-            } 
+            }
             else if (isPromotionToBishop(moves[i]) || isPromotionToRook(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], uninterestingPromotion);
-            } 
+            }
+            else if (isCaptureMove(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], mvvLVA(board, moves[i]));
+            }
             else if (killerMoves[ply][0] != 0 && killerMoves[ply][0] == moves[i]) {
-
                 Assert.assertTrue(killerMoves[ply][0] < MOVE_SIZE_LIMIT);
-                
                 moves[i] = buildMoveScore(moves[i], killerOneScore);
-            } 
+            }
             else if (EngineSpecifications.ALLOW_KILLERS && killerMoves[ply][1] != 0 && killerMoves[ply][1] == moves[i]) {
-               
                 Assert.assertTrue(killerMoves[ply][1] < MOVE_SIZE_LIMIT);
-                
                 moves[i] = buildMoveScore(moves[i], killerTwoScore);
-            } 
+            }
             else if (ply >= 2 && killerMoves[ply - 2][0] != 0 && killerMoves[ply - 2][0] == moves[i]) {
-
                 Assert.assertTrue(killerMoves[ply - 2][0] < MOVE_SIZE_LIMIT);
-                
                 moves[i] = buildMoveScore(moves[i], oldKillerScoreOne);
-            } 
+            }
             else if (ply >= 2 && killerMoves[ply - 2][1] != 0 && killerMoves[ply - 2][1] == (moves[i])) {
-
                 Assert.assertTrue(killerMoves[ply - 2][1] < MOVE_SIZE_LIMIT);
-                
                 moves[i] = buildMoveScore(moves[i], oldKillerScoreTwo);
-            } 
+            }
             else if (checkingMove(board, moves[i])) {
                 moves[i] = buildMoveScore(moves[i], giveCheckMove);
-            } 
-            else if (MoveParser.isCaptureMove(moves[i])) {
-                moves[i] = buildMoveScore(moves[i], mvvLVA(board, moves[i]));
-            } 
-            else if (MoveParser.isCastlingMove(moves[i])) {
+            }
+            else if (isCastlingMove(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], castlingMove);
-            } 
+            }
             else {
                 moves[i] = buildMoveScore(moves[i], Math.max(historyMoveScore(moves[i]), uninterestingMove));
-                
             }
         }
-
-
-//        MoveParser.printMoves(moves);
-
-
-        
     }
 
     static boolean positiveCapture(int moveScore){
@@ -147,8 +127,8 @@ public class MoveOrderer {
     }
 
     private static int mvvLVA (Chessboard board, int move){
-        int sourceScore = scoreByPiece(move, MoveParser.getMovingPieceInt(move));
-        int destinationScore = scoreByPiece(move, MoveParser.getVictimPieceInt(move));
+        int sourceScore = scoreByPiece(move, getMovingPieceInt(move));
+        int destinationScore = scoreByPiece(move, getVictimPieceInt(move));
         return CAPTURE_BIAS + destinationScore - sourceScore;
     }
 
@@ -194,34 +174,29 @@ public class MoveOrderer {
             }
 
             int move = moves[i];
-            
+
             if (move > MOVE_SIZE_LIMIT){
-                MoveParser.printMoves(moves);
+                printMoves(moves);
                 System.out.println(MoveParser.toString(move) + "    "+move);
                 Art.printLong(move);
+                Assert.assertTrue(move <= MOVE_SIZE_LIMIT);
             }
 
             Assert.assertTrue(move < MOVE_SIZE_LIMIT);
 
 
-            if (MoveParser.isCaptureMove(move)) {
-                if (isPromotionMove(moves[i])) {
-                    /*
-                    ignore under promotions in Q search
-                     */
-                    if (isPromotionToQueen(moves[i])) {
-                        moves[i] = buildMoveScore(moves[i], queenCapturePromotionScore);
-                    }
+            if (isCaptureMove(move)) {
+                if (isPromotionMove(move) && isPromotionToQueen(move)) {
+                    moves[i] = buildMoveScore(move, queenCapturePromotionScore);
                 } else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
-                    moves[i] = buildMoveScore(moves[i], CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, moves[i]));
+                    moves[i] = buildMoveScore(move, CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, moves[i]));
                 } else {
-                    moves[i] = buildMoveScore(moves[i], mvvLVA(board, moves[i]));
+                    moves[i] = buildMoveScore(move, mvvLVA(board, moves[i]));
                 }
-            } else if (isPromotionMove(moves[i])) {
-                if (isPromotionToQueen(moves[i])) {
-                    moves[i] = buildMoveScore(moves[i], queenQuietPromotionScore);
-                }
-            } else {
+            } else if (isPromotionMove(move) && (isPromotionToQueen(moves[i]))) {
+                moves[i] = buildMoveScore(moves[i], queenQuietPromotionScore);
+            }
+            else {
                 moves[i] = 0;
             }
         }
@@ -243,8 +218,8 @@ public class MoveOrderer {
         int historyScore = historyMoves[getSourceIndex(move)][getDestinationIndex(move)];
         return historyScore > maxMoveScoreOfHistory ? maxMoveScoreOfHistory : historyScore;
     }
-    
-    
+
+
     public static void updateKillerMoves(int move, int ply){
 
         Assert.assertTrue(move < MOVE_SIZE_LIMIT);
@@ -263,6 +238,6 @@ public class MoveOrderer {
     public static void updateMateKillerMoves(int move, int ply){
         mateKillers[ply] = move;
     }
-    
-    
+
+
 }

@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.search;
 
+import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.AfterClass;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import standalone.Temp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,11 +18,12 @@ import java.util.List;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static com.github.louism33.axolotl.search.Engine.flips;
 
 @RunWith(Parameterized.class)
 public class WACSanityTest {
 
-    private static final int timeLimit = 10_000;
+    private static final int timeLimit = 20_000;
     private static int successes = 0;
 
     @AfterClass
@@ -33,7 +36,15 @@ public class WACSanityTest {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
+        int stopAt = 29;
+        
+        
         for (int i = 0; i < splitUpWACs.length; i++) {
+            
+            if (i == stopAt){
+                break;
+            }
+            
             String splitUpWAC = splitUpWACs[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
@@ -63,7 +74,13 @@ public class WACSanityTest {
             System.out.println("Move(s) to avoid:   " + Arrays.toString(MoveParser.toString(losingMoves)));
         }
 
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        System.out.println("initial Score:");
+        System.out.println(Evaluator.eval(
+                EPDObject.getBoard(), EPDObject.getBoard().isWhiteTurn(), EPDObject.getBoard().generateLegalMoves()));
+        System.out.println("Now search time");
+
+//        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        int move = Engine.searchFixedDepth(EPDObject.getBoard(), 14);
         System.out.print("Best move found:    "+MoveParser.toString(move));
         
         if (Engine.getAiMoveScore() >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
@@ -88,6 +105,9 @@ public class WACSanityTest {
         
         System.out.println("Amount of flipflopping: " + Engine.flipflop);
         System.out.println("Realistic flip flop   : " + Engine.realisticflipflop);
+        System.out.println("flip size: " +flips.size());
+        System.out.println(flips);
+        Temp.flipTest(flips);
         
         Assert.assertTrue(winningMoves.contains(move));
         Assert.assertTrue(!losingMoves.contains(move));

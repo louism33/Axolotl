@@ -76,7 +76,7 @@ public class UCIPrinter {
             }
         if (EngineSpecifications.INFO_LOG) {
             if (mateFound) {
-                System.out.println("m"+distanceToMate + " : " + protocolInformationCommand.getMoveList());
+                System.out.println("  m"+distanceToMate + " : " + protocolInformationCommand.getMoveList());
             }
             else {
                 System.out.println(String.format("% 5d : ", protocolInformationCommand.getCentipawns()) + protocolInformationCommand.getMoveList());

@@ -23,13 +23,13 @@ public class EvaluationConstants {
     // piece values
     public static final int PAWN_SCORE                    = 100;
     public static final int KNIGHT_SCORE                  = 300;
-    public static final int BISHOP_SCORE                  = 310;
+    public static final int BISHOP_SCORE                  = 300;
     public static final int ROOK_SCORE                    = 500;
     public static final int QUEEN_SCORE                   = 900;
     public static final int KING_SCORE                    = 3000;
 
     // misc factors
-    static final int[] PINNED_PIECES = {0, -10, -25, -25, -50, -100, 0};
+    static final int[] PINNED_PIECES = {0, -10, -25, -25, -50, -90, 0};
     static final int MOVE_NUMBER_POINT                    = 1; // /10
     static final int BATTERY_SCORE                        = 10;
     static final int I_CONTROL_OPEN_FILE                  = 10;

@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.moveordering;
 
-class MoveOrderingConstants {
+public class MoveOrderingConstants {
 
     /*
     01111110

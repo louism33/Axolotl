@@ -27,6 +27,7 @@ public class PVLine {
 
             if (i == 0) {
                 nodeScore = TranspositionTable.getScore(entry);
+                System.out.println("nodeScore: " + nodeScore);
             }
 
             int move = TranspositionTable.getMove(entry) & MoveOrderer.MOVE_MASK;

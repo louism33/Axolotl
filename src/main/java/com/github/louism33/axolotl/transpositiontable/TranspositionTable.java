@@ -3,6 +3,8 @@ package com.github.louism33.axolotl.transpositiontable;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import org.junit.Assert;
 
+import java.util.Arrays;
+
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 
 public class TranspositionTable {
@@ -17,11 +19,17 @@ public class TranspositionTable {
         Assert.assertTrue(Integer.bitCount(mb) == 1
                 && index < 16);
         int size = mb; 
+        // todo ? modulo ?
         keys = new long[size];
         entries = new long[size];
         shiftAmount = 64 - index;
         
         tableReady = true;
+    }
+    
+    public static void reset(){
+        Arrays.fill(keys, 0);
+        Arrays.fill(entries, 0);
     }
     
     public static void addToTable(long key, long entry){
