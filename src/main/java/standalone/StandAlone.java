@@ -7,7 +7,6 @@ import com.github.louism33.chesscore.MoveParser;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-@SuppressWarnings("FieldCanBeLocal")
 class StandAlone {
 
     private static int totalMoves = 1;

@@ -4,7 +4,6 @@ import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.moveordering.MoveOrderingConstants;
-import com.github.louism33.axolotl.utilities.Statistics;
 import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
@@ -23,7 +22,6 @@ class QuiescenceSearch {
         int standPatScore = EvaluationConstants.SHORT_MINIMUM;
 
         if (!board.inCheck(board.isWhiteTurn())){
-//            standPatScore = Evaluator.eval(board, board.isWhiteTurn(), moves);
             standPatScore = Evaluator.evalNOCM(board, board.isWhiteTurn(), moves);
 
             if (standPatScore >= beta){
@@ -36,7 +34,7 @@ class QuiescenceSearch {
         }
 
         boolean inCheck = board.inCheck(board.isWhiteTurn());
-        
+
         Assert.assertFalse(standPatScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
 
         if (!inCheck) {
@@ -49,8 +47,8 @@ class QuiescenceSearch {
             int realMoves = MoveParser.numberOfRealMoves(moves);
             Ints.sortDescending(moves, 0, realMoves);
         }
-        
-        
+
+
         int numberOfMovesSearched = 0;
         for (int i = 0; i < moves.length; i++) {
 
@@ -76,33 +74,20 @@ class QuiescenceSearch {
 
             int loudMove = moves[i] & MoveOrderer.MOVE_MASK;
 
-            if (loudMove > MoveOrderingConstants.MOVE_SIZE_LIMIT) {
-                System.out.println(MoveParser.toString(loudMove) + "    " + loudMove);
-                Art.printLong(loudMove);
-                Art.printLong(MoveOrderingConstants.MOVE_SIZE_LIMIT);
-                Assert.assertTrue(loudMove < MoveOrderingConstants.MOVE_SIZE_LIMIT);
-            }
-
             boolean captureMove = MoveParser.isCaptureMove(loudMove);
             boolean promotionMove = MoveParser.isPromotionMove(loudMove);
 
             if (!inCheck) {
-            Assert.assertTrue(captureMove || promotionMove);
+                Assert.assertTrue(captureMove || promotionMove);
             }
 
             board.makeMoveAndFlipTurn(loudMove);
             numberOfMovesSearched++;
             Engine.quiescentMovesMade++;
 
-
-            board.flipTurn();
-            Assert.assertFalse(board.inCheck(board.isWhiteTurn()));
-            board.flipTurn();
-
             int score = -quiescenceSearch(board, -beta, -alpha);
 
             board.unMakeMoveAndFlipTurn();
-
 
             if (score > alpha) {
                 alpha = score;

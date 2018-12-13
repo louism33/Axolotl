@@ -7,14 +7,14 @@ import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
 import org.junit.Assert;
 
-public class PVLine {
+class PVLine {
 
-    private static int maxPVLength = 20;
+    private static final int maxPVLength = 20;
     private static int nodeScore;
     static int nps;
-    private static int[] pvMoves = new int[maxPVLength];
+    private static final int[] pvMoves = new int[maxPVLength];
 
-    public static void retrievePV(Chessboard board) throws IllegalUnmakeException {
+    static void retrievePV(Chessboard board) throws IllegalUnmakeException {
         Chessboard initial = new Chessboard(board);
        
         int i = 0, finalI;
@@ -27,7 +27,6 @@ public class PVLine {
 
             if (i == 0) {
                 nodeScore = TranspositionTable.getScore(entry);
-                System.out.println("nodeScore: " + nodeScore);
             }
 
             int move = TranspositionTable.getMove(entry) & MoveOrderer.MOVE_MASK;
@@ -65,7 +64,7 @@ public class PVLine {
     }
 
 
-    public static boolean verifyMove(Chessboard board, int move){
+    private static boolean verifyMove(Chessboard board, int move){
         int[] legalMoves = board.generateLegalMoves();
         for (int j = 0; j < legalMoves.length; j++) {
             int possibleMove = legalMoves[j];

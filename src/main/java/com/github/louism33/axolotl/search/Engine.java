@@ -1,8 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.evaluation.EvaluationConstants;
-import com.github.louism33.axolotl.evaluation.Evaluator;
-import com.github.louism33.axolotl.helper.protocolhelperclasses.PVLine;
 import com.github.louism33.axolotl.helper.timemanagement.TimeAllocator;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
@@ -13,10 +10,6 @@ import com.github.louism33.chesscore.IllegalUnmakeException;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
-import standalone.Temp;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.helper.timemanagement.TimeAllocator.allocateTime;
@@ -24,14 +17,11 @@ import static com.github.louism33.axolotl.helper.timemanagement.TimeAllocator.ou
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateKillerMoves;
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateMateKillerMoves;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
+import static com.github.louism33.axolotl.search.SearchUtils.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 
 public class Engine {
-
-    public static List<List<String>> flips = new ArrayList<>();
-    public static int flipflop = 0;
-    public static int realisticflipflop = 0;
 
     private static int aiMove;
     private static int aiMoveScore;
@@ -40,7 +30,7 @@ public class Engine {
     public static long nps;
     public static long regularMovesMade;
     public static long quiescentMovesMade;
-    public static long startTime = 0;
+    private static long startTime = 0;
     private static UCIEntry uciEntry;
 
     public static int getAiMove() {
@@ -48,11 +38,10 @@ public class Engine {
     }
 
     private static void setAiMove(int aiMove) {
-        flipflop++;
         Engine.aiMove = aiMove;
     }
 
-    public static boolean isStopInstruction() {
+    private static boolean isStopInstruction() {
         return stopInstruction;
     }
 
@@ -108,10 +97,7 @@ public class Engine {
         quiescentMovesMade = 0;
         aiMove = 0;
         aiMoveScore = SHORT_MINIMUM;
-        flipflop = 0;
-        realisticflipflop = 0;
         TranspositionTable.reset();
-        flips = new ArrayList<>();
     }
 
     public static int searchFixedDepth(Chessboard board, int depth) {
@@ -163,98 +149,34 @@ public class Engine {
     }
 
     private static void iterativeDeepeningWithAspirationWindows(Chessboard board, long startTime, long timeLimitMillis) throws IllegalUnmakeException {
-        int aspirationScore = 0;
         int depth = 0;
 
         while (!stopSearch(startTime, timeLimitMillis, depth, MAX_DEPTH)) {
             depth++;
 
-            int preAI = aiMove;
-
-            System.out.println("----- Depth: " + depth + ", aiMove at start: " + MoveParser.toString(aiMove) + ", and aiScore: " + aiMoveScore);
-
-//            int score = aspirationSearch(board, startTime, timeLimitMillis, depth, aspirationScore);
-
-
-            int alpha = SHORT_MINIMUM;
-            int beta = SHORT_MAXIMUM;
-
             int score;
 
             score = principleVariationSearch(board,
-                    startTime, timeLimitMillis,
-                    depth, depth, 0, alpha, beta, 0, false);
-
-
-            System.out.println("                  ai move at end: " + MoveParser.toString(aiMove) + ", and aiScore: " + aiMoveScore);
+                    depth, 0, SHORT_MINIMUM, SHORT_MAXIMUM, 0);
 
             TimeAllocator.printManager(board, true);
-
-            System.out.println();
-
-            if (preAI != aiMove){
-                realisticflipflop++;
-            }
 
             if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
                 break;
             }
-
-
-            aspirationScore = score;
-
         }
     }
-
-    private static int aspirationSearch(Chessboard board, long startTime, long timeLimitMillis,
-                                        int depth, int aspirationScore) throws IllegalUnmakeException {
-        int firstWindow = 100, alpha, beta;
-
-//        alpha = aspirationScore - firstWindow;
-//        beta = aspirationScore + firstWindow;
-        alpha = SHORT_MINIMUM;
-        beta = SHORT_MAXIMUM;
-
-        int score;
-
-//        while (true) {
-        score = principleVariationSearch(board,
-                startTime, timeLimitMillis,
-                depth, depth, 0, alpha, beta, 0, false);
-
-        TimeAllocator.printManager(board, false);
-
-        if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
-            return score;
-        }
-
-//        if (outOfTime(startTime, timeLimitMillis)) {
-//            return score;
-//        }
-//
-//            if (score <= alpha) {
-//                alpha = SHORT_MINIMUM;
-//            } else if (score >= beta) {
-//                beta = SHORT_MAXIMUM;
-//            } else {
-//                break;
-//            }
-//        }
-        return score;
-    }
-
 
     private static int principleVariationSearch(Chessboard board,
-                                                long startTime, long timeLimitMillis,
-                                                int originalDepth, int depth, int ply,
+                                                int depth, int ply,
                                                 int alpha, int beta,
-                                                int nullMoveCounter, boolean reducedSearch) throws IllegalUnmakeException {
+                                                int nullMoveCounter) throws IllegalUnmakeException {
 
         int originalAlpha = alpha;
         int[] moves = board.generateLegalMoves();
         boolean boardInCheck = board.inCheckRecorder;
 
-        depth += Extensions.extensions(board, ply, boardInCheck);
+        depth += extensions(board, ply, boardInCheck, moves);
 
         Assert.assertTrue(depth >= 0);
 
@@ -272,94 +194,34 @@ public class Engine {
         int hashMove = 0;
         int score;
 
-        long previousTableData = TranspositionTable.retrieveFromTable(board.getZobrist());
-//        if (previousTableData != 0) {
-//            score = TranspositionTable.getScore(previousTableData);
-//            hashMove = TranspositionTable.getMove(previousTableData);
-//
-//            if (TranspositionTable.getDepth(previousTableData) >= depth && PVLine.verifyMove(board, hashMove, moves)){
-//                int flag = TranspositionTable.getFlag(previousTableData);
-//                if (flag == EXACT) {
-//                    if (ply == 0){
-//
-//                        if (aiMove != hashMove) {
-//                            List<String> flippy = new ArrayList<>(2);
-//                            flippy.add("");
-//                            flippy.add("");
-//                            flippy.set(0, MoveParser.toString(aiMove));
-//                            flippy.set(1, MoveParser.toString(hashMove));
-//                            flips.add(flippy);
-//
-//                            setAiMove(hashMove);
-//                        }
-//
-//                        aiMoveScore = score;
-//                    }
-//                    return score;
-//                } else if (flag == LOWERBOUND) {
-//                    alpha = Math.max(alpha, score);
-//                } else if (flag == UPPERBOUND) {
-//                    beta = Math.min(beta, score);
-//                }
-//                if (alpha >= beta) {
-//                    if (ply == 0){
-//
-//                        if (aiMove != hashMove) {
-//
-//                            List<String> flippy = new ArrayList<>(2);
-//                            flippy.add("");
-//                            flippy.add("");
-//                            flippy.set(0, MoveParser.toString(aiMove));
-//                            flippy.set(1, MoveParser.toString(hashMove));
-//                            flips.add(flippy);
-//
-//                            setAiMove(hashMove);
-//                        }
-//
-//                        aiMoveScore = alpha;
-//                    }
-//                    return alpha;
-//                }
-//            }   
-//            else {
-//                hashMove = 0;
-//                score = 0;
-//            }
-//        }
+        boolean thisIsAPrincipleVariationNode = (beta - alpha != 1);
 
+        if (!thisIsAPrincipleVariationNode && !boardInCheck) {
 
-//        boolean thisIsAPrincipleVariationNode = (beta - alpha != 1);
-//
-//        if (!thisIsAPrincipleVariationNode && !boardInCheck) {
-//            if (moves == null){
-//                moves = board.generateLegalMoves();
-//            }
-//
-//            if (nullMoveCounter < 2 && depth > 3 && !(populationCount(board.allPieces()) < 9)){
-//                int R = 2;
-//
-//                Chessboard initial = new Chessboard(board);
-//
-//                board.makeNullMoveAndFlipTurn();
-//
-//                int nullScore = -principleVariationSearch(board,
-//                        startTime, timeLimitMillis,
-//                        originalDepth, depth - R - 1, ply + 1,
-//                        -beta, -beta + 1, nullMoveCounter + 1, false);
-//
-//                board.unMakeNullMoveAndFlipTurn();
-//
-//                Assert.assertEquals(initial, board);
-//
-//                if (nullScore >= beta){
-//                    if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY){
-//                        nullScore = beta;
-//                    }
-//
-//                    return nullScore;
-//                }
-//            }
-//        }
+            int R = nullMoveDepthReduction(depth);
+
+            if (isNullMoveOkHere(board, nullMoveCounter, depth, R)){
+
+                Chessboard initial = new Chessboard(board);
+
+                board.makeNullMoveAndFlipTurn();
+
+                int nullScore = -principleVariationSearch(board,
+                        depth - R - 1, ply + 1,
+                        -beta, -beta + 1, nullMoveCounter + 1);
+
+                board.unMakeNullMoveAndFlipTurn();
+
+                Assert.assertEquals(initial, board);
+
+                if (nullScore >= beta){
+                    if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY){
+                        nullScore = beta;
+                    }
+                    return nullScore;
+                }
+            }
+        }
 
         MoveOrderer.scoreMoves(moves, board, board.isWhiteTurn(), ply, hashMove);
 
@@ -375,6 +237,7 @@ public class Engine {
             }
 
             Assert.assertTrue(moves[i] > MoveOrderingConstants.MOVE_SIZE_LIMIT);
+
             if (i == 0) {
                 Assert.assertTrue(moves[i] >= moves[i + 1]);
             } else {
@@ -384,11 +247,7 @@ public class Engine {
 
             int move = moves[i] & MoveOrderer.MOVE_MASK;
             int moveScore = MoveOrderer.getMoveScore(moves[i]);
-            
-            if ((move & MoveOrderer.MOVE_MASK) > Temp.biggy) {
-                Temp.biggy = (move & MoveOrderer.MOVE_MASK);
-            }
-            
+
             boolean captureMove = MoveParser.isCaptureMove(move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
             boolean givesCheckMove = MoveOrderer.checkingMove(board, move);
@@ -404,65 +263,50 @@ public class Engine {
             } else {
                 score = alpha + 1;
 
-                int R = 2 + depth / 3;
-                
+                int R = lateMoveDepthReduction(depth);
+
                 if (numberOfMovesSearched > 3
                         && depth > R && !captureMove && !promotionMove
                         && !pawnToSeven && !boardInCheck && !givesCheckMove) {
 
                     score = -principleVariationSearch(board,
-                            startTime, timeLimitMillis,
-                            originalDepth, depth - R - 1, ply + 1,
-                            -alpha - 1, -alpha, nullMoveCounter, true);
+                            depth - R - 1, ply + 1,
+                            -alpha - 1, -alpha, nullMoveCounter);
                 }
 
                 if (numberOfMovesSearched > 1 && score > alpha) {
                     score = -principleVariationSearch(board,
-                            startTime, timeLimitMillis,
-                            originalDepth, depth - 1, ply + 1,
-                            -alpha - 1, -alpha, 0, reducedSearch);
+                            depth - 1, ply + 1,
+                            -alpha - 1, -alpha, 0);
                 }
 
                 if (score > alpha) {
                     score = -principleVariationSearch(board,
-                            startTime, timeLimitMillis,
-                            originalDepth, depth - 1, ply + 1,
-                            -beta, -alpha, 0, false);
+                            depth - 1, ply + 1,
+                            -beta, -alpha, 0);
                 }
             }
+
             board.unMakeMoveAndFlipTurn();
 
             if (score > bestScore) {
                 bestScore = score;
                 bestMove = move & MoveOrderer.MOVE_MASK;
                 alpha = Math.max(alpha, score);
+                
                 if (ply == 0) {
-
-                    if (aiMove != bestMove){
-                        List<String> flippy = new ArrayList<>(2);
-                        flippy.add("");
-                        flippy.add("");
-                        flippy.set(0, MoveParser.toString(aiMove));
-                        flippy.set(1, MoveParser.toString(bestMove));
-                        flips.add(flippy);
-
-                        setAiMove(bestMove);
-                    }
-
+                    setAiMove(bestMove);
                     aiMoveScore = bestScore;
                 }
             }
 
             if (alpha >= beta) {
-
                 if (alpha > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
                     updateMateKillerMoves(move, ply);
                 } else {
                     updateKillerMoves(move, ply);
                 }
-
                 MoveOrderer.updateHistoryMoves(move, ply);
-
                 break;
             }
         }

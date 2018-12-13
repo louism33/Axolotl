@@ -17,7 +17,7 @@ import java.util.List;
 class ReflectionTests {
 
     private static final int timeLimit = 60_000;
-    boolean[][] successOrFailure = new boolean[4][50];
+    private final boolean[][] successOrFailure = new boolean[4][50];
 
     @AfterAll
     public void compare(){
@@ -50,7 +50,7 @@ class ReflectionTests {
         return answers;
     }
 
-    private static int i = 0;
+    private static final int i = 0;
     private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
     public ReflectionTests(Object edp, Object name) {

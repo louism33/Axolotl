@@ -10,8 +10,8 @@ public class MoveOrderingConstants {
      */
     private static int bestMoveScorePossible = 63;
     public final static int MOVE_SIZE_LIMIT = 0x2000000;
-    static int moveScoreOffset = 25;
-    static int MOVE_SCORE_MASK = 0xfe000000;
+    static final int moveScoreOffset = 25;
+    static final int MOVE_SCORE_MASK = 0xfe000000;
 
     static final int MAX_HISTORY_MOVE_SCORE = 48;
     static final int CAPTURE_BIAS = 50;

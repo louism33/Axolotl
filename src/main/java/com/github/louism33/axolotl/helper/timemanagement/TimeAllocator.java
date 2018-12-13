@@ -34,7 +34,6 @@ public class TimeAllocator {
         }
         if (weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
             // not enough time to search another ply
-            System.out.println("Time to stop searching");
             outOfTime = true;
         }
 
@@ -44,7 +43,6 @@ public class TimeAllocator {
     public static void printManager(Chessboard board, boolean printNow){
         if (printNow || (EngineSpecifications.INFO_LOG && timeToPrint())){
             try {
-                System.out.println("Print now: " + printNow);
                 lastPrint = System.currentTimeMillis();
                 UCIPrinter.printPV(board);
             } catch (IllegalUnmakeException e) {

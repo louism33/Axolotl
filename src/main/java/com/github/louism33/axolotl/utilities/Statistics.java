@@ -7,57 +7,57 @@ import java.util.Arrays;
 public class Statistics {
     
     private final int[] whichMoveWasTheBest = new int[60];
-    public static final int[] whichMoveWasTheBestQuiescence = new int[60];
+    private static final int[] whichMoveWasTheBestQuiescence = new int[60];
 
-    public static long numberOfMovesMade = 0;
-    public static long numberOfQuiescentMovesMade = 0;
-    public static long numberOfEvals = 0;
-    public static long numberOfQuiescentEvals = 0;
-    public static int numberOfCheckmates = 0;
-    public static int numberOfStalemates = 0;
+    private static final long numberOfMovesMade = 0;
+    private static final long numberOfQuiescentMovesMade = 0;
+    private static final long numberOfEvals = 0;
+    private static final long numberOfQuiescentEvals = 0;
+    private static final int numberOfCheckmates = 0;
+    private static final int numberOfStalemates = 0;
     private static int numberOfFailHighs = 0;
-    public static int numberOfNullMoveHits = 0;
-    public static int numberOfNullMoveMisses = 0;
-    public static int numberOfPVSHits = 0;
-    public static int numberOfPVSMisses = 0;
-    public static int numberOfLateMovePrunings = 0;
-    public static int numberOfLateMoveReductions = 0;
-    public static int numberOfLateMoveReductionsHits = 0;
-    public static int numberOfLateMoveReductionsMisses = 0;
+    private static final int numberOfNullMoveHits = 0;
+    private static final int numberOfNullMoveMisses = 0;
+    private static final int numberOfPVSHits = 0;
+    private static final int numberOfPVSMisses = 0;
+    private static final int numberOfLateMovePrunings = 0;
+    private static final int numberOfLateMoveReductions = 0;
+    private static final int numberOfLateMoveReductionsHits = 0;
+    private static final int numberOfLateMoveReductionsMisses = 0;
     public static int numberOfCheckExtensions = 0;
     public static int numberOfPassedPawnExtensions = 0;
-    public static int numberOfSuccessfulFutilities = 0;
-    public static int numberOfFailedFutilities = 0;
-    public static int numberOfSuccessfulQuiescenceFutilities = 0;
-    public static int numberOfFailedQuiescenceFutilities = 0;
+    private static final int numberOfSuccessfulFutilities = 0;
+    private static final int numberOfFailedFutilities = 0;
+    private static final int numberOfSuccessfulQuiescenceFutilities = 0;
+    private static final int numberOfFailedQuiescenceFutilities = 0;
 
-    public static int numberOfSuccessfulSEEs = 0;
-    public static int numberOfSuccessfulQuiescentSEEs = 0;
+    private static final int numberOfSuccessfulSEEs = 0;
+    private static final int numberOfSuccessfulQuiescentSEEs = 0;
     
-    public static int numberOfSuccessfulAlphaRazors = 0;
-    public static int numberOfFailedAlphaRazors = 0;
-    public static int numberOfSuccessfulBetaRazors = 0;
-    public static int numberOfSuccessfulAspirations = 0;
-    public static int numberOfFailedAspirations = 0;
+    private static final int numberOfSuccessfulAlphaRazors = 0;
+    private static final int numberOfFailedAlphaRazors = 0;
+    private static final int numberOfSuccessfulBetaRazors = 0;
+    private static final int numberOfSuccessfulAspirations = 0;
+    private static final int numberOfFailedAspirations = 0;
     
-    public static int numberOfIIDs = 0;
-    public static int numberOfSuccessfulIIDs = 0;
-    public static int numberOfFailedIIDs = 0;
+    private static final int numberOfIIDs = 0;
+    private static final int numberOfSuccessfulIIDs = 0;
+    private static final int numberOfFailedIIDs = 0;
 
-    private static int numberOfVictoriousKillersOne = 0;
-    private static int numberOfVictoriousKillersTwo = 0;
-    private static int numberOfVeteranVictoriousKillersOne = 0;
-    private static int numberOfVeteranVictoriousKillersTwo = 0;
+    private static final int numberOfVictoriousKillersOne = 0;
+    private static final int numberOfVictoriousKillersTwo = 0;
+    private static final int numberOfVeteranVictoriousKillersOne = 0;
+    private static final int numberOfVeteranVictoriousKillersTwo = 0;
 
-    private static int numberOfVictoriousMaters = 0;
+    private static final int numberOfVictoriousMaters = 0;
 
-    public static int numberOfSearchesWithHash = 0;
-    public static int numberOfSearchesWithoutHash = 0;
+    private static final int numberOfSearchesWithHash = 0;
+    private static final int numberOfSearchesWithoutHash = 0;
 
-    public static int numberOfExacts = 0;
-    public static int numberOfLowerBounds = 0;
-    public static int numberOfUpperBounds = 0;
-    public static int numberOfHashBetaCutoffs = 0;
+    private static final int numberOfExacts = 0;
+    private static final int numberOfLowerBounds = 0;
+    private static final int numberOfUpperBounds = 0;
+    private static final int numberOfHashBetaCutoffs = 0;
 
     public void infoLog(long endTime, long startTime, int move){
         long time = endTime - startTime;

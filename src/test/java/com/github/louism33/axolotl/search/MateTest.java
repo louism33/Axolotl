@@ -1,8 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.evaluation.EvaluationConstants;
-import com.github.louism33.axolotl.evaluation.Evaluator;
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
@@ -16,8 +13,6 @@ import java.util.List;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
-import static com.github.louism33.axolotl.search.Engine.flips;
-import static standalone.Temp.biggy;
 
 @RunWith(Parameterized.class)
 public class MateTest {
@@ -28,12 +23,7 @@ public class MateTest {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        int stopAt = 29;
-        
         for (int i = 0; i < checkmatePositions.length; i++) {
-            if (i >= stopAt){
-//                break;
-            }
             String pos = checkmatePositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(pos);
@@ -59,8 +49,7 @@ public class MateTest {
 
         System.out.println(EPDObject.getBoard());
         
-//        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
-        int move = Engine.searchFixedDepth(EPDObject.getBoard(), 10);
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
         
         System.out.print("Best move found:    "+MoveParser.toString(move));
         
@@ -72,14 +61,6 @@ public class MateTest {
         if (Engine.nps > 0) {
             System.out.println("NPS:                " + Engine.nps);
         }
-        
-        System.out.println("Amount of flipflopping: " + Engine.flipflop);
-        System.out.println("Realistic flip flop   : " + Engine.realisticflipflop);
-
-        System.out.println();
-        System.out.println(flips);
-        System.out.println();
-        System.out.println(MoveParser.toString(biggy) +"    "+biggy);
         
         Assert.assertTrue(winningMoveDestination.contains(move));
     }

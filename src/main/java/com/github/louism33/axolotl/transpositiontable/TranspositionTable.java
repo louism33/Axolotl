@@ -19,12 +19,11 @@ public class TranspositionTable {
         int index = Integer.numberOfTrailingZeros(mb);
         Assert.assertTrue(Integer.bitCount(mb) == 1
                 && index < 16);
-        int size = mb; 
-        
+
         moduloAmount = mb;
         
-        keys = new long[size];
-        entries = new long[size];
+        keys = new long[mb];
+        entries = new long[mb];
         shiftAmount = 64 - index;
         
         tableReady = true;

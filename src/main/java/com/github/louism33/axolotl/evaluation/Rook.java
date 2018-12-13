@@ -1,14 +1,13 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.*;
+import com.github.louism33.chesscore.BitOperations;
+import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.PieceMove;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.Evaluator.getFile;
 import static com.github.louism33.axolotl.evaluation.Evaluator.getRow;
-import static com.github.louism33.chesscore.BitOperations.getIndexOfFirstPiece;
-import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BitboardResources.*;
-import static com.github.louism33.chesscore.BitboardResources.FILES;
 
 class Rook {
 

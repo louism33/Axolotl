@@ -16,7 +16,7 @@ public class EvaluationConstants {
     public static final int SHORT_MAXIMUM = 31000;
     public static final int IN_CHECKMATE_SCORE = -30000;
     public static final int CHECKMATE_ENEMY_SCORE = -IN_CHECKMATE_SCORE;
-    public static final int IN_CHECKMATE_SCORE_MAX_PLY = IN_CHECKMATE_SCORE + 100;
+    private static final int IN_CHECKMATE_SCORE_MAX_PLY = IN_CHECKMATE_SCORE + 100;
     public static final int CHECKMATE_ENEMY_SCORE_MAX_PLY = -IN_CHECKMATE_SCORE_MAX_PLY;
     public static final int IN_STALEMATE_SCORE = 0;
 
@@ -108,7 +108,7 @@ public class EvaluationConstants {
     static final int QUEEN_HATES_PAWNS                    = 10;
     
     // king valuation
-    static int KING_PAWN_PROTECT_BONUS              = 5;
+    static final int KING_PAWN_PROTECT_BONUS              = 5;
     static final int KING_PROTECTOR_SCORE                 = 1;
     static final int KING_AGGRESSOR_SCORE                 = 1;
 

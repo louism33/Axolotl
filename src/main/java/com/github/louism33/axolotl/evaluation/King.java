@@ -5,7 +5,7 @@ import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.PieceMove;
 import org.junit.Assert;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.KING_PAWN_PROTECT_BONUS;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 
 class King {

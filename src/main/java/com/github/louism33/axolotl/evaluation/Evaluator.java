@@ -2,7 +2,6 @@ package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
-import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.Bishop.evalBishopByTurn;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
@@ -322,11 +321,11 @@ public class Evaluator {
         }
     }
 
-    public static String evalBreakdown(int[] moves, Chessboard board, boolean white,
-                                       long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
-                                       long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
-                                       long enemies, long friends, long allPieces,
-                                       long pinnedPieces, boolean inCheck){
+    private static String evalBreakdown(int[] moves, Chessboard board, boolean white,
+                                        long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
+                                        long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
+                                        long enemies, long friends, long allPieces,
+                                        long pinnedPieces, boolean inCheck){
 
 
         String line = "----------------------------------------------------------------\n";

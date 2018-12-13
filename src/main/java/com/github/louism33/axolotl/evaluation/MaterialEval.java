@@ -5,7 +5,6 @@ import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.chesscore.BitOperations.populationCount;
 
 class MaterialEval {
 

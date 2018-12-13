@@ -12,9 +12,9 @@ import static com.github.louism33.chesscore.MoveParser.*;
 
 public class MoveOrderer {
 
-    public static final int[] mateKillers = new int[128];
-    public static final int[][] killerMoves = new int[128][2];
-    public static final int[][] historyMoves = new int[64][64];
+    private static final int[] mateKillers = new int[128];
+    private static final int[][] killerMoves = new int[128][2];
+    private static final int[][] historyMoves = new int[64][64];
 
     public static final int MOVE_MASK = ~MOVE_SCORE_MASK;
 
@@ -221,7 +221,7 @@ public class MoveOrderer {
         historyMoves[getSourceIndex(move)][getDestinationIndex(move)] += (2 * ply);
     }
 
-    public static int historyMoveScore(int move){
+    private static int historyMoveScore(int move){
         int maxMoveScoreOfHistory = MAX_HISTORY_MOVE_SCORE;
         int historyScore = historyMoves[getSourceIndex(move)][getDestinationIndex(move)];
         return historyScore > maxMoveScoreOfHistory ? maxMoveScoreOfHistory : historyScore;
