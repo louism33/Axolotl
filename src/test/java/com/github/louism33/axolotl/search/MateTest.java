@@ -1,8 +1,8 @@
-package com.github.louism33.axolotl.evaluation;
+package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
 import com.github.louism33.chesscore.MoveParser;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +12,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+
 @RunWith(Parameterized.class)
 public class MateTest {
 
-    private static final int timeLimit = 20_000;
+    private static final int timeLimit = 10_000;
+    private static int successes = 0;
+    
+    @AfterClass
+    public static void finalSuccessTally(){
+        System.out.println("Successful WAC sanity tests: " + successes);
+        Assert.assertTrue(successes > 140);
+    }
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -40,18 +50,33 @@ public class MateTest {
 
     @Test
     public void test() {
-        List<Integer> winningMoveDestination = EPDObject.getBestMoves();
+        List<Integer> winningMoves = EPDObject.getBestMoves();
         System.out.println();
         System.out.println(EPDObject.getBoardFen());
-        System.out.println("Move to get:        " + MoveParser.toString(winningMoveDestination.get(0)));
+        System.out.println("Move to get:        " + MoveParser.toString(winningMoves.get(0)));
 
+        System.out.println(EPDObject.getBoard());
+        
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
-        System.out.println("Best move found:    "+MoveParser.toString(move));
+        
+        System.out.print("Best move found:    "+MoveParser.toString(move));
+        
+        if (Engine.getAiMoveScore() >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
+            System.out.println(", mate in " + (CHECKMATE_ENEMY_SCORE - Engine.getAiMoveScore())+" half plies.");
+        }else {
+            System.out.println(", score: "+Engine.getAiMoveScore());
+        }
         if (Engine.nps > 0) {
             System.out.println("NPS:                " + Engine.nps);
         }
-
-        Assert.assertTrue(winningMoveDestination.contains(move));
+        
+        if (winningMoves.contains(move)){
+            System.out.println("success");
+            successes++;
+        }
+        else {
+            System.out.println("failure");
+        }
     }
 
     private static final String positions = "" +

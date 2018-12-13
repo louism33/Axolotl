@@ -1,106 +1,101 @@
 package com.github.louism33.axolotl.search;
 
+import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
+import com.github.louism33.axolotl.moveordering.MoveOrderingConstants;
+import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
 import com.github.louism33.chesscore.MoveParser;
+import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
-import static com.github.louism33.axolotl.search.FutilityPruning.quiescenceFutilityMargin;
-import static com.github.louism33.axolotl.search.SEEPruning.seeScore;
 
 class QuiescenceSearch {
 
-    /*
-    Quiescence Search: 
-    special search for captures only
-     */
     static int quiescenceSearch(Chessboard board, int alpha, int beta) throws IllegalUnmakeException {
 
         int[] moves = board.generateLegalMoves();
 
-        /*
-        the score we get from not making captures anymore
-         */
-        int standPatScore = Evaluator.eval(board, board.isWhiteTurn(), moves);
+        int standPatScore = EvaluationConstants.SHORT_MINIMUM;
+
+        if (!board.inCheck(board.isWhiteTurn())){
+            standPatScore = Evaluator.evalNOCM(board, board.isWhiteTurn(), moves);
+
+            if (standPatScore >= beta){
+                return standPatScore;
+            }
+
+            if (standPatScore > alpha){
+                alpha = standPatScore;
+            }
+        }
+
+        boolean inCheck = board.inCheck(board.isWhiteTurn());
 
         Assert.assertFalse(standPatScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
 
-        if (standPatScore >= beta){
-            return standPatScore;
+        if (!inCheck) {
+            MoveOrderer.scoreMovesQuiescence(moves, board);
+            int realMoves = MoveParser.numberOfRealMoves(moves);
+            Ints.sortDescending(moves, 0, realMoves);
+        }
+        else {
+            MoveOrderer.scoreMoves(moves, board, 0, 0);
+            int realMoves = MoveParser.numberOfRealMoves(moves);
+            Ints.sortDescending(moves, 0, realMoves);
         }
 
-        if (standPatScore > alpha){
-            alpha = standPatScore;
-        }
-
-        /*
-        no more captures to make or no more moves at all
-         */
-        if (QuiescentSearchUtils.isBoardQuiet(board, moves) || moves.length == 0){
-            Engine.statistics.numberOfQuiescentEvals++;
-            return standPatScore;
-        }
-
-        MoveOrderer.scoreMovesQuiescence(moves, board, board.isWhiteTurn());
 
         int numberOfMovesSearched = 0;
         for (int i = 0; i < moves.length; i++) {
-            
+
             if (moves[i] == 0){
                 break;
             }
-            
-            int loudMove = moves[i];
-            
+
+            int loudMoveScore = MoveOrderer.getMoveScore(moves[i]);
+
+            if (i == 0) {
+                Assert.assertTrue(moves[i] >= moves[i + 1]);
+            } else {
+                Assert.assertTrue(moves[i] <= moves[i - 1]);
+                Assert.assertTrue(moves[i] >= moves[i + 1]);
+            }
+
+            if (moves[i] < MoveOrderingConstants.MOVE_SIZE_LIMIT) {
+                System.out.println(MoveParser.toString(moves[i]) + "    " + moves[i] + "    score: " + loudMoveScore);
+                Art.printLong(moves[i]);
+                Art.printLong(MoveOrderingConstants.MOVE_SIZE_LIMIT);
+                Assert.assertTrue(moves[i] > MoveOrderingConstants.MOVE_SIZE_LIMIT);
+            }
+
+            int loudMove = moves[i] & MoveOrderer.MOVE_MASK;
+
             boolean captureMove = MoveParser.isCaptureMove(loudMove);
             boolean promotionMove = MoveParser.isPromotionMove(loudMove);
 
-            Assert.assertTrue(captureMove || promotionMove);
-            
-            /*
-            Quiescence Futility Pruning:
-            if this is a particularly low scoring situation skip this move
-             */
-            if (Engine.getEngineSpecifications().ALLOW_QUIESCENCE_FUTILITY_PRUNING) {
-                if (captureMove
-                        && quiescenceFutilityMargin
-                        + standPatScore
-                        + Evaluator.getScoreOfDestinationPiece(board, loudMove)
-                        < alpha) {
-                    Engine.statistics.numberOfSuccessfulQuiescenceFutilities++;
-                    continue;
-                } else {
-                    Engine.statistics.numberOfFailedQuiescenceFutilities++;
-                }
-            }
-
-            if (captureMove && Engine.getEngineSpecifications().ALLOW_QUIESCENCE_SEE_PRUNING) {
-                int seeScore = seeScore(board, loudMove);
-                if (seeScore <= -300) {
-                    Engine.statistics.numberOfSuccessfulQuiescentSEEs++;
-                    continue;
-                }
+            if (!inCheck) {
+                Assert.assertTrue(captureMove || promotionMove);
             }
 
             board.makeMoveAndFlipTurn(loudMove);
             numberOfMovesSearched++;
-            Engine.statistics.numberOfQuiescentMovesMade++;
+            Engine.quiescentMovesMade++;
 
             int score = -quiescenceSearch(board, -beta, -alpha);
 
             board.unMakeMoveAndFlipTurn();
 
-            if (score >= beta) {
-                Engine.statistics.whichMoveWasTheBestQuiescence[numberOfMovesSearched - 1]++;
-                return score;
-            }
-
             if (score > alpha) {
                 alpha = score;
+                if (alpha >= beta) {
+                    return alpha;
+                }
             }
+
         }
         return alpha;
     }

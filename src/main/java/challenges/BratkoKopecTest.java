@@ -77,7 +77,7 @@ public class BratkoKopecTest {
             "r2qnrnk/p2b2b1/1p1p2pp/2pPpp2/1PP1P3/PRNBB3/3QNPPP/5RK1 w - - bm f4; id \"BK.24\";" +
             "";
 
-    private static final String[] splitUpBKs = bkTests.split("\\\n");
+    private static final String[] splitUpBKs = bkTests.split("\n");
 
 }
     

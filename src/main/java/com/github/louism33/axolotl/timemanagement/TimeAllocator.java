@@ -1,36 +1,40 @@
 package com.github.louism33.axolotl.timemanagement;
 
-import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 
 public class TimeAllocator {
-    
-    public static long allocateTime(Chessboard board, long maxTime){
+
+    private static long lastPrint;
+
+    public static long allocateTime(long maxTime){
         return maxTime / 25;
     }
 
-    private static boolean weShouldStopSearching(long timeLeft, long maxTime){
-        return timeLeft > maxTime / 1.2;
+    private static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){
+        return timeLeftMillis < (2 * timeLimitMillis) / 3;
     }
-    
+
     public static boolean outOfTime(long startTime, long timeLimitMillis){
+
+        lastPrint = Math.max(lastPrint, startTime);
+
         boolean outOfTime = false;
-        
-        if (!Engine.getEngineSpecifications().ALLOW_TIME_LIMIT){
+        if (!EngineSpecifications.ALLOW_TIME_LIMIT){
             return false;
         }
-        
+
         long currentTime = System.currentTimeMillis();
-        long maxTime = startTime + timeLimitMillis;
-        long timeLeft = maxTime - currentTime;
-        if (timeLeft < 0) {
+        long stopTime = startTime + timeLimitMillis;
+        long timeLeftMillis = stopTime - currentTime;
+        if (timeLeftMillis < 0) {
             outOfTime = true;
         }
-        if (weShouldStopSearching(timeLeft, maxTime)) {
+        if (weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
             // not enough time to search another ply
             outOfTime = true;
         }
-        
+
         return outOfTime;
     }
+
 }

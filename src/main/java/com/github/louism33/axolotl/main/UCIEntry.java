@@ -5,6 +5,7 @@ import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 
@@ -13,13 +14,13 @@ import java.util.List;
 import static com.github.louism33.axolotl.main.UCIBoardParser.convertGenericBoardToChessboard;
 import static com.github.louism33.axolotl.main.UCIBoardParser.convertMyMoveToGenericMove;
 
-public class UCIEntry extends AbstractEngine {
+class UCIEntry extends AbstractEngine {
 
     private Chessboard board;
     private GenericBoard genericBoard;
     private List<GenericMove> moves;
 
-    public UCIEntry(){
+    private UCIEntry(){
         super();
     }
     
@@ -31,8 +32,8 @@ public class UCIEntry extends AbstractEngine {
     @Override
     public void receive(EngineInitializeRequestCommand command) {
         System.out.println("Starting Engine");
-        Engine.setup(this);
-        this.getProtocol().send(new ProtocolInitializeAnswerCommand("axolotl", "Louis James Mackenzie-Smith"));
+        Engine.setup();
+        this.getProtocol().send(new ProtocolInitializeAnswerCommand("axolotl_v2.0", "Louis James Mackenzie-Smith"));
     }
 
     @Override
@@ -61,7 +62,7 @@ public class UCIEntry extends AbstractEngine {
         moves = null;
         board = null;
         genericBoard = null;
-        Engine.setup(this);
+        Engine.setup();
         System.out.println("New Game");
     }
 
@@ -94,12 +95,12 @@ public class UCIEntry extends AbstractEngine {
             System.out.println("Search for move, clock time: " + clock);
             return Engine.searchMyTime(board, clock);
         }
-        else if (command.getMoveTime() != 0){
+        else if (command.getMoveTime() != null && command.getMoveTime() != 0){
             System.out.println("Search for move, fixed time: " + command.getMoveTime());
             return Engine.searchFixedTime(board, command.getMoveTime());
         }
         else {
-            int searchDepth = Engine.MAX_DEPTH;
+            int searchDepth = EngineSpecifications.MAX_DEPTH;
             if (command.getInfinite()){
                 return Engine.searchFixedDepth(board, searchDepth);
             }
@@ -141,21 +142,10 @@ public class UCIEntry extends AbstractEngine {
         System.out.println("I don't know how to ponder :(");
     }
 
-    public void sendInformation(ProtocolInformationCommand protocolInformationCommand){
-        this.getProtocol().send(protocolInformationCommand);
-    }
-
     public static void main(String[] args) {
-
-        Chessboard board = new Chessboard();
-        System.out.println(board);
-        int move = Engine.searchFixedDepth(board, 6);
-        System.out.println(MoveParser.toString(move));
-        
         System.out.println("Starting everything");
-        // start the Engine
-//        Thread thread = new Thread( new UCIEntry() );
-//        thread.start();
+        Thread thread = new Thread( new UCIEntry() );
+        thread.start();
     }
 
 }

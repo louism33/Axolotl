@@ -77,6 +77,6 @@ public class KaufmanTests {
             "8/3nk3/3pp3/1B6/8/3PPP2/4K3/8 w - - bm Bxd7; id \"position 25\";" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\\\n");
+    private static final String[] splitUpWACs = wacTests.split("\n");
     
 }

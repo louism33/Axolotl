@@ -83,6 +83,6 @@ public class ZugzwangPositions {
             "8/3p1N2/8/4B3/2K2p2/b3P3/pP2P3/k7 b - - bm d6; id \"ZPTS.30\";" +
             "";
 
-    private static final String[] splitUpZZs = zzTests.split("\\\n");
+    private static final String[] splitUpZZs = zzTests.split("\n");
 
 }

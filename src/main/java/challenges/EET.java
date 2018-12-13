@@ -156,6 +156,6 @@ public class EET {
             "8/1k6/8/Q7/7p/6p1/6pr/6Kb w - - bm Qc5; id \"E_E_T 70b - D vs T&L&B\";" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\\\n");
+    private static final String[] splitUpWACs = wacTests.split("\n");
 
 }

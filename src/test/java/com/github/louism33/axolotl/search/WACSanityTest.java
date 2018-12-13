@@ -1,6 +1,5 @@
-package com.github.louism33.axolotl.evaluation;
+package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.AfterClass;
@@ -14,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 
 @RunWith(Parameterized.class)
 public class WACSanityTest {
@@ -32,6 +34,7 @@ public class WACSanityTest {
         List<Object[]> answers = new ArrayList<>();
 
         for (int i = 0; i < splitUpWACs.length; i++) {
+
             String splitUpWAC = splitUpWACs[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
@@ -52,8 +55,9 @@ public class WACSanityTest {
     public void test() {
         List<Integer> winningMoves = EPDObject.getBestMoves();
         List<Integer> losingMoves = EPDObject.getAvoidMoves();
-        System.out.println(EPDObject.getId()+": ");
+//        System.out.println(EPDObject.getId()+": ");
         System.out.println(EPDObject.getBoardFen());
+//        System.out.println(EPDObject.getBoard());
         System.out.println("Move(s) to get:     " + Arrays.toString(MoveParser.toString(winningMoves)));
 
         if (losingMoves.size() > 0){
@@ -61,10 +65,18 @@ public class WACSanityTest {
         }
 
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
-        System.out.println("Best move found:    "+MoveParser.toString(move));
+        
+        System.out.print("Best move found:    "+MoveParser.toString(move));
+        
+        if (Engine.getAiMoveScore() >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
+            System.out.println(", mate in " + (CHECKMATE_ENEMY_SCORE - Engine.getAiMoveScore())+" half plies.");
+        }else {
+            System.out.println(", score: "+Engine.getAiMoveScore());
+        }
         if (Engine.nps > 0) {
             System.out.println("NPS:                " + Engine.nps);
         }
+        
         if (winningMoves.contains(move) && !losingMoves.contains(move)){
             System.out.println("success");
             successes++;
@@ -75,9 +87,8 @@ public class WACSanityTest {
 
         System.out.println("total successes: " + successes);
         System.out.println();
+        
     }
-
-
 
     private static final String wacTests = "" +
             "2rr3k/pp3pp1/1nnqbN1p/3pN3/2pP4/2P3Q1/PPB4P/R4RK1 w - - bm Qg6; id \"WAC.001\";\n" +

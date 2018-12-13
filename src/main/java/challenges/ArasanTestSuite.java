@@ -253,6 +253,6 @@ public class ArasanTestSuite {
             "4rrk1/1bq1pp2/p2p1n1Q/1pn2p1p/4P3/P1N2P2/BPP3PP/2KRR3 w - - bm g4; id \"arasan20.200\";  " +
             "";
 
-    private static final String[] splitUpArasan = arasanTests.split("\\\n");
+    private static final String[] splitUpArasan = arasanTests.split("\n");
 
 }

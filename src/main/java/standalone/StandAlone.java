@@ -1,4 +1,4 @@
-package com.github.louism33.axolotl.main;
+package standalone;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.Chessboard;
@@ -7,7 +7,6 @@ import com.github.louism33.chesscore.MoveParser;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-@SuppressWarnings("FieldCanBeLocal")
 class StandAlone {
 
     private static int totalMoves = 1;
@@ -21,10 +20,8 @@ class StandAlone {
         Chessboard board = new Chessboard();
         String command, prompt;
         int move;
-//        Engine engine = new Engine();
 
         while(true) {
-
             while (true) {
 
                 if (board.isWhiteTurn()){
