@@ -11,13 +11,13 @@ class SearchUtils {
 
     static final int quiescenceFutilityMargin = 200;
 
-    private static final int[] futilityMargin = {0, 150, 250, 350, 450, 550, 650};
+    static final int[] futilityMargin = {0, 150, 250, 350, 450, 550, 650};
     private static final int futilityBelowThisDepth = futilityMargin.length;
 
-    private static final int[] alphaRazorMargin = {0, 300, 500, 650};
+    static final int[] alphaRazorMargin = {0, 300, 500, 650};
     private static final int alphaRazorBelowThisDepth = alphaRazorMargin.length;
 
-    private static final int[] betaRazorMargin = {0, 150, 250, 350, 450, 650, 750};
+    static final int[] betaRazorMargin = {0, 150, 250, 350, 450, 650, 750};
     private static final int betaRazorBelowThisDepth = betaRazorMargin.length;
 
     static int extensions(Chessboard board, int ply, boolean boardInCheck, int[] moves){
@@ -54,7 +54,7 @@ class SearchUtils {
                 ;
     }
 
-    static boolean isBetaRazoringMoveOkHere(Chessboard board, int depth, int staticBoardEval){
+    static boolean isBetaRazoringOkHere(Chessboard board, int depth, int staticBoardEval){
         return depth < betaRazorBelowThisDepth
                 && staticBoardEval < CHECKMATE_ENEMY_SCORE_MAX_PLY
                 ;
@@ -92,7 +92,7 @@ class SearchUtils {
         return populationCount(allMyPieces ^ (myPawns | myKing)) <= 1;
     }
 
-    private static boolean onlyPawnsLeftForPlayer(Chessboard board, boolean white){
+    static boolean onlyPawnsLeftForPlayer(Chessboard board, boolean white){
         long myPawns, myKing, allMyPieces;
         if (white){
             allMyPieces = board.whitePieces();
@@ -110,17 +110,18 @@ class SearchUtils {
     static boolean isFutilityPruningAllowedHere(Chessboard board, int move, int depth,
                                                 boolean promotionMove,
                                                 boolean givesCheckMove,
-                                                boolean pawnToSix, boolean pawnToSeven){
+                                                boolean pawnToSix, boolean pawnToSeven, int numberOfMovesSearched){
         return depth < futilityBelowThisDepth
                 && !promotionMove
                 && !givesCheckMove
                 && !pawnToSix
                 && !pawnToSeven
+                && numberOfMovesSearched > 2
                 ;
     }
 
 
-    static int lateMoveDepthReduction(int depth){
+    static int lateMoveDepthReduction(int depth, int moveScore){
         return 2;
     }
     

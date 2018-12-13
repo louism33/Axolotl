@@ -14,7 +14,7 @@ public class TimeAllocator {
     }
 
     private static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){
-        return timeLeftMillis < timeLimitMillis / 2;
+        return timeLeftMillis < (2 * timeLimitMillis) / 3;
     }
 
     public static boolean outOfTime(long startTime, long timeLimitMillis){

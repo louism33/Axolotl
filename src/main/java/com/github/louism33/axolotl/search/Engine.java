@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.search;
 
+import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.helper.timemanagement.TimeAllocator;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
@@ -20,7 +21,6 @@ import static com.github.louism33.axolotl.search.EngineSpecifications.ASPIRATION
 import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
-import static com.github.louism33.chesscore.BitOperations.populationCount;
 
 public class Engine {
 
@@ -158,15 +158,12 @@ public class Engine {
 
             int score;
 
-//            score = principleVariationSearch(board,
-//                    depth, 0, SHORT_MINIMUM, SHORT_MAXIMUM, 0);
-
             score = aspirationSearch(board, depth, aspirationScore);
 
             TimeAllocator.printManager(board, true);
 
             aspirationScore = score;
-            
+
             if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
                 break;
             }
@@ -174,7 +171,7 @@ public class Engine {
     }
 
     private static int aspirationSearch(Chessboard board, int depth, int aspirationScore) throws IllegalUnmakeException {
-       
+
         int alpha;
         int beta;
         int alphaAspirationAttempts = 0;
@@ -217,7 +214,6 @@ public class Engine {
         return score;
     }
 
-
     private static int principleVariationSearch(Chessboard board,
                                                 int depth, int ply,
                                                 int alpha, int beta,
@@ -247,14 +243,36 @@ public class Engine {
 
         boolean thisIsAPrincipleVariationNode = (beta - alpha != 1);
 
+        int staticBoardEval = SHORT_MINIMUM;
+        
         if (!thisIsAPrincipleVariationNode && !boardInCheck) {
 
+            staticBoardEval = Evaluator.eval(board, board.isWhiteTurn(), moves);
+            
+            if (isBetaRazoringOkHere(board, depth, staticBoardEval)){
+                int specificBetaRazorMargin = betaRazorMargin[depth];
+                if (staticBoardEval - specificBetaRazorMargin >= beta){
+                    return staticBoardEval;
+                }
+            }
+
+
+            if (isAlphaRazoringMoveOkHere(board, depth, alpha)){
+                int specificAlphaRazorMargin = alphaRazorMargin[depth];
+                if (staticBoardEval + specificAlphaRazorMargin < alpha){
+                    int qScore = QuiescenceSearch.quiescenceSearch(board,
+                            alpha - specificAlphaRazorMargin,
+                            alpha - specificAlphaRazorMargin + 1);
+
+                    if (qScore + specificAlphaRazorMargin <= alpha){
+                        return qScore;
+                    }
+                }
+            }
+
+
             int R = nullMoveDepthReduction(depth);
-
             if (isNullMoveOkHere(board, nullMoveCounter, depth, R)){
-
-                Chessboard initial = new Chessboard(board);
-
                 board.makeNullMoveAndFlipTurn();
 
                 int nullScore = -principleVariationSearch(board,
@@ -263,8 +281,6 @@ public class Engine {
 
                 board.unMakeNullMoveAndFlipTurn();
 
-                Assert.assertEquals(initial, board);
-
                 if (nullScore >= beta){
                     if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY){
                         nullScore = beta;
@@ -272,6 +288,8 @@ public class Engine {
                     return nullScore;
                 }
             }
+
+
         }
 
         MoveOrderer.scoreMoves(moves, board, board.isWhiteTurn(), ply, hashMove);
@@ -305,6 +323,39 @@ public class Engine {
             boolean pawnToSix = MoveParser.moveIsPawnPushSix(move);
             boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(move);
 
+            if (!thisIsAPrincipleVariationNode) {
+                if (bestScore < CHECKMATE_ENEMY_SCORE_MAX_PLY
+                        && !onlyPawnsLeftForPlayer(board, board.isWhiteTurn())) {
+                    if (!promotionMove
+                            && !givesCheckMove
+                            && !pawnToSix
+                            && !pawnToSeven
+                            && depth <= 4
+                            && numberOfMovesSearched >= depth * 3 + 4) {
+                        continue;
+                    }
+                }
+
+                if (isFutilityPruningAllowedHere(board, move, depth,
+                        promotionMove, givesCheckMove, pawnToSix, pawnToSeven, numberOfMovesSearched)) {
+
+                    if (staticBoardEval == SHORT_MINIMUM) {
+                        staticBoardEval = Evaluator.eval(board, board.isWhiteTurn(),
+                                board.generateLegalMoves());
+                    }
+
+                    int futilityScore = staticBoardEval + futilityMargin[depth];
+
+                    if (futilityScore <= alpha) {
+                        if (futilityScore > bestScore) {
+                            bestScore = futilityScore;
+                        }
+                        continue;
+                    }
+                }
+            }
+            
+
             board.makeMoveAndFlipTurn(move);
             regularMovesMade++;
             numberOfMovesSearched++;
@@ -314,7 +365,7 @@ public class Engine {
             } else {
                 score = alpha + 1;
 
-                int R = lateMoveDepthReduction(depth);
+                int R = lateMoveDepthReduction(depth, moveScore);
 
                 if (numberOfMovesSearched > 3
                         && depth > R && !captureMove && !promotionMove
@@ -371,6 +422,8 @@ public class Engine {
             }
         }
 
+        Assert.assertTrue(bestMove != 0);
+        
         int flag;
         if (bestScore <= originalAlpha){
             flag = UPPERBOUND;
