@@ -2,15 +2,6 @@ package com.github.louism33.axolotl.evaluation;
 
 public class EvaluationConstants {
 
-    // index
-    static final int EMPTY = 0;
-    static final int PAWN = 1;
-    static final int KNIGHT = 2;
-    static final int BISHOP = 3;
-    static final int ROOK = 4;
-    static final int QUEEN = 5;
-    static final int KING = 6;
-    
     // general numbers
     public static final int SHORT_MINIMUM = -31000;
     public static final int SHORT_MAXIMUM = 31000;
@@ -26,7 +17,6 @@ public class EvaluationConstants {
     public static final int BISHOP_SCORE                  = 300;
     public static final int ROOK_SCORE                    = 500;
     public static final int QUEEN_SCORE                   = 900;
-    public static final int KING_SCORE                    = 3000;
 
     // misc factors
     static final int[] PINNED_PIECES = {0, -10, -25, -25, -50, -90, 0};
@@ -35,10 +25,6 @@ public class EvaluationConstants {
     static final int I_CONTROL_OPEN_FILE                  = 10;
     static final int MY_TURN_BONUS                        = 10;
     static final int IN_CHECK_PENALTY                     = -15;
-    static final int BASIC_PINNED_PIECE_PENALTY_KING      = -15;
-    static final int QUEEN_IS_PINNED                      = -10;
-    static final int BASIC_PINNED_PIECE_PENALTY_QUEEN     = -10;
-    static int MY_SPACE                                   = 2;
 
     // pawn valuation
     static final int PAWN_PASSED                          = 15;
@@ -46,7 +32,6 @@ public class EvaluationConstants {
     static final int PAWN_ON_CENTRE                       = 5;
     static final int PAWN_ON_SUPER_CENTRE                 = 10;
     static final int PAWN_UNBLOCKED                       = 10;
-    static final int PAWN_ON_OPEN_FILE                    = 10;
     static final int PAWN_PROTECTED_BY_PAWNS              = 5;
     static final int PAWN_THREATENS_BIG_THINGS            = 10;
     static final int PAWN_BLOCKED                         = -5;
@@ -72,8 +57,6 @@ public class EvaluationConstants {
     static final int KNIGHT_MOBILITY_SCORE                = 3;
     static final int KNIGHT_THREATEN_BIG                  = 10;
     static final int KNIGHT_FORK                          = 35;
-    static final int KNIGHT_PROTECTOR_SCORE               = 4;
-    static final int KNIGHT_AGGRESSOR_SCORE               = 6;
     static final int KNIGHT_UNDEVELOPED_PENALTY           = -20;
     
     // bishop valuation
@@ -83,33 +66,24 @@ public class EvaluationConstants {
     static final int BISHOP_OUTPOST_BONUS                 = 18;
     static final int BISHOP_ADVANCED_BONUS                = 5;
     static final int BISHOP_MOBILITY_SCORE                = 1;
-    static final int BISHOP_PROTECTOR_SCORE               = 2;
-    static final int BISHOP_AGGRESSOR_SCORE               = 5;
     static final int BISHOP_UNDEVELOPED_PENALTY           = -20;
     static final int BISHOPS_PRIME_DIAGONAL_BONUS         = 20;
 
     // rook valuation
     static final int ROOK_ON_SEVENTH_BONUS                = 25;
     static final int ROOK_MOBILITY_SCORE                  = 1;
-    static final int ROOK_PROTECTOR_SCORE                 = 2;
-    static final int ROOK_AGGRESSOR_SCORE                 = 2;
     static final int ROOK_NOT_DEVELOPED                   = -5;
     static final int ROOK_OPEN_FILE_BONUS                 = 15;
     static final int ROOK_ON_SEMI_OPEN_FILE_BONUS         = 10;
-    static final int ROOK_PROTECTS_QUEEN                  = 5;
     static final int ROOK_SAME_ROW                      = 5;
     
     // queen valuation
     static final int QUEEN_ON_SEVENTH_BONUS               = 10;
     static final int QUEEN_MOBILITY_SCORE                 = 1;
-    static final int QUEEN_PROTECTOR_SCORE                = 2;
-    static final int QUEEN_AGGRESSOR_SCORE                = 5;
     static final int QUEEN_PROTECTS_ROOK                  = 10;
     static final int QUEEN_HATES_PAWNS                    = 10;
     
     // king valuation
     static final int KING_PAWN_PROTECT_BONUS              = 5;
-    static final int KING_PROTECTOR_SCORE                 = 1;
-    static final int KING_AGGRESSOR_SCORE                 = 1;
 
 }

@@ -1,10 +1,6 @@
 package challenges;
 
-import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
-import com.github.louism33.chesscore.MoveParser;
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
@@ -12,8 +8,6 @@ import java.util.Collection;
 import java.util.List;
 
 class SCHACKNYTTtests {
-
-    private static final int timeLimit = 60_000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -28,24 +22,6 @@ class SCHACKNYTTtests {
             answers.add(objectAndName);
         }
         return answers;
-    }
-
-    private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
-
-    public SCHACKNYTTtests(Object edp, Object name) {
-        EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
-    }
-
-    @Test
-    public void test() {
-        List<Integer> winningMoveDestination = EPDObject.getBestMoves();
-        System.out.println();
-        System.out.println(EPDObject.getBoardFen());
-        System.out.println("Move to get: " + MoveParser.toString(winningMoveDestination.get(0)));
-
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
-
-        Assert.assertTrue(winningMoveDestination.contains(move));
     }
 
 
@@ -68,7 +44,7 @@ class SCHACKNYTTtests {
             "2r2k2/5p2/2Bp1b1r/2qPp1pp/PpN1P3/1P2Q3/5PPP/4R1K1 w - - bm Rc1; c0 \"positional scores are: Rc1=10, Nb6=8, Qxc5=7, a5=6, Qf3=5, h4=4, Nxe5=2\"; id \"tony.pos.16\";" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\\\n");
+    private static final String[] splitUpWACs = wacTests.split("\n");
 }
 
 /*

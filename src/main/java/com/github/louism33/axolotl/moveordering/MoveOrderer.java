@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.moveordering;
 
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
@@ -39,16 +38,16 @@ public class MoveOrderer {
         return i;
     }
 
-    public static void scoreMoves(int[] moves, Chessboard board, boolean white, int ply,
+    public static void scoreMoves(int[] moves, Chessboard board, int ply,
                                   int hashMove){
         try {
-            scoreMovesHelper(moves, board, white, ply, hashMove);
+            scoreMovesHelper(moves, board, ply, hashMove);
         } catch (IllegalUnmakeException e) {
             e.printStackTrace();
         }
     }
 
-    private static void scoreMovesHelper(int[] moves, Chessboard board, boolean white, int ply,
+    private static void scoreMovesHelper(int[] moves, Chessboard board, int ply,
                                          int hashMove) throws IllegalUnmakeException {
 
         for (int i = 0; i < moves.length; i++) {
@@ -75,7 +74,7 @@ public class MoveOrderer {
                 moves[i] = buildMoveScore(moves[i], mateKillerScore);
             }
             else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
-                moves[i] = buildMoveScore(moves[i], CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, moves[i]));
+                moves[i] = buildMoveScore(moves[i], CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(moves[i]));
             }
             else if (isPromotionToQueen(moves[i])) {
                 if (isCaptureMove(moves[i])) {
@@ -92,7 +91,7 @@ public class MoveOrderer {
                 moves[i] = buildMoveScore(moves[i], uninterestingPromotion);
             }
             else if (isCaptureMove(moves[i])) {
-                moves[i] = buildMoveScore(moves[i], mvvLVA(board, moves[i]));
+                moves[i] = buildMoveScore(moves[i], mvvLVA(moves[i]));
             }
             else if (killerMoves[ply][0] != 0 && killerMoves[ply][0] == moves[i]) {
                 Assert.assertTrue(killerMoves[ply][0] < MOVE_SIZE_LIMIT);
@@ -122,11 +121,7 @@ public class MoveOrderer {
         }
     }
 
-    static boolean positiveCapture(int moveScore){
-        return getMoveScore(moveScore) > CAPTURE_BIAS;
-    }
-
-    private static int mvvLVA (Chessboard board, int move){
+    private static int mvvLVA(int move){
         int sourceScore = scoreByPiece(move, getMovingPieceInt(move));
         int destinationScore = scoreByPiece(move, getVictimPieceInt(move));
         return CAPTURE_BIAS + destinationScore - sourceScore;
@@ -163,11 +158,11 @@ public class MoveOrderer {
     Quiescence Search ordering:
     order moves by most valuable victim and least valuable aggressor
      */
-    public static void scoreMovesQuiescence(int[] moves, Chessboard board, boolean white){
-        scoreMovesQuiescenceHelper(moves, board, white);
+    public static void scoreMovesQuiescence(int[] moves, Chessboard board){
+        scoreMovesQuiescenceHelper(moves, board);
     }
 
-    private static void scoreMovesQuiescenceHelper(int[] moves, Chessboard board, boolean white){
+    private static void scoreMovesQuiescenceHelper(int[] moves, Chessboard board){
         for (int i = 0; i < moves.length; i++) {
             if (moves[i] == 0){
                 break;
@@ -175,31 +170,13 @@ public class MoveOrderer {
 
             int move = moves[i];
 
-            if (move > MOVE_SIZE_LIMIT){
-                printMoves(moves);
-                System.out.println(MoveParser.toString(move) + "    "+move);
-                Art.printLong(move);
-                Assert.assertTrue(move <= MOVE_SIZE_LIMIT);
-            }
-
-            Assert.assertTrue(move < MOVE_SIZE_LIMIT);
-
-
-//            if (isCaptureMove(move) || isPromotionToQueen(move)) {
-//                moves[i] = buildMoveScore(move, CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, moves[i]));
-//            }
-//            else {
-//                moves[i] = 0;
-//            }
-
-
             if (isCaptureMove(move)) {
                 if (isPromotionMove(move) && isPromotionToQueen(move)) {
                     moves[i] = buildMoveScore(move, queenCapturePromotionScore);
                 } else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
-                    moves[i] = buildMoveScore(move, CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, moves[i]));
+                    moves[i] = buildMoveScore(move, CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(moves[i]));
                 } else {
-                    moves[i] = buildMoveScore(move, mvvLVA(board, moves[i]));
+                    moves[i] = buildMoveScore(move, mvvLVA(moves[i]));
                 }
             } else if (isPromotionMove(move) && (isPromotionToQueen(moves[i]))) {
                 moves[i] = buildMoveScore(moves[i], queenQuietPromotionScore);
@@ -232,9 +209,6 @@ public class MoveOrderer {
 
         Assert.assertTrue(move < MOVE_SIZE_LIMIT);
         
-        /*
-        if we have a new killer move, shift killers to the right
-         */
         if (move != killerMoves[ply][0]){
             if (killerMoves[ply][0] != 0) {
                 killerMoves[ply][1] = killerMoves[ply][0];

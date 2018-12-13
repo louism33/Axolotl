@@ -105,7 +105,7 @@ public class Pet {
             "7k/7p/1p4p1/n2p4/1K1p3R/2NB4/3Q1P2/q1r5 w - - bm Rxh7+;        id \"PET050: QNBR vs QNR\";\n" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\\\n");
+    private static final String[] splitUpWACs = wacTests.split("\n");
 
 }
     

@@ -8,7 +8,7 @@ import com.github.louism33.chesscore.MoveParser;
 
 import java.util.List;
 
-public class UCIBoardParser {
+class UCIBoardParser {
     
     public static GenericMove convertMyMoveToGenericMove(int move){
         GenericMove genericMove = null;
@@ -32,15 +32,6 @@ public class UCIBoardParser {
         return board;
     }
 
-    public static Chessboard convertGenericBoardToChessboardDelta(Chessboard board, List<GenericMove> moves){
-
-        for (int i = moves.size() - 2; i < moves.size(); i++) {
-            GenericMove genericMove = moves.get(i);
-            board.makeMoveAndFlipTurn(MoveParser.newMove(board, genericMove.toString()));
-        }
-        return board;
-    }
-    
 }
 
 

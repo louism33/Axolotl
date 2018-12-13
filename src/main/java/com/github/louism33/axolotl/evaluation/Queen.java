@@ -10,11 +10,9 @@ import static com.github.louism33.chesscore.BitboardResources.*;
 
 class Queen {
 
-    static int evalQueenByTurn(int[] moves, Chessboard board, boolean white,
-                               long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
-                               long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
-                               long enemies, long friends, long allPieces,
-                               long pinnedPieces, boolean inCheck) {
+    static int evalQueenByTurn(Chessboard board, boolean white,
+                               long myRooks, long myQueens,
+                               long enemyPawns) {
         
         if (myQueens == 0) {
             return 0;

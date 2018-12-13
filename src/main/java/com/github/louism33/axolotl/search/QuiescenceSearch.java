@@ -38,12 +38,12 @@ class QuiescenceSearch {
         Assert.assertFalse(standPatScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
 
         if (!inCheck) {
-            MoveOrderer.scoreMovesQuiescence(moves, board, board.isWhiteTurn());
+            MoveOrderer.scoreMovesQuiescence(moves, board);
             int realMoves = MoveParser.numberOfRealMoves(moves);
             Ints.sortDescending(moves, 0, realMoves);
         }
         else {
-            MoveOrderer.scoreMoves(moves, board, board.isWhiteTurn(), 0, 0);
+            MoveOrderer.scoreMoves(moves, board, 0, 0);
             int realMoves = MoveParser.numberOfRealMoves(moves);
             Ints.sortDescending(moves, 0, realMoves);
         }

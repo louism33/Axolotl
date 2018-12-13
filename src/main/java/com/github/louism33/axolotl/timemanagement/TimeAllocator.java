@@ -1,15 +1,12 @@
-package com.github.louism33.axolotl.helper.timemanagement;
+package com.github.louism33.axolotl.timemanagement;
 
-import com.github.louism33.axolotl.helper.protocolhelperclasses.UCIPrinter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
-import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.IllegalUnmakeException;
 
 public class TimeAllocator {
 
     private static long lastPrint;
 
-    public static long allocateTime(Chessboard board, long maxTime){
+    public static long allocateTime(long maxTime){
         return maxTime / 25;
     }
 
@@ -38,21 +35,6 @@ public class TimeAllocator {
         }
 
         return outOfTime;
-    }
-
-    public static void printManager(Chessboard board, boolean printNow){
-        if (printNow || (EngineSpecifications.INFO_LOG && timeToPrint())){
-            try {
-                lastPrint = System.currentTimeMillis();
-                UCIPrinter.printPV(board);
-            } catch (IllegalUnmakeException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    private static boolean timeToPrint(){
-        return System.currentTimeMillis() - lastPrint > EngineSpecifications.PRINT_FREQUENCY_MS;
     }
 
 }

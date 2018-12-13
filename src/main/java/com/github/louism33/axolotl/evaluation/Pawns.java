@@ -13,16 +13,15 @@ import static com.github.louism33.chesscore.Square.squareThreatenend;
 class Pawns {
 
     static int evalPawnsByTurn(Chessboard board, boolean white,
-                               long myPawns, long myRooks,
+                               long myPawns,
                                long enemyPawns,
-                               long friends, long enemies,
+                               long enemies,
                                long allPieces) {
 
         if (myPawns == 0) {
             return 0;
         }
 
-        long fourthRank = white ? RANK_FOUR : RANK_FIVE;
         long fifthRank = white ? RANK_FIVE : RANK_FOUR;
         long sixthRank = white ? RANK_SIX : RANK_THREE;
         long seventhRank = white ? RANK_SEVEN : RANK_TWO;
@@ -75,18 +74,17 @@ class Pawns {
 
         while (myPawnsEval != 0) {
             long pawn = BitOperations.getFirstPiece(myPawnsEval);
-            score += pawnScore(board, white, pawn, myPawns, myRooks, enemyPawns,
-                    allPieces,
-                    lastPawn, fourthRank, fifthRank);
+            score += pawnScore(board, white, pawn, myPawns, enemyPawns,
+                    lastPawn, fifthRank);
             myPawnsEval &= myPawnsEval - 1;
         }
 
         long advancedPawns = pawnsOnSeven | pawnsOnSix;
         while (advancedPawns != 0) {
             long pawn = BitOperations.getFirstPiece(advancedPawns);
-            score += advancedPawnScore(board, white, pawn, myPawns, myRooks, enemyPawns,
+            score += advancedPawnScore(board, white, pawn,
                     allPieces,
-                    lastPawn, sixthRank, seventhRank);
+                    sixthRank);
             advancedPawns &= advancedPawns - 1;
         }
 
@@ -94,10 +92,9 @@ class Pawns {
     }
 
     private static int pawnScore(Chessboard board, boolean white, long pawn,
-                                 long myPawns, long myRooks,
+                                 long myPawns,
                                  long enemyPawns,
-                                 long allPieces,
-                                 long lastPawn, long fourthRank, long fifthRank) {
+                                 long lastPawn, long fifthRank) {
 
         int score = 0;
 
@@ -184,10 +181,8 @@ class Pawns {
     }
 
     private static int advancedPawnScore(Chessboard board, boolean white, long advancedPawn,
-                                         long myPawns, long myRooks,
-                                         long enemyPawns,
                                          long allPieces,
-                                         long lastPawn, long sixthRank, long seventhRank) {
+                                         long sixthRank) {
 
         int score = 0;
 

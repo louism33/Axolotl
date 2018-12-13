@@ -19,10 +19,6 @@ import static com.github.louism33.chesscore.BitboardResources.ROWS;
 
 public class Evaluator {
 
-    public static int lazyEval(Chessboard board, boolean white) {
-        return lazyEvalHelper(board, white);
-    }
-
     public static int eval(Chessboard board, boolean white, int[] moves) {
         if (moves == null){
             moves = board.generateLegalMoves();
@@ -162,71 +158,59 @@ public class Evaluator {
 
         return evalTurn(moves, board, white,
                 myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
+                enemyPawns, enemyRooks, enemyQueens, enemyKing,
                 enemies, friends, allPieces,
                 pinnedPieces, inCheck) -
 
                 evalTurn(moves, board, !white,
                         enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                        myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
+                        myPawns, myRooks, myQueens, myKing,
                         enemies, friends, allPieces,
                         pinnedPieces, inCheck);
     }
 
-    private static int evalTurn (int[] moves, Chessboard board, boolean white,
-                                 long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
-                                 long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
-                                 long enemies, long friends, long allPieces,
-                                 long pinnedPieces, boolean inCheck){
+    private static int evalTurn(int[] moves, Chessboard board, boolean white,
+                                long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
+                                long enemyPawns, long enemyRooks, long enemyQueens, long enemyKing,
+                                long enemies, long friends, long allPieces,
+                                long pinnedPieces, boolean inCheck){
 
         int score = 0;
         score +=
-                evalMaterialByTurn(board,
-                        myPawns, myKnights, myBishops, myRooks, myQueens, myKing)
+                evalMaterialByTurn(
+                        myPawns, myKnights, myBishops, myRooks, myQueens)
 
                         + evalPositionByTurn(board, white, naiveEndgame(board))
 
-                        + evalPawnsByTurn(board, white, myPawns, myRooks, enemyPawns,
-                        friends, enemies, allPieces)
+                        + evalPawnsByTurn(board, white, myPawns, enemyPawns,
+                        enemies, allPieces)
 
-                        + evalKnightByTurn(moves, board, white,
-                        myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                        enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                        enemies, friends, allPieces,
-                        pinnedPieces, inCheck)
+                        + evalKnightByTurn(board, white,
+                        myPawns, myKnights,
+                        enemyPawns, enemyRooks, enemyQueens, enemyKing
+                )
 
-                        + evalBishopByTurn(moves, board, white,
-                        myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                        enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                        enemies, friends, allPieces,
-                        pinnedPieces, inCheck)
+                        + evalBishopByTurn(board, white,
+                        myPawns, myBishops,
+                        enemyPawns,
+                        friends
+                )
 
-                        + evalRookByTurn(board, white, myPawns, myRooks, myQueens, enemyPawns, friends, enemies, allPieces)
+                        + evalRookByTurn(board, white, myPawns, myRooks, myQueens, enemyPawns, enemies, allPieces)
 
-                        + evalQueenByTurn(moves, board, white,
-                        myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                        enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                        enemies, friends, allPieces,
-                        pinnedPieces, inCheck)
+                        + evalQueenByTurn(board, white,
+                        myRooks, myQueens,
+                        enemyPawns
+                )
 
-                        + evalKingByTurn(moves, board, white,
-                        myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                        enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                        enemies, friends, allPieces,
-                        pinnedPieces, inCheck)
+                        + evalKingByTurn(board, white,
+                        myPawns, myKing,
+                        allPieces
+                )
 
                         + evalMiscByTurn(board, white, moves, pinnedPieces, inCheck)
         ;
         return score;
-    }
-
-    private static int lazyEvalHelper(Chessboard board, boolean white) {
-//        return evalMaterialByTurn(board, white) - evalMaterialByTurn(board, !white);
-        return 0;
-    }
-
-    public static int getScoreOfDestinationPiece(Chessboard board, int move){
-        return MaterialEval.getScoreOfDestinationPiece(board, move);
     }
 
 
@@ -237,142 +221,5 @@ public class Evaluator {
     public static long getFile(long piece) {
         return FILES[getIndexOfFirstPiece(piece) % 8];
     }
-
-
-
-
-
-
-
-    public static String masterEvalBreakdown(Chessboard board, boolean white, int[] moves){
-        if (moves == null){
-            moves = board.generateLegalMoves();
-        }
-
-        if (moves.length == 0){
-            if (board.inCheck(white)) {
-                return "In checkmate";
-            }
-            else {
-                return "stalemate";
-            }
-        }
-        else{
-
-            long myPawns, myKnights, myBishops, myRooks, myQueens, myKing;
-            long enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing;
-            long friends, enemies;
-
-            if (white){
-                myPawns = board.getWhitePawns();
-                myKnights = board.getWhiteKnights();
-                myBishops = board.getWhiteBishops();
-                myRooks = board.getWhiteRooks();
-                myQueens = board.getWhiteQueen();
-                myKing = board.getWhiteKing();
-
-                enemyPawns = board.getBlackPawns();
-                enemyKnights = board.getBlackKnights();
-                enemyBishops = board.getBlackBishops();
-                enemyRooks = board.getBlackRooks();
-                enemyQueens = board.getBlackQueen();
-                enemyKing = board.getBlackKing();
-
-                friends = board.whitePieces();
-                enemies = board.blackPieces();
-            }
-            else {
-                myPawns = board.getBlackPawns();
-                myKnights = board.getBlackKnights();
-                myBishops = board.getBlackBishops();
-                myRooks = board.getBlackRooks();
-                myQueens = board.getBlackQueen();
-                myKing = board.getBlackKing();
-
-                enemyPawns = board.getWhitePawns();
-                enemyKnights = board.getWhiteKnights();
-                enemyBishops = board.getWhiteBishops();
-                enemyRooks = board.getWhiteRooks();
-                enemyQueens = board.getWhiteQueen();
-                enemyKing = board.getWhiteKing();
-
-                friends = board.blackPieces();
-                enemies = board.whitePieces();
-            }
-
-            long allPieces = friends | enemies;
-
-            long pinnedPieces = board.pinnedPieces;
-            boolean inCheck = board.inCheckRecorder;
-
-            return ("white: " + white + "\n" + evalBreakdown(moves, board, white,
-                    myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                    enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                    enemies, friends, allPieces,
-                    pinnedPieces, inCheck)
-                    +"\n\nwhite" + white + "\n"+
-
-                    evalBreakdown(moves, board, !white,
-                            enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                            myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                            enemies, friends, allPieces,
-                            pinnedPieces, inCheck));
-
-        }
-    }
-
-    private static String evalBreakdown(int[] moves, Chessboard board, boolean white,
-                                        long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
-                                        long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
-                                        long enemies, long friends, long allPieces,
-                                        long pinnedPieces, boolean inCheck){
-
-
-        String line = "----------------------------------------------------------------\n";
-        StringBuilder sb = new StringBuilder();
-        sb.append("The piece scores are: ");
-        sb.append("\nPawn: "+PAWN_SCORE + ", Knight: " + KNIGHT_SCORE+", Bishop: "+BISHOP_SCORE + ", Rook: " + ROOK_SCORE + ", Queen: " +QUEEN_SCORE+"\n");
-        sb.append(line);
-        sb.append("Material eval:   ").append(evalMaterialByTurn(board,
-                myPawns, myKnights, myBishops, myRooks, myQueens, myKing));
-
-        sb.append(line);
-        sb.append("Position eval:   ").append(evalPositionByTurn(board, white, naiveEndgame(board)));
-        sb.append(line);
-        sb.append("Pawn eval:       ").append(evalPawnsByTurn(board, white, myPawns, myRooks, enemyPawns,
-                friends, enemies, allPieces));
-        sb.append(line);
-        sb.append("Knight eval:     ").append(evalKnightByTurn(moves, board, white,
-                myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                enemies, friends, allPieces,
-                pinnedPieces, inCheck));
-        sb.append(line);
-        sb.append("Bishop eval:     ").append(evalBishopByTurn(moves, board, white,
-                myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                enemies, friends, allPieces,
-                pinnedPieces, inCheck));
-        sb.append(line);
-        sb.append("Rook eval:       ").append(evalRookByTurn(board, white, myPawns, myRooks, myQueens, enemyPawns, friends, enemies, allPieces));
-        sb.append(line);
-        sb.append("Queen eval:      ").append(evalQueenByTurn(moves, board, white,
-                myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                enemies, friends, allPieces,
-                pinnedPieces, inCheck));
-        sb.append(line);
-        sb.append("King eval:       ").append(evalKingByTurn(moves, board, white,
-                myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                enemies, friends, allPieces,
-                pinnedPieces, inCheck));
-        sb.append(line);
-        sb.append("Misc:            ").append(evalMiscByTurn(board, white, moves, pinnedPieces, inCheck));
-        sb.append(line);
-
-        return sb.toString();
-    }
-
 
 }

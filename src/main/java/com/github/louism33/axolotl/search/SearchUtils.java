@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.utilities.Statistics;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 
@@ -8,8 +7,6 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMA
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 
 class SearchUtils {
-
-    static final int quiescenceFutilityMargin = 200;
 
     static final int[] futilityMargin = {0, 150, 250, 350, 450, 550, 650};
     private static final int futilityBelowThisDepth = futilityMargin.length;
@@ -27,17 +24,14 @@ class SearchUtils {
         }
 
         if (boardInCheck){
-            Statistics.numberOfCheckExtensions++;
             return 1;
         }
 
         if (board.previousMoveWasPawnPushToSix()){
-            Statistics.numberOfPassedPawnExtensions++;
             return 1;
         }
 
         if (board.previousMoveWasPawnPushToSeven()){
-            Statistics.numberOfPassedPawnExtensions++;
             return 1;
         }
 
@@ -48,19 +42,19 @@ class SearchUtils {
         return 0;
     }
 
-    static boolean isAlphaRazoringMoveOkHere(Chessboard board, int depth, int alpha){
+    static boolean isAlphaRazoringMoveOkHere(int depth, int alpha){
         return depth < alphaRazorBelowThisDepth
                 && alpha < CHECKMATE_ENEMY_SCORE_MAX_PLY
                 ;
     }
 
-    static boolean isBetaRazoringOkHere(Chessboard board, int depth, int staticBoardEval){
+    static boolean isBetaRazoringOkHere(int depth, int staticBoardEval){
         return depth < betaRazorBelowThisDepth
                 && staticBoardEval < CHECKMATE_ENEMY_SCORE_MAX_PLY
                 ;
     }
 
-    static int nullMoveDepthReduction(int depth){
+    static int nullMoveDepthReduction(){
         return 2;
     }
 
@@ -68,7 +62,7 @@ class SearchUtils {
         return nullMoveCounter < 2
                 && depth > R
                 && !maybeInEndgame(board)
-                && !onlyPawnsLeftForPlayer(board, board.isWhiteTurn())
+                && notJustPawnsLeft(board, board.isWhiteTurn())
                 && !maybeInZugzwang(board, board.isWhiteTurn());
     }
 
@@ -92,7 +86,7 @@ class SearchUtils {
         return populationCount(allMyPieces ^ (myPawns | myKing)) <= 1;
     }
 
-    static boolean onlyPawnsLeftForPlayer(Chessboard board, boolean white){
+    static boolean notJustPawnsLeft(Chessboard board, boolean white){
         long myPawns, myKing, allMyPieces;
         if (white){
             allMyPieces = board.whitePieces();
@@ -104,10 +98,10 @@ class SearchUtils {
             myPawns = board.getBlackPawns();
             myKing = board.getBlackKing();
         }
-        return populationCount(allMyPieces ^ (myPawns | myKing)) == 0;
+        return populationCount(allMyPieces ^ (myPawns | myKing)) != 0;
     }
     
-    static boolean isFutilityPruningAllowedHere(Chessboard board, int move, int depth,
+    static boolean isFutilityPruningAllowedHere(int depth,
                                                 boolean promotionMove,
                                                 boolean givesCheckMove,
                                                 boolean pawnToSix, boolean pawnToSeven, int numberOfMovesSearched){
@@ -121,7 +115,7 @@ class SearchUtils {
     }
 
 
-    static int lateMoveDepthReduction(int depth, int moveScore){
+    static int lateMoveDepthReduction(){
         return 2;
     }
     

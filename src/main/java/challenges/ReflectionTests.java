@@ -1,38 +1,13 @@
 package challenges;
 
-import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
-import com.github.louism33.chesscore.MoveParser;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 class ReflectionTests {
-
-    private static final int timeLimit = 60_000;
-    private final boolean[][] successOrFailure = new boolean[4][50];
-
-    @AfterAll
-    public void compare(){
-        System.out.println(Arrays.deepToString(successOrFailure));
-        for (int x = 0; x < successOrFailure.length; x++){
-
-            if (x > 0){
-                Assert.assertArrayEquals(successOrFailure[x], successOrFailure[x - 1]);
-            }
-
-            for (int y = 0; y < successOrFailure[x].length; y++){
-
-            }
-        }
-    }
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -48,30 +23,6 @@ class ReflectionTests {
             answers.add(objectAndName);
         }
         return answers;
-    }
-
-    private static final int i = 0;
-    private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
-
-    public ReflectionTests(Object edp, Object name) {
-        EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
-    }
-
-    @Test
-    public void test() {
-        List<Integer> winningMoveDestination = EPDObject.getBestMoves();
-        System.out.println();
-        System.out.println(EPDObject.getBoardFen());
-        System.out.println("Move to get: " + MoveParser.toString(winningMoveDestination.get(0)));
-
-        int move = Engine.searchFixedDepth(EPDObject.getBoard(), EngineSpecifications.MAX_DEPTH);
-
-        int x = i / 47;
-        int y = i % 47;
-
-        successOrFailure[x][y] = winningMoveDestination.contains(move);
-
-        Assert.assertTrue(winningMoveDestination.contains(move));
     }
 
 

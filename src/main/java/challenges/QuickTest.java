@@ -77,6 +77,6 @@ public class QuickTest {
             "3B4/1R3p1k/2p4p/2Pp3r/3P4/4Q1K1/6P1/3b1q2 w - - bm Bf6; id Quick-24;" +
             "";
 
-    private static final String[] splitUpBKs = bkTests.split("\\\n");
+    private static final String[] splitUpBKs = bkTests.split("\n");
 }
     

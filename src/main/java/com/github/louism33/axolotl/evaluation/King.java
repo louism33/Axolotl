@@ -10,11 +10,9 @@ import static com.github.louism33.chesscore.BitOperations.populationCount;
 
 class King {
 
-    static int evalKingByTurn(int[] moves, Chessboard board, boolean white,
-                              long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
-                              long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
-                              long enemies, long friends, long allPieces,
-                              long pinnedPieces, boolean inCheck) {
+    static int evalKingByTurn(Chessboard board, boolean white,
+                              long myPawns, long myKing,
+                              long allPieces) {
 
         Assert.assertEquals(1, populationCount(myKing));
 

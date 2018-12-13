@@ -2,6 +2,7 @@ package com.github.louism33.axolotl.search;
 
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
 import com.github.louism33.chesscore.MoveParser;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,13 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMA
 public class MateTest {
 
     private static final int timeLimit = 10_000;
+    private static int successes = 0;
+    
+    @AfterClass
+    public static void finalSuccessTally(){
+        System.out.println("Successful WAC sanity tests: " + successes);
+        Assert.assertTrue(successes > 140);
+    }
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -42,10 +50,10 @@ public class MateTest {
 
     @Test
     public void test() {
-        List<Integer> winningMoveDestination = EPDObject.getBestMoves();
+        List<Integer> winningMoves = EPDObject.getBestMoves();
         System.out.println();
         System.out.println(EPDObject.getBoardFen());
-        System.out.println("Move to get:        " + MoveParser.toString(winningMoveDestination.get(0)));
+        System.out.println("Move to get:        " + MoveParser.toString(winningMoves.get(0)));
 
         System.out.println(EPDObject.getBoard());
         
@@ -62,7 +70,13 @@ public class MateTest {
             System.out.println("NPS:                " + Engine.nps);
         }
         
-        Assert.assertTrue(winningMoveDestination.contains(move));
+        if (winningMoves.contains(move)){
+            System.out.println("success");
+            successes++;
+        }
+        else {
+            System.out.println("failure");
+        }
     }
 
     private static final String positions = "" +

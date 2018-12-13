@@ -10,11 +10,9 @@ import static com.github.louism33.chesscore.BitboardResources.*;
 
 class Knight {
 
-    static int evalKnightByTurn(int[] moves, Chessboard board, boolean white,
-                                long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
-                                long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
-                                long enemies, long friends, long allPieces,
-                                long pinnedPieces, boolean inCheck) {
+    static int evalKnightByTurn(Chessboard board, boolean white,
+                                long myPawns, long myKnights,
+                                long enemyPawns, long enemyRooks, long enemyQueens, long enemyKing) {
 
         if (myKnights == 0) {
             return 0;

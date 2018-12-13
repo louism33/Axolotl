@@ -93,7 +93,7 @@ public class LapuceII {
             "8/5Bp1/4P3/6pP/1b1k1P2/5K2/8/8 w - - bm Kg4; id \"LCTFIN09 (Kg4!)\";\n" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\\\n");
+    private static final String[] splitUpWACs = wacTests.split("\n");
 
 }
     
