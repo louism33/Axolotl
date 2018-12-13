@@ -51,31 +51,9 @@ public class MateTest {
     @Test
     public void test() {
         List<Integer> winningMoves = EPDObject.getBestMoves();
-        System.out.println();
-        System.out.println(EPDObject.getBoardFen());
-        System.out.println("Move to get:        " + MoveParser.toString(winningMoves.get(0)));
-
-        System.out.println(EPDObject.getBoard());
-        
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
-        
-        System.out.print("Best move found:    "+MoveParser.toString(move));
-        
-        if (Engine.getAiMoveScore() >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
-            System.out.println(", mate in " + (CHECKMATE_ENEMY_SCORE - Engine.getAiMoveScore())+" half plies.");
-        }else {
-            System.out.println(", score: "+Engine.getAiMoveScore());
-        }
-        if (Engine.nps > 0) {
-            System.out.println("NPS:                " + Engine.nps);
-        }
-        
         if (winningMoves.contains(move)){
-            System.out.println("success");
             successes++;
-        }
-        else {
-            System.out.println("failure");
         }
     }
 

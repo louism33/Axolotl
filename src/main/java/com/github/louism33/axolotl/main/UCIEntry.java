@@ -72,7 +72,6 @@ class UCIEntry extends AbstractEngine {
     public void receive(EngineAnalyzeCommand command) {
         genericBoard = command.board;
         moves = command.moves;
-//        System.out.println("The initial board fen is:\n"+ genericBoard +"\nWith moves: "+moves);
         board = convertGenericBoardToChessboard(genericBoard, moves);
     }
 

@@ -7,7 +7,7 @@ public class TimeAllocator {
     private static long lastPrint;
 
     public static long allocateTime(long maxTime){
-        return maxTime / 25;
+        return maxTime / 20;
     }
 
     private static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){

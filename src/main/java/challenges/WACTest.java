@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+
 @RunWith(Parameterized.class)
 public class WACTest {
 
@@ -42,18 +45,22 @@ public class WACTest {
 
     @Test
     public void test() {
-        List<Integer> winningMoveDestination = EPDObject.getBestMoves();
         System.out.println();
-        System.out.println("Move to get: " + Arrays.toString(MoveParser.toString(winningMoveDestination)));
+        System.out.println(EPDObject.getId());
         System.out.println(EPDObject.getBoardFen());
+        System.out.println(EPDObject.getBoard());
+        
+        List<Integer> winningMoves = EPDObject.getBestMoves();
+        List<Integer> losingMoveDestination = EPDObject.getAvoidMoves();
         
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
-        Assert.assertTrue(winningMoveDestination.contains(move));
+        System.out.println();
+        System.out.println("Move to get:        " + MoveParser.toString(winningMoves.get(0)));
 
-        List<Integer> losingMoveDestination = EPDObject.getAvoidMoves();
-
+        Assert.assertTrue(winningMoves.contains(move));
         Assert.assertFalse(losingMoveDestination.contains(move));
+
     }
 
     private static final String wacTests = "" +
