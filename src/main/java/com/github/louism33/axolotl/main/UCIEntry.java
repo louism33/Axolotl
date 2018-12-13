@@ -20,7 +20,7 @@ class UCIEntry extends AbstractEngine {
     private GenericBoard genericBoard;
     private List<GenericMove> moves;
 
-    public UCIEntry(){
+    private UCIEntry(){
         super();
     }
     
@@ -95,7 +95,7 @@ class UCIEntry extends AbstractEngine {
             System.out.println("Search for move, clock time: " + clock);
             return Engine.searchMyTime(board, clock);
         }
-        else if (command.getMoveTime() != 0){
+        else if (command.getMoveTime() != null && command.getMoveTime() != 0){
             System.out.println("Search for move, fixed time: " + command.getMoveTime());
             return Engine.searchFixedTime(board, command.getMoveTime());
         }
