@@ -168,8 +168,7 @@ public class Engine {
 
         while (!stopSearch(startTime, timeLimitMillis, depth, MAX_DEPTH)) {
             depth++;
-            
-            
+
             int preAI = aiMove;
 
             System.out.println("----- Depth: " + depth + ", aiMove at start: " + MoveParser.toString(aiMove) + ", and aiScore: " + aiMoveScore);
@@ -189,7 +188,7 @@ public class Engine {
 
             System.out.println("                  ai move at end: " + MoveParser.toString(aiMove) + ", and aiScore: " + aiMoveScore);
 
-//            TimeAllocator.printManager(board, true);
+            TimeAllocator.printManager(board, true);
 
             System.out.println();
 
@@ -255,40 +254,30 @@ public class Engine {
         int[] moves = board.generateLegalMoves();
         boolean boardInCheck = board.inCheckRecorder;
 
-//        Assert.assertEquals(boardInCheck, board.inCheck(board.isWhiteTurn()));
+        depth += Extensions.extensions(board, ply, boardInCheck);
 
-//        depth += Extensions.extensions(board, ply, boardInCheck);
-
-//        Assert.assertTrue(depth >= 0);
-
-        if (false && outOfTime(startTime, timeLimitMillis) || Engine.isStopInstruction()) {
-            System.out.println("OUT OF TIME: ");
-            System.out.println("current aimove: " + MoveParser.toString(aiMove));
-            return QuiescenceSearch.quiescenceSearch(board, alpha, beta);
-//            return Evaluator.eval(board, board.isWhiteTurn(), moves);
-//            return alpha;
-        }
+        Assert.assertTrue(depth >= 0);
 
         if (depth <= 0){
-//            Assert.assertTrue(!board.inCheck(board.isWhiteTurn()));
+            Assert.assertTrue(!board.inCheck(board.isWhiteTurn()));
             return QuiescenceSearch.quiescenceSearch(board, alpha, beta);
         }
 
-//        alpha = Math.max(alpha, IN_CHECKMATE_SCORE + ply);
-//        beta = Math.min(beta, -IN_CHECKMATE_SCORE - ply - 1);
-//        if (alpha >= beta){
-//            return alpha;
-//        }
+        alpha = Math.max(alpha, IN_CHECKMATE_SCORE + ply);
+        beta = Math.min(beta, -IN_CHECKMATE_SCORE - ply - 1);
+        if (alpha >= beta){
+            return alpha;
+        }
 
         int hashMove = 0;
         int score;
 
-//        long previousTableData = TranspositionTable.retrieveFromTable(board.getZobrist());
+        long previousTableData = TranspositionTable.retrieveFromTable(board.getZobrist());
 //        if (previousTableData != 0) {
 //            score = TranspositionTable.getScore(previousTableData);
 //            hashMove = TranspositionTable.getMove(previousTableData);
 //
-//            if (TranspositionTable.getDepth(previousTableData) >= depth){
+//            if (TranspositionTable.getDepth(previousTableData) >= depth && PVLine.verifyMove(board, hashMove, moves)){
 //                int flag = TranspositionTable.getFlag(previousTableData);
 //                if (flag == EXACT) {
 //                    if (ply == 0){
@@ -331,8 +320,13 @@ public class Engine {
 //                    }
 //                    return alpha;
 //                }
+//            }   
+//            else {
+//                hashMove = 0;
+//                score = 0;
 //            }
 //        }
+
 
 //        boolean thisIsAPrincipleVariationNode = (beta - alpha != 1);
 //
@@ -367,7 +361,6 @@ public class Engine {
 //            }
 //        }
 
-
         MoveOrderer.scoreMoves(moves, board, board.isWhiteTurn(), ply, hashMove);
 
         int bestScore = SHORT_MINIMUM;
@@ -376,43 +369,26 @@ public class Engine {
         Ints.sortDescending(moves, 0, realMoves);
         int numberOfMovesSearched = 0;
 
-
-//        if (hashMove != 0 && PVLine.verifyMove(board, hashMove, moves)){
-//            Assert.assertEquals(moves[0], hashMove);
-//
-//            if (ply == 0 && aiMove != 0){
-//                if (aiMove != hashMove){
-//                    System.out.println("Original alpha : " + originalAlpha);
-//                    System.out.println("ai      : " + MoveParser.toString(aiMove));
-//                    System.out.println("hashMove: " + MoveParser.toString(hashMove));
-//                }
-//                Assert.assertEquals(aiMove, hashMove);
-//            }
-//        }
-
         for (int i = 0; i < moves.length; i++) {
             if (moves[i] == 0) {
                 break;
             }
 
-//            Assert.assertTrue(moves[i] > MoveOrderingConstants.MOVE_SIZE_LIMIT);
-//            if (i == 0){
-//                Assert.assertTrue(moves[i] >= moves[i+1]);
-//            } else {
-//                Assert.assertTrue(moves[i] <= moves[i - 1]);
-//                Assert.assertTrue(moves[i] >= moves[i + 1]);
-//            }
+            Assert.assertTrue(moves[i] > MoveOrderingConstants.MOVE_SIZE_LIMIT);
+            if (i == 0) {
+                Assert.assertTrue(moves[i] >= moves[i + 1]);
+            } else {
+                Assert.assertTrue(moves[i] <= moves[i - 1]);
+                Assert.assertTrue(moves[i] >= moves[i + 1]);
+            }
 
             int move = moves[i] & MoveOrderer.MOVE_MASK;
             int moveScore = MoveOrderer.getMoveScore(moves[i]);
-
-
-            if ((move & MoveOrderer.MOVE_MASK) > Temp.biggy){
+            
+            if ((move & MoveOrderer.MOVE_MASK) > Temp.biggy) {
                 Temp.biggy = (move & MoveOrderer.MOVE_MASK);
             }
-
-
-
+            
             boolean captureMove = MoveParser.isCaptureMove(move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
             boolean givesCheckMove = MoveOrderer.checkingMove(board, move);
@@ -423,60 +399,37 @@ public class Engine {
             regularMovesMade++;
             numberOfMovesSearched++;
 
-//            if (board.drawByRepetition(board.isWhiteTurn())) {
-//                score = IN_STALEMATE_SCORE;
-//            } else {
-            score = alpha + 1;
+            if (board.drawByRepetition(board.isWhiteTurn())) {
+                score = IN_STALEMATE_SCORE;
+            } else {
+                score = alpha + 1;
 
-//                if (numberOfMovesSearched > 1) {
-//                    
-//                    /*
-//                    late move reductions
-//                     */
-//                    if (depth > 2 && numberOfMovesSearched > 3 && !captureMove && !promotionMove && !pawnToSeven && !boardInCheck && !givesCheckMove) {
-//
-//                        int R = 2;
-//
-//                        score = -principleVariationSearch(board,
-//                                startTime, timeLimitMillis,
-//                                originalDepth, depth - R - 1, ply + 1,
-//                                -alpha - 1, -alpha, nullMoveCounter, true);
-//
-//
-////                        if (score > alpha) {
-////                            score = -principleVariationSearch(board,
-////                                    startTime, timeLimitMillis,
-////                                    originalDepth, depth - 1, ply + 1,
-////                                    -alpha - 1, -alpha, 0, false);
-////                        }
-//                    }
-//                    /*
-//                    principle variation
-//                     */
-//                    else {
-//                        score = -principleVariationSearch(board,
-//                                startTime, timeLimitMillis,
-//                                originalDepth, depth - 1, ply + 1,
-//                                -alpha - 1, -alpha, 0, reducedSearch);
-//
-//                    }
+                int R = 2 + depth / 3;
+                
+                if (numberOfMovesSearched > 3
+                        && depth > R && !captureMove && !promotionMove
+                        && !pawnToSeven && !boardInCheck && !givesCheckMove) {
 
-//                }
+                    score = -principleVariationSearch(board,
+                            startTime, timeLimitMillis,
+                            originalDepth, depth - R - 1, ply + 1,
+                            -alpha - 1, -alpha, nullMoveCounter, true);
+                }
 
-            if (numberOfMovesSearched > 1) {
-                score = -principleVariationSearch(board,
-                        startTime, timeLimitMillis,
-                        originalDepth, depth - 1, ply + 1,
-                        -alpha - 1, -alpha, 0, reducedSearch);
+                if (numberOfMovesSearched > 1 && score > alpha) {
+                    score = -principleVariationSearch(board,
+                            startTime, timeLimitMillis,
+                            originalDepth, depth - 1, ply + 1,
+                            -alpha - 1, -alpha, 0, reducedSearch);
+                }
+
+                if (score > alpha) {
+                    score = -principleVariationSearch(board,
+                            startTime, timeLimitMillis,
+                            originalDepth, depth - 1, ply + 1,
+                            -beta, -alpha, 0, false);
+                }
             }
-
-            if (score > alpha) {
-                score = -principleVariationSearch(board,
-                        startTime, timeLimitMillis,
-                        originalDepth, depth - 1, ply + 1,
-                        -beta, -alpha, 0, false);
-            }
-
             board.unMakeMoveAndFlipTurn();
 
             if (score > bestScore) {
@@ -501,16 +454,15 @@ public class Engine {
             }
 
             if (alpha >= beta) {
-                int justMove = move & MoveOrderer.MOVE_MASK;
+
                 if (alpha > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
-                    updateMateKillerMoves(justMove, ply);
+                    updateMateKillerMoves(move, ply);
                 } else {
-                    updateKillerMoves(justMove, ply);
+                    updateKillerMoves(move, ply);
                 }
 
-                MoveOrderer.updateHistoryMoves(justMove, ply);
+                MoveOrderer.updateHistoryMoves(move, ply);
 
-//                return alpha;
                 break;
             }
         }
@@ -524,33 +476,17 @@ public class Engine {
             }
         }
 
-//        int flag;
-//        if (bestScore <= originalAlpha){
-//            flag = UPPERBOUND;
-//        } else if (bestScore >= beta) {
-//            flag = LOWERBOUND;
-//        } else {
-//            flag = EXACT;
-//        }
-//
-//
-//        if (ply == 0 && bestScore > CHECKMATE_ENEMY_SCORE_MAX_PLY){
-//            System.out.println("MATE AT ROOT");
-//            System.out.println(board);
-//            System.out.println("best: " + MoveParser.toString(bestMove));
-//            System.out.println("ai    "+ MoveParser.toString(aiMove));
-//            System.out.println("bestscore: " + bestScore);
-//        }
-//
-//        if (bestMove == 0){
-//            System.out.println(board);
-//            System.out.println("best move equals zero");
-//            System.out.println(MoveParser.toString(bestMove));
-//        }
-//
-//        TranspositionTable.addToTable(board.getZobrist(),
-//                TranspositionTable.buildTableEntry(bestMove & MoveOrderer.MOVE_MASK, bestScore, depth, flag, ply));
+        int flag;
+        if (bestScore <= originalAlpha){
+            flag = UPPERBOUND;
+        } else if (bestScore >= beta) {
+            flag = LOWERBOUND;
+        } else {
+            flag = EXACT;
+        }
 
+        TranspositionTable.addToTable(board.getZobrist(),
+                TranspositionTable.buildTableEntry(bestMove & MoveOrderer.MOVE_MASK, bestScore, depth, flag, ply));
 
         return bestScore;
     }
