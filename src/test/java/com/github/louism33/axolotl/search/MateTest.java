@@ -32,7 +32,7 @@ public class MateTest {
         
         for (int i = 0; i < checkmatePositions.length; i++) {
             if (i >= stopAt){
-                break;
+//                break;
             }
             String pos = checkmatePositions[i];
             Object[] objectAndName = new Object[2];
@@ -59,7 +59,8 @@ public class MateTest {
 
         System.out.println(EPDObject.getBoard());
         
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+//        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        int move = Engine.searchFixedDepth(EPDObject.getBoard(), 10);
         
         System.out.print("Best move found:    "+MoveParser.toString(move));
         
@@ -79,8 +80,6 @@ public class MateTest {
         System.out.println(flips);
         System.out.println();
         System.out.println(MoveParser.toString(biggy) +"    "+biggy);
-        Art.printLong(biggy);
-        
         
         Assert.assertTrue(winningMoveDestination.contains(move));
     }

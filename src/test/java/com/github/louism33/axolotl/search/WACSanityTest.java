@@ -23,7 +23,7 @@ import static com.github.louism33.axolotl.search.Engine.flips;
 @RunWith(Parameterized.class)
 public class WACSanityTest {
 
-    private static final int timeLimit = 20_000;
+    private static final int timeLimit = 40_000;
     private static int successes = 0;
 
     @AfterClass
@@ -79,8 +79,9 @@ public class WACSanityTest {
                 EPDObject.getBoard(), EPDObject.getBoard().isWhiteTurn(), EPDObject.getBoard().generateLegalMoves()));
         System.out.println("Now search time");
 
-//        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
-        int move = Engine.searchFixedDepth(EPDObject.getBoard(), 14);
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+//        int move = Engine.searchFixedDepth(EPDObject.getBoard(), 7);
+        
         System.out.print("Best move found:    "+MoveParser.toString(move));
         
         if (Engine.getAiMoveScore() >= CHECKMATE_ENEMY_SCORE_MAX_PLY){

@@ -185,6 +185,14 @@ public class MoveOrderer {
             Assert.assertTrue(move < MOVE_SIZE_LIMIT);
 
 
+//            if (isCaptureMove(move) || isPromotionToQueen(move)) {
+//                moves[i] = buildMoveScore(move, CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(board, moves[i]));
+//            }
+//            else {
+//                moves[i] = 0;
+//            }
+
+
             if (isCaptureMove(move)) {
                 if (isPromotionMove(move) && isPromotionToQueen(move)) {
                     moves[i] = buildMoveScore(move, queenCapturePromotionScore);

@@ -93,6 +93,64 @@ public class Evaluator {
         }
     }
 
+    public static int evalNOCM(Chessboard board, boolean white, int[] moves) {
+        if (moves == null){
+            moves = board.generateLegalMoves();
+        }
+
+        long myPawns, myKnights, myBishops, myRooks, myQueens, myKing;
+        long enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing;
+        long friends, enemies;
+
+        if (white){
+            myPawns = board.getWhitePawns();
+            myKnights = board.getWhiteKnights();
+            myBishops = board.getWhiteBishops();
+            myRooks = board.getWhiteRooks();
+            myQueens = board.getWhiteQueen();
+            myKing = board.getWhiteKing();
+
+            enemyPawns = board.getBlackPawns();
+            enemyKnights = board.getBlackKnights();
+            enemyBishops = board.getBlackBishops();
+            enemyRooks = board.getBlackRooks();
+            enemyQueens = board.getBlackQueen();
+            enemyKing = board.getBlackKing();
+
+            friends = board.whitePieces();
+            enemies = board.blackPieces();
+        }
+        else {
+            myPawns = board.getBlackPawns();
+            myKnights = board.getBlackKnights();
+            myBishops = board.getBlackBishops();
+            myRooks = board.getBlackRooks();
+            myQueens = board.getBlackQueen();
+            myKing = board.getBlackKing();
+
+            enemyPawns = board.getWhitePawns();
+            enemyKnights = board.getWhiteKnights();
+            enemyBishops = board.getWhiteBishops();
+            enemyRooks = board.getWhiteRooks();
+            enemyQueens = board.getWhiteQueen();
+            enemyKing = board.getWhiteKing();
+
+            friends = board.blackPieces();
+            enemies = board.whitePieces();
+        }
+
+        long allPieces = friends | enemies;
+
+        long pinnedPieces = board.pinnedPieces;
+        boolean inCheck = board.inCheckRecorder;
+
+        return evalHelper(moves, board, white,
+                myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
+                enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
+                enemies, friends, allPieces,
+                pinnedPieces, inCheck);
+    }
+
     private static boolean naiveEndgame (Chessboard board){
         return BitOperations.populationCount(board.allPieces()) < 8;
     }
@@ -255,11 +313,11 @@ public class Evaluator {
                     pinnedPieces, inCheck)
                     +"\n\nwhite" + white + "\n"+
 
-            evalBreakdown(moves, board, !white,
-                    enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                    myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                    enemies, friends, allPieces,
-                    pinnedPieces, inCheck));
+                    evalBreakdown(moves, board, !white,
+                            enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
+                            myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
+                            enemies, friends, allPieces,
+                            pinnedPieces, inCheck));
 
         }
     }
@@ -278,7 +336,7 @@ public class Evaluator {
         sb.append(line);
         sb.append("Material eval:   ").append(evalMaterialByTurn(board,
                 myPawns, myKnights, myBishops, myRooks, myQueens, myKing));
-        
+
         sb.append(line);
         sb.append("Position eval:   ").append(evalPositionByTurn(board, white, naiveEndgame(board)));
         sb.append(line);
@@ -313,9 +371,9 @@ public class Evaluator {
         sb.append(line);
         sb.append("Misc:            ").append(evalMiscByTurn(board, white, moves, pinnedPieces, inCheck));
         sb.append(line);
-        
+
         return sb.toString();
     }
-    
+
 
 }

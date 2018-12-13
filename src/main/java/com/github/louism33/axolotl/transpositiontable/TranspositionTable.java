@@ -13,13 +13,16 @@ public class TranspositionTable {
     private static long[] entries;
     private static boolean tableReady = false;
     private static int shiftAmount;
+    private static int moduloAmount;
 
     public static void initTable(int mb){
         int index = Integer.numberOfTrailingZeros(mb);
         Assert.assertTrue(Integer.bitCount(mb) == 1
                 && index < 16);
         int size = mb; 
-        // todo ? modulo ?
+        
+        moduloAmount = mb;
+        
         keys = new long[size];
         entries = new long[size];
         shiftAmount = 64 - index;
@@ -37,6 +40,7 @@ public class TranspositionTable {
             initTable(EngineSpecifications.DEFAULT_TABLE_SIZE);
         }
         int index = (int) (key >>> shiftAmount);
+//        int index = Math.abs((int) (key % moduloAmount));
         keys[index] = key;
         entries[index] = entry;
     }
@@ -46,6 +50,7 @@ public class TranspositionTable {
             initTable(EngineSpecifications.DEFAULT_TABLE_SIZE);
         }
         int index = (int) (key >>> shiftAmount);
+//        int index = Math.abs((int) (key % moduloAmount));
         Assert.assertTrue(index >= 0);
         long keyValue = keys[index];
         if (keyValue == 0){

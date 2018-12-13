@@ -13,8 +13,8 @@ public class TimeAllocator {
         return maxTime / 25;
     }
 
-    private static boolean weShouldStopSearching(long timeLeft, long maxTime){
-        return timeLeft > maxTime / 1.5;
+    private static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){
+        return timeLeftMillis < timeLimitMillis / 2;
     }
 
     public static boolean outOfTime(long startTime, long timeLimitMillis){
@@ -27,13 +27,14 @@ public class TimeAllocator {
         }
 
         long currentTime = System.currentTimeMillis();
-        long maxTime = startTime + timeLimitMillis;
-        long timeLeft = maxTime - currentTime;
-        if (timeLeft < 0) {
+        long stopTime = startTime + timeLimitMillis;
+        long timeLeftMillis = stopTime - currentTime;
+        if (timeLeftMillis < 0) {
             outOfTime = true;
         }
-        if (weShouldStopSearching(timeLeft, maxTime)) {
+        if (weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
             // not enough time to search another ply
+            System.out.println("Time to stop searching");
             outOfTime = true;
         }
 
