@@ -1,6 +1,8 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
+import com.github.louism33.axolotl.main.UCIEntry;
+import com.github.louism33.axolotl.main.UCIPrinter;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.moveordering.MoveOrderingConstants;
 import com.github.louism33.chesscore.Chessboard;
@@ -24,10 +26,25 @@ public class Engine {
     private static int aiMoveScore;
     private static boolean isReady = false;
     private static boolean stopInstruction = false;
-    public static long nps;
-    private static long regularMovesMade;
+    private static long nps;
+    public static long regularMovesMade;
     public static long quiescentMovesMade;
     private static long startTime = 0;
+
+    private static UCIEntry uciEntry;
+
+    public static long getNps() {
+        calculateNPS();
+        return nps;
+    }
+
+    public static UCIEntry getUciEntry() {
+        return uciEntry;
+    }
+
+    public static void setUciEntry(UCIEntry uciEntry) {
+        Engine.uciEntry = uciEntry;
+    }
 
     public static int getAiMove() {
         return aiMove;
@@ -138,6 +155,10 @@ public class Engine {
 
             score = aspirationSearch(board, depth, aspirationScore);
 
+            if (depth > 6){
+                UCIPrinter.sendInfoCommand(aiMove, aiMoveScore, depth);
+            }
+
             aspirationScore = score;
 
             if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
@@ -217,11 +238,11 @@ public class Engine {
         boolean thisIsAPrincipleVariationNode = (beta - alpha != 1);
 
         int staticBoardEval = SHORT_MINIMUM;
-        
+
         if (!thisIsAPrincipleVariationNode && !boardInCheck) {
 
             staticBoardEval = Evaluator.eval(board, board.isWhiteTurn(), moves);
-            
+
             if (isBetaRazoringOkHere(depth, staticBoardEval)){
                 int specificBetaRazorMargin = betaRazorMargin[depth];
                 if (staticBoardEval - specificBetaRazorMargin >= beta){
@@ -326,7 +347,7 @@ public class Engine {
                     }
                 }
             }
-            
+
 
             board.makeMoveAndFlipTurn(move);
             regularMovesMade++;
