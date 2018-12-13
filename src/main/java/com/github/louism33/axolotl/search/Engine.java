@@ -16,6 +16,7 @@ import static com.github.louism33.axolotl.helper.timemanagement.TimeAllocator.al
 import static com.github.louism33.axolotl.helper.timemanagement.TimeAllocator.outOfTime;
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateKillerMoves;
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateMateKillerMoves;
+import static com.github.louism33.axolotl.search.EngineSpecifications.ASPIRATION_MAX_TRIES;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
@@ -150,22 +151,72 @@ public class Engine {
 
     private static void iterativeDeepeningWithAspirationWindows(Chessboard board, long startTime, long timeLimitMillis) throws IllegalUnmakeException {
         int depth = 0;
+        int aspirationScore = 0;
 
         while (!stopSearch(startTime, timeLimitMillis, depth, MAX_DEPTH)) {
             depth++;
 
             int score;
 
-            score = principleVariationSearch(board,
-                    depth, 0, SHORT_MINIMUM, SHORT_MAXIMUM, 0);
+//            score = principleVariationSearch(board,
+//                    depth, 0, SHORT_MINIMUM, SHORT_MAXIMUM, 0);
+
+            score = aspirationSearch(board, depth, aspirationScore);
 
             TimeAllocator.printManager(board, true);
 
+            aspirationScore = score;
+            
             if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
                 break;
             }
         }
     }
+
+    private static int aspirationSearch(Chessboard board, int depth, int aspirationScore) throws IllegalUnmakeException {
+       
+        int alpha;
+        int beta;
+        int alphaAspirationAttempts = 0;
+        int betaAspirationAttempts = 0;
+
+        alpha = aspirationScore - EngineSpecifications.ASPIRATION_WINDOWS[alphaAspirationAttempts];
+        beta = aspirationScore + EngineSpecifications.ASPIRATION_WINDOWS[betaAspirationAttempts];
+
+        int score;
+
+        while (true) {
+            score = principleVariationSearch(board, depth, 0, alpha, beta, 0);
+
+            TimeAllocator.printManager(board, false);
+
+            if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+                return score;
+            }
+
+            if (score <= alpha) {
+                alphaAspirationAttempts++;
+                if (alphaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES){
+                    alpha = SHORT_MINIMUM;
+                }
+                else {
+                    alpha = aspirationScore - EngineSpecifications.ASPIRATION_WINDOWS[alphaAspirationAttempts];
+                }
+            } else if (score >= beta) {
+                betaAspirationAttempts++;
+                if (betaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES){
+                    beta = SHORT_MAXIMUM;
+                }
+                else {
+                    beta = aspirationScore - EngineSpecifications.ASPIRATION_WINDOWS[betaAspirationAttempts];
+                }
+            } else {
+                break;
+            }
+        }
+        return score;
+    }
+
 
     private static int principleVariationSearch(Chessboard board,
                                                 int depth, int ply,
@@ -293,7 +344,7 @@ public class Engine {
                 bestScore = score;
                 bestMove = move & MoveOrderer.MOVE_MASK;
                 alpha = Math.max(alpha, score);
-                
+
                 if (ply == 0) {
                     setAiMove(bestMove);
                     aiMoveScore = bestScore;

@@ -5,7 +5,7 @@ import com.github.louism33.axolotl.search.EngineSpecifications;
 import java.util.Arrays;
 
 public class Statistics {
-    
+
     private final int[] whichMoveWasTheBest = new int[60];
     private static final int[] whichMoveWasTheBestQuiescence = new int[60];
 
@@ -33,13 +33,13 @@ public class Statistics {
 
     private static final int numberOfSuccessfulSEEs = 0;
     private static final int numberOfSuccessfulQuiescentSEEs = 0;
-    
+
     private static final int numberOfSuccessfulAlphaRazors = 0;
     private static final int numberOfFailedAlphaRazors = 0;
     private static final int numberOfSuccessfulBetaRazors = 0;
     private static final int numberOfSuccessfulAspirations = 0;
     private static final int numberOfFailedAspirations = 0;
-    
+
     private static final int numberOfIIDs = 0;
     private static final int numberOfSuccessfulIIDs = 0;
     private static final int numberOfFailedIIDs = 0;
@@ -59,38 +59,19 @@ public class Statistics {
     private static final int numberOfUpperBounds = 0;
     private static final int numberOfHashBetaCutoffs = 0;
 
-    public void infoLog(long endTime, long startTime, int move){
-        long time = endTime - startTime;
-        
-        if (time > 1000) {
-//            System.out.println("Best move: "+MoveParser.toString(move)+", nps: " +
-//                    ((1000 * (this.numberOfMovesMade + this.numberOfQuiescentMovesMade)) / time));  
-            
-//            System.out.println("Nps: " +
-//                    ((1000 * (this.numberOfMovesMade + this.numberOfQuiescentMovesMade)) / time));
-        } 
-        else {
-//            System.out.println("Best move: " + MoveParser.toString(move));
-        }
 
-       
-    }
-    
     public void printStatistics(){
         System.out.println();
         System.out.println("------");
 
         System.out.println();
-        if (EngineSpecifications.ALLOW_PRINCIPLE_VARIATION_SEARCH) {
-            System.out.println("number of PVS hits:             " + numberOfPVSHits);
-            System.out.println("number of PVS misses:           " + numberOfPVSMisses);
-            System.out.println();
-        }
-        if (EngineSpecifications.ALLOW_ASPIRATION_WINDOWS) {
-            System.out.println("Number of good aspirations:     " + numberOfSuccessfulAspirations);
-            System.out.println("Number of bad aspirations:      " + numberOfFailedAspirations);
-            System.out.println();
-        }
+        System.out.println("number of PVS hits:             " + numberOfPVSHits);
+        System.out.println("number of PVS misses:           " + numberOfPVSMisses);
+        System.out.println();
+
+        System.out.println("Number of good aspirations:     " + numberOfSuccessfulAspirations);
+        System.out.println("Number of bad aspirations:      " + numberOfFailedAspirations);
+        System.out.println();
 
         System.out.println("Number of searches with hashmove:   " + numberOfSearchesWithHash);
         System.out.println("Number of searches w/out hashmove:  " + numberOfSearchesWithoutHash);
@@ -101,77 +82,55 @@ public class Statistics {
         System.out.println("numberOfHashBetaCutoffs:            " + numberOfHashBetaCutoffs);
         System.out.println();
 
-        if (EngineSpecifications.ALLOW_KILLERS){
-            System.out.println("numberOfVictoriousKillersOne:   " + numberOfVictoriousKillersOne);
-            System.out.println("numberOfVictoriousKillersTwo:   " + numberOfVictoriousKillersTwo);
-            System.out.println("number of old killer ones:      " + numberOfVeteranVictoriousKillersOne);
-            System.out.println("number of old killer twos:      " + numberOfVeteranVictoriousKillersTwo);
-            System.out.println();
-        }
+        System.out.println("numberOfVictoriousKillersOne:   " + numberOfVictoriousKillersOne);
+        System.out.println("numberOfVictoriousKillersTwo:   " + numberOfVictoriousKillersTwo);
+        System.out.println("number of old killer ones:      " + numberOfVeteranVictoriousKillersOne);
+        System.out.println("number of old killer twos:      " + numberOfVeteranVictoriousKillersTwo);
+        System.out.println();
 
-        if (EngineSpecifications.ALLOW_MATE_KILLERS){
-            System.out.println("numberOfVictoriousMaters:       " + numberOfVictoriousMaters);
-            System.out.println();
-        }
+        System.out.println("numberOfVictoriousMaters:       " + numberOfVictoriousMaters);
+        System.out.println();
 
-        if (EngineSpecifications.ALLOW_EXTENSIONS) {
-            System.out.println("number of Check Extensions      " + numberOfCheckExtensions);
-            System.out.println();
-        }
-        if (EngineSpecifications.ALLOW_LATE_MOVE_REDUCTIONS) {
-            System.out.println("number of LMRs:                 " + numberOfLateMoveReductions);
-            System.out.println("number of LMR hits:             " + numberOfLateMoveReductionsHits);
-            System.out.println("number of LMR misses:           " + numberOfLateMoveReductionsMisses);
-            System.out.println();
-        }
-        if (EngineSpecifications.ALLOW_LATE_MOVE_PRUNING) {
-            System.out.println("number of late move prunings:   " + numberOfLateMovePrunings);
-            System.out.println();
-        }
-        if (EngineSpecifications.ALLOW_NULL_MOVE_PRUNING){
-            System.out.println("number of null move hits:       " + numberOfNullMoveHits);
-            System.out.println("number of null move misses:     " + numberOfNullMoveMisses);
-            System.out.println();
-        }
-        if (EngineSpecifications.ALLOW_ALPHA_RAZORING) {
-            System.out.println("Number of good alpha razors:    " + numberOfSuccessfulAlphaRazors);
-            System.out.println("Number of failed alpha razors:  " + numberOfFailedAlphaRazors);
-            System.out.println();
-        }
+        System.out.println("number of Check Extensions      " + numberOfCheckExtensions);
+        System.out.println();
 
-        if (EngineSpecifications.ALLOW_BETA_RAZORING) {
-            System.out.println("Number of good beta razors:     " + numberOfSuccessfulBetaRazors);
-            System.out.println();
-        }
+        System.out.println("number of LMRs:                 " + numberOfLateMoveReductions);
+        System.out.println("number of LMR hits:             " + numberOfLateMoveReductionsHits);
+        System.out.println("number of LMR misses:           " + numberOfLateMoveReductionsMisses);
+        System.out.println();
 
-        if (EngineSpecifications.ALLOW_FUTILITY_PRUNING) {
-            System.out.println("Number of good futilities:      " + numberOfSuccessfulFutilities);
-            System.out.println("Number of bad futilities:       " + numberOfFailedFutilities);
-            System.out.println();
-        }   
-        
-        if (EngineSpecifications.ALLOW_SEE_PRUNING) {
-            System.out.println("Number of successful SEEs:      " + numberOfSuccessfulSEEs);
-            System.out.println();
-        }            
-        
-        if (EngineSpecifications.ALLOW_QUIESCENCE_SEE_PRUNING) {
-            System.out.println("Number of successful Q SEEs:    " + numberOfSuccessfulQuiescentSEEs);
-            System.out.println();
-        }        
-        
-        if (EngineSpecifications.ALLOW_QUIESCENCE_FUTILITY_PRUNING) {
-            System.out.println("Number of good Q futilities:    " + numberOfSuccessfulQuiescenceFutilities);
-            System.out.println("Number of bad Q futilities:     " + numberOfFailedQuiescenceFutilities);
-            System.out.println();
-        }
+        System.out.println("number of late move prunings:   " + numberOfLateMovePrunings);
+        System.out.println();
 
-        if (EngineSpecifications.ALLOW_INTERNAL_ITERATIVE_DEEPENING) {
-            System.out.println("Number of IIDS:                 " + numberOfIIDs);
-            System.out.println("Number of successful IIDS:      " + numberOfSuccessfulIIDs);
-            System.out.println("Number of failed IIDS:          " + numberOfFailedIIDs);
-            System.out.println();
-        }
+        System.out.println("number of null move hits:       " + numberOfNullMoveHits);
+        System.out.println("number of null move misses:     " + numberOfNullMoveMisses);
+        System.out.println();
+
+        System.out.println("Number of good alpha razors:    " + numberOfSuccessfulAlphaRazors);
+        System.out.println("Number of failed alpha razors:  " + numberOfFailedAlphaRazors);
+        System.out.println();
+
+        System.out.println("Number of good beta razors:     " + numberOfSuccessfulBetaRazors);
+        System.out.println();
+
+        System.out.println("Number of good futilities:      " + numberOfSuccessfulFutilities);
+        System.out.println("Number of bad futilities:       " + numberOfFailedFutilities);
+        System.out.println();
+
+        System.out.println("Number of successful SEEs:      " + numberOfSuccessfulSEEs);
+        System.out.println();
+
+        System.out.println("Number of successful Q SEEs:    " + numberOfSuccessfulQuiescentSEEs);
+        System.out.println();
+
+        System.out.println("Number of good Q futilities:    " + numberOfSuccessfulQuiescenceFutilities);
+        System.out.println("Number of bad Q futilities:     " + numberOfFailedQuiescenceFutilities);
+        System.out.println();
+
+        System.out.println("Number of IIDS:                 " + numberOfIIDs);
+        System.out.println("Number of successful IIDS:      " + numberOfSuccessfulIIDs);
+        System.out.println("Number of failed IIDS:          " + numberOfFailedIIDs);
+        System.out.println();
 
 
 

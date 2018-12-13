@@ -70,7 +70,7 @@ public class MoveOrderer {
             if (move == hashMove) {
                 moves[i] = buildMoveScore(moves[i], hashScore);
             }
-            else if (EngineSpecifications.ALLOW_MATE_KILLERS && mateKillers[ply] != 0 && moves[i] == mateKillers[ply]) {
+            else if (mateKillers[ply] != 0 && moves[i] == mateKillers[ply]) {
                 Assert.assertTrue(mateKillers[ply] < MOVE_SIZE_LIMIT);
                 moves[i] = buildMoveScore(moves[i], mateKillerScore);
             }
@@ -98,7 +98,7 @@ public class MoveOrderer {
                 Assert.assertTrue(killerMoves[ply][0] < MOVE_SIZE_LIMIT);
                 moves[i] = buildMoveScore(moves[i], killerOneScore);
             }
-            else if (EngineSpecifications.ALLOW_KILLERS && killerMoves[ply][1] != 0 && killerMoves[ply][1] == moves[i]) {
+            else if (killerMoves[ply][1] != 0 && killerMoves[ply][1] == moves[i]) {
                 Assert.assertTrue(killerMoves[ply][1] < MOVE_SIZE_LIMIT);
                 moves[i] = buildMoveScore(moves[i], killerTwoScore);
             }
