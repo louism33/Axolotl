@@ -85,5 +85,6 @@ public class EvaluationConstants {
     
     // king valuation
     static final int KING_PAWN_PROTECT_BONUS              = 5;
+    static final int KING_HOME_RANK                       = 10;
 
 }

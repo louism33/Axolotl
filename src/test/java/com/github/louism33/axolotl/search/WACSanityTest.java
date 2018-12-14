@@ -55,39 +55,10 @@ public class WACSanityTest {
     public void test() {
         List<Integer> winningMoves = EPDObject.getBestMoves();
         List<Integer> losingMoves = EPDObject.getAvoidMoves();
-//        System.out.println(EPDObject.getId()+": ");
-        System.out.println(EPDObject.getBoardFen());
-//        System.out.println(EPDObject.getBoard());
-        System.out.println("Move(s) to get:     " + Arrays.toString(MoveParser.toString(winningMoves)));
-
-        if (losingMoves.size() > 0){
-            System.out.println("Move(s) to avoid:   " + Arrays.toString(MoveParser.toString(losingMoves)));
-        }
-
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
-        
-        System.out.print("Best move found:    "+MoveParser.toString(move));
-        
-        if (Engine.getAiMoveScore() >= CHECKMATE_ENEMY_SCORE_MAX_PLY){
-            System.out.println(", mate in " + (CHECKMATE_ENEMY_SCORE - Engine.getAiMoveScore())+" half plies.");
-        }else {
-            System.out.println(", score: "+Engine.getAiMoveScore());
-        }
-        if (Engine.nps > 0) {
-            System.out.println("NPS:                " + Engine.nps);
-        }
-        
         if (winningMoves.contains(move) && !losingMoves.contains(move)){
-            System.out.println("success");
             successes++;
         }
-        else {
-            System.out.println("failure");
-        }
-
-        System.out.println("total successes: " + successes);
-        System.out.println();
-        
     }
 
     private static final String wacTests = "" +

@@ -14,7 +14,7 @@ import java.util.List;
 import static com.github.louism33.axolotl.main.UCIBoardParser.convertGenericBoardToChessboard;
 import static com.github.louism33.axolotl.main.UCIBoardParser.convertMyMoveToGenericMove;
 
-class UCIEntry extends AbstractEngine {
+public class UCIEntry extends AbstractEngine {
 
     private Chessboard board;
     private GenericBoard genericBoard;
@@ -33,6 +33,7 @@ class UCIEntry extends AbstractEngine {
     public void receive(EngineInitializeRequestCommand command) {
         System.out.println("Starting Engine");
         Engine.setup();
+        Engine.setUciEntry(this);
         this.getProtocol().send(new ProtocolInitializeAnswerCommand("axolotl_v2.0", "Louis James Mackenzie-Smith"));
     }
 
@@ -72,7 +73,6 @@ class UCIEntry extends AbstractEngine {
     public void receive(EngineAnalyzeCommand command) {
         genericBoard = command.board;
         moves = command.moves;
-//        System.out.println("The initial board fen is:\n"+ genericBoard +"\nWith moves: "+moves);
         board = convertGenericBoardToChessboard(genericBoard, moves);
     }
 
@@ -142,6 +142,10 @@ class UCIEntry extends AbstractEngine {
         System.out.println("I don't know how to ponder :(");
     }
 
+    public void sendInformation(ProtocolInformationCommand protocolInformationCommand){
+        this.getProtocol().send(protocolInformationCommand);
+    }
+    
     public static void main(String[] args) {
         System.out.println("Starting everything");
         Thread thread = new Thread( new UCIEntry() );
