@@ -1,8 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.BitOperations;
-import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.PieceMove;
+import com.github.louism33.chesscore.*;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
@@ -27,6 +25,8 @@ class Knight {
 
         while (myKnights != 0){
             long knight = BitOperations.getFirstPiece(myKnights);
+            int knightIndex = BitOperations.getIndexOfFirstPiece(knight);
+
 
             long pseudoAvailableSquares = PieceMove.singleKnightTable(knight, UNIVERSE);
             score += populationCount(pseudoAvailableSquares & emptySquares) * KNIGHT_MOBILITY_SCORE;
@@ -45,10 +45,8 @@ class Knight {
 
                 if ((knight & (northSouthHighway | FILE_C | FILE_F)) != 0) {
                     if (white) {
-                        if ((((knight << 7) & enemyPawns) != 0)
-                                || (((knight << 9) & enemyPawns) != 0)
-                                || (((knight << 17) & enemyPawns) != 0)
-                                || ((knight << 18) & enemyPawns) != 0) {
+                        long enemyPawnKillZone = blackPawnKillZone[knightIndex] | blackPawnKillZone[knightIndex + 8];
+                        if ((enemyPawnKillZone & enemyPawns) != 0) {
                             myKnights &= myKnights - 1;
                             continue;
                         }
@@ -58,10 +56,8 @@ class Knight {
                         }
                         
                     } else {
-                        if ((((knight >>> 7) & enemyPawns) != 0)
-                                || (((knight >>> 9) & enemyPawns) != 0)
-                                || (((knight >>> 17) & enemyPawns) != 0)
-                                || ((knight >>> 18) & enemyPawns) != 0) {
+                        long enemyPawnKillZone = whitePawnKillZone[knightIndex] | whitePawnKillZone[knightIndex - 8];
+                        if ((enemyPawnKillZone & enemyPawns) != 0) {
                             myKnights &= myKnights - 1;
                             continue;
                         }

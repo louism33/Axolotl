@@ -15,7 +15,6 @@ class Misc {
         if (board.isWhiteTurn() == white){
             score += MY_TURN_BONUS;
             score += (MoveParser.numberOfRealMoves(moves) * MOVE_NUMBER_POINT) / 10;
-
         }
         
         while (pinnedPieces != 0){

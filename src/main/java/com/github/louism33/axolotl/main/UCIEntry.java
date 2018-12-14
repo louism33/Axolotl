@@ -11,8 +11,7 @@ import com.github.louism33.chesscore.MoveParser;
 
 import java.util.List;
 
-import static com.github.louism33.axolotl.main.UCIBoardParser.convertGenericBoardToChessboard;
-import static com.github.louism33.axolotl.main.UCIBoardParser.convertMyMoveToGenericMove;
+import static com.github.louism33.axolotl.main.UCIBoardParser.*;
 
 public class UCIEntry extends AbstractEngine {
 
@@ -34,7 +33,7 @@ public class UCIEntry extends AbstractEngine {
         System.out.println("Starting Engine");
         Engine.setup();
         Engine.setUciEntry(this);
-        this.getProtocol().send(new ProtocolInitializeAnswerCommand("axolotl_v2.0", "Louis James Mackenzie-Smith"));
+        this.getProtocol().send(new ProtocolInitializeAnswerCommand("axolotl_v1.1", "Louis James Mackenzie-Smith"));
     }
 
     @Override
@@ -93,7 +92,8 @@ public class UCIEntry extends AbstractEngine {
         long clock = timeOnClock(command);
         if (clock != 0){
             System.out.println("Search for move, clock time: " + clock);
-            return Engine.searchMyTime(board, clock);
+            Long clockIncrement = command.getClockIncrement(convertMyColourToGenericColour(board.isWhiteTurn()));
+            return Engine.searchMyTime(board, clock, clockIncrement);
         }
         else if (command.getMoveTime() != null && command.getMoveTime() != 0){
             System.out.println("Search for move, fixed time: " + command.getMoveTime());

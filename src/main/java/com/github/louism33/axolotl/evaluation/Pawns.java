@@ -116,13 +116,13 @@ class Pawns {
         long myOtherPawns = myPawns ^ pawn;
         long file = Evaluator.getFile(pawn);
         int index = BitOperations.getIndexOfFirstPiece(pawn);
+        long forwardFile = BitOperations.fileForward(index, white);
 
         if ((file & myOtherPawns) != 0) {
             score += PAWN_DOUBLED;
         }
 
-        // todo, only forwards
-        if ((file & enemyPawns) != 0) {
+        if ((forwardFile & enemyPawns) != 0) {
             score += PAWN_UNBLOCKED;
         }
 
@@ -133,7 +133,6 @@ class Pawns {
         if ((BitOperations.squareCentredOnIndex(index) & myOtherPawns) == 0) {
             score += PAWN_ISOLATED;
         }
-
 
         long possiblePassedPawn = pawn & fifthRank;
         if (possiblePassedPawn == 0) {

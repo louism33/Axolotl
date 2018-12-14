@@ -26,7 +26,13 @@ public class WACTest {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
+        int stopAt = 30;
+        
         for (int i = 0; i < splitUpWACs.length; i++) {
+            if (i == stopAt){
+                break;
+            }
+            
             String splitUpWAC = splitUpWACs[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);

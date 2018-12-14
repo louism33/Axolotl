@@ -104,7 +104,7 @@ public class Engine {
         return searchFixedTime(board, 0);
     }
 
-    public static int searchMyTime(Chessboard board, long maxTime) {
+    public static int searchMyTime(Chessboard board, long maxTime, long increment) {
         EngineSpecifications.ALLOW_TIME_LIMIT = true;
 
         if (maxTime < 1000) {
@@ -113,7 +113,7 @@ public class Engine {
         if (maxTime < 5000) {
             return searchFixedDepth(board, 2);
         }
-        long timeLimit = allocateTime(maxTime);
+        long timeLimit = allocateTime(maxTime, increment);
 
         return searchFixedTime(board, timeLimit);
     }

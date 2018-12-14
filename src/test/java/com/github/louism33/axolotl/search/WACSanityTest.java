@@ -34,7 +34,6 @@ public class WACSanityTest {
         List<Object[]> answers = new ArrayList<>();
 
         for (int i = 0; i < splitUpWACs.length; i++) {
-
             String splitUpWAC = splitUpWACs[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
