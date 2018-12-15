@@ -4,7 +4,8 @@ import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 
 import static com.github.louism33.axolotl.evaluation.Bishop.evalBishopByTurn;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_STALEMATE_SCORE;
 import static com.github.louism33.axolotl.evaluation.King.evalKingByTurn;
 import static com.github.louism33.axolotl.evaluation.Knight.evalKnightByTurn;
 import static com.github.louism33.axolotl.evaluation.MaterialEval.evalMaterialByTurn;
@@ -214,11 +215,11 @@ public class Evaluator {
     }
 
 
-    public static long getRow(long piece){
+    static long getRow(long piece){
         return ROWS[getIndexOfFirstPiece(piece)  / 8];
     }
 
-    public static long getFile(long piece) {
+    static long getFile(long piece) {
         return FILES[getIndexOfFirstPiece(piece) % 8];
     }
 

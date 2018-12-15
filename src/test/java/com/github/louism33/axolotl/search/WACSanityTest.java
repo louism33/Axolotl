@@ -20,7 +20,7 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMA
 @RunWith(Parameterized.class)
 public class WACSanityTest {
 
-    private static final int timeLimit = 10_000;
+    private static final int timeLimit = 5_000;
     private static int successes = 0;
 
     @AfterClass

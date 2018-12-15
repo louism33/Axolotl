@@ -12,13 +12,13 @@ import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocateTime;
-import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateKillerMoves;
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateMateKillerMoves;
 import static com.github.louism33.axolotl.search.EngineSpecifications.ASPIRATION_MAX_TRIES;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
+import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocateTime;
+import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
 
 public class Engine {
 
@@ -104,7 +104,7 @@ public class Engine {
         return searchFixedTime(board, 0);
     }
 
-    public static int searchMyTime(Chessboard board, long maxTime) {
+    public static int searchMyTime(Chessboard board, long maxTime, long increment) {
         EngineSpecifications.ALLOW_TIME_LIMIT = true;
 
         if (maxTime < 1000) {
@@ -113,7 +113,7 @@ public class Engine {
         if (maxTime < 5000) {
             return searchFixedDepth(board, 2);
         }
-        long timeLimit = allocateTime(maxTime);
+        long timeLimit = allocateTime(maxTime, increment);
 
         return searchFixedTime(board, timeLimit);
     }

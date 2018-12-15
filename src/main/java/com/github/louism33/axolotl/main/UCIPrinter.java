@@ -1,14 +1,8 @@
 package com.github.louism33.axolotl.main;
 
 import com.fluxchess.jcpi.commands.ProtocolInformationCommand;
-import com.fluxchess.jcpi.models.GenericMove;
-import com.fluxchess.jcpi.protocols.NoProtocolException;
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.MoveParser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;

@@ -1,6 +1,5 @@
 package standalone;
 
-import com.fluxchess.jcpi.commands.EngineAnalyzeCommand;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.Chessboard;
@@ -18,7 +17,10 @@ public class Temp {
 //        EngineAnalyzeCommand e = new EngineAnalyzeCommand()
 
         Chessboard board = new Chessboard();
-        int move = Engine.searchFixedTime(board, 1000);
-        System.out.println(MoveParser.toString(move));
+//        int move = Engine.searchFixedTime(board, 1000);
+//        System.out.println(MoveParser.toString(move));
+
+
+        System.out.println(20 / 2.5);
     }
 }
