@@ -53,12 +53,17 @@ public class WACSanityTest {
 
     @Test
     public void test() {
+        System.out.println(EPDObject.getBoardFen());
         List<Integer> winningMoves = EPDObject.getBestMoves();
         List<Integer> losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.INFO = false;
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
         if (winningMoves.contains(move) && !losingMoves.contains(move)){
+            System.out.println("success");
             successes++;
+        }
+        else {
+            System.out.println("failure");
         }
     }
 
