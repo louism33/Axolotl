@@ -76,7 +76,7 @@ public class EvaluationConstants {
 
     // rook valuation
     static final int ROOK_ON_SEVENTH_BONUS                = 25;
-    static final int ROOK_MOBILITY_SCORE                  = 1;
+    static final int ROOK_MOBILITY_SCORE                  = 2;
     static final int ROOK_NOT_DEVELOPED                   = -5;
     static final int ROOK_OPEN_FILE_BONUS                 = 15;
     static final int ROOK_ON_SEMI_OPEN_FILE_BONUS         = 10;
