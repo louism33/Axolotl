@@ -1,30 +1,25 @@
 package standalone;
 
 import com.fluxchess.jcpi.models.GenericBoard;
+import com.github.louism33.axolotl.evaluation.Evaluator;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MoveParser;
 
 class Temp {
     
     public static void main(String[] args){
+//        Chessboard board = new Chessboard("k7/3b4/K7/8/8/8/3B4/8 w - -");
         
-//        String fen = "rnbqk2r/pppp1ppp/4p3/8/4P3/8/PPPbPPPP/R2QKBNR w KQkq - 0 6";
-//        Chessboard board = new Chessboard(fen);
-
-        GenericBoard g = new GenericBoard();
-
-//        EngineAnalyzeCommand e = new EngineAnalyzeCommand()
-
         Chessboard board = new Chessboard();
-//        int move = Engine.searchFixedTime(board, 1000);
-//        System.out.println(MoveParser.toString(move));
+        System.out.println(board);
+        
+        
+        int i = Engine.searchFixedDepth(board, 2);
+        System.out.println(MoveParser.toString(i));
 
-        int a = 2047;
-        int b = 1024;
+        int eval = Evaluator.eval(board, board.isWhiteTurn(), board.generateLegalMoves());
 
-        System.out.println(a % b);
-        System.out.println(-a % b);
-        System.out.println((((-a % b) + b) % b));
-        System.out.println(a % -b);
-        System.out.println(-a % -b);
+        System.out.println("eval: " + eval);
     }
 }
