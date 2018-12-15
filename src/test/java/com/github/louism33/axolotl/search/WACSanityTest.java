@@ -55,6 +55,7 @@ public class WACSanityTest {
     public void test() {
         List<Integer> winningMoves = EPDObject.getBestMoves();
         List<Integer> losingMoves = EPDObject.getAvoidMoves();
+        EngineSpecifications.INFO = false;
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
         if (winningMoves.contains(move) && !losingMoves.contains(move)){
             successes++;

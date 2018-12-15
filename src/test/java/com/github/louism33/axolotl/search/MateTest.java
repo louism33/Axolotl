@@ -51,6 +51,7 @@ public class MateTest {
     @Test
     public void test() {
         List<Integer> winningMoves = EPDObject.getBestMoves();
+        EngineSpecifications.INFO = false;
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
         if (winningMoves.contains(move)){
             successes++;

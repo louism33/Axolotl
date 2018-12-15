@@ -155,7 +155,7 @@ public class Engine {
 
             score = aspirationSearch(board, depth, aspirationScore);
 
-            if (depth > 6){
+            if (EngineSpecifications.INFO && depth > 6){
                 UCIPrinter.sendInfoCommand(aiMove, aiMoveScore, depth);
             }
 
