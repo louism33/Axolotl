@@ -2,11 +2,12 @@ package com.github.louism33.axolotl.search;
 
 public class EngineSpecifications {
 
-    public static boolean INFO                                       = true;
+    public static boolean INFO                                       = false;
     public static int MAX_DEPTH                                      = 14;
     public static boolean ALLOW_TIME_LIMIT                           = true;
 
-    public static final int[] ASPIRATION_WINDOWS                     = {10, 100, 1000};
-    public static final int ASPIRATION_MAX_TRIES                     = ASPIRATION_WINDOWS.length;
-    public static final int DEFAULT_TABLE_SIZE                       = 10_000_000;
+    static final int[] ASPIRATION_WINDOWS                            = {10, 100, 1000};
+    static final int ASPIRATION_MAX_TRIES                            = ASPIRATION_WINDOWS.length;
+    public static int TABLE_SIZE                                     = 16 * 62_500; // 16mb
+    public static final int MAX_TABLE_SIZE                           = 16 * 62_500 * 60; // 960mb
 }

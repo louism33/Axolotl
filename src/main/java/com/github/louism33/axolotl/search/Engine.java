@@ -16,8 +16,7 @@ import org.junit.Assert;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateKillerMoves;
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateMateKillerMoves;
-import static com.github.louism33.axolotl.search.EngineSpecifications.ASPIRATION_MAX_TRIES;
-import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
+import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocateTime;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
@@ -91,10 +90,11 @@ public class Engine {
         nps = 0;
         regularMovesMade = 0;
         stopInstruction = false;
-        regularMovesMade = 0;
         quiescentMovesMade = 0;
         aiMove = 0;
         aiMoveScore = SHORT_MINIMUM;
+
+        TranspositionTable.initTable(TABLE_SIZE);
     }
 
     public static int searchFixedDepth(Chessboard board, int depth) {
@@ -143,7 +143,10 @@ public class Engine {
         return aiMove & MoveOrderer.MOVE_MASK;
     }
 
-    private static void iterativeDeepeningWithAspirationWindows(Chessboard board, long startTime, long timeLimitMillis) throws IllegalUnmakeException {
+    private static void iterativeDeepeningWithAspirationWindows
+            (Chessboard board, long startTime, long timeLimitMillis)
+            throws IllegalUnmakeException {
+        
         int depth = 0;
         int aspirationScore = 0;
 
@@ -166,7 +169,8 @@ public class Engine {
         }
     }
 
-    private static int aspirationSearch(Chessboard board, int depth, int aspirationScore) throws IllegalUnmakeException {
+    private static int aspirationSearch(Chessboard board, int depth, int aspirationScore)
+            throws IllegalUnmakeException {
 
         int alpha;
         int beta;
@@ -250,7 +254,7 @@ public class Engine {
                         aiMoveScore = score;
                     }
                     return score;
-                } 
+                }
                 else if (flag == LOWERBOUND) {
                     if (score >= beta){
                         if (ply == 0){
@@ -259,7 +263,7 @@ public class Engine {
                         }
                         return score;
                     }
-                } 
+                }
                 else if (flag == UPPERBOUND) {
                     if (score <= alpha){
                         if (ply == 0){

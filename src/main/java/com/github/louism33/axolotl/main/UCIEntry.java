@@ -4,6 +4,7 @@ import com.fluxchess.jcpi.AbstractEngine;
 import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
+import com.fluxchess.jcpi.options.AbstractOption;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
@@ -21,7 +22,7 @@ public class UCIEntry extends AbstractEngine {
     private UCIEntry(){
         super();
     }
-    
+
     public UCIEntry(Engine engine){
         super();
     }
@@ -29,10 +30,28 @@ public class UCIEntry extends AbstractEngine {
     // "uci"
     @Override
     public void receive(EngineInitializeRequestCommand command) {
-        System.out.println("Starting Engine");
         Engine.setup();
         Engine.setUciEntry(this);
-        this.getProtocol().send(new ProtocolInitializeAnswerCommand("axolotl_v1.1", "Louis James Mackenzie-Smith"));
+
+        ProtocolInitializeAnswerCommand firstCommand 
+                = new ProtocolInitializeAnswerCommand("axolotl_v1.1", "Louis James Mackenzie-Smith");
+        
+        firstCommand.addOption(new AbstractOption("Log") {
+            @Override
+            protected String type() {
+                return "check";
+            }
+        });
+
+        firstCommand.addOption(new AbstractOption("Hash Table Size") {
+            @Override
+            protected String type() {
+                return "spin";
+            }
+        });
+
+
+        this.getProtocol().send(firstCommand);
     }
 
     @Override
@@ -41,9 +60,26 @@ public class UCIEntry extends AbstractEngine {
         System.exit(1);
     }
 
+    // setoption name Write Debug Log true
     @Override
     public void receive(EngineSetOptionCommand command) {
-        System.out.println("This is not possible yet");
+        if (command == null || command.name == null || command.name.equals("")){
+            return;
+        }
+        if (command.name.equalsIgnoreCase("Log")){
+            EngineSpecifications.INFO = Boolean.valueOf(command.value);
+        }
+
+        if (command.name.equalsIgnoreCase("Table Size")){
+            int size = Integer.parseInt(command.value);
+            int number = size * 62_500;
+            if (number > 0 && number < EngineSpecifications.MAX_TABLE_SIZE) {
+                EngineSpecifications.TABLE_SIZE = number;
+            }
+            if (number > EngineSpecifications.MAX_TABLE_SIZE){
+                EngineSpecifications.TABLE_SIZE = EngineSpecifications.MAX_TABLE_SIZE;
+            }
+        }
     }
 
     @Override
@@ -62,7 +98,6 @@ public class UCIEntry extends AbstractEngine {
         board = null;
         genericBoard = null;
         Engine.setup();
-        System.out.println("New Game");
     }
 
     // ex:
@@ -141,10 +176,10 @@ public class UCIEntry extends AbstractEngine {
         System.out.println("I don't know how to ponder :(");
     }
 
-    public void sendInformation(ProtocolInformationCommand protocolInformationCommand){
+    void sendInformation(ProtocolInformationCommand protocolInformationCommand){
         this.getProtocol().send(protocolInformationCommand);
     }
-    
+
     public static void main(String[] args) {
         System.out.println("Starting everything");
         Thread thread = new Thread( new UCIEntry() );

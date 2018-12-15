@@ -16,10 +16,6 @@ public class TranspositionTable {
     private static int moduloAmount;
 
     public static void initTable(int maxEntries){
-//        int index = Integer.numberOfTrailingZeros(maxEntries);
-//        Assert.assertTrue(Integer.bitCount(maxEntries) == 1
-//                && index < 32);
-
         moduloAmount = maxEntries;
 
         keys = new long[maxEntries];
@@ -37,7 +33,7 @@ public class TranspositionTable {
 
     public static void addToTableAlwaysReplace(long key, long entry){
         if (!tableReady){
-            initTable(EngineSpecifications.DEFAULT_TABLE_SIZE);
+            initTable(EngineSpecifications.TABLE_SIZE);
         }
 
         int index = getIndex(key);
@@ -48,7 +44,7 @@ public class TranspositionTable {
 
     public static long retrieveFromTable(long key){
         if (!tableReady){
-            initTable(EngineSpecifications.DEFAULT_TABLE_SIZE);
+            initTable(EngineSpecifications.TABLE_SIZE);
         }
 
         int index = getIndex(key);

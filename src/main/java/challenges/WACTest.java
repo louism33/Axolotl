@@ -1,6 +1,7 @@
 package challenges;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.*;
+
 @RunWith(Parameterized.class)
 public class WACTest {
 
@@ -22,6 +25,8 @@ public class WACTest {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
+        EngineSpecifications.INFO = true;
+        
         int stopAt = 30;
         
         for (int i = 0; i < splitUpWACs.length; i++) {
@@ -31,7 +36,7 @@ public class WACTest {
             
             String splitUpWAC = splitUpWACs[i];
             Object[] objectAndName = new Object[2];
-            ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
+            EPDObject EPDObject = parseEDPPosition(splitUpWAC);
             objectAndName[0] = EPDObject;
             objectAndName[1] = EPDObject.getId();
             answers.add(objectAndName);
@@ -39,10 +44,10 @@ public class WACTest {
         return answers;
     }
 
-    private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
+    private static EPDObject EPDObject;
 
     public WACTest(Object edp, Object name) {
-        EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
+        EPDObject = (EPDObject) edp;
     }
 
     @Test

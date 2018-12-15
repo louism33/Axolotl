@@ -37,7 +37,7 @@ public class TranspositionTableTest {
 
     @Test
     public void buildTableEntryTestToLimit() {
-        int total = EngineSpecifications.DEFAULT_TABLE_SIZE;
+        int total = EngineSpecifications.TABLE_SIZE;
 
         TranspositionTable.initTable(total);
 
@@ -86,7 +86,7 @@ public class TranspositionTableTest {
 
     @Test
     public void overrideTest() {
-        int total = EngineSpecifications.DEFAULT_TABLE_SIZE;
+        int total = EngineSpecifications.TABLE_SIZE;
 
         TranspositionTable.initTable(total);
 
