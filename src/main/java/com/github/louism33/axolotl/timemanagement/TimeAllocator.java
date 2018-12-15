@@ -10,7 +10,7 @@ public class TimeAllocator {
         if (maxTime < 10000){
             return 1000;
         }
-        return (maxTime / 25) + (increment / 2);
+        return (maxTime / 25) + (increment / 3);
     }
 
     private static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){
