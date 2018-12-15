@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.transpositiontable;
 
+import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,15 +21,15 @@ public class TranspositionTableTest {
             Random r = new Random();
             
             int move = r.nextInt();
-            int score = r.nextInt(Short.MAX_VALUE * 2) - Short.MAX_VALUE;
+            int score = r.nextInt(EvaluationConstants.SHORT_MAXIMUM * 2) - EvaluationConstants.SHORT_MAXIMUM;
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
-            int ply = r.nextInt(127);
+            int ply = r.nextInt(99);
 
             long entry = buildTableEntry(move, score, depth, flag, ply);
 
             Assert.assertEquals(getMove(entry), move);
-            Assert.assertEquals(getScore(entry, 0), score);
+            Assert.assertEquals(getScore(entry, ply), score);
             Assert.assertEquals(getDepth(entry), depth);
             Assert.assertEquals(getFlag(entry), flag);
         }
@@ -51,10 +52,10 @@ public class TranspositionTableTest {
             Random r = new Random();
 
             int move = r.nextInt();
-            int score = r.nextInt(Short.MAX_VALUE * 2) - Short.MAX_VALUE;
+            int score = r.nextInt(EvaluationConstants.SHORT_MAXIMUM * 2) - EvaluationConstants.SHORT_MAXIMUM;
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
-            int ply = r.nextInt(127);
+            int ply = r.nextInt(99);
 
             moves.add(move);
             scores.add(score);
@@ -75,7 +76,7 @@ public class TranspositionTableTest {
             Assert.assertEquals(entry, (long) allEntries.get(key));
             
             Assert.assertEquals(getMove(entry), (int) moves.get(key));
-            Assert.assertEquals(getScore(entry, 0), (int) scores.get(key));
+            Assert.assertEquals(getScore(entry, plys.get(key)), (int) scores.get(key));
             Assert.assertEquals(getDepth(entry), (int) depths.get(key));
             Assert.assertEquals(getFlag(entry), (int) flags.get(key));
         }
@@ -100,10 +101,10 @@ public class TranspositionTableTest {
             Random r = new Random();
 
             int move = r.nextInt();
-            int score = r.nextInt(Short.MAX_VALUE * 2) - Short.MAX_VALUE;
+            int score = r.nextInt(EvaluationConstants.SHORT_MAXIMUM * 2) - EvaluationConstants.SHORT_MAXIMUM;
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
-            int ply = r.nextInt(127);
+            int ply = r.nextInt(99);
 
             long entry = buildTableEntry(move, score, depth, flag, ply);
 
@@ -114,10 +115,10 @@ public class TranspositionTableTest {
             Random r = new Random();
 
             int move = r.nextInt();
-            int score = r.nextInt(Short.MAX_VALUE * 2) - Short.MAX_VALUE;
+            int score = r.nextInt(EvaluationConstants.SHORT_MAXIMUM * 2) - EvaluationConstants.SHORT_MAXIMUM;
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
-            int ply = r.nextInt(127);
+            int ply = r.nextInt(99);
 
             moves.add(move);
             scores.add(score);
@@ -138,7 +139,7 @@ public class TranspositionTableTest {
             Assert.assertEquals(entry, (long) allEntries.get(key));
 
             Assert.assertEquals(getMove(entry), (int) moves.get(key));
-            Assert.assertEquals(getScore(entry, 0), (int) scores.get(key));
+            Assert.assertEquals(getScore(entry, plys.get(key)), (int) scores.get(key));
             Assert.assertEquals(getDepth(entry), (int) depths.get(key));
             Assert.assertEquals(getFlag(entry), (int) flags.get(key));
         }
