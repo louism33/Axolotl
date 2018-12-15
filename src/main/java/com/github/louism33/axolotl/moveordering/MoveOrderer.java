@@ -57,13 +57,6 @@ public class MoveOrderer {
 
             int move = moves[i];
 
-            if (move > MOVE_SIZE_LIMIT){
-                System.out.println("h " + MoveParser.toString(hashMove));
-                printMoves(moves);
-                System.out.println(MoveParser.toString(move) + "    "+move);
-                Art.printLong(move);
-            }
-
             Assert.assertTrue(move < MOVE_SIZE_LIMIT);
 
             if (move == hashMove) {

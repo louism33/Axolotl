@@ -36,44 +36,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/SearchUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-299">
-              <caret line="56" column="38" selection-start-line="56" selection-start-column="38" selection-end-line="56" selection-end-column="38" />
-              <folding>
-                <element signature="e#1744#1745#0" expanded="true" />
-                <element signature="e#1783#1784#0" expanded="true" />
-                <element signature="e#3953#3954#0" expanded="true" />
-                <element signature="e#3989#3990#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/Engine.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="330" selection-start-line="330" selection-end-line="330" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.travis.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="17" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" selection-start-line="22" selection-end-line="22" />
+            <state relative-caret-position="195">
+              <caret line="7" column="19" lean-forward="true" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -199,8 +166,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Pawns.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/SearchUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/Engine.java" />
-        <option value="$PROJECT_DIR$/.travis.yml" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/.travis.yml" />
       </list>
     </option>
   </component>
@@ -379,6 +346,11 @@
               <item name="axolotl" type="462c0819:PsiDirectoryNode" />
               <item name="transpositiontable" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Axolotl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Axolotl" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -390,7 +362,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544908899543" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544910018416" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="extract.method.default.visibility" value="private" />
@@ -443,34 +415,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UCIEntry" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.github.louism33.axolotl.main.UCIEntry" />
-      <module name="Axolotl" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.github.louism33.axolotl.main.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="WACTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Axolotl" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="challenges.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="challenges" />
-      <option name="MAIN_CLASS_NAME" value="challenges.WACTest" />
-      <option name="PARAMETERS" value="[2 Test: WAC.003]" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="WACTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Axolotl" />
       <extension name="coverage">
@@ -485,24 +429,32 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Axolotl-1.0-SNAPSHOT-jar-with-dependencies.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/target/Axolotl-1.0-SNAPSHOT-jar-with-dependencies.jar" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Axolotl-1.0-SNAPSHOT.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/target/Axolotl-1.0-SNAPSHOT.jar" />
+      <method v="2" />
+    </configuration>
     <configuration name="axolotl.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
       <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/axolotl_jar/axolotl.jar" />
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="JUnit.WACTest" />
-      <item itemvalue="JUnit.WACTest (1)" />
-      <item itemvalue="Application.UCIEntry" />
       <item itemvalue="Application.Temp" />
       <item itemvalue="JAR Application.axolotl.jar" />
+      <item itemvalue="JAR Application.Axolotl-1.0-SNAPSHOT-jar-with-dependencies.jar" />
+      <item itemvalue="JAR Application.Axolotl-1.0-SNAPSHOT.jar" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JAR Application.axolotl.jar" />
+        <item itemvalue="JAR Application.Axolotl-1.0-SNAPSHOT.jar" />
+        <item itemvalue="JAR Application.Axolotl-1.0-SNAPSHOT-jar-with-dependencies.jar" />
         <item itemvalue="JUnit.WACTest" />
         <item itemvalue="Application.Temp" />
-        <item itemvalue="Application.UCIEntry" />
-        <item itemvalue="JUnit.WACTest (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -695,7 +647,14 @@
       <option name="project" value="LOCAL" />
       <updated>1544906272269</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="position scores">
+      <created>1544908906535</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1544908906535</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -731,7 +690,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34307000" />
+    <option name="totallyTimeSpent" value="35258000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -744,9 +703,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1368" height="741" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48854962" visible="true" weight="0.18636364" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48854962" visible="true" weight="0.18636364" />
       <window_info id="Structure" order="1" sideWeight="0.51039696" side_tool="true" weight="0.26666668" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -756,12 +714,12 @@
       <window_info id="Favorites" order="7" sideWeight="0.5114504" side_tool="true" weight="0.18636364" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.33009708" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49772727" weight="0.43295637" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49772727" visible="true" weight="0.43295637" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.24878837" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32847896" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.2197092" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.1453958" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.40549272" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5022727" side_tool="true" weight="0.32847896" />
@@ -1085,17 +1043,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.travis.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="17" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
+          <caret line="22" column="4" lean-forward="true" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.travis.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="7" column="19" lean-forward="true" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="19" />
         </state>
       </provider>
     </entry>
