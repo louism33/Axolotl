@@ -1,13 +1,13 @@
-//package com.github.louism33.axolotl.helper.protocolhelperclasses;
+package com.github.louism33.axolotl.helper.protocolhelperclasses;
+
+import com.github.louism33.axolotl.moveordering.MoveOrderer;
+import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
+import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.IllegalUnmakeException;
+import org.junit.Assert;
 //
-//import com.github.louism33.axolotl.moveordering.MoveOrderer;
-//import com.github.louism33.axolotl.search.Engine;
-//import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
-//import com.github.louism33.chesscore.Chessboard;
-//import com.github.louism33.chesscore.IllegalUnmakeException;
-//import org.junit.Assert;
-//
-//class PVLine {
+public class PVLine {
 //
 //    private static final int maxPVLength = 20;
 //    private static int nodeScore;
@@ -50,18 +50,18 @@
 //        Assert.assertEquals(board, initial);
 //    }
 //
-//    public static boolean verifyMove(Chessboard board, int move, int[] moves){
-//        for (int j = 0; j < moves.length; j++) {
-//            int possibleMove = moves[j];
-//            if (possibleMove == 0) {
-//                break;
-//            }
-//            if (move == possibleMove) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    public static boolean verifyMove(Chessboard board, int move, int[] moves){
+        for (int j = 0; j < moves.length; j++) {
+            int possibleMove = moves[j];
+            if (possibleMove == 0) {
+                break;
+            }
+            if (move == possibleMove) {
+                return true;
+            }
+        }
+        return false;
+    }
 //
 //
 //    private static boolean verifyMove(Chessboard board, int move){
@@ -89,4 +89,4 @@
 //    public static long getNps() {
 //        return Engine.nps;
 //    }
-//}
+}

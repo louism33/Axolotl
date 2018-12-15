@@ -8,5 +8,5 @@ public class EngineSpecifications {
 
     public static final int[] ASPIRATION_WINDOWS                     = {10, 100, 1000};
     public static final int ASPIRATION_MAX_TRIES                     = ASPIRATION_WINDOWS.length;
-    public static final int DEFAULT_TABLE_SIZE                       = 1024;
+    public static final int DEFAULT_TABLE_SIZE                       = 10_000_000;
 }

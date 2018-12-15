@@ -1,5 +1,7 @@
 package com.github.louism33.axolotl.transpositiontable;
 
+import com.github.louism33.axolotl.evaluation.EvaluationConstants;
+import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import org.junit.Assert;
 
@@ -9,15 +11,15 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTableC
 
 public class TranspositionTable {
 
-    private static long[] keys;
-    private static long[] entries;
+    public static long[] keys;
+    public static long[] entries;
     private static boolean tableReady = false;
     private static int moduloAmount;
 
     public static void initTable(int maxEntries){
-        int index = Integer.numberOfTrailingZeros(maxEntries);
-        Assert.assertTrue(Integer.bitCount(maxEntries) == 1
-                && index < 16);
+//        int index = Integer.numberOfTrailingZeros(maxEntries);
+//        Assert.assertTrue(Integer.bitCount(maxEntries) == 1
+//                && index < 32);
 
         moduloAmount = maxEntries;
 
@@ -25,7 +27,7 @@ public class TranspositionTable {
         entries = new long[maxEntries];
 
         reset();
-        
+
         tableReady = true;
     }
 
@@ -34,12 +36,13 @@ public class TranspositionTable {
         Arrays.fill(entries, 0);
     }
 
-    public static void addToTable(long key, long entry){
+    public static void addToTableAlwaysReplace(long key, long entry){
         if (!tableReady){
             initTable(EngineSpecifications.DEFAULT_TABLE_SIZE);
         }
-        int index = 0;
-        
+
+        int index = getIndex(key);
+
         keys[index] = key;
         entries[index] = entry;
     }
@@ -48,16 +51,23 @@ public class TranspositionTable {
         if (!tableReady){
             initTable(EngineSpecifications.DEFAULT_TABLE_SIZE);
         }
-        int index = 0;
-//        int index = Math.abs((int) (key % moduloAmount));
-        Assert.assertTrue(index >= 0);
-        long keyValue = keys[index];
-        if (keyValue == 0){
-            return 0;
-        }
+
+        int index = getIndex(key);
+
         long entryValue = entries[index];
-        Assert.assertTrue(entryValue != 0);
         return entryValue;
+    }
+
+    private static int getIndex(long key) {
+        int index = (int) (key % moduloAmount);
+
+        if (index < 0){
+            index += moduloAmount;
+        }
+
+        Assert.assertTrue(index >= 0);
+
+        return index;
     }
 
     public static long buildTableEntry(int move, int score, int depth, int flag, int ply){
@@ -65,6 +75,12 @@ public class TranspositionTable {
         Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
         Assert.assertTrue(flag >= 0 && flag < 4);
 
+        if (score > EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY){
+            score += ply;
+        }
+        else if (score < EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY){
+            score -= ply;
+        }
         long entry = 0;
         entry |= (move & MOVE_MASK);
         entry |= (((long) score & SCORE_CLEANER) << scoreOffset);
@@ -77,9 +93,16 @@ public class TranspositionTable {
         return (int) (entry & MOVE_MASK);
     }
 
-    public static int getScore(long entry){
+    public static int getScore(long entry, int ply){
         long l1 = (entry & SCORE_MASK) >>> scoreOffset;
-        return (int) (l1 > twoFifteen ? l1 - twoSixteen : l1);
+        int score = (int) (l1 > twoFifteen ? l1 - twoSixteen : l1);
+        if (score > EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY){
+            score -= ply;
+        }
+        else if (score < EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY){
+            score += ply;
+        }
+        return score;
     }
 
     public static int getDepth(long entry){

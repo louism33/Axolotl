@@ -25,6 +25,7 @@ public class Temp {
 
         System.out.println(a % b);
         System.out.println(-a % b);
+        System.out.println((((-a % b) + b) % b));
         System.out.println(a % -b);
         System.out.println(-a % -b);
     }

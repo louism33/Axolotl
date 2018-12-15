@@ -1,15 +1,19 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
+import com.github.louism33.axolotl.helper.protocolhelperclasses.PVLine;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.main.UCIPrinter;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.moveordering.MoveOrderingConstants;
+import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
+
+import java.util.Arrays;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateKillerMoves;
@@ -19,6 +23,7 @@ import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocateTime;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
+import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 
 public class Engine {
 
@@ -214,6 +219,8 @@ public class Engine {
                                                 int alpha, int beta,
                                                 int nullMoveCounter) throws IllegalUnmakeException {
 
+        int originalAlpha = alpha;
+
         int[] moves = board.generateLegalMoves();
         boolean boardInCheck = board.inCheckRecorder;
 
@@ -234,6 +241,53 @@ public class Engine {
 
         int hashMove = 0;
         int score;
+
+
+
+
+        long previousTableData = TranspositionTable.retrieveFromTable(board.getZobrist());
+        if (previousTableData != 0) {
+            score = TranspositionTable.getScore(previousTableData, ply);
+            hashMove = TranspositionTable.getMove(previousTableData);
+
+            if (TranspositionTable.getDepth(previousTableData) >= depth){
+//                    && PVLine.verifyMove(board, hashMove, moves)){
+                int flag = TranspositionTable.getFlag(previousTableData);
+                if (flag == EXACT) {
+                    if (ply == 0){
+                        setAiMove(hashMove);
+                        aiMoveScore = score;
+                    }
+                    return score;
+                } 
+                else if (flag == LOWERBOUND) {
+                    if (score >= beta){
+                        if (ply == 0){
+                            setAiMove(hashMove);
+                            aiMoveScore = score;
+                        }
+                        return score;
+                    }
+                } 
+                else if (flag == UPPERBOUND) {
+                    if (score <= alpha){
+                        if (ply == 0){
+                            setAiMove(hashMove);
+                            aiMoveScore = score;
+                        }
+                        return score;
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
 
         boolean thisIsAPrincipleVariationNode = (beta - alpha != 1);
 
@@ -416,6 +470,19 @@ public class Engine {
         }
 
         Assert.assertTrue(bestMove != 0);
+
+        int flag;
+        if (bestScore <= originalAlpha){
+            flag = UPPERBOUND;
+        } else if (bestScore >= beta) {
+            flag = LOWERBOUND;
+        } else {
+            flag = EXACT;
+        }
+
+        TranspositionTable.addToTableAlwaysReplace(board.getZobrist(),
+                TranspositionTable.buildTableEntry(bestMove & MoveOrderer.MOVE_MASK, bestScore, depth, flag, ply));
+
 
         return bestScore;
     }
