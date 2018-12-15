@@ -20,7 +20,12 @@ public class Temp {
 //        int move = Engine.searchFixedTime(board, 1000);
 //        System.out.println(MoveParser.toString(move));
 
+        int a = 2047;
+        int b = 1024;
 
-        System.out.println(20 / 2.5);
+        System.out.println(a % b);
+        System.out.println(-a % b);
+        System.out.println(a % -b);
+        System.out.println(-a % -b);
     }
 }
