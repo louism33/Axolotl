@@ -1,7 +1,6 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
-import com.github.louism33.chesscore.MoveParser;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,12 +9,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 
 @RunWith(Parameterized.class)
 public class WACSanityTest {

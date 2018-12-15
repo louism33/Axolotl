@@ -20,7 +20,7 @@ class UCIBoardParser {
         }
     }
     
-    static GenericMove convertMyMoveToGenericMove(int move){
+    public static GenericMove convertMyMoveToGenericMove(int move){
         GenericMove genericMove = null;
         try {
             genericMove = new GenericMove(MoveParser.toString(move));

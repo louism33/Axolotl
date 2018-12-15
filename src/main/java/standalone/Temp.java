@@ -1,11 +1,9 @@
 package standalone;
 
 import com.fluxchess.jcpi.models.GenericBoard;
-import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveParser;
 
-public class Temp {
+class Temp {
     
     public static void main(String[] args){
         
@@ -20,7 +18,13 @@ public class Temp {
 //        int move = Engine.searchFixedTime(board, 1000);
 //        System.out.println(MoveParser.toString(move));
 
+        int a = 2047;
+        int b = 1024;
 
-        System.out.println(20 / 2.5);
+        System.out.println(a % b);
+        System.out.println(-a % b);
+        System.out.println((((-a % b) + b) % b));
+        System.out.println(a % -b);
+        System.out.println(-a % -b);
     }
 }
