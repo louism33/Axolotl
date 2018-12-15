@@ -2,7 +2,6 @@ package challenges;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
-import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,7 +13,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.*;
+import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.EPDObject;
+import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.parseEDPPosition;
 
 @RunWith(Parameterized.class)
 public class WACTest {
@@ -27,11 +27,11 @@ public class WACTest {
 
         EngineSpecifications.INFO = true;
         
-        int stopAt = 30;
+        int stopAt = 10;
         
         for (int i = 0; i < splitUpWACs.length; i++) {
             if (i == stopAt){
-//                break;
+                break;
             }
             
             String splitUpWAC = splitUpWACs[i];

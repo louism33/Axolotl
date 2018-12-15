@@ -115,8 +115,8 @@ class SearchUtils {
     }
 
 
-    static int lateMoveDepthReduction(){
-        return 2;
+    static int lateMoveDepthReduction(int depth){
+        return 2 + depth / 4;
     }
     
 }

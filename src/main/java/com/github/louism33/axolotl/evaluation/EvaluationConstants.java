@@ -43,8 +43,13 @@ public class EvaluationConstants {
     static final int PAWN_HANGING_PROTECTED               = 10;
     static final int PAWN_HANGING_UNDER_THREAT            = -25;
     // promoting pawns
-    static final int PAWN_SEVEN                           = 25;
+    static final int STRONG_DEFENCE_PRESENCE              = -2;
+    static final int STRONG_PRESENCE_FORWARD              = 7;
+    static final int PAWN_SIX_EMPTY_FILE_FORWARD          = 40;
+    static final int PAWN_SIX_FRIENDS                     = 15;
+    static final int PAWN_SEVEN_FRIENDS                   = 25;
     static final int PAWN_SIX                             = 15;
+    static final int PAWN_SEVEN                           = 25;
     static final int PAWN_SEVEN_PROMOTION_POSSIBLE        = 35;
     static final int PAWN_P_SQUARE_SUPPORTED              = 25;
     static final int PAWN_P_SQUARE_UNTHREATENED           = 25;

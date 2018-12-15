@@ -65,7 +65,7 @@ class Pawns {
 
         long pawnsOnSix = myPawns & sixthRank;
         long pawnsOnSeven = myPawns & seventhRank;
-        score += BitOperations.populationCount(pawnsOnSix) * PAWN_SIX;
+        score += BitOperations.populationCount(pawnsOnSix)  * PAWN_SIX;
         score += BitOperations.populationCount(pawnsOnSeven) * PAWN_SEVEN;
 
         long myPawnsEval = myPawns;
@@ -83,8 +83,8 @@ class Pawns {
         while (advancedPawns != 0) {
             long pawn = BitOperations.getFirstPiece(advancedPawns);
             score += advancedPawnScore(board, white, pawn,
-                    allPieces,
-                    sixthRank);
+                    myPawns, allPieces,
+                    enemies, sixthRank);
             advancedPawns &= advancedPawns - 1;
         }
 
@@ -181,13 +181,22 @@ class Pawns {
     }
 
     private static int advancedPawnScore(Chessboard board, boolean white, long advancedPawn,
-                                         long allPieces,
-                                         long sixthRank) {
+                                         long myPawns, long allPieces,
+                                         long enemies, long sixthRank) {
 
         int score = 0;
 
+        int index = BitOperations.getIndexOfFirstPiece(advancedPawn);
+        
+        long forwardFile = BitOperations.fileForward(index, white);
+        long squareOnMe = BitOperations.squareCentredOnIndex(index);
+        
         if ((advancedPawn & sixthRank) != 0) {
-            return PAWN_SIX;
+            score += BitOperations.populationCount(squareOnMe & myPawns) * PAWN_SIX_FRIENDS;
+            if ((forwardFile & enemies) == 0){
+                score += PAWN_SIX_EMPTY_FILE_FORWARD;
+            }
+            return score;
         }
 
         if (white) {
@@ -195,6 +204,9 @@ class Pawns {
             long capturePromotingSquareL = advancedPawn << 9;
             long capturePromotingSquareR = advancedPawn << 7;
 
+            score += BitOperations.populationCount(squareOnMe & myPawns) * PAWN_SEVEN_FRIENDS;
+            
+            
             if ((pushPromotingSquare & allPieces) == 0) {
                 score += PAWN_SEVEN_PROMOTION_POSSIBLE;
             }
