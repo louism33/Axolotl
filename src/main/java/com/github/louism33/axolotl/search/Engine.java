@@ -399,7 +399,7 @@ public class Engine {
             } else {
                 score = alpha + 1;
 
-                int R = lateMoveDepthReduction();
+                int R = lateMoveDepthReduction(depth);
 
                 if (numberOfMovesSearched > 3
                         && depth > R && !captureMove && !promotionMove

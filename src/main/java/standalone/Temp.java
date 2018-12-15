@@ -1,6 +1,5 @@
 package standalone;
 
-import com.fluxchess.jcpi.models.GenericBoard;
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.Chessboard;
