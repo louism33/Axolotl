@@ -9,7 +9,7 @@ import com.github.louism33.chesscore.MoveParser;
 
 import java.util.List;
 
-public class UCIBoardParser {
+class UCIBoardParser {
 
     static GenericColor convertMyColourToGenericColour(boolean white) {
         if (white){

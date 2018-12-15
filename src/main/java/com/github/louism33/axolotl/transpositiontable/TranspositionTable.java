@@ -1,7 +1,6 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
-import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import org.junit.Assert;
 
@@ -11,8 +10,8 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTableC
 
 public class TranspositionTable {
 
-    public static long[] keys;
-    public static long[] entries;
+    private static long[] keys;
+    private static long[] entries;
     private static boolean tableReady = false;
     private static int moduloAmount;
 
@@ -31,7 +30,7 @@ public class TranspositionTable {
         tableReady = true;
     }
 
-    public static void reset(){
+    private static void reset(){
         Arrays.fill(keys, 0);
         Arrays.fill(entries, 0);
     }
@@ -54,8 +53,7 @@ public class TranspositionTable {
 
         int index = getIndex(key);
 
-        long entryValue = entries[index];
-        return entryValue;
+        return entries[index];
     }
 
     private static int getIndex(long key) {
@@ -113,7 +111,5 @@ public class TranspositionTable {
         return (int) ((entry & FLAG_MASK) >>> flagOffset);
     }
 
-
-    public TranspositionTable(){}
 
 }

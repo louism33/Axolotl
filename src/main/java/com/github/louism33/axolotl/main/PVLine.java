@@ -1,13 +1,10 @@
-package com.github.louism33.axolotl.helper.protocolhelperclasses;
+package com.github.louism33.axolotl.main;
 
 import com.fluxchess.jcpi.models.GenericMove;
-import com.github.louism33.axolotl.main.UCIBoardParser;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
-import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
-import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import java.util.ArrayList;
@@ -32,7 +29,7 @@ public class PVLine {
 
             int move = TranspositionTable.getMove(entry) & MoveOrderer.MOVE_MASK;
 
-            if (PVLine.verifyMove(board, move, board.generateLegalMoves())) {
+            if (PVLine.verifyMove(move, board.generateLegalMoves())) {
                 pvMoves.add(UCIBoardParser.convertMyMoveToGenericMove(move));
                 board.makeMoveAndFlipTurn(move);
                 i++;
@@ -55,7 +52,7 @@ public class PVLine {
         return pvMoves;
     }
 
-    public static boolean verifyMove(Chessboard board, int move, int[] moves){
+    public static boolean verifyMove(int move, int[] moves){
         for (int j = 0; j < moves.length; j++) {
             int possibleMove = moves[j];
             if (possibleMove == 0) {

@@ -2,7 +2,6 @@ package com.github.louism33.axolotl.main;
 
 import com.fluxchess.jcpi.commands.ProtocolInformationCommand;
 import com.fluxchess.jcpi.models.GenericMove;
-import com.github.louism33.axolotl.helper.protocolhelperclasses.PVLine;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;

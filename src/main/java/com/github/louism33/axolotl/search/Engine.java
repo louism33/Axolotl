@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
-import com.github.louism33.axolotl.helper.protocolhelperclasses.PVLine;
+import com.github.louism33.axolotl.main.PVLine;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.main.UCIPrinter;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
@@ -12,8 +12,6 @@ import com.github.louism33.chesscore.IllegalUnmakeException;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
-
-import java.util.Arrays;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateKillerMoves;
@@ -65,10 +63,6 @@ public class Engine {
 
     public static void setStopInstruction(boolean instruction) {
         stopInstruction = instruction;
-    }
-
-    static int getAiMoveScore() {
-        return aiMoveScore;
     }
 
     private static void calculateNPS(){
@@ -248,7 +242,7 @@ public class Engine {
             hashMove = TranspositionTable.getMove(previousTableData);
 
             if (TranspositionTable.getDepth(previousTableData) >= depth
-                    && PVLine.verifyMove(board, hashMove, moves)){
+                    && PVLine.verifyMove(hashMove, moves)){
                 int flag = TranspositionTable.getFlag(previousTableData);
                 if (flag == EXACT) {
                     if (ply == 0){
