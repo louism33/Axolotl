@@ -10,12 +10,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 
 @RunWith(Parameterized.class)
 public class WACTest {
@@ -26,7 +22,13 @@ public class WACTest {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
+        int stopAt = 30;
+        
         for (int i = 0; i < splitUpWACs.length; i++) {
+            if (i == stopAt){
+                break;
+            }
+            
             String splitUpWAC = splitUpWACs[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);

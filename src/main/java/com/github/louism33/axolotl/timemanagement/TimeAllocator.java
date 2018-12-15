@@ -6,12 +6,15 @@ public class TimeAllocator {
 
     private static long lastPrint;
 
-    public static long allocateTime(long maxTime){
-        return maxTime / 20;
+    public static long allocateTime(long maxTime, long increment){
+        if (maxTime < 10000){
+            return 1000;
+        }
+        return (maxTime / 20) + (increment / 2);
     }
 
     private static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){
-        return timeLeftMillis < (2 * timeLimitMillis) / 3;
+        return timeLeftMillis < (timeLimitMillis) / 3;
     }
 
     public static boolean outOfTime(long startTime, long timeLimitMillis){
