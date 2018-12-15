@@ -242,16 +242,13 @@ public class Engine {
         int hashMove = 0;
         int score;
 
-
-
-
         long previousTableData = TranspositionTable.retrieveFromTable(board.getZobrist());
         if (previousTableData != 0) {
             score = TranspositionTable.getScore(previousTableData, ply);
             hashMove = TranspositionTable.getMove(previousTableData);
 
-            if (TranspositionTable.getDepth(previousTableData) >= depth){
-//                    && PVLine.verifyMove(board, hashMove, moves)){
+            if (TranspositionTable.getDepth(previousTableData) >= depth
+                    && PVLine.verifyMove(board, hashMove, moves)){
                 int flag = TranspositionTable.getFlag(previousTableData);
                 if (flag == EXACT) {
                     if (ply == 0){
@@ -280,14 +277,6 @@ public class Engine {
                 }
             }
         }
-
-
-
-
-
-
-
-
 
         boolean thisIsAPrincipleVariationNode = (beta - alpha != 1);
 
