@@ -53,6 +53,10 @@ class Rook {
             score += ROOK_OPEN_FILE_BONUS;
         }
 
+        if ((file & enemyPawns) == 0) {
+            score += ROOKS_ATTACK_PAWNS;
+        }
+
         if ((file & (myRooks - rook)) != 0) {
             score += BATTERY_SCORE;
         }

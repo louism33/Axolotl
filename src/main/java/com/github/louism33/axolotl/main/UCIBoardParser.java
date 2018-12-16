@@ -38,10 +38,6 @@ class UCIBoardParser {
         Chessboard board = new Chessboard(genericBoard.toString());
         for (GenericMove genericMove : moves){
             board.makeMoveAndFlipTurn(MoveParser.newMove(board, genericMove.toString()));
-
-            System.out.println(genericMove);
-            
-            System.out.println(board);
         }
         return board;
     }

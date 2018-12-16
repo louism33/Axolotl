@@ -65,12 +65,9 @@ class QuiescenceSearch {
                 Assert.assertTrue(moves[i] >= moves[i + 1]);
             }
 
-            if (moves[i] < MoveOrderingConstants.MOVE_SIZE_LIMIT) {
-                System.out.println(MoveParser.toString(moves[i]) + "    " + moves[i] + "    score: " + loudMoveScore);
-                Art.printLong(moves[i]);
-                Art.printLong(MoveOrderingConstants.MOVE_SIZE_LIMIT);
+
                 Assert.assertTrue(moves[i] > MoveOrderingConstants.MOVE_SIZE_LIMIT);
-            }
+            
 
             int loudMove = moves[i] & MoveOrderer.MOVE_MASK;
 

@@ -2,7 +2,7 @@ package com.github.louism33.axolotl.search;
 
 public class EngineSpecifications {
 
-    public static boolean INFO                                       = false;
+    public static boolean INFO                                       = true;
     public static int MAX_DEPTH                                      = 14;
     public static boolean ALLOW_TIME_LIMIT                           = true;
 
