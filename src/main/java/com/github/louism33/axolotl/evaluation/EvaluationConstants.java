@@ -22,15 +22,16 @@ public class EvaluationConstants {
     static final int[] PINNED_PIECES = {0, -10, -25, -25, -50, -90, 0};
     static final int MOVE_NUMBER_POINT                    = 1; // /10
     static final int BATTERY_SCORE                        = 10;
-    static final int I_CONTROL_OPEN_FILE                  = 10;
+    static final int I_CONTROL_OPEN_FILE                  = 25;
     static final int MY_TURN_BONUS                        = 10;
+    static final int CENTRE_PIECE                         = 10;
     static final int IN_CHECK_PENALTY                     = -15;
 
     // pawn valuation
     static final int PAWN_PASSED                          = 15;
     static final int PAWN_DOUBLED                         = -10;
-    static final int PAWN_ON_CENTRE                       = 5;
-    static final int PAWN_ON_SUPER_CENTRE                 = 10;
+    static final int PAWN_ON_CENTRE                       = 10;
+    static final int PAWN_ON_SUPER_CENTRE                 = 15;
     static final int PAWN_UNBLOCKED                       = 10;
     static final int PAWN_PROTECTED_BY_PAWNS              = 5;
     static final int PAWN_THREATENS_BIG_THINGS            = 10;

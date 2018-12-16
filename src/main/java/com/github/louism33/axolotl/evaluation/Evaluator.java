@@ -209,7 +209,7 @@ public class Evaluator {
                         allPieces
                 )
 
-                        + evalMiscByTurn(board, white, moves, pinnedPieces, inCheck)
+                        + evalMiscByTurn(board, white, moves, pinnedPieces, friends, inCheck)
         ;
         return score;
     }
