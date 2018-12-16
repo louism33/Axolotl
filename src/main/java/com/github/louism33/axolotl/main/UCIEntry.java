@@ -34,7 +34,7 @@ public class UCIEntry extends AbstractEngine {
         Engine.setUciEntry(this);
 
         ProtocolInitializeAnswerCommand firstCommand 
-                = new ProtocolInitializeAnswerCommand("axolotl_v1.1", "Louis James Mackenzie-Smith");
+                = new ProtocolInitializeAnswerCommand("axolotl_v1.2", "Louis James Mackenzie-Smith");
         
         firstCommand.addOption(new AbstractOption("Log") {
             @Override
@@ -125,12 +125,10 @@ public class UCIEntry extends AbstractEngine {
     private int calculatingHelper(EngineStartCalculatingCommand command) {
         long clock = timeOnClock(command);
         if (clock != 0){
-            System.out.println("Search for move, clock time: " + clock);
             Long clockIncrement = command.getClockIncrement(convertMyColourToGenericColour(board.isWhiteTurn()));
             return Engine.searchMyTime(board, clock, clockIncrement);
         }
         else if (command.getMoveTime() != null && command.getMoveTime() != 0){
-            System.out.println("Search for move, fixed time: " + command.getMoveTime());
             return Engine.searchFixedTime(board, command.getMoveTime());
         }
         else {
@@ -140,7 +138,6 @@ public class UCIEntry extends AbstractEngine {
             }
             else if (command.getDepth() != null){
                 searchDepth = command.getDepth();
-                System.out.println("Search for move, fixed depth: " + command.getDepth());
                 return Engine.searchFixedDepth(board, searchDepth);
             }
             else {
@@ -163,7 +160,6 @@ public class UCIEntry extends AbstractEngine {
     @Override
     public void receive(EngineStopCalculatingCommand command) {
         int aiMove = Engine.getAiMove();
-        System.out.println("Time to stop calculating, aiMove: " + aiMove);
         if (aiMove != 0) {
             this.getProtocol().send(
                     new ProtocolBestMoveCommand(convertMyMoveToGenericMove(aiMove), null));
@@ -181,7 +177,6 @@ public class UCIEntry extends AbstractEngine {
     }
 
     public static void main(String[] args) {
-        System.out.println("Starting everything");
         Thread thread = new Thread( new UCIEntry() );
         thread.start();
     }
