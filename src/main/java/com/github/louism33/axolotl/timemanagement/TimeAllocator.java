@@ -14,6 +14,7 @@ public class TimeAllocator {
     }
 
     private static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){
+//        return false;
         return timeLeftMillis < (timeLimitMillis) / 3;
     }
 
