@@ -14,7 +14,7 @@ class Pawns {
 
     static int evalPawnsByTurn(Chessboard board, boolean white,
                                long myPawns,
-                               long enemyPawns,
+                               long enemyPawns,long enemyBishops,
                                long enemies,
                                long allPieces) {
 
@@ -46,7 +46,9 @@ class Pawns {
         long davidVSGoliath = myPawnAttacks & enemyBigPieces;
         score += populationCount(davidVSGoliath) * PAWN_THREATENS_BIG_THINGS;
 
-
+        long bishopAttacks = myPawnAttacks & enemyBishops;
+        score += populationCount(davidVSGoliath) * PAWN_THREATENS_BISHOPS;
+        
         score += populationCount(
                 centreFourSquares & myPawns)
                 * PAWN_ON_SUPER_CENTRE;
@@ -98,6 +100,7 @@ class Pawns {
 
         int score = 0;
 
+
         if ((pawn & lastPawn) != 0) {
             long advancedPosition = white ? pawn << 8 : pawn >>> 8;
             if (squareThreatenend(board, true, lastPawn)) {
@@ -113,11 +116,15 @@ class Pawns {
             }
         }
 
+//        long attacks = PieceMove.singlePawnCaptures(pawn, white, enemies);
+        
         long myOtherPawns = myPawns ^ pawn;
         long file = Evaluator.getFile(pawn);
         int index = BitOperations.getIndexOfFirstPiece(pawn);
         long forwardFile = BitOperations.fileForward(index, white);
 
+        
+        
         if ((file & myOtherPawns) != 0) {
             score += PAWN_DOUBLED;
         }

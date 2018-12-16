@@ -14,7 +14,7 @@ public class EvaluationConstants {
     // piece values
     public static final int PAWN_SCORE                    = 100;
     public static final int KNIGHT_SCORE                  = 300;
-    public static final int BISHOP_SCORE                  = 300;
+    public static final int BISHOP_SCORE                  = 325;
     public static final int ROOK_SCORE                    = 500;
     public static final int QUEEN_SCORE                   = 900;
 
@@ -34,6 +34,7 @@ public class EvaluationConstants {
     static final int PAWN_UNBLOCKED                       = 10;
     static final int PAWN_PROTECTED_BY_PAWNS              = 5;
     static final int PAWN_THREATENS_BIG_THINGS            = 10;
+    static final int PAWN_THREATENS_BISHOPS               = 10;
     static final int PAWN_BLOCKED                         = -5;
     static final int PAWN_THREATEN_CENTRE                 = 5;
     static final int PAWN_THREATEN_SUPER_CENTRE           = 10;
@@ -80,7 +81,8 @@ public class EvaluationConstants {
     static final int ROOK_NOT_DEVELOPED                   = -5;
     static final int ROOK_OPEN_FILE_BONUS                 = 15;
     static final int ROOK_ON_SEMI_OPEN_FILE_BONUS         = 10;
-    static final int ROOK_SAME_ROW                      = 5;
+    static final int ROOK_SAME_ROW                        = 5;
+    static final int ROOKS_ATTACK_PAWNS                   = 15;
     
     // queen valuation
     static final int QUEEN_ON_SEVENTH_BONUS               = 10;
