@@ -1,9 +1,6 @@
 language: java
 jdk:
 - openjdk11
-branches:
-  only:
-    - master
 deploy:
   provider: releases
   api_key:
