@@ -27,11 +27,11 @@ public class WACTest {
 
         EngineSpecifications.INFO = true;
         
-        int stopAt = 10;
+        int stopAt = 30;
         
         for (int i = 0; i < splitUpWACs.length; i++) {
             if (i == stopAt){
-//                break;
+                break;
             }
             
             String splitUpWAC = splitUpWACs[i];

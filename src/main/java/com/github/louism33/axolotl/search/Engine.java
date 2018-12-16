@@ -146,37 +146,12 @@ public class Engine {
     private static void iterativeDeepeningWithAspirationWindows
             (Chessboard board, long startTime, long timeLimitMillis)
             throws IllegalUnmakeException {
-        
+
         int depth = 0;
         int aspirationScore = 0;
 
-        while (!stopSearch(startTime, timeLimitMillis, depth, MAX_DEPTH)) {
-            depth++;
 
-            int score;
-            
-            int previousAi = aiMove;
 
-            score = aspirationSearch(board, depth, aspirationScore);
-
-            if (EngineSpecifications.INFO && depth > 6 && aiMove != previousAi){
-                UCIPrinter.sendInfoCommand(board, aiMove, aiMoveScore, depth);
-            }
-
-            aspirationScore = score;
-
-            if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
-                break;
-            }
-        }
-        
-        if (INFO){
-            UCIPrinter.sendInfoCommand(board, aiMove, aiMoveScore, depth);
-        }
-    }
-
-    private static int aspirationSearch(Chessboard board, int depth, int aspirationScore)
-            throws IllegalUnmakeException {
 
         int alpha;
         int beta;
@@ -188,34 +163,84 @@ public class Engine {
 
         int score;
 
-        while (true) {
-            score = principleVariationSearch(board, depth, 0, alpha, beta, 0);
 
-            if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
-                return score;
+
+
+
+        while (depth < MAX_DEPTH
+                && !stopSearch(startTime, timeLimitMillis, depth, MAX_DEPTH)) {
+
+            depth++;
+
+            int previousAi = aiMove;
+
+
+            while (true) {
+                score = principleVariationSearch(board, depth, 0, alpha, beta, 0);
+
+
+
+                if (stopSearch(startTime, timeLimitMillis, depth, MAX_DEPTH)){
+                    break;
+                }
+                
+                
+                if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+                    return;
+                }
+
+                if (score <= alpha) {
+                    alphaAspirationAttempts++;
+                    if (alphaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES){
+                        alpha = SHORT_MINIMUM;
+                    }
+                    else {
+                        alpha = aspirationScore - EngineSpecifications.ASPIRATION_WINDOWS[alphaAspirationAttempts];
+                    }
+                } else if (score >= beta) {
+                    betaAspirationAttempts++;
+                    if (betaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES){
+                        beta = SHORT_MAXIMUM;
+                    }
+                    else {
+                        beta = aspirationScore - EngineSpecifications.ASPIRATION_WINDOWS[betaAspirationAttempts];
+                    }
+                } else {
+                    break;
+                }
             }
 
-            if (score <= alpha) {
-                alphaAspirationAttempts++;
-                if (alphaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES){
-                    alpha = SHORT_MINIMUM;
-                }
-                else {
-                    alpha = aspirationScore - EngineSpecifications.ASPIRATION_WINDOWS[alphaAspirationAttempts];
-                }
-            } else if (score >= beta) {
-                betaAspirationAttempts++;
-                if (betaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES){
-                    beta = SHORT_MAXIMUM;
-                }
-                else {
-                    beta = aspirationScore - EngineSpecifications.ASPIRATION_WINDOWS[betaAspirationAttempts];
-                }
-            } else {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            if (EngineSpecifications.INFO && depth > 6 && aiMove != previousAi){
+                UCIPrinter.sendInfoCommand(board, aiMove, aiMoveScore, depth);
+            }
+
+            aspirationScore = score;
+
+            if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
                 break;
             }
         }
-        return score;
+
+        if (INFO){
+            UCIPrinter.sendInfoCommand(board, aiMove, aiMoveScore, depth);
+        }
     }
 
     private static int principleVariationSearch(Chessboard board,
