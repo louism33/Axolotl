@@ -129,7 +129,7 @@ public class UCIEntry extends AbstractEngine {
             return Engine.searchMyTime(board, clock, clockIncrement);
         }
         else if (command.getMoveTime() != null && command.getMoveTime() != 0){
-            return Engine.searchFixedTime(board, command.getMoveTime());
+            return Engine.searchFixedTime(board, command.getMoveTime(), true);
         }
         else {
             int searchDepth = EngineSpecifications.MAX_DEPTH;

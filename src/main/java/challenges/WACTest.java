@@ -27,11 +27,11 @@ public class WACTest {
 
         EngineSpecifications.INFO = true;
         
-        int stopAt = 30;
+        int stopAt = 10;
         
         for (int i = 0; i < splitUpWACs.length; i++) {
             if (i == stopAt){
-//                break;
+                break;
             }
             
             String splitUpWAC = splitUpWACs[i];
@@ -60,7 +60,7 @@ public class WACTest {
         List<Integer> winningMoves = EPDObject.getBestMoves();
         List<Integer> losingMoveDestination = EPDObject.getAvoidMoves();
         
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
 
         System.out.println();
         System.out.println("Move to get:        " + MoveParser.toString(winningMoves.get(0)));

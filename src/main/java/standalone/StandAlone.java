@@ -66,7 +66,7 @@ class StandAlone {
 
                     switch (command) {
                         case "go":
-                            move = Engine.searchFixedTime(board, timeLimit);
+                            move = Engine.searchFixedTime(board, timeLimit, false);
                             break label;
                         case "quit":
                             System.out.println("QUIT.\n");

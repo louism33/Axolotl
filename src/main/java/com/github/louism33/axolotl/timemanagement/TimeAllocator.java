@@ -18,7 +18,7 @@ public class TimeAllocator {
         return timeLeftMillis < (timeLimitMillis) / 3;
     }
 
-    public static boolean outOfTime(long startTime, long timeLimitMillis){
+    public static boolean outOfTime(long startTime, long timeLimitMillis, boolean manageTime){
 
         lastPrint = Math.max(lastPrint, startTime);
 
@@ -33,7 +33,7 @@ public class TimeAllocator {
         if (timeLeftMillis < 0) {
             outOfTime = true;
         }
-        if (weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
+        if (manageTime && weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
             // not enough time to search another ply
             outOfTime = true;
         }

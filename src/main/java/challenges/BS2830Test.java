@@ -44,7 +44,7 @@ public class BS2830Test {
         System.out.println(EPDObject.getBoardFen());
         System.out.println("Move to get: " + MoveParser.toString(winningMoveDestination.get(0)));
 
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
 
         Assert.assertTrue(winningMoveDestination.contains(move));
     }

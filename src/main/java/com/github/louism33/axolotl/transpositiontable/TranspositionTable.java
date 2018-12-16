@@ -1,6 +1,7 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
+import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import org.junit.Assert;
 
@@ -10,10 +11,11 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTableC
 
 public class TranspositionTable {
 
-    private static long[] keys;
-    private static long[] entries;
+    static long[] keys;
+    static long[] entries;
     private static boolean tableReady = false;
     private static int moduloAmount;
+    static int bucketSize = 4;
 
     public static void initTable(int maxEntries){
         moduloAmount = maxEntries;
@@ -42,6 +44,66 @@ public class TranspositionTable {
         entries[index] = entry;
     }
 
+    public static int newEntries = 0;
+    public static int hit = 0;
+    public static int hitButAlreadyGood = 0;
+    public static int hitReplace = 0;
+    public static int override = 0;
+    
+    public static void addToTableReplaceByDepth(long key, int bestMove, 
+                                                int bestScore, int depth, int flag, int ply){
+        if (!tableReady){
+            initTable(EngineSpecifications.TABLE_SIZE);
+        }
+        System.out.println("key : " + key +" modamount_ " + moduloAmount);
+        System.out.println(bestMove);
+        
+        
+        
+        int index = getIndex(key);
+
+        int replaceMeIndex = 0;
+        int worstDepth = EvaluationConstants.SHORT_MAXIMUM;
+
+        for (int i = 0; i < bucketSize; i++) {
+            int enhancedIndex = (index + i) % moduloAmount;
+            
+            long currentKey = keys[enhancedIndex];
+            long currentEntry = entries[enhancedIndex];
+
+            if (currentEntry == 0) {
+                newEntries++;
+                replaceMeIndex = enhancedIndex;
+                break;
+            }
+
+            int currentDepth = getDepth(currentEntry);
+            
+            if (key == currentKey) {
+                hit++;
+                if (depth < currentDepth && flag != EXACT) {
+                    hitButAlreadyGood++;
+                    return;
+                }
+                hitReplace++;
+                replaceMeIndex = enhancedIndex;
+                break;
+            }
+
+            override++;
+
+            if (currentDepth < worstDepth){
+                worstDepth = currentDepth;
+                replaceMeIndex = enhancedIndex;
+            }
+        }
+        
+        long possibleEntry = buildTableEntry(bestMove & MoveOrderer.MOVE_MASK, bestScore, depth, flag, ply);
+
+        keys[replaceMeIndex] = key;
+        entries[replaceMeIndex] = possibleEntry;
+    }
+
     public static long retrieveFromTable(long key){
         if (!tableReady){
             initTable(EngineSpecifications.TABLE_SIZE);
@@ -49,7 +111,14 @@ public class TranspositionTable {
 
         int index = getIndex(key);
 
-        return entries[index];
+        for (int i = 0; i < bucketSize; i++) {
+            int enhancedIndex = (index + i) % moduloAmount;
+            if (keys[enhancedIndex] == key) {
+                return entries[enhancedIndex];
+            }
+        }
+
+        return 0;
     }
 
     private static int getIndex(long key) {
@@ -64,7 +133,7 @@ public class TranspositionTable {
         return index;
     }
 
-    public static long buildTableEntry(int move, int score, int depth, int flag, int ply){
+    static long buildTableEntry(int move, int score, int depth, int flag, int ply){
         Assert.assertTrue(move != 0);
         Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
         Assert.assertTrue(flag >= 0 && flag < 4);
