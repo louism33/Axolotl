@@ -1,16 +1,13 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.BitOperations;
-import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveParser;
-import com.github.louism33.chesscore.Piece;
+import com.github.louism33.chesscore.*;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.chesscore.BitboardResources.*;
 
 class Misc {
 
-    static int evalMiscByTurn(Chessboard board, boolean white, int[] moves, long pinnedPieces,
+    static int evalMiscByTurn(Chessboard board, boolean white, int[] moves, long pinnedPieces, long myPieces,
                               boolean inCheck) {
         int score = 0;
 
@@ -22,6 +19,8 @@ class Misc {
             score += MY_TURN_BONUS;
             score += (MoveParser.numberOfRealMoves(moves) * MOVE_NUMBER_POINT) / 10;
         }
+        
+        score =+ BitOperations.populationCount(centreFourSquares & myPieces) * CENTRE_PIECE;
         
         while (pinnedPieces != 0){
             long pinnedPiece = BitOperations.getFirstPiece(pinnedPieces);
