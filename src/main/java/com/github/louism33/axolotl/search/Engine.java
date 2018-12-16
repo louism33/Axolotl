@@ -154,10 +154,12 @@ public class Engine {
             depth++;
 
             int score;
+            
+            int previousAi = aiMove;
 
             score = aspirationSearch(board, depth, aspirationScore);
 
-            if (EngineSpecifications.INFO && depth > 6){
+            if (EngineSpecifications.INFO && depth > 6 && aiMove != previousAi){
                 UCIPrinter.sendInfoCommand(board, aiMove, aiMoveScore, depth);
             }
 
@@ -166,6 +168,10 @@ public class Engine {
             if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
                 break;
             }
+        }
+        
+        if (INFO){
+            UCIPrinter.sendInfoCommand(board, aiMove, aiMoveScore, depth);
         }
     }
 
