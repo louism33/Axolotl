@@ -13,3 +13,21 @@ You are free to use Axolotl however you see fit. If you have any questions, simp
 
 Louis
  
+ 
+ PS: also available as a maven import
+ 
+ ```
+
+<repository>
+    <id>com.github.louism33</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/axolotl/1.1-SNAPSHOT/</url>
+</repository>
+```
+```
+
+<dependency>
+  <groupId>com.github.louism33</groupId>
+  <artifactId>axolotl</artifactId>
+  <version>1.1-SNAPSHOT</version>
+</dependency>
+```
