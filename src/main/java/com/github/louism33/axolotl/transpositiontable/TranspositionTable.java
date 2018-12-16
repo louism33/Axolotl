@@ -55,11 +55,7 @@ public class TranspositionTable {
         if (!tableReady){
             initTable(EngineSpecifications.TABLE_SIZE);
         }
-        System.out.println("key : " + key +" modamount_ " + moduloAmount);
-        System.out.println(bestMove);
-        
-        
-        
+
         int index = getIndex(key);
 
         int replaceMeIndex = 0;

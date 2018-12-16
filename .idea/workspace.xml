@@ -6,29 +6,9 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8807346a-cf9d-4333-98e2-880bdb09ab35" name="Default Changelist" comment="release_1.2">
+    <list default="true" id="8807346a-cf9d-4333-98e2-880bdb09ab35" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.travis.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.travis.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/Arasan20.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/Arasan20.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/ArasanTestSuite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/ArasanTestSuite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/BS2830Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/BS2830Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/BT2630.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/BT2630.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/BratkoKopecTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/BratkoKopecTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/CCROneHourTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/CCROneHourTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/EET.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/EET.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/KaufmanTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/KaufmanTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/LapuceII.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/LapuceII.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/Pet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/Pet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/QuickTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/QuickTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/WACTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/WACTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/challenges/ZugzwangPositions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/challenges/ZugzwangPositions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/main/UCIEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/main/UCIEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/Engine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/timemanagement/TimeAllocator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/timemanagement/TimeAllocator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/transpositiontable/TranspositionTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/transpositiontable/TranspositionTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/standalone/StandAlone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/standalone/StandAlone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/search/MateTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/search/MateTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/search/WACSanityTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/search/WACSanityTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/transpositiontable/TranspositionTableTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/transpositiontable/TranspositionTableTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
@@ -56,11 +36,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/transpositiontable/TranspositionTableTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="131" column="44" selection-start-line="131" selection-start-column="44" selection-end-line="131" selection-end-column="44" />
+            <state relative-caret-position="330">
+              <caret line="33" column="61" lean-forward="true" selection-start-line="33" selection-start-column="61" selection-end-line="33" selection-end-column="61" />
             </state>
           </provider>
         </entry>
@@ -68,8 +48,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/transpositiontable/TranspositionTable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
+            <state relative-caret-position="-296">
+              <caret line="35" column="37" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4324#4325#0" expanded="true" />
@@ -79,29 +59,6 @@
                 <element signature="e#4953#4954#0" expanded="true" />
                 <element signature="e#5018#5019#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Axolotl.iml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.travis.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="7" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/Engine.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="205" column="37" selection-start-line="205" selection-start-column="37" selection-end-line="205" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -245,9 +202,9 @@
         <option value="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/search/WACSanityTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/Engine.java" />
         <option value="$PROJECT_DIR$/src/main/java/challenges/WACTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/transpositiontable/TranspositionTableTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/transpositiontable/TranspositionTable.java" />
         <option value="$PROJECT_DIR$/.travis.yml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/transpositiontable/TranspositionTable.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/transpositiontable/TranspositionTableTest.java" />
       </list>
     </option>
   </component>
@@ -360,7 +317,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544983855619" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544984862605" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="extract.method.default.visibility" value="private" />
@@ -399,7 +356,21 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.TranspositionTableTest.tableBucketTest">
+  <component name="RunManager" selected="JUnit.TranspositionTableTest">
+    <configuration name="TranspositionTableTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="axolotl" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.github.louism33.axolotl.transpositiontable.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.github.louism33.axolotl.transpositiontable" />
+      <option name="MAIN_CLASS_NAME" value="com.github.louism33.axolotl.transpositiontable.TranspositionTableTest" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="TranspositionTableTest.buildTableEntryTestSingle" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="axolotl" />
       <extension name="coverage">
@@ -432,6 +403,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TranspositionTableTest.overrideTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="axolotl" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.github.louism33.axolotl.transpositiontable.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.github.louism33.axolotl.transpositiontable" />
+      <option name="MAIN_CLASS_NAME" value="com.github.louism33.axolotl.transpositiontable.TranspositionTableTest" />
+      <option name="METHOD_NAME" value="overrideTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="TranspositionTableTest.tableBucketTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="axolotl" />
       <extension name="coverage">
@@ -448,48 +435,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WACSanityTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="axolotl" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.github.louism33.axolotl.search.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.github.louism33.axolotl.search" />
-      <option name="MAIN_CLASS_NAME" value="com.github.louism33.axolotl.search.WACSanityTest" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="WACTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="axolotl" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="challenges.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="challenges" />
-      <option name="MAIN_CLASS_NAME" value="challenges.WACTest" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
-      <item itemvalue="JUnit.WACTest" />
-      <item itemvalue="JUnit.WACSanityTest" />
       <item itemvalue="JUnit.TranspositionTableTest.buildTableEntryTestSingle" />
       <item itemvalue="JUnit.TranspositionTableTest.buildTableEntryTestToLimit" />
       <item itemvalue="JUnit.TranspositionTableTest.tableBucketTest" />
+      <item itemvalue="JUnit.TranspositionTableTest.overrideTest" />
+      <item itemvalue="JUnit.TranspositionTableTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.TranspositionTableTest" />
+        <item itemvalue="JUnit.TranspositionTableTest.overrideTest" />
         <item itemvalue="JUnit.TranspositionTableTest.tableBucketTest" />
         <item itemvalue="JUnit.TranspositionTableTest.buildTableEntryTestToLimit" />
         <item itemvalue="JUnit.TranspositionTableTest.buildTableEntryTestSingle" />
-        <item itemvalue="JUnit.WACTest" />
-        <item itemvalue="JUnit.WACSanityTest" />
       </list>
     </recent_temporary>
   </component>
@@ -592,7 +551,7 @@
       <workItem from="1544871773776" duration="3151000" />
       <workItem from="1544950201498" duration="4342000" />
       <workItem from="1544958826536" duration="3860000" />
-      <workItem from="1544963193873" duration="15116000" />
+      <workItem from="1544963193873" duration="16228000" />
     </task>
     <task id="LOCAL-00001" summary="preparing for release">
       <created>1544872103266</created>
@@ -804,43 +763,57 @@
       <option name="project" value="LOCAL" />
       <updated>1544974436278</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="release_1.2">
+      <created>1544983770668</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1544983770668</updated>
+    </task>
+    <task id="LOCAL-00032" summary="release_1.2">
+      <created>1544983858678</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1544983858678</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="TranspositionTableTest_buildTableEntryTestToLimit - 2018.12.16 at 18h 56m 17s.xml">
-      <configuration name="TranspositionTableTest.buildTableEntryTestToLimit" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TranspositionTableTest_buildTableEntryTestToLimit - 2018.12.16 at 18h 56m 28s.xml">
-      <configuration name="TranspositionTableTest.buildTableEntryTestToLimit" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TranspositionTableTest_buildTableEntryTestToLimit - 2018.12.16 at 18h 58m 26s.xml">
-      <configuration name="TranspositionTableTest.buildTableEntryTestToLimit" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TranspositionTableTest_buildTableEntryTestToLimit - 2018.12.16 at 18h 58m 43s.xml">
-      <configuration name="TranspositionTableTest.buildTableEntryTestToLimit" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TranspositionTableTest_tableBucketTest - 2018.12.16 at 19h 02m 29s.xml">
+    <history-entry file="TranspositionTableTest_tableBucketTest - 2018.12.16 at 19h 18m 44s.xml">
       <configuration name="TranspositionTableTest.tableBucketTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranspositionTableTest_tableBucketTest - 2018.12.16 at 19h 03m 02s.xml">
+    <history-entry file="TranspositionTableTest_tableBucketTest - 2018.12.16 at 19h 19m 50s.xml">
       <configuration name="TranspositionTableTest.tableBucketTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranspositionTableTest_tableBucketTest - 2018.12.16 at 19h 03m 39s.xml">
+    <history-entry file="TranspositionTableTest_tableBucketTest - 2018.12.16 at 19h 20m 02s.xml">
       <configuration name="TranspositionTableTest.tableBucketTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranspositionTableTest_tableBucketTest - 2018.12.16 at 19h 05m 33s.xml">
+    <history-entry file="TranspositionTableTest_tableBucketTest - 2018.12.16 at 19h 21m 18s.xml">
       <configuration name="TranspositionTableTest.tableBucketTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranspositionTableTest_tableBucketTest - 2018.12.16 at 19h 05m 55s.xml">
+    <history-entry file="TranspositionTableTest_tableBucketTest - 2018.12.16 at 19h 21m 26s.xml">
       <configuration name="TranspositionTableTest.tableBucketTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TranspositionTableTest_tableBucketTest - 2018.12.16 at 19h 06m 08s.xml">
+    <history-entry file="TranspositionTableTest_tableBucketTest - 2018.12.16 at 19h 21m 48s.xml">
       <configuration name="TranspositionTableTest.tableBucketTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TranspositionTableTest_overrideTest - 2018.12.16 at 19h 25m 51s.xml">
+      <configuration name="TranspositionTableTest.overrideTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TranspositionTableTest_overrideTest - 2018.12.16 at 19h 27m 19s.xml">
+      <configuration name="TranspositionTableTest.overrideTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TranspositionTableTest_overrideTest - 2018.12.16 at 19h 27m 28s.xml">
+      <configuration name="TranspositionTableTest.overrideTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TranspositionTableTest - 2018.12.16 at 19h 27m 41s.xml">
+      <configuration name="TranspositionTableTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62652000" />
+    <option name="totallyTimeSpent" value="63764000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -855,7 +828,7 @@
     <frame x="-1" y="0" width="1368" height="741" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.486747" visible="true" weight="0.18560606" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.486747" visible="true" weight="0.18560606" />
       <window_info id="Structure" order="1" sideWeight="0.51325303" side_tool="true" weight="0.24166666" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -865,13 +838,13 @@
       <window_info id="Favorites" order="7" sideWeight="0.5114504" side_tool="true" weight="0.18636364" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.33009708" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49772727" visible="true" weight="0.2746365" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.24878837" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49772727" visible="true" weight="0.07915994" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.26979" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32847896" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.2907916" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.15670437" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.048465267" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5022727" side_tool="true" weight="0.32847896" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.26979" />
@@ -1271,17 +1244,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/transpositiontable/TranspositionTableTest.java">
+    <entry file="file://$PROJECT_DIR$/.travis.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="131" column="44" selection-start-line="131" selection-start-column="44" selection-end-line="131" selection-end-column="44" />
+        <state relative-caret-position="90">
+          <caret line="6" column="7" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Axolotl.iml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/transpositiontable/TranspositionTable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
+        <state relative-caret-position="-296">
+          <caret line="35" column="37" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#4324#4325#0" expanded="true" />
@@ -1294,13 +1270,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Axolotl.iml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.travis.yml">
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/transpositiontable/TranspositionTableTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="7" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+        <state relative-caret-position="330">
+          <caret line="33" column="61" lean-forward="true" selection-start-line="33" selection-start-column="61" selection-end-line="33" selection-end-column="61" />
         </state>
       </provider>
     </entry>
