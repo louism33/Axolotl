@@ -11,6 +11,7 @@ import com.github.louism33.chesscore.IllegalUnmakeException;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
+import standalone.Temp;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateKillerMoves;
@@ -24,9 +25,11 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTableC
 
 public class Engine {
 
+    public static final Object lock = new Object();
+
     public static Chessboard[] boards;
     public static ChessThread[] threads;
-    private static int aiMoveScore;
+//    private static int aiMoveScore;
     private static int aiMove;
     private static boolean isReady = false;
     private static boolean stopInstruction = false;
@@ -35,6 +38,7 @@ public class Engine {
     public static long quiescentMovesMade;
     private static long startTime = 0;
     private static boolean manageTime = true;
+    public static boolean stopNow = false;
 
     private static UCIEntry uciEntry;
 
@@ -103,12 +107,9 @@ public class Engine {
     public static void setupThreads() {
         threads = new ChessThread[THREAD_NUMBER];
         for (int c = 0; c < THREAD_NUMBER; c++) {
-            System.out.println("setup threads: " + c);
             threads[c] = new ChessThread("I"+c, c);
         }
 
-        System.out.println("-");
-//        System.out.println(Arrays.toString(threads));
     }
 
     public static void setup() {
@@ -123,23 +124,25 @@ public class Engine {
         regularMovesMade = 0;
         stopInstruction = false;
         quiescentMovesMade = 0;
-        aiMoveScore = SHORT_MINIMUM;
+//        aiMoveScore = SHORT_MINIMUM;
+
+        stopNow = false;
 
         initTable(TABLE_SIZE);
     }
 
-    private static void putAIMoveFirst(int[] rootMoves, int aiMove) {
-
-        if (rootMoves[0] == aiMove) {
-            return;
-        }
-
-        System.arraycopy(rootMoves, 0, 
-                rootMoves, 1, 
-                Ints.indexOf(rootMoves, aiMove));
-        
-        rootMoves[0] = aiMove;
-    }
+//    private static void putAIMoveFirst(int[] rootMoves, int aiMove) {
+//
+//        if (rootMoves[0] == aiMove) {
+//            return;
+//        }
+//
+//        System.arraycopy(rootMoves, 0, 
+//                rootMoves, 1, 
+//                Ints.indexOf(rootMoves, aiMove));
+//        
+//        rootMoves[0] = aiMove;
+//    }
 
     public static int searchFixedDepth(Chessboard board, int depth) {
         EngineSpecifications.ALLOW_TIME_LIMIT = false;
@@ -161,7 +164,7 @@ public class Engine {
         return searchFixedTime(board, timeLimit, false);
     }
 
-    public static int searchFixedTime(Chessboard board, long maxTime, boolean manageTimee) {
+    synchronized public static int searchFixedTime(Chessboard board, long maxTime, boolean manageTimee) {
         if (!isReady) {
             setup();
         }
@@ -172,15 +175,37 @@ public class Engine {
 
         startTime = System.currentTimeMillis();
 
-        
-        
-
         for (int c = 0; c < THREAD_NUMBER; c++) {
+            Engine.threads[c].setTime(startTime, maxTime);
             Engine.threads[c].start();
         }
+//
+//
+        synchronized(lock){
+            try {
+                lock.wait(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            lock.notify();
+        }
 
-        
 
+
+        System.out.println("**********************************************");
+//        synchronized (syncObject) {
+//            while (!stopNow) {
+//                try {
+//                    Thread.currentThread().wait();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+
+
+
+        System.out.println("end of waiting!");
 
         long endTime = System.currentTimeMillis();
 
@@ -189,6 +214,8 @@ public class Engine {
         if (time != 0) {
             calculateNPS();
         }
+
+
 
 //        int bestThread = 0;
 //        int bestMove = rootMoves[0];
@@ -227,6 +254,7 @@ public class Engine {
 
             depth++;
 
+            System.out.println("depth : " + depth);
 //            int previousAi = rootMoves[0];
 
 
@@ -276,23 +304,11 @@ public class Engine {
             }
         }
 
+//        ChessThread thread = (ChessThread) Thread.currentThread();
 
-
-
-
-
-        ChessThread thread = (ChessThread) Thread.currentThread();
-
-
-
-
-
-
-        int aiMove = rootMoves[0];
-
-        if (INFO){
-            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
-        }
+//        if (INFO){
+//            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
+//        }
     }
 
     private static int principleVariationSearch(Chessboard board, int[] rootMoves,
@@ -335,16 +351,22 @@ public class Engine {
                 int flag = getFlag(previousTableData);
                 if (flag == EXACT) {
                     if (ply == 0){
-                        putAIMoveFirst(rootMoves, hashMove);
-                        aiMoveScore = score;
+//                        putAIMoveFirst(rootMoves, hashMove);
+                        ChessThread chessThread = (ChessThread) Thread.currentThread();
+                        chessThread.putAIMoveFirst(hashMove, score);
+                        
+//                        aiMoveScore = score;
                     }
                     return score;
                 }
                 else if (flag == LOWERBOUND) {
                     if (score >= beta){
                         if (ply == 0){
-                            putAIMoveFirst(rootMoves, hashMove);
-                            aiMoveScore = score;
+
+                            ChessThread chessThread = (ChessThread) Thread.currentThread();
+                            chessThread.putAIMoveFirst(hashMove, score);
+//                            putAIMoveFirst(rootMoves, hashMove);
+//                            aiMoveScore = score;
                         }
                         return score;
                     }
@@ -352,8 +374,10 @@ public class Engine {
                 else if (flag == UPPERBOUND) {
                     if (score <= alpha){
                         if (ply == 0){
-                            putAIMoveFirst(rootMoves, hashMove);
-                            aiMoveScore = score;
+//                            putAIMoveFirst(rootMoves, hashMove);
+                            ChessThread chessThread = (ChessThread) Thread.currentThread();
+                            chessThread.putAIMoveFirst(hashMove, score);
+//                            aiMoveScore = score;
                         }
                         return score;
                     }
@@ -525,8 +549,12 @@ public class Engine {
                 alpha = Math.max(alpha, score);
 
                 if (ply == 0) {
-                    putAIMoveFirst(rootMoves, bestMove);
-                    aiMoveScore = bestScore;
+
+                    ChessThread chessThread = (ChessThread) Thread.currentThread();
+                    chessThread.putAIMoveFirst(bestMove, score);
+                    
+//                    putAIMoveFirst(rootMoves, bestMove);
+//                    aiMoveScore = bestScore;
                 }
             }
 

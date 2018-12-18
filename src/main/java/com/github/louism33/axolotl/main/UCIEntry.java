@@ -132,6 +132,7 @@ public class UCIEntry extends AbstractEngine {
         if (command == null){
             return;
         }
+        Engine.giveThreadsBoard(board);
         int aiMove = calculatingHelper(command);
         if (aiMove != 0){
             this.getProtocol().send(

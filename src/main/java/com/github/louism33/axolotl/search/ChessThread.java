@@ -7,10 +7,13 @@ import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.SHORT_MINIMUM;
+
 public class ChessThread extends Thread{
 
     Chessboard board;
     int[] rootMoves;
+    int aiMoveScore = SHORT_MINIMUM;
     int threadIndex;
     long startTime;
     long timeLimitMillis;
@@ -21,7 +24,7 @@ public class ChessThread extends Thread{
     }
 
 
-    private void putAIMoveFirst(int aiMove) {
+    void putAIMoveFirst(int aiMove, int aiMoveScore) {
         ChessThread chessThread = (ChessThread) Thread.currentThread();
 
         if (rootMoves[0] == aiMove) {
@@ -32,6 +35,7 @@ public class ChessThread extends Thread{
                 Ints.indexOf(rootMoves, aiMove));
         
         rootMoves[0] = aiMove;
+        this.aiMoveScore = aiMoveScore;
     }
 
 
@@ -56,12 +60,23 @@ public class ChessThread extends Thread{
     }
 
     @Override
-    public void run() {
+    synchronized public void run() {
         Assert.assertTrue(board != null);
         try {
-            System.out.println("Hi I am " + this.getName() + ", id " + this.threadIndex);
+//            System.out.println("Hi I am " + this.getName() + ", id " + this.threadIndex);
+//            System.out.println("root moves: ");
+//            MoveParser.printMoves(rootMoves);
+            
             Engine.iterativeDeepeningWithAspirationWindows(this.board, this.rootMoves, this.startTime, this.timeLimitMillis);
-            System.out.println("Now I am done");
+
+            Engine.stopNow = true;
+            
+            Engine.lock.notify();
+            
+//            System.out.println("Now I am done");
+//            System.out.println("score: " + aiMoveScore);
+//            MoveParser.printMoves(rootMoves);
+            
         } catch (IllegalUnmakeException e) {
             e.printStackTrace();
         }
