@@ -8,12 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="8807346a-cf9d-4333-98e2-880bdb09ab35" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/axolotl_jar/axolotl.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/EvaluationConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/EvaluationConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Evaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Evaluator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/EvaluatorPositionConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/EvaluatorPositionConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Misc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/Misc.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/PositionEval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/PositionEval.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -56,7 +50,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/King.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="225">
-              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+              <caret line="23" selection-start-line="23" selection-end-line="23" />
             </state>
           </provider>
         </entry>
@@ -74,7 +68,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/EvaluationConstants.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
-              <caret line="30" column="63" lean-forward="true" selection-start-line="30" selection-start-column="63" selection-end-line="30" selection-end-column="63" />
+              <caret line="30" column="63" selection-start-line="30" selection-start-column="63" selection-end-line="30" selection-end-column="63" />
             </state>
           </provider>
         </entry>
@@ -115,20 +109,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="32" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
+            <state relative-caret-position="165">
+              <caret line="11" column="50" selection-start-line="11" selection-start-column="50" selection-end-line="11" selection-end-column="50" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/challenges/WACTest.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+            <state relative-caret-position="149">
+              <caret line="73" column="8" selection-start-line="73" selection-start-column="8" selection-end-line="73" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -168,7 +162,6 @@
       <find>enemy</find>
       <find>davic</find>
       <find>davi</find>
-      <find>out</find>
       <find>build</find>
       <find>org.apache.maven.plugins</find>
       <find>maven-compiler-plugin</find>
@@ -176,6 +169,7 @@
       <find>aim</find>
       <find>print</find>
       <find>sendInfoCommand</find>
+      <find>out</find>
     </findStrings>
     <replaceStrings>
       <replace>BS</replace>
@@ -370,7 +364,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544962405401" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544962687334" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="extract.method.default.visibility" value="private" />
@@ -575,7 +569,7 @@
       <workItem from="1544871592224" duration="150000" />
       <workItem from="1544871773776" duration="3151000" />
       <workItem from="1544950201498" duration="4342000" />
-      <workItem from="1544958826536" duration="3179000" />
+      <workItem from="1544958826536" duration="3429000" />
     </task>
     <task id="LOCAL-00001" summary="preparing for release">
       <created>1544872103266</created>
@@ -745,7 +739,14 @@
       <option name="project" value="LOCAL" />
       <updated>1544959029275</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="release_1.1">
+      <created>1544962417705</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1544962417705</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -781,7 +782,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46855000" />
+    <option name="totallyTimeSpent" value="47105000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -811,8 +812,8 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32847896" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.20355412" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.27948305" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.2924071" />
+      <window_info anchor="bottom" id="Version Control" order="8" visible="true" weight="0.27948305" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5022727" side_tool="true" weight="0.32847896" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.26979" />
@@ -1087,13 +1088,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="72" selection-start-line="72" selection-end-line="72" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/challenges/WACTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -1114,7 +1108,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/King.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>
@@ -1128,7 +1122,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/EvaluationConstants.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
-          <caret line="30" column="63" lean-forward="true" selection-start-line="30" selection-start-column="63" selection-end-line="30" selection-end-column="63" />
+          <caret line="30" column="63" selection-start-line="30" selection-start-column="63" selection-end-line="30" selection-end-column="63" />
         </state>
       </provider>
     </entry>
@@ -1162,8 +1156,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="32" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
+        <state relative-caret-position="165">
+          <caret line="11" column="50" selection-start-line="11" selection-start-column="50" selection-end-line="11" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="73" column="8" selection-start-line="73" selection-start-column="8" selection-end-line="73" selection-end-column="8" />
         </state>
       </provider>
     </entry>
