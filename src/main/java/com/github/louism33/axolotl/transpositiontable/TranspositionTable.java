@@ -33,17 +33,6 @@ public class TranspositionTable {
         Arrays.fill(entries, 0);
     }
 
-    public static void addToTableAlwaysReplace(long key, long entry){
-        if (!tableReady){
-            initTable(EngineSpecifications.TABLE_SIZE);
-        }
-
-        int index = getIndex(key);
-
-        keys[index] = key;
-        entries[index] = entry;
-    }
-
     public static int newEntries = 0;
     public static int hit = 0;
     public static int hitButAlreadyGood = 0;
@@ -64,7 +53,7 @@ public class TranspositionTable {
         for (int i = 0; i < bucketSize; i++) {
             int enhancedIndex = (index + i) % moduloAmount;
             
-            long currentKey = keys[enhancedIndex];
+            long currentKey = (keys[enhancedIndex] ^ entries[enhancedIndex]);
             long currentEntry = entries[enhancedIndex];
 
             if (currentEntry == 0) {
@@ -96,7 +85,7 @@ public class TranspositionTable {
         
         long possibleEntry = buildTableEntry(bestMove & MoveOrderer.MOVE_MASK, bestScore, depth, flag, ply);
 
-        keys[replaceMeIndex] = key;
+        keys[replaceMeIndex] = key ^ possibleEntry;
         entries[replaceMeIndex] = possibleEntry;
     }
 
@@ -109,7 +98,7 @@ public class TranspositionTable {
 
         for (int i = 0; i < bucketSize; i++) {
             int enhancedIndex = (index + i) % moduloAmount;
-            if (keys[enhancedIndex] == key) {
+            if ((keys[enhancedIndex] ^ entries[enhancedIndex]) == key) {
                 return entries[enhancedIndex];
             }
         }

@@ -47,7 +47,7 @@ class Pawns {
         score += populationCount(davidVSGoliath) * PAWN_THREATENS_BIG_THINGS;
 
         long bishopAttacks = myPawnAttacks & enemyBishops;
-        score += populationCount(davidVSGoliath) * PAWN_THREATENS_BISHOPS;
+        score += populationCount(bishopAttacks) * PAWN_THREATENS_BISHOPS;
         
         score += populationCount(
                 centreFourSquares & myPawns)
@@ -101,7 +101,7 @@ class Pawns {
         int score = 0;
 
 
-        if ((pawn & lastPawn) != 0) {
+        if ((pawn & lastPawn) != 0 && false) {
             long advancedPosition = white ? pawn << 8 : pawn >>> 8;
             if (squareThreatenend(board, true, lastPawn)) {
                 score += PAWN_HANGING_UNDER_THREAT;

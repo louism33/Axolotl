@@ -50,6 +50,12 @@ public class UCIEntry extends AbstractEngine {
             }
         });
 
+        firstCommand.addOption(new AbstractOption("Threads") {
+            @Override
+            protected String type() {
+                return "spin";
+            }
+        });
 
         this.getProtocol().send(firstCommand);
     }
@@ -80,6 +86,15 @@ public class UCIEntry extends AbstractEngine {
                 EngineSpecifications.TABLE_SIZE = EngineSpecifications.MAX_TABLE_SIZE;
             }
         }
+
+        if (command.name.equalsIgnoreCase("Threads")){
+            int threadNumber = Integer.parseInt(command.value);
+            if (threadNumber < 1 || threadNumber > EngineSpecifications.MAX_THREADS){
+                return;
+            }
+            EngineSpecifications.THREAD_NUMBER = threadNumber;
+            Engine.setupThreads();
+        }
     }
 
     @Override
@@ -107,6 +122,8 @@ public class UCIEntry extends AbstractEngine {
         genericBoard = command.board;
         moves = command.moves;
         board = convertGenericBoardToChessboard(genericBoard, moves);
+        
+        Engine.setBoards(board);
     }
 
     // go movetime 30000
@@ -155,7 +172,6 @@ public class UCIEntry extends AbstractEngine {
         }
         return time;
     }
-
 
     @Override
     public void receive(EngineStopCalculatingCommand command) {

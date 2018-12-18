@@ -1,9 +1,7 @@
 package com.github.louism33.axolotl.moveordering;
 
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
-import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
@@ -37,7 +35,7 @@ public class MoveOrderer {
         Assert.assertTrue(i > 0);
         return i;
     }
-
+    
     public static void scoreMoves(int[] moves, Chessboard board, int ply,
                                   int hashMove){
         try {

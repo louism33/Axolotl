@@ -31,7 +31,7 @@ public class WACTest {
         
         for (int i = 0; i < splitUpWACs.length; i++) {
             if (i == stopAt){
-                break;
+//                break;
             }
             
             String splitUpWAC = splitUpWACs[i];
