@@ -69,11 +69,6 @@ public class ChessThread extends Thread{
     synchronized public void run() {
         Assert.assertTrue(board != null);
         try {
-            System.out.println("Hi I am " + this.getName() + ", id " + this.threadIndex);
-//            System.out.println("root moves: ");
-//            MoveParser.printMoves(rootMoves);
-
-
             int depth = 0;
             int aspirationScore = 0;
 

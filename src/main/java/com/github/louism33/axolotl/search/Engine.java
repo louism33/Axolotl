@@ -34,6 +34,8 @@ public class Engine {
 //    private static int aiMoveScore;
     private static int aiMove;
     private static boolean isReady = false;
+    private static boolean threadsReady = false;
+    private static boolean boardReady = false;
     private static boolean stopInstruction = false;
     private static long nps;
     public static long regularMovesMade;
@@ -103,14 +105,15 @@ public class Engine {
         for (int c = 0; c < THREAD_NUMBER; c++) {
             threads[c].setBoardAndRootMoves(new Chessboard(board));
         }
+        boardReady = true;
     }
 
     public static void setupThreads() {
         threads = new ChessThread[THREAD_NUMBER];
         for (int c = 0; c < THREAD_NUMBER; c++) {
             threads[c] = new ChessThread("I"+c, c);
-//            threads[c].start();
         }
+        threadsReady = true;
     }
 
     public static void setup() {
@@ -170,6 +173,12 @@ public class Engine {
         if (!isReady) {
             setup();
         }
+        if (!threadsReady){
+            setupThreads();
+        }
+        if (!boardReady){
+            giveThreadsBoard(board);
+        }
 
         manageTime = manageTimee;
 
@@ -204,7 +213,14 @@ public class Engine {
         }
 
 
-        MoveParser.printMoves(rootMoves);
+        for (ChessThread thread : threads) {
+            try {
+                thread.interrupt();
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         
         return rootMoves[0];
     }
