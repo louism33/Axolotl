@@ -159,20 +159,20 @@ public class Evaluator {
 
         return evalTurn(moves, board, white,
                 myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
+                enemyPawns, enemyBishops, enemyRooks, enemyQueens, enemyKing,
                 enemies, friends, allPieces,
                 pinnedPieces, inCheck) -
 
                 evalTurn(moves, board, !white,
                         enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                        myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
+                        myPawns, myBishops, myRooks, myQueens, myKing,
                         enemies, friends, allPieces,
                         pinnedPieces, inCheck);
     }
 
     private static int evalTurn(int[] moves, Chessboard board, boolean white,
                                 long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
-                                long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
+                                long enemyPawns, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
                                 long enemies, long friends, long allPieces,
                                 long pinnedPieces, boolean inCheck){
 

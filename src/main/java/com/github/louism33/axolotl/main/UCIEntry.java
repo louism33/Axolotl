@@ -123,7 +123,6 @@ public class UCIEntry extends AbstractEngine {
         moves = command.moves;
         board = convertGenericBoardToChessboard(genericBoard, moves);
         
-        Engine.setBoards(board);
     }
 
     // go movetime 30000

@@ -2,8 +2,8 @@ package com.github.louism33.axolotl.search;
 
 public class EngineSpecifications {
 
-    public static int THREAD_NUMBER                                  = 2;
-    public static int MAX_THREADS                                    = 8;
+    public static int THREAD_NUMBER                                  = 4;
+    public static final int MAX_THREADS                                    = 8;
     public static boolean INFO                                       = true;
     public static int MAX_DEPTH                                      = 18;
     public static boolean ALLOW_TIME_LIMIT                           = true;

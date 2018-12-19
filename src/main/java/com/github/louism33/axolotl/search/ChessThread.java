@@ -1,49 +1,29 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.evaluation.Evaluator;
+import com.github.louism33.axolotl.main.UCIPrinter;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
 import com.github.louism33.chesscore.MoveParser;
-import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
 import java.util.Arrays;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.search.Engine.*;
-import static com.github.louism33.axolotl.search.EngineSpecifications.ASPIRATION_MAX_TRIES;
-import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
+import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
-public class ChessThread extends Thread{
+class ChessThread extends Thread{
 
-    Chessboard board;
-    //    int[] rootMoves;
+    private Chessboard board;
     int aiMoveScore = SHORT_MINIMUM;
-    int threadIndex;
-    long startTime;
-    long timeLimitMillis;
+    private final int threadIndex;
+    private long startTime;
+    private long timeLimitMillis;
 
     public void setTime(long startTime, long timeLimitMillis) {
         this.startTime = startTime;
         this.timeLimitMillis = timeLimitMillis;
     }
-
-
-//    void putAIMoveFirst(int aiMove, int aiMoveScore) {
-//        ChessThread chessThread = (ChessThread) Thread.currentThread();
-//
-//        if (rootMoves[0] == aiMove) {
-//            return;
-//        }
-//
-//        System.arraycopy(this.rootMoves, 0, this.rootMoves, 1,
-//                Ints.indexOf(rootMoves, aiMove));
-//
-//        rootMoves[0] = aiMove;
-//        this.aiMoveScore = aiMoveScore;
-//    }
-
 
     public ChessThread(String name, int index){
         this.setName(name);
@@ -54,10 +34,8 @@ public class ChessThread extends Thread{
         return board;
     }
 
-    public void setBoardAndRootMoves(Chessboard board) {
+    public void setBoard(Chessboard board) {
         this.board = board;
-//        this.rootMoves = new int[rootMoves.length];
-//        System.arraycopy(rootMoves, 0, this.rootMoves, 0, rootMoves.length);
     }
 
     @Override
@@ -88,23 +66,17 @@ public class ChessThread extends Thread{
 
                 depth++;
 
-                System.out.println("Depth: " + depth);
-
                 int previousAi = rootMoves[0];
-
 
                 while (true) {
 
                     score = principleVariationSearch(board, rootMoves,  depth, 0,
-                            alpha, beta, 0, false, startTime, timeLimitMillis,
+                            alpha, beta, 0, startTime, timeLimitMillis,
                             threadIndex);
-
-
 
                     if (stopSearch(startTime, timeLimitMillis)){
                         break;
                     }
-
 
                     if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
                         break everything;
@@ -131,9 +103,9 @@ public class ChessThread extends Thread{
                     }
                 }
 
-//            if (EngineSpecifications.INFO && depth > 6 && rootMoves[0][0] != previousAi){
-//                UCIPrinter.sendInfoCommand(board, rootMoves[0][0], aiMoveScore, depth);
-//            }
+                if (INFO && depth > 6 && this.threadIndex == 0 && rootMoves[0] != previousAi){
+                    UCIPrinter.sendInfoCommand(board, rootMoves[0], Engine.aiMoveScore, depth);
+                }
 
                 aspirationScore = score;
 
@@ -142,26 +114,11 @@ public class ChessThread extends Thread{
                 }
             }
 
-//        ChessThread thread = (ChessThread) Thread.currentThread();
+            if (INFO && this.threadIndex == 0){
+                UCIPrinter.sendInfoCommand(board, rootMoves[0], Engine.aiMoveScore, depth);
+            }
 
-//        if (INFO){
-//            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
-//        }
-
-
-
-
-
-
-
-
-            Engine.stopNow = true;
-
-            Engine.HACK++;
-
-            System.out.println("Now I am done");
-//            System.out.println("score: " + aiMoveScore);
-//            MoveParser.printMoves(rootMoves);
+            Engine.increment();
 
         } catch (IllegalUnmakeException e) {
             e.printStackTrace();
