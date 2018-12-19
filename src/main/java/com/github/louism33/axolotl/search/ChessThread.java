@@ -7,12 +7,18 @@ import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.SHORT_MINIMUM;
+import java.util.Arrays;
+
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static com.github.louism33.axolotl.search.Engine.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.ASPIRATION_MAX_TRIES;
+import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
 
 public class ChessThread extends Thread{
 
     Chessboard board;
-    int[] rootMoves;
+    //    int[] rootMoves;
     int aiMoveScore = SHORT_MINIMUM;
     int threadIndex;
     long startTime;
@@ -24,19 +30,19 @@ public class ChessThread extends Thread{
     }
 
 
-    void putAIMoveFirst(int aiMove, int aiMoveScore) {
-        ChessThread chessThread = (ChessThread) Thread.currentThread();
-
-        if (rootMoves[0] == aiMove) {
-            return;
-        }
-
-        System.arraycopy(rootMoves, 0, rootMoves, 1, 
-                Ints.indexOf(rootMoves, aiMove));
-        
-        rootMoves[0] = aiMove;
-        this.aiMoveScore = aiMoveScore;
-    }
+//    void putAIMoveFirst(int aiMove, int aiMoveScore) {
+//        ChessThread chessThread = (ChessThread) Thread.currentThread();
+//
+//        if (rootMoves[0] == aiMove) {
+//            return;
+//        }
+//
+//        System.arraycopy(this.rootMoves, 0, this.rootMoves, 1,
+//                Ints.indexOf(rootMoves, aiMove));
+//
+//        rootMoves[0] = aiMove;
+//        this.aiMoveScore = aiMoveScore;
+//    }
 
 
     public ChessThread(String name, int index){
@@ -48,35 +54,120 @@ public class ChessThread extends Thread{
         return board;
     }
 
-    public void setBoard(Chessboard board, int[] rootMoves) {
+    public void setBoardAndRootMoves(Chessboard board) {
         this.board = board;
-        this.rootMoves = rootMoves;
+//        this.rootMoves = new int[rootMoves.length];
+//        System.arraycopy(rootMoves, 0, this.rootMoves, 0, rootMoves.length);
     }
 
     @Override
     public synchronized void start() {
         super.start();
-
     }
 
     @Override
     synchronized public void run() {
         Assert.assertTrue(board != null);
         try {
-//            System.out.println("Hi I am " + this.getName() + ", id " + this.threadIndex);
+            System.out.println("Hi I am " + this.getName() + ", id " + this.threadIndex);
 //            System.out.println("root moves: ");
 //            MoveParser.printMoves(rootMoves);
-            
-            Engine.iterativeDeepeningWithAspirationWindows(this.board, this.rootMoves, this.startTime, this.timeLimitMillis);
+
+
+            int depth = 0;
+            int aspirationScore = 0;
+
+            int alpha;
+            int beta;
+            int alphaAspirationAttempts = 0;
+            int betaAspirationAttempts = 0;
+
+            alpha = aspirationScore - EngineSpecifications.ASPIRATION_WINDOWS[alphaAspirationAttempts];
+            beta = aspirationScore + EngineSpecifications.ASPIRATION_WINDOWS[betaAspirationAttempts];
+
+            int score;
+
+            everything:
+            while (depth < MAX_DEPTH
+                    && !stopSearch(startTime, timeLimitMillis)) {
+
+                depth++;
+
+                System.out.println("Depth: " + depth);
+
+                int previousAi = rootMoves[0];
+
+
+                while (true) {
+
+                    score = principleVariationSearch(board, rootMoves,  depth, 0,
+                            alpha, beta, 0, false, startTime, timeLimitMillis,
+                            threadIndex);
+
+
+
+                    if (stopSearch(startTime, timeLimitMillis)){
+                        break;
+                    }
+
+
+                    if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+                        break everything;
+                    }
+
+                    if (score <= alpha) {
+                        alphaAspirationAttempts++;
+                        if (alphaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES){
+                            alpha = SHORT_MINIMUM;
+                        }
+                        else {
+                            alpha = aspirationScore - EngineSpecifications.ASPIRATION_WINDOWS[alphaAspirationAttempts];
+                        }
+                    } else if (score >= beta) {
+                        betaAspirationAttempts++;
+                        if (betaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES){
+                            beta = SHORT_MAXIMUM;
+                        }
+                        else {
+                            beta = aspirationScore - EngineSpecifications.ASPIRATION_WINDOWS[betaAspirationAttempts];
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+//            if (EngineSpecifications.INFO && depth > 6 && rootMoves[0][0] != previousAi){
+//                UCIPrinter.sendInfoCommand(board, rootMoves[0][0], aiMoveScore, depth);
+//            }
+
+                aspirationScore = score;
+
+                if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+                    break;
+                }
+            }
+
+//        ChessThread thread = (ChessThread) Thread.currentThread();
+
+//        if (INFO){
+//            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
+//        }
+
+
+
+
+
+
+
 
             Engine.stopNow = true;
-            
-            Engine.lock.notify();
-            
-//            System.out.println("Now I am done");
+
+            Engine.HACK++;
+
+            System.out.println("Now I am done");
 //            System.out.println("score: " + aiMoveScore);
 //            MoveParser.printMoves(rootMoves);
-            
+
         } catch (IllegalUnmakeException e) {
             e.printStackTrace();
         }
@@ -87,6 +178,7 @@ public class ChessThread extends Thread{
         return "ChessThread{" +
                 "threadIndex=" + threadIndex +
                 ", aiMove=" + MoveParser.toString(rootMoves[0]) +
+                ", moves =" + Arrays.toString(MoveParser.toString(rootMoves)) +
                 '}';
     }
 }
