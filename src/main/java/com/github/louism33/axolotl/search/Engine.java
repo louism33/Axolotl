@@ -27,12 +27,12 @@ public class Engine {
 
     private static final Object lock = new Object();
     private volatile static int HACK = 0;
-    
+
     volatile static int deepestThread = 0;
 
     private static ChessThread[] threads;
     static int[] depths;
-    
+
     static int[] rootMoves;
     static int aiMoveScore;
     private static boolean isReady = false;
@@ -181,7 +181,7 @@ public class Engine {
         if (!isReady) {
             setup();
         }
-        
+
         setupThreads();
         giveThreadsBoard(board);
 
@@ -258,7 +258,8 @@ public class Engine {
             hashMove = getMove(previousTableData);
 
             if (getDepth(previousTableData) >= depth
-                    && PVLine.verifyMove(hashMove, moves)){
+//                    && PVLine.verifyMove(hashMove, moves)
+            ){
                 int flag = getFlag(previousTableData);
                 if (flag == EXACT) {
                     if (ply == 0){
@@ -314,7 +315,7 @@ public class Engine {
                 if (staticBoardEval + specificAlphaRazorMargin < alpha){
                     int qScore = QuiescenceSearch.quiescenceSearch(board,
                             alpha - specificAlphaRazorMargin,
-                            alpha - specificAlphaRazorMargin + 1, 
+                            alpha - specificAlphaRazorMargin + 1,
                             whichThread);
 
                     if (qScore + specificAlphaRazorMargin <= alpha){
@@ -323,7 +324,7 @@ public class Engine {
                 }
             }
 
-            int R = nullMoveDepthReduction() + depth / 4;
+            int R = nullMoveDepthReduction();
             if (isNullMoveOkHere(board, nullMoveCounter, depth, R)){
                 board.makeNullMoveAndFlipTurn();
 
@@ -386,7 +387,7 @@ public class Engine {
                             && !pawnToSix
                             && !pawnToSeven
                             && depth <= 4
-                            && numberOfMovesSearched >= depth * 3 + 4) {
+                            && numberOfMovesSearched >= depth * 3 + 3) {
                         continue;
                     }
                 }
@@ -420,9 +421,9 @@ public class Engine {
             } else {
                 score = alpha + 1;
 
-                int R = lateMoveDepthReduction(depth);
+                int R = lateMoveDepthReduction(depth, numberOfMovesSearched);
 
-                if (numberOfMovesSearched > 2
+                if (numberOfMovesSearched > 1
                         && depth > R && !captureMove && !promotionMove
                         && !pawnToSeven && !boardInCheck && !givesCheckMove) {
 

@@ -195,19 +195,19 @@ public class Evaluator {
                         friends
                 )
 
-//                        + evalRookByTurn(board, white, myPawns, myRooks, myQueens, enemyPawns, enemies, allPieces)
-//
-//                        + evalQueenByTurn(board, white,
-//                        myRooks, myQueens,
-//                        enemyPawns
-//                )
-//
-//                        + evalKingByTurn(board, white,
-//                        myPawns, myKing,
-//                        allPieces
-//                )
-//
-//                        + evalMiscByTurn(board, white, moves, pinnedPieces, friends, inCheck)
+                        + evalRookByTurn(board, white, myPawns, myRooks, myQueens, enemyPawns, enemies, allPieces)
+
+                        + evalQueenByTurn(board, white,
+                        myRooks, myQueens,
+                        enemyPawns
+                )
+
+                        + evalKingByTurn(board, white,
+                        myPawns, myKing,
+                        allPieces
+                )
+
+                        + evalMiscByTurn(board, white, moves, pinnedPieces, friends, inCheck)
         ;
         return score;
     }
