@@ -47,7 +47,7 @@ class ChessThread extends Thread{
     synchronized public void run() {
         Assert.assertTrue(board != null);
         try {
-            int depth = 0;
+            int depth = threadIndex % 2; // start threads at different indexes to separate them
             int aspirationScore = 0;
 
             int alpha;
@@ -65,6 +65,19 @@ class ChessThread extends Thread{
                     && !stopSearch(startTime, timeLimitMillis)) {
 
                 depth++;
+
+                depths[threadIndex]++;
+
+//                System.out.println("depths: " + Arrays.toString(depths) + " my d: " + depth + ", my id: " + threadIndex);
+                
+                if (depth > 6){
+//                    Engine.threadDepthIncrement(depth);
+//                    if (depth < Engine.deepestThread){
+//                        depth++;
+//                    }
+                }
+                
+                
 
                 int previousAi = rootMoves[0];
 
@@ -103,7 +116,12 @@ class ChessThread extends Thread{
                     }
                 }
 
-                if (INFO && depth > 6 && this.threadIndex == 0 && rootMoves[0] != previousAi){
+                if (INFO
+                        && depth > 8 
+                        && this.threadIndex == 0
+                        && rootMoves[0] != previousAi
+                ){
+                    System.out.println("depths: " + Arrays.toString(depths));
                     UCIPrinter.sendInfoCommand(board, rootMoves[0], Engine.aiMoveScore, depth);
                 }
 

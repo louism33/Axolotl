@@ -283,9 +283,14 @@
             <url>http://maven.fluxchess.com/release</url>
         </repository>
 
+        <!--<repository>-->
+            <!--<id>com.github.louism33</id>-->
+            <!--<url>https://oss.sonatype.org/content/repositories/releases/com/github/louism33/chesscore/1.6</url>-->
+        <!--</repository>-->
+
         <repository>
             <id>com.github.louism33</id>
-            <url>https://oss.sonatype.org/content/repositories/releases/com/github/louism33/chesscore/1.5</url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/chesscore/1.8</url>
         </repository>
     </repositories>
 
@@ -294,7 +299,7 @@
         <dependency>
             <groupId>com.github.louism33</groupId>
             <artifactId>chesscore</artifactId>
-            <version>1.5</version>
+            <version>1.8-SNAPSHOT</version>
         </dependency>
 
         <dependency>

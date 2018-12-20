@@ -29,7 +29,7 @@ class Pawns {
 
         int score = 0;
 
-        long enemyBigPieces = white ? enemies ^ board.getBlackPawns() : enemies ^ board.getWhitePawns();
+        long enemyBigPieces = enemies ^ enemyPawns;
 
         long myPawnAttacks = PieceMove.masterPawnCapturesTable(board, white, 0, allPieces, myPawns);
 
@@ -44,11 +44,11 @@ class Pawns {
 
 
         long davidVSGoliath = myPawnAttacks & enemyBigPieces;
-        score += populationCount(davidVSGoliath) * PAWN_THREATENS_BIG_THINGS;
+//        score += populationCount(davidVSGoliath) * PAWN_THREATENS_BIG_THINGS;
 
         long bishopAttacks = myPawnAttacks & enemyBishops;
         score += populationCount(bishopAttacks) * PAWN_THREATENS_BISHOPS;
-        
+
         score += populationCount(
                 centreFourSquares & myPawns)
                 * PAWN_ON_SUPER_CENTRE;
@@ -117,14 +117,14 @@ class Pawns {
         }
 
 //        long attacks = PieceMove.singlePawnCaptures(pawn, white, enemies);
-        
+
         long myOtherPawns = myPawns ^ pawn;
         long file = Evaluator.getFile(pawn);
         int index = BitOperations.getIndexOfFirstPiece(pawn);
         long forwardFile = BitOperations.fileForward(index, white);
 
-        
-        
+
+
         if ((file & myOtherPawns) != 0) {
             score += PAWN_DOUBLED;
         }
@@ -194,10 +194,10 @@ class Pawns {
         int score = 0;
 
         int index = BitOperations.getIndexOfFirstPiece(advancedPawn);
-        
+
         long forwardFile = BitOperations.fileForward(index, white);
         long squareOnMe = BitOperations.squareCentredOnIndex(index);
-        
+
         if ((advancedPawn & sixthRank) != 0) {
             score += BitOperations.populationCount(squareOnMe & myPawns) * PAWN_SIX_FRIENDS;
             if ((forwardFile & enemies) == 0){
@@ -212,8 +212,8 @@ class Pawns {
             long capturePromotingSquareR = advancedPawn << 7;
 
             score += BitOperations.populationCount(squareOnMe & myPawns) * PAWN_SEVEN_FRIENDS;
-            
-            
+
+
             if ((pushPromotingSquare & allPieces) == 0) {
                 score += PAWN_SEVEN_PROMOTION_POSSIBLE;
             }

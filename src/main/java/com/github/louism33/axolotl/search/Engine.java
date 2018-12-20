@@ -11,6 +11,8 @@ import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
+import java.util.stream.IntStream;
+
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateKillerMoves;
 import static com.github.louism33.axolotl.moveordering.MoveOrderer.updateMateKillerMoves;
@@ -25,16 +27,19 @@ public class Engine {
 
     private static final Object lock = new Object();
     private volatile static int HACK = 0;
+    
+    volatile static int deepestThread = 0;
 
     private static ChessThread[] threads;
+    static int[] depths;
+    
     static int[] rootMoves;
     static int aiMoveScore;
-    private static int aiMove;
     private static boolean isReady = false;
     private static boolean stopInstruction = false;
     private static long nps;
-    public static long regularMovesMade;
-    public static long quiescentMovesMade;
+    private static int[] numberOfMovesMade;
+    static int[] numberOfQMovesMade;
     private static long startTime = 0;
     private static boolean manageTime = true;
     public static boolean stopNow = false;
@@ -47,7 +52,7 @@ public class Engine {
     }
 
     public static int getAiMove() {
-        return aiMove;
+        return rootMoves[0];
     }
 
     public static UCIEntry getUciEntry() {
@@ -72,8 +77,20 @@ public class Engine {
             nps = 0;
         }
         else {
-            nps = ((1000 * (regularMovesMade + quiescentMovesMade)) / time);
+            System.out.println("time: " + time);
+            nps = ((1000 * getNodesSearched()) / time);
         }
+    }
+
+    public static long getNodesSearched() {
+        long ans = 0;
+        for (int i = 0; i < numberOfMovesMade.length; i++){
+            ans += numberOfMovesMade[i];
+        }
+        for (int i = 0; i < numberOfQMovesMade.length; i++){
+            ans += numberOfQMovesMade[i];
+        }
+        return ans;
     }
 
     static boolean stopSearch(long startTime, long timeLimiMillis) {
@@ -88,7 +105,10 @@ public class Engine {
     }
 
     public static void setupThreads() {
+        depths = new int[THREAD_NUMBER];
         threads = new ChessThread[THREAD_NUMBER];
+        numberOfMovesMade = new int[THREAD_NUMBER];
+        numberOfQMovesMade = new int[THREAD_NUMBER];
         for (int c = 0; c < THREAD_NUMBER; c++) {
             threads[c] = new ChessThread("I"+c, c);
         }
@@ -104,9 +124,7 @@ public class Engine {
     private static void reset() {
         HACK = 0;
         nps = 0;
-        regularMovesMade = 0;
         stopInstruction = false;
-        quiescentMovesMade = 0;
         aiMoveScore = SHORT_MINIMUM;
 
         stopNow = false;
@@ -148,9 +166,14 @@ public class Engine {
     }
 
     static void increment(){
-
         synchronized (lock){
             HACK++;
+        }
+    }
+
+    static void threadDepthIncrement(int depth){
+        if (depth > deepestThread){
+            deepestThread = depth;
         }
     }
 
@@ -217,7 +240,7 @@ public class Engine {
 
         if (depth <= 0){
             Assert.assertTrue(!board.inCheck(board.isWhiteTurn()));
-            return QuiescenceSearch.quiescenceSearch(board, alpha, beta);
+            return QuiescenceSearch.quiescenceSearch(board, alpha, beta, whichThread);
         }
 
         alpha = Math.max(alpha, IN_CHECKMATE_SCORE + ply);
@@ -291,7 +314,8 @@ public class Engine {
                 if (staticBoardEval + specificAlphaRazorMargin < alpha){
                     int qScore = QuiescenceSearch.quiescenceSearch(board,
                             alpha - specificAlphaRazorMargin,
-                            alpha - specificAlphaRazorMargin + 1);
+                            alpha - specificAlphaRazorMargin + 1, 
+                            whichThread);
 
                     if (qScore + specificAlphaRazorMargin <= alpha){
                         return qScore;
@@ -299,7 +323,7 @@ public class Engine {
                 }
             }
 
-            int R = nullMoveDepthReduction();
+            int R = nullMoveDepthReduction() + depth / 4;
             if (isNullMoveOkHere(board, nullMoveCounter, depth, R)){
                 board.makeNullMoveAndFlipTurn();
 
@@ -388,7 +412,7 @@ public class Engine {
 
 
             board.makeMoveAndFlipTurn(move);
-            regularMovesMade++;
+            numberOfMovesMade[whichThread]++;
             numberOfMovesSearched++;
 
             if (board.drawByRepetition(board.isWhiteTurn())) {

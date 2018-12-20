@@ -5,6 +5,7 @@ import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
 import com.fluxchess.jcpi.options.AbstractOption;
+import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
@@ -122,7 +123,15 @@ public class UCIEntry extends AbstractEngine {
         genericBoard = command.board;
         moves = command.moves;
         board = convertGenericBoardToChessboard(genericBoard, moves);
-        
+
+        if (board.isWhiteTurn()) {
+            System.out.println("white turn: ");
+        }
+        else {
+            System.out.println("black turn: ");
+        }
+        System.out.println("eval: " + Evaluator.eval(board, board.isWhiteTurn(), board.generateLegalMoves()));
+        Evaluator.printEval(board);
     }
 
     // go movetime 30000

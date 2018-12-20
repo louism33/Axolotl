@@ -32,7 +32,7 @@ class PositionEval {
                 + piecePositionScores(bishops, white, BISHOP_POSITION_SCORES) 
                 + piecePositionScores(rooks, white, ROOK_POSITION_SCORES)
                 + piecePositionScores(queens, white, QUEEN_POSITION_SCORES)
-                + piecePositionScores(kings, white, naiveEndgame ? KING_POSITION_SCORES_END : KING_POSITION_SCORES_START)
+//                + piecePositionScores(kings, white, naiveEndgame ? KING_POSITION_SCORES_END : KING_POSITION_SCORES_START)
                 ;
     }
 
