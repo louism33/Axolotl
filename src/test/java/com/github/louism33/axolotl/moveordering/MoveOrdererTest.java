@@ -9,8 +9,8 @@ import static com.github.louism33.axolotl.moveordering.MoveOrderer.getMoveScore;
 
 public class MoveOrdererTest {
 
-    @Test
-    public void moveScore() {
+    @org.junit.jupiter.api.Test
+    public void moveScoreTest() {
         Chessboard board = new Chessboard();
         int[] ints = board.generateCleanLegalMoves();
         int move = ints[0];
@@ -26,8 +26,8 @@ public class MoveOrdererTest {
     }
 
 
-    @Test
-    public void positiveMoves() {
+    @org.junit.jupiter.api.Test
+    public void positiveMovesTest() {
         Chessboard board = new Chessboard("r2r2k1/pp2bppp/2p1p3/4qb1P/8/1BP1BQ2/PP3PP1/2KR3R b - - 0 1");
 
         int[] moves = board.generateCleanLegalMoves();
@@ -47,4 +47,5 @@ public class MoveOrdererTest {
             }
         }
     }
+
 }
