@@ -207,14 +207,6 @@ public class Evaluator {
         resetThreats();
         populateThreats(board, moves);
 
-//        System.out.println();
-//        System.out.println("white threats: ");
-//        pt(whiteThreatsToSquare);
-//        System.out.println();
-//        System.out.println("black threats: ");
-//        pt(blackThreatsToSquare);
-//        System.out.println();
-        
         return evalTurn(moves, board, white,
                 myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
                 enemyPawns, enemyBishops, enemyRooks, enemyQueens, enemyKing,
