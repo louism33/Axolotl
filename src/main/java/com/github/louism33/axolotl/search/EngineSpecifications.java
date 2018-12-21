@@ -11,6 +11,6 @@ public class EngineSpecifications {
 
     static final int[] ASPIRATION_WINDOWS                            = {10, 100, 1000};
     static final int ASPIRATION_MAX_TRIES                            = ASPIRATION_WINDOWS.length;
-    public static int TABLE_SIZE                                     = 16 * 62_500; // 16mb
+    public static int TABLE_SIZE                                     = 16 * 62_500 * 16; // 256mb
     public static final int MAX_TABLE_SIZE                           = 16 * 62_500 * 60; // 960mb
 }

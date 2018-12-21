@@ -61,7 +61,7 @@ public class WACSilverTest {
         List<Integer> winningMoves = EPDObject.getBestMoves();
         List<Integer> losingMoveDestination = EPDObject.getAvoidMoves();
 
-        Evaluator.printEval(EPDObject.getBoard());
+//        Evaluator.printEval(EPDObject.getBoard());
         
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
 

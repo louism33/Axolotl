@@ -28,6 +28,8 @@ public class WACSilverSanityTest {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
+//        EngineSpecifications.TABLE_SIZE = EngineSpecifications.MAX_TABLE_SIZE;
+
         for (int i = 0; i < splitUpWACs.length; i++) {
 
             String splitUpWAC = splitUpWACs[i];
