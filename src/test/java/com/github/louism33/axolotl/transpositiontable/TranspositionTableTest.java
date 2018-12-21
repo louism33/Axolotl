@@ -53,6 +53,9 @@ public class TranspositionTableTest {
             Random r = new Random();
 
             int move = r.nextInt() & MoveOrderer.MOVE_MASK;
+            if (move == 0){
+                move = 1;
+            }
             int score = r.nextInt(EvaluationConstants.SHORT_MAXIMUM * 2) - EvaluationConstants.SHORT_MAXIMUM;
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
@@ -152,6 +155,9 @@ public class TranspositionTableTest {
             Random r = new Random();
 
             int move = r.nextInt() & MoveOrderer.MOVE_MASK;
+            if (move == 0){
+                move = 1;
+            }
             int score = r.nextInt(EvaluationConstants.SHORT_MAXIMUM * 2) - EvaluationConstants.SHORT_MAXIMUM;
             int depth = 10;
             int flag = r.nextInt(3);
@@ -164,6 +170,9 @@ public class TranspositionTableTest {
             Random r = new Random();
 
             int move = r.nextInt() & MoveOrderer.MOVE_MASK;
+            if (move == 0){
+                move = 1;
+            }
             int score = r.nextInt(EvaluationConstants.SHORT_MAXIMUM * 2) - EvaluationConstants.SHORT_MAXIMUM;
             int depth = 20;
             int flag = r.nextInt(3);
