@@ -33,7 +33,7 @@ public class EvaluationConstants {
     static final int PAWN_ON_CENTRE                       = 10;
     static final int PAWN_ON_SUPER_CENTRE                 = 15;
     static final int PAWN_UNBLOCKED                       = 10;
-    static final int PAWN_PROTECTED_BY_PAWNS              = 5;
+    static final int PAWN_PROTECTED_BY_PAWNS              = 3;
     static final int PAWN_THREATENS_BIG_THINGS            = 10;
     static final int PAWN_THREATENS_BISHOPS               = 10;
     static final int PAWN_BLOCKED                         = -5;
@@ -57,12 +57,11 @@ public class EvaluationConstants {
     static final int PAWN_P_UNTHREATENED                  = 25;
     
     // knights valuation
-    static final int KNIGHT_OUTPOST_BONUS                 = 20;
+    static final int KNIGHT_OUTPOST_BONUS                 = 15;
     static final int KNIGHT_ADVANCED_BONUS                = 5;
     static final int KNIGHT_MOBILITY_SCORE                = 3;
     static final int KNIGHT_THREATEN_BIG                  = 10;
     static final int KNIGHT_FORK                          = 35;
-    static final int KNIGHT_UNDEVELOPED_PENALTY           = -20;
     
     // bishop valuation
     static final int BISHOP_PER_ENEMY_PAWN_ON_COLOUR      = -3;

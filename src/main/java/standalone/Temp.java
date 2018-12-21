@@ -17,8 +17,9 @@ class Temp {
         System.out.println(board);
 
 //        int move = Engine.searchFixedDepth(board, 20);
-//        int move = Engine.searchFixedTime(board, 60000, false);
+        int move = Engine.searchFixedTime(board, 5000, false);
 
-        Evaluator.printEval(board);
+        System.out.println("Move: " + MoveParser.toString(move));
+//        Evaluator.printEval(board);
     }
 }
