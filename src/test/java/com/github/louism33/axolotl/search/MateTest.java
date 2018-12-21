@@ -19,7 +19,7 @@ public class MateTest {
     
     @AfterClass
     public static void finalSuccessTally(){
-        System.out.println("Successful WAC sanity tests: " + successes);
+        System.out.println("Successful MATE sanity tests: " + successes);
         Assert.assertTrue(successes > 140);
     }
 
@@ -49,7 +49,7 @@ public class MateTest {
         System.out.println(EPDObject.getBoardFen());
         List<Integer> winningMoves = EPDObject.getBestMoves();
         EngineSpecifications.INFO = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
         if (winningMoves.contains(move)){
             System.out.println("success");
             successes++;

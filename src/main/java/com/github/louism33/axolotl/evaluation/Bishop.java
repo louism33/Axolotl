@@ -22,7 +22,7 @@ class Bishop {
         int score = 0;
 
         long emptySquares = ~board.allPieces();
-        
+
         long bishopSquares = ((WHITE_COLOURED_SQUARES & myBishops) != 0) ?
                 WHITE_COLOURED_SQUARES : BLACK_COLOURED_SQUARES;
 
@@ -83,8 +83,6 @@ class Bishop {
             }
             myBishops &= myBishops - 1;
         }
-
-
 
         return score;
     }

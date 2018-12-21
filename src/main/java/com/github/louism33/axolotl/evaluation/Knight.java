@@ -20,18 +20,11 @@ class Knight {
         long emptySquares = ~board.allPieces();
         int score = 0;
 
-        long originalKnights = white ? board.getWhiteKnights() : board.getBlackKnights();
-        score += populationCount(originalKnights & myKnights)
-                * KNIGHT_UNDEVELOPED_PENALTY;
-
-
         while (myKnights != 0){
             long knight = BitOperations.getFirstPiece(myKnights);
             int knightIndex = BitOperations.getIndexOfFirstPiece(knight);
 
-
             long pseudoAvailableSquares = PieceMove.singleKnightTable(knight, UNIVERSE);
-            score += populationCount(pseudoAvailableSquares & emptySquares) * KNIGHT_MOBILITY_SCORE;
 
             int bigThreats = populationCount(pseudoAvailableSquares
                     & (enemyQueens | enemyRooks | enemyKing));
@@ -46,7 +39,7 @@ class Knight {
                     && ((knight & boardWithoutEdges) != 0)) {
 
                 if ((knight & (northSouthHighway | FILE_C | FILE_F)) != 0) {
-                    if (white) {
+                    if (white && ((knightIndex > 23))) {
                         long enemyPawnKillZone = blackPawnKillZone[knightIndex] | blackPawnKillZone[knightIndex + 8];
                         if ((enemyPawnKillZone & enemyPawns) != 0) {
                             myKnights &= myKnights - 1;
@@ -56,8 +49,8 @@ class Knight {
                         if ((((knight >> 7) & myPawns) != 0) || ((knight >> 9) & myPawns) != 0){
                             score += KNIGHT_OUTPOST_BONUS;
                         }
-                        
-                    } else {
+
+                    } else if (!white && knightIndex < 40) {
                         long enemyPawnKillZone = whitePawnKillZone[knightIndex] | whitePawnKillZone[knightIndex - 8];
                         if ((enemyPawnKillZone & enemyPawns) != 0) {
                             myKnights &= myKnights - 1;

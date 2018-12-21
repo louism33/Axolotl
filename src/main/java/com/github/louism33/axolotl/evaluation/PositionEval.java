@@ -1,9 +1,10 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.*;
+import static com.github.louism33.chesscore.BitOperations.getFirstPiece;
+import static com.github.louism33.chesscore.BitOperations.getIndexOfFirstPiece;
 
 class PositionEval {
 
@@ -39,11 +40,14 @@ class PositionEval {
         int answer = 0;
 
         while (pieces != 0){
-            int piece = BitOperations.getIndexOfFirstPiece(pieces);
-            if (white){
-                piece = 63 - piece;
+            long piece = getFirstPiece(pieces);
+            int lookupIndex = 63 - getIndexOfFirstPiece(piece);
+
+            if (!white){
+                lookupIndex = (7 - lookupIndex / 8) * 8 + (lookupIndex & 7);
             }
-            answer += whichArray[piece];
+
+            answer += whichArray[lookupIndex];
             pieces &= pieces - 1;
         }
 

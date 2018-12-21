@@ -16,7 +16,6 @@ class Rook {
                               long enemyPawns,
                               long enemies, long allPieces) {
 
-
         long originalRooks = white ? board.getWhiteRooks() : board.getBlackRooks();
         long seventhRank = white ? RANK_SEVEN : RANK_TWO;
 
@@ -48,7 +47,7 @@ class Rook {
         if ((file & enemyPieces) == 0) {
             score += I_CONTROL_OPEN_FILE;
         }
-        
+
         if ((file & enemyPawns) == 0) {
             score += ROOK_OPEN_FILE_BONUS;
         }

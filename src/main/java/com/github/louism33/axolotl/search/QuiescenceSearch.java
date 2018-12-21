@@ -4,7 +4,6 @@ import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.moveordering.MoveOrderingConstants;
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
 import com.github.louism33.chesscore.MoveParser;
@@ -15,7 +14,7 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMA
 
 class QuiescenceSearch {
 
-    static int quiescenceSearch(Chessboard board, int alpha, int beta) throws IllegalUnmakeException {
+    static int quiescenceSearch(Chessboard board, int alpha, int beta, int whichThread) throws IllegalUnmakeException {
 
         int[] moves = board.generateLegalMoves();
 
@@ -43,7 +42,7 @@ class QuiescenceSearch {
             Ints.sortDescending(moves, 0, realMoves);
         }
         else {
-            MoveOrderer.scoreMoves(moves, board, 0, 0);
+            MoveOrderer.scoreMoves(whichThread, moves, board, 0, 0);
             int realMoves = MoveParser.numberOfRealMoves(moves);
             Ints.sortDescending(moves, 0, realMoves);
         }
@@ -80,9 +79,9 @@ class QuiescenceSearch {
 
             board.makeMoveAndFlipTurn(loudMove);
             numberOfMovesSearched++;
-            Engine.quiescentMovesMade++;
-
-            int score = -quiescenceSearch(board, -beta, -alpha);
+            Engine.numberOfQMovesMade[whichThread]++;
+            
+            int score = -quiescenceSearch(board, -beta, -alpha, whichThread);
 
             board.unMakeMoveAndFlipTurn();
 

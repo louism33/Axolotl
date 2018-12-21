@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.timemanagement;
 
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 
 public class TimeAllocator {
@@ -14,10 +15,11 @@ public class TimeAllocator {
     }
 
     private static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){
+//        return false;
         return timeLeftMillis < (timeLimitMillis) / 3;
     }
 
-    public static boolean outOfTime(long startTime, long timeLimitMillis){
+    public static boolean outOfTime(long startTime, long timeLimitMillis, boolean manageTime){
 
         lastPrint = Math.max(lastPrint, startTime);
 
@@ -32,11 +34,14 @@ public class TimeAllocator {
         if (timeLeftMillis < 0) {
             outOfTime = true;
         }
-        if (weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
+        if (manageTime && weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
             // not enough time to search another ply
             outOfTime = true;
         }
 
+        if (outOfTime){
+            Engine.stopNow = true;
+        }
         return outOfTime;
     }
 

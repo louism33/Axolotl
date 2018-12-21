@@ -6,7 +6,7 @@
 
     <groupId>com.github.louism33</groupId>
     <artifactId>axolotl</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version> 
     <name>axolotl</name>
     <description>Amphibious Java Chess Engine</description>
     <url>https://github.com/louism33/Axolotl</url>
@@ -140,20 +140,20 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.21.0</version>
+                    <version>2.22.0</version>
                     <dependencies>
                         <dependency>
                             <groupId>org.junit.platform</groupId>
                             <artifactId>junit-platform-surefire-provider</artifactId>
-                            <version>1.2.0-M1</version>
+                            <version>1.2.0</version>
                         </dependency>
                         <dependency>
                             <groupId>org.junit.jupiter</groupId>
                             <artifactId>junit-jupiter-engine</artifactId>
-                            <version>5.2.0-M1</version>
+                            <version>5.2.0</version>
                         </dependency>
                     </dependencies>
-                </plugin>
+                </plugin> 
                 <plugin>
                     <groupId>com.github.github</groupId>
                     <artifactId>downloads-maven-plugin</artifactId>
@@ -283,9 +283,14 @@
             <url>http://maven.fluxchess.com/release</url>
         </repository>
 
+        <!--<repository>-->
+            <!--<id>com.github.louism33</id>-->
+            <!--<url>https://oss.sonatype.org/content/repositories/releases/com/github/louism33/chesscore/1.6</url>-->
+        <!--</repository>-->
+
         <repository>
             <id>com.github.louism33</id>
-            <url>https://oss.sonatype.org/content/repositories/releases/com/github/louism33/chesscore/1.5</url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/chesscore/1.8</url>
         </repository>
     </repositories>
 
@@ -294,7 +299,7 @@
         <dependency>
             <groupId>com.github.louism33</groupId>
             <artifactId>chesscore</artifactId>
-            <version>1.5</version>
+            <version>1.8-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -310,16 +315,55 @@
         </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.22.0</version>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.2.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.2.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.2.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>5.2.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>1.2.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-runner</artifactId>
+            <version>1.2.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

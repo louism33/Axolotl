@@ -1,22 +1,30 @@
 package com.github.louism33.axolotl.moveordering;
 
-import com.github.louism33.chesscore.Art;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.IllegalUnmakeException;
-import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.MoveParser.*;
 
 public class MoveOrderer {
 
-    private static final int[] mateKillers = new int[128];
-    private static final int[][] killerMoves = new int[128][2];
-    private static final int[][] historyMoves = new int[64][64];
+    private static boolean ready = false;
+    private static int[][] mateKillers;
+    private static int[][][] killerMoves;
+    private static int[][][] historyMoves;
 
     public static final int MOVE_MASK = ~MOVE_SCORE_MASK;
 
+    public static void initMoveOrderer(){
+        mateKillers = new int[THREAD_NUMBER][128];
+        killerMoves = new int[THREAD_NUMBER][128][2];
+        historyMoves = new int[THREAD_NUMBER][64][64];
+        ready = true;
+    }
+    
     public static int getMoveScore (int moveScore){
         Assert.assertTrue(moveScore > 0);
         int i = (moveScore & MOVE_SCORE_MASK) >>> moveScoreOffset;
@@ -37,17 +45,21 @@ public class MoveOrderer {
         Assert.assertTrue(i > 0);
         return i;
     }
-
-    public static void scoreMoves(int[] moves, Chessboard board, int ply,
+    
+    public static void scoreMoves(int whichThread, int[] moves, Chessboard board, int ply,
                                   int hashMove){
+
+        if (!ready) {
+            initMoveOrderer();
+        }
         try {
-            scoreMovesHelper(moves, board, ply, hashMove);
+            scoreMovesHelper(whichThread, moves, board, ply, hashMove);
         } catch (IllegalUnmakeException e) {
             e.printStackTrace();
         }
     }
 
-    private static void scoreMovesHelper(int[] moves, Chessboard board, int ply,
+    private static void scoreMovesHelper(int whichThread, int[] moves, Chessboard board, int ply,
                                          int hashMove) throws IllegalUnmakeException {
 
         for (int i = 0; i < moves.length; i++) {
@@ -62,8 +74,8 @@ public class MoveOrderer {
             if (move == hashMove) {
                 moves[i] = buildMoveScore(moves[i], hashScore);
             }
-            else if (mateKillers[ply] != 0 && moves[i] == mateKillers[ply]) {
-                Assert.assertTrue(mateKillers[ply] < MOVE_SIZE_LIMIT);
+            else if (mateKillers[whichThread][ply] != 0 && moves[i] == mateKillers[whichThread][ply]) {
+                Assert.assertTrue(mateKillers[whichThread][ply] < MOVE_SIZE_LIMIT);
                 moves[i] = buildMoveScore(moves[i], mateKillerScore);
             }
             else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
@@ -86,20 +98,22 @@ public class MoveOrderer {
             else if (isCaptureMove(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], mvvLVA(moves[i]));
             }
-            else if (killerMoves[ply][0] != 0 && killerMoves[ply][0] == moves[i]) {
-                Assert.assertTrue(killerMoves[ply][0] < MOVE_SIZE_LIMIT);
+            else if (killerMoves[whichThread][ply][0] != 0 && killerMoves[whichThread][ply][0] == moves[i]) {
+                Assert.assertTrue(killerMoves[whichThread][ply][0] < MOVE_SIZE_LIMIT);
                 moves[i] = buildMoveScore(moves[i], killerOneScore);
             }
-            else if (killerMoves[ply][1] != 0 && killerMoves[ply][1] == moves[i]) {
-                Assert.assertTrue(killerMoves[ply][1] < MOVE_SIZE_LIMIT);
+            else if (killerMoves[whichThread][ply][1] != 0 && killerMoves[whichThread][ply][1] == moves[i]) {
+                Assert.assertTrue(killerMoves[whichThread][ply][1] < MOVE_SIZE_LIMIT);
                 moves[i] = buildMoveScore(moves[i], killerTwoScore);
             }
-            else if (ply >= 2 && killerMoves[ply - 2][0] != 0 && killerMoves[ply - 2][0] == moves[i]) {
-                Assert.assertTrue(killerMoves[ply - 2][0] < MOVE_SIZE_LIMIT);
+            else if (ply >= 2 && killerMoves[whichThread][ply - 2][0] != 0 
+                    && killerMoves[whichThread][ply - 2][0] == moves[i]) {
+                Assert.assertTrue(killerMoves[whichThread][ply - 2][0] < MOVE_SIZE_LIMIT);
                 moves[i] = buildMoveScore(moves[i], oldKillerScoreOne);
             }
-            else if (ply >= 2 && killerMoves[ply - 2][1] != 0 && killerMoves[ply - 2][1] == (moves[i])) {
-                Assert.assertTrue(killerMoves[ply - 2][1] < MOVE_SIZE_LIMIT);
+            else if (ply >= 2 && killerMoves[whichThread][ply - 2][1] != 0 
+                    && killerMoves[whichThread][ply - 2][1] == (moves[i])) {
+                Assert.assertTrue(killerMoves[whichThread][ply - 2][1] < MOVE_SIZE_LIMIT);
                 moves[i] = buildMoveScore(moves[i], oldKillerScoreTwo);
             }
             else if (checkingMove(board, moves[i])) {
@@ -109,7 +123,8 @@ public class MoveOrderer {
                 moves[i] = buildMoveScore(moves[i], castlingMove);
             }
             else {
-                moves[i] = buildMoveScore(moves[i], Math.max(historyMoveScore(moves[i]), uninterestingMove));
+                moves[i] = buildMoveScore(moves[i], 
+                        Math.max(historyMoveScore(whichThread, moves[i]), uninterestingMove));
             }
         }
     }
@@ -187,31 +202,31 @@ public class MoveOrderer {
         return checkingMove;
     }
 
-    public static void updateHistoryMoves(int move, int ply){
-        historyMoves[getSourceIndex(move)][getDestinationIndex(move)] += (2 * ply);
+    public static void updateHistoryMoves(int whichThread, int move, int ply){
+        historyMoves[whichThread][getSourceIndex(move)][getDestinationIndex(move)] += (2 * ply);
     }
 
-    private static int historyMoveScore(int move){
+    private static int historyMoveScore(int whichThread, int move){
         int maxMoveScoreOfHistory = MAX_HISTORY_MOVE_SCORE;
-        int historyScore = historyMoves[getSourceIndex(move)][getDestinationIndex(move)];
+        int historyScore = historyMoves[whichThread][getSourceIndex(move)][getDestinationIndex(move)];
         return historyScore > maxMoveScoreOfHistory ? maxMoveScoreOfHistory : historyScore;
     }
 
 
-    public static void updateKillerMoves(int move, int ply){
+    public static void updateKillerMoves(int whichThread, int move, int ply){
 
         Assert.assertTrue(move < MOVE_SIZE_LIMIT);
         
-        if (move != killerMoves[ply][0]){
-            if (killerMoves[ply][0] != 0) {
-                killerMoves[ply][1] = killerMoves[ply][0];
+        if (move != killerMoves[whichThread][ply][0]){
+            if (killerMoves[whichThread][ply][0] != 0) {
+                killerMoves[whichThread][ply][1] = killerMoves[whichThread][ply][0];
             }
-            killerMoves[ply][0] = move;
+            killerMoves[whichThread][ply][0] = move;
         }
     }
 
-    public static void updateMateKillerMoves(int move, int ply){
-        mateKillers[ply] = move;
+    public static void updateMateKillerMoves(int whichThread, int move, int ply){
+        mateKillers[whichThread][ply] = move;
     }
 
 

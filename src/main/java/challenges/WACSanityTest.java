@@ -2,7 +2,8 @@ package challenges;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
-import com.github.louism33.chesscore.MoveParser;
+import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,30 +14,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.EPDObject;
-import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.parseEDPPosition;
-
 @RunWith(Parameterized.class)
-public class WACTest {
+public class WACSanityTest {
 
-    private static final int timeLimit = 15_000;
+    private static final int timeLimit = 5_000;
+    private static int successes = 0;
+
+    @AfterClass
+    public static void finalSuccessTally(){
+        System.out.println("Successful WAC sanity tests: " + successes);
+        Assert.assertTrue(successes > 250);
+    }
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.INFO = true;
-        
-        int stopAt = 10;
-        
         for (int i = 0; i < splitUpWACs.length; i++) {
-            if (i == stopAt){
-//                break;
-            }
-            
+
             String splitUpWAC = splitUpWACs[i];
             Object[] objectAndName = new Object[2];
-            EPDObject EPDObject = parseEDPPosition(splitUpWAC);
+            ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
             objectAndName[0] = EPDObject;
             objectAndName[1] = EPDObject.getId();
             answers.add(objectAndName);
@@ -44,30 +42,26 @@ public class WACTest {
         return answers;
     }
 
-    private static EPDObject EPDObject;
+    private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
-    public WACTest(Object edp, Object name) {
-        EPDObject = (EPDObject) edp;
+    public WACSanityTest(Object edp, Object name) {
+        EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
     }
 
     @Test
     public void test() {
-        System.out.println();
-        System.out.println(EPDObject.getId());
         System.out.println(EPDObject.getBoardFen());
-        System.out.println(EPDObject.getBoard());
-        
         List<Integer> winningMoves = EPDObject.getBestMoves();
-        List<Integer> losingMoveDestination = EPDObject.getAvoidMoves();
-        
+        List<Integer> losingMoves = EPDObject.getAvoidMoves();
+        EngineSpecifications.INFO = false;
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
-
-        System.out.println();
-        System.out.println("Move to get:        " + MoveParser.toString(winningMoves.get(0)));
-
-        Assert.assertTrue(winningMoves.contains(move));
-        Assert.assertFalse(losingMoveDestination.contains(move));
-
+        if (winningMoves.contains(move) && !losingMoves.contains(move)){
+            System.out.println("success");
+            successes++;
+        }
+        else {
+            System.out.println("failure");
+        }
     }
 
     private static final String wacTests = "" +
@@ -374,6 +368,4 @@ public class WACTest {
             "";
 
     private static final String[] splitUpWACs = wacTests.split("\n");
-
 }
-    
