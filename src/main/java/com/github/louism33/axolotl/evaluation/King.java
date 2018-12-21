@@ -94,7 +94,8 @@ class King {
             oSquares &= oSquares - 1;
         }
 
-        return -KING_SAFETY_ARRAY[kingSafetyLookupCounter];
+        return kingSafetyLookupCounter >= KING_SAFETY_ARRAY.length ? - 700 
+                : -KING_SAFETY_ARRAY[kingSafetyLookupCounter];
     }
     
 }

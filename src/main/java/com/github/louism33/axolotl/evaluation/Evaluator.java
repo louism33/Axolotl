@@ -35,7 +35,6 @@ public class Evaluator {
     static void populateThreats(Chessboard board, int[] moves){
         populateFromMoves(moves);
         board.flipTurn();
-        MoveParser.printMoves(board.generateLegalMoves());
         populateFromMoves(board.generateLegalMoves());
         board.flipTurn();
     }
