@@ -20,7 +20,7 @@ Louis
 
 <repository>
     <id>com.github.louism33</id>
-    <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/axolotl/1.1-SNAPSHOT/</url>
+    <url>https://oss.sonatype.org/content/repositories/releases/com/github/louism33/axolotl/1.2/</url>
 </repository>
 ```
 ```
@@ -28,6 +28,6 @@ Louis
 <dependency>
   <groupId>com.github.louism33</groupId>
   <artifactId>axolotl</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.2</version>
 </dependency>
 ```
