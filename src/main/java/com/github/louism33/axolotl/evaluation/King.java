@@ -26,6 +26,18 @@ class King {
         0...0
          */
 
+        if (white && board.getBlackQueen() == 0) {
+            return 0;
+        }
+
+        if (!white && board.getWhiteQueen() == 0) {
+            return 0;
+        }
+
+        if (populationCount(board.allPieces()) < 10) {
+            return 0;
+        }
+
         int kingSafetyLookupCounter = 0;
         
         long dotSquares, oSquares, xSquares;

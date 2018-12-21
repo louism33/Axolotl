@@ -19,7 +19,7 @@ import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.pa
 @RunWith(Parameterized.class)
 public class WACTest {
 
-    private static final int timeLimit = 5_000;
+    private static final int timeLimit = 15_000;
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
