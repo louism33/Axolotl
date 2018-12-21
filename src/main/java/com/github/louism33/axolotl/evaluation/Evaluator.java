@@ -2,6 +2,8 @@ package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.*;
 
+import java.util.Arrays;
+
 import static com.github.louism33.axolotl.evaluation.Bishop.evalBishopByTurn;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_STALEMATE_SCORE;
@@ -9,6 +11,7 @@ import static com.github.louism33.axolotl.evaluation.King.evalKingByTurn;
 import static com.github.louism33.axolotl.evaluation.Knight.evalKnightByTurn;
 import static com.github.louism33.axolotl.evaluation.MaterialEval.evalMaterialByTurn;
 import static com.github.louism33.axolotl.evaluation.Misc.evalMiscByTurn;
+import static com.github.louism33.axolotl.evaluation.MoveTable.*;
 import static com.github.louism33.axolotl.evaluation.PassedPawns.*;
 import static com.github.louism33.axolotl.evaluation.Pawns.evalPawnsByTurn;
 import static com.github.louism33.axolotl.evaluation.PositionEval.evalPositionByTurn;
@@ -21,6 +24,21 @@ import static com.github.louism33.chesscore.BitboardResources.*;
 public class Evaluator {
 
     static boolean isEndgame = false;
+
+    static int[] whiteThreatsToSquare = new int[64];
+    static int[] blackThreatsToSquare = new int[64];
+
+    static void resetThreats(){
+        Arrays.fill(whiteThreatsToSquare, 0);
+        Arrays.fill(blackThreatsToSquare, 0);
+    }
+    static void populateThreats(Chessboard board, int[] moves){
+        populateFromMoves(moves);
+        board.flipTurn();
+        MoveParser.printMoves(board.generateLegalMoves());
+        populateFromMoves(board.generateLegalMoves());
+        board.flipTurn();
+    }
 
     public static int eval(Chessboard board, boolean white, int[] moves) {
         if (moves == null){
@@ -171,6 +189,15 @@ public class Evaluator {
 
         return isEndgame;
     }
+    
+    private static void pt(int[] threats){
+        for (int i = 0; i < threats.length; i++){
+            System.out.print(String.format("% 5d ", threats[i]));
+            if (i % 8 == 7 && i != 0){
+                System.out.println();
+            }
+        }
+    }
 
     private static int evalHelper(int[] moves, Chessboard board, boolean white,
                                   long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
@@ -178,6 +205,17 @@ public class Evaluator {
                                   long enemies, long friends, long allPieces,
                                   long pinnedPieces, boolean inCheck) {
 
+        resetThreats();
+        populateThreats(board, moves);
+
+//        System.out.println();
+//        System.out.println("white threats: ");
+//        pt(whiteThreatsToSquare);
+//        System.out.println();
+//        System.out.println("black threats: ");
+//        pt(blackThreatsToSquare);
+//        System.out.println();
+        
         return evalTurn(moves, board, white,
                 myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
                 enemyPawns, enemyBishops, enemyRooks, enemyQueens, enemyKing,
@@ -187,7 +225,7 @@ public class Evaluator {
                 evalTurn(moves, board, !white,
                         enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
                         myPawns, myBishops, myRooks, myQueens, myKing,
-                        enemies, friends, allPieces,
+                        friends, enemies, allPieces,
                         pinnedPieces, inCheck);
     }
 
@@ -229,6 +267,7 @@ public class Evaluator {
 
                         + evalKingByTurn(board, white,
                         myPawns, myKing,
+                        friends, enemies,
                         allPieces
                 )
 
@@ -308,9 +347,11 @@ public class Evaluator {
 
         int whiteKing = evalKingByTurn(board, true,
                 board.getWhitePawns(), board.getWhiteKing(),
+                board.whitePieces(), board.blackPieces(),
                 board.allPieces());
         int blackKing = evalKingByTurn(board, false,
                 board.getBlackPawns(), board.getBlackKing(),
+                board.blackPieces(), board.whitePieces(),
                 board.allPieces());
 
         int miscWhite = evalMiscByTurn(board, true, moves,
@@ -359,7 +400,7 @@ public class Evaluator {
                 String.format(" PassedPawns |     % 5d     |     % 5d     |    % 5d\n",
                         whitePassedPawns, blackPassedPawns, (whitePassedPawns - blackPassedPawns))
                 + (naiveEndgame(board) ? "\nWe are in the endgame." : "\nWe are not in the endgame.") +
-                "\nFrom white's point of view the score is:              " 
+                "\nFrom white's point of view the score is:              "
                 +((whiteMat - blackMat)
                 + (whitePos - blackPos)
                 + (whitePawns - blackPawns)

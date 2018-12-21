@@ -44,6 +44,13 @@ public class UCIEntry extends AbstractEngine {
             }
         });
 
+        firstCommand.addOption(new AbstractOption("PrintEval") {
+            @Override
+            protected String type() {
+                return "check";
+            }
+        });
+
         firstCommand.addOption(new AbstractOption("HashSize") {
             @Override
             protected String type() {
@@ -75,6 +82,10 @@ public class UCIEntry extends AbstractEngine {
         }
         if (command.name.equalsIgnoreCase("Log")){
             EngineSpecifications.INFO = Boolean.valueOf(command.value);
+        }        
+        
+        if (command.name.equalsIgnoreCase("PrintEval")){
+            EngineSpecifications.PRINT = Boolean.valueOf(command.value);
         }
 
         if (command.name.equalsIgnoreCase("HashSize")){
@@ -124,14 +135,10 @@ public class UCIEntry extends AbstractEngine {
         moves = command.moves;
         board = convertGenericBoardToChessboard(genericBoard, moves);
 
-        if (board.isWhiteTurn()) {
-            System.out.println("white turn: ");
+        if (EngineSpecifications.PRINT) {
+            System.out.println(board);
+            Evaluator.printEval(board);
         }
-        else {
-            System.out.println("black turn: ");
-        }
-        System.out.println("eval: " + Evaluator.eval(board, board.isWhiteTurn(), board.generateLegalMoves()));
-        Evaluator.printEval(board);
     }
 
     // go movetime 30000
