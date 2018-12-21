@@ -15,13 +15,13 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class WACSilverSanityTest {
 
-    private static final int timeLimit = 5_000;
+    private static final int timeLimit = 10_000;
     private static int successes = 0;
 
     @AfterClass
     public static void finalSuccessTally(){
         System.out.println("Successful WAC Silver sanity tests: " + successes);
-        Assert.assertTrue(successes > 150);
+        Assert.assertTrue(successes > 140);
     }
 
     @Parameters(name = "{index} Test: {1}")

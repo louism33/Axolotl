@@ -14,69 +14,67 @@ class Knight {
                                 long myPawns, long myKnights,
                                 long enemyPawns, long enemyRooks, long enemyQueens, long enemyKing) {
 
-        return 0;
-//        
-//        if (myKnights == 0) {
-//            return 0;
-//        }
-//        long emptySquares = ~board.allPieces();
-//        int score = 0;
-//
-//        long originalKnights = white ? board.getWhiteKnights() : board.getBlackKnights();
-//        score += populationCount(originalKnights & myKnights)
-//                * KNIGHT_UNDEVELOPED_PENALTY;
-//
-//
-//        while (myKnights != 0){
-//            long knight = BitOperations.getFirstPiece(myKnights);
-//            int knightIndex = BitOperations.getIndexOfFirstPiece(knight);
-//
-//
-//            long pseudoAvailableSquares = PieceMove.singleKnightTable(knight, UNIVERSE);
-//            score += populationCount(pseudoAvailableSquares & emptySquares) * KNIGHT_MOBILITY_SCORE;
-//
-//            int bigThreats = populationCount(pseudoAvailableSquares
-//                    & (enemyQueens | enemyRooks | enemyKing));
-//            if (bigThreats > 0){
-//                score += KNIGHT_THREATEN_BIG;
-//            }
-//            if (bigThreats > 1){
-//                score += KNIGHT_FORK;
-//            }
-//
-//            if (((knight & noMansLand) != 0)
-//                    && ((knight & boardWithoutEdges) != 0)) {
-//
-//                if ((knight & (northSouthHighway | FILE_C | FILE_F)) != 0) {
-//                    if (white) {
-//                        long enemyPawnKillZone = blackPawnKillZone[knightIndex] | blackPawnKillZone[knightIndex + 8];
-//                        if ((enemyPawnKillZone & enemyPawns) != 0) {
-//                            myKnights &= myKnights - 1;
-//                            continue;
-//                        }
-//                        score += KNIGHT_ADVANCED_BONUS;
-//                        if ((((knight >> 7) & myPawns) != 0) || ((knight >> 9) & myPawns) != 0){
-//                            score += KNIGHT_OUTPOST_BONUS;
-//                        }
-//                        
-//                    } else {
-//                        long enemyPawnKillZone = whitePawnKillZone[knightIndex] | whitePawnKillZone[knightIndex - 8];
-//                        if ((enemyPawnKillZone & enemyPawns) != 0) {
-//                            myKnights &= myKnights - 1;
-//                            continue;
-//                        }
-//                        score += KNIGHT_ADVANCED_BONUS;
-//                        if ((((knight << 7) & myPawns) != 0) || ((knight << 9) & myPawns) != 0){
-//                            score += KNIGHT_OUTPOST_BONUS;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            myKnights &= myKnights - 1;
-//        }
+        if (myKnights == 0) {
+            return 0;
+        }
+        long emptySquares = ~board.allPieces();
+        int score = 0;
 
-//        return score;
+        long originalKnights = white ? board.getWhiteKnights() : board.getBlackKnights();
+        score += populationCount(originalKnights & myKnights)
+                * KNIGHT_UNDEVELOPED_PENALTY;
+
+
+        while (myKnights != 0){
+            long knight = BitOperations.getFirstPiece(myKnights);
+            int knightIndex = BitOperations.getIndexOfFirstPiece(knight);
+
+
+            long pseudoAvailableSquares = PieceMove.singleKnightTable(knight, UNIVERSE);
+            score += populationCount(pseudoAvailableSquares & emptySquares) * KNIGHT_MOBILITY_SCORE;
+
+            int bigThreats = populationCount(pseudoAvailableSquares
+                    & (enemyQueens | enemyRooks | enemyKing));
+            if (bigThreats > 0){
+                score += KNIGHT_THREATEN_BIG;
+            }
+            if (bigThreats > 1){
+                score += KNIGHT_FORK;
+            }
+
+            if (((knight & noMansLand) != 0)
+                    && ((knight & boardWithoutEdges) != 0)) {
+
+                if ((knight & (northSouthHighway | FILE_C | FILE_F)) != 0) {
+                    if (white) {
+                        long enemyPawnKillZone = blackPawnKillZone[knightIndex] | blackPawnKillZone[knightIndex + 8];
+                        if ((enemyPawnKillZone & enemyPawns) != 0) {
+                            myKnights &= myKnights - 1;
+                            continue;
+                        }
+                        score += KNIGHT_ADVANCED_BONUS;
+                        if ((((knight >> 7) & myPawns) != 0) || ((knight >> 9) & myPawns) != 0){
+                            score += KNIGHT_OUTPOST_BONUS;
+                        }
+
+                    } else {
+                        long enemyPawnKillZone = whitePawnKillZone[knightIndex] | whitePawnKillZone[knightIndex - 8];
+                        if ((enemyPawnKillZone & enemyPawns) != 0) {
+                            myKnights &= myKnights - 1;
+                            continue;
+                        }
+                        score += KNIGHT_ADVANCED_BONUS;
+                        if ((((knight << 7) & myPawns) != 0) || ((knight << 9) & myPawns) != 0){
+                            score += KNIGHT_OUTPOST_BONUS;
+                        }
+                    }
+                }
+            }
+
+            myKnights &= myKnights - 1;
+        }
+
+        return score;
     }
 
 }

@@ -391,7 +391,7 @@ public class Evaluator {
                 String.format(" PassedPawns |     % 5d     |     % 5d     |    % 5d\n",
                         whitePassedPawns, blackPassedPawns, (whitePassedPawns - blackPassedPawns))
                 + (naiveEndgame(board) ? "\nWe are in the endgame." : "\nWe are not in the endgame.") +
-                "\nFrom white's point of view the score is:              "
+                "\nFrom white's point of view the score is:           "
                 +((whiteMat - blackMat)
                 + (whitePos - blackPos)
                 + (whitePawns - blackPawns)

@@ -1,5 +1,6 @@
 package challenges;
 
+import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.MoveParser;
@@ -19,7 +20,7 @@ import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.pa
 @RunWith(Parameterized.class)
 public class WACSilverTest {
 
-    private static final int timeLimit = 5_000;
+    private static final int timeLimit = 10_000;
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -59,6 +60,8 @@ public class WACSilverTest {
         
         List<Integer> winningMoves = EPDObject.getBestMoves();
         List<Integer> losingMoveDestination = EPDObject.getAvoidMoves();
+
+        Evaluator.printEval(EPDObject.getBoard());
         
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
 

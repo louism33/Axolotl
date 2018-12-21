@@ -18,70 +18,68 @@ class Pawns {
                                long enemies,
                                long allPieces) {
 
-        return 0;
-//        
-//        if (myPawns == 0) {
-//            return 0;
-//        }
-//
-//        long fifthRank = white ? RANK_FIVE : RANK_FOUR;
-//        long sixthRank = white ? RANK_SIX : RANK_THREE;
-//        long seventhRank = white ? RANK_SEVEN : RANK_TWO;
-//        long lastPawn = BitOperations.getFirstPiece(myPawns);
-//
-//        int score = 0;
-//
-//        long enemyBigPieces = enemies ^ enemyPawns;
-//
-//        long myPawnAttacks = PieceMove.masterPawnCapturesTable(board, white, 0, allPieces, myPawns);
-//
-//        long threatenedSuperCentre = myPawnAttacks & centreFourSquares;
-//        score += populationCount(threatenedSuperCentre) * PAWN_THREATEN_SUPER_CENTRE;
-//
-//        long threatenedCentre = myPawnAttacks & (centreNineSquares ^ centreFourSquares);
-//        score += populationCount(threatenedCentre) * PAWN_THREATEN_CENTRE;
-//
-//        long protectedPawns = myPawnAttacks & myPawns;
-//        score += populationCount(protectedPawns) * PAWN_PROTECTED_BY_PAWNS;
-//
-//
-//        long davidVSGoliath = myPawnAttacks & enemyBigPieces;
-////        score += populationCount(davidVSGoliath) * PAWN_THREATENS_BIG_THINGS;
-//
-//        long bishopAttacks = myPawnAttacks & enemyBishops;
-//        score += populationCount(bishopAttacks) * PAWN_THREATENS_BISHOPS;
-//
-//        score += populationCount(
-//                centreFourSquares & myPawns)
-//                * PAWN_ON_SUPER_CENTRE;
-//
-//        score += populationCount(
-//                (centreNineSquares ^ centreFourSquares) & myPawns)
-//                * PAWN_ON_CENTRE;
-//
-//        if (white) {
-//            long blockingEnemyPawns = (myPawns << 8) & enemyPawns;
-//            score += populationCount(blockingEnemyPawns) * PAWN_BLOCKED;
-//        } else {
-//            long blockingEnemyPawns = (myPawns >>> 8) & enemyPawns;
-//            score += populationCount(blockingEnemyPawns) * PAWN_BLOCKED;
-//        }
-//
-//        long pawnsOnSix = myPawns & sixthRank;
-//        long pawnsOnSeven = myPawns & seventhRank;
-//
-//        long myPawnsEval = myPawns;
-//
-//        myPawnsEval ^= (pawnsOnSix | pawnsOnSeven);
-//
-//        while (myPawnsEval != 0) {
-//            long pawn = BitOperations.getFirstPiece(myPawnsEval);
-//            score += pawnScore(board, white, pawn, myPawns, enemyPawns,
-//                    lastPawn, fifthRank);
-//            myPawnsEval &= myPawnsEval - 1;
-//        }
-//
-//        return score;
+        if (myPawns == 0) {
+            return 0;
+        }
+
+        long fifthRank = white ? RANK_FIVE : RANK_FOUR;
+        long sixthRank = white ? RANK_SIX : RANK_THREE;
+        long seventhRank = white ? RANK_SEVEN : RANK_TWO;
+        long lastPawn = BitOperations.getFirstPiece(myPawns);
+
+        int score = 0;
+
+        long enemyBigPieces = enemies ^ enemyPawns;
+
+        long myPawnAttacks = PieceMove.masterPawnCapturesTable(board, white, 0, allPieces, myPawns);
+
+        long threatenedSuperCentre = myPawnAttacks & centreFourSquares;
+        score += populationCount(threatenedSuperCentre) * PAWN_THREATEN_SUPER_CENTRE;
+
+        long threatenedCentre = myPawnAttacks & (centreNineSquares ^ centreFourSquares);
+        score += populationCount(threatenedCentre) * PAWN_THREATEN_CENTRE;
+
+        long protectedPawns = myPawnAttacks & myPawns;
+        score += populationCount(protectedPawns) * PAWN_PROTECTED_BY_PAWNS;
+
+
+        long davidVSGoliath = myPawnAttacks & enemyBigPieces;
+//        score += populationCount(davidVSGoliath) * PAWN_THREATENS_BIG_THINGS;
+
+        long bishopAttacks = myPawnAttacks & enemyBishops;
+        score += populationCount(bishopAttacks) * PAWN_THREATENS_BISHOPS;
+
+        score += populationCount(
+                centreFourSquares & myPawns)
+                * PAWN_ON_SUPER_CENTRE;
+
+        score += populationCount(
+                (centreNineSquares ^ centreFourSquares) & myPawns)
+                * PAWN_ON_CENTRE;
+
+        if (white) {
+            long blockingEnemyPawns = (myPawns << 8) & enemyPawns;
+            score += populationCount(blockingEnemyPawns) * PAWN_BLOCKED;
+        } else {
+            long blockingEnemyPawns = (myPawns >>> 8) & enemyPawns;
+            score += populationCount(blockingEnemyPawns) * PAWN_BLOCKED;
+        }
+
+        long pawnsOnSix = myPawns & sixthRank;
+        long pawnsOnSeven = myPawns & seventhRank;
+
+        long myPawnsEval = myPawns;
+
+        myPawnsEval ^= (pawnsOnSix | pawnsOnSeven);
+
+        while (myPawnsEval != 0) {
+            long pawn = BitOperations.getFirstPiece(myPawnsEval);
+            score += pawnScore(board, white, pawn, myPawns, enemyPawns,
+                    lastPawn, fifthRank);
+            myPawnsEval &= myPawnsEval - 1;
+        }
+
+        return score;
     }
 
     private static int pawnScore(Chessboard board, boolean white, long pawn,

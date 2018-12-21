@@ -14,34 +14,32 @@ class Queen {
                                long myRooks, long myQueens,
                                long enemyPawns) {
         
-        return 0;
-//        
-//        if (myQueens == 0) {
-//            return 0;
-//        }
-//
-//        long emptySquares = ~board.allPieces();
-//        
-//        int score = 0;
-//
-//        long seventhRank = white ? RANK_SEVEN : RANK_TWO;
-//        int numberOfQueensOnSeventh = populationCount(myQueens & seventhRank);
-//        score += numberOfQueensOnSeventh * QUEEN_ON_SEVENTH_BONUS;
-//        
-//        
-//        while (myQueens != 0) {
-//            long queen = BitOperations.getFirstPiece(myQueens);
-//
-//            long pseudoAvailableSquares = PieceMove.singleQueenTable(board.allPieces(), white, queen, UNIVERSE);
-//            
-//            score += populationCount(pseudoAvailableSquares & emptySquares) * QUEEN_MOBILITY_SCORE;
-//            score += populationCount(pseudoAvailableSquares & myRooks) * QUEEN_PROTECTS_ROOK;
-//            score += populationCount(pseudoAvailableSquares & enemyPawns) * QUEEN_HATES_PAWNS;
-//        
-//            myQueens &= myQueens - 1;
-//        }
-//        
-//        
-//        return score;
+        if (myQueens == 0) {
+            return 0;
+        }
+
+        long emptySquares = ~board.allPieces();
+
+        int score = 0;
+
+        long seventhRank = white ? RANK_SEVEN : RANK_TWO;
+        int numberOfQueensOnSeventh = populationCount(myQueens & seventhRank);
+        score += numberOfQueensOnSeventh * QUEEN_ON_SEVENTH_BONUS;
+
+
+        while (myQueens != 0) {
+            long queen = BitOperations.getFirstPiece(myQueens);
+
+            long pseudoAvailableSquares = PieceMove.singleQueenTable(board.allPieces(), white, queen, UNIVERSE);
+
+            score += populationCount(pseudoAvailableSquares & emptySquares) * QUEEN_MOBILITY_SCORE;
+            score += populationCount(pseudoAvailableSquares & myRooks) * QUEEN_PROTECTS_ROOK;
+            score += populationCount(pseudoAvailableSquares & enemyPawns) * QUEEN_HATES_PAWNS;
+
+            myQueens &= myQueens - 1;
+        }
+
+
+        return score;
     }
 }
