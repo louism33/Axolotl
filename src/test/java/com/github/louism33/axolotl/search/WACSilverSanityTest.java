@@ -21,7 +21,7 @@ public class WACSilverSanityTest {
     @AfterClass
     public static void finalSuccessTally(){
         System.out.println("Successful WAC Silver sanity tests: " + successes);
-        Assert.assertTrue(successes > 140);
+        Assert.assertTrue(successes > 130);
     }
 
     @Parameters(name = "{index} Test: {1}")
