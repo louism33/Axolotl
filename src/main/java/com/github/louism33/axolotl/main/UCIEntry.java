@@ -44,7 +44,7 @@ public class UCIEntry extends AbstractEngine {
             }
         });
 
-        firstCommand.addOption(new AbstractOption("Hash Table Size") {
+        firstCommand.addOption(new AbstractOption("HashSize") {
             @Override
             protected String type() {
                 return "spin";
@@ -77,7 +77,7 @@ public class UCIEntry extends AbstractEngine {
             EngineSpecifications.INFO = Boolean.valueOf(command.value);
         }
 
-        if (command.name.equalsIgnoreCase("Table Size")){
+        if (command.name.equalsIgnoreCase("HashSize")){
             int size = Integer.parseInt(command.value);
             int number = size * 62_500;
             if (number > 0 && number < EngineSpecifications.MAX_TABLE_SIZE) {

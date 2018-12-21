@@ -14,31 +14,33 @@ class Misc {
                               boolean inCheck) {
         int score = 0;
 
-        long sixthRank = white ? RANK_SIX : RANK_THREE;
-        long seventhRank = white ? RANK_SEVEN : RANK_TWO;
-        long reallyAdvancedPieces = sixthRank | seventhRank;
-
-        if (board.isWhiteTurn() == white){
-            score += MY_TURN_BONUS;
-            score += (MoveParser.numberOfRealMoves(moves) * MOVE_NUMBER_POINT) / 10;
-        }
-        
-        score =+ BitOperations.populationCount(centreFourSquares & myPieces) * CENTRE_PIECE;
-        
-        while (pinnedPieces != 0){
-            long pinnedPiece = BitOperations.getFirstPiece(pinnedPieces);
-            int ordinal = Piece.pieceOnSquare(board, pinnedPiece).ordinal();
-            int pinnedPenalty = ordinal > 6 ? PINNED_PIECES[ordinal - 6] : PINNED_PIECES[ordinal];
-
-            score += pinnedPenalty;
-            pinnedPieces &= pinnedPieces -1;
-        }
-        
-        if (inCheck){
-            score += IN_CHECK_PENALTY;
-        }
-
-        return score;
+        return 0;
+//        
+//        long sixthRank = white ? RANK_SIX : RANK_THREE;
+//        long seventhRank = white ? RANK_SEVEN : RANK_TWO;
+//        long reallyAdvancedPieces = sixthRank | seventhRank;
+//
+//        if (board.isWhiteTurn() == white){
+//            score += MY_TURN_BONUS;
+//            score += (MoveParser.numberOfRealMoves(moves) * MOVE_NUMBER_POINT) / 10;
+//        }
+//        
+//        score =+ BitOperations.populationCount(centreFourSquares & myPieces) * CENTRE_PIECE;
+//        
+//        while (pinnedPieces != 0){
+//            long pinnedPiece = BitOperations.getFirstPiece(pinnedPieces);
+//            int ordinal = Piece.pieceOnSquare(board, pinnedPiece).ordinal();
+//            int pinnedPenalty = ordinal > 6 ? PINNED_PIECES[ordinal - 6] : PINNED_PIECES[ordinal];
+//
+//            score += pinnedPenalty;
+//            pinnedPieces &= pinnedPieces -1;
+//        }
+//        
+//        if (inCheck){
+//            score += IN_CHECK_PENALTY;
+//        }
+//
+//        return score;
     }
 
 

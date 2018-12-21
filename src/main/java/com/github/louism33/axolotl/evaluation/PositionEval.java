@@ -30,9 +30,9 @@ class PositionEval {
         return piecePositionScores(pawns, white, PAWN_POSITION_SCORES)
                 + piecePositionScores(knights, white, KNIGHT_POSITION_SCORES) 
                 + piecePositionScores(bishops, white, BISHOP_POSITION_SCORES) 
-//                + piecePositionScores(rooks, white, ROOK_POSITION_SCORES)
-//                + piecePositionScores(queens, white, QUEEN_POSITION_SCORES)
-//                + piecePositionScores(kings, white, naiveEndgame ? KING_POSITION_SCORES_END : KING_POSITION_SCORES_START)
+                + piecePositionScores(rooks, white, ROOK_POSITION_SCORES)
+                + piecePositionScores(queens, white, QUEEN_POSITION_SCORES)
+                + piecePositionScores(kings, white, naiveEndgame ? KING_POSITION_SCORES_END : KING_POSITION_SCORES_START)
                 ;
     }
 

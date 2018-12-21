@@ -14,13 +14,17 @@ class Temp {
         Engine.setup();
         Engine.giveThreadsBoard(board);
 
-//        int move = Engine.searchFixedDepth(board, 14);
+        System.out.println(board);
+
+//        int move = Engine.searchFixedDepth(board, 20);
 //        int move = Engine.searchFixedTime(board, 60000, false);
 
         System.out.println("///////////////////////////");
         System.out.println("FINAL MOVE");
 //        System.out.println(MoveParser.toString(move));
 
+        System.out.println();
+        System.out.println();
 
         System.out.println(Evaluator.eval(board, board.isWhiteTurn(), board.generateLegalMoves()));
         Evaluator.printEval(board);

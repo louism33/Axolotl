@@ -13,8 +13,8 @@ public class EvaluationConstants {
 
     // piece values
     public static final int PAWN_SCORE                    = 100;
-    public static final int KNIGHT_SCORE                  = 300;
-    public static final int BISHOP_SCORE                  = 325;
+    public static final int KNIGHT_SCORE                  = 320;
+    public static final int BISHOP_SCORE                  = 330;
     public static final int ROOK_SCORE                    = 500;
     public static final int QUEEN_SCORE                   = 900;
 
@@ -50,8 +50,6 @@ public class EvaluationConstants {
     static final int PAWN_SIX_EMPTY_FILE_FORWARD          = 40;
     static final int PAWN_SIX_FRIENDS                     = 15;
     static final int PAWN_SEVEN_FRIENDS                   = 25;
-    static final int PAWN_SIX                             = 15;
-    static final int PAWN_SEVEN                           = 25;
     static final int PAWN_SEVEN_PROMOTION_POSSIBLE        = 35;
     static final int PAWN_P_SQUARE_SUPPORTED              = 25;
     static final int PAWN_P_SQUARE_UNTHREATENED           = 25;

@@ -9,14 +9,18 @@ import static com.github.louism33.axolotl.evaluation.King.evalKingByTurn;
 import static com.github.louism33.axolotl.evaluation.Knight.evalKnightByTurn;
 import static com.github.louism33.axolotl.evaluation.MaterialEval.evalMaterialByTurn;
 import static com.github.louism33.axolotl.evaluation.Misc.evalMiscByTurn;
+import static com.github.louism33.axolotl.evaluation.PassedPawns.*;
 import static com.github.louism33.axolotl.evaluation.Pawns.evalPawnsByTurn;
 import static com.github.louism33.axolotl.evaluation.PositionEval.evalPositionByTurn;
 import static com.github.louism33.axolotl.evaluation.Queen.evalQueenByTurn;
 import static com.github.louism33.axolotl.evaluation.Rook.evalRookByTurn;
 import static com.github.louism33.chesscore.BitOperations.getIndexOfFirstPiece;
+import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BitboardResources.*;
 
 public class Evaluator {
+
+    static boolean isEndgame = false;
 
     public static int eval(Chessboard board, boolean white, int[] moves) {
         if (moves == null){
@@ -146,7 +150,26 @@ public class Evaluator {
     }
 
     private static boolean naiveEndgame (Chessboard board){
-        return BitOperations.populationCount(board.allPieces()) < 8;
+        if (isEndgame){
+            return true;
+        }
+        if (board.getWhiteQueen() == 0 && board.getBlackQueen() == 0){
+            isEndgame = true;
+        }
+        else if (board.getWhiteQueen() == 1
+                && populationCount(board.getWhiteKnights()
+                | board.getWhiteBishops()
+                | board.getWhiteRooks()) == 1){
+            isEndgame = true;
+        }
+        else if (board.getBlackQueen() == 1
+                && populationCount(board.getBlackKnights()
+                | board.getBlackBishops()
+                | board.getBlackRooks()) == 1){
+            isEndgame = true;
+        }
+
+        return isEndgame;
     }
 
     private static int evalHelper(int[] moves, Chessboard board, boolean white,
@@ -180,6 +203,8 @@ public class Evaluator {
                         myPawns, myKnights, myBishops, myRooks, myQueens)
 
                         + evalPositionByTurn(board, white, naiveEndgame(board))
+
+                        + evalPassedPawnsByTurn(board, white, myPawns, allPieces, enemies)
 
                         + evalPawnsByTurn(board, white, myPawns, enemyPawns, enemyBishops,
                         enemies, allPieces)
@@ -265,35 +290,40 @@ public class Evaluator {
                 board.getWhitePawns(),
                 board.blackPieces());
 
-        int whiteRook = 0*evalRookByTurn(board, true,
+        int whiteRook = evalRookByTurn(board, true,
                 board.getWhitePawns(), board.getWhiteRooks(),
                 board.getWhiteQueen(), board.getBlackPawns(),
                 board.getBlackPawns(), board.allPieces());
-        int blackRook = 0*evalRookByTurn(board, false,
+        int blackRook = evalRookByTurn(board, false,
                 board.getBlackPawns(), board.getBlackRooks(),
                 board.getBlackQueen(), board.getWhitePawns(),
                 board.getWhitePawns(), board.allPieces());
 
-        int whiteQueen = 0*evalQueenByTurn(board, true,
+        int whiteQueen = evalQueenByTurn(board, true,
                 board.getWhiteRooks(), board.getWhiteQueen(),
                 board.getBlackPawns());
-        int blackQueen = 0*evalQueenByTurn(board, false,
+        int blackQueen = evalQueenByTurn(board, false,
                 board.getBlackRooks(), board.getBlackQueen(),
                 board.getWhitePawns());
 
-        int whiteKing = 0*evalKingByTurn(board, true,
+        int whiteKing = evalKingByTurn(board, true,
                 board.getWhitePawns(), board.getWhiteKing(),
                 board.allPieces());
-        int blackKing = 0*evalKingByTurn(board, false,
+        int blackKing = evalKingByTurn(board, false,
                 board.getBlackPawns(), board.getBlackKing(),
                 board.allPieces());
 
-        int miscWhite = 0*evalMiscByTurn(board, true, moves,
+        int miscWhite = evalMiscByTurn(board, true, moves,
                 board.pinnedPiecesToSquareBitBoard(true, Square.squareFromSingleBitboard(board.getWhiteKing())),
                 board.whitePieces(), board.inCheck(true));
-        int miscBlack = 0*evalMiscByTurn(board, false, moves,
+        int miscBlack = evalMiscByTurn(board, false, moves,
                 board.pinnedPiecesToSquareBitBoard(false, Square.squareFromSingleBitboard(board.getBlackKing())),
                 board.blackPieces(), board.inCheck(false));
+
+        int whitePassedPawns = evalPassedPawnsByTurn(board, true,
+                board.getWhitePawns(), board.allPieces(), board.blackPieces());
+        int blackPassedPawns = evalPassedPawnsByTurn(board, false,
+                board.getBlackPawns(), board.allPieces(), board.whitePieces());
 
         String evalString = "   Aspect    |     White     |     Black     |    Total  \n" +
                 "             |               |               |           \n" +
@@ -326,7 +356,10 @@ public class Evaluator {
                 String.format("    Misc     |     % 5d     |     % 5d     |    % 5d\n",
                         miscWhite, miscBlack, (miscWhite - miscBlack)) +
 
-                "\nFrom white's point of view the score is:              "
+                String.format(" PassedPawns |     % 5d     |     % 5d     |    % 5d\n",
+                        whitePassedPawns, blackPassedPawns, (whitePassedPawns - blackPassedPawns))
+                + (naiveEndgame(board) ? "\nWe are in the endgame." : "\nWe are not in the endgame.") +
+                "\nFrom white's point of view the score is:              " 
                 +((whiteMat - blackMat)
                 + (whitePos - blackPos)
                 + (whitePawns - blackPawns)
@@ -334,7 +367,8 @@ public class Evaluator {
                 + (whiteRook - blackRook)
                 + (whiteQueen - blackQueen)
                 + (whiteKing - blackKing)
-                + (miscWhite - miscBlack));
+                + (miscWhite - miscBlack)
+                + (whitePassedPawns - blackPassedPawns));
 
         return evalString;
     }

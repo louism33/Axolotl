@@ -18,79 +18,70 @@ class Pawns {
                                long enemies,
                                long allPieces) {
 
-        if (myPawns == 0) {
-            return 0;
-        }
-
-        long fifthRank = white ? RANK_FIVE : RANK_FOUR;
-        long sixthRank = white ? RANK_SIX : RANK_THREE;
-        long seventhRank = white ? RANK_SEVEN : RANK_TWO;
-        long lastPawn = BitOperations.getFirstPiece(myPawns);
-
-        int score = 0;
-
-        long enemyBigPieces = enemies ^ enemyPawns;
-
-        long myPawnAttacks = PieceMove.masterPawnCapturesTable(board, white, 0, allPieces, myPawns);
-
-        long threatenedSuperCentre = myPawnAttacks & centreFourSquares;
-        score += populationCount(threatenedSuperCentre) * PAWN_THREATEN_SUPER_CENTRE;
-
-        long threatenedCentre = myPawnAttacks & (centreNineSquares ^ centreFourSquares);
-        score += populationCount(threatenedCentre) * PAWN_THREATEN_CENTRE;
-
-        long protectedPawns = myPawnAttacks & myPawns;
-        score += populationCount(protectedPawns) * PAWN_PROTECTED_BY_PAWNS;
-
-
-        long davidVSGoliath = myPawnAttacks & enemyBigPieces;
-//        score += populationCount(davidVSGoliath) * PAWN_THREATENS_BIG_THINGS;
-
-        long bishopAttacks = myPawnAttacks & enemyBishops;
-        score += populationCount(bishopAttacks) * PAWN_THREATENS_BISHOPS;
-
-        score += populationCount(
-                centreFourSquares & myPawns)
-                * PAWN_ON_SUPER_CENTRE;
-
-        score += populationCount(
-                (centreNineSquares ^ centreFourSquares) & myPawns)
-                * PAWN_ON_CENTRE;
-
-        if (white) {
-            long blockingEnemyPawns = (myPawns << 8) & enemyPawns;
-            score += populationCount(blockingEnemyPawns) * PAWN_BLOCKED;
-        } else {
-            long blockingEnemyPawns = (myPawns >>> 8) & enemyPawns;
-            score += populationCount(blockingEnemyPawns) * PAWN_BLOCKED;
-        }
-
-        long pawnsOnSix = myPawns & sixthRank;
-        long pawnsOnSeven = myPawns & seventhRank;
-        score += BitOperations.populationCount(pawnsOnSix)  * PAWN_SIX;
-        score += BitOperations.populationCount(pawnsOnSeven) * PAWN_SEVEN;
-
-        long myPawnsEval = myPawns;
-
-        myPawnsEval ^= (pawnsOnSix | pawnsOnSeven);
-
-        while (myPawnsEval != 0) {
-            long pawn = BitOperations.getFirstPiece(myPawnsEval);
-            score += pawnScore(board, white, pawn, myPawns, enemyPawns,
-                    lastPawn, fifthRank);
-            myPawnsEval &= myPawnsEval - 1;
-        }
-
-        long advancedPawns = pawnsOnSeven | pawnsOnSix;
-        while (advancedPawns != 0) {
-            long pawn = BitOperations.getFirstPiece(advancedPawns);
-            score += advancedPawnScore(board, white, pawn,
-                    myPawns, allPieces,
-                    enemies, sixthRank);
-            advancedPawns &= advancedPawns - 1;
-        }
-
-        return score;
+        return 0;
+//        
+//        if (myPawns == 0) {
+//            return 0;
+//        }
+//
+//        long fifthRank = white ? RANK_FIVE : RANK_FOUR;
+//        long sixthRank = white ? RANK_SIX : RANK_THREE;
+//        long seventhRank = white ? RANK_SEVEN : RANK_TWO;
+//        long lastPawn = BitOperations.getFirstPiece(myPawns);
+//
+//        int score = 0;
+//
+//        long enemyBigPieces = enemies ^ enemyPawns;
+//
+//        long myPawnAttacks = PieceMove.masterPawnCapturesTable(board, white, 0, allPieces, myPawns);
+//
+//        long threatenedSuperCentre = myPawnAttacks & centreFourSquares;
+//        score += populationCount(threatenedSuperCentre) * PAWN_THREATEN_SUPER_CENTRE;
+//
+//        long threatenedCentre = myPawnAttacks & (centreNineSquares ^ centreFourSquares);
+//        score += populationCount(threatenedCentre) * PAWN_THREATEN_CENTRE;
+//
+//        long protectedPawns = myPawnAttacks & myPawns;
+//        score += populationCount(protectedPawns) * PAWN_PROTECTED_BY_PAWNS;
+//
+//
+//        long davidVSGoliath = myPawnAttacks & enemyBigPieces;
+////        score += populationCount(davidVSGoliath) * PAWN_THREATENS_BIG_THINGS;
+//
+//        long bishopAttacks = myPawnAttacks & enemyBishops;
+//        score += populationCount(bishopAttacks) * PAWN_THREATENS_BISHOPS;
+//
+//        score += populationCount(
+//                centreFourSquares & myPawns)
+//                * PAWN_ON_SUPER_CENTRE;
+//
+//        score += populationCount(
+//                (centreNineSquares ^ centreFourSquares) & myPawns)
+//                * PAWN_ON_CENTRE;
+//
+//        if (white) {
+//            long blockingEnemyPawns = (myPawns << 8) & enemyPawns;
+//            score += populationCount(blockingEnemyPawns) * PAWN_BLOCKED;
+//        } else {
+//            long blockingEnemyPawns = (myPawns >>> 8) & enemyPawns;
+//            score += populationCount(blockingEnemyPawns) * PAWN_BLOCKED;
+//        }
+//
+//        long pawnsOnSix = myPawns & sixthRank;
+//        long pawnsOnSeven = myPawns & seventhRank;
+//
+//        long myPawnsEval = myPawns;
+//
+//        myPawnsEval ^= (pawnsOnSix | pawnsOnSeven);
+//
+//        while (myPawnsEval != 0) {
+//            long pawn = BitOperations.getFirstPiece(myPawnsEval);
+//            score += pawnScore(board, white, pawn, myPawns, enemyPawns,
+//                    lastPawn, fifthRank);
+//            myPawnsEval &= myPawnsEval - 1;
+//        }
+//
+//        return score;
     }
 
     private static int pawnScore(Chessboard board, boolean white, long pawn,
@@ -183,116 +174,6 @@ class Pawns {
             }
 
 
-        }
-        return score;
-    }
-
-    private static int advancedPawnScore(Chessboard board, boolean white, long advancedPawn,
-                                         long myPawns, long allPieces,
-                                         long enemies, long sixthRank) {
-
-        int score = 0;
-
-        int index = BitOperations.getIndexOfFirstPiece(advancedPawn);
-
-        long forwardFile = BitOperations.fileForward(index, white);
-        long squareOnMe = BitOperations.squareCentredOnIndex(index);
-
-        if ((advancedPawn & sixthRank) != 0) {
-            score += BitOperations.populationCount(squareOnMe & myPawns) * PAWN_SIX_FRIENDS;
-            if ((forwardFile & enemies) == 0){
-                score += PAWN_SIX_EMPTY_FILE_FORWARD;
-            }
-            return score;
-        }
-
-        if (white) {
-            long pushPromotingSquare = advancedPawn << 8;
-            long capturePromotingSquareL = advancedPawn << 9;
-            long capturePromotingSquareR = advancedPawn << 7;
-
-            score += BitOperations.populationCount(squareOnMe & myPawns) * PAWN_SEVEN_FRIENDS;
-
-
-            if ((pushPromotingSquare & allPieces) == 0) {
-                score += PAWN_SEVEN_PROMOTION_POSSIBLE;
-            }
-
-            if ((advancedPawn & FILE_A) != 0) {
-                if ((capturePromotingSquareR & board.allPieces()) == 0) {
-                    score += PAWN_SEVEN_PROMOTION_POSSIBLE;
-                }
-            } else if ((advancedPawn & FILE_H) != 0) {
-                if ((capturePromotingSquareL & board.allPieces()) == 0) {
-                    score += PAWN_SEVEN_PROMOTION_POSSIBLE;
-                }
-            } else {
-                if ((capturePromotingSquareR & board.allPieces()) == 0) {
-                    score += PAWN_SEVEN_PROMOTION_POSSIBLE;
-                }
-
-                if ((capturePromotingSquareL & board.allPieces()) == 0) {
-                    score += PAWN_SEVEN_PROMOTION_POSSIBLE;
-                }
-            }
-
-            if (squareThreatenend(board, true, pushPromotingSquare)) {
-                score += PAWN_P_SQUARE_UNTHREATENED;
-            }
-
-            if (squareThreatenend(board, false, pushPromotingSquare)) {
-                score += PAWN_P_SQUARE_SUPPORTED;
-            }
-
-            if (squareThreatenend(board, true, advancedPawn)) {
-                score += PAWN_P_UNTHREATENED;
-            }
-
-            if (squareThreatenend(board, false, advancedPawn)) {
-                score += PAWN_P_PROTECTED;
-            }
-        } else {
-            long pushPromotingSquare = advancedPawn >>> 8;
-            long capturePromotingSquareL = advancedPawn >>> 9;
-            long capturePromotingSquareR = advancedPawn >>> 7;
-
-            if ((pushPromotingSquare & board.allPieces()) == 0) {
-                score += PAWN_SEVEN_PROMOTION_POSSIBLE;
-            }
-
-            if ((advancedPawn & FILE_A) != 0) {
-                if ((capturePromotingSquareL & board.allPieces()) == 0) {
-                    score += PAWN_SEVEN_PROMOTION_POSSIBLE;
-                }
-            } else if ((advancedPawn & FILE_H) != 0) {
-                if ((capturePromotingSquareR & board.allPieces()) == 0) {
-                    score += PAWN_SEVEN_PROMOTION_POSSIBLE;
-                }
-            } else {
-                if ((capturePromotingSquareR & board.allPieces()) == 0) {
-                    score += PAWN_SEVEN_PROMOTION_POSSIBLE;
-                }
-
-                if ((capturePromotingSquareL & board.allPieces()) == 0) {
-                    score += PAWN_SEVEN_PROMOTION_POSSIBLE;
-                }
-            }
-
-            if (squareThreatenend(board, false, pushPromotingSquare)) {
-                score += PAWN_P_SQUARE_UNTHREATENED;
-            }
-
-            if (squareThreatenend(board, true, pushPromotingSquare)) {
-                score += PAWN_P_SQUARE_SUPPORTED;
-            }
-
-            if (squareThreatenend(board, false, advancedPawn)) {
-                score += PAWN_P_UNTHREATENED;
-            }
-
-            if (squareThreatenend(board, true, advancedPawn)) {
-                score += PAWN_P_PROTECTED;
-            }
         }
         return score;
     }

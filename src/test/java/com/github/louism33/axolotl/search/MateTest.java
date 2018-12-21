@@ -19,7 +19,7 @@ public class MateTest {
     
     @AfterClass
     public static void finalSuccessTally(){
-        System.out.println("Successful WAC sanity tests: " + successes);
+        System.out.println("Successful MATE sanity tests: " + successes);
         Assert.assertTrue(successes > 140);
     }
 
