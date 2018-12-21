@@ -14,26 +14,25 @@ public class PassedPawns {
                                  long myPawns, long allPieces,
                                  long enemies) {
 
-        return 0;
-//        
-//        int score = 0;
-//        
-//        long sixthRank = white ? RANK_SIX : RANK_THREE;
-//        long seventhRank = white ? RANK_SEVEN : RANK_TWO;
-//        
-//        long pawnsOnSix = myPawns & sixthRank;
-//        long pawnsOnSeven = myPawns & seventhRank;
-//        
-//        long advancedPawns = pawnsOnSeven | pawnsOnSix;
-//        while (advancedPawns != 0) {
-//            long pawn = BitOperations.getFirstPiece(advancedPawns);
-//            score += PassedPawns.advancedPawnScore(board, white, pawn,
-//                    myPawns, allPieces,
-//                    enemies, sixthRank);
-//            advancedPawns &= advancedPawns - 1;
-//        }
-//        
-//        return score;
+
+        int score = 0;
+
+        long sixthRank = white ? RANK_SIX : RANK_THREE;
+        long seventhRank = white ? RANK_SEVEN : RANK_TWO;
+
+        long pawnsOnSix = myPawns & sixthRank;
+        long pawnsOnSeven = myPawns & seventhRank;
+
+        long advancedPawns = pawnsOnSeven | pawnsOnSix;
+        while (advancedPawns != 0) {
+            long pawn = BitOperations.getFirstPiece(advancedPawns);
+            score += PassedPawns.advancedPawnScore(board, white, pawn,
+                    myPawns, allPieces,
+                    enemies, sixthRank);
+            advancedPawns &= advancedPawns - 1;
+        }
+
+        return score;
     }
 
 

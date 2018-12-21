@@ -1,40 +1,67 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.BitOperations;
-import com.github.louism33.chesscore.BitboardResources;
-import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.PieceMove;
+import com.github.louism33.chesscore.*;
 import org.junit.Assert;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.KING_HOME_RANK;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.KING_PAWN_PROTECT_BONUS;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 
 class King {
 
+    /*
+    thanks to Ed Schroeder
+    http://www.top-5000.nl/authors/rebel/chess840.htm
+     */
     static int evalKingByTurn(Chessboard board, boolean white,
                               long myPawns, long myKing,
                               long allPieces) {
 
-        return 0;
-//        
-//        Assert.assertEquals(1, populationCount(myKing));
-//
-//        int score = 0;
-//
-//        long emptySquares = ~board.allPieces();
-//
-//        long homeRank = white ? BitboardResources.RANK_ONE : BitboardResources.RANK_EIGHT;
-//            
-//        long myKingAttacks = PieceMove.masterAttackTableKing(board, white, 0, emptySquares, allPieces, myKing);
-//
-//        score += BitOperations.populationCount(myKingAttacks & myPawns) * KING_PAWN_PROTECT_BONUS;
-//        
-//        score += BitOperations.populationCount(myKingAttacks & homeRank) * KING_HOME_RANK;
-//
-//        return score;
-    }
+        /*
+        00000
+        0xxx0
+        0ooo0
+        0.K.0
+        0...0
+         */
+        int kingSafetyLookupCounter = 0;
+        
+        long dotSquares, oSquares, xSquares;
+        
+        Assert.assertEquals(1, populationCount(myKing));
 
+        int myKingIndex = BitOperations.getIndexOfFirstPiece(myKing);
+
+        long square = BitOperations.squareCentredOnIndex(myKingIndex);
+
+        long row = Square.getRow(myKingIndex);
+        
+        if (white){
+            long nextRow = row << 8;
+            long nextNextRow = row << 16;
+            dotSquares = square & (~nextRow);
+            oSquares = square & nextRow;
+            xSquares = oSquares << 8;
+        }
+        else {
+            long nextRow = row >>> 8;
+            long nextNextRow = row >>> 16;
+            dotSquares = square & (~nextRow);
+            oSquares = square & nextRow;
+            xSquares = oSquares >>> 8;
+        }
+
+        // xSquares
+        // measure just pressure
+        
+        // dotSquares
+        // measure pressure and defence
+        
+        // oSquares
+        // measure pressure defence and defending pieces
+
+        return KING_SAFETY_ARRAY[kingSafetyLookupCounter];
+    }
+    
 }
 
 

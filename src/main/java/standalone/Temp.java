@@ -28,5 +28,7 @@ class Temp {
 
         System.out.println(Evaluator.eval(board, board.isWhiteTurn(), board.generateLegalMoves()));
         Evaluator.printEval(board);
+        
+        
     }
 }

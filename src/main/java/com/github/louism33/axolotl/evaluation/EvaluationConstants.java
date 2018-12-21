@@ -92,5 +92,13 @@ public class EvaluationConstants {
     // king valuation
     static final int KING_PAWN_PROTECT_BONUS              = 5;
     static final int KING_HOME_RANK                       = 10;
+    static final int[] KING_SAFETY_ARRAY                  = 
+            {   
+                    0,  2,  3,  6,   12, 18, 25, 37, 
+                    50, 75, 100,125, 150,175,200,225,
+                    250,275,300,325, 350,375,400,425,
+                    450,475,500,525,550,575, 600,600,
+                    600,600,600, 700, 800, 900, 1000
+            };
 
 }
