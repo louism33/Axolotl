@@ -130,6 +130,8 @@ public class Engine {
         stopNow = false;
 
         initTable(TABLE_SIZE);
+        
+        MoveOrderer.initMoveOrderer();
     }
 
     private static void putAIMoveFirst(int[] rootMoves, int aiMove) {
@@ -346,7 +348,7 @@ public class Engine {
             }
         }
 
-        MoveOrderer.scoreMoves(moves, board, ply, hashMove);
+        MoveOrderer.scoreMoves(whichThread, moves, board, ply, hashMove);
 
         int bestScore = SHORT_MINIMUM;
         int bestMove = 0;
@@ -473,11 +475,11 @@ public class Engine {
 
             if (alpha >= beta) {
                 if (alpha > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
-                    updateMateKillerMoves(move, ply);
+                    updateMateKillerMoves(whichThread, move, ply);
                 } else {
-                    updateKillerMoves(move, ply);
+                    updateKillerMoves(whichThread, move, ply);
                 }
-                MoveOrderer.updateHistoryMoves(move, ply);
+                MoveOrderer.updateHistoryMoves(whichThread, move, ply);
                 break;
             }
         }

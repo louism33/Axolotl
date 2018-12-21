@@ -42,7 +42,7 @@ class QuiescenceSearch {
             Ints.sortDescending(moves, 0, realMoves);
         }
         else {
-            MoveOrderer.scoreMoves(moves, board, 0, 0);
+            MoveOrderer.scoreMoves(whichThread, moves, board, 0, 0);
             int realMoves = MoveParser.numberOfRealMoves(moves);
             Ints.sortDescending(moves, 0, realMoves);
         }
