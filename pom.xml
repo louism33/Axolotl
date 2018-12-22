@@ -6,7 +6,7 @@
 
     <groupId>com.github.louism33</groupId>
     <artifactId>axolotl</artifactId>
-    <version>1.3-SNAPSHOT</version> 
+    <version>1.4-SNAPSHOT</version> 
     <name>axolotl</name>
     <description>Amphibious Java Chess Engine</description>
     <url>https://github.com/louism33/Axolotl</url>
