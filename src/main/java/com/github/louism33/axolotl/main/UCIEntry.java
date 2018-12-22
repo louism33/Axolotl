@@ -35,7 +35,7 @@ public class UCIEntry extends AbstractEngine {
         Engine.setUciEntry(this);
 
         ProtocolInitializeAnswerCommand firstCommand 
-                = new ProtocolInitializeAnswerCommand("axolotl_v1.2", "Louis James Mackenzie-Smith");
+                = new ProtocolInitializeAnswerCommand("axolotl_v1.3", "Louis James Mackenzie-Smith");
         
         firstCommand.addOption(new AbstractOption("Log") {
             @Override
