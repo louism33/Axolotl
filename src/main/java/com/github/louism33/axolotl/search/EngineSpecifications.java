@@ -2,7 +2,7 @@ package com.github.louism33.axolotl.search;
 
 public class EngineSpecifications {
 
-    public static int THREAD_NUMBER                                  = 4;
+    public static int THREAD_NUMBER                                  = 1;
     public static final int MAX_THREADS                              = 8;
     public static boolean INFO                                       = true;
     public static boolean PRINT                                      = false;

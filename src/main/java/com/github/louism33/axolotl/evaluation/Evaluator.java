@@ -238,31 +238,31 @@ public class Evaluator {
                         + evalPawnsByTurn(board, white, myPawns, enemyPawns, enemyBishops,
                         enemies, allPieces)
 
-                        + evalKnightByTurn(board, white,
-                        myPawns, myKnights,
-                        enemyPawns, enemyRooks, enemyQueens, enemyKing
-                )
+//                        + evalKnightByTurn(board, white,
+//                        myPawns, myKnights,
+//                        enemyPawns, enemyRooks, enemyQueens, enemyKing
+//                )
 
-                        + evalBishopByTurn(board, white,
-                        myPawns, myBishops,
-                        enemyPawns,
-                        friends
-                )
+//                        + evalBishopByTurn(board, white,
+//                        myPawns, myBishops,
+//                        enemyPawns,
+//                        friends
+//                )
 
-                        + evalRookByTurn(board, white, myPawns, myRooks, myQueens, enemyPawns, enemies, allPieces)
+//                        + evalRookByTurn(board, white, myPawns, myRooks, myQueens, enemyPawns, enemies, allPieces)
+//
+//                        + evalQueenByTurn(board, white,
+//                        myRooks, myQueens,
+//                        enemyPawns
+//                )
+//
+//                        + evalKingByTurn(board, white,
+//                        myPawns, myKing,
+//                        friends, enemies,
+//                        allPieces
+//                )
 
-                        + evalQueenByTurn(board, white,
-                        myRooks, myQueens,
-                        enemyPawns
-                )
-
-                        + evalKingByTurn(board, white,
-                        myPawns, myKing,
-                        friends, enemies,
-                        allPieces
-                )
-
-                        + evalMiscByTurn(board, white, moves, pinnedPieces, friends, inCheck)
+//                        + evalMiscByTurn(board, white, moves, pinnedPieces, friends, inCheck)
         ;
         return score;
     }

@@ -37,7 +37,7 @@ public class UCIEntry extends AbstractEngine {
         ProtocolInitializeAnswerCommand firstCommand 
                 = new ProtocolInitializeAnswerCommand("axolotl_v1.3", "Louis James Mackenzie-Smith");
         
-        firstCommand.addOption(new AbstractOption("Log") {
+        firstCommand.addOption(new AbstractOption("PrintInfo") {
             @Override
             protected String type() {
                 return "check";
@@ -51,7 +51,7 @@ public class UCIEntry extends AbstractEngine {
             }
         });
 
-        firstCommand.addOption(new AbstractOption("HashSize") {
+        firstCommand.addOption(new AbstractOption("Hash") {
             @Override
             protected String type() {
                 return "spin";
@@ -80,7 +80,7 @@ public class UCIEntry extends AbstractEngine {
         if (command == null || command.name == null || command.name.equals("")){
             return;
         }
-        if (command.name.equalsIgnoreCase("Log")){
+        if (command.name.equalsIgnoreCase("PrintInfo")){
             EngineSpecifications.INFO = Boolean.valueOf(command.value);
         }        
         
@@ -88,7 +88,7 @@ public class UCIEntry extends AbstractEngine {
             EngineSpecifications.PRINT = Boolean.valueOf(command.value);
         }
 
-        if (command.name.equalsIgnoreCase("HashSize")){
+        if (command.name.equalsIgnoreCase("Hash")){
             int size = Integer.parseInt(command.value);
             int number = size * 62_500;
             if (number > 0 && number < EngineSpecifications.MAX_TABLE_SIZE) {
@@ -209,6 +209,7 @@ public class UCIEntry extends AbstractEngine {
     }
 
     public static void main(String[] args) {
+        System.out.println("axolotl v1.3 by Louis Mackenzie-Smith");
         Thread thread = new Thread( new UCIEntry() );
         thread.start();
     }
