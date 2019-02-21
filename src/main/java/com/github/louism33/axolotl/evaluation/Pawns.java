@@ -7,7 +7,7 @@ import com.github.louism33.chesscore.PieceMove;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
-import static com.github.louism33.chesscore.BitboardResources.*;
+import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.Square.squareThreatenend;
 
 class Pawns {

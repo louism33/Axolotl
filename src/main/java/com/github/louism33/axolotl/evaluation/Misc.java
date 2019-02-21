@@ -2,11 +2,10 @@ package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.chesscore.Piece;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.chesscore.BitboardResources.*;
+import static com.github.louism33.chesscore.BoardConstants.*;
 
 class Misc {
 
@@ -23,7 +22,7 @@ class Misc {
 
         while (pinnedPieces != 0){
             long pinnedPiece = BitOperations.getFirstPiece(pinnedPieces);
-            int ordinal = Piece.pieceOnSquare(board, pinnedPiece).ordinal();
+            int ordinal = Piece.pieceOnSquareInt(board, pinnedPiece); // todo possible bug
             int pinnedPenalty = ordinal > 6 ? PINNED_PIECES[ordinal - 6] : PINNED_PIECES[ordinal];
 
             score += pinnedPenalty;

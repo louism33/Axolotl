@@ -7,7 +7,7 @@ import com.github.louism33.chesscore.PieceMove;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.Evaluator.getFile;
 import static com.github.louism33.axolotl.evaluation.Evaluator.getRow;
-import static com.github.louism33.chesscore.BitboardResources.*;
+import static com.github.louism33.chesscore.BoardConstants.*;
 
 class Rook {
 

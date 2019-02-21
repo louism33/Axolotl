@@ -19,7 +19,7 @@ import static com.github.louism33.axolotl.evaluation.Queen.evalQueenByTurn;
 import static com.github.louism33.axolotl.evaluation.Rook.evalRookByTurn;
 import static com.github.louism33.chesscore.BitOperations.getIndexOfFirstPiece;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
-import static com.github.louism33.chesscore.BitboardResources.*;
+import static com.github.louism33.chesscore.BoardConstants.*;
 
 public class Evaluator {
 

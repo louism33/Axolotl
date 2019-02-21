@@ -4,8 +4,8 @@ import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.chesscore.BitboardResources.*;
-import static com.github.louism33.chesscore.BitboardResources.RANK_TWO;
+import static com.github.louism33.chesscore.BoardConstants.*;
+import static com.github.louism33.chesscore.BoardConstants.RANK_TWO;
 import static com.github.louism33.chesscore.Square.squareThreatenend;
 
 public class PassedPawns {
