@@ -224,7 +224,7 @@ public class Engine {
                                         int alpha, int beta,
                                         int nullMoveCounter,
                                         long startTime, long timeLimitMillis,
-                                        int whichThread) throws IllegalUnmakeException {
+                                        int whichThread){
 
         int originalAlpha = alpha;
 
