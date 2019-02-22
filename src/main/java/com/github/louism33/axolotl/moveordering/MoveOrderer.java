@@ -1,8 +1,6 @@
 package com.github.louism33.axolotl.moveordering;
 
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.IllegalUnmakeException;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
