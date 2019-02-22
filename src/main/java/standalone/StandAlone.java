@@ -85,8 +85,7 @@ class StandAlone {
                     }
                 }
 
-                board.makeMove(move);
-                board.setWhiteTurn(!board.isWhiteTurn());
+                board.makeMoveAndFlipTurn(move);
                 totalMoves++;
                 System.out.println(prompt + " made move "+move);
             }

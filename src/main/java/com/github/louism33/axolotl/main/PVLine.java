@@ -17,7 +17,7 @@ public class PVLine {
         Chessboard initial = new Chessboard(board);
 
         List<GenericMove> pvMoves = new ArrayList<>(maxPVLength);
-        
+
         int i = 0, finalI;
 
         while(i < maxPVLength) {
@@ -36,15 +36,11 @@ public class PVLine {
             else {
                 break;
             }
-            
+
         }
         finalI = Math.min(i, maxPVLength);
         for (int x = 0; x < finalI; x++){
-            try {
-                board.unMakeMoveAndFlipTurn();
-            } catch (IllegalUnmakeException e) {
-                e.printStackTrace();
-            }
+            board.unMakeMoveAndFlipTurn();
         }
 
         Assert.assertEquals(board, initial);
