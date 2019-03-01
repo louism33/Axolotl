@@ -13,7 +13,7 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMA
 
 class QuiescenceSearch {
 
-    static int quiescenceSearch(Chessboard board, int alpha, int beta, int whichThread) throws IllegalUnmakeException {
+    static int quiescenceSearch(Chessboard board, int alpha, int beta, int whichThread){
 
         int[] moves = board.generateLegalMoves();
 

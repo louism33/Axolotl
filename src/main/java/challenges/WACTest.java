@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.EPDObject;
-import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.parseEDPPosition;
+import static com.github.louism33.utils.ExtendedPositionDescriptionParser.EPDObject;
+import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseEDPPosition;
 
 @RunWith(Parameterized.class)
 public class WACTest {

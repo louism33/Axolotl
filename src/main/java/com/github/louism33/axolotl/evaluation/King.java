@@ -6,6 +6,8 @@ import org.junit.Assert;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.MoveTable.*;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
+import static com.github.louism33.chesscore.BoardConstants.BLACK_QUEEN;
+import static com.github.louism33.chesscore.BoardConstants.WHITE_QUEEN;
 
 class King {
 
@@ -70,7 +72,7 @@ class King {
         while (xSquares != 0) {
             int sq = BitOperations.getIndexOfFirstPiece(xSquares);
             kingSafetyLookupCounter += getTotalAttacksToSquare(them, sq);
-            if (numberOfAttacksBy(them, sq, white ? MoveParser.WHITE_QUEEN : MoveParser.BLACK_QUEEN) != 0){
+            if (numberOfAttacksBy(them, sq, white ? WHITE_QUEEN : BLACK_QUEEN) != 0){
                 kingSafetyLookupCounter++;
             }
             xSquares &= xSquares - 1;

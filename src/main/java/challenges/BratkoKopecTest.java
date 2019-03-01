@@ -1,7 +1,7 @@
 package challenges;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
+import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.Test;

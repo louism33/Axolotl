@@ -1,6 +1,5 @@
 package challenges;
 
-import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.MoveParser;
@@ -14,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.EPDObject;
-import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.parseEDPPosition;
+import static com.github.louism33.utils.ExtendedPositionDescriptionParser.EPDObject;
+import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseEDPPosition;
 
 @RunWith(Parameterized.class)
 public class WACSilverTest {

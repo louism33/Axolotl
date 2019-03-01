@@ -1,6 +1,6 @@
 package challenges;
 
-import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
+import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
