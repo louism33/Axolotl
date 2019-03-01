@@ -47,10 +47,10 @@ public class MateTest {
     @Test
     public void test() {
         System.out.println(EPDObject.getBoardFen());
-        List<Integer> winningMoves = EPDObject.getBestMoves();
+        int[] winningMoves = EPDObject.getBestMoves();
         EngineSpecifications.INFO = false;
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
-        if (winningMoves.contains(move)){
+        if (WACSilverSanityTest.contains(winningMoves, move)){
             System.out.println("success");
             successes++;
         }

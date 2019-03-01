@@ -51,17 +51,28 @@ public class WACSilverSanityTest {
     @Test
     public void test() {
         System.out.println(EPDObject.getBoardFen());
-        List<Integer> winningMoves = EPDObject.getBestMoves();
-        List<Integer> losingMoves = EPDObject.getAvoidMoves();
+        int[] winningMoves = EPDObject.getBestMoves();
+        int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.INFO = false;
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
-        if (winningMoves.contains(move) && !losingMoves.contains(move)){
+        
+        
+        if (contains(winningMoves, move) && !contains(losingMoves, move)){
             System.out.println("success");
             successes++;
         }
         else {
             System.out.println("failure");
         }
+    }
+
+    public static boolean contains(int[] ints, int target) {
+        for (int i = 0; i < ints.length; i++) {
+            if (ints[i] == target) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static final String wacTests = "" +
