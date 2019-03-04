@@ -1,6 +1,10 @@
 package challenges;
 
+import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
@@ -22,6 +26,24 @@ class SCHACKNYTTtests {
             answers.add(objectAndName);
         }
         return answers;
+    }
+
+    private static int timeLimit = 0;
+    private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
+
+    public SCHACKNYTTtests(Object edp, Object name) {
+        EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
+    }
+
+    @Test
+    public void test() {
+        System.out.println(EPDObject.getBoardFen());
+        int[] winningMoves = EPDObject.getBestMoves();
+        int[] losingMoves = EPDObject.getAvoidMoves();
+        EngineSpecifications.INFO = false;
+        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
+
+        Assert.assertTrue(Utils.contains(winningMoves, move) && !Utils.contains(losingMoves, move));
     }
 
 

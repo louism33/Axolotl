@@ -1,11 +1,12 @@
 package com.github.louism33.axolotl.timemanagement;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 
 public class TimeAllocator {
 
-    private static long lastPrint;
+    public static long lastPrint;
 
     public static long allocateTime(long maxTime, long increment){
         if (maxTime < 10000){
@@ -14,12 +15,12 @@ public class TimeAllocator {
         return (maxTime / 25) + (increment / 3);
     }
 
-    private static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){
+    public static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){
 //        return false;
         return timeLeftMillis < (timeLimitMillis) / 3;
     }
 
-    public static boolean outOfTime(long startTime, long timeLimitMillis, boolean manageTime){
+    public static boolean outOfTime(long startTime, long timeLimitMillis, boolean allowTimeLimit){
 
         lastPrint = Math.max(lastPrint, startTime);
 
@@ -31,16 +32,18 @@ public class TimeAllocator {
         long currentTime = System.currentTimeMillis();
         long stopTime = startTime + timeLimitMillis;
         long timeLeftMillis = stopTime - currentTime;
+
+
         if (timeLeftMillis < 0) {
             outOfTime = true;
         }
-        if (manageTime && weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
+        if (allowTimeLimit && weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
             // not enough time to search another ply
             outOfTime = true;
         }
 
         if (outOfTime){
-            Engine.stopNow = true;
+            EngineBetter.stopNow = true;
         }
         return outOfTime;
     }

@@ -6,7 +6,7 @@ public class EngineSpecifications {
     public static final int MAX_THREADS                              = 8;
     public static boolean INFO                                       = true;
     public static boolean PRINT                                      = false;
-    public static int MAX_DEPTH                                      = 28;
+    public static int MAX_DEPTH                                      = 62;
     public static boolean ALLOW_TIME_LIMIT                           = true;
 
     static final int[] ASPIRATION_WINDOWS                            = {10, 100, 1000};

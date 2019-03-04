@@ -16,11 +16,11 @@ import static com.github.louism33.axolotl.main.UCIBoardParser.*;
 
 public class UCIEntry extends AbstractEngine {
 
-    private Chessboard board;
-    private GenericBoard genericBoard;
-    private List<GenericMove> moves;
+    public Chessboard board;
+    public GenericBoard genericBoard;
+    public List<GenericMove> moves;
 
-    private UCIEntry(){
+    public UCIEntry(){
         super();
     }
 
@@ -155,7 +155,7 @@ public class UCIEntry extends AbstractEngine {
         }
     }
 
-    private int calculatingHelper(EngineStartCalculatingCommand command) {
+    public int calculatingHelper(EngineStartCalculatingCommand command) {
         long clock = timeOnClock(command);
         if (clock != 0){
             Long clockIncrement = command.getClockIncrement(convertMyColourToGenericColour(board.isWhiteTurn()));
@@ -179,7 +179,7 @@ public class UCIEntry extends AbstractEngine {
         }
     }
 
-    private long timeOnClock(EngineStartCalculatingCommand command){
+    public long timeOnClock(EngineStartCalculatingCommand command){
         long time = 0;
         try {
             time = command.getClock(genericBoard.getActiveColor());

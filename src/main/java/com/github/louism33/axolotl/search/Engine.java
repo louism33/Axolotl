@@ -34,8 +34,8 @@ public class Engine {
     private static boolean isReady = false;
     private static boolean stopInstruction = false;
     private static long nps;
-    private static int[] numberOfMovesMade;
-    static int[] numberOfQMovesMade;
+    private static int[] numberOfMovesMade = new int[1];
+    static int[] numberOfQMovesMade = new int[1];
     private static long startTime = 0;
     private static boolean manageTime = true;
     public static boolean stopNow = false;
@@ -127,7 +127,7 @@ public class Engine {
 
         initTable(TABLE_SIZE);
         
-        MoveOrderer.initMoveOrderer();
+        MoveOrdererBetter.initMoveOrderer();
     }
 
     private static void putAIMoveFirst(int[] rootMoves, int aiMove) {
@@ -250,7 +250,7 @@ public class Engine {
         int hashMove = 0;
         int score;
 
-        long previousTableData = retrieveFromTable(board.getZobrist());
+        long previousTableData = retrieveFromTable(board.zobristHash);
         if (previousTableData != 0) {
             score = getScore(previousTableData, ply);
             hashMove = getMove(previousTableData);
@@ -500,7 +500,7 @@ public class Engine {
             flag = EXACT;
         }
 
-        addToTableReplaceByDepth(board.getZobrist(),
+        addToTableReplaceByDepth(board.zobristHash,
                 bestMove & MoveOrderer.MOVE_MASK, bestScore, depth, flag, ply);
 
 

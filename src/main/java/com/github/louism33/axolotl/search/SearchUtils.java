@@ -9,13 +9,13 @@ import static com.github.louism33.chesscore.BitOperations.populationCount;
 class SearchUtils {
 
     static final int[] futilityMargin = {0, 150, 250, 350, 450, 550, 650};
-    private static final int futilityBelowThisDepth = futilityMargin.length;
+    public static final int futilityBelowThisDepth = futilityMargin.length;
 
     static final int[] alphaRazorMargin = {0, 300, 500, 650};
-    private static final int alphaRazorBelowThisDepth = alphaRazorMargin.length;
+    public static final int alphaRazorBelowThisDepth = alphaRazorMargin.length;
 
     static final int[] betaRazorMargin = {0, 150, 250, 350, 450, 650, 750};
-    private static final int betaRazorBelowThisDepth = betaRazorMargin.length;
+    public static final int betaRazorBelowThisDepth = betaRazorMargin.length;
 
     static int extensions(Chessboard board, int ply, boolean boardInCheck, int[] moves){
 
@@ -66,39 +66,42 @@ class SearchUtils {
                 && !maybeInZugzwang(board, board.isWhiteTurn());
     }
 
-    private static boolean maybeInEndgame(Chessboard board){
+    public static boolean maybeInEndgame(Chessboard board){
         return populationCount(board.allPieces()) < 9;
     }
 
-    private static boolean maybeInZugzwang(Chessboard board, boolean white){
+    public static boolean maybeInZugzwang(Chessboard board, boolean white){
         // returns true if you are down to Pawns and King (+1 extra piece)
-        long myPawns, myKing, allMyPieces;
-        if (white){
-            allMyPieces = board.whitePieces();
-            myPawns = board.getWhitePawns();
-            myKing = board.getWhiteKing();
-        }
-        else {
-            allMyPieces = board.blackPieces();
-            myPawns = board.getBlackPawns();
-            myKing = board.getBlackKing();
-        }
-        return populationCount(allMyPieces ^ (myPawns | myKing)) <= 1;
+//        long myPawns, myKing, allMyPieces;
+//        if (white){
+//            allMyPieces = board.whitePieces();
+//            myPawns = board.getWhitePawns();
+//            myKing = board.getWhiteKing();
+//        }
+//        else {
+//            allMyPieces = board.blackPieces();
+//            myPawns = board.getBlackPawns();
+//            myKing = board.getBlackKing();
+//        }
+//        return populationCount(allMyPieces ^ (myPawns | myKing)) <= 1;
+        
+        return false;
     }
 
     static boolean notJustPawnsLeft(Chessboard board, boolean white){
-        long myPawns, myKing, allMyPieces;
-        if (white){
-            allMyPieces = board.whitePieces();
-            myPawns = board.getWhitePawns();
-            myKing = board.getWhiteKing();
-        }
-        else {
-            allMyPieces = board.blackPieces();
-            myPawns = board.getBlackPawns();
-            myKing = board.getBlackKing();
-        }
-        return populationCount(allMyPieces ^ (myPawns | myKing)) != 0;
+//        long myPawns, myKing, allMyPieces;
+//        if (white){
+//            allMyPieces = board.whitePieces();
+//            myPawns = board.getWhitePawns();
+//            myKing = board.getWhiteKing();
+//        }
+//        else {
+//            allMyPieces = board.blackPieces();
+//            myPawns = board.getBlackPawns();
+//            myKing = board.getBlackKing();
+//        }
+//        return populationCount(allMyPieces ^ (myPawns | myKing)) != 0;
+        return false;
     }
     
     static boolean isFutilityPruningAllowedHere(int depth,

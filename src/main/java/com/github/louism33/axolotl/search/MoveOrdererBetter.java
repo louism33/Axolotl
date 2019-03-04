@@ -1,14 +1,17 @@
-package com.github.louism33.axolotl.moveordering;
+package com.github.louism33.axolotl.search;
 
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
-import static com.github.louism33.axolotl.search.EngineSpecifications.*;
+import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.MOVE_SIZE_LIMIT;
+import static com.github.louism33.axolotl.search.EngineSpecifications.THREAD_NUMBER;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MoveParser.*;
+import static com.github.louism33.chesscore.MoveParser.getDestinationIndex;
 
-public class MoveOrderer {
+public class MoveOrdererBetter {
+
 
     public static boolean ready = false;
     public static int[][] mateKillers;
@@ -25,10 +28,10 @@ public class MoveOrderer {
     }
 
     public static int getMoveScore (int moveScore){
-        Assert.assertTrue(moveScore > 0);
-        int i = (moveScore & MOVE_SCORE_MASK) >>> moveScoreOffset;
-        Assert.assertTrue(i > 0);
-        return i;
+//        Assert.assertTrue(moveScore > 0);
+//        int i = (moveScore & MOVE_SCORE_MASK) >>> moveScoreOffset;
+//        Assert.assertTrue(i > 0);
+        return 0;
     }
 
     static int buildMoveScore(int move, int score){
@@ -45,24 +48,72 @@ public class MoveOrderer {
         return i;
     }
 
-    public static void scoreMoves(int whichThread, int[] moves, Chessboard board, int ply,
+    public static void scoreMovesAtRoot(int[] moves, int numberOfMoves, Chessboard board){
+        if (!ready) {
+            initMoveOrderer();
+        }
+
+        for (int i = 0; i < numberOfMoves; i++) {
+            if (moves[i] == 0){
+                break;
+            }
+
+            if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(moves[i]));
+            }
+            else if (isPromotionToQueen(moves[i])) {
+                if (isCaptureMove(moves[i])) {
+                    moves[i] = buildMoveScore(moves[i], queenCapturePromotionScore);
+                }
+                else {
+                    moves[i] = buildMoveScore(moves[i], queenQuietPromotionScore);
+                }
+            }
+            else if (isPromotionToKnight(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], knightPromotionScore);
+            }
+            else if (isPromotionToBishop(moves[i]) || isPromotionToRook(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], uninterestingPromotion);
+            }
+            else if (isCaptureMove(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], mvvLVA(moves[i]));
+            }
+            else if (checkingMove(board, moves[i])) {
+                moves[i] = buildMoveScore(moves[i], giveCheckMove);
+            }
+            else if (isCastlingMove(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], castlingMove);
+            }
+            else {
+//                moves[i] = buildMoveScore(moves[i],
+//                        Math.max(historyMoveScore(moves[i]), uninterestingMove));
+            }
+        }
+        
+    }
+    
+    
+    public static void scoreMoves(int[] moves, Chessboard board, int ply,
                                   int hashMove){
 
         if (!ready) {
             initMoveOrderer();
         }
-        scoreMovesHelper(whichThread, moves, board, ply, hashMove);
+        scoreMovesHelper(moves, board, ply, hashMove);
     }
+    
+    public static final int whichThread = 0;
 
-    public static void scoreMovesHelper(int whichThread, int[] moves, Chessboard board, int ply,
-                                         int hashMove){
+    public static void scoreMovesHelper(int[] moves, Chessboard board, int ply,
+                                        int hashMove){
 
-        for (int i = 0; i < moves.length; i++) {
+        int maxMoves = moves[moves.length - 1];
+        for (int i = 0; i < maxMoves; i++) {
             if (moves[i] == 0){
                 break;
             }
 
-            int move = moves[i];
+            int move = moves[i] & MOVE_MASK;
 
             Assert.assertTrue(move < MOVE_SIZE_LIMIT);
 
@@ -119,7 +170,7 @@ public class MoveOrderer {
             }
             else {
                 moves[i] = buildMoveScore(moves[i],
-                        Math.max(historyMoveScore(whichThread, moves[i]), uninterestingMove));
+                        Math.max(historyMoveScore(moves[i]), uninterestingMove));
             }
         }
     }
@@ -166,10 +217,9 @@ public class MoveOrderer {
     }
 
     public static void scoreMovesQuiescenceHelper(int[] moves, Chessboard board){
-        int maxMoves = moves[moves.length - 1];
+        final int maxMoves = moves[moves.length - 1];
         for (int i = 0; i < maxMoves; i++) {
-            
-            if (moves[i] == 0) {
+            if (moves[i] == 0){
                 break;
             }
 
@@ -185,7 +235,8 @@ public class MoveOrderer {
                 }
             } else if (isPromotionMove(move) && (isPromotionToQueen(moves[i]))) {
                 moves[i] = buildMoveScore(moves[i], queenQuietPromotionScore);
-            } else {
+            }
+            else {
                 moves[i] = 0;
             }
         }
@@ -199,31 +250,32 @@ public class MoveOrderer {
     }
 
     public static void updateHistoryMoves(int whichThread, int move, int ply){
-        historyMoves[whichThread][getSourceIndex(move)][getDestinationIndex(move)] += (2 * ply);
+//        historyMoves[whichThread][getSourceIndex(move)][getDestinationIndex(move)] += (2 * ply);
     }
 
-    public static int historyMoveScore(int whichThread, int move){
+    public static int historyMoveScore(int move){
         int maxMoveScoreOfHistory = MAX_HISTORY_MOVE_SCORE;
-        int historyScore = historyMoves[whichThread][getSourceIndex(move)][getDestinationIndex(move)];
+        int historyScore = historyMoves[0][getSourceIndex(move)][getDestinationIndex(move)];
         return historyScore > maxMoveScoreOfHistory ? maxMoveScoreOfHistory : historyScore;
     }
 
 
     public static void updateKillerMoves(int whichThread, int move, int ply){
 
-        Assert.assertTrue(move < MOVE_SIZE_LIMIT);
-
-        if (move != killerMoves[whichThread][ply][0]){
-            if (killerMoves[whichThread][ply][0] != 0) {
-                killerMoves[whichThread][ply][1] = killerMoves[whichThread][ply][0];
-            }
-            killerMoves[whichThread][ply][0] = move;
-        }
+//        Assert.assertTrue(move < MOVE_SIZE_LIMIT);
+//
+//        if (move != killerMoves[whichThread][ply][0]){
+//            if (killerMoves[whichThread][ply][0] != 0) {
+//                killerMoves[whichThread][ply][1] = killerMoves[whichThread][ply][0];
+//            }
+//            killerMoves[whichThread][ply][0] = move;
+//        }
     }
 
     public static void updateMateKillerMoves(int whichThread, int move, int ply){
-        mateKillers[whichThread][ply] = move;
+//        mateKillers[whichThread][ply] = move;
     }
 
 
 }
+

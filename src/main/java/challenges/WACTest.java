@@ -1,8 +1,7 @@
 package challenges;
 
-import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
-import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static challenges.Utils.contains;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.EPDObject;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseEDPPosition;
 
@@ -26,14 +26,9 @@ public class WACTest {
         List<Object[]> answers = new ArrayList<>();
 
         EngineSpecifications.INFO = true;
-        
-        int stopAt = 10;
-        
+
         for (int i = 0; i < splitUpWACs.length; i++) {
-            if (i == stopAt){
-//                break;
-            }
-            
+
             String splitUpWAC = splitUpWACs[i];
             Object[] objectAndName = new Object[2];
             EPDObject EPDObject = parseEDPPosition(splitUpWAC);
@@ -52,22 +47,13 @@ public class WACTest {
 
     @Test
     public void test() {
-        System.out.println();
-        System.out.println(EPDObject.getId());
         System.out.println(EPDObject.getBoardFen());
-        System.out.println(EPDObject.getBoard());
-        
-        List<Integer> winningMoves = EPDObject.getBestMoves();
-        List<Integer> losingMoveDestination = EPDObject.getAvoidMoves();
-        
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
+        int[] winningMoves = EPDObject.getBestMoves();
+        int[] losingMoves = EPDObject.getAvoidMoves();
+        EngineSpecifications.INFO = false;
+        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
-        System.out.println();
-        System.out.println("Move to get:        " + MoveParser.toString(winningMoves.get(0)));
-
-        Assert.assertTrue(winningMoves.contains(move));
-        Assert.assertFalse(losingMoveDestination.contains(move));
-
+        Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }
 
     private static final String wacTests = "" +

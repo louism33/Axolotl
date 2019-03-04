@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PVLine {
 
-    private static final int maxPVLength = 20;
+    public static final int maxPVLength = 20;
 
     public static List<GenericMove> retrievePV(Chessboard board) {
         Chessboard initial = new Chessboard(board);
@@ -21,7 +21,7 @@ public class PVLine {
         int i = 0, finalI;
 
         while(i < maxPVLength) {
-            long entry = TranspositionTable.retrieveFromTable(board.getZobrist());
+            long entry = TranspositionTable.retrieveFromTable(board.zobristHash);
             if (entry == 0) {
                 break;
             }

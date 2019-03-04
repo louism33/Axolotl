@@ -1,5 +1,7 @@
 package com.github.louism33.axolotl.search;
 
+import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -14,14 +16,7 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class MateTest {
 
-    private static final int timeLimit = 10_000;
-    private static int successes = 0;
-    
-    @AfterClass
-    public static void finalSuccessTally(){
-        System.out.println("Successful MATE sanity tests: " + successes);
-        Assert.assertTrue(successes > 140);
-    }
+    private static final int timeLimit = 5_000;
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -30,9 +25,10 @@ public class MateTest {
         for (int i = 0; i < checkmatePositions.length; i++) {
             String pos = checkmatePositions[i];
             Object[] objectAndName = new Object[2];
-            ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(pos);
+            ExtendedPositionDescriptionParser.EPDObject EPDObject =
+                    ExtendedPositionDescriptionParser.parseEDPPosition(pos);
             objectAndName[0] = EPDObject;
-            objectAndName[1] = EPDObject.getId();
+            objectAndName[1] = EPDObject.getBestPrettyMoves();
             answers.add(objectAndName);
         }
         return answers;
@@ -46,17 +42,15 @@ public class MateTest {
 
     @Test
     public void test() {
-        System.out.println(EPDObject.getBoardFen());
+        System.out.println(EPDObject.getFullString());
+
         int[] winningMoves = EPDObject.getBestMoves();
         EngineSpecifications.INFO = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
-        if (WACSilverSanityTest.contains(winningMoves, move)){
-            System.out.println("success");
-            successes++;
-        }
-        else {
-            System.out.println("failure");
-        }
+        final Chessboard board = EPDObject.getBoard();
+        int move = EngineBetter.searchFixedTime(board, timeLimit);
+
+        Assert.assertTrue(WACSilverSanityTest.contains(winningMoves, move));
+
     }
 
     private static final String positions = "" +
@@ -169,7 +163,7 @@ public class MateTest {
             "3r1b2/3P1p2/p3rpkp/2q2N2/5Q1R/2P3BP/P5PK/8 w - - 1 0 bm Rxh6+; \n" +
             "r3kr2/ppq3bp/2np2p1/2pBp1B1/4P1Q1/2PP4/PP3PPP/R3K2R w KQq - 0 1 bm Bxc6+; \n" +
             "r2qr1k1/1p1n2pp/2b1p3/p2pP1b1/P2P1Np1/3BPR2/1PQB3P/5RK1 w - - 1 0 bm Bxh7+; \n" +
-            "7r/pRpk4/2np2p1/5b2/2P4q/2b1BBN1/P4PP1/3Q1K2 b - - 0 1 bm Bd3+ ;\n" +
+            "7r/pRpk4/2np2p1/5b2/2P4q/2b1BBN1/P4PP1/3Q1K2 b - - 0 1 bm Bd3+;\n" +
             "1r3rk1/5p1p/pp2b1p1/4n3/4PP2/1BP1B1Pq/P6P/R1QR2K1 b - - 0 1 bm Nf3+; \n" +
             "2q2r1k/5Qp1/4p1P1/3p4/r6b/7R/5BPP/5RK1 w - - 1 0 bm Bxh4; \n" +
             "1r2k3/2pn1p2/p1Qb3p/7q/3PP3/2P1BN1b/PP1N1Pr1/RR5K b - - 0 1 bm Rg1+; \n" +
@@ -204,12 +198,13 @@ public class MateTest {
             "5r1k/p1p1q1pp/1p1p4/8/2PPn3/B1P1P3/P1Q1P2p/1R5K b - - 0 1 bm Nf2+; \n" +
             "2b5/3qr2k/5Q1p/P3B3/1PB1PPp1/4K1P1/8/8 w - - 1 0 bm Bg8+; \n" +
             "r1bq1bkr/6pp/p1p3P1/1p1p3Q/4P3/8/PPP3PP/RNB2RK1 w - - 1 0 bm gxh7+; \n" +
-            "rr4Rb/2pnqb1k/np1p1p1B/3PpP2/p1P1P2P/2N3R1/PP2BP2/1KQ5 w - - 1 0 bm Bg7; \n" + // m4
+            "rr4Rb/2pnqb1k/np1p1p1B/3PpP2/p1P1P2P/2N3R1/PP2BP2/1KQ5 w - - 1 0 bm Bg7 g8h8; \n" + // m4
             "r4b1r/pp1n2k1/1qp1p2p/3pP1pQ/1P6/2BP2N1/P4PPP/R4RK1 w - - 1 0 bm Nf5+; \n" +
             "5k2/r3pp1p/6p1/q1pP3R/5B2/2b3PP/PQ3PK1/R7 w - - 1 0 bm Qb8+; \n" +
             "r3r1k1/pp3pb1/3pb1p1/q5B1/1n2N3/3B1N2/PPP2PPQ/2K4R w - - 1 0 bm Qh7+; \n" +
             "4r1rk/pQ2P2p/P7/2pqb3/3p1p2/8/3B2PP/4RRK1 b - - 0 1 bm Rxg2+; \n" +
             "r6r/pp2pk1p/1n3b2/5Q1N/8/3B4/q4PPP/3RR1K1 w - - 1 0 bm Rxe7+; \n" +
+            "rnb3kr/ppp2ppp/1b6/3q4/3pN3/Q4N2/PPP2KPP/R1B1R3 w - - 0 1 bm e4f6; \n" +
             "3k4/1pp3b1/4b2p/1p3qp1/3Pn3/2P1RN2/r5P1/1Q2R1K1 b - - 0 1 bm Rxg2+; ";
 
     private static final String[] checkmatePositions = positions.split("\n");

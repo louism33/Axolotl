@@ -3,6 +3,7 @@ package com.github.louism33.axolotl.search;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -17,18 +18,25 @@ public class WACSilverSanityTest {
 
     private static final int timeLimit = 10_000;
     private static int successes = 0;
+    private static final int targetSuccesses = 0;
 
+    @BeforeClass
+    public static void setup(){
+        final String str = "Testing " + splitUpWACs.length + " WAC positions. " +
+                "Time per position: " + timeLimit + " milliseconds." 
+                +"\nIf more than " + targetSuccesses + " are correct, success.";
+        System.out.println(str);
+    }    
+    
     @AfterClass
     public static void finalSuccessTally(){
         System.out.println("Successful WAC Silver sanity tests: " + successes);
-        Assert.assertTrue(successes > 130);
+        Assert.assertTrue(successes > targetSuccesses);
     }
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
-        List<Object[]> answers = new ArrayList<>();
-
-//        EngineSpecifications.TABLE_SIZE = EngineSpecifications.MAX_TABLE_SIZE;
+        List<Object[]> answers = new ArrayList<>(splitUpWACs.length);
 
         for (int i = 0; i < splitUpWACs.length; i++) {
 
@@ -54,8 +62,7 @@ public class WACSilverSanityTest {
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.INFO = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
-        
+        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
         
         if (contains(winningMoves, move) && !contains(losingMoves, move)){
             System.out.println("success");

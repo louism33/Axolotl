@@ -11,10 +11,10 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTableC
 
 public class TranspositionTable {
 
-    private static long[] keys;
-    private static long[] entries;
-    private static boolean tableReady = false;
-    private static int moduloAmount;
+    public static long[] keys;
+    public static long[] entries;
+    public static boolean tableReady = false;
+    public static int moduloAmount;
     static final int bucketSize = 4;
 
     public static void initTable(int maxEntries){
@@ -28,16 +28,16 @@ public class TranspositionTable {
         tableReady = true;
     }
 
-    private static void reset(){
+    public static void reset(){
         Arrays.fill(keys, 0);
         Arrays.fill(entries, 0);
     }
 
-    private static int newEntries = 0;
-    private static int hit = 0;
-    private static int hitButAlreadyGood = 0;
-    private static int hitReplace = 0;
-    private static int override = 0;
+    public static int newEntries = 0;
+    public static int hit = 0;
+    public static int hitButAlreadyGood = 0;
+    public static int hitReplace = 0;
+    public static int override = 0;
     
     public static void addToTableReplaceByDepth(long key, int bestMove, 
                                                 int bestScore, int depth, int flag, int ply){
@@ -106,7 +106,7 @@ public class TranspositionTable {
         return 0;
     }
 
-    private static int getIndex(long key) {
+    public static int getIndex(long key) {
         int index = (int) (key % moduloAmount);
 
         if (index < 0){

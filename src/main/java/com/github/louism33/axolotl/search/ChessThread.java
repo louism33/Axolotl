@@ -13,11 +13,11 @@ import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
 class ChessThread extends Thread{
 
-    private Chessboard board;
+    public Chessboard board;
     int aiMoveScore = SHORT_MINIMUM;
-    private final int threadIndex;
-    private long startTime;
-    private long timeLimitMillis;
+    public final int threadIndex;
+    public long startTime;
+    public long timeLimitMillis;
 
     public void setTime(long startTime, long timeLimitMillis) {
         this.startTime = startTime;

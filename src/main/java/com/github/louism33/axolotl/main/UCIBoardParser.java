@@ -6,6 +6,7 @@ import com.fluxchess.jcpi.models.GenericMove;
 import com.fluxchess.jcpi.models.IllegalNotationException;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
+import com.github.louism33.utils.MoveParserFromAN;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ class UCIBoardParser {
         }
         Chessboard board = new Chessboard(genericBoard.toString());
         for (GenericMove genericMove : moves){
-            board.makeMoveAndFlipTurn(MoveParser.newMove(board, genericMove.toString()));
+            board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMove.toString()));
         }
         return board;
     }
