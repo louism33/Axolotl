@@ -25,8 +25,8 @@ public class KaufmanTests {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        for (int i = 0; i < splitUpWACs.length; i++) {
-            String pos = splitUpWACs[i];
+        for (int i = 0; i < splitUpPositions.length; i++) {
+            String pos = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(pos);
             objectAndName[0] = EPDObject;
@@ -52,7 +52,7 @@ public class KaufmanTests {
 
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }
-    private static final String wacTests = "" +
+    private static final String positions = "" +
             "1rbq1rk1/p1b1nppp/1p2p3/8/1B1pN3/P2B4/1P3PPP/2RQ1R1K w - - bm Nf6+; id \"position 01\";\n" +
             "3r2k1/p2r1p1p/1p2p1p1/q4n2/3P4/PQ5P/1P1RNPP1/3R2K1 b - - bm Nxd4 id \"position 02\";\n" +
             "3r2k1/1p3ppp/2pq4/p1n5/P6P/1P6/1PB2QP1/1K2R3 w - - am Rd1; id \"position 03\";\n" +
@@ -80,6 +80,6 @@ public class KaufmanTests {
             "8/3nk3/3pp3/1B6/8/3PPP2/4K3/8 w - - bm Bxd7; id \"position 25\";" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\n");
+    private static final String[] splitUpPositions = positions.split("\n");
     
 }

@@ -30,12 +30,12 @@ public class WACSilverTest {
         
         int stopAt = 10;
         
-        for (int i = 0; i < splitUpWACs.length; i++) {
+        for (int i = 0; i < splitUpPositions.length; i++) {
             if (i == stopAt){
 //                break;
             }
             
-            String splitUpWAC = splitUpWACs[i];
+            String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             EPDObject EPDObject = parseEDPPosition(splitUpWAC);
             objectAndName[0] = EPDObject;
@@ -63,7 +63,7 @@ public class WACSilverTest {
 
     }
 
-    private static final String wacTests = "" +
+    private static final String positions = "" +
             "5rk1/1ppb3p/p1pb4/6q1/3P1p1r/2P1R2P/PP1BQ1P1/5RKN w - - bm Rg3; id \"WAC.003\";\n" +
             "r1bq2rk/pp3pbp/2p1p1pQ/7P/3P4/2PB1N2/PP3PPR/2KR4 w - - bm Qxh7+; id \"WAC.004\";\n" +
             "5k2/6pp/p1qN4/1p1p4/3P4/2PKP2Q/PP3r2/3R4 b - - bm Qc4+; id \"WAC.005\";\n" +
@@ -266,7 +266,7 @@ public class WACSilverTest {
             "r2q1rk1/2p2ppp/p1n2n2/Pp2p3/1P2P3/1BPPQR2/6PP/RN4K1 b - - bm Nd4; id \"WAC.301\";" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\n");
+    private static final String[] splitUpPositions = positions.split("\n");
 
 }
     

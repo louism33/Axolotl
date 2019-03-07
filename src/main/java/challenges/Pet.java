@@ -28,8 +28,8 @@ public class Pet {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        for (int i = 0; i < splitUpWACs.length; i++) {
-            String pos = splitUpWACs[i];
+        for (int i = 0; i < splitUpPositions.length; i++) {
+            String pos = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(pos);
             objectAndName[0] = EPDObject;
@@ -57,7 +57,7 @@ public class Pet {
     }
 
 
-    private static final String wacTests = "" +
+    private static final String positions = "" +
             "8/7p/2k1Pp2/pp1p2p1/3P2P1/4P3/P3K2P/8 w - - bm e4;             id \"PET001: Pawn endgame\";\n" +
             "8/1p4kP/5pP1/3p4/8/4P3/7K/8 w - - bm e4;                       id \"PET002: Pawn endgame\";\n" +
             "8/8/8/pPk3pp/2P1p3/1pK3P1/5PP1/8 w - - bm g4;                  id \"PET003: Pawn endgame\";\n" +
@@ -108,7 +108,7 @@ public class Pet {
             "7k/7p/1p4p1/n2p4/1K1p3R/2NB4/3Q1P2/q1r5 w - - bm Rxh7+;        id \"PET050: QNBR vs QNR\";\n" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\n");
+    private static final String[] splitUpPositions = positions.split("\n");
 
 }
     

@@ -77,7 +77,7 @@ public class UCIEntry extends AbstractEngine {
     // setoption name Write Debug Log true
     @Override
     public void receive(EngineSetOptionCommand command) {
-        if (command == null || command.name == null || command.name.equals("")){
+        if (command == null || command.name == null || command.name.isEmpty()){
             return;
         }
         if (command.name.equalsIgnoreCase("PrintInfo")){
@@ -137,7 +137,7 @@ public class UCIEntry extends AbstractEngine {
 
         if (EngineSpecifications.PRINT) {
             System.out.println(board);
-            Evaluator.printEval(board);
+//            Evaluator.printEval(board);
         }
     }
 

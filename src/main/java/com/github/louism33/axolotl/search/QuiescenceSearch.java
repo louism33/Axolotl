@@ -20,7 +20,7 @@ class QuiescenceSearch {
         int standPatScore = EvaluationConstants.SHORT_MINIMUM;
 
         if (!board.inCheck(board.isWhiteTurn())){
-            standPatScore = Evaluator.evalNOCM(board, board.isWhiteTurn(), moves);
+            standPatScore = 0; //Evaluator.evalNOCM(board, board.isWhiteTurn(), moves);
 
             if (standPatScore >= beta){
                 return standPatScore;

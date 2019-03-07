@@ -32,8 +32,8 @@ public class BT2630 {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        for (int i = 0; i < splitUpWACs.length; i++) {
-            String pos = splitUpWACs[i];
+        for (int i = 0; i < splitUpPositions.length; i++) {
+            String pos = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(pos);
             objectAndName[0] = EPDObject;
@@ -60,7 +60,7 @@ public class BT2630 {
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }
 
-    private static final String wacTests = "" +
+    private static final String positions = "" +
             "rq2r1k1/5pp1/p7/4bNP1/1p2P2P/5Q2/PP4K1/5R1R w - - bm Nxg7; id \"test 1\";\n" +
             "6k1/2b2p1p/ppP3p1/4p3/PP1B4/5PP1/7P/7K w - - bm Bxb6; id \"test 2\";\n" +
             "5r1k/p1q2pp1/1pb4p/n3R1NQ/7P/3B1P2/2P3P1/7K w - - bm Re6; id \"test 3\";\n" +
@@ -93,7 +93,7 @@ public class BT2630 {
             "2k5/2p3Rp/p1pb4/1p2p3/4P3/PN1P1P2/1P2KP1r/8 w - - bm f4; id \"test 30\";\n" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\n");
+    private static final String[] splitUpPositions = positions.split("\n");
 
 }
     

@@ -25,10 +25,7 @@ public class MoveOrderer {
     }
 
     public static int getMoveScore (int moveScore){
-        Assert.assertTrue(moveScore > 0);
-        int i = (moveScore & MOVE_SCORE_MASK) >>> moveScoreOffset;
-        Assert.assertTrue(i > 0);
-        return i;
+        return (moveScore & MOVE_SCORE_MASK) >>> moveScoreOffset;
     }
 
     static int buildMoveScore(int move, int score){

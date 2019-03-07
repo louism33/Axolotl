@@ -17,8 +17,8 @@ class SCHACKNYTTtests {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        for (int i = 0; i < splitUpWACs.length; i++) {
-            String pos = splitUpWACs[i];
+        for (int i = 0; i < splitUpPositions.length; i++) {
+            String pos = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(pos);
             objectAndName[0] = EPDObject;
@@ -47,7 +47,7 @@ class SCHACKNYTTtests {
     }
 
 
-    private static final String wacTests = "" +
+    private static final String positions = "" +
             "1r2r1k1/1pqbbppp/p2p1n2/4p3/P3PP2/2N1BB2/1PP2QPP/R4R1K b - - bm Rbc8; c0 \"positional scores are: Rbc8=10, exf4=9, Bc6=7, Rec8=6, b6=6, b5=5, Be6=4, h6=3\"; id \"tony.pos.01\";\n" +
             "r1bk1bnr/ppp2ppp/8/4n3/2P5/P3B3/1P3PPP/RN2KBNR w KQ - - bm Nf3; c0 \"positional scores are: Nf3=10, Nd2=9, Nc3=7, Be2=6, Bf4=4, f4=3, h3=3\"; id \"tony.pos.02\";\n" +
             "8/7p/3k2p1/6P1/4KP2/8/7P/8 w - - bm h4; c0 \"positional scores are: h4=10, Kf3=8, Ke3=6, Kd4=6, Kd3=6, h3=5\"; id \"tony.pos.03\";\n" +
@@ -66,7 +66,7 @@ class SCHACKNYTTtests {
             "2r2k2/5p2/2Bp1b1r/2qPp1pp/PpN1P3/1P2Q3/5PPP/4R1K1 w - - bm Rc1; c0 \"positional scores are: Rc1=10, Nb6=8, Qxc5=7, a5=6, Qf3=5, h4=4, Nxe5=2\"; id \"tony.pos.16\";" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\n");
+    private static final String[] splitUpPositions = positions.split("\n");
 }
 
 /*

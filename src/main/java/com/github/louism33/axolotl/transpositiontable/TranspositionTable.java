@@ -130,7 +130,7 @@ public class TranspositionTable {
             score -= ply;
         }
         long entry = 0;
-        entry |= (move & MOVE_MASK);
+        entry |= (move & TT_MOVE_MASK);
         entry |= (((long) score & SCORE_CLEANER) << scoreOffset);
         entry |= (((long) depth) << depth_offset);
         entry |= (((long) flag) << flagOffset);
@@ -138,7 +138,7 @@ public class TranspositionTable {
     }
 
     public static int getMove(long entry){
-        return (int) (entry & MOVE_MASK);
+        return (int) (entry & TT_MOVE_MASK);
     }
 
     public static int getScore(long entry, int ply){

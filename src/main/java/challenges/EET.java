@@ -28,8 +28,8 @@ public class EET {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        for (int i = 0; i < splitUpWACs.length; i++) {
-            String pos = splitUpWACs[i];
+        for (int i = 0; i < splitUpPositions.length; i++) {
+            String pos = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(pos);
             objectAndName[0] = EPDObject;
@@ -56,7 +56,7 @@ public class EET {
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }
 
-    private static final String wacTests = "" +
+    private static final String positions = "" +
             "8/8/p2p3p/3k2p1/PP6/3K1P1P/8/8 b - - bm Kc6; id \"E_E_T 001 - B vs B\";\n" +
             "8/p5pp/3k1p2/3p4/1P3P2/P1K5/5P1P/8 b - - bm g5; id \"E_E_T 002 - B vs B\";\n" +
             "8/1p3p2/p7/8/2k5/4P1pP/2P1K1P1/8 w - - bm h4; id \"E_E_T 003 - B vs B\";\n" +
@@ -159,6 +159,6 @@ public class EET {
             "8/1k6/8/Q7/7p/6p1/6pr/6Kb w - - bm Qc5; id \"E_E_T 70b - D vs T&L&B\";" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\n");
+    private static final String[] splitUpPositions = positions.split("\n");
 
 }

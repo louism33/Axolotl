@@ -27,9 +27,9 @@ public class WACTest {
 
         EngineSpecifications.INFO = true;
 
-        for (int i = 0; i < splitUpWACs.length; i++) {
+        for (int i = 0; i < splitUpPositions.length; i++) {
 
-            String splitUpWAC = splitUpWACs[i];
+            String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             EPDObject EPDObject = parseEDPPosition(splitUpWAC);
             objectAndName[0] = EPDObject;
@@ -47,7 +47,8 @@ public class WACTest {
 
     @Test
     public void test() {
-        System.out.println(EPDObject.getBoardFen());
+        System.out.println(EPDObject.getFullString());
+        System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.INFO = false;
@@ -56,7 +57,7 @@ public class WACTest {
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }
 
-    private static final String wacTests = "" +
+    private static final String positions = "" +
             "2rr3k/pp3pp1/1nnqbN1p/3pN3/2pP4/2P3Q1/PPB4P/R4RK1 w - - bm Qg6; id \"WAC.001\";\n" +
             "8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - - bm Rxb2; id \"WAC.002\";\n" +
             "5rk1/1ppb3p/p1pb4/6q1/3P1p1r/2P1R2P/PP1BQ1P1/5RKN w - - bm Rg3; id \"WAC.003\";\n" +
@@ -359,7 +360,7 @@ public class WACTest {
             "b2b1r1k/3R1ppp/4qP2/4p1PQ/4P3/5B2/4N1K1/8 w - - bm g6; id \"WAC.300\";" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\n");
+    private static final String[] splitUpPositions = positions.split("\n");
 
 }
     

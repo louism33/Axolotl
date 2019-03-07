@@ -299,7 +299,7 @@ public class Engine {
 
         if (!thisIsAPrincipleVariationNode && !boardInCheck) {
 
-            staticBoardEval = Evaluator.eval(board, board.isWhiteTurn(), moves);
+            staticBoardEval = Evaluator.eval(board, moves);
 
             if (isBetaRazoringOkHere(depth, staticBoardEval)){
                 int specificBetaRazorMargin = betaRazorMargin[depth];
@@ -394,7 +394,7 @@ public class Engine {
                         promotionMove, givesCheckMove, pawnToSix, pawnToSeven, numberOfMovesSearched)) {
 
                     if (staticBoardEval == SHORT_MINIMUM) {
-                        staticBoardEval = Evaluator.eval(board, board.isWhiteTurn(),
+                        staticBoardEval = Evaluator.eval(board,
                                 board.generateLegalMoves());
                     }
 

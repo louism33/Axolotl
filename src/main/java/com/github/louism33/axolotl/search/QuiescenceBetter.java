@@ -2,6 +2,7 @@ package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.evaluation.Evaluator;
+import com.github.louism33.axolotl.moveordering.MoveOrderingConstants;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
@@ -13,15 +14,13 @@ public class QuiescenceBetter {
 
     static int quiescenceSearchBetter(Chessboard board, int alpha, int beta){
 
-        int[] moves = new int[128];
-        
-        final int[] m = board.generateLegalMoves();
-        System.arraycopy(m, 0, moves, 0, 128);
+        int[] moves = board.generateLegalMoves();
+//        System.arraycopy(m, 0, moves, 0, 128);
         
         int standPatScore = EvaluationConstants.SHORT_MINIMUM;
 
         if (!board.inCheck(board.isWhiteTurn())){
-            standPatScore = Evaluator.evalNOCM(board, board.isWhiteTurn(), moves);
+            standPatScore = Evaluator.eval(board, moves);
 
             if (standPatScore >= beta){
                 return standPatScore;
@@ -51,31 +50,38 @@ public class QuiescenceBetter {
         int numberOfMovesSearched = 0;
         for (int i = 0; i < moves.length; i++) {
 
-            if (moves[i] == 0){
+            final int move = moves[i];
+            if (move == 0){
                 break;
             }
 
-            int loudMoveScore = MoveOrdererBetter.getMoveScore(moves[i]);
+            int loudMoveScore = MoveOrdererBetter.getMoveScore(move);
 
-//            if (i == 0) {
-//                Assert.assertTrue(moves[i] >= moves[i + 1]);
-//            } else {
-//                Assert.assertTrue(moves[i] <= moves[i - 1]);
-//                Assert.assertTrue(moves[i] >= moves[i + 1]);
-//            }
-//
-//
-//            Assert.assertTrue(moves[i] > MoveOrderingConstants.MOVE_SIZE_LIMIT);
+            final boolean captureMove = MoveParser.isCaptureMove(move);
+            final boolean promotionMove = MoveParser.isPromotionMove(move);
+            
+            if (!inCheck && loudMoveScore != 0) {
+                Assert.assertTrue(captureMove || promotionMove);
+            }
+            
+            if (!inCheck && loudMoveScore == 0) {
+                break;
+            }
 
+            int loudMove = move & MoveOrdererBetter.MOVE_MASK;
+            if (!inCheck) {
+                if (i == 0) {
+                    Assert.assertTrue(moves[i] >= moves[i + 1]);
+                } else {
+                    Assert.assertTrue(moves[i] <= moves[i - 1]);
+                    Assert.assertTrue(moves[i] >= moves[i + 1]);
+                }
+                Assert.assertTrue(moves[i] > MoveOrderingConstants.MOVE_SIZE_LIMIT);
+            }
 
-            int loudMove = moves[i] & MoveOrdererBetter.MOVE_MASK;
-
-            boolean captureMove = MoveParser.isCaptureMove(loudMove);
-            boolean promotionMove = MoveParser.isPromotionMove(loudMove);
-
-//            if (!inCheck) {
-//                Assert.assertTrue(captureMove || promotionMove);
-//            }
+            if (!inCheck) {
+                Assert.assertTrue(captureMove || promotionMove);
+            }
 
             board.makeMoveAndFlipTurn(loudMove);
             numberOfMovesSearched++;

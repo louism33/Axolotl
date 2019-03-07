@@ -1,16 +1,21 @@
 package com.github.louism33.axolotl.evaluation;
 
+import com.github.louism33.chesscore.Art;
+import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
+import org.junit.Assert;
 
 import java.util.Arrays;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_STALEMATE_SCORE;
-import static com.github.louism33.axolotl.evaluation.MaterialEval.evalMaterialByTurn;
-import static com.github.louism33.axolotl.evaluation.PassedPawns.evalPassedPawnsByTurn;
-import static com.github.louism33.axolotl.evaluation.Pawns.evalPawnsByTurn;
-import static com.github.louism33.axolotl.evaluation.PositionEval.evalPositionByTurn;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
+import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.POSITION_SCORES;
+import static com.github.louism33.axolotl.evaluation.MoveTable.populateFromMoves;
+import static com.github.louism33.chesscore.BitOperations.getFirstPiece;
+import static com.github.louism33.chesscore.BoardConstants.*;
+import static java.lang.Long.numberOfTrailingZeros;
+import static java.lang.Long.remainderUnsigned;
 
+@SuppressWarnings("ALL")
 public class Evaluator {
 
     static boolean isEndgame = false;
@@ -23,140 +28,136 @@ public class Evaluator {
         Arrays.fill(blackThreatsToSquare, 0);
     }
     static void populateThreats(Chessboard board, int[] moves){
-//        populateFromMoves(moves);
+        populateFromMoves(moves);
 //        board.flipTurn();
 //        populateFromMoves(board.generateLegalMoves());
 //        board.flipTurn();
     }
-
-    public static int eval(Chessboard board, boolean white, int[] moves) {
-        if (moves == null){
-            moves = board.generateLegalMoves();
-        }
-
-
-        if (moves.length == 0){
-            if (board.inCheck(white)) {
-                return IN_CHECKMATE_SCORE;
-            }
-            else {
-                return IN_STALEMATE_SCORE;
-            }
-        }
-        return 0;
-//        else{
-//
-//            long myPawns, myKnights, myBishops, myRooks, myQueens, myKing;
-//            long enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing;
-//            long friends, enemies;
-//
-//            if (white){
-//                myPawns = board.getWhitePawns();
-//                myKnights = board.getWhiteKnights();
-//                myBishops = board.getWhiteBishops();
-//                myRooks = board.getWhiteRooks();
-//                myQueens = board.getWhiteQueen();
-//                myKing = board.getWhiteKing();
-//
-//                enemyPawns = board.getBlackPawns();
-//                enemyKnights = board.getBlackKnights();
-//                enemyBishops = board.getBlackBishops();
-//                enemyRooks = board.getBlackRooks();
-//                enemyQueens = board.getBlackQueen();
-//                enemyKing = board.getBlackKing();
-//
-//                friends = board.whitePieces();
-//                enemies = board.blackPieces();
-//            }
-//            else {
-//                myPawns = board.getBlackPawns();
-//                myKnights = board.getBlackKnights();
-//                myBishops = board.getBlackBishops();
-//                myRooks = board.getBlackRooks();
-//                myQueens = board.getBlackQueen();
-//                myKing = board.getBlackKing();
-//
-//                enemyPawns = board.getWhitePawns();
-//                enemyKnights = board.getWhiteKnights();
-//                enemyBishops = board.getWhiteBishops();
-//                enemyRooks = board.getWhiteRooks();
-//                enemyQueens = board.getWhiteQueen();
-//                enemyKing = board.getWhiteKing();
-//
-//                friends = board.blackPieces();
-//                enemies = board.whitePieces();
-//            }
-//
-//            long allPieces = friends | enemies;
-//
-//            long pinnedPieces = board.pinnedPieces;
-//            boolean inCheck = board.inCheckRecorder;
-//
-//            return evalHelper(moves, board, white,
-//                    myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-//                    enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-//                    enemies, friends, allPieces,
-//                    pinnedPieces, inCheck);
-//        }
+    
+    public static void printEval(Chessboard board, int turn){
+        printEval(board, turn, board.generateLegalMoves());
+    }
+    public static void printEval(Chessboard board, int turn, int[] moves){
+        eval(board, moves);
+        EvalPrintObject epo = new EvalPrintObject(scoresForEPO);
+        System.out.println(epo);
     }
 
-    public static int evalNOCM(Chessboard board, boolean white, int[] moves) {
-        if (moves == null){
-            moves = board.generateLegalMoves();
-        }
-        return 0;
-//        long myPawns, myKnights, myBishops, myRooks, myQueens, myKing;
-//        long enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing;
-//        long friends, enemies;
-//
-//        if (white){
-//            myPawns = board.getWhitePawns();
-//            myKnights = board.getWhiteKnights();
-//            myBishops = board.getWhiteBishops();
-//            myRooks = board.getWhiteRooks();
-//            myQueens = board.getWhiteQueen();
-//            myKing = board.getWhiteKing();
-//
-//            enemyPawns = board.getBlackPawns();
-//            enemyKnights = board.getBlackKnights();
-//            enemyBishops = board.getBlackBishops();
-//            enemyRooks = board.getBlackRooks();
-//            enemyQueens = board.getBlackQueen();
-//            enemyKing = board.getBlackKing();
-//
-//            friends = board.whitePieces();
-//            enemies = board.blackPieces();
+    public static int eval(Chessboard board, int[] moves) {
+        Assert.assertTrue(moves != null);
+//        if (moves == null){
+//            moves = board.generateLegalMoves();
 //        }
-//        else {
-//            myPawns = board.getBlackPawns();
-//            myKnights = board.getBlackKnights();
-//            myBishops = board.getBlackBishops();
-//            myRooks = board.getBlackRooks();
-//            myQueens = board.getBlackQueen();
-//            myKing = board.getBlackKing();
-//
-//            enemyPawns = board.getWhitePawns();
-//            enemyKnights = board.getWhiteKnights();
-//            enemyBishops = board.getWhiteBishops();
-//            enemyRooks = board.getWhiteRooks();
-//            enemyQueens = board.getWhiteQueen();
-//            enemyKing = board.getWhiteKing();
-//
-//            friends = board.blackPieces();
-//            enemies = board.whitePieces();
-//        }
-//
-//        long allPieces = friends | enemies;
-//
-//        long pinnedPieces = board.pinnedPieces;
-//        boolean inCheck = board.inCheckRecorder;
-//
-//        return evalHelper(moves, board, white,
-//                myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-//                enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-//                enemies, friends, allPieces,
-//                pinnedPieces, inCheck);
+
+        Arrays.fill(scoresForEPO[WHITE], 0);
+        Arrays.fill(scoresForEPO[BLACK], 0);
+        
+        return evalTurn(board, board.turn) - evalTurn(board, 1 - board.turn);
     }
+
+    static int[][] scoresForEPO = new int[2][13];
+
+    private final static int evalTurn(Chessboard board, int turn){
+        //please generate moves before calling this
+        final long[][] pieces = board.pieces;
+
+        long myPawns, myKnights, myBishops, myRooks, myQueens, myKing;
+        long enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing;
+        final long friends, enemies;
+
+        myPawns = pieces[turn][PAWN];
+        myKnights = pieces[turn][KNIGHT];
+        myBishops = pieces[turn][BISHOP];
+        myRooks = pieces[turn][ROOK];
+        myQueens = pieces[turn][QUEEN];
+        myKing = pieces[turn][KING];
+
+        enemyPawns = pieces[1 - turn][PAWN];
+        enemyKnights = pieces[1 - turn][KNIGHT];
+        enemyBishops = pieces[1 - turn][BISHOP];
+        enemyRooks = pieces[1 - turn][ROOK];
+        enemyQueens = pieces[1 - turn][QUEEN];
+        enemyKing = pieces[1 - turn][KING];
+
+        friends = pieces[turn][ALL_COLOUR_PIECES];
+        enemies = pieces[1 - turn][ALL_COLOUR_PIECES];
+
+        Assert.assertTrue(friends != 0);
+        Assert.assertTrue(enemies != 0);
+
+        final long allPieces = friends | enemies;
+        long pinnedPieces = board.pinnedPieces;
+        boolean inCheck = board.inCheckRecorder;
+
+        int finalScore = 0, materialScore = 0;
+
+        materialScore += BitOperations.populationCount(myPawns) * PAWN_SCORE;
+        materialScore += BitOperations.populationCount(myKnights) * KNIGHT_SCORE;
+        materialScore += BitOperations.populationCount(myBishops) * BISHOP_SCORE;
+        materialScore += BitOperations.populationCount(myRooks) * ROOK_SCORE;
+        materialScore += BitOperations.populationCount(myQueens) * QUEEN_SCORE;
+
+        scoresForEPO[turn][EvalPrintObject.materialScore] = materialScore;
+
+        finalScore += materialScore;
+
+        long ignoreThesePieces = 0; // maybe pins
+
+        int positionScore = 0;
+
+        while (myKnights != 0){
+            final long knight = getFirstPiece(myKnights);
+            if ((knight & ignoreThesePieces) == 0) {
+                final int knightIndex = numberOfTrailingZeros(knight);
+                positionScore += POSITION_SCORES[turn][KNIGHT][knightIndex];
+            }
+            myKnights &= (myKnights - 1);
+        }
+
+        while (myBishops != 0){
+            final long bishop = getFirstPiece(myBishops);
+            if ((bishop & ignoreThesePieces) == 0) {
+                final int bishopIndex = numberOfTrailingZeros(bishop);
+                positionScore += POSITION_SCORES[turn][BISHOP][bishopIndex];
+            }
+            myBishops &= (myBishops - 1);
+        }
+
+        while (myRooks != 0){
+            final long rook = getFirstPiece(myRooks);
+            if ((rook & ignoreThesePieces) == 0) {
+                final int rookIndex = numberOfTrailingZeros(rook);
+                positionScore += POSITION_SCORES[turn][ROOK][rookIndex];
+            }
+            myRooks &= (myRooks - 1);
+        }
+
+        while (myQueens != 0){
+            final long queen = getFirstPiece(myQueens);
+            if ((queen & ignoreThesePieces) == 0) {
+                final int queenIndex = numberOfTrailingZeros(queen);
+                positionScore += POSITION_SCORES[turn][QUEEN][queenIndex];
+            }
+            myQueens &= (myQueens - 1);
+        }
+
+        myPawns = pieces[turn][PAWN] & ~ignoreThesePieces;
+        while (myPawns != 0){
+            final long pawn = getFirstPiece(myPawns);
+            final int pawnIndex = numberOfTrailingZeros(pawn);
+            positionScore += POSITION_SCORES[turn][PAWN][pawnIndex];
+            myPawns &= myPawns - 1;
+        }
+
+        finalScore += positionScore;
+
+        scoresForEPO[turn][EvalPrintObject.positionScore] = positionScore;
+        scoresForEPO[turn][EvalPrintObject.totalScore] = finalScore;
+
+        return finalScore;
+    }
+
+
 
     public static boolean naiveEndgame (Chessboard board){
         if (isEndgame){
@@ -181,221 +182,6 @@ public class Evaluator {
 //
 //        return isEndgame;
     }
-    
-    public static void pt(int[] threats){
-        for (int i = 0; i < threats.length; i++){
-            System.out.print(String.format("% 5d ", threats[i]));
-            if (i % 8 == 7 && i != 0){
-                System.out.println();
-            }
-        }
-    }
-
-    public static int evalHelper(int[] moves, Chessboard board, boolean white,
-                                  long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
-                                  long enemyPawns, long enemyKnights, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
-                                  long enemies, long friends, long allPieces,
-                                  long pinnedPieces, boolean inCheck) {
-
-        resetThreats();
-        populateThreats(board, moves);
-
-        return evalTurn(moves, board, white,
-                myPawns, myKnights, myBishops, myRooks, myQueens, myKing,
-                enemyPawns, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                enemies, friends, allPieces,
-                pinnedPieces, inCheck) -
-
-                evalTurn(moves, board, !white,
-                        enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing,
-                        myPawns, myBishops, myRooks, myQueens, myKing,
-                        friends, enemies, allPieces,
-                        pinnedPieces, inCheck);
-    }
-
-    public static int evalTurn(int[] moves, Chessboard board, boolean white,
-                                long myPawns, long myKnights, long myBishops, long myRooks, long myQueens, long myKing,
-                                long enemyPawns, long enemyBishops, long enemyRooks, long enemyQueens, long enemyKing,
-                                long enemies, long friends, long allPieces,
-                                long pinnedPieces, boolean inCheck){
-
-        int score = 0;
-        score +=
-                evalMaterialByTurn(
-                        myPawns, myKnights, myBishops, myRooks, myQueens)
-
-                        + evalPositionByTurn(board, white, naiveEndgame(board))
-
-                        + evalPassedPawnsByTurn(board, white, myPawns, allPieces, enemies)
-
-                        + evalPawnsByTurn(board, white, myPawns, enemyPawns, enemyBishops,
-                        enemies, allPieces)
-
-//                        + evalKnightByTurn(board, white,
-//                        myPawns, myKnights,
-//                        enemyPawns, enemyRooks, enemyQueens, enemyKing
-//                )
-
-//                        + evalBishopByTurn(board, white,
-//                        myPawns, myBishops,
-//                        enemyPawns,
-//                        friends
-//                )
-
-//                        + evalRookByTurn(board, white, myPawns, myRooks, myQueens, enemyPawns, enemies, allPieces)
-//
-//                        + evalQueenByTurn(board, white,
-//                        myRooks, myQueens,
-//                        enemyPawns
-//                )
-//
-//                        + evalKingByTurn(board, white,
-//                        myPawns, myKing,
-//                        friends, enemies,
-//                        allPieces
-//                )
-
-//                        + evalMiscByTurn(board, white, moves, pinnedPieces, friends, inCheck)
-        ;
-        return score;
-    }
 
 
-//    static long getRow(long piece){
-//        return ROWS[getIndexOfFirstPiece(piece)  / 8];
-//    }
-//
-//    static long getFile(long piece) {
-//        return FILES[getIndexOfFirstPiece(piece) % 8];
-//    }
-
-
-
-
-
-    public static void printEval(Chessboard board){
-        System.out.println(evalToString(board, board.generateLegalMoves()));
-    }
-
-    public static String evalToString(Chessboard board, int[] moves) {
-        return "";
-//        int whiteMat = evalMaterialByTurn(
-//                board.getWhitePawns(), board.getWhiteKnights(),
-//                board.getWhiteBishops(), board.getWhiteRooks(), board.getWhiteQueen());
-//        int blackMat = evalMaterialByTurn(
-//                board.getBlackPawns(), board.getBlackKnights(),
-//                board.getBlackBishops(), board.getBlackRooks(), board.getBlackQueen());
-//
-//        int whitePos = evalPositionByTurn(board, true, naiveEndgame(board));
-//        int blackPos = evalPositionByTurn(board, false, naiveEndgame(board));
-//
-//        int whitePawns = evalPawnsByTurn(board, true,
-//                board.getWhitePawns(),
-//                board.getBlackPawns(), board.getBlackBishops(),
-//                board.blackPieces(), board.allPieces());
-//        int blackPawns = evalPawnsByTurn(board, false,
-//                board.getBlackPawns(),
-//                board.getWhitePawns(), board.getWhiteBishops(),
-//                board.whitePieces(), board.allPieces());
-//
-//        int whiteKnight = evalKnightByTurn(board, true,
-//                board.getWhitePawns(), board.getWhiteKnights(),
-//                board.getBlackPawns(), board.getBlackRooks(), board.getBlackQueen(), board.getBlackKing());
-//        int blackKnight = evalKnightByTurn(board, false,
-//                board.getBlackPawns(), board.getBlackKnights(),
-//                board.getWhitePawns(), board.getWhiteRooks(), board.getWhiteQueen(), board.getWhiteKing());
-//
-//        int whiteBishop = evalBishopByTurn(board, true,
-//                board.getWhitePawns(), board.getWhiteBishops(),
-//                board.getBlackPawns(),
-//                board.whitePieces());
-//        int blackBishop = evalBishopByTurn(board, false,
-//                board.getBlackPawns(), board.getBlackBishops(),
-//                board.getWhitePawns(),
-//                board.blackPieces());
-//
-//        int whiteRook = evalRookByTurn(board, true,
-//                board.getWhitePawns(), board.getWhiteRooks(),
-//                board.getWhiteQueen(), board.getBlackPawns(),
-//                board.getBlackPawns(), board.allPieces());
-//        int blackRook = evalRookByTurn(board, false,
-//                board.getBlackPawns(), board.getBlackRooks(),
-//                board.getBlackQueen(), board.getWhitePawns(),
-//                board.getWhitePawns(), board.allPieces());
-//
-//        int whiteQueen = evalQueenByTurn(board, true,
-//                board.getWhiteRooks(), board.getWhiteQueen(),
-//                board.getBlackPawns());
-//        int blackQueen = evalQueenByTurn(board, false,
-//                board.getBlackRooks(), board.getBlackQueen(),
-//                board.getWhitePawns());
-//
-//        int whiteKing = evalKingByTurn(board, true,
-//                board.getWhitePawns(), board.getWhiteKing(),
-//                board.whitePieces(), board.blackPieces(),
-//                board.allPieces());
-//        int blackKing = evalKingByTurn(board, false,
-//                board.getBlackPawns(), board.getBlackKing(),
-//                board.blackPieces(), board.whitePieces(),
-//                board.allPieces());
-//
-//        int miscWhite = evalMiscByTurn(board, true, moves,
-//                board.pinnedPiecesToSquareBitBoard(true, Square.squareFromSingleBitboard(board.getWhiteKing())),
-//                board.whitePieces(), board.inCheck(true));
-//        int miscBlack = evalMiscByTurn(board, false, moves,
-//                board.pinnedPiecesToSquareBitBoard(false, Square.squareFromSingleBitboard(board.getBlackKing())),
-//                board.blackPieces(), board.inCheck(false));
-//
-//        int whitePassedPawns = evalPassedPawnsByTurn(board, true,
-//                board.getWhitePawns(), board.allPieces(), board.blackPieces());
-//        int blackPassedPawns = evalPassedPawnsByTurn(board, false,
-//                board.getBlackPawns(), board.allPieces(), board.whitePieces());
-//
-//        String evalString = "   Aspect    |     White     |     Black     |    Total  \n" +
-//                "             |               |               |           \n" +
-//                "-------------+---------------+---------------+-----------\n" +
-//
-//                String.format("  Material   |     % 5d     |     % 5d     |    % 5d\n",
-//                        whiteMat, blackMat, (whiteMat - blackMat)) +
-//
-//                String.format("  Position   |     % 5d     |     % 5d     |    % 5d\n",
-//                        whitePos, blackPos, (whitePos - blackPos)) +
-//
-//                String.format("   Pawns     |     % 5d     |     % 5d     |    % 5d\n",
-//                        whitePawns, blackPawns, (whitePawns - blackPawns)) +
-//
-//                String.format("  Knights    |     % 5d     |     % 5d     |    % 5d\n",
-//                        whiteKnight, blackKnight, (whiteKnight - blackKnight)) +
-//
-//                String.format("  Bishops    |     % 5d     |     % 5d     |    % 5d\n",
-//                        whiteBishop, blackBishop, (whiteBishop - blackBishop)) +
-//
-//                String.format("   Rooks     |     % 5d     |     % 5d     |    % 5d\n",
-//                        whiteRook, blackRook, (whiteRook - blackRook)) +
-//
-//                String.format("  Queens     |     % 5d     |     % 5d     |    % 5d\n",
-//                        whiteQueen, blackQueen, (whiteQueen - blackQueen)) +
-//
-//                String.format("    King     |     % 5d     |     % 5d     |    % 5d\n",
-//                        whiteKing, blackKing, (whiteKing - blackKing)) +
-//
-//                String.format("    Misc     |     % 5d     |     % 5d     |    % 5d\n",
-//                        miscWhite, miscBlack, (miscWhite - miscBlack)) +
-//
-//                String.format(" PassedPawns |     % 5d     |     % 5d     |    % 5d\n",
-//                        whitePassedPawns, blackPassedPawns, (whitePassedPawns - blackPassedPawns))
-//                + (naiveEndgame(board) ? "\nWe are in the endgame." : "\nWe are not in the endgame.") +
-//                "\nFrom white's point of view the score is:           "
-//                +((whiteMat - blackMat)
-//                + (whitePos - blackPos)
-//                + (whitePawns - blackPawns)
-//                + (whiteBishop - blackBishop)
-//                + (whiteRook - blackRook)
-//                + (whiteQueen - blackQueen)
-//                + (whiteKing - blackKing)
-//                + (miscWhite - miscBlack)
-//                + (whitePassedPawns - blackPassedPawns));
-//
-//        return evalString;
-    }
 }
