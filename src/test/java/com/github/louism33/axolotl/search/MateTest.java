@@ -1,9 +1,7 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +45,7 @@ public class MateTest {
         int[] winningMoves = EPDObject.getBestMoves();
         EngineSpecifications.INFO = false;
         final Chessboard board = EPDObject.getBoard();
-        int move = EngineBetter.searchFixedTime(board, timeLimit);
+        int move = Engine.searchFixedTime(board, timeLimit);
 
         Assert.assertTrue(WACSilverSanityTest.contains(winningMoves, move));
 

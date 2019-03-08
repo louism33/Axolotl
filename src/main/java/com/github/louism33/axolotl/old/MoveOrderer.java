@@ -1,10 +1,10 @@
-package com.github.louism33.axolotl.moveordering;
+package com.github.louism33.axolotl.old;
 
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
-import static com.github.louism33.axolotl.search.EngineSpecifications.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.THREAD_NUMBER;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MoveParser.*;
 

@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.main;
 
 import com.fluxchess.jcpi.models.GenericMove;
-import com.github.louism33.axolotl.moveordering.MoveOrderer;
+import com.github.louism33.axolotl.search.MoveOrderer;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;

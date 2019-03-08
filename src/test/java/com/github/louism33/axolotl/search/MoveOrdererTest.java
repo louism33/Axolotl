@@ -1,13 +1,13 @@
-package com.github.louism33.axolotl.moveordering;
+package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.search.MoveOrdererBetter;
+import com.github.louism33.axolotl.search.MoveOrderer;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import static com.github.louism33.axolotl.moveordering.MoveOrderer.MOVE_MASK;
-import static com.github.louism33.axolotl.moveordering.MoveOrderer.getMoveScore;
+import static com.github.louism33.axolotl.search.MoveOrderer.MOVE_MASK;
+import static com.github.louism33.axolotl.search.MoveOrderer.getMoveScore;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_UPPER_BOUND;
 
 public class MoveOrdererTest {
@@ -20,7 +20,7 @@ public class MoveOrdererTest {
 
         int max = 64;
         for (int s = 1; s < max; s++) {
-            int scoredMove = MoveOrderer.buildMoveScore(move, s);
+            int scoredMove = com.github.louism33.axolotl.search.MoveOrderer.buildMoveScore(move, s);
             int scoreFromMove = getMoveScore(scoredMove);
 
             Assert.assertEquals(MoveParser.toString(move), MoveParser.toString(scoredMove));
@@ -41,7 +41,7 @@ public class MoveOrdererTest {
             }
             int max = 64;
             for (int s = 1; s < max; s++) {
-                int moveScore = MoveOrderer.buildMoveScore(move, s);
+                int moveScore = com.github.louism33.axolotl.search.MoveOrderer.buildMoveScore(move, s);
                 int scoreFromMove = getMoveScore(moveScore);
 
                 Assert.assertTrue(moveScore > 0);
@@ -100,10 +100,10 @@ public class MoveOrdererTest {
         System.arraycopy(moves, 0, unscoredMoves, 0, moves.length);
         
         if (depth % 2 == 0) {
-            MoveOrdererBetter.scoreMoves(moves, board, 0, 0);
+            MoveOrderer.scoreMoves(moves, board, 0, 0);
         }
         else {
-            MoveOrdererBetter.scoreMovesAtRoot(moves, maxMoves, board);
+            MoveOrderer.scoreMovesAtRoot(moves, maxMoves, board);
         }
         
         for (int i = 0; i < maxMoves; i++) {

@@ -3,7 +3,6 @@ package com.github.louism33.axolotl.main;
 import com.fluxchess.jcpi.commands.ProtocolInformationCommand;
 import com.fluxchess.jcpi.models.GenericMove;
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 
@@ -29,10 +28,10 @@ public class UCIPrinter {
 
         protocolInformationCommand.setCurrentMove(convertMyMoveToGenericMove(aiMove));
 
-        protocolInformationCommand.setNodes(EngineBetter.numberOfMovesMade[0]);
+        protocolInformationCommand.setNodes(Engine.numberOfMovesMade[0]);
 
-        EngineBetter.calculateNPS();
-        long nps = EngineBetter.nps;
+        Engine.calculateNPS();
+        long nps = Engine.nps;
         protocolInformationCommand.setNps(nps);
 
         boolean mateFound = mateFound(nodeScore);
@@ -43,10 +42,10 @@ public class UCIPrinter {
             protocolInformationCommand.setCentipawns(nodeScore);
         }
 
-        if (Engine.getUciEntry() == null){
+        if (Engine.uciEntry == null){
             System.out.println(buildString(aiMove, nodeScore, depth, mateFound, 2*distanceToMate(nodeScore), new ArrayList<>(), nps));
         } else {
-            Engine.getUciEntry().sendInformation(protocolInformationCommand);
+            Engine.uciEntry.sendInformation(protocolInformationCommand);
         }
     }
     

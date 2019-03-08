@@ -62,11 +62,11 @@ class StandAlone {
                 while (true) {
                     System.out.print(prompt + " move (or \"go\" or \"quit\")> ");
                     command = readCommand(stdin);
-                    System.out.println("This is move number " + totalMoves + ".");
+                    System.out.println("This is move number " + totalMoves + '.');
 
                     switch (command) {
                         case "go":
-                            move = Engine.searchFixedTime(board, timeLimit, false);
+                            move = Engine.searchFixedTime(board, timeLimit);
                             break label;
                         case "quit":
                             System.out.println("QUIT.\n");
@@ -80,7 +80,7 @@ class StandAlone {
                                 }
                             }
                             if (move != 0) break label;
-                            System.out.println("\"" + command + "\" is not a legal move");
+                            System.out.println('"' + command + "\" is not a legal move");
                             break;
                     }
                 }
