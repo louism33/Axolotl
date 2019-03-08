@@ -15,7 +15,6 @@ public class QuiescenceBetter {
     static int quiescenceSearchBetter(Chessboard board, int alpha, int beta){
 
         int[] moves = board.generateLegalMoves();
-//        System.arraycopy(m, 0, moves, 0, 128);
         
         int standPatScore = EvaluationConstants.SHORT_MINIMUM;
 

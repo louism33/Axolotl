@@ -51,7 +51,7 @@ public class WACTest {
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.INFO = false;
+        EngineSpecifications.INFO = true;
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));

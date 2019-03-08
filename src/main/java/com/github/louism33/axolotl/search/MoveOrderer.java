@@ -254,7 +254,7 @@ public class MoveOrderer {
     }
 
     public static void updateHistoryMoves(int whichThread, int move, int ply){
-//        historyMoves[whichThread][getSourceIndex(move)][getDestinationIndex(move)] += (2 * ply);
+        historyMoves[whichThread][getSourceIndex(move)][getDestinationIndex(move)] += (2 * ply);
     }
 
     public static int historyMoveScore(int move){
@@ -266,18 +266,18 @@ public class MoveOrderer {
 
     public static void updateKillerMoves(int whichThread, int move, int ply){
 
-//        Assert.assertTrue(move < MOVE_SIZE_LIMIT);
-//
-//        if (move != killerMoves[whichThread][ply][0]){
-//            if (killerMoves[whichThread][ply][0] != 0) {
-//                killerMoves[whichThread][ply][1] = killerMoves[whichThread][ply][0];
-//            }
-//            killerMoves[whichThread][ply][0] = move;
-//        }
+        Assert.assertTrue(move < MOVE_SIZE_LIMIT);
+
+        if (move != killerMoves[whichThread][ply][0]){
+            if (killerMoves[whichThread][ply][0] != 0) {
+                killerMoves[whichThread][ply][1] = killerMoves[whichThread][ply][0];
+            }
+            killerMoves[whichThread][ply][0] = move;
+        }
     }
 
     public static void updateMateKillerMoves(int whichThread, int move, int ply){
-//        mateKillers[whichThread][ply] = move;
+        mateKillers[whichThread][ply] = move;
     }
 
 

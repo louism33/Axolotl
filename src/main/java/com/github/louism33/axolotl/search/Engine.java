@@ -69,7 +69,7 @@ public class Engine {
     public static int getAiMove(){
         return rootMoves[0];
     }
-    
+
 
     public static void main(String[] args) {
 
@@ -145,14 +145,15 @@ public class Engine {
         return searchFixedTime(board, maxTime, MAX_DEPTH);
     }
 
-    private static final int searchFixedTime(final Chessboard board, final long maxTime, final int depth) {
+    private static final int searchFixedTime(final Chessboard b, final long maxTime, final int depth) {
         setup();
 
+        board = b;
         startTime = System.currentTimeMillis() - 100;
 
         timeLimitMillis = maxTime;
 
-        rootMoves = board.generateLegalMoves();
+        rootMoves = b.generateLegalMoves();
         aiMoveX = rootMoves[0];
 
         int numberOfRealMoves = rootMoves[rootMoves.length - 1];
@@ -160,10 +161,10 @@ public class Engine {
             return rootMoves[0] & MOVE_MASK;
         }
 
-        scoreMovesAtRoot(rootMoves, numberOfRealMoves, board);
+        scoreMovesAtRoot(rootMoves, numberOfRealMoves, b);
         Ints.sortDescending(rootMoves, 0, numberOfRealMoves);
 
-        search(board, depth);
+        search(b, depth);
 
         long endTime = System.currentTimeMillis();
 
@@ -219,7 +220,7 @@ public class Engine {
             int previousAi = rootMoves[0];
 
             while (true) {
-                score = principleVariationSearch(board, depth, 0,
+                score = principleVariationSearch(depth, 0,
                         alpha, beta, 0);
 
                 if (stopNow || stopSearch(startTime, timeLimitMillis)) {
@@ -249,25 +250,24 @@ public class Engine {
                 }
             }
 
-//            boolean info = true;
-//            if (info && rootMoves[0] != previousAi){
-//                UCIPrinter.sendInfoCommand(board, rootMoves[0], Engine.aiMoveScore, depth);
-//            }
-
-            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
+            if (INFO){
+                UCIPrinter.sendInfoCommand(board, rootMoves[0], Engine.aiMoveScore, depth);
+            }
 
             aspirationScore = score;
         }
 
-        UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
+        if (INFO){
+            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
+        }
     }
 
 
     public static int whichThread = 0;
 
+    private static Chessboard board;
 
-    static int principleVariationSearch(Chessboard board,
-                                        int depth, int ply,
+    static int principleVariationSearch(int depth, int ply,
                                         int alpha, int beta,
                                         int nullMoveCounter) {
 
@@ -366,8 +366,7 @@ public class Engine {
             if (isNullMoveOkHere(board, nullMoveCounter, depth, R)) {
                 board.makeNullMoveAndFlipTurn();
 
-                int nullScore = -principleVariationSearch(board,
-                        depth - R - 1, ply + 1,
+                int nullScore = -principleVariationSearch(depth - R - 1, ply + 1,
                         -beta, -beta + 1, nullMoveCounter + 1);
 
                 board.unMakeNullMoveAndFlipTurn();
@@ -418,7 +417,7 @@ public class Engine {
 
             boolean captureMove = MoveParser.isCaptureMove(move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
-            boolean givesCheckMove = false; //checkingMove(board, move);
+            boolean givesCheckMove = checkingMove(board, move);
             boolean pawnToSix = MoveParser.moveIsPawnPushSix(move);
             boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(move);
 
@@ -466,26 +465,26 @@ public class Engine {
                 score = alpha + 1;
 
 
-                int R = 2 + depth / 3; //lateMoveDepthReduction(depth, numberOfMovesSearched);
+                int R = 2;// + depth / 3; //lateMoveDepthReduction(depth, numberOfMovesSearched);
 
                 if (numberOfMovesSearched > 1
                         && depth > R && !captureMove && !promotionMove
                         && !pawnToSeven && !boardInCheck && !givesCheckMove) {
 
-                    score = -principleVariationSearch(board,
+                    score = -principleVariationSearch(
                             depth - R - 1, ply + 1,
                             -alpha - 1, -alpha, nullMoveCounter);
                 }
 
 
                 if (numberOfMovesSearched > 1 && score > alpha) {
-                    score = -principleVariationSearch(board,
+                    score = -principleVariationSearch(
                             depth - 1, ply + 1,
                             -alpha - 1, -alpha, 0);
                 }
 
                 if (score > alpha) {
-                    score = -principleVariationSearch(board,
+                    score = -principleVariationSearch(
                             depth - 1, ply + 1,
                             -beta, -alpha, 0);
                 }
