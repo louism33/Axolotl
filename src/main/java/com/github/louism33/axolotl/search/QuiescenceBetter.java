@@ -10,12 +10,11 @@ import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 
-public class QuiescenceBetter {
+public final class QuiescenceBetter {
 
     static int quiescenceSearchBetter(Chessboard board, int alpha, int beta){
 
         int[] moves = board.generateLegalMoves();
-//        System.arraycopy(m, 0, moves, 0, 128);
         
         int standPatScore = EvaluationConstants.SHORT_MINIMUM;
 

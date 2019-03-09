@@ -21,7 +21,7 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 
 @SuppressWarnings("ALL")
-public class EngineBetter {
+public final class EngineBetter {
 
     static int aiMoveScore;
     private static boolean isReady = false;
