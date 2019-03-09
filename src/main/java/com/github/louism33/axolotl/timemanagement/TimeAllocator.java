@@ -1,6 +1,7 @@
 package com.github.louism33.axolotl.timemanagement;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 
 public class TimeAllocator {
@@ -42,7 +43,7 @@ public class TimeAllocator {
         }
 
         if (outOfTime){
-            Engine.stopNow = true;
+            EngineBetter.stopNow = true;
         }
         return outOfTime;
     }

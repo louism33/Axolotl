@@ -62,7 +62,7 @@ public class WACSilverSanityTest {
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.INFO = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
         
         if (contains(winningMoves, move) && !contains(losingMoves, move)){
             System.out.println("success");

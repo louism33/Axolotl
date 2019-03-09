@@ -1,5 +1,7 @@
 package com.github.louism33.axolotl.moveordering;
 
+import com.github.louism33.chesscore.Art;
+
 public class MoveOrderingConstants {
 
     public final static int MOVE_SIZE_LIMIT = 0x2000000;

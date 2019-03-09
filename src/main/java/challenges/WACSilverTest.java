@@ -1,7 +1,9 @@
 package challenges;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,7 +57,7 @@ public class WACSilverTest {
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.INFO = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         Assert.assertTrue(Utils.contains(winningMoves, move) && !Utils.contains(losingMoves, move));
 

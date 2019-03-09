@@ -1,15 +1,19 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
+import static com.github.louism33.axolotl.moveordering.MoveOrderer.checkingMove;
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
+import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.MOVE_SIZE_LIMIT;
 import static com.github.louism33.axolotl.search.EngineSpecifications.THREAD_NUMBER;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_UPPER_BOUND;
 import static com.github.louism33.chesscore.MoveParser.*;
+import static com.github.louism33.chesscore.MoveParser.getDestinationIndex;
 
-public class MoveOrderer {
+public class MoveOrdererBetter {
 
 
     public static boolean ready = false;
@@ -118,7 +122,7 @@ public class MoveOrderer {
 
             Assert.assertTrue(moves[i] < MOVE_SIZE_LIMIT);
 
-            if (move == hashMove || move == (hashMove & MOVE_MASK)) {
+            if (false && move == hashMove || move == (hashMove & MOVE_MASK)) {
                 moves[i] = buildMoveScore(moves[i], hashScore);
             }
             else if (mateKillers[whichThread][ply] != 0 && moves[i] == mateKillers[whichThread][ply]) {
@@ -254,7 +258,7 @@ public class MoveOrderer {
     }
 
     public static void updateHistoryMoves(int whichThread, int move, int ply){
-        historyMoves[whichThread][getSourceIndex(move)][getDestinationIndex(move)] += (2 * ply);
+//        historyMoves[whichThread][getSourceIndex(move)][getDestinationIndex(move)] += (2 * ply);
     }
 
     public static int historyMoveScore(int move){
@@ -266,18 +270,18 @@ public class MoveOrderer {
 
     public static void updateKillerMoves(int whichThread, int move, int ply){
 
-        Assert.assertTrue(move < MOVE_SIZE_LIMIT);
-
-        if (move != killerMoves[whichThread][ply][0]){
-            if (killerMoves[whichThread][ply][0] != 0) {
-                killerMoves[whichThread][ply][1] = killerMoves[whichThread][ply][0];
-            }
-            killerMoves[whichThread][ply][0] = move;
-        }
+//        Assert.assertTrue(move < MOVE_SIZE_LIMIT);
+//
+//        if (move != killerMoves[whichThread][ply][0]){
+//            if (killerMoves[whichThread][ply][0] != 0) {
+//                killerMoves[whichThread][ply][1] = killerMoves[whichThread][ply][0];
+//            }
+//            killerMoves[whichThread][ply][0] = move;
+//        }
     }
 
     public static void updateMateKillerMoves(int whichThread, int move, int ply){
-        mateKillers[whichThread][ply] = move;
+//        mateKillers[whichThread][ply] = move;
     }
 
 

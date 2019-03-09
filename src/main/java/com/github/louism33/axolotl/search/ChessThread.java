@@ -1,7 +1,6 @@
-package com.github.louism33.axolotl.old;
+package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.main.UCIPrinter;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
@@ -9,7 +8,7 @@ import org.junit.Assert;
 import java.util.Arrays;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.old.Engine.*;
+import static com.github.louism33.axolotl.search.Engine.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
 class ChessThread extends Thread{

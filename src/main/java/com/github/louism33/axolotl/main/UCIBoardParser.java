@@ -10,19 +10,17 @@ import com.github.louism33.utils.MoveParserFromAN;
 
 import java.util.List;
 
-import static com.github.louism33.chesscore.BoardConstants.WHITE;
-
 class UCIBoardParser {
 
-    static GenericColor convertMyColourToGenericColour(int turn) {
-        switch (turn) {
-            case WHITE:
-                return GenericColor.WHITE;
-            default:
-                return GenericColor.BLACK;
+    static GenericColor convertMyColourToGenericColour(boolean white) {
+        if (white){
+            return GenericColor.WHITE;
+        }
+        else {
+            return GenericColor.BLACK;
         }
     }
-
+    
     public static GenericMove convertMyMoveToGenericMove(int move){
         GenericMove genericMove = null;
         try {

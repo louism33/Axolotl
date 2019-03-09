@@ -1,12 +1,12 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
+import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import org.junit.Assert;
 
 import java.util.Arrays;
 
-import static com.github.louism33.axolotl.search.MoveOrderer.MOVE_MASK;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 
 public class TranspositionTable {
@@ -83,7 +83,7 @@ public class TranspositionTable {
             }
         }
         
-        long possibleEntry = buildTableEntry(bestMove & MOVE_MASK, bestScore, depth, flag, ply);
+        long possibleEntry = buildTableEntry(bestMove & MoveOrderer.MOVE_MASK, bestScore, depth, flag, ply);
 
         keys[replaceMeIndex] = key ^ possibleEntry;
         entries[replaceMeIndex] = possibleEntry;

@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
+import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
@@ -12,6 +13,7 @@ import static com.github.louism33.axolotl.evaluation.MoveTable.populateFromMoves
 import static com.github.louism33.chesscore.BitOperations.getFirstPiece;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static java.lang.Long.numberOfTrailingZeros;
+import static java.lang.Long.remainderUnsigned;
 
 @SuppressWarnings("ALL")
 public class Evaluator {
