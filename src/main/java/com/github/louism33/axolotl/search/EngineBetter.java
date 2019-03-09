@@ -64,11 +64,11 @@ public class EngineBetter {
 
         String fen = "8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - -";
         Chessboard board = new Chessboard(fen);
-        board = new Chessboard();
+//        board = new Chessboard();
 
         System.out.println(board);
 
-        searchFixedDepth(board, 14);
+        searchFixedTime(board, 180000);
 //        searchFixedDepth(board, 22);
 
 
@@ -266,7 +266,7 @@ public class EngineBetter {
                                         int nullMoveCounter){
 
         final int originalAlpha = alpha;
-
+        final int turn = board.turn;
         int[] moves = ply == 0 ? rootMoves : board.generateLegalMoves();
 
         boolean boardInCheck = board.inCheckRecorder;
@@ -415,8 +415,8 @@ public class EngineBetter {
             boolean captureMove = MoveParser.isCaptureMove(move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
             boolean givesCheckMove = MoveOrderer.checkingMove(board, move);
-            boolean pawnToSix = MoveParser.moveIsPawnPushSix(move);
-            boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(move);
+            boolean pawnToSix = MoveParser.moveIsPawnPushSix(turn, move);
+            boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(turn, move);
 
 
 

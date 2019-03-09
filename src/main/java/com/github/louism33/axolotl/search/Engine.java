@@ -374,8 +374,8 @@ public class Engine {
             boolean captureMove = MoveParser.isCaptureMove(move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
             boolean givesCheckMove = MoveOrderer.checkingMove(board, move);
-            boolean pawnToSix = MoveParser.moveIsPawnPushSix(move);
-            boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(move);
+            boolean pawnToSix = MoveParser.moveIsPawnPushSix(1, move);
+            boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(1, move);
 
             if (!thisIsAPrincipleVariationNode) {
                 if (bestScore < CHECKMATE_ENEMY_SCORE_MAX_PLY
