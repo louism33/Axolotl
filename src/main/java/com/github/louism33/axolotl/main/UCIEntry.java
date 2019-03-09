@@ -5,8 +5,7 @@ import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
 import com.fluxchess.jcpi.options.AbstractOption;
-import com.github.louism33.axolotl.evaluation.Evaluator;
-import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 
@@ -24,15 +23,15 @@ public class UCIEntry extends AbstractEngine {
         super();
     }
 
-    public UCIEntry(Engine engine){
+    public UCIEntry(EngineBetter engine){
         super();
     }
 
     // "uci"
     @Override
     public void receive(EngineInitializeRequestCommand command) {
-        Engine.setup();
-        Engine.setUciEntry(this);
+        EngineBetter.reset();
+        EngineBetter.uciEntry = this;
 
         ProtocolInitializeAnswerCommand firstCommand 
                 = new ProtocolInitializeAnswerCommand("axolotl_v1.3", "Louis James Mackenzie-Smith");
@@ -99,14 +98,14 @@ public class UCIEntry extends AbstractEngine {
             }
         }
 
-        if (command.name.equalsIgnoreCase("Threads")){
-            int threadNumber = Integer.parseInt(command.value);
-            if (threadNumber < 1 || threadNumber > EngineSpecifications.MAX_THREADS){
-                return;
-            }
-            EngineSpecifications.THREAD_NUMBER = threadNumber;
-            Engine.setupThreads();
-        }
+//        if (command.name.equalsIgnoreCase("Threads")){
+//            int threadNumber = Integer.parseInt(command.value);
+//            if (threadNumber < 1 || threadNumber > EngineSpecifications.MAX_THREADS){
+//                return;
+//            }
+//            EngineSpecifications.THREAD_NUMBER = threadNumber;
+////            Engine.setupThreads();
+//        }
     }
 
     @Override
@@ -124,7 +123,7 @@ public class UCIEntry extends AbstractEngine {
         moves = null;
         board = null;
         genericBoard = null;
-        Engine.setup();
+        EngineBetter.reset();
     }
 
     // ex:
@@ -147,7 +146,7 @@ public class UCIEntry extends AbstractEngine {
         if (command == null){
             return;
         }
-        Engine.giveThreadsBoard(board);
+//        Engine.giveThreadsBoard(board);
         int aiMove = calculatingHelper(command);
         if (aiMove != 0){
             this.getProtocol().send(
@@ -159,19 +158,19 @@ public class UCIEntry extends AbstractEngine {
         long clock = timeOnClock(command);
         if (clock != 0){
             Long clockIncrement = command.getClockIncrement(convertMyColourToGenericColour(board.isWhiteTurn()));
-            return Engine.searchMyTime(board, clock, clockIncrement);
+            return EngineBetter.searchMyTime(board, clock, clockIncrement);
         }
         else if (command.getMoveTime() != null && command.getMoveTime() != 0){
-            return Engine.searchFixedTime(board, command.getMoveTime(), true);
+            return EngineBetter.searchFixedTime(board, command.getMoveTime());
         }
         else {
             int searchDepth = EngineSpecifications.MAX_DEPTH;
             if (command.getInfinite()){
-                return Engine.searchFixedDepth(board, searchDepth);
+                return EngineBetter.searchFixedDepth(board, searchDepth);
             }
             else if (command.getDepth() != null){
                 searchDepth = command.getDepth();
-                return Engine.searchFixedDepth(board, searchDepth);
+                return EngineBetter.searchFixedDepth(board, searchDepth);
             }
             else {
                 throw new RuntimeException("I do not know how I should search for a move");
@@ -191,12 +190,12 @@ public class UCIEntry extends AbstractEngine {
 
     @Override
     public void receive(EngineStopCalculatingCommand command) {
-        int aiMove = Engine.getAiMove();
+        int aiMove = EngineBetter.getAiMove();
         if (aiMove != 0) {
             this.getProtocol().send(
                     new ProtocolBestMoveCommand(convertMyMoveToGenericMove(aiMove), null));
         }
-        Engine.setStopInstruction(true);
+        EngineBetter.stopNow = true;
     }
 
     @Override

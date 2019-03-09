@@ -1,13 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.*;
-import org.junit.Assert;
-
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.evaluation.MoveTable.*;
-import static com.github.louism33.chesscore.BitOperations.populationCount;
-import static com.github.louism33.chesscore.BoardConstants.BLACK_QUEEN;
-import static com.github.louism33.chesscore.BoardConstants.WHITE_QUEEN;
+import com.github.louism33.chesscore.Chessboard;
 
 class King {
 

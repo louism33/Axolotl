@@ -1,12 +1,10 @@
 package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.MoveParser;
-import org.apache.maven.project.ModelUtils;
 
 import static com.github.louism33.axolotl.evaluation.Evaluator.blackThreatsToSquare;
 import static com.github.louism33.axolotl.evaluation.Evaluator.whiteThreatsToSquare;
 import static com.github.louism33.chesscore.BoardConstants.*;
-import static com.github.louism33.chesscore.MoveParser.*;
 
 public class MoveTable {
 

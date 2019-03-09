@@ -1,17 +1,13 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
-import static com.github.louism33.axolotl.moveordering.MoveOrderer.checkingMove;
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
-import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.MOVE_SIZE_LIMIT;
 import static com.github.louism33.axolotl.search.EngineSpecifications.THREAD_NUMBER;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_UPPER_BOUND;
 import static com.github.louism33.chesscore.MoveParser.*;
-import static com.github.louism33.chesscore.MoveParser.getDestinationIndex;
 
 public class MoveOrdererBetter {
 
@@ -122,7 +118,7 @@ public class MoveOrdererBetter {
 
             Assert.assertTrue(moves[i] < MOVE_SIZE_LIMIT);
 
-            if (false && move == hashMove || move == (hashMove & MOVE_MASK)) {
+            if (move == hashMove || move == (hashMove & MOVE_MASK)) {
                 moves[i] = buildMoveScore(moves[i], hashScore);
             }
             else if (mateKillers[whichThread][ply] != 0 && moves[i] == mateKillers[whichThread][ply]) {

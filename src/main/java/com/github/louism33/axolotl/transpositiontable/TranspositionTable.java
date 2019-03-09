@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 
-public class TranspositionTable {
+public final class TranspositionTable {
 
     public static long[] keys;
     public static long[] entries;
@@ -20,17 +20,16 @@ public class TranspositionTable {
     public static void initTable(int maxEntries){
         moduloAmount = maxEntries;
 
-        keys = new long[maxEntries];
-        entries = new long[maxEntries];
-
-        reset();
+        if (keys != null && keys.length == maxEntries) {
+            Arrays.fill(keys, 0);
+            Arrays.fill(entries, 0);
+        }
+        else {
+            keys = new long[maxEntries];
+            entries = new long[maxEntries];
+        }
 
         tableReady = true;
-    }
-
-    public static void reset(){
-        Arrays.fill(keys, 0);
-        Arrays.fill(entries, 0);
     }
 
     public static int newEntries = 0;

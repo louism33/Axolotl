@@ -1,33 +1,24 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.evaluation.EvalPrintObject;
 import com.github.louism33.axolotl.evaluation.Evaluator;
+import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.main.UCIPrinter;
 import com.github.louism33.axolotl.moveordering.MoveOrderer;
-import com.github.louism33.axolotl.moveordering.MoveOrderingConstants;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
-import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
-import java.util.Arrays;
-
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.MOVE_SIZE_LIMIT;
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.hashScore;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.MoveOrdererBetter.*;
-import static com.github.louism33.axolotl.search.MoveOrdererBetter.MOVE_MASK;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
-import static com.github.louism33.axolotl.search.SearchUtils.isNullMoveOkHere;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocateTime;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
-import static com.github.louism33.chesscore.MoveConstants.MOVE_UPPER_BOUND;
 
 @SuppressWarnings("ALL")
 public class EngineBetter {
@@ -39,10 +30,11 @@ public class EngineBetter {
     static long[] numberOfQMovesMade = new long[1];
     private static long startTime = 0;
     public static boolean stopNow = false;
-    private static boolean stopInstruction = false;
 
     static boolean manageTime = true;
     private static long timeLimitMillis;
+
+    public static UCIEntry uciEntry;
 
     public static boolean contains(int[] ints, int target) {
         for (int i = 0; i < ints.length; i++) {
@@ -53,15 +45,9 @@ public class EngineBetter {
         return false;
     }
 
-    public static void setup() {
-        stopInstruction = false;
+    public static void reset() {
         isReady = true;
-        reset();
-    }
-
-    private static void reset() {
         nps = 0;
-        stopInstruction = false;
         aiMoveScore = SHORT_MINIMUM;
 
         numberOfMovesMade[0] = 0;
@@ -114,7 +100,9 @@ public class EngineBetter {
     }
 
     private static int[] rootMoves;
-
+    public static int getAiMove(){
+        return rootMoves[0];
+    }
     public static int searchMyTime(Chessboard board, long maxTime, long increment) {
         EngineSpecifications.ALLOW_TIME_LIMIT = true;
         manageTime = true;
@@ -138,8 +126,7 @@ public class EngineBetter {
     }
 
     static boolean stopSearch(long startTime, long timeLimiMillis) {
-        return stopInstruction
-                || (EngineSpecifications.ALLOW_TIME_LIMIT && outOfTime(startTime, timeLimiMillis, manageTime));
+        return (EngineSpecifications.ALLOW_TIME_LIMIT && outOfTime(startTime, timeLimiMillis, manageTime));
     }
 
     public static final int searchFixedTime(final Chessboard board, final long maxTime) {
@@ -149,7 +136,7 @@ public class EngineBetter {
     }
 
     private static final int searchFixedTime(final Chessboard board, final long maxTime, final int depth) {
-        setup();
+        reset();
 
         startTime = System.currentTimeMillis() - 100;
 
