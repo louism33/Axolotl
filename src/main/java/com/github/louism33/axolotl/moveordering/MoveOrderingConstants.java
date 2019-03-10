@@ -1,9 +1,6 @@
 package com.github.louism33.axolotl.moveordering;
 
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.MoveConstants;
-
-import static com.github.louism33.axolotl.search.MoveOrdererBetter.MOVE_MASK;
 
 public final class MoveOrderingConstants {
 

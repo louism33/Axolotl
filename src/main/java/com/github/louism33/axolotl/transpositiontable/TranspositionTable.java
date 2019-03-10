@@ -1,14 +1,12 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
-import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.search.MoveOrdererBetter;
 import org.junit.Assert;
 
 import java.util.Arrays;
 
-import static com.github.louism33.axolotl.search.MoveOrdererBetter.MOVE_MASK;
 import static com.github.louism33.axolotl.search.MoveOrdererBetter.MOVE_MASK_WO_CHECK;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 
@@ -140,7 +138,6 @@ public final class TranspositionTable {
     }
 
     public static int getMove(long entry){
-//        return (int) (entry & TT_MOVE_MASK);
         return (int) (entry & MOVE_MASK_WO_CHECK);
     }
 
