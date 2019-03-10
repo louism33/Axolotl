@@ -41,7 +41,7 @@ public final class MoveOrdererBetter {
         return i;
     }
 
-    static int buildMoveScore(int move, int score){
+    public static int buildMoveScore(int move, int score){
         Assert.assertTrue(move > 0);
 
         Assert.assertTrue(score > 0);

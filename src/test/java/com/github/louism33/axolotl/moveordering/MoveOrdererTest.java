@@ -4,7 +4,8 @@ import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
-import static com.github.louism33.axolotl.moveordering.MoveOrderer.getMoveScore;
+import static com.github.louism33.axolotl.search.MoveOrdererBetter.buildMoveScore;
+import static com.github.louism33.axolotl.search.MoveOrdererBetter.getMoveScore;
 
 public class MoveOrdererTest {
 
@@ -14,9 +15,9 @@ public class MoveOrdererTest {
         int[] ints = board.generateLegalMoves();
         int move = ints[0];
 
-        int max = 64;
+        int max = MoveOrderingConstants.hashScore;
         for (int s = 1; s < max; s++) {
-            int moveScore = MoveOrderer.buildMoveScore(move, s);
+            int moveScore = buildMoveScore(move, s);
             int scoreFromMove = getMoveScore(moveScore);
 
             Assert.assertEquals(MoveParser.toString(move), MoveParser.toString(moveScore));
@@ -35,9 +36,9 @@ public class MoveOrdererTest {
             if (move == 0){
                 break;
             }
-            int max = 64;
+            int max = MoveOrderingConstants.hashScore;
             for (int s = 1; s < max; s++) {
-                int moveScore = MoveOrderer.buildMoveScore(move, s);
+                int moveScore = buildMoveScore(move, s);
                 int scoreFromMove = getMoveScore(moveScore);
 
                 Assert.assertTrue(moveScore > 0);

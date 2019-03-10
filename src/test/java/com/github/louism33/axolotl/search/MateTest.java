@@ -71,7 +71,7 @@ public class MateTest {
             "5rk1/5ppp/pq6/1r3n2/2Q2P2/1P1N4/P1P1R1PP/4R2K b - - 0 1 bm Ng3+; \n" +
             "1k3r2/4R1Q1/p2q1r2/8/2p1Bb2/5R2/pP5P/K7 w - - 1 0 bm Re8+; \n" +
             "2k1r2r/ppp3p1/3b4/3pq2b/7p/2NP1P2/PPP2Q1P/R5RK b - - 0 1 bm Bxf3+; \n" +
-            "3k4/1p3Bp1/p5r1/2b5/P3P1N1/5Pp1/1P1r4/2R4K b - - 0 1 bm Rh2+; \n" +
+            "3k4/1p3Bp1/p5r1/2b5/P3P1N1/5Pp1/1P1r4/2R4K b - - 0 1 bm g3g2 Rh2+; \n" +
             "6k1/1r4np/pp1p1R1B/2pP2p1/P1P5/1n5P/6P1/4R2K w - - 1 0 bm Re8+; \n" +
             "8/p2q1p1k/4pQp1/1p1b2Bp/7P/8/5PP1/6K1 w - - 1 0 bm Bh6; \n" +
             "r7/6R1/ppkqrn1B/2pp3p/P6n/2N5/8/1Q1R1K2 w - - 1 0 bm Qb5+; \n" +
@@ -193,7 +193,7 @@ public class MateTest {
             "r4r1k/pppq1p1p/3p4/5p1Q/2B1Pp2/3P3P/PPn2P1K/R5R1 w - - 1 0 bm Rg7; \n" +
             "2kr1b1r/ppq5/1np1pp2/P3Pn2/1P3P2/2P2Qp1/6P1/RNB1RBK1 b - - 0 1 bm Rh1+; \n" +
             "2Q5/4ppbk/3p4/3P1NPp/4P3/5NB1/5PPK/rq6 w - - 1 0 bm g6+; \n" +
-            "5r1k/p1p1q1pp/1p1p4/8/2PPn3/B1P1P3/P1Q1P2p/1R5K b - - 0 1 bm Nf2+; \n" +
+            "5r1k/p1p1q1pp/1p1p4/8/2PPn3/B1P1P3/P1Q1P2p/1R5K b - - 0 1 bm f8f2 Nf2+; \n" +
             "2b5/3qr2k/5Q1p/P3B3/1PB1PPp1/4K1P1/8/8 w - - 1 0 bm Bg8+; \n" +
             "r1bq1bkr/6pp/p1p3P1/1p1p3Q/4P3/8/PPP3PP/RNB2RK1 w - - 1 0 bm gxh7+; \n" +
             "rr4Rb/2pnqb1k/np1p1p1B/3PpP2/p1P1P2P/2N3R1/PP2BP2/1KQ5 w - - 1 0 bm Bg7 g8h8; \n" + // m4
