@@ -3,7 +3,6 @@ package com.github.louism33.axolotl.search;
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.main.UCIPrinter;
-import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
@@ -36,6 +35,11 @@ public final class EngineBetter {
 
     public static UCIEntry uciEntry;
 
+    public static UCIEntry getUciEntry() {
+        return uciEntry;
+    }
+
+
     public static boolean contains(int[] ints, int target) {
         for (int i = 0; i < ints.length; i++) {
             if (ints[i] == target) {
@@ -57,7 +61,7 @@ public final class EngineBetter {
 
         initTable(TABLE_SIZE);
 
-        MoveOrderer.initMoveOrderer();
+        MoveOrdererBetter.initMoveOrderer();
     }
 
     public static void main(String[] args) {
@@ -249,8 +253,9 @@ public final class EngineBetter {
 
             aspirationScore = score;
         }
-
-        UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
+//        if (INFO) {
+            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
+//        }
     }
 
 
@@ -410,7 +415,7 @@ public final class EngineBetter {
             }
 
 
-            int move = moves[i] & MoveOrderer.MOVE_MASK;
+            int move = moves[i] & MoveOrdererBetter.MOVE_MASK;
 
             Assert.assertTrue(moveScore != 0);
 
@@ -430,14 +435,12 @@ public final class EngineBetter {
 
 
             if (captureMove && !promotionMove) {
-                Assert.assertTrue(moveScore >= (captureBias + 1 - 10));
+                Assert.assertTrue(moveScore >= (captureBias + 1 - 5));
             }
 
             if (queenPromotionMove) {
                 Assert.assertTrue(moveScore >= queenQuietPromotionScore);
             }
-
-
 
             if (!thisIsAPrincipleVariationNode) {
                 if (bestScore < CHECKMATE_ENEMY_SCORE_MAX_PLY
@@ -564,7 +567,7 @@ public final class EngineBetter {
         }
 
         addToTableReplaceByDepth(board.zobristHash,
-                bestMove & MoveOrderer.MOVE_MASK, bestScore, depth, flag, ply);
+                bestMove & MoveOrdererBetter.MOVE_MASK, bestScore, depth, flag, ply);
 
         return bestScore;
     }

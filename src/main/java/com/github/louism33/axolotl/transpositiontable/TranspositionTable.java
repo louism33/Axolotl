@@ -12,13 +12,14 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTableC
 
 public final class TranspositionTable {
 
-    public static long[] keys;
-    public static long[] entries;
+    public static long[] keys = new long[EngineSpecifications.TABLE_SIZE];
+    public static long[] entries = new long[EngineSpecifications.TABLE_SIZE];
     public static boolean tableReady = false;
-    public static int moduloAmount;
+    public static int moduloAmount = EngineSpecifications.TABLE_SIZE;
     static final int bucketSize = 4;
 
     public static void initTable(int maxEntries){
+        EngineSpecifications.TABLE_SIZE = maxEntries;
         moduloAmount = maxEntries;
 
         if (keys != null && keys.length == maxEntries) {

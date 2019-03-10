@@ -2,7 +2,6 @@ package com.github.louism33.axolotl.main;
 
 import com.fluxchess.jcpi.commands.ProtocolInformationCommand;
 import com.fluxchess.jcpi.models.GenericMove;
-import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
@@ -14,7 +13,7 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMA
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.main.UCIBoardParser.convertMyMoveToGenericMove;
 
-public class UCIPrinter {
+public final class UCIPrinter {
 
     public static void sendInfoCommand(Chessboard board, int aiMove, int nodeScore, int depth){
         ProtocolInformationCommand protocolInformationCommand = new ProtocolInformationCommand();
@@ -23,9 +22,10 @@ public class UCIPrinter {
             protocolInformationCommand.setDepth(depth);
         }
 
-//        List<GenericMove> pvMoves = PVLine.retrievePV(board);
+        List<GenericMove> pvMoves = new ArrayList<>();
+        pvMoves = PVLine.retrievePV(board);
         
-//        protocolInformationCommand.setMoveList(pvMoves);
+        protocolInformationCommand.setMoveList(pvMoves);
 
         protocolInformationCommand.setCurrentMove(convertMyMoveToGenericMove(aiMove));
 
@@ -43,10 +43,11 @@ public class UCIPrinter {
             protocolInformationCommand.setCentipawns(nodeScore);
         }
 
-        if (Engine.getUciEntry() == null){
-            System.out.println(buildString(aiMove, nodeScore, depth, mateFound, 2*distanceToMate(nodeScore), new ArrayList<>(), nps));
+        if (EngineBetter.getUciEntry() == null){
+            System.out.println(buildString
+                    (aiMove, nodeScore, depth, mateFound, 2*distanceToMate(nodeScore), pvMoves, nps));
         } else {
-            Engine.getUciEntry().sendInformation(protocolInformationCommand);
+            EngineBetter.getUciEntry().sendInformation(protocolInformationCommand);
         }
     }
     

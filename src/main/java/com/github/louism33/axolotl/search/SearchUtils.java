@@ -6,7 +6,7 @@ import com.github.louism33.chesscore.MoveParser;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 
-class SearchUtils {
+final class SearchUtils {
 
     static final int[] futilityMargin = {0, 150, 250, 350, 450, 550, 650};
     public static final int futilityBelowThisDepth = futilityMargin.length;
@@ -52,10 +52,6 @@ class SearchUtils {
         return depth < betaRazorBelowThisDepth
                 && staticBoardEval < CHECKMATE_ENEMY_SCORE_MAX_PLY
                 ;
-    }
-
-    static int nullMoveDepthReduction(){
-        return 2;
     }
 
     static boolean isNullMoveOkHere(Chessboard board, int nullMoveCounter, int depth, int R){

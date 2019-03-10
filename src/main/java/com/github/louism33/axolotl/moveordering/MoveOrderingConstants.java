@@ -17,8 +17,10 @@ public final class MoveOrderingConstants {
     public static final int mateKillerScore = 25;
     public static final int killerOneScore = 24;
     public static final int killerTwoScore = 23;
+    public static final int pawnPushToSeven = 23;
     public static final int giveCheckMove = 22;
     public static final int castlingMove = 21;
+    public static final int pawnPushToSix = 21;
     public static final int oldKillerScoreOne = 20;
     public static final int oldKillerScoreTwo = 19;
     public static final int maxHistoryMoveScore = 18;

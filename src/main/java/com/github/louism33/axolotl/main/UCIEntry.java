@@ -89,12 +89,15 @@ public class UCIEntry extends AbstractEngine {
 
         if (command.name.equalsIgnoreCase("Hash")){
             int size = Integer.parseInt(command.value);
-            int number = size * 62_500;
-            if (number > 0 && number < EngineSpecifications.MAX_TABLE_SIZE) {
+            int number = size * EngineSpecifications.TABLE_SIZE_PER_MB;
+            if (number > EngineSpecifications.MIN_TABLE_SIZE && number < EngineSpecifications.MAX_TABLE_SIZE) {
                 EngineSpecifications.TABLE_SIZE = number;
             }
-            if (number > EngineSpecifications.MAX_TABLE_SIZE){
+            else if (number > EngineSpecifications.MAX_TABLE_SIZE){
                 EngineSpecifications.TABLE_SIZE = EngineSpecifications.MAX_TABLE_SIZE;
+            }
+            else if (number < EngineSpecifications.MIN_TABLE_SIZE){
+                EngineSpecifications.TABLE_SIZE = EngineSpecifications.MIN_TABLE_SIZE;
             }
         }
 

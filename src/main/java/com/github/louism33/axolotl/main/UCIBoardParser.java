@@ -10,7 +10,7 @@ import com.github.louism33.utils.MoveParserFromAN;
 
 import java.util.List;
 
-class UCIBoardParser {
+final class UCIBoardParser {
 
     static GenericColor convertMyColourToGenericColour(boolean white) {
         if (white){

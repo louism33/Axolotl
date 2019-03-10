@@ -109,6 +109,8 @@ public final class MoveOrdererBetter {
     }
 
 
+    public static final int whichThread = 0;
+
     public static void scoreMoves(int[] moves, Chessboard board, int ply,
                                   int hashMove){
         if (!ready) {
@@ -117,13 +119,12 @@ public final class MoveOrdererBetter {
         scoreMovesHelper(moves, board, ply, hashMove);
     }
 
-    public static final int whichThread = 0;
-
     public static void scoreMovesHelper(int[] moves, Chessboard board, int ply,
                                         int hashMove){
 
         int maxMoves = moves[moves.length - 1];
-
+        int turn = board.turn;
+        
         final int mateKiller = mateKillers[whichThread][ply];
         final int firstKiller = killerMoves[whichThread][ply][0];
         final int secondKiller = ply >= 2 ? killerMoves[whichThread][ply][1] : 0;
@@ -199,8 +200,23 @@ public final class MoveOrdererBetter {
                 moves[i] = buildMoveScore(moves[i], oldKillerScoreTwo);
             }
             else {
-                moves[i] = buildMoveScore(moves[i],
-                        Math.max(historyMoveScore(moves[i], whichThread, board.turn), uninterestingMove));
+
+                boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(turn, move);
+                if (pawnToSeven) {
+                    moves[i] = buildMoveScore(move, pawnPushToSeven);
+                    continue;
+                }
+
+                boolean pawnToSix = MoveParser.moveIsPawnPushSix(turn, move);
+                if (pawnToSix) {
+                    moves[i] = buildMoveScore(move, pawnPushToSix);
+                    continue;
+                }
+                
+//                moves[i] = buildMoveScore(moves[i],
+//                        Math.max(historyMoveScore(move, whichThread, board.turn), uninterestingMove));                
+
+                moves[i] = buildMoveScore(moves[i], uninterestingMove);
             }
 
             Assert.assertTrue(moves[i] >= MOVE_UPPER_BOUND);
