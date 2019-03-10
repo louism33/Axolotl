@@ -20,11 +20,16 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 @RunWith(Parameterized.class)
 public class WACTest {
 
-    private static final int timeLimit = 5_000;
+    private static final int timeLimit = 60_000;
     
+    // tough at 5 sec
+//    private static final int[] infamousIndexes = {2, 48, 54, 80, 86, 116, 141, 145, 163, 196, 222, 228, 230, 241, 243, 248, 252, 256, 283, 293}; 
     
-//    private static final int[] infamousIndexes = {2, 48, 54, 80, 86, 116, 141, 145, 163, 196, 222, 228, 230, 241, 243, 248, 252, 256, 283, 293};
-    private static final int[] infamousIndexes = {2, 80, 86, 116, 141, 145, 163, 196, 222, 228, 230, 241, 243, 248, 252, 256, 283, 293};
+    // tough at 10 sec
+    private static final int[] infamousIndexes = {86, 116, 145, 163, 196, 222, 230, 243, 248, 252, 256, 293};    
+    
+    // tough at 60 sec
+//    private static final int[] infamousIndexes = {86, 163, 196, 230, 248, 256, 293};
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -35,7 +40,7 @@ public class WACTest {
         for (int i = 0; i < splitUpPositions.length; i++) {
 
             if (!contains(infamousIndexes, i+1)) {
-//                continue;
+                continue;
             }
 
             String splitUpWAC = splitUpPositions[i];
