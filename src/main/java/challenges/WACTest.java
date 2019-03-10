@@ -23,7 +23,8 @@ public class WACTest {
     private static final int timeLimit = 5_000;
     
     
-    private static final int[] infamousIndexes = {2, 48, 54, 80, 86, 116, 141, 145, 163, 196, 222, 228, 230, 241, 243, 248, 252, 256, 283, 293};
+//    private static final int[] infamousIndexes = {2, 48, 54, 80, 86, 116, 141, 145, 163, 196, 222, 228, 230, 241, 243, 248, 252, 256, 283, 293};
+    private static final int[] infamousIndexes = {2, 80, 86, 116, 141, 145, 163, 196, 222, 228, 230, 241, 243, 248, 252, 256, 283, 293};
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -59,7 +60,7 @@ public class WACTest {
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.INFO = false;
+        EngineSpecifications.INFO = true;
         int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
         MoveParser.printMove(move);
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
