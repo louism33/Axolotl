@@ -71,7 +71,7 @@ public class MoveOrderer {
                 moves[i] = buildMoveScore(moves[i], mateKillerScore);
             }
             else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
-                moves[i] = buildMoveScore(moves[i], CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(moves[i]));
+                moves[i] = buildMoveScore(moves[i], captureBiasOfLastMovedPiece + mvvLVA(moves[i]));
             }
             else if (isPromotionToQueen(moves[i])) {
                 if (isCaptureMove(moves[i])) {
@@ -108,7 +108,7 @@ public class MoveOrderer {
                 Assert.assertTrue(killerMoves[whichThread][ply - 2][1] < MOVE_SIZE_LIMIT);
                 moves[i] = buildMoveScore(moves[i], oldKillerScoreTwo);
             }
-            else if (checkingMove(board, moves[i])) {
+            else if (calculateIfCheckingMove(board, moves[i])) {
                 moves[i] = buildMoveScore(moves[i], giveCheckMove);
             }
             else if (isCastlingMove(moves[i])) {
@@ -124,7 +124,7 @@ public class MoveOrderer {
     public static int mvvLVA(int move){
         int sourceScore = scoreByPiece(move, getMovingPieceInt(move));
         int destinationScore = scoreByPiece(move, getVictimPieceInt(move));
-        return CAPTURE_BIAS + destinationScore - sourceScore;
+        return captureBias + destinationScore - sourceScore;
     }
 
     public static int scoreByPiece(int move, int piece){
@@ -176,7 +176,7 @@ public class MoveOrderer {
                 if (isPromotionMove(move) && isPromotionToQueen(move)) {
                     moves[i] = buildMoveScore(move, queenCapturePromotionScore);
                 } else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
-                    moves[i] = buildMoveScore(move, CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(moves[i]));
+                    moves[i] = buildMoveScore(move, captureBiasOfLastMovedPiece + mvvLVA(moves[i]));
                 } else {
                     moves[i] = buildMoveScore(move, mvvLVA(moves[i]));
                 }
@@ -188,7 +188,7 @@ public class MoveOrderer {
         }
     }
 
-    public static boolean checkingMove(Chessboard board, int move){
+    public static boolean calculateIfCheckingMove(Chessboard board, int move){
         board.makeMoveAndFlipTurn(move);
         boolean checkingMove = board.inCheck(board.isWhiteTurn());
         board.unMakeMoveAndFlipTurn();
@@ -200,7 +200,7 @@ public class MoveOrderer {
     }
 
     public static int historyMoveScore(int whichThread, int move){
-        int maxMoveScoreOfHistory = MAX_HISTORY_MOVE_SCORE;
+        int maxMoveScoreOfHistory = maxHistoryMoveScore;
         int historyScore = historyMoves[whichThread][getSourceIndex(move)][getDestinationIndex(move)];
         return historyScore > maxMoveScoreOfHistory ? maxMoveScoreOfHistory : historyScore;
     }

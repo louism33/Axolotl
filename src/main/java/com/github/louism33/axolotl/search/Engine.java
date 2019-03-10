@@ -373,7 +373,7 @@ public class Engine {
 
             boolean captureMove = MoveParser.isCaptureMove(move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
-            boolean givesCheckMove = MoveOrderer.checkingMove(board, move);
+            boolean givesCheckMove = MoveOrderer.calculateIfCheckingMove(board, move);
             boolean pawnToSix = MoveParser.moveIsPawnPushSix(1, move);
             boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(1, move);
 

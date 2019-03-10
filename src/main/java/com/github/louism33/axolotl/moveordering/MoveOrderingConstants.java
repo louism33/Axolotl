@@ -1,28 +1,32 @@
 package com.github.louism33.axolotl.moveordering;
 
-public class MoveOrderingConstants {
+import com.github.louism33.chesscore.Art;
+import com.github.louism33.chesscore.MoveConstants;
 
-    public final static int MOVE_SIZE_LIMIT = 0x2000000;
-    public static final int moveScoreOffset = 25;
-    public static final int MOVE_SCORE_MASK = 0xfe000000;
+import static com.github.louism33.axolotl.search.MoveOrdererBetter.MOVE_MASK;
 
-    public static final int MAX_HISTORY_MOVE_SCORE = 48;
-    public static final int CAPTURE_BIAS = 50;
-    public static final int CAPTURE_BIAS_LAST_MOVED_PIECE = 1;
+public final class MoveOrderingConstants {
 
-    public static final int hashScore = 63;
-    public static final int mateKillerScore = 61;
-    public static final int queenCapturePromotionScore = 60;
-    public static final int queenQuietPromotionScore = 59;
-    public static final int killerOneScore = 50;
-    public static final int killerTwoScore = 49;
-    public static final int oldKillerScoreOne = 46;
-    public static final int oldKillerScoreTwo = 45;
-    public static final int castlingMove = 40;
-    public static final int giveCheckMove = 47;
+    public final static int MOVE_SIZE_LIMIT = MoveConstants.MOVE_UPPER_BOUND;
+    public static final int moveScoreOffset = 26;
+    public static final int MOVE_SCORE_MASK = 0xfc000000;
+
+    public static final int captureBiasOfLastMovedPiece = 1;
+
+    public static final int hashScore = 31;
+    public static final int queenCapturePromotionScore = 30;
+    public static final int queenQuietPromotionScore = 29;
+    public static final int captureBias = 26; // between 30 and 23
+    public static final int mateKillerScore = 25;
+    public static final int killerOneScore = 24;
+    public static final int killerTwoScore = 23;
+    public static final int giveCheckMove = 22;
+    public static final int castlingMove = 21;
+    public static final int oldKillerScoreOne = 20;
+    public static final int oldKillerScoreTwo = 19;
+    public static final int maxHistoryMoveScore = 18;
     public static final int knightPromotionScore = 3;
     public static final int uninterestingMove = 2;
     public static final int uninterestingPromotion = 1;
-    
-    
+
 }

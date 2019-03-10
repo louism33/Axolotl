@@ -11,7 +11,7 @@ import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.hashScore;
+import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.MoveOrdererBetter.*;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
@@ -243,12 +243,9 @@ public final class EngineBetter {
                 }
             }
 
-//            boolean info = true;
-//            if (info && rootMoves[0] != previousAi){
-//                UCIPrinter.sendInfoCommand(board, rootMoves[0], Engine.aiMoveScore, depth);
-//            }
-
-            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
+            if (INFO) {
+                UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
+            }
 
             aspirationScore = score;
         }
@@ -388,22 +385,27 @@ public final class EngineBetter {
         int numberOfMovesSearched = 0;
 
         if (ply == 0 && hashMove != 0){
-            Assert.assertEquals(moves[0] & MoveOrderer.MOVE_MASK, hashMove);
+            Assert.assertEquals(moves[0] & MOVE_MASK_WO_CHECK, hashMove);
+            Assert.assertEquals(rootMoves[0] & MOVE_MASK_WO_CHECK, hashMove);
+        }
+
+        if (ply != 0 && hashMove != 0){
+            Assert.assertEquals(moves[0] & MOVE_MASK_WO_CHECK, hashMove);
         }
 
         for (int i = 0; i < lastMove; i++) {
             if (moves[i] == 0) {
                 break;
             }
-            int moveScore = MoveOrdererBetter.getMoveScore(moves[i]);
+            int moveScore = getMoveScore(moves[i]);
 
             if (i < lastMove - 1) {
                 if (i == 0) {
-                    Assert.assertTrue(moveScore >= MoveOrdererBetter.getMoveScore(moves[i + 1]));
+                    Assert.assertTrue(moveScore >= getMoveScore(moves[i + 1]));
                 } else {
-                    Assert.assertTrue(moveScore <= MoveOrdererBetter.getMoveScore(moves[i - 1]));
+                    Assert.assertTrue(moveScore <= getMoveScore(moves[i - 1]));
 
-                    Assert.assertTrue(moveScore >= MoveOrdererBetter.getMoveScore(moves[i + 1]));
+                    Assert.assertTrue(moveScore >= getMoveScore(moves[i + 1]));
                 }
             }
 
@@ -412,18 +414,35 @@ public final class EngineBetter {
 
             Assert.assertTrue(moveScore != 0);
 
+
+            if (ply != 0 && i == 0 && hashMove != 0) {
+                Assert.assertTrue(move == hashMove);
+                Assert.assertTrue(moveScore == hashScore);
+            }
+
+
             boolean captureMove = MoveParser.isCaptureMove(move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
-            boolean givesCheckMove = MoveOrderer.checkingMove(board, move);
+            boolean queenPromotionMove = !promotionMove ? false : MoveParser.isPromotionToQueen(move);
+            boolean givesCheckMove = MoveParser.isCheckingMove(move);
             boolean pawnToSix = MoveParser.moveIsPawnPushSix(turn, move);
             boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(turn, move);
+
+
+            if (captureMove && !promotionMove) {
+                Assert.assertTrue(moveScore >= (captureBias + 1 - 10));
+            }
+
+            if (queenPromotionMove) {
+                Assert.assertTrue(moveScore >= queenQuietPromotionScore);
+            }
 
 
 
             if (!thisIsAPrincipleVariationNode) {
                 if (bestScore < CHECKMATE_ENEMY_SCORE_MAX_PLY
                         && notJustPawnsLeft(board, board.isWhiteTurn())) {
-                    if (!promotionMove
+                    if (!queenPromotionMove
                             && !givesCheckMove
                             && !pawnToSix
                             && !pawnToSeven
@@ -434,11 +453,10 @@ public final class EngineBetter {
                 }
 
                 if (isFutilityPruningAllowedHere(depth,
-                        promotionMove, givesCheckMove, pawnToSix, pawnToSeven, numberOfMovesSearched)) {
+                        queenPromotionMove, givesCheckMove, pawnToSix, pawnToSeven, numberOfMovesSearched)) {
 
                     if (staticBoardEval == SHORT_MINIMUM) {
                         staticBoardEval = Evaluator.eval(board,
-//                                board.generateLegalMoves());
                                 moves);
                     }
 
@@ -464,11 +482,10 @@ public final class EngineBetter {
             } else {
                 score = alpha + 1;
 
-
-                int R = 2; //lateMoveDepthReduction(depth, numberOfMovesSearched);
+                int R = 2;
 
                 if (numberOfMovesSearched > 1
-                        && depth > R && !captureMove && !promotionMove
+                        && depth > R && !captureMove && !queenPromotionMove
                         && !pawnToSeven && !boardInCheck && !givesCheckMove) {
 
                     score = -principleVariationSearch(board,
@@ -511,8 +528,19 @@ public final class EngineBetter {
             }
 
             if (alpha >= beta) {
+                Assert.assertTrue((move & MOVE_SCORE_MASK) == 0);
+                if (alpha > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+                    updateMateKillerMoves(whichThread, move, ply);
+                    break;
+                }
+                if (!captureMove) {
+                    //todo
+                    updateKillerMoves(whichThread, move, ply);
+//                    updateHistoryMoves(whichThread, move, ply, 1 - board.turn); // turn of mover
+                }
                 break;
             }
+
         }
 
         if (numberOfMovesSearched == 0) {
@@ -557,7 +585,7 @@ public final class EngineBetter {
                 Assert.assertTrue(i != 0);
                 System.arraycopy(rootMoves, 0,
                         rootMoves, 1, i);
-                rootMoves[0] = MoveOrdererBetter.buildMoveScore(aiMoveMask, hashScore);
+                rootMoves[0] = buildMoveScore(aiMoveMask, hashScore);
                 break;
             }
         }

@@ -1,15 +1,18 @@
 package com.github.louism33.axolotl.search;
 
+import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
 import static com.github.louism33.axolotl.search.EngineSpecifications.THREAD_NUMBER;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_UPPER_BOUND;
 import static com.github.louism33.chesscore.MoveParser.*;
 
-public class MoveOrdererBetter {
+public final class MoveOrdererBetter {
 
 
     public static boolean ready = false;
@@ -18,12 +21,17 @@ public class MoveOrdererBetter {
     public static int[][][] historyMoves;
 
     public static final int MOVE_MASK = ~MOVE_SCORE_MASK;
+    public static final int MOVE_MASK_WO_CHECK = 0x1ffffff;
 
     public static void initMoveOrderer(){
-        mateKillers = new int[THREAD_NUMBER][128];
-        killerMoves = new int[THREAD_NUMBER][128][2];
-        historyMoves = new int[THREAD_NUMBER][64][64];
+        mateKillers = new int[THREAD_NUMBER][MAX_DEPTH];
+        killerMoves = new int[THREAD_NUMBER][MAX_DEPTH][2];
+        historyMoves = new int[THREAD_NUMBER * 2][64][64]; // one for each side to move. number of squares ** 2
         ready = true;
+    }
+
+    public static void resetMoveOrderer(){
+
     }
 
     public static int getMoveScore (int move){
@@ -39,6 +47,14 @@ public class MoveOrdererBetter {
         Assert.assertTrue(score > 0);
 
         int i1 = score << moveScoreOffset;
+
+        if (i1 < 0) {
+            System.out.println(isCaptureMove(move));
+            MoveParser.printMove(move);
+            System.out.println(move + "    "+ score);
+            Art.printLong(move);
+            Art.printLong(i1);
+        }
 
         Assert.assertTrue(i1 > 0);
         int i = move | i1;
@@ -59,7 +75,7 @@ public class MoveOrdererBetter {
 
 
             if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
-                moves[i] = buildMoveScore(moves[i], CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(moves[i]));
+                moves[i] = buildMoveScore(moves[i], captureBiasOfLastMovedPiece + mvvLVA(moves[i]));
             }
             else if (isPromotionToQueen(moves[i])) {
                 if (isCaptureMove(moves[i])) {
@@ -78,7 +94,7 @@ public class MoveOrdererBetter {
             else if (isCaptureMove(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], mvvLVA(moves[i]));
             }
-//            else if (checkingMove(board, moves[i])) {
+//            else if (calculateIfCheckingMove(board, moves[i])) {
 //                moves[i] = buildMoveScore(moves[i], giveCheckMove);
 //            }
             else if (isCastlingMove(moves[i])) {
@@ -86,13 +102,13 @@ public class MoveOrdererBetter {
             }
             else {
                 moves[i] = buildMoveScore(moves[i],
-                        Math.max(historyMoveScore(moves[i]), uninterestingMove));
+                        Math.max(historyMoveScore(moves[i], whichThread, board.turn), uninterestingMove));
             }
         }
-        
+
     }
-    
-    
+
+
     public static void scoreMoves(int[] moves, Chessboard board, int ply,
                                   int hashMove){
         if (!ready) {
@@ -100,13 +116,20 @@ public class MoveOrdererBetter {
         }
         scoreMovesHelper(moves, board, ply, hashMove);
     }
-    
+
     public static final int whichThread = 0;
 
-    // todo , use mask before ORing? avoid hugely valued moves?
     public static void scoreMovesHelper(int[] moves, Chessboard board, int ply,
                                         int hashMove){
+
         int maxMoves = moves[moves.length - 1];
+
+        final int mateKiller = mateKillers[whichThread][ply];
+        final int firstKiller = killerMoves[whichThread][ply][0];
+        final int secondKiller = ply >= 2 ? killerMoves[whichThread][ply][1] : 0;
+        final int firstOldKiller = ply >= 2 ? killerMoves[whichThread][ply - 2][0] : 0;
+        final int secondOldKiller = ply >= 2 ? killerMoves[whichThread][ply - 2][1] : 0;
+
         for (int i = 0; i < maxMoves; i++) {
             if (moves[i] == 0){
                 break;
@@ -116,17 +139,13 @@ public class MoveOrdererBetter {
 
             int move = moves[i];
 
-            Assert.assertTrue(moves[i] < MOVE_SIZE_LIMIT);
+            Assert.assertTrue(move < MOVE_SIZE_LIMIT);
+            Assert.assertTrue(hashMove < MOVE_SIZE_LIMIT);
 
-            if (move == hashMove || move == (hashMove & MOVE_MASK)) {
-                moves[i] = buildMoveScore(moves[i], hashScore);
-            }
-            else if (mateKillers[whichThread][ply] != 0 && moves[i] == mateKillers[whichThread][ply]) {
-                Assert.assertTrue(mateKillers[whichThread][ply] < MOVE_SIZE_LIMIT);
-                moves[i] = buildMoveScore(moves[i], mateKillerScore);
-            }
-            else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
-                moves[i] = buildMoveScore(moves[i], CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(moves[i]));
+            final boolean captureMove = isCaptureMove(move);
+
+            if (move == hashMove) {
+                moves[i] = buildMoveScore(move, hashScore);
             }
             else if (isPromotionToQueen(moves[i])) {
                 if (isCaptureMove(moves[i])) {
@@ -142,38 +161,46 @@ public class MoveOrdererBetter {
             else if (isPromotionToBishop(moves[i]) || isPromotionToRook(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], uninterestingPromotion);
             }
-            else if (isCaptureMove(moves[i])) {
-                moves[i] = buildMoveScore(moves[i], mvvLVA(moves[i]));
+            else if (captureMove) {
+                if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
+                    moves[i] = buildMoveScore(moves[i], captureBiasOfLastMovedPiece + mvvLVA(moves[i]));
+                }
+                else {
+                    moves[i] = buildMoveScore(moves[i], mvvLVA(moves[i]));
+                }
             }
-            else if (killerMoves[whichThread][ply][0] != 0 && killerMoves[whichThread][ply][0] == moves[i]) {
-                Assert.assertTrue(killerMoves[whichThread][ply][0] < MOVE_SIZE_LIMIT);
+            else if (mateKiller != 0 && moves[i] == mateKiller) {
+                Assert.assertTrue(mateKiller < MOVE_SIZE_LIMIT);
+                moves[i] = buildMoveScore(moves[i], mateKillerScore);
+            }
+
+            else if (firstKiller != 0 && firstKiller == moves[i]) {
+                Assert.assertTrue(firstKiller < MOVE_SIZE_LIMIT);
                 moves[i] = buildMoveScore(moves[i], killerOneScore);
             }
-            else if (killerMoves[whichThread][ply][1] != 0 && killerMoves[whichThread][ply][1] == moves[i]) {
-                Assert.assertTrue(killerMoves[whichThread][ply][1] < MOVE_SIZE_LIMIT);
+            else if (secondKiller != 0 && secondKiller == moves[i]) {
+                Assert.assertTrue(secondKiller < MOVE_SIZE_LIMIT);
                 moves[i] = buildMoveScore(moves[i], killerTwoScore);
             }
-            else if (ply >= 2 && killerMoves[whichThread][ply - 2][0] != 0
-                    && killerMoves[whichThread][ply - 2][0] == moves[i]) {
-                Assert.assertTrue(killerMoves[whichThread][ply - 2][0] < MOVE_SIZE_LIMIT);
-                moves[i] = buildMoveScore(moves[i], oldKillerScoreOne);
+            else if (checkingMove(board, moves[i])) {
+                moves[i] = MoveParser.setCheckingMove(move);
+                Assert.assertTrue(MoveParser.isCheckingMove(moves[i]));
+                moves[i] = buildMoveScore(moves[i], giveCheckMove);
             }
-            else if (ply >= 2 && killerMoves[whichThread][ply - 2][1] != 0
-                    && killerMoves[whichThread][ply - 2][1] == (moves[i])) {
-                Assert.assertTrue(killerMoves[whichThread][ply - 2][1] < MOVE_SIZE_LIMIT);
-                moves[i] = buildMoveScore(moves[i], oldKillerScoreTwo);
-            }
-////            else if (checkingMove(board, moves[i])) {
-////                moves[i] = buildMoveScore(moves[i], giveCheckMove);
-////            }
             else if (isCastlingMove(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], castlingMove);
             }
+            else if (ply >= 2 && firstOldKiller != 0 && firstOldKiller == moves[i]) {
+                Assert.assertTrue(firstOldKiller < MOVE_SIZE_LIMIT);
+                moves[i] = buildMoveScore(moves[i], oldKillerScoreOne);
+            }
+            else if (ply >= 2 && secondOldKiller != 0 && secondOldKiller == (moves[i])) {
+                Assert.assertTrue(secondOldKiller < MOVE_SIZE_LIMIT);
+                moves[i] = buildMoveScore(moves[i], oldKillerScoreTwo);
+            }
             else {
                 moves[i] = buildMoveScore(moves[i],
-                        Math.max(historyMoveScore(moves[i]), uninterestingMove));
-
-                moves[i] = buildMoveScore(moves[i],5);
+                        Math.max(historyMoveScore(moves[i], whichThread, board.turn), uninterestingMove));
             }
 
             Assert.assertTrue(moves[i] >= MOVE_UPPER_BOUND);
@@ -185,7 +212,7 @@ public class MoveOrdererBetter {
     public static int mvvLVA(int move){
         int sourceScore = scoreByPiece(move, getMovingPieceInt(move));
         int destinationScore = scoreByPiece(move, getVictimPieceInt(move));
-        return CAPTURE_BIAS + destinationScore - sourceScore;
+        return captureBias + destinationScore - sourceScore;
     }
 
     public static int scoreByPiece(int move, int piece){
@@ -197,19 +224,18 @@ public class MoveOrdererBetter {
                 return 1;
             case WHITE_KNIGHT:
             case BLACK_KNIGHT:
-                return 3;
             case WHITE_BISHOP:
             case BLACK_BISHOP:
-                return 3;
+                return 2;
             case WHITE_ROOK:
             case BLACK_ROOK:
-                return 5;
+                return 3;
             case WHITE_QUEEN:
             case BLACK_QUEEN:
-                return 9;
+                return 4;
             case WHITE_KING:
             case BLACK_KING:
-                return 10;
+                return 5;
             default:
                 throw new RuntimeException("score by piece problem "+ move);
         }
@@ -236,7 +262,7 @@ public class MoveOrdererBetter {
                 if (isPromotionMove(move) && isPromotionToQueen(move)) {
                     moves[i] = buildMoveScore(move, queenCapturePromotionScore);
                 } else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
-                    moves[i] = buildMoveScore(move, CAPTURE_BIAS_LAST_MOVED_PIECE + mvvLVA(moves[i]));
+                    moves[i] = buildMoveScore(move, captureBiasOfLastMovedPiece + mvvLVA(moves[i]));
                 } else {
                     moves[i] = buildMoveScore(move, mvvLVA(moves[i]));
                 }
@@ -246,38 +272,38 @@ public class MoveOrdererBetter {
         }
     }
 
-    public static boolean checkingMove(Chessboard board, int move){
+    private static boolean checkingMove(Chessboard board, int move){
         board.makeMoveAndFlipTurn(move);
         boolean checkingMove = board.inCheck(board.isWhiteTurn());
         board.unMakeMoveAndFlipTurn();
         return checkingMove;
     }
 
-    public static void updateHistoryMoves(int whichThread, int move, int ply){
-//        historyMoves[whichThread][getSourceIndex(move)][getDestinationIndex(move)] += (2 * ply);
+    public static void updateHistoryMoves(int whichThread, int move, int ply, int turnOfMover){
+        historyMoves[whichThread + turnOfMover][getSourceIndex(move)][getDestinationIndex(move)] += (ply * ply);
     }
 
-    public static int historyMoveScore(int move){
-        int maxMoveScoreOfHistory = MAX_HISTORY_MOVE_SCORE;
-        int historyScore = historyMoves[0][getSourceIndex(move)][getDestinationIndex(move)];
+    public static int historyMoveScore(int move, int whichThread, int turn){
+        int maxMoveScoreOfHistory = maxHistoryMoveScore;
+        int historyScore = historyMoves[whichThread + turn][getSourceIndex(move)][getDestinationIndex(move)];
         return historyScore > maxMoveScoreOfHistory ? maxMoveScoreOfHistory : historyScore;
     }
 
 
     public static void updateKillerMoves(int whichThread, int move, int ply){
+        Assert.assertTrue(killerMoves.length != 0 && killerMoves[0].length != 0);
+        Assert.assertTrue(move < MOVE_SIZE_LIMIT);
 
-//        Assert.assertTrue(move < MOVE_SIZE_LIMIT);
-//
-//        if (move != killerMoves[whichThread][ply][0]){
-//            if (killerMoves[whichThread][ply][0] != 0) {
-//                killerMoves[whichThread][ply][1] = killerMoves[whichThread][ply][0];
-//            }
-//            killerMoves[whichThread][ply][0] = move;
-//        }
+        if (move != killerMoves[whichThread][ply][0]){
+            if (killerMoves[whichThread][ply][0] != 0) {
+                killerMoves[whichThread][ply][1] = killerMoves[whichThread][ply][0];
+            }
+            killerMoves[whichThread][ply][0] = move;
+        }
     }
 
     public static void updateMateKillerMoves(int whichThread, int move, int ply){
-//        mateKillers[whichThread][ply] = move;
+        mateKillers[whichThread][ply] = move;
     }
 
 
