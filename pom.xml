@@ -290,7 +290,7 @@
 
         <repository>
             <id>com.github.louism33</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/chesscore/1.8</url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/chesscore/1.9</url>
         </repository>
     </repositories>
 
@@ -299,7 +299,7 @@
         <dependency>
             <groupId>com.github.louism33</groupId>
             <artifactId>chesscore</artifactId>
-            <version>1.8-SNAPSHOT</version>
+            <version>1.9-SNAPSHOT</version>
         </dependency>
 
         <dependency>
