@@ -18,7 +18,7 @@ public class WACSilverSanityTest {
 
     private static final int timeLimit = 10_000;
     private static int successes = 0;
-    private static final int targetSuccesses = 275;
+    private static final int targetSuccesses = 175;
 
     @BeforeClass
     public static void setup(){
