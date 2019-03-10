@@ -16,7 +16,7 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class WACSilverSanityTest {
 
-    private static final int timeLimit = 10_000;
+    private static final int timeLimit = 5_000;
     private static int successes = 0;
     private static final int targetSuccesses = 175;
 
