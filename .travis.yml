@@ -1,5 +1,4 @@
 language: java
-sudo: true
 jdk:
 - openjdk11
 deploy:
@@ -15,3 +14,6 @@ deploy:
 env:
   global:
     secure: lnA6Uhw4jhLqCaAwCOe9+VVUkYEixBg2vVHBCm/IRy9ykXCtfcLuE+3Mr4KDxfqR5cU5vZSRN1SDPy7hnpHGo2ginDa38MoJEZCuGUtjDL5qC+ofxU/VHf9hoEhuf/GCZ+duLbVKA9Rnx9sOWRFsuzFf7LFzawByHYb/fqcmkmvlxAIIULO3AXlf9cZW8MGi7uJP/9NeRCfVazHvofXjF2StOEVO7OXLBgmFz15NqTii/3m71l0yGwUflnJTRLJH8zoVjeGXQdjHvi/ukh4eZhOcYvwrhmmjh0KvRfd43WtjLYKOhdt/Jq09o5bmFQ+oU6siSH0oEJJ3uX1fbKbnRAPT+fd9e+SC6lQ50FLM/OAFp+uBRWF8d+quf0kRugsxO+qkXD1Ns0gtAs5La6Ohxg8RTXcZ71+Z9cKVercTPbptu61nuOGcvVz5HMjQs603hBrw+U/V+t7yMXzVYJLSDiX+r4ejWl5BGwuCLUiu7VEbhZ1jInH8iPT3G4ehl2WulDbOnLzhFe0MswBgwGHjnNSu8eKQzfeuR2iT9h+avjirCBzH7CnFnH3TH1vCvUukgvaK2e3Lg5tO9AxkN/RtkdxWmd/QrsXNwpJ6JdqzLxXo1B3GLcDPbQhXTmsPJQjLUiy/UF+N4KYC5tKkLh4YLNFlV1JBDyA1+zLHYfixkhs=
+
+before_install:
+  - chmod +x mvnw
