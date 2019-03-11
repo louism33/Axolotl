@@ -496,8 +496,6 @@ public final class EngineBetter {
                             -alpha - 1, -alpha, nullMoveCounter);
                 }
 
-
-
                 if (numberOfMovesSearched > 1 && score > alpha) {
                     score = -principleVariationSearch(board,
                             depth - 1, ply + 1,
