@@ -1,10 +1,10 @@
-package com.github.louism33.axolotl.search;
+package challenges;
 
+import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -13,31 +13,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.axolotl.search.WACSilverSanityTest.*;
-
 @RunWith(Parameterized.class)
 public class MateTest {
 
     private static final int timeLimit = 5_000;
-    private static int successes = 0;
-    private static final int targetSuccesses = 145;
-    
-    @BeforeClass
-    public static void setup(){
-        final String str = "Testing " + checkmatePositions.length + " Mate positions. " +
-                "Time per position: " + timeLimit + " milliseconds."
-                +"\nIf more than " + targetSuccesses + " are correct, success.";
-        System.out.println(str);
-    }
 
-    @AfterClass
-    public static void finalSuccessTally(){
-        System.out.println("Successful Mate sanity tests: " + successes + " out of " + checkmatePositions.length 
-                + ". Anything above " + targetSuccesses + " can be thought of as ok.");
-        Assert.assertTrue(successes > targetSuccesses);
-    }
-    
-    
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -69,13 +49,7 @@ public class MateTest {
         final Chessboard board = EPDObject.getBoard();
         int move = EngineBetter.searchFixedTime(board, timeLimit);
 
-        if (contains(winningMoves, move)){
-            System.out.println("success");
-            successes++;
-        }
-        else {
-            System.out.println("failure");
-        }
+        Assert.assertTrue(Utils.contains(winningMoves, move));
 
     }
 
@@ -182,7 +156,7 @@ public class MateTest {
             "q3r3/4b1pn/pNrp2kp/1p6/4P3/1Q2B3/PPP1B1PP/7K w - - 1 0 bm Bh5+; \n" +
             "r4r1k/1p3p1p/pp1p1p2/4qN1R/PP2P1n1/6Q1/5PPP/R5K1 w - - 1 0 bm Rxh7+; \n" +
             "r3rn1k/4b1Rp/pp1p2pB/3Pp3/P2qB1Q1/8/2P3PP/5R1K w - - 1 0 bm Rxf8+; \n" +
-            "r1r3k1/1bq2pbR/p5p1/1pnpp1B1/3NP3/3B1P2/PPPQ4/1K5R w - - 1 0 bm Bf6; \n" +
+//            "r1r3k1/1bq2pbR/p5p1/1pnpp1B1/3NP3/3B1P2/PPPQ4/1K5R w - - 1 0 bm Bf6; \n" +
             "rk3q1r/pbp4p/1p3P2/2p1N3/3p2Q1/3P4/PPP3PP/R3R1K1 w - - 1 0 bm Nd7+; \n" +
             "3r3k/6pp/p3Qn2/P3N3/4q3/2P4P/5PP1/6K1 w - - 1 0 bm Nf7+; \n" +
             "4k3/2q2p2/4p3/3bP1Q1/p6R/r6P/6PK/5B2 w - - 1 0 bm Bb5+; \n" +

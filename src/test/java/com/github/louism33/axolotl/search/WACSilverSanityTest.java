@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.search;
 
+import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -63,7 +64,7 @@ public class WACSilverSanityTest {
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.INFO = false;
         int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
-        
+        MoveParser.printMove(move);
         if (contains(winningMoves, move) && !contains(losingMoves, move)){
             System.out.println("success");
             successes++;
