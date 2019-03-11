@@ -211,7 +211,7 @@ public class UCIEntry extends AbstractEngine {
     }
 
     public static void main(String[] args) {
-        System.out.println("axolotl v1.3 by Louis Mackenzie-Smith");
+        System.out.println("axolotl v1.4 by Louis Mackenzie-Smith");
         Thread thread = new Thread( new UCIEntry() );
         thread.start();
     }
