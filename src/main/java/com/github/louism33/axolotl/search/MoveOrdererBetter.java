@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
@@ -9,7 +8,6 @@ import org.junit.Assert;
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
 import static com.github.louism33.axolotl.search.EngineSpecifications.THREAD_NUMBER;
-import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.retrieveFromTable;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_UPPER_BOUND;
 import static com.github.louism33.chesscore.MoveParser.*;
@@ -65,12 +63,11 @@ public final class MoveOrdererBetter {
         return i;
     }
 
-    public static void scoreMovesAtRootOld(int[] moves, int numberOfMoves, Chessboard board){
+    public static void scoreMovesAtRoot(int[] moves, int numberOfMoves, Chessboard board){
         if (!ready) {
             initMoveOrderer();
         }
 
-        
         for (int i = 0; i < numberOfMoves; i++) {
             if (moves[i] == 0){
                 break;
@@ -109,88 +106,6 @@ public final class MoveOrdererBetter {
             }
         }
 
-    }   
-    
-    public static void scoreMovesAtRoot(int[] moves, int numberOfMoves, Chessboard board){
-        if (!ready) {
-            initMoveOrderer();
-        }
-        
-        int hashMove = 0;
-        long previousTableData = retrieveFromTable(board.zobristHash);
-        if (previousTableData != 0) {
-            hashMove = TranspositionTable.getMove(previousTableData);
-        }
-
-        int turn = board.turn;
-
-        for (int i = 0; i < numberOfMoves; i++) {
-            if (moves[i] == 0){
-                break;
-            }
-
-            moves[i] = moves[i] & MOVE_MASK;
-
-            int move = moves[i];
-
-            Assert.assertTrue(move < MOVE_SIZE_LIMIT);
-            Assert.assertTrue(hashMove < MOVE_SIZE_LIMIT);
-
-            final boolean captureMove = isCaptureMove(move);
-
-            if (move == hashMove) {
-                moves[i] = buildMoveScore(move, hashScore);
-            }
-            else if (isPromotionToQueen(move)) {
-                if (captureMove) {
-                    moves[i] = buildMoveScore(move, queenCapturePromotionScore);
-                }
-                else {
-                    moves[i] = buildMoveScore(move, queenQuietPromotionScore);
-                }
-            }
-            else if (isPromotionToKnight(move)) {
-                moves[i] = buildMoveScore(move, knightPromotionScore);
-            }
-            else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
-                moves[i] = buildMoveScore(move, uninterestingPromotion);
-            }
-            else if (captureMove) {
-                if (board.moveIsCaptureOfLastMovePiece(move)) {
-                    moves[i] = buildMoveScore(move, captureBiasOfLastMovedPiece + mvvLVA(move));
-                }
-                else {
-                    moves[i] = buildMoveScore(move, mvvLVA(move));
-                }
-            }
-            else if (checkingMove(board, move)) {
-                moves[i] = MoveParser.setCheckingMove(move);
-                Assert.assertTrue(MoveParser.isCheckingMove(moves[i]));
-                moves[i] = buildMoveScore(move, giveCheckMove);
-            }
-            else if (isCastlingMove(move)) {
-                moves[i] = buildMoveScore(move, castlingMove);
-            }
-            else {
-                boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(turn, move);
-                if (pawnToSeven) {
-                    moves[i] = buildMoveScore(move, pawnPushToSeven);
-                    continue;
-                }
-
-                boolean pawnToSix = MoveParser.moveIsPawnPushSix(turn, move);
-                if (pawnToSix) {
-                    moves[i] = buildMoveScore(move, pawnPushToSix);
-                    continue;
-                }
-
-                moves[i] = buildMoveScore(move, uninterestingMove);
-            }
-
-            Assert.assertTrue(moves[i] >= MOVE_UPPER_BOUND);
-            Assert.assertTrue(moves[i] > MOVE_MASK);
-        }
-
     }
 
 
@@ -201,6 +116,11 @@ public final class MoveOrdererBetter {
         if (!ready) {
             initMoveOrderer();
         }
+        scoreMovesHelper(moves, board, ply, hashMove);
+    }
+
+    public static void scoreMovesHelper(int[] moves, Chessboard board, int ply,
+                                        int hashMove){
 
         int maxMoves = moves[moves.length - 1];
         int turn = board.turn;
@@ -228,56 +148,56 @@ public final class MoveOrdererBetter {
             if (move == hashMove) {
                 moves[i] = buildMoveScore(move, hashScore);
             }
-            else if (isPromotionToQueen(move)) {
-                if (captureMove) {
-                    moves[i] = buildMoveScore(move, queenCapturePromotionScore);
+            else if (isPromotionToQueen(moves[i])) {
+                if (isCaptureMove(moves[i])) {
+                    moves[i] = buildMoveScore(moves[i], queenCapturePromotionScore);
                 }
                 else {
-                    moves[i] = buildMoveScore(move, queenQuietPromotionScore);
+                    moves[i] = buildMoveScore(moves[i], queenQuietPromotionScore);
                 }
             }
-            else if (isPromotionToKnight(move)) {
-                moves[i] = buildMoveScore(move, knightPromotionScore);
+            else if (isPromotionToKnight(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], knightPromotionScore);
             }
-            else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
-                moves[i] = buildMoveScore(move, uninterestingPromotion);
+            else if (isPromotionToBishop(moves[i]) || isPromotionToRook(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], uninterestingPromotion);
             }
             else if (captureMove) {
-                if (board.moveIsCaptureOfLastMovePiece(move)) {
-                    moves[i] = buildMoveScore(move, captureBiasOfLastMovedPiece + mvvLVA(move));
+                if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
+                    moves[i] = buildMoveScore(moves[i], captureBiasOfLastMovedPiece + mvvLVA(moves[i]));
                 }
                 else {
-                    moves[i] = buildMoveScore(move, mvvLVA(move));
+                    moves[i] = buildMoveScore(moves[i], mvvLVA(moves[i]));
                 }
             }
-            else if (mateKiller != 0 && move == mateKiller) {
+            else if (mateKiller != 0 && moves[i] == mateKiller) {
                 Assert.assertTrue(mateKiller < MOVE_SIZE_LIMIT);
-                moves[i] = buildMoveScore(move, mateKillerScore);
+                moves[i] = buildMoveScore(moves[i], mateKillerScore);
             }
 
-            else if (firstKiller != 0 && firstKiller == move) {
+            else if (firstKiller != 0 && firstKiller == moves[i]) {
                 Assert.assertTrue(firstKiller < MOVE_SIZE_LIMIT);
-                moves[i] = buildMoveScore(move, killerOneScore);
+                moves[i] = buildMoveScore(moves[i], killerOneScore);
             }
-            else if (secondKiller != 0 && secondKiller == move) {
+            else if (secondKiller != 0 && secondKiller == moves[i]) {
                 Assert.assertTrue(secondKiller < MOVE_SIZE_LIMIT);
-                moves[i] = buildMoveScore(move, killerTwoScore);
+                moves[i] = buildMoveScore(moves[i], killerTwoScore);
             }
-            else if (checkingMove(board, move)) {
-                moves[i] = MoveParser.setCheckingMove(moves[i]);
+            else if (checkingMove(board, moves[i])) {
+                moves[i] = MoveParser.setCheckingMove(move);
                 Assert.assertTrue(MoveParser.isCheckingMove(moves[i]));
-                moves[i] = buildMoveScore(move, giveCheckMove);
+                moves[i] = buildMoveScore(moves[i], giveCheckMove);
             }
-            else if (isCastlingMove(move)) {
-                moves[i] = buildMoveScore(move, castlingMove);
+            else if (isCastlingMove(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], castlingMove);
             }
-            else if (ply >= 2 && firstOldKiller != 0 && firstOldKiller == move) {
+            else if (ply >= 2 && firstOldKiller != 0 && firstOldKiller == moves[i]) {
                 Assert.assertTrue(firstOldKiller < MOVE_SIZE_LIMIT);
-                moves[i] = buildMoveScore(move, oldKillerScoreOne);
+                moves[i] = buildMoveScore(moves[i], oldKillerScoreOne);
             }
-            else if (ply >= 2 && secondOldKiller != 0 && secondOldKiller == (move)) {
+            else if (ply >= 2 && secondOldKiller != 0 && secondOldKiller == (moves[i])) {
                 Assert.assertTrue(secondOldKiller < MOVE_SIZE_LIMIT);
-                moves[i] = buildMoveScore(move, oldKillerScoreTwo);
+                moves[i] = buildMoveScore(moves[i], oldKillerScoreTwo);
             }
             else {
 
@@ -293,10 +213,10 @@ public final class MoveOrdererBetter {
                     continue;
                 }
                 
-//                moves[i] = buildMoveScore(move,
+//                moves[i] = buildMoveScore(moves[i],
 //                        Math.max(historyMoveScore(move, whichThread, board.turn), uninterestingMove));                
 
-                moves[i] = buildMoveScore(move, uninterestingMove);
+                moves[i] = buildMoveScore(moves[i], uninterestingMove);
             }
 
             Assert.assertTrue(moves[i] >= MOVE_UPPER_BOUND);
@@ -342,26 +262,28 @@ public final class MoveOrdererBetter {
     order moves by most valuable victim and least valuable aggressor
      */
     public static void scoreMovesQuiescence(int[] moves, Chessboard board){
+        scoreMovesQuiescenceHelper(moves, board);
+    }
+
+    public static void scoreMovesQuiescenceHelper(int[] moves, Chessboard board){
         final int maxMoves = moves[moves.length - 1];
         for (int i = 0; i < maxMoves; i++) {
             if (moves[i] == 0){
                 break;
             }
 
-            moves[i] &= MOVE_MASK;
-            
             int move = moves[i];
 
             if (isCaptureMove(move)) {
                 if (isPromotionMove(move) && isPromotionToQueen(move)) {
                     moves[i] = buildMoveScore(move, queenCapturePromotionScore);
-                } else if (board.moveIsCaptureOfLastMovePiece(move)) {
-                    moves[i] = buildMoveScore(move, captureBiasOfLastMovedPiece + mvvLVA(move));
+                } else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
+                    moves[i] = buildMoveScore(move, captureBiasOfLastMovedPiece + mvvLVA(moves[i]));
                 } else {
-                    moves[i] = buildMoveScore(move, mvvLVA(move));
+                    moves[i] = buildMoveScore(move, mvvLVA(moves[i]));
                 }
-            } else if (isPromotionMove(move) && (isPromotionToQueen(move))) {
-                moves[i] = buildMoveScore(move, queenQuietPromotionScore);
+            } else if (isPromotionMove(move) && (isPromotionToQueen(moves[i]))) {
+                moves[i] = buildMoveScore(moves[i], queenQuietPromotionScore);
             }
         }
     }

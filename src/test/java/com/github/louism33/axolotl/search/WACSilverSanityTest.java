@@ -1,9 +1,10 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
-import org.junit.*;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -18,16 +19,16 @@ public class WACSilverSanityTest {
     private static final int timeLimit = 5_000;
     private static int successes = 0;
     private static final int targetSuccesses = 175;
-    
-    @BeforeAll
+
+    @BeforeClass
     public static void setup(){
         final String str = "Testing " + splitUpPositions.length + " WAC positions. " +
                 "Time per position: " + timeLimit + " milliseconds." 
                 +"\nIf more than " + targetSuccesses + " are correct, success.";
         System.out.println(str);
-    }
-
-    @AfterAll
+    }    
+    
+    @AfterClass
     public static void finalSuccessTally(){
         System.out.println("Successful WAC Silver sanity tests: " + successes);
         Assert.assertTrue(successes > targetSuccesses);
@@ -50,14 +51,11 @@ public class WACSilverSanityTest {
     }
 
     private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
-    private static String name;
 
-    public WACSilverSanityTest(Object edp, Object n) {
+    public WACSilverSanityTest(Object edp, Object name) {
         EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
-        name = (String) n;
     }
 
- 
     @Test
     public void test() {
         System.out.println(EPDObject.getBoardFen());
@@ -73,8 +71,6 @@ public class WACSilverSanityTest {
         else {
             System.out.println("failure");
         }
-        
-        Assert.assertTrue(move != 0);
     }
 
     public static boolean contains(int[] ints, int target) {

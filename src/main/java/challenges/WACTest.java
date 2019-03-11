@@ -3,7 +3,6 @@ package challenges;
 import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.MoveParser;
-import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,21 +14,13 @@ import java.util.Collection;
 import java.util.List;
 
 import static challenges.Utils.contains;
+import static com.github.louism33.utils.ExtendedPositionDescriptionParser.EPDObject;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseEDPPosition;
 
 @RunWith(Parameterized.class)
 public class WACTest {
 
-    private static final int timeLimit = 60_000;
-    
-    // tough at 5 sec
-//    private static final int[] infamousIndexes = {2, 48, 54, 80, 86, 116, 141, 145, 163, 196, 222, 228, 230, 241, 243, 248, 252, 256, 283, 293}; 
-    
-    // tough at 10 sec
-    private static final int[] infamousIndexes = {86, 116, 145, 163, 196, 222, 230, 243, 248, 252, 256, 293};    
-    
-    // tough at 60 sec
-//    private static final int[] infamousIndexes = {86, 163, 196, 230, 248, 256, 293};
+    private static final int timeLimit = 5_000;
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -39,13 +30,9 @@ public class WACTest {
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
-            if (!contains(infamousIndexes, i+1)) {
-                continue;
-            }
-
             String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
-            ExtendedPositionDescriptionParser.EPDObject EPDObject = parseEDPPosition(splitUpWAC);
+            EPDObject EPDObject = parseEDPPosition(splitUpWAC);
             objectAndName[0] = EPDObject;
             objectAndName[1] = EPDObject.getId();
             answers.add(objectAndName);
@@ -53,10 +40,10 @@ public class WACTest {
         return answers;
     }
 
-    private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
+    private static EPDObject EPDObject;
 
     public WACTest(Object edp, Object name) {
-        EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
+        EPDObject = (EPDObject) edp;
     }
 
     @Test
@@ -65,7 +52,7 @@ public class WACTest {
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.INFO = true;
+        EngineSpecifications.INFO = false;
         int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
         MoveParser.printMove(move);
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));

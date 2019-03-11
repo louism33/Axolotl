@@ -2,12 +2,8 @@ package com.github.louism33.axolotl.search;
 
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -15,29 +11,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.axolotl.search.WACSilverSanityTest.contains;
-
 @RunWith(Parameterized.class)
 public class MateTest {
 
     private static final int timeLimit = 5_000;
-    private static int successes = 0;
-    private static final int targetSuccesses = 145;
 
-    @BeforeAll
-    public static void setup(){
-        final String str = "Testing " + checkmatePositions.length + " WAC positions. " +
-                "Time per position: " + timeLimit + " milliseconds."
-                +"\nIf more than " + targetSuccesses + " are correct, success.";
-        System.out.println(str);
-    }
-
-    @AfterAll
-    public static void finalSuccessTally(){
-        System.out.println("Successful WAC Silver sanity tests: " + successes);
-        Assert.assertTrue(successes > targetSuccesses);
-    }
-    
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -69,14 +47,8 @@ public class MateTest {
         final Chessboard board = EPDObject.getBoard();
         int move = EngineBetter.searchFixedTime(board, timeLimit);
 
-        if (contains(winningMoves, move) && !contains(EPDObject.getAvoidMoves(), move)){
-            System.out.println("success");
-            successes++;
-        }
-        else {
-            System.out.println("failure");
-        }
-        
+        Assert.assertTrue(WACSilverSanityTest.contains(winningMoves, move));
+
     }
 
     private static final String positions = "" +

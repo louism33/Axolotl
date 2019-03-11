@@ -185,6 +185,7 @@ public final class EngineBetter {
             nps = 0;
         }
         else {
+            System.out.println("time: " + time + " seconds.");
             final long total = numberOfMovesMade[0] + numberOfQMovesMade[0];
             nps = ((1000 * total) / time);
         }
@@ -247,16 +248,14 @@ public final class EngineBetter {
             }
 
             if (INFO) {
-                long time = System.currentTimeMillis() - startTime;
-                UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth, time);
+                UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
             }
 
             aspirationScore = score;
         }
-//        if (INFO) {
-        long time = System.currentTimeMillis() - startTime;
-            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth, time);
-//        }
+        if (INFO) {
+            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth);
+        }
     }
 
 
