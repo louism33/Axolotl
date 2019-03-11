@@ -215,5 +215,4 @@ public class UCIEntry extends AbstractEngine {
         Thread thread = new Thread( new UCIEntry() );
         thread.start();
     }
-
 }
