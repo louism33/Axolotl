@@ -20,16 +20,34 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 @RunWith(Parameterized.class)
 public class WACTest {
 
-    private static final int timeLimit = 6_000;
+    private static final int timeLimit = 5_000;
 
+    // tough at 5 sec
+    private static final int[] infamousIndexes = {2, 49, 55, 80, 86, 116, 141, 145, 163, 196, 222, 228, 230, 241, 243, 248, 252, 256, 283, 293};
+
+    // tough at 10 sec
+//    private static final int[] infamousIndexes = {49, 86, 116, 145, 163, 196, 222, 230, 243, 248, 252, 256, 293};
+
+
+    // tough at 20 sec
+//    private static final int[] infamousIndexes = {86, 145, 163, 196, 230, 243, 248, 252, 256, 293};
+
+    // tough at 120 sec
+//    private static final int[] infamousIndexes = {86, 163, 196, 230, 248, 293};
+
+    
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.INFO = true;
+        EngineSpecifications.INFO = false;
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
+            if (!contains(infamousIndexes, i + 1)) {
+                continue;
+            }
+            
             String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             EPDObject EPDObject = parseEDPPosition(splitUpWAC);
@@ -52,7 +70,6 @@ public class WACTest {
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.INFO = false;
         int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
         MoveParser.printMove(move);
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
