@@ -2,8 +2,6 @@ language: java
 jdk:
 - openjdk11
 sudo: true
-before_install:
-- chmod +x mvnw
 deploy:
   provider: releases
   api_key:
