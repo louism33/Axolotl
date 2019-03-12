@@ -399,6 +399,10 @@ public final class EngineBetter {
             Assert.assertEquals(moves[0] & MOVE_MASK_WO_CHECK, hashMove);
         }
 
+        if (ply != 0 && thisIsAPrincipleVariationNode) {
+//            Assert.assertTrue(hashMove != 0);
+        }
+
         for (int i = 0; i < lastMove; i++) {
             if (moves[i] == 0) {
                 break;
@@ -488,7 +492,7 @@ public final class EngineBetter {
 
                 int R = 2;
 
-                if (numberOfMovesSearched > 1
+                if (numberOfMovesSearched > 3
                         && depth > R && !captureMove && !queenPromotionMove
                         && !pawnToSeven && !boardInCheck && !givesCheckMove) {
 
