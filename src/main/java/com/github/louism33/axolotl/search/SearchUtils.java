@@ -13,10 +13,10 @@ final class SearchUtils {
     static final int[] futilityMargin = {0, 180, 250, 350, 450};
     public static final int futilityBelowThisDepth = futilityMargin.length;
 
-    static final int[] alphaRazorMargin = {0, 300, 500, 650};
+    static final int[] alphaRazorMargin = {0, 400, 600, 800};
     public static final int alphaRazorBelowThisDepth = alphaRazorMargin.length;
 
-    static final int[] betaRazorMargin = {0, 150, 250, 350, 450, 650, 750};
+    static final int[] betaRazorMargin = {0, 250, 350, 450, 550, 750, 1000};
     public static final int betaRazorBelowThisDepth = betaRazorMargin.length;
 
     static int extensions(Chessboard board, int ply, boolean boardInCheck, int[] moves){
