@@ -9,7 +9,8 @@ import static com.github.louism33.chesscore.BoardConstants.*;
 
 final class SearchUtils {
 
-    static final int[] futilityMargin = {0, 150, 250, 350, 450, 550, 650};
+//    static final int[] futilityMargin = {0, 180, 250, 350, 450, 550, 650};
+    static final int[] futilityMargin = {0, 180, 250, 350, 450};
     public static final int futilityBelowThisDepth = futilityMargin.length;
 
     static final int[] alphaRazorMargin = {0, 300, 500, 650};
@@ -87,7 +88,7 @@ final class SearchUtils {
                 && !givesCheckMove
                 && !pawnToSix
                 && !pawnToSeven
-                && numberOfMovesSearched > 2
+                && numberOfMovesSearched > 6
                 ;
     }
 }

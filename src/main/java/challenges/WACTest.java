@@ -45,7 +45,7 @@ public class WACTest {
         for (int i = 0; i < splitUpPositions.length; i++) {
 
             if (!contains(infamousIndexes, i + 1)) {
-                continue;
+//                continue;
             }
             
             String splitUpWAC = splitUpPositions[i];
