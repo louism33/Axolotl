@@ -10,7 +10,7 @@ public final class EngineSpecifications {
     public static final int MAX_DEPTH_HARD                           = 62;
     public static boolean ALLOW_TIME_LIMIT                           = true;
 
-    static final int[] ASPIRATION_WINDOWS                            = {10, 100, 1000};
+    static final int[] ASPIRATION_WINDOWS                            = {50, 100, 1000};
     static final int ASPIRATION_MAX_TRIES                            = ASPIRATION_WINDOWS.length;
     /*
     one mb is 1024 KB

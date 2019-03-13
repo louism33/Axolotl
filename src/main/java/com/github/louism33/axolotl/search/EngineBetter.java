@@ -270,6 +270,7 @@ public final class EngineBetter {
 
         final int originalAlpha = alpha;
         final int turn = board.turn;
+
         int[] moves = ply == 0 ? rootMoves : board.generateLegalMoves();
 
         boolean boardInCheck = board.inCheckRecorder;
@@ -363,6 +364,8 @@ public final class EngineBetter {
 
             int R = 2;
             if (isNullMoveOkHere(board, nullMoveCounter, depth, R)){
+                Chessboard clone = new Chessboard(board);
+
                 board.makeNullMoveAndFlipTurn();
 
                 int nullScore = -principleVariationSearch(board,
@@ -370,6 +373,8 @@ public final class EngineBetter {
                         -beta, -beta + 1, nullMoveCounter + 1);
 
                 board.unMakeNullMoveAndFlipTurn();
+
+                Assert.assertEquals(board, clone);
 
                 if (nullScore >= beta){
                     if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY){
@@ -396,11 +401,17 @@ public final class EngineBetter {
         }
 
         if (ply != 0 && hashMove != 0){
+            if ((moves[0] & MOVE_MASK_WITHOUT_CHECK) != hashMove) {
+                System.out.println(board);
+                MoveParser.printMove(moves);
+                System.out.println("correct: ");
+                MoveParser.printMove(moves[0]);
+                
+                MoveParser.printMove(hashMove);
+                System.out.println("details : ");
+                System.out.println(ply + "  " + depth);
+            }
             Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
-        }
-
-        if (ply != 0 && thisIsAPrincipleVariationNode) {
-//            Assert.assertTrue(hashMove != 0);
         }
 
         for (int i = 0; i < lastMove; i++) {
@@ -449,7 +460,7 @@ public final class EngineBetter {
 
             if (!thisIsAPrincipleVariationNode) {
                 if (bestScore < CHECKMATE_ENEMY_SCORE_MAX_PLY
-                        && notJustPawnsLeft(board, board.isWhiteTurn())) {
+                        && notJustPawnsLeft(board)) {
                     if (!queenPromotionMove
                             && !givesCheckMove
                             && !pawnToSix

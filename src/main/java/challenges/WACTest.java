@@ -23,14 +23,14 @@ public class WACTest {
     private static final int timeLimit = 5_000;
 
     // tough at 5 sec
-    private static final int[] infamousIndexes = {2, 55, 80, 86, 116, 163, 196, 222, 226, 230, 241, 243, 248, 252, 283, 293};
+    private static final int[] infamousIndexes = {86, 92, 116, 160, 163, 180, 196, 204, 222, 230, 241, 243, 248, 252, 283, 293, 297};
 
     // tough at 10 sec
-//       private static final int[] infamousIndexes = {80, 86, 116, 163, 196, 222, 230, 248, 252, 293};
+//    private static final int[] infamousIndexes = {86, 92, 160, 180, 196, 230, 243, 248, 252, 293};
 
 
     // tough at 20 sec
-//    private static final int[] infamousIndexes = {86, 163, 196, 230, 248, 252, 293};
+//    private static final int[] infamousIndexes = {86, 92, 160, 180, 196, 230, 243, 293};
 
     // tough at 120 sec
 //    private static final int[] infamousIndexes = {86, 196, 230, 248, 293};
@@ -45,7 +45,7 @@ public class WACTest {
         for (int i = 0; i < splitUpPositions.length; i++) {
 
             if (!contains(infamousIndexes, i + 1)) {
-//                continue;
+                continue;
             }
             
             String splitUpWAC = splitUpPositions[i];

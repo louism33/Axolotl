@@ -5,6 +5,7 @@ import com.github.louism33.chesscore.MoveParser;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
+import static com.github.louism33.chesscore.BoardConstants.*;
 
 final class SearchUtils {
 
@@ -58,46 +59,23 @@ final class SearchUtils {
         return nullMoveCounter < 2
                 && depth > R
                 && !maybeInEndgame(board)
-                && notJustPawnsLeft(board, board.isWhiteTurn())
-                && !maybeInZugzwang(board, board.isWhiteTurn());
+                && notJustPawnsLeft(board)
+                && !maybeInZugzwang(board);
     }
 
     public static boolean maybeInEndgame(Chessboard board){
-        return populationCount(board.allPieces()) < 9;
+        return populationCount(board.pieces[board.turn][ALL_COLOUR_PIECES] | board.pieces[1 - board.turn][ALL_COLOUR_PIECES]) < 9;
     }
 
-    public static boolean maybeInZugzwang(Chessboard board, boolean white){
+    public static boolean maybeInZugzwang(Chessboard board){
         // returns true if you are down to Pawns and King (+1 extra piece)
-//        long myPawns, myKing, allMyPieces;
-//        if (white){
-//            allMyPieces = board.whitePieces();
-//            myPawns = board.getWhitePawns();
-//            myKing = board.getWhiteKing();
-//        }
-//        else {
-//            allMyPieces = board.blackPieces();
-//            myPawns = board.getBlackPawns();
-//            myKing = board.getBlackKing();
-//        }
-//        return populationCount(allMyPieces ^ (myPawns | myKing)) <= 1;
-        
-        return false;
+        final int turn = board.turn;
+        return populationCount(board.pieces[turn][ALL_COLOUR_PIECES] ^ (board.pieces[turn][PAWN] | board.pieces[turn][KING])) <= 1;
     }
 
-    static boolean notJustPawnsLeft(Chessboard board, boolean white){
-//        long myPawns, myKing, allMyPieces;
-//        if (white){
-//            allMyPieces = board.whitePieces();
-//            myPawns = board.getWhitePawns();
-//            myKing = board.getWhiteKing();
-//        }
-//        else {
-//            allMyPieces = board.blackPieces();
-//            myPawns = board.getBlackPawns();
-//            myKing = board.getBlackKing();
-//        }
-//        return populationCount(allMyPieces ^ (myPawns | myKing)) != 0;
-        return false;
+    static boolean notJustPawnsLeft(Chessboard board){
+        final int turn = board.turn;
+        return populationCount(board.pieces[turn][ALL_COLOUR_PIECES] ^ (board.pieces[turn][PAWN] | board.pieces[turn][KING])) != 0;
     }
     
     static boolean isFutilityPruningAllowedHere(int depth,
@@ -112,10 +90,4 @@ final class SearchUtils {
                 && numberOfMovesSearched > 2
                 ;
     }
-
-
-    static int lateMoveDepthReduction(int depth, int numberOfMovesSearched){
-        return 2 + depth / 3 + (numberOfMovesSearched / 10);
-    }
-    
 }
