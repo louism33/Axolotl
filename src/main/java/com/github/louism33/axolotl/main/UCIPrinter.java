@@ -15,7 +15,7 @@ import static com.github.louism33.axolotl.main.UCIBoardParser.convertMyMoveToGen
 
 public final class UCIPrinter {
 
-    public static void sendInfoCommand(Chessboard board, int aiMove, int nodeScore, int depth, long time){
+    public static void sendInfoCommand(Chessboard board, int aiMove, int nodeScore, int depth, long time, long nodes){
         ProtocolInformationCommand protocolInformationCommand = new ProtocolInformationCommand();
 
         if (depth != 0) {
@@ -30,6 +30,8 @@ public final class UCIPrinter {
         protocolInformationCommand.setCurrentMove(convertMyMoveToGenericMove(aiMove));
 
         protocolInformationCommand.setNodes(EngineBetter.numberOfMovesMade[0]);
+        
+        protocolInformationCommand.setNodes(nodes);
 
         EngineBetter.calculateNPS();
         long nps = EngineBetter.nps;
@@ -47,7 +49,7 @@ public final class UCIPrinter {
 
         if (EngineBetter.getUciEntry() == null){
             System.out.println(buildString
-                    (aiMove, nodeScore, depth, mateFound, 2*distanceToMate(nodeScore), pvMoves, nps, time));
+                    (aiMove, nodeScore, depth, mateFound, 2*distanceToMate(nodeScore), pvMoves, nps, time, nodes));
         } else {
             EngineBetter.getUciEntry().sendInformation(protocolInformationCommand);
         }
@@ -55,15 +57,15 @@ public final class UCIPrinter {
     
     public static String buildString(int aiMove, int score, int depth, 
                                       boolean mateFound, int distanceToMate, 
-                                      List<GenericMove> pvMoves, long nps, long time){
+                                      List<GenericMove> pvMoves, long nps, long time, long nodes){
         final String npsString = nps == 0 ? "" : ", nps: " + nps;
         if (mateFound){
             return String.format("   m%d : %s ", distanceToMate,
-                    MoveParser.toString(aiMove)) + ", depth: " + depth + ", time " + time + ", " +  pvMoves + npsString;
+                    MoveParser.toString(aiMove)) + ", depth: " + depth + ", time " + time + ", " +  pvMoves + npsString + ", nodes " + nodes;
         }
         else {
             return String.format("% 5d : %s, depth: %d", score, MoveParser.toString(aiMove), depth) 
-                    + ", time " + time + ", " + pvMoves + npsString;
+                    + ", time " + time + ", " + pvMoves + npsString + ", nodes " + nodes;
         }
     }
 

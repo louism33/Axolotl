@@ -1,5 +1,7 @@
 package com.github.louism33.axolotl.search;
 
+import com.github.louism33.chesscore.Chessboard;
+
 public final class EngineSpecifications {
 
     public static int THREAD_NUMBER                                  = 1;
@@ -7,6 +9,7 @@ public final class EngineSpecifications {
     public static boolean INFO                                       = true;
     public static boolean PRINT                                      = false;
     public static int MAX_DEPTH                                      = 62;
+    public static final int MAX_DEPTH_HARD                           = 62;
     public static boolean ALLOW_TIME_LIMIT                           = true;
 
     static final int[] ASPIRATION_WINDOWS                            = {10, 100, 1000};

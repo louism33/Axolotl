@@ -23,17 +23,17 @@ public class WACTest {
     private static final int timeLimit = 5_000;
 
     // tough at 5 sec
-    private static final int[] infamousIndexes = {2, 49, 55, 80, 86, 116, 141, 145, 163, 196, 222, 228, 230, 241, 243, 248, 252, 256, 283, 293};
+    private static final int[] infamousIndexes = {2, 55, 80, 86, 116, 163, 196, 222, 226, 230, 241, 243, 248, 252, 283, 293};
 
     // tough at 10 sec
-//    private static final int[] infamousIndexes = {49, 86, 116, 145, 163, 196, 222, 230, 243, 248, 252, 256, 293};
+//       private static final int[] infamousIndexes = {80, 86, 116, 163, 196, 222, 230, 248, 252, 293};
 
 
     // tough at 20 sec
-//    private static final int[] infamousIndexes = {86, 145, 163, 196, 230, 243, 248, 252, 256, 293};
+//    private static final int[] infamousIndexes = {86, 163, 196, 230, 248, 252, 293};
 
     // tough at 120 sec
-//    private static final int[] infamousIndexes = {86, 163, 196, 230, 248, 293};
+//    private static final int[] infamousIndexes = {86, 196, 230, 248, 293};
 
     
     @Parameters(name = "{index} Test: {1}")

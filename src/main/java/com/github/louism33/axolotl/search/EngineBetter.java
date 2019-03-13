@@ -39,7 +39,6 @@ public final class EngineBetter {
         return uciEntry;
     }
 
-
     public static boolean contains(int[] ints, int target) {
         for (int i = 0; i < ints.length; i++) {
             if (ints[i] == target) {
@@ -169,7 +168,6 @@ public final class EngineBetter {
             }
             else {
                 calculateNPS();
-                System.out.println("time spent: " + (time / 1000) + " and nps: " + nps);
             }
         }
 
@@ -248,14 +246,14 @@ public final class EngineBetter {
 
             if (INFO) {
                 long time = System.currentTimeMillis() - startTime;
-                UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth, time);
+                UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth, time, numberOfMovesMade[0]);
             }
 
             aspirationScore = score;
         }
         if (INFO) {
             long time = System.currentTimeMillis() - startTime;
-            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth, time);
+            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth, time, numberOfMovesMade[0]);
         }
     }
 

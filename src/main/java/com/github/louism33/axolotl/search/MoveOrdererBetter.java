@@ -6,8 +6,7 @@ import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
-import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH;
-import static com.github.louism33.axolotl.search.EngineSpecifications.THREAD_NUMBER;
+import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_UPPER_BOUND;
 import static com.github.louism33.chesscore.MoveParser.*;
@@ -24,8 +23,8 @@ public final class MoveOrdererBetter {
     public static final int MOVE_MASK_WO_CHECK = 0x1ffffff;
 
     public static void initMoveOrderer(){
-        mateKillers = new int[THREAD_NUMBER][MAX_DEPTH];
-        killerMoves = new int[THREAD_NUMBER][MAX_DEPTH][2];
+        mateKillers = new int[THREAD_NUMBER][MAX_DEPTH_HARD];
+        killerMoves = new int[THREAD_NUMBER][MAX_DEPTH_HARD][2];
         historyMoves = new int[THREAD_NUMBER * 2][64][64]; // one for each side to move. number of squares ** 2
         ready = true;
     }
