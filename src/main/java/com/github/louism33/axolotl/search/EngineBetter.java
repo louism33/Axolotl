@@ -18,6 +18,7 @@ import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocateT
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
+import static com.github.louism33.chesscore.MoveConstants.*;
 
 @SuppressWarnings("ALL")
 public final class EngineBetter {
@@ -60,7 +61,7 @@ public final class EngineBetter {
 
         initTable(TABLE_SIZE);
 
-        MoveOrdererBetter.initMoveOrderer();
+        initMoveOrderer();
     }
 
     public static void main(String[] args) {
@@ -104,7 +105,7 @@ public final class EngineBetter {
 
     private static int[] rootMoves;
     public static int getAiMove(){
-        return rootMoves[0];
+        return rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
     }
     public static int searchMyTime(Chessboard board, long maxTime, long increment) {
         EngineSpecifications.ALLOW_TIME_LIMIT = true;
@@ -150,7 +151,8 @@ public final class EngineBetter {
 
         int numberOfRealMoves = rootMoves[rootMoves.length - 1];
         if (numberOfRealMoves == 0 || numberOfRealMoves == 1){
-            return rootMoves[0] & MOVE_MASK;
+//            return rootMoves[0] & MOVE_MASK_WITH_CHECK;
+            return rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
         }
 
         scoreMovesAtRoot(rootMoves, numberOfRealMoves, board);
@@ -171,8 +173,8 @@ public final class EngineBetter {
             }
         }
 
-        final int bestMove = rootMoves[0] & MOVE_MASK;
-        final int actual = aiMoveX & MOVE_MASK;
+        final int bestMove = rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
+        final int actual = aiMoveX & MOVE_MASK_WITHOUT_CHECK;
         return bestMove;
     }
 
@@ -209,7 +211,7 @@ public final class EngineBetter {
         while (depth < depthLimit){
             depth++;
 
-            int previousAi = rootMoves[0];
+            int previousAi = rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
 
             while (true){
                 score = principleVariationSearch(board, depth, 0,
@@ -251,10 +253,10 @@ public final class EngineBetter {
 
             aspirationScore = score;
         }
-        if (INFO) {
+//        if (INFO) {
             long time = System.currentTimeMillis() - startTime;
             UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth, time, numberOfMovesMade[0]);
-        }
+//        }
     }
 
 
@@ -389,12 +391,12 @@ public final class EngineBetter {
         int numberOfMovesSearched = 0;
 
         if (ply == 0 && hashMove != 0){
-            Assert.assertEquals(moves[0] & MOVE_MASK_WO_CHECK, hashMove);
-            Assert.assertEquals(rootMoves[0] & MOVE_MASK_WO_CHECK, hashMove);
+            Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
+            Assert.assertEquals(rootMoves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
         }
 
         if (ply != 0 && hashMove != 0){
-            Assert.assertEquals(moves[0] & MOVE_MASK_WO_CHECK, hashMove);
+            Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
         }
 
         if (ply != 0 && thisIsAPrincipleVariationNode) {
@@ -418,7 +420,7 @@ public final class EngineBetter {
             }
 
 
-            int move = moves[i] & MoveOrdererBetter.MOVE_MASK;
+            int move = moves[i] & MOVE_MASK_WITHOUT_CHECK;
 
             Assert.assertTrue(moveScore != 0);
 
@@ -432,7 +434,7 @@ public final class EngineBetter {
             boolean captureMove = MoveParser.isCaptureMove(move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
             boolean queenPromotionMove = !promotionMove ? false : MoveParser.isPromotionToQueen(move);
-            boolean givesCheckMove = MoveParser.isCheckingMove(move);
+            boolean givesCheckMove = MoveParser.isCheckingMove(moves[i]); // keep moves[i] here
             boolean pawnToSix = MoveParser.moveIsPawnPushSix(turn, move);
             boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(turn, move);
 
@@ -568,7 +570,7 @@ public final class EngineBetter {
         }
 
         addToTableReplaceByDepth(board.zobristHash,
-                bestMove & MoveOrdererBetter.MOVE_MASK, bestScore, depth, flag, ply);
+                bestMove & MOVE_MASK_WITHOUT_CHECK, bestScore, depth, flag, ply);
 
         return bestScore;
     }
@@ -577,14 +579,14 @@ public final class EngineBetter {
     private static int aiMoveX = 0;
     private static void putAIMoveFirst(int aiMove) {
         aiMoveX = aiMove;
-        final int aiMoveMask = aiMove & MOVE_MASK;
-        if ((rootMoves[0] & MOVE_MASK) == aiMoveMask) {
+        final int aiMoveMask = aiMove & MOVE_MASK_WITHOUT_CHECK;
+        if ((rootMoves[0] & MOVE_MASK_WITHOUT_CHECK) == aiMoveMask) {
             return;
         }
 
         final int maxMoves = rootMoves.length - 1;
         for (int i = 0; i < maxMoves; i++) {
-            final int rootMove = rootMoves[i] & MOVE_MASK;
+            final int rootMove = rootMoves[i] & MOVE_MASK_WITHOUT_CHECK;
             if (rootMove == aiMove || rootMove == aiMoveMask) {
                 Assert.assertTrue(i != 0);
                 System.arraycopy(rootMoves, 0,

@@ -2,13 +2,15 @@ package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.evaluation.Evaluator;
-import com.github.louism33.axolotl.moveordering.MoveOrderingConstants;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static com.github.louism33.axolotl.search.MoveOrdererBetter.*;
+import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
+import static com.github.louism33.chesscore.MoveConstants.FIRST_FREE_BIT;
 
 public final class QuiescenceBetter {
 
@@ -35,12 +37,12 @@ public final class QuiescenceBetter {
         Assert.assertFalse(standPatScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
 
         if (!inCheck) {
-            MoveOrdererBetter.scoreMovesQuiescence(moves, board);
+            scoreMovesQuiescence(moves, board);
             int realMoves = MoveParser.numberOfRealMoves(moves);
             Ints.sortDescending(moves, 0, realMoves);
         }
         else {
-            MoveOrdererBetter.scoreMoves(moves, board, 0, 0);
+            scoreMoves(moves, board, 0, 0);
             int realMoves = MoveParser.numberOfRealMoves(moves);
             Ints.sortDescending(moves, 0, realMoves);
         }
@@ -54,7 +56,7 @@ public final class QuiescenceBetter {
                 break;
             }
 
-            int loudMoveScore = MoveOrdererBetter.getMoveScore(move);
+            int loudMoveScore = getMoveScore(move);
 
             final boolean captureMove = MoveParser.isCaptureMove(move);
             final boolean promotionMove = MoveParser.isPromotionMove(move);
@@ -67,7 +69,7 @@ public final class QuiescenceBetter {
                 break;
             }
 
-            int loudMove = move & MoveOrdererBetter.MOVE_MASK;
+            int loudMove = move & MOVE_MASK_WITH_CHECK;
             if (!inCheck) {
                 if (i == 0) {
                     Assert.assertTrue(moves[i] >= moves[i + 1]);
@@ -75,7 +77,7 @@ public final class QuiescenceBetter {
                     Assert.assertTrue(moves[i] <= moves[i - 1]);
                     Assert.assertTrue(moves[i] >= moves[i + 1]);
                 }
-                Assert.assertTrue(moves[i] > MoveOrderingConstants.MOVE_SIZE_LIMIT);
+                Assert.assertTrue(moves[i] > FIRST_FREE_BIT);
             }
 
             if (!inCheck) {

@@ -2,13 +2,15 @@ package com.github.louism33.axolotl.search;
 
 import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MoveConstants;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
-import static com.github.louism33.axolotl.search.EngineSpecifications.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH_HARD;
+import static com.github.louism33.axolotl.search.EngineSpecifications.THREAD_NUMBER;
 import static com.github.louism33.chesscore.BoardConstants.*;
-import static com.github.louism33.chesscore.MoveConstants.MOVE_UPPER_BOUND;
+import static com.github.louism33.chesscore.MoveConstants.*;
 import static com.github.louism33.chesscore.MoveParser.*;
 
 public final class MoveOrdererBetter {
@@ -18,9 +20,6 @@ public final class MoveOrdererBetter {
     public static int[][] mateKillers;
     public static int[][][] killerMoves;
     public static int[][][] historyMoves;
-
-    public static final int MOVE_MASK = ~MOVE_SCORE_MASK;
-    public static final int MOVE_MASK_WO_CHECK = 0x1ffffff;
 
     public static void initMoveOrderer(){
         mateKillers = new int[THREAD_NUMBER][MAX_DEPTH_HARD];
@@ -93,9 +92,14 @@ public final class MoveOrdererBetter {
             else if (isCaptureMove(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], mvvLVA(moves[i]));
             }
-//            else if (calculateIfCheckingMove(board, moves[i])) {
-//                moves[i] = buildMoveScore(moves[i], giveCheckMove);
-//            }
+            
+            
+            else if (checkingMove(board, moves[i])) {
+                moves[i] = MoveParser.setCheckingMove(moves[i]);
+                Assert.assertTrue(MoveParser.isCheckingMove(moves[i]));
+                moves[i] = buildMoveScore(moves[i], giveCheckMove);
+            }
+            
             else if (isCastlingMove(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], castlingMove);
             }
@@ -135,12 +139,12 @@ public final class MoveOrdererBetter {
                 break;
             }
 
-            moves[i] = moves[i] & MOVE_MASK;
+            moves[i] = moves[i] & MOVE_MASK_WITH_CHECK;
 
             int move = moves[i];
 
-            Assert.assertTrue(move < MOVE_SIZE_LIMIT);
-            Assert.assertTrue(hashMove < MOVE_SIZE_LIMIT);
+            Assert.assertTrue(move < MoveConstants.FIRST_FREE_BIT);
+            Assert.assertTrue(hashMove < MoveConstants.FIRST_FREE_BIT);
 
             final boolean captureMove = isCaptureMove(move);
 
@@ -170,16 +174,16 @@ public final class MoveOrdererBetter {
                 }
             }
             else if (mateKiller != 0 && moves[i] == mateKiller) {
-                Assert.assertTrue(mateKiller < MOVE_SIZE_LIMIT);
+                Assert.assertTrue(mateKiller < MoveConstants.FIRST_FREE_BIT);
                 moves[i] = buildMoveScore(moves[i], mateKillerScore);
             }
 
             else if (firstKiller != 0 && firstKiller == moves[i]) {
-                Assert.assertTrue(firstKiller < MOVE_SIZE_LIMIT);
+                Assert.assertTrue(firstKiller < MoveConstants.FIRST_FREE_BIT);
                 moves[i] = buildMoveScore(moves[i], killerOneScore);
             }
             else if (secondKiller != 0 && secondKiller == moves[i]) {
-                Assert.assertTrue(secondKiller < MOVE_SIZE_LIMIT);
+                Assert.assertTrue(secondKiller < MoveConstants.FIRST_FREE_BIT);
                 moves[i] = buildMoveScore(moves[i], killerTwoScore);
             }
             else if (checkingMove(board, moves[i])) {
@@ -191,11 +195,11 @@ public final class MoveOrdererBetter {
                 moves[i] = buildMoveScore(moves[i], castlingMove);
             }
             else if (ply >= 2 && firstOldKiller != 0 && firstOldKiller == moves[i]) {
-                Assert.assertTrue(firstOldKiller < MOVE_SIZE_LIMIT);
+                Assert.assertTrue(firstOldKiller < MoveConstants.FIRST_FREE_BIT);
                 moves[i] = buildMoveScore(moves[i], oldKillerScoreOne);
             }
             else if (ply >= 2 && secondOldKiller != 0 && secondOldKiller == (moves[i])) {
-                Assert.assertTrue(secondOldKiller < MOVE_SIZE_LIMIT);
+                Assert.assertTrue(secondOldKiller < MoveConstants.FIRST_FREE_BIT);
                 moves[i] = buildMoveScore(moves[i], oldKillerScoreTwo);
             }
             else {
@@ -218,8 +222,8 @@ public final class MoveOrdererBetter {
                 moves[i] = buildMoveScore(moves[i], uninterestingMove);
             }
 
-            Assert.assertTrue(moves[i] >= MOVE_UPPER_BOUND);
-            Assert.assertTrue(moves[i] > MOVE_MASK);
+            Assert.assertTrue(moves[i] >= FIRST_FREE_BIT);
+            Assert.assertTrue(moves[i] > MOVE_MASK_WITH_CHECK);
         }
 
     }
@@ -307,7 +311,7 @@ public final class MoveOrdererBetter {
 
     public static void updateKillerMoves(int whichThread, int move, int ply){
         Assert.assertTrue(killerMoves.length != 0 && killerMoves[0].length != 0);
-        Assert.assertTrue(move < MOVE_SIZE_LIMIT);
+        Assert.assertTrue(move < MoveConstants.FIRST_FREE_BIT);
 
         if (move != killerMoves[whichThread][ply][0]){
             if (killerMoves[whichThread][ply][0] != 0) {

@@ -1,12 +1,10 @@
 package com.github.louism33.axolotl.moveordering;
 
-import com.github.louism33.chesscore.MoveConstants;
-
 public final class MoveOrderingConstants {
 
-    public static final int MOVE_SIZE_LIMIT = MoveConstants.MOVE_UPPER_BOUND;
-    public static final int moveScoreOffset = 26;
-    public static final int MOVE_SCORE_MASK = 0xfc000000;
+//    public static final int FIRST_FREE_BIT = MoveConstants.FIRST_FREE_BIT;
+//    public static final int moveScoreOffset = 26;
+//    public static final int MOVE_SCORE_MASK = 0xfc000000;
 
     public static final int captureBiasOfLastMovedPiece = 1;
 

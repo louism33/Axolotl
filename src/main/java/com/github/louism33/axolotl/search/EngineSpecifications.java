@@ -1,7 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.chesscore.Chessboard;
-
 public final class EngineSpecifications {
 
     public static int THREAD_NUMBER                                  = 1;

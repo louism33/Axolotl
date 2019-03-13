@@ -2,13 +2,13 @@ package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.search.EngineSpecifications;
-import com.github.louism33.axolotl.search.MoveOrdererBetter;
 import org.junit.Assert;
 
 import java.util.Arrays;
 
-import static com.github.louism33.axolotl.search.MoveOrdererBetter.MOVE_MASK_WO_CHECK;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
+import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
+import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
 public final class TranspositionTable {
 
@@ -84,7 +84,7 @@ public final class TranspositionTable {
             }
         }
         
-        long possibleEntry = buildTableEntry(bestMove & MoveOrdererBetter.MOVE_MASK, bestScore, depth, flag, ply);
+        long possibleEntry = buildTableEntry(bestMove & MOVE_MASK_WITH_CHECK, bestScore, depth, flag, ply);
 
         keys[replaceMeIndex] = key ^ possibleEntry;
         entries[replaceMeIndex] = possibleEntry;
@@ -139,7 +139,7 @@ public final class TranspositionTable {
     }
 
     public static int getMove(long entry){
-        return (int) (entry & MOVE_MASK_WO_CHECK);
+        return (int) (entry & MOVE_MASK_WITHOUT_CHECK);
     }
 
     public static int getScore(long entry, int ply){

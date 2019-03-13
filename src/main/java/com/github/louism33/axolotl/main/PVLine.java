@@ -6,9 +6,9 @@ import com.github.louism33.chesscore.Chessboard;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.louism33.axolotl.search.MoveOrdererBetter.MOVE_MASK;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.getMove;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.retrieveFromTable;
+import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 
 public final class PVLine {
 
@@ -27,7 +27,7 @@ public final class PVLine {
                 break;
             }
 
-            int move = getMove(entry) & MOVE_MASK;
+            int move = getMove(entry) & MOVE_MASK_WITH_CHECK;
 
             try {
                 dummyBoard.makeMoveAndFlipTurn(move);
