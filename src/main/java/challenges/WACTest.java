@@ -23,10 +23,10 @@ public class WACTest {
     private static final int timeLimit = 5_000;
 
     // tough at 5 sec
-    private static final int[] infamousIndexes = {86, 92, 116, 160, 163, 180, 196, 204, 222, 230, 241, 243, 248, 252, 283, 293, 297};
+    private static final int[] infamousIndexes = {86, 163, 180, 196, 222, 230, 243, 293};
 
     // tough at 10 sec
-//    private static final int[] infamousIndexes = {86, 92, 160, 180, 196, 230, 243, 248, 252, 293};
+//    private static final int[] infamousIndexes = {86, 163, 180, 196, 230, 243, 293};
 
 
     // tough at 20 sec
