@@ -53,54 +53,11 @@ public final class EngineBetter {
         isReady = true;
         nps = 0;
         aiMoveScore = SHORT_MINIMUM;
-
         numberOfMovesMade[0] = 0;
         numberOfQMovesMade[0] = 0;
-
         stopNow = false;
-
         initTable(TABLE_SIZE);
-
         initMoveOrderer();
-    }
-
-    public static void main(String[] args) {
-
-        String fen = "8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - -";
-        Chessboard board = new Chessboard(fen);
-//        board = new Chessboard();
-
-        System.out.println(board);
-
-        searchFixedTime(board, 180000);
-//        searchFixedDepth(board, 22);
-
-
-//        System.out.println("*******************************");
-//        board.makeMoveAndFlipTurn(move);
-//        iter(depth, board, move);
-//        System.out.println("*******************************");
-//        iter(depth, board, move);
-//        System.out.println("*******************************");
-//        iter(depth, board, move);
-//        System.out.println("*******************************");
-//        iter(depth, board, move);
-//        System.out.println("*******************************");
-//        iter(depth, board, move);
-//        System.out.println("*******************************");
-//        iter(depth, board, move);
-//        System.out.println("*******************************");
-//        iter(depth, board, move);
-//        System.out.println("*******************************");
-//        System.out.println("*******************************");
-//        System.out.println("*******************************");
-//        System.out.println("*******************************");
-    }
-
-    private static void iter(int depth, Chessboard board, int move) {
-        System.out.println(board);
-        int move2 = searchFixedDepth(board, depth);
-        board.makeMoveAndFlipTurn(move2);
     }
 
     private static int[] rootMoves;
@@ -364,8 +321,6 @@ public final class EngineBetter {
 
             int R = 2;
             if (isNullMoveOkHere(board, nullMoveCounter, depth, R)){
-                Chessboard clone = new Chessboard(board);
-
                 board.makeNullMoveAndFlipTurn();
 
                 int nullScore = -principleVariationSearch(board,
@@ -374,7 +329,6 @@ public final class EngineBetter {
 
                 board.unMakeNullMoveAndFlipTurn();
 
-                Assert.assertEquals(board, clone);
 
                 if (nullScore >= beta){
                     if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY){

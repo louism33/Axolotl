@@ -88,7 +88,7 @@ final class SearchUtils {
                 && !givesCheckMove
                 && !pawnToSix
                 && !pawnToSeven
-                && numberOfMovesSearched > 6
+                && numberOfMovesSearched > 5
                 ;
     }
 }

@@ -40,8 +40,6 @@
         </license>
     </licenses>
 
-
-
     <scm>
         <connection>scm:git:git@github.com:louism33/Axolotl.git</connection>
         <developerConnection>scm:git:git@github.com:louism33/Axolotl.git</developerConnection>
@@ -59,10 +57,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-
-
-
 
     <build>
         <pluginManagement>
@@ -235,47 +229,32 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                     <configuration>
+                        <finalName>axolotl_v1.4</finalName>
+                        <appendAssemblyId>false</appendAssemblyId>
+                        <outputDirectory>${user.dir}</outputDirectory>
                         <archive>
                             <manifest>
-                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                                <mainClass>com.github.louism33.axolotl.main.UCIEntry</mainClass>
                             </manifest>
                         </archive>
+                        <descriptorRefs>
+                            <descriptorRef>jar-with-dependencies</descriptorRef>
+                        </descriptorRefs>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
     </build>
-    
-    
-    
-    
-    
-    
 
     <repositories>
         <repository>
@@ -309,9 +288,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fluxchess</groupId>
+            <groupId>com.fluxchess.jcpi</groupId>
             <artifactId>jcpi</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1</version>
         </dependency>
 
         <dependency>

@@ -34,22 +34,8 @@ public class UCIEntry extends AbstractEngine {
         EngineBetter.uciEntry = this;
 
         ProtocolInitializeAnswerCommand firstCommand 
-                = new ProtocolInitializeAnswerCommand("axolotl_v1.3", "Louis James Mackenzie-Smith");
+                = new ProtocolInitializeAnswerCommand("axolotl_v1.4", "Louis James Mackenzie-Smith");
         
-        firstCommand.addOption(new AbstractOption("PrintInfo") {
-            @Override
-            protected String type() {
-                return "check";
-            }
-        });
-
-        firstCommand.addOption(new AbstractOption("PrintEval") {
-            @Override
-            protected String type() {
-                return "check";
-            }
-        });
-
         firstCommand.addOption(new AbstractOption("Hash") {
             @Override
             protected String type() {
@@ -78,13 +64,6 @@ public class UCIEntry extends AbstractEngine {
     public void receive(EngineSetOptionCommand command) {
         if (command == null || command.name == null || command.name.isEmpty()){
             return;
-        }
-        if (command.name.equalsIgnoreCase("PrintInfo")){
-            EngineSpecifications.INFO = Boolean.valueOf(command.value);
-        }        
-        
-        if (command.name.equalsIgnoreCase("PrintEval")){
-            EngineSpecifications.PRINT = Boolean.valueOf(command.value);
         }
 
         if (command.name.equalsIgnoreCase("Hash")){
@@ -136,11 +115,6 @@ public class UCIEntry extends AbstractEngine {
         genericBoard = command.board;
         moves = command.moves;
         board = convertGenericBoardToChessboard(genericBoard, moves);
-
-        if (EngineSpecifications.PRINT) {
-            System.out.println(board);
-//            Evaluator.printEval(board);
-        }
     }
 
     // go movetime 30000
@@ -149,7 +123,6 @@ public class UCIEntry extends AbstractEngine {
         if (command == null){
             return;
         }
-//        Engine.giveThreadsBoard(board);
         int aiMove = calculatingHelper(command);
         if (aiMove != 0){
             this.getProtocol().send(
@@ -157,11 +130,11 @@ public class UCIEntry extends AbstractEngine {
         }
     }
 
-    public int calculatingHelper(EngineStartCalculatingCommand command) {
+    private int calculatingHelper(EngineStartCalculatingCommand command) {
         long clock = timeOnClock(command);
         if (clock != 0){
             Long clockIncrement = command.getClockIncrement(convertMyColourToGenericColour(board.isWhiteTurn()));
-            return EngineBetter.searchMyTime(board, clock, clockIncrement);
+            return EngineBetter.searchMyTime(board, clock, clockIncrement == null ? 0 : clockIncrement);
         }
         else if (command.getMoveTime() != null && command.getMoveTime() != 0){
             return EngineBetter.searchFixedTime(board, command.getMoveTime());

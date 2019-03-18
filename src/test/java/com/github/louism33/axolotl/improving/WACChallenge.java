@@ -3,9 +3,7 @@ package com.github.louism33.axolotl.improving;
 import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.MoveParser;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -22,14 +20,25 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 public class WACChallenge {
 
     private static final int timeLimit = 5_000;
+    private static int successes = 0;
+    private static final int targetSuccesses = 290;
 
-    // tough at 5 sec
-    private static final int[] infamousIndexes = {86, 163, 180, 196, 222, 230, 243, 293};
+    @BeforeClass
+    public static void setup(){
+        final String str = "Testing " + splitUpPositions.length + " WAC positions. " +
+                "Time per position: " + timeLimit + " milliseconds."
+                +"\nIf more than " + targetSuccesses + " are correct, success.";
+        System.out.println(str);
+    }
 
-    // tough at 10 sec
-//    private static final int[] infamousIndexes = {86, 163, 180, 196, 230, 243, 293};
+    @AfterClass
+    public static void finalSuccessTally(){
+        System.out.println("Successful WAC tests: " + successes + " out of "
+                + splitUpPositions.length + ". Success starts at " + targetSuccesses);
+        Assert.assertTrue(successes >= targetSuccesses);
+    }
 
-
+    
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -38,10 +47,6 @@ public class WACChallenge {
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
-            if (!contains(infamousIndexes, i + 1)) {
-//                continue;
-            }
-            
             String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             EPDObject EPDObject = parseEDPPosition(splitUpWAC);
@@ -66,7 +71,15 @@ public class WACChallenge {
         int[] losingMoves = EPDObject.getAvoidMoves();
         int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
         MoveParser.printMove(move);
-        Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
+
+        if (contains(winningMoves, move) && !contains(losingMoves, move)){
+            System.out.println("success");
+            successes++;
+        }
+        else {
+            System.out.println("failure");
+        }
+        
     }
 
     private static final String positions = "" +
