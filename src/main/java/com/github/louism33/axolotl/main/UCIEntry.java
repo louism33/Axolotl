@@ -5,6 +5,8 @@ import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
 import com.fluxchess.jcpi.options.AbstractOption;
+import com.fluxchess.jcpi.options.Options;
+import com.fluxchess.jcpi.options.SpinnerOption;
 import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
@@ -36,20 +38,10 @@ public class UCIEntry extends AbstractEngine {
         ProtocolInitializeAnswerCommand firstCommand 
                 = new ProtocolInitializeAnswerCommand("axolotl_v1.4", "Louis James Mackenzie-Smith");
         
-        firstCommand.addOption(new AbstractOption("Hash") {
-            @Override
-            protected String type() {
-                return "spin";
-            }
-        });
-
-        firstCommand.addOption(new AbstractOption("Threads") {
-            @Override
-            protected String type() {
-                return "spin";
-            }
-        });
-
+        firstCommand.addOption(Options.newHashOption( 16, 1, 64));
+        
+//        firstCommand.addOption(new SpinnerOption("Threads", 1, 1, 4));
+        
         this.getProtocol().send(firstCommand);
     }
 
@@ -59,13 +51,13 @@ public class UCIEntry extends AbstractEngine {
         System.exit(1);
     }
 
-    // setoption name Write Debug Log true
+    // setoption name Hash value 2
     @Override
     public void receive(EngineSetOptionCommand command) {
         if (command == null || command.name == null || command.name.isEmpty()){
             return;
         }
-
+        
         if (command.name.equalsIgnoreCase("Hash")){
             int size = Integer.parseInt(command.value);
             int number = size * EngineSpecifications.TABLE_SIZE_PER_MB;
@@ -80,14 +72,6 @@ public class UCIEntry extends AbstractEngine {
             }
         }
 
-//        if (command.name.equalsIgnoreCase("Threads")){
-//            int threadNumber = Integer.parseInt(command.value);
-//            if (threadNumber < 1 || threadNumber > EngineSpecifications.MAX_THREADS){
-//                return;
-//            }
-//            EngineSpecifications.THREAD_NUMBER = threadNumber;
-////            Engine.setupThreads();
-//        }
     }
 
     @Override
@@ -184,7 +168,7 @@ public class UCIEntry extends AbstractEngine {
     }
 
     public static void main(String[] args) {
-        System.out.println("axolotl v1.4 by Louis Mackenzie-Smith");
+        System.out.println("axolotl v1.4 by Louis James Mackenzie-Smith");
         Thread thread = new Thread( new UCIEntry() );
         thread.start();
     }

@@ -43,9 +43,6 @@ public class Evaluator {
 
     public static int eval(Chessboard board, int[] moves) {
         Assert.assertTrue(moves != null);
-//        if (moves == null){
-//            moves = board.generateLegalMoves();
-//        }
 
         Arrays.fill(scoresForEPO[WHITE], 0);
         Arrays.fill(scoresForEPO[BLACK], 0);
