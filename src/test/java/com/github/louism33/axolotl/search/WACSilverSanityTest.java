@@ -33,7 +33,7 @@ public class WACSilverSanityTest {
     public static void finalSuccessTally(){
         System.out.println("Successful WAC Silver sanity tests: " + successes + " out of "
                 + splitUpPositions.length + ". Success starts at " + targetSuccesses);
-        Assert.assertTrue(successes > targetSuccesses);
+        Assert.assertTrue(successes >= targetSuccesses);
     }
 
     @Parameters(name = "{index} Test: {1}")

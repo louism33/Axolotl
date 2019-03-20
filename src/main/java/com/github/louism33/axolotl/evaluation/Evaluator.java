@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
+import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
@@ -10,6 +11,7 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.POSITION_SCORES;
 import static com.github.louism33.axolotl.evaluation.MoveTable.populateFromMoves;
 import static com.github.louism33.chesscore.BitOperations.getFirstPiece;
+import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static java.lang.Long.numberOfTrailingZeros;
 
@@ -31,7 +33,7 @@ public class Evaluator {
 //        populateFromMoves(board.generateLegalMoves());
 //        board.flipTurn();
     }
-    
+
     public static void printEval(Chessboard board, int turn){
         printEval(board, turn, board.generateLegalMoves());
     }
@@ -46,8 +48,17 @@ public class Evaluator {
 
         Arrays.fill(scoresForEPO[WHITE], 0);
         Arrays.fill(scoresForEPO[BLACK], 0);
-        
-        return evalTurn(board, board.turn) - evalTurn(board, 1 - board.turn);
+
+        // basic mobility
+        int score = evalTurn(board, board.turn) - evalTurn(board, 1 - board.turn);
+        score += moves[moves.length - 1];
+
+//        long pinnedPieces = board.pinnedPieces;
+//        score -= populationCount(pinnedPieces) * 15;
+
+//        score += PinnedPieces.evalPinnedPieces(board);
+
+        return score;
     }
 
     static int[][] scoresForEPO = new int[2][13];

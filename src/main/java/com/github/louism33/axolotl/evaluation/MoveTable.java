@@ -80,7 +80,7 @@ public class MoveTable {
         }
         return 0;
     }
-    
+    // todo move to chesscore
     static void populateFromMoves(int[] moves) {
         for (int i = 0; i < moves.length; i++) {
             int move = moves[i];
