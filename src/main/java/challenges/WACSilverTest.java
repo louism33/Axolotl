@@ -18,7 +18,7 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 @RunWith(Parameterized.class)
 public class WACSilverTest {
 
-    private static final int timeLimit = 10_000;
+    private static final int timeLimit = 5_000;
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {

@@ -16,20 +16,23 @@
     </issueManagement>
 
     <distributionManagement>
-        <!--<repository>-->
-        <!--<uniqueVersion>true</uniqueVersion>-->
-        <!--<id>ossrh</id>-->
-        <!--<url>-->
-        <!--https://oss.sonatype.org/content/repositories/releases-->
-        <!--</url>-->
-        <!--<layout>default</layout>-->
-        <!--</repository>-->
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>
-                https://oss.sonatype.org/content/repositories/snapshots
-            </url>
-        </snapshotRepository>
+        
+        <repository>
+        <uniqueVersion>true</uniqueVersion>
+        <id>ossrh</id>
+        <url>
+        https://oss.sonatype.org/content/repositories/releases
+        </url>
+        <layout>default</layout>
+        </repository>
+        
+        <!--<snapshotRepository>-->
+            <!--<id>ossrh</id>-->
+            <!--<url>-->
+                <!--https://oss.sonatype.org/content/repositories/snapshots-->
+            <!--</url>-->
+        <!--</snapshotRepository>-->
+        
     </distributionManagement>
 
     <licenses>
