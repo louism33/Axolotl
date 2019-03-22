@@ -1,18 +1,22 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 
 import java.util.Arrays;
 
+import static com.github.louism33.axolotl.evaluation.EvalPrintObject.kingSafetyScore;
+import static com.github.louism33.axolotl.evaluation.EvalPrintObject.totalScore;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.POSITION_SCORES;
+import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.mobilityScores;
+import static com.github.louism33.axolotl.evaluation.Init.*;
 import static com.github.louism33.axolotl.evaluation.MoveTable.populateFromMoves;
 import static com.github.louism33.chesscore.BitOperations.getFirstPiece;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
+import static com.github.louism33.chesscore.PieceMove.*;
 import static java.lang.Long.numberOfTrailingZeros;
 
 @SuppressWarnings("ALL")
@@ -26,12 +30,6 @@ public class Evaluator {
     static void resetThreats(){
         Arrays.fill(whiteThreatsToSquare, 0);
         Arrays.fill(blackThreatsToSquare, 0);
-    }
-    static void populateThreats(Chessboard board, int[] moves){
-        populateFromMoves(moves);
-//        board.flipTurn();
-//        populateFromMoves(board.generateLegalMoves());
-//        board.flipTurn();
     }
 
     public static void printEval(Chessboard board, int turn){
@@ -49,15 +47,33 @@ public class Evaluator {
         Arrays.fill(scoresForEPO[WHITE], 0);
         Arrays.fill(scoresForEPO[BLACK], 0);
 
-        // basic mobility
-        int score = evalTurn(board, board.turn) - evalTurn(board, 1 - board.turn);
-        score += moves[moves.length - 1];
+        init(board, WHITE);
+        init(board, BLACK);
 
-//        long pinnedPieces = board.pinnedPieces;
-//        score -= populationCount(pinnedPieces) * 15;
+        int turn = board.turn;
+        
+        int score = evalTurn(board, turn) - evalTurn(board, 1 - turn);
 
-//        score += PinnedPieces.evalPinnedPieces(board);
+        int mks = attackingEnemyKingLookup[turn] >= 0 
+                ? attackingEnemyKingLookup[turn]
+                : 0;
+        
+        int myKingSafety = KING_SAFETY_ARRAY[mks];
 
+        int yks = attackingEnemyKingLookup[1 - turn] >= 0
+                ? attackingEnemyKingLookup[1 - turn]
+                : 0;
+        
+        int yourKingSafety = KING_SAFETY_ARRAY[yks];
+        
+        scoresForEPO[turn][kingSafetyScore] -= myKingSafety;
+        scoresForEPO[1 - turn][kingSafetyScore] += yourKingSafety;
+
+        score -= myKingSafety;
+        score += yourKingSafety;
+
+        scoresForEPO[turn][totalScore] = score;
+        scoresForEPO[1 - turn][totalScore] = score;
         return score;
     }
 
@@ -110,12 +126,40 @@ public class Evaluator {
         long ignoreThesePieces = 0; // maybe pins
 
         int positionScore = 0;
+        int mobilityScore = 0;
+
+        long squaresMyPawnsThreaten = pawnTables[turn][CAPTURES];
+
+        long squaresEnemyPawnsThreaten = pawnTables[1 - turn][CAPTURES];
+        long enemyPawnShifts = turn == WHITE ? enemyPawns >>> 8 : enemyPawns << 8;
+        long myBlockedPawns = enemyPawnShifts & myPawns;
+        long myBackwardsPawns = myPawns & (PENULTIMATE_RANKS[1 - turn] | INTERMEDIATE_RANKS[turn]);
+
+        long safeMobSquares = ~(myKing | myQueens | myBackwardsPawns | myBlockedPawns | squaresEnemyPawnsThreaten);
+
+        long enemyKingBigArea = kingBigArea[1 - turn];
+        long enemyKingSmallArea = kingSmallArea[1 - turn];
+
+        long myKingBigArea = kingBigArea[turn];
+        long myKingSmallArea = kingSmallArea[turn];
+
+        int defendingMyKingLookup = 0;
 
         while (myKnights != 0){
             final long knight = getFirstPiece(myKnights);
             if ((knight & ignoreThesePieces) == 0) {
                 final int knightIndex = numberOfTrailingZeros(knight);
-                positionScore += POSITION_SCORES[turn][KNIGHT][knightIndex];
+                positionScore += POSITION_SCORES[turn][KNIGHT][63 - knightIndex];
+
+                final long table = KNIGHT_MOVE_TABLE[knightIndex] & safeMobSquares;
+
+                mobilityScore += mobilityScores[KNIGHT - 2][populationCount(table)];
+
+                if ((knight & enemyKingBigArea) != 0) {
+                    attackingEnemyKingLookup[turn] += 2;
+                }
+
+                attackingEnemyKingLookup[turn] += populationCount(table & enemyKingSmallArea);
             }
             myKnights &= (myKnights - 1);
         }
@@ -124,7 +168,17 @@ public class Evaluator {
             final long bishop = getFirstPiece(myBishops);
             if ((bishop & ignoreThesePieces) == 0) {
                 final int bishopIndex = numberOfTrailingZeros(bishop);
-                positionScore += POSITION_SCORES[turn][BISHOP][bishopIndex];
+                positionScore += POSITION_SCORES[turn][BISHOP][63 - bishopIndex];
+
+                final long table = singleBishopTable(allPieces, bishopIndex, UNIVERSE) & safeMobSquares;
+
+                mobilityScore += mobilityScores[BISHOP - 2][populationCount(table)];
+
+                if ((bishop & enemyKingBigArea) != 0) {
+                    attackingEnemyKingLookup[turn] += 2;
+                }
+
+                attackingEnemyKingLookup[turn] += populationCount(table & enemyKingSmallArea);
             }
             myBishops &= (myBishops - 1);
         }
@@ -133,7 +187,17 @@ public class Evaluator {
             final long rook = getFirstPiece(myRooks);
             if ((rook & ignoreThesePieces) == 0) {
                 final int rookIndex = numberOfTrailingZeros(rook);
-                positionScore += POSITION_SCORES[turn][ROOK][rookIndex];
+                positionScore += POSITION_SCORES[turn][ROOK][63 - rookIndex];
+
+                final long table = singleRookTable(allPieces, rookIndex, UNIVERSE) & safeMobSquares;
+
+                mobilityScore += mobilityScores[ROOK - 2][populationCount(table)];
+
+                if ((rook & enemyKingBigArea) != 0) {
+                    attackingEnemyKingLookup[turn] += 3;
+                }
+
+                attackingEnemyKingLookup[turn] += populationCount(table & enemyKingSmallArea);
             }
             myRooks &= (myRooks - 1);
         }
@@ -142,52 +206,49 @@ public class Evaluator {
             final long queen = getFirstPiece(myQueens);
             if ((queen & ignoreThesePieces) == 0) {
                 final int queenIndex = numberOfTrailingZeros(queen);
-                positionScore += POSITION_SCORES[turn][QUEEN][queenIndex];
+                positionScore += POSITION_SCORES[turn][QUEEN][63 - queenIndex];
+
+                final long table = singleQueenTable(allPieces, queenIndex, UNIVERSE) & safeMobSquares;
+
+                mobilityScore += mobilityScores[QUEEN - 2][populationCount(table)];
+
+                if ((queen & enemyKingBigArea) != 0) {
+                    attackingEnemyKingLookup[turn] += 4;
+                }
+
+                attackingEnemyKingLookup[turn] += populationCount(table & enemyKingSmallArea);
             }
             myQueens &= (myQueens - 1);
         }
 
+        attackingEnemyKingLookup[turn] += populationCount(squaresMyPawnsThreaten & enemyKingSmallArea);
+
         myPawns = pieces[turn][PAWN] & ~ignoreThesePieces;
+        attackingEnemyKingLookup[1 - turn] -= populationCount(myPawns & myKingSmallArea);
+
         while (myPawns != 0){
             final long pawn = getFirstPiece(myPawns);
             final int pawnIndex = numberOfTrailingZeros(pawn);
-            positionScore += POSITION_SCORES[turn][PAWN][pawnIndex];
+            positionScore += POSITION_SCORES[turn][PAWN][63 - pawnIndex];
+
+            if ((pawn & enemyKingBigArea) != 0) {
+                attackingEnemyKingLookup[turn] += 1;
+            }
+
             myPawns &= myPawns - 1;
         }
 
-        finalScore += positionScore;
+        if (board.pieces[turn][QUEEN] == 0) {
+            attackingEnemyKingLookup[turn] -= 2;
+        }
 
+        finalScore += positionScore;
+        finalScore += mobilityScore;
+
+        scoresForEPO[turn][EvalPrintObject.mobilityScore] = mobilityScore;
         scoresForEPO[turn][EvalPrintObject.positionScore] = positionScore;
-        scoresForEPO[turn][EvalPrintObject.totalScore] = finalScore;
 
         return finalScore;
     }
-
-
-
-    public static boolean naiveEndgame (Chessboard board){
-        if (isEndgame){
-            return true;
-        }
-        return false;
-//        if (board.getWhiteQueen() == 0 && board.getBlackQueen() == 0){
-//            isEndgame = true;
-//        }
-//        else if (board.getWhiteQueen() == 1
-//                && populationCount(board.getWhiteKnights()
-//                | board.getWhiteBishops()
-//                | board.getWhiteRooks()) == 1){
-//            isEndgame = true;
-//        }
-//        else if (board.getBlackQueen() == 1
-//                && populationCount(board.getBlackKnights()
-//                | board.getBlackBishops()
-//                | board.getBlackRooks()) == 1){
-//            isEndgame = true;
-//        }
-//
-//        return isEndgame;
-    }
-
 
 }

@@ -16,22 +16,22 @@
     </issueManagement>
 
     <distributionManagement>
-        
-        <repository>
-        <uniqueVersion>true</uniqueVersion>
-        <id>ossrh</id>
-        <url>
-        https://oss.sonatype.org/content/repositories/releases
-        </url>
-        <layout>default</layout>
-        </repository>
-        
-        <!--<snapshotRepository>-->
+
+        <!--<repository>-->
+            <!--<uniqueVersion>true</uniqueVersion>-->
             <!--<id>ossrh</id>-->
             <!--<url>-->
-                <!--https://oss.sonatype.org/content/repositories/snapshots-->
+                <!--https://oss.sonatype.org/content/repositories/releases-->
             <!--</url>-->
-        <!--</snapshotRepository>-->
+            <!--<layout>default</layout>-->
+        <!--</repository>-->
+
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>
+                https://oss.sonatype.org/content/repositories/snapshots
+            </url>
+        </snapshotRepository>
         
     </distributionManagement>
 
@@ -272,7 +272,7 @@
 
         <repository>
             <id>com.github.louism33</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/chesscore/1.10</url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/chesscore/</url>
         </repository>
     </repositories>
 
@@ -281,7 +281,7 @@
         <dependency>
             <groupId>com.github.louism33</groupId>
             <artifactId>chesscore</artifactId>
-            <version>1.10-SNAPSHOT</version>
+            <version>1.15-SNAPSHOT</version>
         </dependency>
 
         <dependency>

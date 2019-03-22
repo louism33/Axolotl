@@ -2,13 +2,13 @@ package com.github.louism33.axolotl.evaluation;
 
 import static com.github.louism33.chesscore.BoardConstants.*;
 
+@SuppressWarnings("ALL")
 class EvaluatorPositionConstant {
 
     /*
     thanks to Tomasz Michniewski
     https://www.chessprogramming.org/Simplified_Evaluation_Function
      */
-
     static final int[] PAWN_POSITION_SCORES_WHITE = {
             0,  0,  0,  0,  0,  0,  0,  0,
             50, 50, 50, 50, 50, 50, 50, 50,
@@ -129,4 +129,32 @@ class EvaluatorPositionConstant {
         POSITION_SCORES[BLACK][KING-KING] = KING_POSITION_SCORES_END_BLACK;
     }
 
+
+    static final int[][] mobilityScores = new int[4][32]; // no mobility for pawns or kings
+    
+    static{
+        mobilityScores[0] = new int[] { //Knight
+                -50, -40, -20, -10, 0, 10, 20, 30, 40, 45 
+        };
+
+        mobilityScores[1] = new int[] { //Bishop
+                -30, -20, -5, -2,  0, 10, 15,
+                 20,  25, 30, 35, 40, 45, 50
+        };
+
+        mobilityScores[2] = new int[] { //Rook
+                -30, -25, -20, -15, -10, 0, 5, 
+                10, 25, 30, 35, 40, 45, 50,
+                50
+        };
+
+        mobilityScores[3] = new int[] { //Queen
+                -20, -15, -10, -5, -3, 0, 3,
+                8,  15,  18, 25, 28, 30, 35,
+                45,  48,  50, 55, 60, 65, 75,
+                80,  85,  90, 95, 100, 105, 120,
+        };
+    }
+
+    
 }

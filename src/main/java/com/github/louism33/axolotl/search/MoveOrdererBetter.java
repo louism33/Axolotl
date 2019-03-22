@@ -71,17 +71,16 @@ public final class MoveOrdererBetter {
                 break;
             }
 
-
-            if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
-                moves[i] = buildMoveScore(moves[i], captureBiasOfLastMovedPiece + mvvLVA(moves[i]));
-            }
-            else if (isPromotionToQueen(moves[i])) {
+            if (isPromotionToQueen(moves[i])) {
                 if (isCaptureMove(moves[i])) {
                     moves[i] = buildMoveScore(moves[i], queenCapturePromotionScore);
                 }
                 else {
                     moves[i] = buildMoveScore(moves[i], queenQuietPromotionScore);
                 }
+            }
+            else if (board.moveIsCaptureOfLastMovePiece(moves[i])) {
+                moves[i] = buildMoveScore(moves[i], captureBiasOfLastMovedPiece + mvvLVA(moves[i]));
             }
             else if (isPromotionToKnight(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], knightPromotionScore);
@@ -151,8 +150,8 @@ public final class MoveOrdererBetter {
             if (move == hashMove) {
                 moves[i] = buildMoveScore(move, hashScore);
             }
-            else if (isPromotionToQueen(moves[i])) {
-                if (isCaptureMove(moves[i])) {
+            else if (isPromotionToQueen(move)) {
+                if (isCaptureMove(move)) {
                     moves[i] = buildMoveScore(moves[i], queenCapturePromotionScore);
                 }
                 else {

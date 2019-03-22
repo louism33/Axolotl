@@ -4,16 +4,14 @@ import com.fluxchess.jcpi.AbstractEngine;
 import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
-import com.fluxchess.jcpi.options.AbstractOption;
 import com.fluxchess.jcpi.options.Options;
-import com.fluxchess.jcpi.options.SpinnerOption;
 import com.github.louism33.axolotl.search.EngineBetter;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 
 import java.util.List;
 
 import static com.github.louism33.axolotl.main.UCIBoardParser.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
 public class UCIEntry extends AbstractEngine {
 
@@ -60,15 +58,15 @@ public class UCIEntry extends AbstractEngine {
         
         if (command.name.equalsIgnoreCase("Hash")){
             int size = Integer.parseInt(command.value);
-            int number = size * EngineSpecifications.TABLE_SIZE_PER_MB;
-            if (number > EngineSpecifications.MIN_TABLE_SIZE && number < EngineSpecifications.MAX_TABLE_SIZE) {
-                EngineSpecifications.TABLE_SIZE = number;
+            int number = size * TABLE_SIZE_PER_MB;
+            if (number > MIN_TABLE_SIZE && number < MAX_TABLE_SIZE) {
+                TABLE_SIZE = number;
             }
-            else if (number > EngineSpecifications.MAX_TABLE_SIZE){
-                EngineSpecifications.TABLE_SIZE = EngineSpecifications.MAX_TABLE_SIZE;
+            else if (number > MAX_TABLE_SIZE){
+                TABLE_SIZE = MAX_TABLE_SIZE;
             }
-            else if (number < EngineSpecifications.MIN_TABLE_SIZE){
-                EngineSpecifications.TABLE_SIZE = EngineSpecifications.MIN_TABLE_SIZE;
+            else if (number < MIN_TABLE_SIZE){
+                TABLE_SIZE = MIN_TABLE_SIZE;
             }
         }
 
@@ -115,6 +113,7 @@ public class UCIEntry extends AbstractEngine {
     }
 
     private int calculatingHelper(EngineStartCalculatingCommand command) {
+        MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
         long clock = timeOnClock(command);
         if (clock != 0){
             Long clockIncrement = command.getClockIncrement(convertMyColourToGenericColour(board.isWhiteTurn()));
@@ -124,7 +123,7 @@ public class UCIEntry extends AbstractEngine {
             return EngineBetter.searchFixedTime(board, command.getMoveTime());
         }
         else {
-            int searchDepth = EngineSpecifications.MAX_DEPTH;
+            int searchDepth = MAX_DEPTH;
             if (command.getInfinite()){
                 return EngineBetter.searchFixedDepth(board, searchDepth);
             }

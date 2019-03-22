@@ -4,6 +4,7 @@ import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.main.UCIPrinter;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
+import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
@@ -18,7 +19,8 @@ import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocateT
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
-import static com.github.louism33.chesscore.MoveConstants.*;
+import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
+import static com.github.louism33.chesscore.MoveConstants.MOVE_SCORE_MASK;
 
 @SuppressWarnings("ALL")
 public final class EngineBetter {
@@ -398,7 +400,7 @@ public final class EngineBetter {
 
             boolean captureMove = MoveParser.isCaptureMove(move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
-            boolean queenPromotionMove = !promotionMove ? false : MoveParser.isPromotionToQueen(move);
+            boolean queenPromotionMove = promotionMove ? MoveParser.isPromotionToQueen(move) : false;
             boolean givesCheckMove = MoveParser.isCheckingMove(moves[i]); // keep moves[i] here
             boolean pawnToSix = MoveParser.moveIsPawnPushSix(turn, move);
             boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(turn, move);
@@ -409,7 +411,18 @@ public final class EngineBetter {
             }
 
             if (queenPromotionMove) {
-                Assert.assertTrue(moveScore >= queenQuietPromotionScore);
+                boolean condition = moveScore >= queenQuietPromotionScore;
+                if (!condition) {
+                    System.out.println(board);
+                    MoveParser.printMove(move);
+                    System.out.println("move score is: "+ moveScore);
+                    Art.printLong(moveScore);
+
+                    System.out.println("hash: " + MoveParser.toString(hashMove));
+                    System.out.println("ply is: " + ply);
+                    System.out.println("depth is: " + depth);
+                }
+                Assert.assertTrue(condition);
             }
 
             if (!thisIsAPrincipleVariationNode) {

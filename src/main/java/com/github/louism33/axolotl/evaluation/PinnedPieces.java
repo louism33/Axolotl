@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
+import org.junit.Assert;
 
 import static java.lang.Long.numberOfTrailingZeros;
 
@@ -12,15 +12,19 @@ class PinnedPieces {
         long pinnedPieces = board.pinnedPieces;
         
         while (pinnedPieces != 0) {
-            Art.printLong(pinnedPieces);
+
+            Assert.assertTrue(board.pinningPieces != 0);
 
             final long piece = Long.lowestOneBit(pinnedPieces);
             final int pieceIndex = numberOfTrailingZeros(piece);
             final int pinnedPiece = board.pieceSquareTable[pieceIndex];
 
-            pinnedPieces &= -1;
+            
+            
+            pinnedPieces &= pinnedPieces - 1;
         }
 
         return score;
     }
+    
 }

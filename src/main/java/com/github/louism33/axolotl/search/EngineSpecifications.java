@@ -7,6 +7,7 @@ public final class EngineSpecifications {
     public static boolean INFO                                       = true;
     public static boolean PRINT                                      = false;
     public static int MAX_DEPTH                                      = 62;
+    public static int ABSOLUTE_MAX_DEPTH                             = 62;
     public static final int MAX_DEPTH_HARD                           = 62;
     public static boolean ALLOW_TIME_LIMIT                           = true;
 

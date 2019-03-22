@@ -7,8 +7,8 @@ import org.junit.Assert;
 import java.util.Arrays;
 
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
-import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
+import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 
 public final class TranspositionTable {
 

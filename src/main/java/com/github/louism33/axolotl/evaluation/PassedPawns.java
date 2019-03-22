@@ -13,6 +13,7 @@ public class PassedPawns {
                                  long enemies) {
 
 
+
         int score = 0;
 
         long sixthRank = white ? RANK_SIX : RANK_THREE;

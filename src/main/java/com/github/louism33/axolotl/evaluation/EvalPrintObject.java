@@ -65,8 +65,9 @@ public class EvalPrintObject {
                 String.format(" PassedPawns |     % 5d     |     % 5d     |    % 5d\n",
                         this.scores[WHITE][passedPawnsScore], this.scores[BLACK][passedPawnsScore], (this.scores[WHITE][passedPawnsScore] - this.scores[BLACK][passedPawnsScore])) +
 
-                "\nTotal scores: White " + this.scores[WHITE][totalScore] + ", Black " + this.scores[BLACK][totalScore]
-                + "\nTotalfrom White pov: " + (this.scores[WHITE][totalScore] - this.scores[BLACK][totalScore]) + " cp";
+//                "\nTotal scores: White " + this.scores[WHITE][totalScore] + ", Black " + this.scores[BLACK][totalScore]
+                ""
+                + "\nTotal from my POV: " + (this.scores[WHITE][totalScore]) + " cp";
 
         return evalString;
     }
