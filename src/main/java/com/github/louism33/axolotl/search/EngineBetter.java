@@ -25,7 +25,7 @@ import static com.github.louism33.chesscore.MoveConstants.MOVE_SCORE_MASK;
 @SuppressWarnings("ALL")
 public final class EngineBetter {
 
-    static int aiMoveScore;
+    public static int aiMoveScore;
     private static boolean isReady = false;
     public static long nps;
     public static long[] numberOfMovesMade = new long[1];
@@ -52,6 +52,11 @@ public final class EngineBetter {
     }
 
     public static void reset() {
+        
+        //don't reset moves if uci will provide them
+        if (computeMoves) {
+            rootMoves = null;
+        }
         isReady = true;
         nps = 0;
         aiMoveScore = SHORT_MINIMUM;
@@ -62,7 +67,7 @@ public final class EngineBetter {
         initMoveOrderer();
     }
 
-    private static int[] rootMoves;
+    public static int[] rootMoves;
     public static int getAiMove(){
         return rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
     }
@@ -98,6 +103,9 @@ public final class EngineBetter {
         return searchFixedTime(board, maxTime, MAX_DEPTH);
     }
 
+    public static boolean quitOnSingleMove = true;
+    public static boolean computeMoves = true;
+    
     private static final int searchFixedTime(final Chessboard board, final long maxTime, final int depth) {
         reset();
 
@@ -105,12 +113,19 @@ public final class EngineBetter {
 
         timeLimitMillis = maxTime;
 
-        rootMoves = board.generateLegalMoves();
+        //UCI can provide root moves if doing searchmoves
+        if (rootMoves == null && computeMoves) {
+            rootMoves = board.generateLegalMoves();
+        }
+
         aiMoveX = rootMoves[0];
 
         int numberOfRealMoves = rootMoves[rootMoves.length - 1];
-        if (numberOfRealMoves == 0 || numberOfRealMoves == 1){
-//            return rootMoves[0] & MOVE_MASK_WITH_CHECK;
+        if (numberOfRealMoves == 0){
+            return 0;
+        }        
+        
+        if (numberOfRealMoves == 1 && quitOnSingleMove){
             return rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
         }
 
@@ -205,17 +220,17 @@ public final class EngineBetter {
                 }
             }
 
-            if (INFO) {
+            if (DEBUG) {
                 long time = System.currentTimeMillis() - startTime;
                 UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth, time, numberOfMovesMade[0]);
             }
 
             aspirationScore = score;
         }
-//        if (INFO) {
+        if (DEBUG) {
             long time = System.currentTimeMillis() - startTime;
             UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth, time, numberOfMovesMade[0]);
-//        }
+        }
     }
 
 
@@ -463,7 +478,7 @@ public final class EngineBetter {
             numberOfMovesMade[0]++;
             numberOfMovesSearched++;
 
-            if (board.drawByRepetition(board.isWhiteTurn())) {
+            if (!captureMove && !promotionMove && board.isDrawByRepetition()) {
                 score = IN_STALEMATE_SCORE;
             } else {
                 score = alpha + 1;

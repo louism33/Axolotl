@@ -45,7 +45,6 @@ public class UCIEntry extends AbstractEngine {
 
     @Override
     protected void quit() {
-        System.out.println("Quitting");
         System.exit(1);
     }
 
@@ -72,9 +71,10 @@ public class UCIEntry extends AbstractEngine {
 
     }
 
+    //debug on
     @Override
     public void receive(EngineDebugCommand command) {
-        System.out.println("I'm sorry, I cannot do that");
+        DEBUG = command.debug;
     }
 
     @Override
@@ -90,7 +90,6 @@ public class UCIEntry extends AbstractEngine {
         EngineBetter.reset();
     }
 
-    // ex:
     // position fen N7/P3pk1p/3p2p1/r4p2/8/4b2B/4P1KP/1R6 w - - 0 34
     @Override
     public void receive(EngineAnalyzeCommand command) {
@@ -114,6 +113,15 @@ public class UCIEntry extends AbstractEngine {
 
     private int calculatingHelper(EngineStartCalculatingCommand command) {
         MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
+
+        List<GenericMove> searchMoveList = command.getSearchMoveList();
+        EngineBetter.quitOnSingleMove = true;
+        if (searchMoveList != null) {
+            EngineBetter.quitOnSingleMove = false;
+            EngineBetter.computeMoves = false;
+            EngineBetter.rootMoves = UCIBoardParser.convertGenericMovesToMyMoves(board, searchMoveList);
+        }
+
         long clock = timeOnClock(command);
         if (clock != 0){
             Long clockIncrement = command.getClockIncrement(convertMyColourToGenericColour(board.isWhiteTurn()));
@@ -137,7 +145,7 @@ public class UCIEntry extends AbstractEngine {
         }
     }
 
-    public long timeOnClock(EngineStartCalculatingCommand command){
+    private long timeOnClock(EngineStartCalculatingCommand command){
         long time = 0;
         try {
             time = command.getClock(genericBoard.getActiveColor());

@@ -214,7 +214,12 @@ public final class MoveOrdererBetter {
                     moves[i] = buildMoveScore(move, pawnPushToSix);
                     continue;
                 }
-                
+
+                int movingPieceInt = getMovingPieceInt(move);
+
+                if (movingPieceInt == WHITE_KING || movingPieceInt == BLACK_KING) {
+                    moves[i] = buildMoveScore(moves[i], kingQuietMove);
+                }
 //                moves[i] = buildMoveScore(moves[i],
 //                        Math.max(historyMoveScore(move, whichThread, board.turn), uninterestingMove));                
 
@@ -291,7 +296,16 @@ public final class MoveOrdererBetter {
     }
 
     private static boolean checkingMove(Chessboard board, int move){
-        board.makeMoveAndFlipTurn(move);
+        Assert.assertTrue(move != 0);
+
+        try {
+            board.makeMoveAndFlipTurn(move);
+        } catch (Exception e) {
+            System.out.println(board);
+            System.out.println(move);
+            MoveParser.printMove(move);
+            System.out.println();
+        }
         boolean checkingMove = board.inCheck(board.isWhiteTurn());
         board.unMakeMoveAndFlipTurn();
         return checkingMove;

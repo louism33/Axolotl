@@ -1,11 +1,13 @@
 package com.github.louism33.axolotl.evaluation;
 
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.MY_TURN_BONUS;
+import static com.github.louism33.axolotl.evaluation.Evaluator.percentOfStartgame;
 import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.chesscore.BoardConstants.WHITE;
 
 public class EvalPrintObject {
 
-    int[][] scores = new int[2][13];
+    int[][] scores = new int[2][32];
     
     static final int totalScore = 0;
     static final int materialScore = 1;
@@ -19,7 +21,10 @@ public class EvalPrintObject {
     static final int kingSafetyScore = 9;
     static final int threatsScore = 10;
     static final int passedPawnsScore = 11;
-    static final int positionScore = 12;    
+    static final int positionScore = 12;   
+    static final int spaceScore = 13;   
+    static int turn = WHITE;
+    static int percentOfEndgame;
 
     public EvalPrintObject(int[][] scores) {
         System.arraycopy(scores[WHITE], 0 , this.scores[WHITE], 0, scores[WHITE].length);
@@ -56,18 +61,22 @@ public class EvalPrintObject {
                 String.format("  Mobility   |     % 5d     |     % 5d     |    % 5d\n",
                         this.scores[WHITE][mobilityScore], this.scores[BLACK][mobilityScore], (this.scores[WHITE][mobilityScore] - this.scores[BLACK][mobilityScore])) +
 
+                String.format("   Space     |     % 5d     |     % 5d     |    % 5d\n",
+                        this.scores[WHITE][spaceScore], this.scores[BLACK][spaceScore], (this.scores[WHITE][spaceScore] - this.scores[BLACK][spaceScore])) +
+                
                 String.format("King Safety  |     % 5d     |     % 5d     |    % 5d\n",
                         this.scores[WHITE][kingSafetyScore], this.scores[BLACK][kingSafetyScore], (this.scores[WHITE][kingSafetyScore] - this.scores[BLACK][kingSafetyScore])) +
 
                 String.format("  Threats    |     % 5d     |     % 5d     |    % 5d\n",
                         this.scores[WHITE][threatsScore], this.scores[BLACK][threatsScore], (this.scores[WHITE][threatsScore] - this.scores[BLACK][threatsScore])) +
 
-                String.format(" PassedPawns |     % 5d     |     % 5d     |    % 5d\n",
+                String.format("Passed Pawns |     % 5d     |     % 5d     |    % 5d\n",
                         this.scores[WHITE][passedPawnsScore], this.scores[BLACK][passedPawnsScore], (this.scores[WHITE][passedPawnsScore] - this.scores[BLACK][passedPawnsScore])) +
 
-//                "\nTotal scores: White " + this.scores[WHITE][totalScore] + ", Black " + this.scores[BLACK][totalScore]
                 ""
-                + "\nTotal from my POV: " + (this.scores[WHITE][totalScore]) + " cp";
+                + "\nTurn bonus: " + ((percentOfStartgame * MY_TURN_BONUS) / 100)
+                + "\nWe are " + percentOfEndgame +"% in the endgame"
+                + "\nTotal from white's POV: " + ((turn == BLACK ? -1 : 1) * this.scores[WHITE][totalScore]) + " cp";
 
         return evalString;
     }

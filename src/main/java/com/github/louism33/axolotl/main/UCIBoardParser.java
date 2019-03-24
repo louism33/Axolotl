@@ -10,7 +10,7 @@ import com.github.louism33.utils.MoveParserFromAN;
 
 import java.util.List;
 
-final class UCIBoardParser {
+public final class UCIBoardParser {
 
     static GenericColor convertMyColourToGenericColour(boolean white) {
         if (white){
@@ -37,12 +37,24 @@ final class UCIBoardParser {
             return null;
         }
         Chessboard board = new Chessboard(genericBoard.toString());
-        for (GenericMove genericMove : moves){
+        for (int i = 0; i < moves.size(); i++) {
+            GenericMove genericMove = moves.get(i);
             board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMove.toString()));
         }
         return board;
     }
 
+    public static int[] convertGenericMovesToMyMoves(Chessboard board, List<GenericMove> genMoves) {
+        int size = genMoves.size();
+        int[] moves = new int[size + 1];
+        for (int i = 0; i < size; i++) {
+            moves[i] = MoveParserFromAN.buildMoveFromLAN(board, genMoves.get(i).toString());
+        }
+
+        moves[size] = size;
+        
+        return moves;
+    }
 }
 
 

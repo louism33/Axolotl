@@ -26,7 +26,7 @@ public class STS7Simplification {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.INFO = true;
+        EngineSpecifications.DEBUG = true;
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
@@ -52,7 +52,7 @@ public class STS7Simplification {
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.INFO = false;
+        EngineSpecifications.DEBUG = false;
         int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));

@@ -22,8 +22,9 @@ public final class MoveOrderingConstants {
     public static final int oldKillerScoreOne = 20;
     public static final int oldKillerScoreTwo = 19;
     public static final int maxHistoryMoveScore = 18;
-    public static final int knightPromotionScore = 3;
-    public static final int uninterestingMove = 2;
+    public static final int knightPromotionScore = 4;
+    public static final int uninterestingMove = 3;
+    public static final int kingQuietMove = 2;
     public static final int uninterestingPromotion = 1;
 
 }

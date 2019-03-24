@@ -40,7 +40,7 @@ class SCHACKNYTTtests {
         System.out.println(EPDObject.getBoardFen());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.INFO = false;
+        EngineSpecifications.DEBUG = false;
         int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         Assert.assertTrue(Utils.contains(winningMoves, move) && !Utils.contains(losingMoves, move));

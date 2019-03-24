@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.axolotl.search.WACSilverSanityTest.*;
+import static com.github.louism33.axolotl.search.WACSilverSanityTest.contains;
 
 @RunWith(Parameterized.class)
 public class MateTest {
@@ -65,7 +65,7 @@ public class MateTest {
         System.out.println(EPDObject.getFullString());
 
         int[] winningMoves = EPDObject.getBestMoves();
-        EngineSpecifications.INFO = false;
+        EngineSpecifications.DEBUG = false;
         final Chessboard board = EPDObject.getBoard();
         int move = EngineBetter.searchFixedTime(board, timeLimit);
 

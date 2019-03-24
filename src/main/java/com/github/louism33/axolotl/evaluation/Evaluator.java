@@ -12,7 +12,6 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.POSITION_SCORES;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.mobilityScores;
 import static com.github.louism33.axolotl.evaluation.Init.*;
-import static com.github.louism33.axolotl.evaluation.MoveTable.populateFromMoves;
 import static com.github.louism33.chesscore.BitOperations.getFirstPiece;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
@@ -20,7 +19,7 @@ import static com.github.louism33.chesscore.PieceMove.*;
 import static java.lang.Long.numberOfTrailingZeros;
 
 @SuppressWarnings("ALL")
-public class Evaluator {
+public final class Evaluator {
 
     static boolean isEndgame = false;
 
@@ -38,8 +37,12 @@ public class Evaluator {
     public static void printEval(Chessboard board, int turn, int[] moves){
         eval(board, moves);
         EvalPrintObject epo = new EvalPrintObject(scoresForEPO);
+        epo.turn = board.turn;
         System.out.println(epo);
     }
+
+    public static int percentOfEndgame;
+    public static int percentOfStartgame;
 
     public static int eval(Chessboard board, int[] moves) {
         Assert.assertTrue(moves != null);
@@ -50,34 +53,41 @@ public class Evaluator {
         init(board, WHITE);
         init(board, BLACK);
 
+        percentOfEndgame = getPercentageOfEndgameness(board);
+        percentOfStartgame = 100 - percentOfEndgame;
+
+        EvalPrintObject.percentOfEndgame = percentOfEndgame;
+
         int turn = board.turn;
-        
+
         int score = evalTurn(board, turn) - evalTurn(board, 1 - turn);
 
-        int mks = attackingEnemyKingLookup[turn] >= 0 
+        int mks = attackingEnemyKingLookup[turn] >= 0
                 ? attackingEnemyKingLookup[turn]
                 : 0;
-        
+
         int myKingSafety = KING_SAFETY_ARRAY[mks];
 
         int yks = attackingEnemyKingLookup[1 - turn] >= 0
                 ? attackingEnemyKingLookup[1 - turn]
                 : 0;
-        
+
         int yourKingSafety = KING_SAFETY_ARRAY[yks];
-        
+
         scoresForEPO[turn][kingSafetyScore] -= myKingSafety;
         scoresForEPO[1 - turn][kingSafetyScore] += yourKingSafety;
 
         score -= myKingSafety;
         score += yourKingSafety;
 
+        score += (percentOfStartgame * MY_TURN_BONUS) / 100;
+
         scoresForEPO[turn][totalScore] = score;
         scoresForEPO[1 - turn][totalScore] = score;
         return score;
     }
 
-    static int[][] scoresForEPO = new int[2][13];
+    static int[][] scoresForEPO = new int[2][32];
 
     private final static int evalTurn(Chessboard board, int turn){
         //please generate moves before calling this
@@ -137,6 +147,30 @@ public class Evaluator {
 
         long safeMobSquares = ~(myKing | myQueens | myBackwardsPawns | myBlockedPawns | squaresEnemyPawnsThreaten);
 
+
+        if (percentOfStartgame != 0) {
+            //space
+            long mySafeSquares = (~myPawns
+                    & (turn == WHITE ? (RANK_TWO | RANK_THREE | RANK_FOUR) : (RANK_FIVE | RANK_SIX | RANK_SEVEN))
+                    & (FILE_C | FILE_D | FILE_E | FILE_F)
+                    & ~squaresEnemyPawnsThreaten);
+
+            int spaceScore = populationCount(mySafeSquares) * SPACE;
+
+            long myDevelopedPawns = myPawns & ~(RANK_SEVEN | RANK_TWO);
+            while (myDevelopedPawns != 0) {
+                final int pawnIndex = numberOfTrailingZeros(myDevelopedPawns);
+                final long fileBack = BitOperations.fileForward(pawnIndex, turn == BLACK) & mySafeSquares;
+
+                spaceScore += populationCount(fileBack) * SPACE;
+                myDevelopedPawns &= myDevelopedPawns - 1;
+            }
+
+            finalScore += spaceScore;
+
+            scoresForEPO[turn][EvalPrintObject.spaceScore] = spaceScore;
+        }
+        
         long enemyKingBigArea = kingBigArea[1 - turn];
         long enemyKingSmallArea = kingSmallArea[1 - turn];
 
@@ -144,6 +178,8 @@ public class Evaluator {
         long myKingSmallArea = kingSmallArea[turn];
 
         int defendingMyKingLookup = 0;
+
+        int knightsScore = 0;
 
         while (myKnights != 0){
             final long knight = getFirstPiece(myKnights);
@@ -164,6 +200,8 @@ public class Evaluator {
             myKnights &= (myKnights - 1);
         }
 
+        int bishopsScore = 0;
+
         while (myBishops != 0){
             final long bishop = getFirstPiece(myBishops);
             if ((bishop & ignoreThesePieces) == 0) {
@@ -183,6 +221,8 @@ public class Evaluator {
             myBishops &= (myBishops - 1);
         }
 
+        int rooksScore = 0;
+
         while (myRooks != 0){
             final long rook = getFirstPiece(myRooks);
             if ((rook & ignoreThesePieces) == 0) {
@@ -201,6 +241,8 @@ public class Evaluator {
             }
             myRooks &= (myRooks - 1);
         }
+
+        int queensScore = 0;
 
         while (myQueens != 0){
             final long queen = getFirstPiece(myQueens);
@@ -226,6 +268,8 @@ public class Evaluator {
         myPawns = pieces[turn][PAWN] & ~ignoreThesePieces;
         attackingEnemyKingLookup[1 - turn] -= populationCount(myPawns & myKingSmallArea);
 
+        int pawnsScore = 0;
+
         while (myPawns != 0){
             final long pawn = getFirstPiece(myPawns);
             final int pawnIndex = numberOfTrailingZeros(pawn);
@@ -238,6 +282,18 @@ public class Evaluator {
             myPawns &= myPawns - 1;
         }
 
+        Assert.assertTrue(percentOfEndgame >= 0 && percentOfEndgame <= 100);
+        Assert.assertTrue(percentOfStartgame >= 0 && percentOfStartgame <= 100);
+
+        // king
+        int kingIndex = numberOfTrailingZeros(myKing);
+        positionScore += (percentOfStartgame == 0 ? 0
+                : (percentOfStartgame * POSITION_SCORES[turn][KING][63 - kingIndex]) / 100);
+
+
+        positionScore += percentOfEndgame == 0 ? 0
+                : (percentOfEndgame * POSITION_SCORES[turn][KING-KING][63 - kingIndex]) / 100;
+
         if (board.pieces[turn][QUEEN] == 0) {
             attackingEnemyKingLookup[turn] -= 2;
         }
@@ -245,10 +301,78 @@ public class Evaluator {
         finalScore += positionScore;
         finalScore += mobilityScore;
 
+        finalScore += pawnsScore;
+        finalScore += knightsScore;
+        finalScore += bishopsScore;
+        finalScore += rooksScore;
+        finalScore += queensScore;
+
+        scoresForEPO[turn][EvalPrintObject.pawnScore] = pawnsScore;
+        scoresForEPO[turn][EvalPrintObject.knightScore] = knightsScore;
+        scoresForEPO[turn][EvalPrintObject.bishopScore] = bishopsScore;
+        scoresForEPO[turn][EvalPrintObject.rookScore] = rooksScore;
+        scoresForEPO[turn][EvalPrintObject.queenScore] = queensScore;
+
         scoresForEPO[turn][EvalPrintObject.mobilityScore] = mobilityScore;
         scoresForEPO[turn][EvalPrintObject.positionScore] = positionScore;
 
         return finalScore;
     }
 
+
+    static int getPercentageOfEndgameness(Chessboard board) {
+        int answer = 150;
+
+        int pawnCountW = populationCount(board.pieces[WHITE][PAWN]);
+        int pawnCountB = populationCount(board.pieces[BLACK][PAWN]);
+
+        if (pawnCountB + pawnCountW < 2) {
+            return 100;
+        }
+
+        answer -= pawnCountW * 2;
+        answer -= pawnCountB * 2;
+        
+        if (pawnCountB < 3) {
+            answer += 15;
+        }
+
+        if (pawnCountW < 3) {
+            answer += 15;
+        }
+
+        long wk = board.pieces[WHITE][KNIGHT];
+        long wb = board.pieces[WHITE][BISHOP];
+        long wr = board.pieces[WHITE][ROOK];
+        long wq = board.pieces[WHITE][QUEEN];
+
+        long bk = board.pieces[BLACK][KNIGHT];
+        long bb = board.pieces[BLACK][BISHOP];
+        long br = board.pieces[BLACK][ROOK];
+        long bq = board.pieces[BLACK][QUEEN];
+
+        answer -= populationCount(wk) * 5;
+        answer -= populationCount(bk) * 5;
+
+        answer -= populationCount(wb) * 7;
+        answer -= populationCount(bb) * 7;
+
+        answer -= populationCount(wr) * 10;
+        answer -= populationCount(br) * 10;
+
+        answer -= populationCount(wq) * 22;
+        answer -= populationCount(bq) * 22;
+
+        answer += board.fullMoveCounter / 5;
+
+        if (answer < 0) {
+            return 0;
+        }
+
+        if (answer > 100) {
+            return 100;
+        }
+
+        return answer;
+    }
 }

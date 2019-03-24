@@ -4,7 +4,7 @@ public final class EngineSpecifications {
 
     public static int THREAD_NUMBER                                  = 1;
     public static final int MAX_THREADS                              = 8;
-    public static boolean INFO                                       = true;
+    public static boolean DEBUG                                      = false;
     public static boolean PRINT                                      = false;
     public static int MAX_DEPTH                                      = 62;
     public static int ABSOLUTE_MAX_DEPTH                             = 62;

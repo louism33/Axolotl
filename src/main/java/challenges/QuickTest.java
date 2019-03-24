@@ -45,7 +45,7 @@ public class QuickTest {
         System.out.println(EPDObject.getBoardFen());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.INFO = false;
+        EngineSpecifications.DEBUG = false;
         int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));

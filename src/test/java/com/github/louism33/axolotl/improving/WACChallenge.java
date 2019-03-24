@@ -3,7 +3,10 @@ package com.github.louism33.axolotl.improving;
 import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.MoveParser;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -43,7 +46,7 @@ public class WACChallenge {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.INFO = false;
+        EngineSpecifications.DEBUG = false;
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 

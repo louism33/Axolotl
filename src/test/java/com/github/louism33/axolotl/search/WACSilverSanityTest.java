@@ -19,7 +19,7 @@ public class WACSilverSanityTest {
 
     private static final int timeLimit = 5_000;
     private static int successes = 0;
-    private static final int targetSuccesses = 185;
+    private static final int targetSuccesses = 180;
 
     @BeforeClass
     public static void setup(){
@@ -63,7 +63,7 @@ public class WACSilverSanityTest {
         System.out.println(EPDObject.getBoardFen());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.INFO = false;
+        EngineSpecifications.DEBUG = true;
         int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
         MoveParser.printMove(move);
         if (contains(winningMoves, move) && !contains(losingMoves, move)){
