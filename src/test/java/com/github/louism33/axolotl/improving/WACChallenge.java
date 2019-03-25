@@ -24,7 +24,7 @@ public class WACChallenge {
 
     private static final int timeLimit = 5_000;
     private static int successes = 0;
-    private static final int targetSuccesses = 290;
+    private static final int targetSuccesses = 280;
 
     @BeforeClass
     public static void setup(){
@@ -45,8 +45,6 @@ public class WACChallenge {
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
-
-        EngineSpecifications.DEBUG = false;
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 

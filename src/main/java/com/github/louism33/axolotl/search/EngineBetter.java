@@ -252,6 +252,9 @@ public final class EngineBetter {
         Assert.assertTrue(depth >= 0);
 
         if (depth <= 0){
+            if (ply >= MAX_DEPTH_HARD) {
+                return Evaluator.eval(board, moves);
+            }
             Assert.assertTrue(!board.inCheck(board.isWhiteTurn()));
             return QuiescenceBetter.quiescenceSearchBetter(board, alpha, beta);
         }
@@ -505,9 +508,7 @@ public final class EngineBetter {
                     break;
                 }
                 if (!captureMove) {
-                    //todo
                     updateKillerMoves(whichThread, move, ply);
-//                    updateHistoryMoves(whichThread, move, ply, 1 - board.turn); // turn of mover
                 }
                 break;
             }

@@ -12,7 +12,7 @@ import static com.github.louism33.axolotl.search.MoveOrdererBetter.*;
 import static com.github.louism33.chesscore.MoveConstants.FIRST_FREE_BIT;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 
-public final class QuiescenceBetter {
+final class QuiescenceBetter {
 
     static int quiescenceSearchBetter(Chessboard board, int alpha, int beta){
 
@@ -47,8 +47,6 @@ public final class QuiescenceBetter {
             Ints.sortDescending(moves, 0, realMoves);
         }
 
-
-        int numberOfMovesSearched = 0;
         for (int i = 0; i < moves.length; i++) {
 
             final int move = moves[i];
@@ -85,7 +83,6 @@ public final class QuiescenceBetter {
             }
 
             board.makeMoveAndFlipTurn(loudMove);
-            numberOfMovesSearched++;
             EngineBetter.numberOfQMovesMade[0]++;
 
             int score = -quiescenceSearchBetter(board, -beta, -alpha);

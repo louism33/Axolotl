@@ -127,6 +127,7 @@ public final class MoveOrdererBetter {
         int maxMoves = moves[moves.length - 1];
         int turn = board.turn;
         
+        // todo
         final int mateKiller = mateKillers[whichThread][ply];
         final int firstKiller = killerMoves[whichThread][ply][0];
         final int secondKiller = ply >= 2 ? killerMoves[whichThread][ply][1] : 0;

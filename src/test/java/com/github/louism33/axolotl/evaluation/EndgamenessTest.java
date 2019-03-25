@@ -27,7 +27,7 @@ public class EndgamenessTest {
 
     @Test
     void endPoss() {
-        Chessboard board = new Chessboard("8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - - bm Rxb2; id \"WAC.002\"");
+        Chessboard board = new Chessboard("8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - -");
         int percentageOfEndgameness = getPercentageOfEndgameness(board);
         Assert.assertEquals(100, percentageOfEndgameness);
     }
