@@ -4,7 +4,6 @@ import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.main.UCIPrinter;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
@@ -52,7 +51,6 @@ public final class EngineBetter {
     }
 
     public static void reset() {
-        
         //don't reset moves if uci will provide them
         if (computeMoves) {
             rootMoves = null;
@@ -105,7 +103,7 @@ public final class EngineBetter {
 
     public static boolean quitOnSingleMove = true;
     public static boolean computeMoves = true;
-    
+
     private static final int searchFixedTime(final Chessboard board, final long maxTime, final int depth) {
         reset();
 
@@ -118,13 +116,11 @@ public final class EngineBetter {
             rootMoves = board.generateLegalMoves();
         }
 
-        aiMoveX = rootMoves[0];
-
         int numberOfRealMoves = rootMoves[rootMoves.length - 1];
         if (numberOfRealMoves == 0){
             return 0;
-        }        
-        
+        }
+
         if (numberOfRealMoves == 1 && quitOnSingleMove){
             return rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
         }
@@ -148,7 +144,6 @@ public final class EngineBetter {
         }
 
         final int bestMove = rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
-        final int actual = aiMoveX & MOVE_MASK_WITHOUT_CHECK;
         return bestMove;
     }
 
@@ -188,6 +183,7 @@ public final class EngineBetter {
             int previousAi = rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
 
             while (true){
+
                 score = principleVariationSearch(board, depth, 0,
                         alpha, beta, 0);
 
@@ -249,7 +245,9 @@ public final class EngineBetter {
 
         boolean boardInCheck = board.inCheckRecorder;
 
-        depth += extensions(board, ply, boardInCheck, moves);
+        if (ply + depth < MAX_DEPTH_HARD - 2) {
+            depth += extensions(board, ply, boardInCheck, moves);
+        }
 
         Assert.assertTrue(depth >= 0);
 
@@ -372,16 +370,6 @@ public final class EngineBetter {
         }
 
         if (ply != 0 && hashMove != 0){
-            if ((moves[0] & MOVE_MASK_WITHOUT_CHECK) != hashMove) {
-                System.out.println(board);
-                MoveParser.printMove(moves);
-                System.out.println("correct: ");
-                MoveParser.printMove(moves[0]);
-                
-                MoveParser.printMove(hashMove);
-                System.out.println("details : ");
-                System.out.println(ply + "  " + depth);
-            }
             Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
         }
 
@@ -401,17 +389,14 @@ public final class EngineBetter {
                 }
             }
 
-
             int move = moves[i] & MOVE_MASK_WITHOUT_CHECK;
 
             Assert.assertTrue(moveScore != 0);
-
 
             if (ply != 0 && i == 0 && hashMove != 0) {
                 Assert.assertTrue(move == hashMove);
                 Assert.assertTrue(moveScore == hashScore);
             }
-
 
             boolean captureMove = MoveParser.isCaptureMove(move);
             boolean promotionMove = MoveParser.isPromotionMove(move);
@@ -420,23 +405,12 @@ public final class EngineBetter {
             boolean pawnToSix = MoveParser.moveIsPawnPushSix(turn, move);
             boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(turn, move);
 
-
             if (captureMove && !promotionMove) {
                 Assert.assertTrue(moveScore >= (captureBias + 1 - 5));
             }
 
             if (queenPromotionMove) {
                 boolean condition = moveScore >= queenQuietPromotionScore;
-                if (!condition) {
-                    System.out.println(board);
-                    MoveParser.printMove(move);
-                    System.out.println("move score is: "+ moveScore);
-                    Art.printLong(moveScore);
-
-                    System.out.println("hash: " + MoveParser.toString(hashMove));
-                    System.out.println("ply is: " + ply);
-                    System.out.println("depth is: " + depth);
-                }
                 Assert.assertTrue(condition);
             }
 
@@ -471,8 +445,6 @@ public final class EngineBetter {
                     }
                 }
             }
-
-
 
             board.makeMoveAndFlipTurn(move);
             numberOfMovesMade[0]++;
@@ -569,9 +541,7 @@ public final class EngineBetter {
     }
 
 
-    private static int aiMoveX = 0;
     private static void putAIMoveFirst(int aiMove) {
-        aiMoveX = aiMove;
         final int aiMoveMask = aiMove & MOVE_MASK_WITHOUT_CHECK;
         if ((rootMoves[0] & MOVE_MASK_WITHOUT_CHECK) == aiMoveMask) {
             return;
