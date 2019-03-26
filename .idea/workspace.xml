@@ -8,7 +8,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8807346a-cf9d-4333-98e2-880bdb09ab35" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/axolotl_v1.4.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/search/EarlyGameTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/standalone/EarlyGameMoves.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -50,20 +50,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/EngineBetter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="139">
-              <caret line="467" column="30" selection-start-line="467" selection-start-column="30" selection-end-line="467" selection-end-column="30" />
+            <state relative-caret-position="184">
+              <caret line="470" lean-forward="true" selection-start-line="470" selection-end-line="470" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/search/EarlyGameTest.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/standalone/EarlyGameMoves.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-51">
-              <caret line="18" column="32" lean-forward="true" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
+            <state relative-caret-position="195">
+              <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -130,8 +130,8 @@
       <find>debug</find>
       <find>DEBUG</find>
       <find>R =</find>
-      <find>repetition</find>
       <find>Success</find>
+      <find>repetition</find>
     </findStrings>
     <replaceStrings>
       <replace>8/</replace>
@@ -193,8 +193,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/standalone/Temp.java" />
-        <option value="$PROJECT_DIR$/src/main/java/standalone/StandAlone.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/transpositiontable/TranspositionTableTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/evaluation/MoveTable.java" />
         <option value="$PROJECT_DIR$/../ChessCore/src/main/java/com/github/louism33/chesscore/MoveConstants.java" />
@@ -244,6 +242,8 @@
         <option value="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/search/WACSilverSanityTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/improving/WACChallenge.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/EngineBetter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/standalone/EarlyGameTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/standalone/EarlyGameMoves.java" />
       </list>
     </option>
   </component>
@@ -487,7 +487,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553551274629" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553551318136" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="extract.method.default.visibility" value="private" />
@@ -545,7 +545,7 @@
     </option>
     <option name="contentProportion" value="0.10477299" />
   </component>
-  <component name="RunManager" selected="JUnit.EarlyGameTest">
+  <component name="RunManager" selected="JUnit.EarlyGameMoves">
     <configuration name="UCIEntry" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.github.louism33.axolotl.main.UCIEntry" />
       <module name="axolotl" />
@@ -559,16 +559,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EarlyGameTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="EarlyGameMoves" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="axolotl" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.github.louism33.axolotl.search.*" />
+          <option name="PATTERN" value="standalone.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.github.louism33.axolotl.search" />
-      <option name="MAIN_CLASS_NAME" value="com.github.louism33.axolotl.search.EarlyGameTest" />
+      <option name="PACKAGE_NAME" value="standalone" />
+      <option name="MAIN_CLASS_NAME" value="standalone.EarlyGameMoves" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -578,7 +578,7 @@
       <module name="axolotl" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.github.louism33.axolotl.search.*" />
+          <option name="PATTERN" value="standalone.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -628,11 +628,11 @@
       <item itemvalue="JAR Application.axolotl_v1.4.jar" />
       <item itemvalue="JUnit.com.github.louism33.axolotl in axolotl" />
       <item itemvalue="JUnit.WACChallenge" />
-      <item itemvalue="JUnit.EarlyGameTest" />
+      <item itemvalue="JUnit.EarlyGameMoves" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.EarlyGameTest" />
+        <item itemvalue="JUnit.EarlyGameMoves" />
         <item itemvalue="JUnit.WACChallenge" />
         <item itemvalue="JUnit.com.github.louism33.axolotl in axolotl" />
         <item itemvalue="JAR Application.axolotl_v1.4.jar" />
@@ -768,14 +768,7 @@
       <workItem from="1553110860134" duration="76866000" />
       <workItem from="1553284878790" duration="63888000" />
       <workItem from="1553450863419" duration="647000" />
-      <workItem from="1553453268853" duration="29743000" />
-    </task>
-    <task id="LOCAL-00021" summary="time management">
-      <created>1544951278672</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1544951278672</updated>
+      <workItem from="1553453268853" duration="30096000" />
     </task>
     <task id="LOCAL-00022" summary="time management">
       <created>1544951443833</created>
@@ -1113,7 +1106,14 @@
       <option name="project" value="LOCAL" />
       <updated>1553545696914</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="************** new version ******************">
+      <created>1553551311782</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1553551311782</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1149,7 +1149,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="405986000" />
+    <option name="totallyTimeSpent" value="406339000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1162,9 +1162,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1368" height="741" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.486747" visible="true" weight="0.23030303" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.486747" visible="true" weight="0.23030303" />
       <window_info id="Structure" order="1" sideWeight="0.51325303" side_tool="true" weight="0.24166666" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1172,7 +1171,7 @@
       <window_info id="UI Designer" order="5" />
       <window_info id="Learn" order="6" weight="0.32865497" />
       <window_info id="Favorites" order="7" sideWeight="0.5114504" side_tool="true" weight="0.18636364" />
-      <window_info anchor="bottom" id="Run Dashboard" order="0" visible="true" weight="0.56542814" />
+      <window_info anchor="bottom" id="Run Dashboard" order="0" weight="0.56542814" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32956383" />
       <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49545455" weight="0.053311795" />
@@ -1182,7 +1181,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.28756058" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50454545" side_tool="true" weight="0.53796446" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.17609046" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="10" visible="true" weight="0.38772213" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.18901454" />
       <window_info anchor="bottom" id="Statistic" order="12" weight="0.0" />
       <window_info anchor="bottom" id="Inspection Results" order="13" weight="0.3279483" />
@@ -1678,20 +1677,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/github/louism33/axolotl/search/EarlyGameTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/EngineBetter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-51">
-          <caret line="18" column="32" lean-forward="true" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="184">
+          <caret line="470" lean-forward="true" selection-start-line="470" selection-end-line="470" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/louism33/axolotl/search/EngineBetter.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/standalone/EarlyGameMoves.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="467" column="30" selection-start-line="467" selection-start-column="30" selection-end-line="467" selection-end-column="30" />
+        <state relative-caret-position="195">
+          <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

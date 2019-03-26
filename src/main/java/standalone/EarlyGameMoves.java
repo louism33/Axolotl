@@ -1,5 +1,7 @@
-package com.github.louism33.axolotl.search;
+package standalone;
 
+import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.MoveParserFromAN;
@@ -9,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
-public class EarlyGameTest {
+public class EarlyGameMoves {
 
     private static int depth = 12;
     
