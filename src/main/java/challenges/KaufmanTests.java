@@ -1,8 +1,8 @@
 package challenges;
 
-import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
-import com.github.louism33.chesscore.MoveParser;
+import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +11,8 @@ import org.junit.runners.Parameterized;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static challenges.Utils.contains;
 
 @RunWith(Parameterized.class)
 public class KaufmanTests {
@@ -21,8 +23,8 @@ public class KaufmanTests {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        for (int i = 0; i < splitUpWACs.length; i++) {
-            String pos = splitUpWACs[i];
+        for (int i = 0; i < splitUpPositions.length; i++) {
+            String pos = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(pos);
             objectAndName[0] = EPDObject;
@@ -40,16 +42,15 @@ public class KaufmanTests {
 
     @Test
     public void test() {
-        List<Integer> winningMoveDestination = EPDObject.getBestMoves();
-        System.out.println();
         System.out.println(EPDObject.getBoardFen());
-        System.out.println("Move to get: " + MoveParser.toString(winningMoveDestination.get(0)));
+        int[] winningMoves = EPDObject.getBestMoves();
+        int[] losingMoves = EPDObject.getAvoidMoves();
+        EngineSpecifications.DEBUG = false;
+        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
-
-        Assert.assertTrue(winningMoveDestination.contains(move));
+        Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }
-    private static final String wacTests = "" +
+    private static final String positions = "" +
             "1rbq1rk1/p1b1nppp/1p2p3/8/1B1pN3/P2B4/1P3PPP/2RQ1R1K w - - bm Nf6+; id \"position 01\";\n" +
             "3r2k1/p2r1p1p/1p2p1p1/q4n2/3P4/PQ5P/1P1RNPP1/3R2K1 b - - bm Nxd4 id \"position 02\";\n" +
             "3r2k1/1p3ppp/2pq4/p1n5/P6P/1P6/1PB2QP1/1K2R3 w - - am Rd1; id \"position 03\";\n" +
@@ -77,6 +78,6 @@ public class KaufmanTests {
             "8/3nk3/3pp3/1B6/8/3PPP2/4K3/8 w - - bm Bxd7; id \"position 25\";" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\n");
+    private static final String[] splitUpPositions = positions.split("\n");
     
 }

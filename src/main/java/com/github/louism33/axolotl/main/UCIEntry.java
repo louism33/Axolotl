@@ -4,114 +4,77 @@ import com.fluxchess.jcpi.AbstractEngine;
 import com.fluxchess.jcpi.commands.*;
 import com.fluxchess.jcpi.models.GenericBoard;
 import com.fluxchess.jcpi.models.GenericMove;
-import com.fluxchess.jcpi.options.AbstractOption;
-import com.github.louism33.axolotl.evaluation.Evaluator;
-import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.fluxchess.jcpi.options.Options;
+import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.chesscore.Chessboard;
 
 import java.util.List;
 
 import static com.github.louism33.axolotl.main.UCIBoardParser.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
 public class UCIEntry extends AbstractEngine {
 
-    private Chessboard board;
-    private GenericBoard genericBoard;
-    private List<GenericMove> moves;
+    public Chessboard board;
+    public GenericBoard genericBoard;
+    public List<GenericMove> moves;
 
-    private UCIEntry(){
+    public UCIEntry(){
         super();
     }
 
-    public UCIEntry(Engine engine){
+    public UCIEntry(EngineBetter engine){
         super();
     }
 
     // "uci"
     @Override
     public void receive(EngineInitializeRequestCommand command) {
-        Engine.setup();
-        Engine.setUciEntry(this);
+        EngineBetter.reset();
+        EngineBetter.uciEntry = this;
 
         ProtocolInitializeAnswerCommand firstCommand 
-                = new ProtocolInitializeAnswerCommand("axolotl_v1.3", "Louis James Mackenzie-Smith");
+                = new ProtocolInitializeAnswerCommand("axolotl_v1.4", "Louis James Mackenzie-Smith");
         
-        firstCommand.addOption(new AbstractOption("Log") {
-            @Override
-            protected String type() {
-                return "check";
-            }
-        });
-
-        firstCommand.addOption(new AbstractOption("PrintEval") {
-            @Override
-            protected String type() {
-                return "check";
-            }
-        });
-
-        firstCommand.addOption(new AbstractOption("HashSize") {
-            @Override
-            protected String type() {
-                return "spin";
-            }
-        });
-
-        firstCommand.addOption(new AbstractOption("Threads") {
-            @Override
-            protected String type() {
-                return "spin";
-            }
-        });
-
+        firstCommand.addOption(Options.newHashOption( 16, 1, 64));
+        
+//        firstCommand.addOption(new SpinnerOption("Threads", 1, 1, 4));
+        
         this.getProtocol().send(firstCommand);
     }
 
     @Override
     protected void quit() {
-        System.out.println("Quitting");
         System.exit(1);
     }
 
-    // setoption name Write Debug Log true
+    // setoption name Hash value 2
     @Override
     public void receive(EngineSetOptionCommand command) {
-        if (command == null || command.name == null || command.name.equals("")){
+        if (command == null || command.name == null || command.name.isEmpty()){
             return;
         }
-        if (command.name.equalsIgnoreCase("Log")){
-            EngineSpecifications.INFO = Boolean.valueOf(command.value);
-        }        
         
-        if (command.name.equalsIgnoreCase("PrintEval")){
-            EngineSpecifications.PRINT = Boolean.valueOf(command.value);
-        }
-
-        if (command.name.equalsIgnoreCase("HashSize")){
+        if (command.name.equalsIgnoreCase("Hash")){
             int size = Integer.parseInt(command.value);
-            int number = size * 62_500;
-            if (number > 0 && number < EngineSpecifications.MAX_TABLE_SIZE) {
-                EngineSpecifications.TABLE_SIZE = number;
+            int number = size * TABLE_SIZE_PER_MB;
+            if (number > MIN_TABLE_SIZE && number < MAX_TABLE_SIZE) {
+                TABLE_SIZE = number;
             }
-            if (number > EngineSpecifications.MAX_TABLE_SIZE){
-                EngineSpecifications.TABLE_SIZE = EngineSpecifications.MAX_TABLE_SIZE;
+            else if (number > MAX_TABLE_SIZE){
+                TABLE_SIZE = MAX_TABLE_SIZE;
+            }
+            else if (number < MIN_TABLE_SIZE){
+                TABLE_SIZE = MIN_TABLE_SIZE;
             }
         }
 
-        if (command.name.equalsIgnoreCase("Threads")){
-            int threadNumber = Integer.parseInt(command.value);
-            if (threadNumber < 1 || threadNumber > EngineSpecifications.MAX_THREADS){
-                return;
-            }
-            EngineSpecifications.THREAD_NUMBER = threadNumber;
-            Engine.setupThreads();
-        }
     }
 
+    //debug on
     @Override
     public void receive(EngineDebugCommand command) {
-        System.out.println("I'm sorry, I cannot do that");
+        DEBUG = command.debug;
     }
 
     @Override
@@ -124,21 +87,15 @@ public class UCIEntry extends AbstractEngine {
         moves = null;
         board = null;
         genericBoard = null;
-        Engine.setup();
+        EngineBetter.reset();
     }
 
-    // ex:
     // position fen N7/P3pk1p/3p2p1/r4p2/8/4b2B/4P1KP/1R6 w - - 0 34
     @Override
     public void receive(EngineAnalyzeCommand command) {
         genericBoard = command.board;
         moves = command.moves;
         board = convertGenericBoardToChessboard(genericBoard, moves);
-
-        if (EngineSpecifications.PRINT) {
-            System.out.println(board);
-            Evaluator.printEval(board);
-        }
     }
 
     // go movetime 30000
@@ -147,7 +104,6 @@ public class UCIEntry extends AbstractEngine {
         if (command == null){
             return;
         }
-        Engine.giveThreadsBoard(board);
         int aiMove = calculatingHelper(command);
         if (aiMove != 0){
             this.getProtocol().send(
@@ -156,22 +112,32 @@ public class UCIEntry extends AbstractEngine {
     }
 
     private int calculatingHelper(EngineStartCalculatingCommand command) {
+        MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
+
+        List<GenericMove> searchMoveList = command.getSearchMoveList();
+        EngineBetter.quitOnSingleMove = true;
+        if (searchMoveList != null) {
+            EngineBetter.quitOnSingleMove = false;
+            EngineBetter.computeMoves = false;
+            EngineBetter.rootMoves = UCIBoardParser.convertGenericMovesToMyMoves(board, searchMoveList);
+        }
+
         long clock = timeOnClock(command);
         if (clock != 0){
             Long clockIncrement = command.getClockIncrement(convertMyColourToGenericColour(board.isWhiteTurn()));
-            return Engine.searchMyTime(board, clock, clockIncrement);
+            return EngineBetter.searchMyTime(board, clock, clockIncrement == null ? 0 : clockIncrement);
         }
         else if (command.getMoveTime() != null && command.getMoveTime() != 0){
-            return Engine.searchFixedTime(board, command.getMoveTime(), true);
+            return EngineBetter.searchFixedTime(board, command.getMoveTime());
         }
         else {
-            int searchDepth = EngineSpecifications.MAX_DEPTH;
+            int searchDepth = MAX_DEPTH;
             if (command.getInfinite()){
-                return Engine.searchFixedDepth(board, searchDepth);
+                return EngineBetter.searchFixedDepth(board, searchDepth);
             }
             else if (command.getDepth() != null){
                 searchDepth = command.getDepth();
-                return Engine.searchFixedDepth(board, searchDepth);
+                return EngineBetter.searchFixedDepth(board, searchDepth);
             }
             else {
                 throw new RuntimeException("I do not know how I should search for a move");
@@ -191,12 +157,12 @@ public class UCIEntry extends AbstractEngine {
 
     @Override
     public void receive(EngineStopCalculatingCommand command) {
-        int aiMove = Engine.getAiMove();
+        int aiMove = EngineBetter.getAiMove();
         if (aiMove != 0) {
             this.getProtocol().send(
                     new ProtocolBestMoveCommand(convertMyMoveToGenericMove(aiMove), null));
         }
-        Engine.setStopInstruction(true);
+        EngineBetter.stopNow = true;
     }
 
     @Override
@@ -209,8 +175,8 @@ public class UCIEntry extends AbstractEngine {
     }
 
     public static void main(String[] args) {
+        System.out.println("axolotl v1.4 by Louis James Mackenzie-Smith");
         Thread thread = new Thread( new UCIEntry() );
         thread.start();
     }
-
 }

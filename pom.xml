@@ -6,7 +6,7 @@
 
     <groupId>com.github.louism33</groupId>
     <artifactId>axolotl</artifactId>
-    <version>1.3-SNAPSHOT</version> 
+    <version>1.4-SNAPSHOT</version> 
     <name>axolotl</name>
     <description>Amphibious Java Chess Engine</description>
     <url>https://github.com/louism33/Axolotl</url>
@@ -16,20 +16,23 @@
     </issueManagement>
 
     <distributionManagement>
+
         <!--<repository>-->
-        <!--<uniqueVersion>true</uniqueVersion>-->
-        <!--<id>ossrh</id>-->
-        <!--<url>-->
-        <!--https://oss.sonatype.org/content/repositories/releases-->
-        <!--</url>-->
-        <!--<layout>default</layout>-->
+            <!--<uniqueVersion>true</uniqueVersion>-->
+            <!--<id>ossrh</id>-->
+            <!--<url>-->
+                <!--https://oss.sonatype.org/content/repositories/releases-->
+            <!--</url>-->
+            <!--<layout>default</layout>-->
         <!--</repository>-->
+
         <snapshotRepository>
             <id>ossrh</id>
             <url>
                 https://oss.sonatype.org/content/repositories/snapshots
             </url>
         </snapshotRepository>
+        
     </distributionManagement>
 
     <licenses>
@@ -39,8 +42,6 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
-
 
     <scm>
         <connection>scm:git:git@github.com:louism33/Axolotl.git</connection>
@@ -59,10 +60,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-
-
-
 
     <build>
         <pluginManagement>
@@ -235,47 +232,32 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                     <configuration>
+                        <finalName>axolotl_v1.4</finalName>
+                        <appendAssemblyId>false</appendAssemblyId>
+                        <outputDirectory>${user.dir}</outputDirectory>
                         <archive>
                             <manifest>
-                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                                <mainClass>com.github.louism33.axolotl.main.UCIEntry</mainClass>
                             </manifest>
                         </archive>
+                        <descriptorRefs>
+                            <descriptorRef>jar-with-dependencies</descriptorRef>
+                        </descriptorRefs>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
     </build>
-    
-    
-    
-    
-    
-    
 
     <repositories>
         <repository>
@@ -290,7 +272,7 @@
 
         <repository>
             <id>com.github.louism33</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/chesscore/1.8</url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/chesscore/</url>
         </repository>
     </repositories>
 
@@ -299,7 +281,7 @@
         <dependency>
             <groupId>com.github.louism33</groupId>
             <artifactId>chesscore</artifactId>
-            <version>1.8-SNAPSHOT</version>
+            <version>1.24-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -309,9 +291,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fluxchess</groupId>
+            <groupId>com.fluxchess.jcpi</groupId>
             <artifactId>jcpi</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1</version>
         </dependency>
 
         <dependency>

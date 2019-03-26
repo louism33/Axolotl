@@ -23,9 +23,10 @@ public class EvaluationConstants {
     static final int MOVE_NUMBER_POINT                    = 1; // /10
     static final int BATTERY_SCORE                        = 10;
     static final int I_CONTROL_OPEN_FILE                  = 25;
-    static final int MY_TURN_BONUS                        = 10;
+    static final int MY_TURN_BONUS                        = 25;
     static final int CENTRE_PIECE                         = 10;
     static final int IN_CHECK_PENALTY                     = -15;
+    static final int SPACE                                = 2;
 
     // pawn valuation
     static final int PAWN_PASSED                          = 15;
@@ -97,6 +98,10 @@ public class EvaluationConstants {
                     50, 75, 100,125, 150,175,200,225,
                     250,275,300,325, 350,375,400,425,
                     450,475,500,525,550,575, 600,600,
+                    600,600,600,600,600,600, 600,600,
+                    600,600,600,600,600,600, 600,600,
+                    600,600,600,600,600,600, 600,600,
+                    600,600,600,600,600,600, 600,600,
             };
 
 }

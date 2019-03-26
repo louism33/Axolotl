@@ -1,27 +1,30 @@
 package com.github.louism33.axolotl.moveordering;
 
-public class MoveOrderingConstants {
+public final class MoveOrderingConstants {
 
-    public final static int MOVE_SIZE_LIMIT = 0x2000000;
-    static final int moveScoreOffset = 25;
-    static final int MOVE_SCORE_MASK = 0xfe000000;
+//    public static final int FIRST_FREE_BIT = MoveConstants.FIRST_FREE_BIT;
+//    public static final int moveScoreOffset = 26;
+//    public static final int MOVE_SCORE_MASK = 0xfc000000;
 
-    static final int MAX_HISTORY_MOVE_SCORE = 48;
-    static final int CAPTURE_BIAS = 50;
-    static final int CAPTURE_BIAS_LAST_MOVED_PIECE = 1;
+    public static final int captureBiasOfLastMovedPiece = 1;
 
-    static final int
-            hashScore = 63;
-    static final int mateKillerScore = 61;
-    static final int queenCapturePromotionScore = 60;
-    static final int queenQuietPromotionScore = 59;
-    static final int killerOneScore = 50;
-    static final int killerTwoScore = 49;
-    static final int oldKillerScoreOne = 46;
-    static final int oldKillerScoreTwo = 45;
-    static final int castlingMove = 40;
-    static final int giveCheckMove = 47;
-    static final int knightPromotionScore = 3;
-    static final int uninterestingMove = 2;
-    static final int uninterestingPromotion = 1;
+    public static final int hashScore = 31;
+    public static final int queenCapturePromotionScore = 30;
+    public static final int queenQuietPromotionScore = 29;
+    public static final int captureBias = 26; // between 30 and 23
+    public static final int mateKillerScore = 25;
+    public static final int killerOneScore = 24;
+    public static final int killerTwoScore = 23;
+    public static final int pawnPushToSeven = 23;
+    public static final int giveCheckMove = 22;
+    public static final int castlingMove = 21;
+    public static final int pawnPushToSix = 21;
+    public static final int oldKillerScoreOne = 20;
+    public static final int oldKillerScoreTwo = 19;
+    public static final int maxHistoryMoveScore = 18;
+    public static final int knightPromotionScore = 4;
+    public static final int uninterestingMove = 3;
+    public static final int kingQuietMove = 2;
+    public static final int uninterestingPromotion = 1;
+
 }

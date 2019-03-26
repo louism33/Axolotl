@@ -1,6 +1,6 @@
 package standalone;
 
-import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 
@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 class StandAlone {
 
     private static int totalMoves = 1;
-    private static final long timeLimit = 20000;
+    private static final long timeLimit = 5000;
 
     public static void main(String[] args) throws IOException {
         InputStreamReader stdin;
@@ -62,11 +62,11 @@ class StandAlone {
                 while (true) {
                     System.out.print(prompt + " move (or \"go\" or \"quit\")> ");
                     command = readCommand(stdin);
-                    System.out.println("This is move number " + totalMoves + ".");
+                    System.out.println("This is move number " + totalMoves + '.');
 
                     switch (command) {
                         case "go":
-                            move = Engine.searchFixedTime(board, timeLimit, false);
+                            move = EngineBetter.searchFixedTime(board, timeLimit);
                             break label;
                         case "quit":
                             System.out.println("QUIT.\n");
@@ -80,13 +80,12 @@ class StandAlone {
                                 }
                             }
                             if (move != 0) break label;
-                            System.out.println("\"" + command + "\" is not a legal move");
+                            System.out.println('"' + command + "\" is not a legal move");
                             break;
                     }
                 }
 
-                board.makeMove(move);
-                board.setWhiteTurn(!board.isWhiteTurn());
+                board.makeMoveAndFlipTurn(move);
                 totalMoves++;
                 System.out.println(prompt + " made move "+move);
             }

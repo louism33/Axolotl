@@ -4,15 +4,14 @@ import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.chesscore.BitboardResources.*;
-import static com.github.louism33.chesscore.BitboardResources.RANK_TWO;
-import static com.github.louism33.chesscore.Square.squareThreatenend;
+import static com.github.louism33.chesscore.BoardConstants.*;
 
 public class PassedPawns {
 
     static int evalPassedPawnsByTurn(Chessboard board, boolean white,
                                  long myPawns, long allPieces,
                                  long enemies) {
+
 
 
         int score = 0;
@@ -37,13 +36,13 @@ public class PassedPawns {
 
 
 
-    private static int advancedPawnScore(Chessboard board, boolean white, long advancedPawn,
+    public static int advancedPawnScore(Chessboard board, boolean white, long advancedPawn,
                                  long myPawns, long allPieces,
                                  long enemies, long sixthRank) {
 
         int score = 0;
 
-        int index = BitOperations.getIndexOfFirstPiece(advancedPawn);
+        int index = Long.numberOfTrailingZeros(advancedPawn);
 
         long forwardFile = BitOperations.fileForward(index, white);
         long squareOnMe = BitOperations.squareCentredOnIndex(index);
@@ -86,21 +85,21 @@ public class PassedPawns {
                 }
             }
 
-            if (squareThreatenend(board, true, pushPromotingSquare)) {
-                score += PAWN_P_SQUARE_UNTHREATENED;
-            }
-
-            if (squareThreatenend(board, false, pushPromotingSquare)) {
-                score += PAWN_P_SQUARE_SUPPORTED;
-            }
-
-            if (squareThreatenend(board, true, advancedPawn)) {
-                score += PAWN_P_UNTHREATENED;
-            }
-
-            if (squareThreatenend(board, false, advancedPawn)) {
-                score += PAWN_P_PROTECTED;
-            }
+//            if (squareThreatenend(board, true, pushPromotingSquare)) {
+//                score += PAWN_P_SQUARE_UNTHREATENED;
+//            }
+//
+//            if (squareThreatenend(board, false, pushPromotingSquare)) {
+//                score += PAWN_P_SQUARE_SUPPORTED;
+//            }
+//
+//            if (squareThreatenend(board, true, advancedPawn)) {
+//                score += PAWN_P_UNTHREATENED;
+//            }
+//
+//            if (squareThreatenend(board, false, advancedPawn)) {
+//                score += PAWN_P_PROTECTED;
+//            }
         } else {
             long pushPromotingSquare = advancedPawn >>> 8;
             long capturePromotingSquareL = advancedPawn >>> 9;
@@ -128,21 +127,21 @@ public class PassedPawns {
                 }
             }
 
-            if (squareThreatenend(board, false, pushPromotingSquare)) {
-                score += PAWN_P_SQUARE_UNTHREATENED;
-            }
-
-            if (squareThreatenend(board, true, pushPromotingSquare)) {
-                score += PAWN_P_SQUARE_SUPPORTED;
-            }
-
-            if (squareThreatenend(board, false, advancedPawn)) {
-                score += PAWN_P_UNTHREATENED;
-            }
-
-            if (squareThreatenend(board, true, advancedPawn)) {
-                score += PAWN_P_PROTECTED;
-            }
+//            if (squareThreatenend(board, false, pushPromotingSquare)) {
+//                score += PAWN_P_SQUARE_UNTHREATENED;
+//            }
+//
+//            if (squareThreatenend(board, true, pushPromotingSquare)) {
+//                score += PAWN_P_SQUARE_SUPPORTED;
+//            }
+//
+//            if (squareThreatenend(board, false, advancedPawn)) {
+//                score += PAWN_P_UNTHREATENED;
+//            }
+//
+//            if (squareThreatenend(board, true, advancedPawn)) {
+//                score += PAWN_P_PROTECTED;
+//            }
         }
         return score;
     }

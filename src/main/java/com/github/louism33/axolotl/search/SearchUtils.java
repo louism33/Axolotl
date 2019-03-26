@@ -5,17 +5,19 @@ import com.github.louism33.chesscore.MoveParser;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
+import static com.github.louism33.chesscore.BoardConstants.*;
 
-class SearchUtils {
+final class SearchUtils {
 
-    static final int[] futilityMargin = {0, 150, 250, 350, 450, 550, 650};
-    private static final int futilityBelowThisDepth = futilityMargin.length;
+//    static final int[] futilityMargin = {0, 180, 250, 350, 450, 550, 650};
+    static final int[] futilityMargin = {0, 180, 250, 350, 450};
+    public static final int futilityBelowThisDepth = futilityMargin.length;
 
-    static final int[] alphaRazorMargin = {0, 300, 500, 650};
-    private static final int alphaRazorBelowThisDepth = alphaRazorMargin.length;
+    static final int[] alphaRazorMargin = {0, 400, 600, 800};
+    public static final int alphaRazorBelowThisDepth = alphaRazorMargin.length;
 
-    static final int[] betaRazorMargin = {0, 150, 250, 350, 450, 650, 750};
-    private static final int betaRazorBelowThisDepth = betaRazorMargin.length;
+    static final int[] betaRazorMargin = {0, 250, 350, 450, 550, 750, 1000};
+    public static final int betaRazorBelowThisDepth = betaRazorMargin.length;
 
     static int extensions(Chessboard board, int ply, boolean boardInCheck, int[] moves){
 
@@ -54,51 +56,27 @@ class SearchUtils {
                 ;
     }
 
-    static int nullMoveDepthReduction(){
-        return 2;
-    }
-
     static boolean isNullMoveOkHere(Chessboard board, int nullMoveCounter, int depth, int R){
         return nullMoveCounter < 2
                 && depth > R
                 && !maybeInEndgame(board)
-                && notJustPawnsLeft(board, board.isWhiteTurn())
-                && !maybeInZugzwang(board, board.isWhiteTurn());
+                && notJustPawnsLeft(board)
+                && !maybeInZugzwang(board);
     }
 
-    private static boolean maybeInEndgame(Chessboard board){
-        return populationCount(board.allPieces()) < 9;
+    public static boolean maybeInEndgame(Chessboard board){
+        return populationCount(board.pieces[board.turn][ALL_COLOUR_PIECES] | board.pieces[1 - board.turn][ALL_COLOUR_PIECES]) < 9;
     }
 
-    private static boolean maybeInZugzwang(Chessboard board, boolean white){
+    public static boolean maybeInZugzwang(Chessboard board){
         // returns true if you are down to Pawns and King (+1 extra piece)
-        long myPawns, myKing, allMyPieces;
-        if (white){
-            allMyPieces = board.whitePieces();
-            myPawns = board.getWhitePawns();
-            myKing = board.getWhiteKing();
-        }
-        else {
-            allMyPieces = board.blackPieces();
-            myPawns = board.getBlackPawns();
-            myKing = board.getBlackKing();
-        }
-        return populationCount(allMyPieces ^ (myPawns | myKing)) <= 1;
+        final int turn = board.turn;
+        return populationCount(board.pieces[turn][ALL_COLOUR_PIECES] ^ (board.pieces[turn][PAWN] | board.pieces[turn][KING])) <= 1;
     }
 
-    static boolean notJustPawnsLeft(Chessboard board, boolean white){
-        long myPawns, myKing, allMyPieces;
-        if (white){
-            allMyPieces = board.whitePieces();
-            myPawns = board.getWhitePawns();
-            myKing = board.getWhiteKing();
-        }
-        else {
-            allMyPieces = board.blackPieces();
-            myPawns = board.getBlackPawns();
-            myKing = board.getBlackKing();
-        }
-        return populationCount(allMyPieces ^ (myPawns | myKing)) != 0;
+    static boolean notJustPawnsLeft(Chessboard board){
+        final int turn = board.turn;
+        return populationCount(board.pieces[turn][ALL_COLOUR_PIECES] ^ (board.pieces[turn][PAWN] | board.pieces[turn][KING])) != 0;
     }
     
     static boolean isFutilityPruningAllowedHere(int depth,
@@ -110,13 +88,7 @@ class SearchUtils {
                 && !givesCheckMove
                 && !pawnToSix
                 && !pawnToSeven
-                && numberOfMovesSearched > 2
+                && numberOfMovesSearched > 5
                 ;
     }
-
-
-    static int lateMoveDepthReduction(int depth, int numberOfMovesSearched){
-        return 2 + depth / 3 + (numberOfMovesSearched / 10);
-    }
-    
 }

@@ -1,8 +1,8 @@
 package challenges;
 
-import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
-import com.github.louism33.chesscore.MoveParser;
+import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +11,8 @@ import org.junit.runners.Parameterized;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static challenges.Utils.contains;
 
 @RunWith(Parameterized.class)
 public class Pet {
@@ -24,8 +26,8 @@ public class Pet {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        for (int i = 0; i < splitUpWACs.length; i++) {
-            String pos = splitUpWACs[i];
+        for (int i = 0; i < splitUpPositions.length; i++) {
+            String pos = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(pos);
             objectAndName[0] = EPDObject;
@@ -43,18 +45,17 @@ public class Pet {
 
     @Test
     public void test() {
-        List<Integer> winningMoveDestination = EPDObject.getBestMoves();
-        System.out.println();
         System.out.println(EPDObject.getBoardFen());
-        System.out.println("Move to get: " + MoveParser.toString(winningMoveDestination.get(0)));
+        int[] winningMoves = EPDObject.getBestMoves();
+        int[] losingMoves = EPDObject.getAvoidMoves();
+        EngineSpecifications.DEBUG = false;
+        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
-
-        Assert.assertTrue(winningMoveDestination.contains(move));
+        Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }
 
 
-    private static final String wacTests = "" +
+    private static final String positions = "" +
             "8/7p/2k1Pp2/pp1p2p1/3P2P1/4P3/P3K2P/8 w - - bm e4;             id \"PET001: Pawn endgame\";\n" +
             "8/1p4kP/5pP1/3p4/8/4P3/7K/8 w - - bm e4;                       id \"PET002: Pawn endgame\";\n" +
             "8/8/8/pPk3pp/2P1p3/1pK3P1/5PP1/8 w - - bm g4;                  id \"PET003: Pawn endgame\";\n" +
@@ -105,7 +106,7 @@ public class Pet {
             "7k/7p/1p4p1/n2p4/1K1p3R/2NB4/3Q1P2/q1r5 w - - bm Rxh7+;        id \"PET050: QNBR vs QNR\";\n" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\n");
+    private static final String[] splitUpPositions = positions.split("\n");
 
 }
     

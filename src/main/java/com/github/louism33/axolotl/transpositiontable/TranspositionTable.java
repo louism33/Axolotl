@@ -1,43 +1,44 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
-import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import org.junit.Assert;
 
 import java.util.Arrays;
 
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
+import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
+import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 
-public class TranspositionTable {
+public final class TranspositionTable {
 
-    private static long[] keys;
-    private static long[] entries;
-    private static boolean tableReady = false;
-    private static int moduloAmount;
+    public static long[] keys = new long[EngineSpecifications.TABLE_SIZE];
+    public static long[] entries = new long[EngineSpecifications.TABLE_SIZE];
+    public static boolean tableReady = false;
+    public static int moduloAmount = EngineSpecifications.TABLE_SIZE;
     static final int bucketSize = 4;
 
     public static void initTable(int maxEntries){
+        EngineSpecifications.TABLE_SIZE = maxEntries;
         moduloAmount = maxEntries;
 
-        keys = new long[maxEntries];
-        entries = new long[maxEntries];
-
-        reset();
+        if (keys != null && keys.length == maxEntries) {
+            Arrays.fill(keys, 0);
+            Arrays.fill(entries, 0);
+        }
+        else {
+            keys = new long[maxEntries];
+            entries = new long[maxEntries];
+        }
 
         tableReady = true;
     }
 
-    private static void reset(){
-        Arrays.fill(keys, 0);
-        Arrays.fill(entries, 0);
-    }
-
-    private static int newEntries = 0;
-    private static int hit = 0;
-    private static int hitButAlreadyGood = 0;
-    private static int hitReplace = 0;
-    private static int override = 0;
+    public static int newEntries = 0;
+    public static int hit = 0;
+    public static int hitButAlreadyGood = 0;
+    public static int hitReplace = 0;
+    public static int override = 0;
     
     public static void addToTableReplaceByDepth(long key, int bestMove, 
                                                 int bestScore, int depth, int flag, int ply){
@@ -83,7 +84,7 @@ public class TranspositionTable {
             }
         }
         
-        long possibleEntry = buildTableEntry(bestMove & MoveOrderer.MOVE_MASK, bestScore, depth, flag, ply);
+        long possibleEntry = buildTableEntry(bestMove & MOVE_MASK_WITH_CHECK, bestScore, depth, flag, ply);
 
         keys[replaceMeIndex] = key ^ possibleEntry;
         entries[replaceMeIndex] = possibleEntry;
@@ -106,7 +107,7 @@ public class TranspositionTable {
         return 0;
     }
 
-    private static int getIndex(long key) {
+    public static int getIndex(long key) {
         int index = (int) (key % moduloAmount);
 
         if (index < 0){
@@ -130,7 +131,7 @@ public class TranspositionTable {
             score -= ply;
         }
         long entry = 0;
-        entry |= (move & MOVE_MASK);
+        entry |= (move & TT_MOVE_MASK);
         entry |= (((long) score & SCORE_CLEANER) << scoreOffset);
         entry |= (((long) depth) << depth_offset);
         entry |= (((long) flag) << flagOffset);
@@ -138,7 +139,7 @@ public class TranspositionTable {
     }
 
     public static int getMove(long entry){
-        return (int) (entry & MOVE_MASK);
+        return (int) (entry & MOVE_MASK_WITHOUT_CHECK);
     }
 
     public static int getScore(long entry, int ply){

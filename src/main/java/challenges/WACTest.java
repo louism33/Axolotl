@@ -1,6 +1,6 @@
 package challenges;
 
-import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
@@ -13,28 +13,42 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.EPDObject;
-import static com.github.louism33.chesscore.ExtendedPositionDescriptionParser.parseEDPPosition;
+import static challenges.Utils.contains;
+import static com.github.louism33.utils.ExtendedPositionDescriptionParser.EPDObject;
+import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseEDPPosition;
 
 @RunWith(Parameterized.class)
 public class WACTest {
 
-    private static final int timeLimit = 15_000;
+    private static final int timeLimit = 5_000;
 
+    // tough at 5 sec
+    private static final int[] infamousIndexes = {86, 163, 180, 196, 222, 230, 243, 293};
+
+    // tough at 10 sec
+//    private static final int[] infamousIndexes = {86, 163, 180, 196, 230, 243, 293};
+
+
+    // tough at 20 sec
+//    private static final int[] infamousIndexes = {86, 92, 160, 180, 196, 230, 243, 293};
+
+    // tough at 120 sec
+//    private static final int[] infamousIndexes = {86, 196, 230, 248, 293};
+
+    
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.INFO = true;
-        
-        int stopAt = 10;
-        
-        for (int i = 0; i < splitUpWACs.length; i++) {
-            if (i == stopAt){
-//                break;
+        EngineSpecifications.DEBUG = false;
+
+        for (int i = 0; i < splitUpPositions.length; i++) {
+
+            if (!contains(infamousIndexes, i + 1)) {
+//                continue;
             }
             
-            String splitUpWAC = splitUpWACs[i];
+            String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             EPDObject EPDObject = parseEDPPosition(splitUpWAC);
             objectAndName[0] = EPDObject;
@@ -52,25 +66,16 @@ public class WACTest {
 
     @Test
     public void test() {
-        System.out.println();
-        System.out.println(EPDObject.getId());
-        System.out.println(EPDObject.getBoardFen());
+        System.out.println(EPDObject.getFullString());
         System.out.println(EPDObject.getBoard());
-        
-        List<Integer> winningMoves = EPDObject.getBestMoves();
-        List<Integer> losingMoveDestination = EPDObject.getAvoidMoves();
-        
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
-
-        System.out.println();
-        System.out.println("Move to get:        " + MoveParser.toString(winningMoves.get(0)));
-
-        Assert.assertTrue(winningMoves.contains(move));
-        Assert.assertFalse(losingMoveDestination.contains(move));
-
+        int[] winningMoves = EPDObject.getBestMoves();
+        int[] losingMoves = EPDObject.getAvoidMoves();
+        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        MoveParser.printMove(move);
+        Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }
 
-    private static final String wacTests = "" +
+    private static final String positions = "" +
             "2rr3k/pp3pp1/1nnqbN1p/3pN3/2pP4/2P3Q1/PPB4P/R4RK1 w - - bm Qg6; id \"WAC.001\";\n" +
             "8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - - bm Rxb2; id \"WAC.002\";\n" +
             "5rk1/1ppb3p/p1pb4/6q1/3P1p1r/2P1R2P/PP1BQ1P1/5RKN w - - bm Rg3; id \"WAC.003\";\n" +
@@ -373,7 +378,7 @@ public class WACTest {
             "b2b1r1k/3R1ppp/4qP2/4p1PQ/4P3/5B2/4N1K1/8 w - - bm g6; id \"WAC.300\";" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\n");
+    private static final String[] splitUpPositions = positions.split("\n");
 
 }
     

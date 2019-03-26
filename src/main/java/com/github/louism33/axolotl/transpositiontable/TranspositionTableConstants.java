@@ -18,7 +18,7 @@ public class TranspositionTableConstants {
     public static final int EXACT = 1;
     public static final int UPPERBOUND = 2;
 
-    public static final long MOVE_MASK = 0xffffffffL;
+    public static final long TT_MOVE_MASK = 0xffffffffL;
 
     public static final long SCORE_CLEANER = 0xffffL;
     public static final long SCORE_MASK = 0xffff00000000L;

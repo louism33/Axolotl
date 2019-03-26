@@ -1,8 +1,10 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.chesscore.ExtendedPositionDescriptionParser;
+import com.github.louism33.chesscore.MoveParser;
+import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -15,24 +17,32 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class WACSilverSanityTest {
 
-    private static final int timeLimit = 10_000;
+    private static final int timeLimit = 5_000;
     private static int successes = 0;
+    private static final int targetSuccesses = 180;
 
+    @BeforeClass
+    public static void setup(){
+        final String str = "Testing " + splitUpPositions.length + " WAC silver positions. " +
+                "Time per position: " + timeLimit + " milliseconds." 
+                +"\nIf more than " + targetSuccesses + " are correct, success.";
+        System.out.println(str);
+    }    
+    
     @AfterClass
     public static void finalSuccessTally(){
-        System.out.println("Successful WAC Silver sanity tests: " + successes);
-        Assert.assertTrue(successes > 130);
+        System.out.println("Successful WAC Silver sanity tests: " + successes + " out of "
+                + splitUpPositions.length + ". Success starts at " + targetSuccesses);
+        Assert.assertTrue(successes >= targetSuccesses);
     }
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
-        List<Object[]> answers = new ArrayList<>();
+        List<Object[]> answers = new ArrayList<>(splitUpPositions.length);
 
-//        EngineSpecifications.TABLE_SIZE = EngineSpecifications.MAX_TABLE_SIZE;
+        for (int i = 0; i < splitUpPositions.length; i++) {
 
-        for (int i = 0; i < splitUpWACs.length; i++) {
-
-            String splitUpWAC = splitUpWACs[i];
+            String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
             objectAndName[0] = EPDObject;
@@ -51,11 +61,11 @@ public class WACSilverSanityTest {
     @Test
     public void test() {
         System.out.println(EPDObject.getBoardFen());
-        List<Integer> winningMoves = EPDObject.getBestMoves();
-        List<Integer> losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.INFO = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit, false);
-        if (winningMoves.contains(move) && !losingMoves.contains(move)){
+        int[] winningMoves = EPDObject.getBestMoves();
+        int[] losingMoves = EPDObject.getAvoidMoves();
+        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        MoveParser.printMove(move);
+        if (contains(winningMoves, move) && !contains(losingMoves, move)){
             System.out.println("success");
             successes++;
         }
@@ -64,7 +74,16 @@ public class WACSilverSanityTest {
         }
     }
 
-    private static final String wacTests = "" +
+    public static boolean contains(int[] ints, int target) {
+        for (int i = 0; i < ints.length; i++) {
+            if (ints[i] == target) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static final String positions = "" +
             "5rk1/1ppb3p/p1pb4/6q1/3P1p1r/2P1R2P/PP1BQ1P1/5RKN w - - bm Rg3; id \"WAC.003\";\n" +
             "r1bq2rk/pp3pbp/2p1p1pQ/7P/3P4/2PB1N2/PP3PPR/2KR4 w - - bm Qxh7+; id \"WAC.004\";\n" +
             "5k2/6pp/p1qN4/1p1p4/3P4/2PKP2Q/PP3r2/3R4 b - - bm Qc4+; id \"WAC.005\";\n" +
@@ -267,5 +286,5 @@ public class WACSilverSanityTest {
             "r2q1rk1/2p2ppp/p1n2n2/Pp2p3/1P2P3/1BPPQR2/6PP/RN4K1 b - - bm Nd4; id \"WAC.301\";" +
             "";
 
-    private static final String[] splitUpWACs = wacTests.split("\n");
+    private static final String[] splitUpPositions = positions.split("\n");
 }

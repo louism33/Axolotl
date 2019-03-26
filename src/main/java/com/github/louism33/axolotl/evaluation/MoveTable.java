@@ -1,11 +1,10 @@
 package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.MoveParser;
-import org.apache.maven.project.ModelUtils;
 
 import static com.github.louism33.axolotl.evaluation.Evaluator.blackThreatsToSquare;
 import static com.github.louism33.axolotl.evaluation.Evaluator.whiteThreatsToSquare;
-import static com.github.louism33.chesscore.MoveParser.*;
+import static com.github.louism33.chesscore.BoardConstants.*;
 
 public class MoveTable {
 
@@ -81,7 +80,7 @@ public class MoveTable {
         }
         return 0;
     }
-    
+    // todo move to chesscore
     static void populateFromMoves(int[] moves) {
         for (int i = 0; i < moves.length; i++) {
             int move = moves[i];

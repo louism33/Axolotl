@@ -1,8 +1,8 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
-import com.github.louism33.axolotl.moveordering.MoveOrderer;
 import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.chesscore.MoveConstants;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
+import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
 public class TranspositionTableTest {
 
@@ -21,7 +22,7 @@ public class TranspositionTableTest {
 
             Random r = new Random();
 
-            int move = r.nextInt();
+            int move = r.nextInt(MoveConstants.CHECKING_MOVE_MASK);
             int score = r.nextInt(EvaluationConstants.SHORT_MAXIMUM * 2) - EvaluationConstants.SHORT_MAXIMUM;
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
@@ -52,7 +53,7 @@ public class TranspositionTableTest {
         for (int key = 0; key < total; key ++) {
             Random r = new Random();
 
-            int move = r.nextInt() & MoveOrderer.MOVE_MASK;
+            int move = r.nextInt() & MOVE_MASK_WITHOUT_CHECK;
             if (move == 0){
                 move = 1;
             }
@@ -106,7 +107,7 @@ public class TranspositionTableTest {
         for (int i = 0; i < total; i ++) {
             Random r = new Random();
 
-            int move = r.nextInt() & MoveOrderer.MOVE_MASK;
+            int move = r.nextInt() & MOVE_MASK_WITHOUT_CHECK;
             int score = r.nextInt(EvaluationConstants.SHORT_MAXIMUM * 2) - EvaluationConstants.SHORT_MAXIMUM;
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
@@ -154,7 +155,7 @@ public class TranspositionTableTest {
         for (int key = 0; key < total; key ++) {
             Random r = new Random();
 
-            int move = r.nextInt() & MoveOrderer.MOVE_MASK;
+            int move = r.nextInt() & MOVE_MASK_WITHOUT_CHECK;
             if (move == 0){
                 move = 1;
             }
@@ -169,7 +170,7 @@ public class TranspositionTableTest {
         for (int key = 0; key < total; key ++) {
             Random r = new Random();
 
-            int move = r.nextInt() & MoveOrderer.MOVE_MASK;
+            int move = r.nextInt() & MOVE_MASK_WITHOUT_CHECK;
             if (move == 0){
                 move = 1;
             }
