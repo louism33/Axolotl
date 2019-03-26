@@ -107,6 +107,7 @@ public class UCIEntry extends AbstractEngine {
         int aiMove = calculatingHelper(command);
         EngineBetter.quitOnSingleMove = true;
         EngineBetter.computeMoves = true;
+        MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
         if (aiMove != 0){
             this.getProtocol().send(
                     new ProtocolBestMoveCommand(convertMyMoveToGenericMove(aiMove), null));

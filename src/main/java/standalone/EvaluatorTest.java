@@ -1,9 +1,10 @@
-package com.github.louism33.axolotl.evaluation;
+package standalone;
 
 import com.fluxchess.jcpi.models.IllegalNotationException;
+import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.MoveParserFromAN;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 @SuppressWarnings("All")
 public class EvaluatorTest {

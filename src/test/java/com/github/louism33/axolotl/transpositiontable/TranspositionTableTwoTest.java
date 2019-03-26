@@ -24,45 +24,45 @@ import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHEC
 
 public class TranspositionTableTwoTest {
 
-    @Test
-    public void buildTableEntryTestSingle() {
-
-        Chessboard board = new Chessboard();
-
-        int bestMove = MoveParserFromAN.buildMoveFromLAN(board, "e2e4");
-        int bestScore = 100;
-        int depth = 6;
-        int flag = EXACT;
-        int ply = 0;
-        
-        addToTableReplaceByDepth(board.zobristHash,
-                bestMove & MOVE_MASK_WITHOUT_CHECK, bestScore, depth, flag, ply);
-
-  
-    }
-
-    @Test
-    public void persistenceTest() {
-
-        Chessboard board = new Chessboard();
-
-        int bestMove = EngineBetter.searchFixedDepth(board, 3);
-        int move = getMove(retrieveFromTable(board.zobristHash));
-
-        Assert.assertEquals(bestMove, move);
-        
-        List<GenericMove> genericMoves = PVLine.retrievePV(board);
-
-        System.out.println(genericMoves);
-
-
-        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0).toString()));
-        
-        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(1).toString()));
-
-        System.out.println(board);
-
-
-    }
+//    @Test
+//    public void buildTableEntryTestSingle() {
+//
+//        Chessboard board = new Chessboard();
+//
+//        int bestMove = MoveParserFromAN.buildMoveFromLAN(board, "e2e4");
+//        int bestScore = 100;
+//        int depth = 6;
+//        int flag = EXACT;
+//        int ply = 0;
+//        
+//        addToTableReplaceByDepth(board.zobristHash,
+//                bestMove & MOVE_MASK_WITHOUT_CHECK, bestScore, depth, flag, ply);
+//
+//  
+//    }
+//
+//    @Test
+//    public void persistenceTest() {
+//
+//        Chessboard board = new Chessboard();
+//
+//        int bestMove = EngineBetter.searchFixedDepth(board, 3);
+//        int move = getMove(retrieveFromTable(board.zobristHash));
+//
+//        Assert.assertEquals(bestMove, move);
+//        
+//        List<GenericMove> genericMoves = PVLine.retrievePV(board);
+//
+//        System.out.println(genericMoves);
+//
+//
+//        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0).toString()));
+//        
+//        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(1).toString()));
+//
+//        System.out.println(board);
+//
+//
+//    }
 
 }
