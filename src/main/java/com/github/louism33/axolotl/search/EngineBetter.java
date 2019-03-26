@@ -50,6 +50,11 @@ public final class EngineBetter {
         return false;
     }
 
+    public static void setup() {
+        
+    }
+    
+    
     public static void reset() {
         //don't reset moves if uci will provide them
         if (computeMoves) {
