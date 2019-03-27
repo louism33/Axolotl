@@ -35,13 +35,14 @@ public final class TranspositionTable {
     }
 
     public static int newEntries = 0;
+    public static int agedOut = 0;
     public static int hit = 0;
     public static int hitButAlreadyGood = 0;
     public static int hitReplace = 0;
     public static int override = 0;
     
     public static void addToTableReplaceByDepth(long key, int bestMove, 
-                                                int bestScore, int depth, int flag, int ply){
+                                                int bestScore, int depth, int flag, int ply, int age){
         if (!tableReady){
             initTable(EngineSpecifications.TABLE_SIZE);
         }
@@ -62,7 +63,15 @@ public final class TranspositionTable {
                 replaceMeIndex = enhancedIndex;
                 break;
             }
+    
+            int ageOfEntryInTable = getAge(currentEntry);
 
+            if (false && isTooOld(ageOfEntryInTable, age)) {
+                agedOut++;
+                replaceMeIndex = enhancedIndex;
+                break;
+            }
+            
             int currentDepth = getDepth(currentEntry);
             
             if (key == currentKey) {
@@ -84,7 +93,7 @@ public final class TranspositionTable {
             }
         }
         
-        long possibleEntry = buildTableEntry(bestMove & MOVE_MASK_WITH_CHECK, bestScore, depth, flag, ply);
+        long possibleEntry = buildTableEntry(bestMove & MOVE_MASK_WITH_CHECK, bestScore, depth, flag, ply, age);
 
         keys[replaceMeIndex] = key ^ possibleEntry;
         entries[replaceMeIndex] = possibleEntry;
@@ -107,6 +116,16 @@ public final class TranspositionTable {
         return 0;
     }
 
+    static boolean isTooOld(int alreadyThere, int goingIn) {
+        for (int i = 0; i < acceptableAges; i++) {
+            int i1 = (alreadyThere + i) % ageModulo;
+            if (i1 == goingIn) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static int getIndex(long key) {
         int index = (int) (key % moduloAmount);
 
@@ -119,7 +138,7 @@ public final class TranspositionTable {
         return index;
     }
 
-    static long buildTableEntry(int move, int score, int depth, int flag, int ply){
+    static long buildTableEntry(int move, int score, int depth, int flag, int ply, int age){
         Assert.assertTrue(move != 0);
         Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
         Assert.assertTrue(flag >= 0 && flag < 4);
@@ -135,6 +154,7 @@ public final class TranspositionTable {
         entry |= (((long) score & SCORE_CLEANER) << scoreOffset);
         entry |= (((long) depth) << depth_offset);
         entry |= (((long) flag) << flagOffset);
+        entry |= (((long) age) << ageOffset);
         return entry;
     }
 
@@ -161,6 +181,9 @@ public final class TranspositionTable {
     public static int getFlag(long entry){
         return (int) ((entry & FLAG_MASK) >>> flagOffset);
     }
-
+    
+    public static int getAge(long entry){
+        return (int) ((entry & AGE_MASK) >>> ageOffset);
+    }
 
 }

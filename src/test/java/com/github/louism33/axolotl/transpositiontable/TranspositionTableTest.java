@@ -11,12 +11,13 @@ import java.util.List;
 import java.util.Random;
 
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
+import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.EXACT;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
 public class TranspositionTableTest {
 
     @Test
-    public void buildTableEntryTestSingle() {
+    public void buildTableEntrySingleTest() {
         int total = 1_000_000;
         for (int i = 0; i < total; i ++) {
 
@@ -27,14 +28,60 @@ public class TranspositionTableTest {
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
             int ply = r.nextInt(99);
+            int age = r.nextInt(8);
 
-            long entry = buildTableEntry(move, score, depth, flag, ply);
+            long entry = buildTableEntry(move, score, depth, flag, ply, age);
 
             Assert.assertEquals(getMove(entry), move);
             Assert.assertEquals(getScore(entry, ply), score);
             Assert.assertEquals(getDepth(entry), depth);
             Assert.assertEquals(getFlag(entry), flag);
+            Assert.assertEquals(getAge(entry), age);
         }
+    }
+
+    @Test
+    public void buildTableEntrySingle2Test() {
+        int total = 1_000_000;
+        for (int i = 0; i < total; i ++) {
+
+            Random r = new Random();
+
+            int move = r.nextInt(MoveConstants.CHECKING_MOVE_MASK);
+            int score = r.nextInt(EvaluationConstants.SHORT_MAXIMUM * 2) - EvaluationConstants.SHORT_MAXIMUM;
+            int depth = r.nextInt(127);
+            int flag = r.nextInt(3);
+            int ply = r.nextInt(99);
+            int age = r.nextInt(8);
+
+            long entry = buildTableEntry(move, score, depth, flag, ply, age);
+
+            Assert.assertEquals(getMove(entry), move);
+            Assert.assertEquals(getScore(entry, ply), score);
+            Assert.assertEquals(getDepth(entry), depth);
+            Assert.assertEquals(getFlag(entry), flag);
+            Assert.assertEquals(getAge(entry), age);
+        }
+    }
+
+    @Test
+    public void ageTest() {
+
+        int move = 111;
+        int score = 222;
+        int depth = 3;
+        int flag = EXACT;
+        int ply = 4;
+
+        int age = 5;
+
+        long entry = buildTableEntry(move, score, depth, flag, ply, age);
+
+        Assert.assertEquals(getMove(entry), move);
+        Assert.assertEquals(getScore(entry, ply), score);
+        Assert.assertEquals(getDepth(entry), depth);
+        Assert.assertEquals(getFlag(entry), flag);
+        Assert.assertEquals(getAge(entry), age);
     }
 
     @Test
@@ -49,6 +96,7 @@ public class TranspositionTableTest {
         List<Integer> depths = new ArrayList<>();
         List<Integer> flags = new ArrayList<>();
         List<Integer> plys = new ArrayList<>();
+        List<Integer> ages = new ArrayList<>();
 
         for (int key = 0; key < total; key ++) {
             Random r = new Random();
@@ -61,18 +109,20 @@ public class TranspositionTableTest {
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
             int ply = r.nextInt(99);
+            int age = r.nextInt(8);
 
             moves.add(move);
             scores.add(score);
             depths.add(depth);
             flags.add(flag);
             plys.add(ply);
+            ages.add(age);
 
-            long entry = buildTableEntry(move, score, depth, flag, ply);
+            long entry = buildTableEntry(move, score, depth, flag, ply, age);
 
             allEntries.add(entry);
 
-            TranspositionTable.addToTableReplaceByDepth(key, move, score, depth, flag, ply);
+            TranspositionTable.addToTableReplaceByDepth(key, move, score, depth, flag, ply, age);
         }
 
         for (int key = 0; key < total; key ++) {
@@ -84,6 +134,7 @@ public class TranspositionTableTest {
             Assert.assertEquals(getScore(entry, plys.get(key)), (int) scores.get(key));
             Assert.assertEquals(getDepth(entry), (int) depths.get(key));
             Assert.assertEquals(getFlag(entry), (int) flags.get(key));
+            Assert.assertEquals(getAge(entry), (int) ages.get(key));
         }
     }
 
@@ -103,6 +154,7 @@ public class TranspositionTableTest {
         List<Integer> depths = new ArrayList<>();
         List<Integer> flags = new ArrayList<>();
         List<Integer> plys = new ArrayList<>();
+        List<Integer> ages = new ArrayList<>();
 
         for (int i = 0; i < total; i ++) {
             Random r = new Random();
@@ -112,16 +164,18 @@ public class TranspositionTableTest {
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
             int ply = r.nextInt(99);
+            int age = r.nextInt(8);
 
             moves.add(move);
             scores.add(score);
             depths.add(depth);
             flags.add(flag);
             plys.add(ply);
+            ages.add(age);
 
-            long entry = buildTableEntry(move, score, depth, flag, ply);
+            long entry = buildTableEntry(move, score, depth, flag, ply, age);
             allEntries.add(entry);
-            TranspositionTable.addToTableReplaceByDepth(4*i, move, score, depth, flag, ply);
+            TranspositionTable.addToTableReplaceByDepth(4*i, move, score, depth, flag, ply, age);
         }
 
         for (int key = 0; key < total; key ++) {
@@ -133,6 +187,7 @@ public class TranspositionTableTest {
             Assert.assertEquals(getScore(entry, plys.get(key)), (int) scores.get(key));
             Assert.assertEquals(getDepth(entry), (int) depths.get(key));
             Assert.assertEquals(getFlag(entry), (int) flags.get(key));
+            Assert.assertEquals(getAge(entry), (int) ages.get(key));
         }
     }
 
@@ -151,6 +206,7 @@ public class TranspositionTableTest {
         List<Integer> depths = new ArrayList<>();
         List<Integer> flags = new ArrayList<>();
         List<Integer> plys = new ArrayList<>();
+        List<Integer> ages = new ArrayList<>();
 
         for (int key = 0; key < total; key ++) {
             Random r = new Random();
@@ -163,8 +219,9 @@ public class TranspositionTableTest {
             int depth = 10;
             int flag = r.nextInt(3);
             int ply = r.nextInt(99);
+            int age = r.nextInt(8);
 
-            TranspositionTable.addToTableReplaceByDepth(key, move, score, depth, flag, ply);
+            TranspositionTable.addToTableReplaceByDepth(key, move, score, depth, flag, ply, age);
         }
 
         for (int key = 0; key < total; key ++) {
@@ -178,18 +235,20 @@ public class TranspositionTableTest {
             int depth = 20;
             int flag = r.nextInt(3);
             int ply = r.nextInt(99);
+            int age = r.nextInt(8);
 
             moves.add(move);
             scores.add(score);
             depths.add(depth);
             flags.add(flag);
             plys.add(ply);
+            ages.add(age);
 
-            long entry = buildTableEntry(move, score, depth, flag, ply);
+            long entry = buildTableEntry(move, score, depth, flag, ply, age);
 
             allEntries.add(entry);
 
-            TranspositionTable.addToTableReplaceByDepth(key, move, score, depth, flag, ply);
+            TranspositionTable.addToTableReplaceByDepth(key, move, score, depth, flag, ply, age);
         }
 
         for (int key = 0; key < total; key ++) {
@@ -201,6 +260,7 @@ public class TranspositionTableTest {
             Assert.assertEquals(getScore(entry, plys.get(key)), (int) scores.get(key));
             Assert.assertEquals(getDepth(entry), (int) depths.get(key));
             Assert.assertEquals(getFlag(entry), (int) flags.get(key));
+            Assert.assertEquals(getAge(entry), (int) ages.get(key));
         }
     }
 }

@@ -4,6 +4,7 @@ import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.main.UCIPrinter;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
+import com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
@@ -25,35 +26,53 @@ import static com.github.louism33.chesscore.MoveConstants.MOVE_SCORE_MASK;
 public final class EngineBetter {
 
     public static int aiMoveScore;
-    private static boolean isReady = false;
     public static long nps;
     public static long[] numberOfMovesMade = new long[1];
-    static long[] numberOfQMovesMade = new long[1];
-    private static long startTime = 0;
     public static boolean stopNow = false;
+    public static int whichThread = 0;
+    public static int[] rootMoves;
 
+    static long[] numberOfQMovesMade = new long[1];
     static boolean manageTime = true;
+
+    private static long startTime = 0;
+    private static boolean isReady = false;
+
     private static long timeLimitMillis;
 
+    public static boolean quitOnSingleMove = true;
+    public static boolean computeMoves = true;
+    
+    public static int age = 0;
+    
     public static UCIEntry uciEntry;
-
-    public static UCIEntry getUciEntry() {
-        return uciEntry;
-    }
-
-    public static boolean contains(int[] ints, int target) {
-        for (int i = 0; i < ints.length; i++) {
-            if (ints[i] == target) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public static void setup() {
         
     }
-    
+
+    public static void resetFull() {
+        resetBetweenMoves();
+        age = 0;
+        initTable(TABLE_SIZE);
+        MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
+    }
+
+    public static void resetBetweenMoves() {
+        //don't reset moves if uci will provide them
+        if (computeMoves) {
+            rootMoves = null;
+        }
+        MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
+        isReady = true;
+        nps = 0;
+        aiMoveScore = SHORT_MINIMUM;
+        numberOfMovesMade[0] = 0;
+        numberOfQMovesMade[0] = 0;
+        stopNow = false;
+        initMoveOrderer();
+        age = (age + 1) % ageModulo;
+    }
     
     public static void reset() {
         //don't reset moves if uci will provide them
@@ -70,10 +89,11 @@ public final class EngineBetter {
         initMoveOrderer();
     }
 
-    public static int[] rootMoves;
+
     public static int getAiMove(){
         return rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
     }
+    
     public static int searchMyTime(Chessboard board, long maxTime, long increment) {
         EngineSpecifications.ALLOW_TIME_LIMIT = true;
         manageTime = true;
@@ -106,8 +126,6 @@ public final class EngineBetter {
         return searchFixedTime(board, maxTime, MAX_DEPTH);
     }
 
-    public static boolean quitOnSingleMove = true;
-    public static boolean computeMoves = true;
 
     private static final int searchFixedTime(final Chessboard board, final long maxTime, final int depth) {
         reset();
@@ -234,8 +252,6 @@ public final class EngineBetter {
         }
     }
 
-
-    public static int whichThread = 0;
 
 
     static int principleVariationSearch(Chessboard board,
@@ -541,7 +557,7 @@ public final class EngineBetter {
         }
 
         addToTableReplaceByDepth(board.zobristHash,
-                bestMove & MOVE_MASK_WITHOUT_CHECK, bestScore, depth, flag, ply);
+                bestMove & MOVE_MASK_WITHOUT_CHECK, bestScore, depth, flag, ply, age);
 
         return bestScore;
     }

@@ -1,68 +1,160 @@
 package com.github.louism33.axolotl.transpositiontable;
 
+import com.fluxchess.jcpi.commands.EngineNewGameCommand;
 import com.fluxchess.jcpi.models.GenericMove;
-import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.main.PVLine;
 import com.github.louism33.axolotl.search.EngineBetter;
-import com.github.louism33.axolotl.search.EngineSpecifications;
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveConstants;
-import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import javax.swing.text.ParagraphView;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
-import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.EXACT;
+import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
 public class TranspositionTableTwoTest {
 
-//    @Test
-//    public void buildTableEntryTestSingle() {
-//
-//        Chessboard board = new Chessboard();
-//
-//        int bestMove = MoveParserFromAN.buildMoveFromLAN(board, "e2e4");
-//        int bestScore = 100;
-//        int depth = 6;
-//        int flag = EXACT;
-//        int ply = 0;
-//        
-//        addToTableReplaceByDepth(board.zobristHash,
-//                bestMove & MOVE_MASK_WITHOUT_CHECK, bestScore, depth, flag, ply);
-//
-//  
-//    }
-//
-//    @Test
-//    public void persistenceTest() {
-//
-//        Chessboard board = new Chessboard();
-//
-//        int bestMove = EngineBetter.searchFixedDepth(board, 3);
-//        int move = getMove(retrieveFromTable(board.zobristHash));
-//
-//        Assert.assertEquals(bestMove, move);
-//        
-//        List<GenericMove> genericMoves = PVLine.retrievePV(board);
-//
-//        System.out.println(genericMoves);
-//
-//
-//        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0).toString()));
-//        
-//        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(1).toString()));
-//
-//        System.out.println(board);
-//
-//
-//    }
+    @Test
+    public void persistenceTest() {
+
+        Chessboard board = new Chessboard();
+
+        int bestMove = EngineBetter.searchFixedDepth(board, 3);
+        int move = getMove(retrieveFromTable(board.zobristHash));
+
+        Assert.assertEquals(bestMove, move);
+
+        List<GenericMove> genericMoves = PVLine.retrievePV(board);
+
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0).toString()));
+
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(1).toString()));
+
+        EngineBetter.resetFull();
+    }
+
+
+    @Test
+    void retrieveFromTableSimpleTest() {
+        Chessboard board = new Chessboard();
+
+        int bestMove = 123, bestScore = 666, depth = 5, flag = EXACT, ply = 1, age = 2;
+
+        addToTableReplaceByDepth(board.zobristHash,
+                bestMove & MOVE_MASK_WITHOUT_CHECK, bestScore, depth, flag, ply, age);
+
+        long previousTableData = retrieveFromTable(board.zobristHash);
+
+        Assert.assertTrue(previousTableData != 0);
+        Assert.assertEquals(bestScore, getScore(previousTableData, ply));
+        Assert.assertEquals(bestMove, getMove(previousTableData));
+        Assert.assertEquals(flag, getFlag(previousTableData));
+        Assert.assertEquals(age, getAge(previousTableData));
+
+        EngineBetter.resetFull();
+    }
+
+
+    @Test
+    void isWritingTest() {
+        Chessboard board = new Chessboard();
+
+        EngineBetter.searchFixedDepth(board, 3);
+
+        long previousTableData = retrieveFromTable(board.zobristHash);
+        Assert.assertTrue(previousTableData != 0);
+
+        EngineBetter.resetFull();
+    }
+
+    @Test
+    void isModuloingTest() {
+        EngineBetter.resetFull();
+        Assert.assertEquals(EngineBetter.age, 0);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < ageModulo; j++) {
+                Assert.assertEquals(EngineBetter.age, j);
+                EngineBetter.resetBetweenMoves();
+            }
+        }
+
+        EngineBetter.resetFull();
+    }
+
+    @Test
+    void isModuloing2Test() {
+        Assert.assertFalse(isTooOld(7, 7));
+        Assert.assertFalse(isTooOld(6, 7));
+        Assert.assertFalse(isTooOld(5, 7));
+
+        Assert.assertTrue(isTooOld(4, 7));
+        Assert.assertTrue(isTooOld(3, 7));
+        Assert.assertTrue(isTooOld(2, 7));
+        Assert.assertTrue(isTooOld(1, 7));
+        Assert.assertTrue(isTooOld(0, 7));
+
+        EngineBetter.resetFull();
+    }
+
+    @Test
+    void isModuloing3Test() {
+        Assert.assertFalse(isTooOld(1, 1));
+        Assert.assertFalse(isTooOld(0, 1));
+        Assert.assertFalse(isTooOld(7, 1));
+
+        Assert.assertTrue(isTooOld(6, 1));
+        Assert.assertTrue(isTooOld(5, 1));
+        Assert.assertTrue(isTooOld(4, 1));
+        Assert.assertTrue(isTooOld(3, 1));
+        Assert.assertTrue(isTooOld(2, 1));
+
+        EngineBetter.resetFull();
+    }
+
+    @Test
+    void isPersistingTest() {
+        Chessboard board = new Chessboard();
+
+        int bestMove = EngineBetter.searchFixedDepth(board, 6);
+
+        long previousTableData1 = retrieveFromTable(board.zobristHash);
+        Assert.assertTrue(previousTableData1 != 0);
+
+        List<GenericMove> genericMoves = PVLine.retrievePV(board);
+
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0).toString()));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(1).toString()));
+
+        EngineBetter.resetBetweenMoves();
+        long previousTableData2 = retrieveFromTable(board.zobristHash);
+        Assert.assertTrue(previousTableData2 != 0);
+        System.out.println("persisting ok");
+
+        EngineBetter.resetFull();
+    }
+
+    @Test
+    void fullResetTest() {
+        Chessboard board = new Chessboard();
+
+        int bestMove = EngineBetter.searchFixedDepth(board, 6);
+
+        long previousTableData1 = retrieveFromTable(board.zobristHash);
+        Assert.assertTrue(previousTableData1 != 0);
+
+        List<GenericMove> genericMoves = PVLine.retrievePV(board);
+
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0).toString()));
+
+        EngineBetter.resetFull();
+        long previousTableData2 = retrieveFromTable(board.zobristHash);
+        Assert.assertEquals(0, previousTableData2);
+        System.out.println("full reset working");
+
+        EngineBetter.resetFull();
+    }
 
 }

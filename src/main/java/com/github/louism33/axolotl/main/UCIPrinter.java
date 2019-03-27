@@ -47,11 +47,11 @@ public final class UCIPrinter {
             protocolInformationCommand.setCentipawns(nodeScore);
         }
 
-        if (EngineBetter.getUciEntry() == null){
+        if (EngineBetter.uciEntry == null){
             System.out.println(buildString
                     (aiMove, nodeScore, depth, mateFound, 2*distanceToMate(nodeScore), pvMoves, nps, time, nodes));
         } else {
-            EngineBetter.getUciEntry().sendInformation(protocolInformationCommand);
+            EngineBetter.uciEntry.sendInformation(protocolInformationCommand);
         }
     }
     
