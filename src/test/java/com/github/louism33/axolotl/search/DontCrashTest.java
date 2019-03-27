@@ -16,7 +16,7 @@ import java.util.List;
 public class DontCrashTest {
 
     @Test
-    private void searchMovesTest() throws IllegalNotationException {
+    void searchMovesTest() throws IllegalNotationException {
         String mmm = "d2d4";
         String[] ms = mmm.split(" ");
 
