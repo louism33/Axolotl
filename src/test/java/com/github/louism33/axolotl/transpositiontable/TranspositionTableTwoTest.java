@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.transpositiontable;
 
-import com.fluxchess.jcpi.commands.EngineNewGameCommand;
 import com.fluxchess.jcpi.models.GenericMove;
 import com.github.louism33.axolotl.main.PVLine;
 import com.github.louism33.axolotl.search.EngineBetter;
@@ -12,7 +11,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
-import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
+import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.EXACT;
+import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.ageModulo;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
 public class TranspositionTableTwoTest {

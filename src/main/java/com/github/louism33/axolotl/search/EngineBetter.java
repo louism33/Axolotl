@@ -10,9 +10,9 @@ import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.MoveOrdererBetter.*;
+import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocateTime;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;

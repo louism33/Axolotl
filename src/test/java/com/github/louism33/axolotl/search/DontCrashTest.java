@@ -1,18 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.fluxchess.jcpi.commands.EngineAnalyzeCommand;
-import com.fluxchess.jcpi.commands.EngineStartCalculatingCommand;
-import com.fluxchess.jcpi.models.GenericBoard;
-import com.fluxchess.jcpi.models.GenericColor;
-import com.fluxchess.jcpi.models.GenericMove;
-import com.fluxchess.jcpi.models.IllegalNotationException;
-import com.fluxchess.jcpi.protocols.NoProtocolException;
-import com.github.louism33.axolotl.main.UCIEntry;
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class DontCrashTest {
 
 //    @Test

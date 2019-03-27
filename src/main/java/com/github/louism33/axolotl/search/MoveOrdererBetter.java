@@ -6,9 +6,11 @@ import com.github.louism33.chesscore.MoveConstants;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
-import static com.github.louism33.axolotl.moveordering.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH_HARD;
 import static com.github.louism33.axolotl.search.EngineSpecifications.THREAD_NUMBER;
+import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
+import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.getMove;
+import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.retrieveFromTable;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.*;
 import static com.github.louism33.chesscore.MoveParser.*;
@@ -62,7 +64,7 @@ public final class MoveOrdererBetter {
         return i;
     }
 
-    public static void scoreMovesAtRoot(int[] moves, int numberOfMoves, Chessboard board){
+    public static void scoreMovesAtRootOld(int[] moves, int numberOfMoves, Chessboard board){
         if (!ready) {
             initMoveOrderer();
         }
@@ -105,6 +107,51 @@ public final class MoveOrdererBetter {
             else {
                 moves[i] = buildMoveScore(moves[i],
                         Math.max(historyMoveScore(moves[i], whichThread, board.turn), uninterestingMove));
+            }
+        }
+    }
+
+
+    public static void scoreMovesAtRoot(int[] moves, int numberOfMoves, Chessboard board){
+        if (!ready) {
+            initMoveOrderer();
+        }
+
+        int hashMove = getMove(retrieveFromTable(board.zobristHash));
+
+        for (int i = 0; i < numberOfMoves; i++) {
+            if (moves[i] == 0){
+                break;
+            }
+
+            int move = moves[i];
+
+            if (move == hashMove) {
+                moves[i] = buildMoveScore(move, hashScore);
+            } else if (isPromotionToQueen(move)) {
+                if (isCaptureMove(move)) {
+                    moves[i] = buildMoveScore(move, queenCapturePromotionScore);
+                } else {
+                    moves[i] = buildMoveScore(move, queenQuietPromotionScore);
+                }
+            } else if (board.moveIsCaptureOfLastMovePiece(move)) {
+                moves[i] = buildMoveScore(move, captureBiasOfLastMovedPiece + mvvLVA(move));
+            } else if (isPromotionToKnight(move)) {
+                moves[i] = buildMoveScore(move, knightPromotionScore);
+            } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
+                moves[i] = buildMoveScore(move, uninterestingPromotion);
+            } else if (isCaptureMove(move)) {
+                moves[i] = buildMoveScore(move, mvvLVA(move));
+            } else if (checkingMove(board, move)) {
+                move = MoveParser.setCheckingMove(move);
+                Assert.assertTrue(MoveParser.isCheckingMove(move));
+                moves[i] = buildMoveScore(move, giveCheckMove);
+            } else if (isCastlingMove(move)) {
+                moves[i] = buildMoveScore(move, castlingMove);
+            } else {
+
+                moves[i] = buildMoveScore(move, quietHeuristicMoveScore(move, board.turn, maxRootQuietScore));  
+                
             }
         }
     }
@@ -212,15 +259,8 @@ public final class MoveOrdererBetter {
                     continue;
                 }
 
-                int movingPieceInt = getMovingPieceInt(move);
-
-                if (movingPieceInt == WHITE_KING || movingPieceInt == BLACK_KING) {
-                    moves[i] = buildMoveScore(moves[i], kingQuietMove);
-                }
-//                moves[i] = buildMoveScore(moves[i],
-//                        Math.max(historyMoveScore(move, whichThread, board.turn), uninterestingMove));                
-
-                moves[i] = buildMoveScore(moves[i], uninterestingMove);
+                moves[i] = buildMoveScore(move, quietHeuristicMoveScore(move, turn, maxNodeQuietScore));
+                
             }
 
             Assert.assertTrue(moves[i] >= FIRST_FREE_BIT);
@@ -305,11 +345,10 @@ public final class MoveOrdererBetter {
     }
 
     public static int historyMoveScore(int move, int whichThread, int turn){
-        int maxMoveScoreOfHistory = maxHistoryMoveScore;
+        int maxMoveScoreOfHistory = maxNodeQuietScore;
         int historyScore = historyMoves[whichThread + turn][getSourceIndex(move)][getDestinationIndex(move)];
         return historyScore > maxMoveScoreOfHistory ? maxMoveScoreOfHistory : historyScore;
     }
-
 
     public static void updateKillerMoves(int whichThread, int move, int ply){
         Assert.assertTrue(killerMoves.length != 0 && killerMoves[0].length != 0);
@@ -327,6 +366,22 @@ public final class MoveOrdererBetter {
         mateKillers[whichThread][ply] = move;
     }
 
+    public static int quietHeuristicMoveScore(int move, int turn, int maxScore){
+        int d = getDestinationIndex(move);
+        int piece = getMovingPieceInt(move);
+        if (piece > WHITE_KING) {
+            piece -= 6;
+        }
+        int score = quietsILikeToMove[piece] * goodQuietDestinations[turn][63 - d];
+        if (score > maxScore) {
+            return maxScore;
+        }
 
+        if (score < uninterestingMove) {
+            return uninterestingMove;
+        }
+
+        return score;
+    }
 }
 
