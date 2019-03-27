@@ -21,6 +21,8 @@ public final class MoveOrdererBetter {
     public static int[][][] killerMoves;
     public static int[][][] historyMoves;
 
+    public static final int whichThread = 0;
+
     public static void initMoveOrderer(){
         mateKillers = new int[THREAD_NUMBER][MAX_DEPTH_HARD];
         killerMoves = new int[THREAD_NUMBER][MAX_DEPTH_HARD][2];
@@ -35,7 +37,6 @@ public final class MoveOrdererBetter {
     public static int getMoveScore (int move){
         Assert.assertTrue(move > 0);
         int i = (move & MOVE_SCORE_MASK) >>> moveScoreOffset;
-//        Assert.assertTrue(i > 0);
         return i;
     }
 
@@ -91,14 +92,13 @@ public final class MoveOrdererBetter {
             else if (isCaptureMove(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], mvvLVA(moves[i]));
             }
-            
-            
+
             else if (checkingMove(board, moves[i])) {
                 moves[i] = MoveParser.setCheckingMove(moves[i]);
                 Assert.assertTrue(MoveParser.isCheckingMove(moves[i]));
                 moves[i] = buildMoveScore(moves[i], giveCheckMove);
             }
-            
+
             else if (isCastlingMove(moves[i])) {
                 moves[i] = buildMoveScore(moves[i], castlingMove);
             }
@@ -107,11 +107,7 @@ public final class MoveOrdererBetter {
                         Math.max(historyMoveScore(moves[i], whichThread, board.turn), uninterestingMove));
             }
         }
-
     }
-
-
-    public static final int whichThread = 0;
 
     public static void scoreMoves(int[] moves, Chessboard board, int ply,
                                   int hashMove){
@@ -126,7 +122,7 @@ public final class MoveOrdererBetter {
 
         int maxMoves = moves[moves.length - 1];
         int turn = board.turn;
-        
+
         // todo
         final int mateKiller = mateKillers[whichThread][ply];
         final int firstKiller = killerMoves[whichThread][ply][0];
@@ -298,15 +294,7 @@ public final class MoveOrdererBetter {
 
     private static boolean checkingMove(Chessboard board, int move){
         Assert.assertTrue(move != 0);
-
-        try {
-            board.makeMoveAndFlipTurn(move);
-        } catch (Exception e) {
-            System.out.println(board);
-            System.out.println(move);
-            MoveParser.printMove(move);
-            System.out.println();
-        }
+        board.makeMoveAndFlipTurn(move);
         boolean checkingMove = board.inCheck(board.isWhiteTurn());
         board.unMakeMoveAndFlipTurn();
         return checkingMove;

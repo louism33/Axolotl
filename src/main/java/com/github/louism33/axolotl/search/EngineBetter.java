@@ -4,7 +4,6 @@ import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.main.UCIPrinter;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
-import com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
@@ -42,13 +41,13 @@ public final class EngineBetter {
 
     public static boolean quitOnSingleMove = true;
     public static boolean computeMoves = true;
-    
+
     public static int age = 0;
-    
+
     public static UCIEntry uciEntry;
 
     public static void setup() {
-        
+
     }
 
     public static void resetFull() {
@@ -73,7 +72,7 @@ public final class EngineBetter {
         initMoveOrderer();
         age = (age + 1) % ageModulo;
     }
-    
+
     public static void reset() {
         //don't reset moves if uci will provide them
         if (computeMoves) {
@@ -90,10 +89,10 @@ public final class EngineBetter {
     }
 
 
-    public static int getAiMove(){
+    public static int getAiMove() {
         return rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
     }
-    
+
     public static int searchMyTime(Chessboard board, long maxTime, long increment) {
         EngineSpecifications.ALLOW_TIME_LIMIT = true;
         manageTime = true;
@@ -140,11 +139,11 @@ public final class EngineBetter {
         }
 
         int numberOfRealMoves = rootMoves[rootMoves.length - 1];
-        if (numberOfRealMoves == 0){
+        if (numberOfRealMoves == 0) {
             return 0;
         }
 
-        if (numberOfRealMoves == 1 && quitOnSingleMove){
+        if (numberOfRealMoves == 1 && quitOnSingleMove) {
             return rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
         }
 
@@ -158,10 +157,9 @@ public final class EngineBetter {
         long time = endTime - startTime;
 
         if (time != 0) {
-            if (time < 1000){
+            if (time < 1000) {
                 nps = 0;
-            }
-            else {
+            } else {
                 calculateNPS();
             }
         }
@@ -170,13 +168,12 @@ public final class EngineBetter {
         return bestMove;
     }
 
-    public static void calculateNPS(){
+    public static void calculateNPS() {
         final long l = System.currentTimeMillis();
         long time = l - startTime;
-        if (time < 1000){
+        if (time < 1000) {
             nps = 0;
-        }
-        else {
+        } else {
             final long total = numberOfMovesMade[0] + numberOfQMovesMade[0];
             nps = ((1000 * total) / time);
         }
@@ -185,7 +182,7 @@ public final class EngineBetter {
         }
     }
 
-    private static void search(Chessboard board, int depthLimit){
+    private static void search(Chessboard board, int depthLimit) {
         int depth = 0;
         int aspirationScore = 0;
 
@@ -200,17 +197,17 @@ public final class EngineBetter {
         int score;
 
         everything:
-        while (depth < depthLimit){
+        while (depth < depthLimit) {
             depth++;
 
             int previousAi = rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
 
-            while (true){
+            while (true) {
 
                 score = principleVariationSearch(board, depth, 0,
                         alpha, beta, 0);
 
-                if (stopNow || stopSearch(startTime, timeLimitMillis)){
+                if (stopNow || stopSearch(startTime, timeLimitMillis)) {
                     break everything;
                 }
 
@@ -220,18 +217,16 @@ public final class EngineBetter {
 
                 if (score <= alpha) {
                     alphaAspirationAttempts++;
-                    if (alphaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES){
+                    if (alphaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES) {
                         alpha = SHORT_MINIMUM;
-                    }
-                    else {
+                    } else {
                         alpha = aspirationScore - EngineSpecifications.ASPIRATION_WINDOWS[alphaAspirationAttempts];
                     }
                 } else if (score >= beta) {
                     betaAspirationAttempts++;
-                    if (betaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES){
+                    if (betaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES) {
                         beta = SHORT_MAXIMUM;
-                    }
-                    else {
+                    } else {
                         beta = aspirationScore - EngineSpecifications.ASPIRATION_WINDOWS[betaAspirationAttempts];
                     }
                 } else {
@@ -253,11 +248,10 @@ public final class EngineBetter {
     }
 
 
-
     static int principleVariationSearch(Chessboard board,
                                         int depth, int ply,
                                         int alpha, int beta,
-                                        int nullMoveCounter){
+                                        int nullMoveCounter) {
 
         final int originalAlpha = alpha;
         final int turn = board.turn;
@@ -272,7 +266,7 @@ public final class EngineBetter {
 
         Assert.assertTrue(depth >= 0);
 
-        if (depth <= 0){
+        if (depth <= 0) {
             if (ply >= MAX_DEPTH_HARD) {
                 return Evaluator.eval(board, moves);
             }
@@ -282,7 +276,7 @@ public final class EngineBetter {
 
         alpha = Math.max(alpha, IN_CHECKMATE_SCORE + ply);
         beta = Math.min(beta, -IN_CHECKMATE_SCORE - ply - 1);
-        if (alpha >= beta){
+        if (alpha >= beta) {
             return alpha;
         }
 
@@ -294,32 +288,30 @@ public final class EngineBetter {
             score = getScore(previousTableData, ply);
             hashMove = getMove(previousTableData);
 
-            if (getDepth(previousTableData) >= depth){
+            if (getDepth(previousTableData) >= depth) {
                 int flag = getFlag(previousTableData);
                 if (flag == EXACT) {
-                    if (ply == 0){
-                        if (whichThread == 0){
+                    if (ply == 0) {
+                        if (whichThread == 0) {
                             putAIMoveFirst(hashMove);
                             aiMoveScore = score;
                         }
                     }
                     return score;
-                }
-                else if (flag == LOWERBOUND) {
-                    if (score >= beta){
-                        if (ply == 0){
-                            if (whichThread == 0){
+                } else if (flag == LOWERBOUND) {
+                    if (score >= beta) {
+                        if (ply == 0) {
+                            if (whichThread == 0) {
                                 putAIMoveFirst(hashMove);
                                 aiMoveScore = score;
                             }
                         }
                         return score;
                     }
-                }
-                else if (flag == UPPERBOUND) {
-                    if (score <= alpha){
-                        if (ply == 0){
-                            if (whichThread == 0){
+                } else if (flag == UPPERBOUND) {
+                    if (score <= alpha) {
+                        if (ply == 0) {
+                            if (whichThread == 0) {
                                 putAIMoveFirst(hashMove);
                                 aiMoveScore = score;
                             }
@@ -338,28 +330,28 @@ public final class EngineBetter {
 
             staticBoardEval = Evaluator.eval(board, moves);
 
-            if (isBetaRazoringOkHere(depth, staticBoardEval)){
+            if (isBetaRazoringOkHere(depth, staticBoardEval)) {
                 int specificBetaRazorMargin = betaRazorMargin[depth];
-                if (staticBoardEval - specificBetaRazorMargin >= beta){
+                if (staticBoardEval - specificBetaRazorMargin >= beta) {
                     return staticBoardEval;
                 }
             }
 
-            if (isAlphaRazoringMoveOkHere(depth, alpha)){
+            if (isAlphaRazoringMoveOkHere(depth, alpha)) {
                 int specificAlphaRazorMargin = alphaRazorMargin[depth];
-                if (staticBoardEval + specificAlphaRazorMargin < alpha){
+                if (staticBoardEval + specificAlphaRazorMargin < alpha) {
                     int qScore = QuiescenceBetter.quiescenceSearchBetter(board,
                             alpha - specificAlphaRazorMargin,
                             alpha - specificAlphaRazorMargin + 1);
 
-                    if (qScore + specificAlphaRazorMargin <= alpha){
+                    if (qScore + specificAlphaRazorMargin <= alpha) {
                         return qScore;
                     }
                 }
             }
 
             int R = 2;
-            if (isNullMoveOkHere(board, nullMoveCounter, depth, R)){
+            if (isNullMoveOkHere(board, nullMoveCounter, depth, R)) {
                 board.makeNullMoveAndFlipTurn();
 
                 int nullScore = -principleVariationSearch(board,
@@ -369,8 +361,8 @@ public final class EngineBetter {
                 board.unMakeNullMoveAndFlipTurn();
 
 
-                if (nullScore >= beta){
-                    if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY){
+                if (nullScore >= beta) {
+                    if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
                         nullScore = beta;
                     }
                     return nullScore;
@@ -388,12 +380,12 @@ public final class EngineBetter {
 
         int numberOfMovesSearched = 0;
 
-        if (ply == 0 && hashMove != 0){
+        if (ply == 0 && hashMove != 0) {
             Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
             Assert.assertEquals(rootMoves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
         }
 
-        if (ply != 0 && hashMove != 0){
+        if (ply != 0 && hashMove != 0) {
             Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
         }
 
@@ -505,7 +497,7 @@ public final class EngineBetter {
 
             board.unMakeMoveAndFlipTurn();
 
-            if (TimeAllocator.outOfTime(startTime, timeLimitMillis, manageTime)){
+            if (TimeAllocator.outOfTime(startTime, timeLimitMillis, manageTime)) {
                 return 0;
             }
 
@@ -515,7 +507,7 @@ public final class EngineBetter {
                 alpha = Math.max(alpha, score);
 
                 if (ply == 0) {
-                    if (whichThread == 0){
+                    if (whichThread == 0) {
                         putAIMoveFirst(bestMove);
                         aiMoveScore = score;
                     }
@@ -539,8 +531,7 @@ public final class EngineBetter {
         if (numberOfMovesSearched == 0) {
             if (board.inCheckRecorder) {
                 return IN_CHECKMATE_SCORE + ply;
-            }
-            else {
+            } else {
                 return IN_STALEMATE_SCORE;
             }
         }
@@ -548,7 +539,7 @@ public final class EngineBetter {
         Assert.assertTrue(bestMove != 0);
 
         int flag;
-        if (bestScore <= originalAlpha){
+        if (bestScore <= originalAlpha) {
             flag = UPPERBOUND;
         } else if (bestScore >= beta) {
             flag = LOWERBOUND;
