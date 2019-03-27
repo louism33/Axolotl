@@ -127,7 +127,8 @@ public final class EngineBetter {
 
 
     private static final int searchFixedTime(final Chessboard board, final long maxTime, final int depth) {
-        reset();
+//        reset();
+        resetBetweenMoves();
 
         startTime = System.currentTimeMillis() - 100;
 
