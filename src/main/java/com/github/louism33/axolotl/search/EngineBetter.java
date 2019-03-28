@@ -98,10 +98,10 @@ public final class EngineBetter {
         manageTime = true;
 
         if (maxTime < 1000) {
-            return searchFixedDepth(board, 1);
+            return searchFixedDepth(board, 2);
         }
         if (maxTime < 5000) {
-            return searchFixedDepth(board, 2);
+            return searchFixedDepth(board, 4);
         }
         long timeLimit = allocateTime(maxTime, increment);
 

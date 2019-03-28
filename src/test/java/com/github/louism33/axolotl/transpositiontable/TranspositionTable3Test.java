@@ -9,10 +9,7 @@ import com.fluxchess.jcpi.protocols.NoProtocolException;
 import com.github.louism33.axolotl.main.PVLine;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.search.EngineBetter;
-import com.github.louism33.axolotl.search.MoveOrdererBetter;
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveParser;
-import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +18,7 @@ import java.util.List;
 
 import static com.github.louism33.axolotl.search.EngineBetter.resetBetweenMoves;
 import static com.github.louism33.axolotl.search.EngineBetter.resetFull;
-import static com.github.louism33.utils.MoveParserFromAN.*;
+import static com.github.louism33.utils.MoveParserFromAN.buildMoveFromLAN;
 
 public class TranspositionTable3Test {
 

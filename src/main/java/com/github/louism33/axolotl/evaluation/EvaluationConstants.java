@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
-public class EvaluationConstants {
+public final class EvaluationConstants {
 
     // general numbers
     public static final int SHORT_MINIMUM = -31000;
@@ -57,6 +57,9 @@ public class EvaluationConstants {
     static final int PAWN_P_PROTECTED                     = 50;
     static final int PAWN_P_UNTHREATENED                  = 25;
     
+    // common
+    static final int PIECE_BEHIND_PAWN                    = 10;
+
     // knights valuation
     static final int KNIGHT_OUTPOST_BONUS                 = 15;
     static final int KNIGHT_ADVANCED_BONUS                = 5;
@@ -65,14 +68,13 @@ public class EvaluationConstants {
     static final int KNIGHT_FORK                          = 35;
     
     // bishop valuation
-    static final int BISHOP_PER_ENEMY_PAWN_ON_COLOUR      = -3;
-    static final int BISHOP_PER_FRIENDLY_PAWN_ON_COLOUR   = -2;
-    static final int BISHOP_DOUBLE_BONUS                  = 15;
+    static final int BISHOP_COLOUR_PAWNS                  = 1;
+    static final int BISHOP_DOUBLE                        = 15;
+    static final int BISHOP_PRIME_DIAGONAL                = 10;
     static final int BISHOP_OUTPOST_BONUS                 = 18;
     static final int BISHOP_ADVANCED_BONUS                = 5;
     static final int BISHOP_MOBILITY_SCORE                = 1;
     static final int BISHOP_UNDEVELOPED_PENALTY           = -20;
-    static final int BISHOPS_PRIME_DIAGONAL_BONUS         = 20;
 
     // rook valuation
     static final int ROOK_ON_SEVENTH_BONUS                = 25;

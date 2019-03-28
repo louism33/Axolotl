@@ -39,6 +39,9 @@ public class StaticEvalChallenge {
     public void test() {
         System.out.println(EPDObject.getFullString());
         Chessboard board = EPDObject.getBoard();
+
+        System.out.println(board);
+        
         System.out.println(Evaluator.eval(board, board.generateLegalMoves()));
 
         Evaluator.printEval(board, board.turn, board.generateLegalMoves());

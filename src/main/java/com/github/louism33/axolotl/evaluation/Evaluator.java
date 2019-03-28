@@ -1,13 +1,14 @@
 package com.github.louism33.axolotl.evaluation;
 
+import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.BitOperations;
+import com.github.louism33.chesscore.BoardConstants;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 
 import java.util.Arrays;
 
-import static com.github.louism33.axolotl.evaluation.EvalPrintObject.kingSafetyScore;
-import static com.github.louism33.axolotl.evaluation.EvalPrintObject.totalScore;
+import static com.github.louism33.axolotl.evaluation.EvalPrintObject.*;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.POSITION_SCORES;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.mobilityScores;
@@ -62,25 +63,27 @@ public final class Evaluator {
 
         int score = evalTurn(board, turn) - evalTurn(board, 1 - turn);
 
-        int mks = attackingEnemyKingLookup[turn] >= 0
-                ? attackingEnemyKingLookup[turn]
-                : 0;
-
-        int myKingSafety = KING_SAFETY_ARRAY[mks];
-
-        int yks = attackingEnemyKingLookup[1 - turn] >= 0
+        int mks = attackingEnemyKingLookup[1 - turn] >= 0
                 ? attackingEnemyKingLookup[1 - turn]
                 : 0;
 
-        int yourKingSafety = KING_SAFETY_ARRAY[yks];
+        int myKingSafety = -KING_SAFETY_ARRAY[mks];
 
-        scoresForEPO[turn][kingSafetyScore] -= myKingSafety;
+        int yks = attackingEnemyKingLookup[turn] >= 0
+                ? attackingEnemyKingLookup[turn]
+                : 0;
+
+        int yourKingSafety = -KING_SAFETY_ARRAY[yks];
+
+        scoresForEPO[turn][kingSafetyScore] += myKingSafety;
         scoresForEPO[1 - turn][kingSafetyScore] += yourKingSafety;
 
-        score -= myKingSafety;
-        score += yourKingSafety;
+        score += myKingSafety;
+        score -= yourKingSafety;
 
-        score += (percentOfStartgame * MY_TURN_BONUS) / 100;
+        int turnBonus = (percentOfStartgame * MY_TURN_BONUS) / 100;
+        scoresForEPO[WHITE][turnScore] = turnBonus;
+        score += turnBonus;
 
         scoresForEPO[turn][totalScore] = score;
         scoresForEPO[1 - turn][totalScore] = score;
@@ -147,7 +150,6 @@ public final class Evaluator {
 
         long safeMobSquares = ~(myKing | myQueens | myBackwardsPawns | myBlockedPawns | squaresEnemyPawnsThreaten);
 
-
         if (percentOfStartgame != 0) {
             //space
             long mySafeSquares = (~myPawns
@@ -181,6 +183,21 @@ public final class Evaluator {
 
         int knightsScore = 0;
 
+        long allPawns = myPawns | enemyPawns;
+        long wps = WHITE_COLOURED_SQUARES & allPawns;
+        long bps = BLACK_COLOURED_SQUARES & allPawns;
+
+        long wpsc = wps & BoardConstants.centreRingSquares;
+        long bpsc = bps & centreRingSquares;
+
+        long wpscc = wps & centreFourSquares;
+        long bpscc = bps & centreFourSquares;
+
+        long developpedPawns = myPawns & ~PENULTIMATE_RANKS[1 - turn];
+        long behindPawnSpots = turn == WHITE ? developpedPawns >>> 8 : developpedPawns << 8;
+        
+        // todo : outposts, pieces behind pawns, colour weakness, rook n pawns, 
+        
         while (myKnights != 0){
             final long knight = getFirstPiece(myKnights);
             if ((knight & ignoreThesePieces) == 0) {
@@ -191,6 +208,11 @@ public final class Evaluator {
 
                 mobilityScore += mobilityScores[KNIGHT - 2][populationCount(table)];
 
+
+                if ((knight & behindPawnSpots) != 0) {
+                    knightsScore += PIECE_BEHIND_PAWN;
+                }
+                
                 if ((knight & enemyKingBigArea) != 0) {
                     attackingEnemyKingLookup[turn] += 2;
                 }
@@ -202,6 +224,10 @@ public final class Evaluator {
 
         int bishopsScore = 0;
 
+        if (populationCount(myBishops) >= 2) {
+            bishopsScore += BISHOP_DOUBLE;
+        }
+
         while (myBishops != 0){
             final long bishop = getFirstPiece(myBishops);
             if ((bishop & ignoreThesePieces) == 0) {
@@ -209,9 +235,26 @@ public final class Evaluator {
                 positionScore += POSITION_SCORES[turn][BISHOP][63 - bishopIndex];
 
                 final long table = singleBishopTable(allPieces, bishopIndex, UNIVERSE) & safeMobSquares;
-
+                
                 mobilityScore += mobilityScores[BISHOP - 2][populationCount(table)];
 
+                if ((bishop & behindPawnSpots) != 0) {
+                    bishopsScore += PIECE_BEHIND_PAWN;
+                }
+                
+                if (populationCount(table & centreFourSquares) > 1) {
+                    bishopsScore += BISHOP_PRIME_DIAGONAL;
+                }
+                
+                if ((bishop & WHITE_COLOURED_SQUARES) != 0) {
+                    bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(wps) *
+                            (1 + populationCount(wpscc) + populationCount(wpsc) / 2));
+                } else {
+                    bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(bps) *
+                            (1 + populationCount(bpscc) + populationCount(bpsc) / 2));
+                }
+
+                
                 if ((bishop & enemyKingBigArea) != 0) {
                     attackingEnemyKingLookup[turn] += 2;
                 }

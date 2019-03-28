@@ -106,7 +106,7 @@ public class DontCrashTest {
 
         UCIEntry uciEntry = new UCIEntry();
 
-        EngineBetter.reset();
+        EngineBetter.resetFull();
         EngineBetter.uciEntry = uciEntry;
 
         EngineStartCalculatingCommand start = new EngineStartCalculatingCommand();

@@ -9,17 +9,16 @@ public class TimeAllocator {
 
     public static long allocateTime(long maxTime, long increment){
         if (maxTime < 10000){
-            return 1000;
+            return 1000 + (increment / 3);
         }
         return (maxTime / 25) + (increment / 3);
     }
 
     public static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){
-//        return false;
-        return timeLeftMillis < (timeLimitMillis) / 3;
+        return timeLeftMillis < (timeLimitMillis) / 2;
     }
 
-    public static boolean outOfTime(long startTime, long timeLimitMillis, boolean allowTimeLimit){
+    public static boolean outOfTime(long startTime, long timeLimitMillis, boolean manageTime){
 
         lastPrint = Math.max(lastPrint, startTime);
 
@@ -32,11 +31,10 @@ public class TimeAllocator {
         long stopTime = startTime + timeLimitMillis;
         long timeLeftMillis = stopTime - currentTime;
 
-
         if (timeLeftMillis < 0) {
             outOfTime = true;
         }
-        if (allowTimeLimit && weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
+        if (manageTime && weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
             // not enough time to search another ply
             outOfTime = true;
         }

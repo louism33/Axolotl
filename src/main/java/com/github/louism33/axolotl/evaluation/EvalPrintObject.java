@@ -5,7 +5,7 @@ import static com.github.louism33.axolotl.evaluation.Evaluator.percentOfStartgam
 import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.chesscore.BoardConstants.WHITE;
 
-public class EvalPrintObject {
+public final class EvalPrintObject {
 
     int[][] scores = new int[2][32];
     
@@ -23,6 +23,7 @@ public class EvalPrintObject {
     static final int passedPawnsScore = 11;
     static final int positionScore = 12;   
     static final int spaceScore = 13;   
+    static final int turnScore = 14;   
     static int turn = WHITE;
     static int percentOfEndgame;
 
@@ -74,7 +75,7 @@ public class EvalPrintObject {
                         this.scores[WHITE][passedPawnsScore], this.scores[BLACK][passedPawnsScore], (this.scores[WHITE][passedPawnsScore] - this.scores[BLACK][passedPawnsScore])) +
 
                 ""
-                + "\nTurn bonus: " + ((percentOfStartgame * MY_TURN_BONUS) / 100)
+                + "\nTurn bonus: " + this.scores[WHITE][turnScore]
                 + "\nWe are " + percentOfEndgame +"% in the endgame"
                 + "\nTotal from white's POV: " + ((turn == BLACK ? -1 : 1) * this.scores[WHITE][totalScore]) + " cp";
 

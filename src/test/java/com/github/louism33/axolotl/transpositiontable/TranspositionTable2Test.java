@@ -15,7 +15,7 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTableC
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.ageModulo;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
-public class TranspositionTableTwoTest {
+public class TranspositionTable2Test {
 
     @Test
     public void persistenceTest() {
@@ -36,6 +36,47 @@ public class TranspositionTableTwoTest {
         EngineBetter.resetFull();
     }
 
+    @Test
+    public void ageTest() {
+        Chessboard board = new Chessboard();
+
+        int bestMove = EngineBetter.searchFixedDepth(board, 6);
+
+        int length = entries.length;
+        for (int i = 0; i < length; i++) {
+            long entry = entries[i];
+            int age = getAge(entry);
+            Assert.assertTrue(age >= 0);
+            Assert.assertTrue(age < ageModulo);
+        }
+    }
+
+    @Test
+    void ageOutTest() {
+        EngineBetter.resetFull();
+        Chessboard board = new Chessboard();
+
+        int bestMove = 123, bestScore = 666, depth = 5, flag = EXACT, ply = 1, age = 2;
+
+        addToTableReplaceByDepth(board.zobristHash, 0, 666, 10, EXACT, 10, 0);
+        addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, EXACT, 10, 0);
+        addToTableReplaceByDepth(board.zobristHash, 200, 666, 10, EXACT, 10, 0);
+        addToTableReplaceByDepth(board.zobristHash, 300, 666, 10, EXACT, 10, 0);
+        addToTableReplaceByDepth(board.zobristHash, 400, 666, 10, EXACT, 10, 0);
+        addToTableReplaceByDepth(board.zobristHash, 500, 666, 10, EXACT, 10, 0);
+        addToTableReplaceByDepth(board.zobristHash, 600, 666, 10, EXACT, 10, 0);
+
+        long previousTableData = retrieveFromTable(board.zobristHash);
+
+        
+        Assert.assertTrue(previousTableData != 0);
+        Assert.assertEquals(bestScore, getScore(previousTableData, ply));
+        Assert.assertEquals(bestMove, getMove(previousTableData));
+        Assert.assertEquals(flag, getFlag(previousTableData));
+        Assert.assertEquals(age, getAge(previousTableData));
+
+        EngineBetter.resetFull();
+    }
 
     @Test
     void retrieveFromTableSimpleTest() {

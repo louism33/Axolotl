@@ -14,7 +14,7 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.EXACT;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
-public class TranspositionTableTest {
+public class TranspositionTable1Test {
 
     @Test
     public void buildTableEntrySingleTest() {
@@ -23,7 +23,7 @@ public class TranspositionTableTest {
 
             Random r = new Random();
 
-            int move = r.nextInt(MoveConstants.CHECKING_MOVE_MASK);
+            int move = r.nextInt(MoveConstants.CHECKING_MOVE_MASK - 1) + 1;
             int score = r.nextInt(EvaluationConstants.SHORT_MAXIMUM * 2) - EvaluationConstants.SHORT_MAXIMUM;
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);

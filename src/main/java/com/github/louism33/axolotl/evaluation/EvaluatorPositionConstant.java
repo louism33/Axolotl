@@ -3,7 +3,7 @@ package com.github.louism33.axolotl.evaluation;
 import static com.github.louism33.chesscore.BoardConstants.*;
 
 @SuppressWarnings("ALL")
-class EvaluatorPositionConstant {
+final class EvaluatorPositionConstant {
 
     /*
     thanks to Tomasz Michniewski
@@ -36,7 +36,7 @@ class EvaluatorPositionConstant {
             -10,  0,  0,  0,  0,  0,  0,-10,
             -10,  0,  5, 10, 10,  5,  0,-10,
             -10,  5,  5, 10, 10,  5,  5,-10,
-            -10,  0, 10, 10, 10, 10,  0,-10,
+              0,  0, 10, 10, 10, 10,  0,  0,
             -10, 10, 10, 10, 10, 10, 10,-10,
             -10,  5,  0,  0,  0,  0,  5,-10,
             -20,-10,-20,-10,-10,-25,-10,-20,
@@ -133,11 +133,11 @@ class EvaluatorPositionConstant {
     
     static{
         mobilityScores[0] = new int[] { //Knight
-                -50, -40, -20, -10, -2, 4, 8, 10, 12 
+                -50, -40, -20, 0, 2, 4, 6, 7, 8 
         };
 
         mobilityScores[1] = new int[] { //Bishop
-                -30, -20, -5, -2,  0, 10, 15,
+                -45, -35, -15, -2,  0, 10, 15,
                  20,  25, 30, 35, 40, 45, 50
         };
 

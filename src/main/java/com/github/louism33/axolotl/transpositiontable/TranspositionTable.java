@@ -66,11 +66,11 @@ public final class TranspositionTable {
     
             int ageOfEntryInTable = getAge(currentEntry);
 
-            if (false && isTooOld(ageOfEntryInTable, age)) {
-                agedOut++;
-                replaceMeIndex = enhancedIndex;
-                break;
-            }
+//            if (isTooOld(ageOfEntryInTable, age)) {
+//                agedOut++;
+//                replaceMeIndex = enhancedIndex;
+//                break;
+//            }
             
             int currentDepth = getDepth(currentEntry);
             
@@ -117,6 +117,8 @@ public final class TranspositionTable {
     }
 
     static boolean isTooOld(int alreadyThere, int goingIn) {
+        Assert.assertTrue(alreadyThere < ageModulo);
+        Assert.assertTrue(goingIn < ageModulo);
         for (int i = 0; i < acceptableAges; i++) {
             int i1 = (alreadyThere + i) % ageModulo;
             if (i1 == goingIn) {
