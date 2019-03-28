@@ -183,18 +183,18 @@ public final class Evaluator {
 
         int knightsScore = 0;
 
-        long allPawns = myPawns | enemyPawns;
-        long wps = WHITE_COLOURED_SQUARES & allPawns;
-        long bps = BLACK_COLOURED_SQUARES & allPawns;
-
-        long wpsc = wps & BoardConstants.centreRingSquares;
-        long bpsc = bps & centreRingSquares;
-
-        long wpscc = wps & centreFourSquares;
-        long bpscc = bps & centreFourSquares;
-
-        long developpedPawns = myPawns & ~PENULTIMATE_RANKS[1 - turn];
-        long behindPawnSpots = turn == WHITE ? developpedPawns >>> 8 : developpedPawns << 8;
+//        long allPawns = myPawns | enemyPawns;
+//        long wps = WHITE_COLOURED_SQUARES & allPawns;
+//        long bps = BLACK_COLOURED_SQUARES & allPawns;
+//
+//        long wpsc = wps & BoardConstants.centreRingSquares;
+//        long bpsc = bps & centreRingSquares;
+//
+//        long wpscc = wps & centreFourSquares;
+//        long bpscc = bps & centreFourSquares;
+//
+//        long developpedPawns = myPawns & ~PENULTIMATE_RANKS[1 - turn];
+//        long behindPawnSpots = turn == WHITE ? developpedPawns >>> 8 : developpedPawns << 8;
         
         // todo : outposts, pieces behind pawns, colour weakness, rook n pawns, 
         
@@ -209,9 +209,9 @@ public final class Evaluator {
                 mobilityScore += mobilityScores[KNIGHT - 2][populationCount(table)];
 
 
-                if ((knight & behindPawnSpots) != 0) {
-                    knightsScore += PIECE_BEHIND_PAWN;
-                }
+//                if ((knight & behindPawnSpots) != 0) {
+//                    knightsScore += PIECE_BEHIND_PAWN;
+//                }
                 
                 if ((knight & enemyKingBigArea) != 0) {
                     attackingEnemyKingLookup[turn] += 2;
@@ -238,21 +238,21 @@ public final class Evaluator {
                 
                 mobilityScore += mobilityScores[BISHOP - 2][populationCount(table)];
 
-                if ((bishop & behindPawnSpots) != 0) {
-                    bishopsScore += PIECE_BEHIND_PAWN;
-                }
+//                if ((bishop & behindPawnSpots) != 0) {
+//                    bishopsScore += PIECE_BEHIND_PAWN;
+//                }
                 
                 if (populationCount(table & centreFourSquares) > 1) {
                     bishopsScore += BISHOP_PRIME_DIAGONAL;
                 }
                 
-                if ((bishop & WHITE_COLOURED_SQUARES) != 0) {
-                    bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(wps) *
-                            (1 + populationCount(wpscc) + populationCount(wpsc) / 2));
-                } else {
-                    bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(bps) *
-                            (1 + populationCount(bpscc) + populationCount(bpsc) / 2));
-                }
+//                if ((bishop & WHITE_COLOURED_SQUARES) != 0) {
+//                    bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(wps) *
+//                            (1 + populationCount(wpscc) + populationCount(wpsc) / 2));
+//                } else {
+//                    bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(bps) *
+//                            (1 + populationCount(bpscc) + populationCount(bpsc) / 2));
+//                }
 
                 
                 if ((bishop & enemyKingBigArea) != 0) {

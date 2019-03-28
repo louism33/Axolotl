@@ -187,5 +187,4 @@ public final class TranspositionTable {
     public static int getAge(long entry){
         return (int) ((entry & AGE_MASK) >>> ageOffset);
     }
-
 }

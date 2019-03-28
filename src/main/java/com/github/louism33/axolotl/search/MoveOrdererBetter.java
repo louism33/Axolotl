@@ -367,6 +367,9 @@ public final class MoveOrdererBetter {
     }
 
     public static int quietHeuristicMoveScore(int move, int turn, int maxScore){
+        if (true) {
+            return 1;
+        }
         int d = getDestinationIndex(move);
         int piece = getMovingPieceInt(move);
         if (piece > WHITE_KING) {
