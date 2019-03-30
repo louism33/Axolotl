@@ -18,15 +18,21 @@ public final class TranspositionTable {
     public static int moduloAmount = EngineSpecifications.TABLE_SIZE;
     static final int bucketSize = 4;
 
-    public static void initTable(int maxEntries){
+    public static void initTable(int maxEntries) {
         EngineSpecifications.TABLE_SIZE = maxEntries;
         moduloAmount = maxEntries;
+
+        newEntries = 0;
+        agedOut = 0;
+        hit = 0;
+        hitButAlreadyGood = 0;
+        hitReplace = 0;
+        override = 0;
 
         if (keys != null && keys.length == maxEntries) {
             Arrays.fill(keys, 0);
             Arrays.fill(entries, 0);
-        }
-        else {
+        } else {
             keys = new long[maxEntries];
             entries = new long[maxEntries];
         }
@@ -40,10 +46,10 @@ public final class TranspositionTable {
     public static int hitButAlreadyGood = 0;
     public static int hitReplace = 0;
     public static int override = 0;
-    
-    public static void addToTableReplaceByDepth(long key, int bestMove, 
-                                                int bestScore, int depth, int flag, int ply, int age){
-        if (!tableReady){
+
+    public static void addToTableReplaceByDepth(long key, int bestMove,
+                                                int bestScore, int depth, int flag, int ply, int age) {
+        if (!tableReady) {
             initTable(EngineSpecifications.TABLE_SIZE);
         }
 
@@ -54,7 +60,7 @@ public final class TranspositionTable {
 
         for (int i = 0; i < bucketSize; i++) {
             int enhancedIndex = (index + i) % moduloAmount;
-            
+
             long currentKey = (keys[enhancedIndex] ^ entries[enhancedIndex]);
             long currentEntry = entries[enhancedIndex];
 
@@ -63,17 +69,9 @@ public final class TranspositionTable {
                 replaceMeIndex = enhancedIndex;
                 break;
             }
-    
-            int ageOfEntryInTable = getAge(currentEntry);
 
-//            if (isTooOld(ageOfEntryInTable, age)) {
-//                agedOut++;
-//                replaceMeIndex = enhancedIndex;
-//                break;
-//            }
-            
             int currentDepth = getDepth(currentEntry);
-            
+
             if (key == currentKey) {
                 hit++;
                 if (depth < currentDepth && flag != EXACT) {
@@ -84,23 +82,31 @@ public final class TranspositionTable {
                 replaceMeIndex = enhancedIndex;
                 break;
             }
+            
+            int ageOfEntryInTable = getAge(currentEntry);
 
+            if (isTooOld(ageOfEntryInTable, age)) {
+                agedOut++;
+                replaceMeIndex = enhancedIndex;
+                break;
+            }
+            
             override++;
 
-            if (currentDepth < worstDepth){
+            if (currentDepth < worstDepth) {
                 worstDepth = currentDepth;
                 replaceMeIndex = enhancedIndex;
             }
         }
-        
+
         long possibleEntry = buildTableEntry(bestMove & MOVE_MASK_WITH_CHECK, bestScore, depth, flag, ply, age);
 
         keys[replaceMeIndex] = key ^ possibleEntry;
         entries[replaceMeIndex] = possibleEntry;
     }
 
-    public static long retrieveFromTable(long key){
-        if (!tableReady){
+    public static long retrieveFromTable(long key) {
+        if (!tableReady) {
             initTable(EngineSpecifications.TABLE_SIZE);
         }
 
@@ -121,6 +127,7 @@ public final class TranspositionTable {
         Assert.assertTrue(goingIn < ageModulo);
         for (int i = 0; i < acceptableAges; i++) {
             int i1 = (alreadyThere + i) % ageModulo;
+            Assert.assertTrue(i1 >= 0 && i1 < ageModulo);
             if (i1 == goingIn) {
                 return false;
             }
@@ -131,7 +138,7 @@ public final class TranspositionTable {
     public static int getIndex(long key) {
         int index = (int) (key % moduloAmount);
 
-        if (index < 0){
+        if (index < 0) {
             index += moduloAmount;
         }
 
@@ -140,15 +147,14 @@ public final class TranspositionTable {
         return index;
     }
 
-    static long buildTableEntry(int move, int score, int depth, int flag, int ply, int age){
+    static long buildTableEntry(int move, int score, int depth, int flag, int ply, int age) {
         Assert.assertTrue(move != 0);
         Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
         Assert.assertTrue(flag >= 0 && flag < 4);
 
-        if (score > EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY){
+        if (score > EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY) {
             score += ply;
-        }
-        else if (score < EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY){
+        } else if (score < EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY) {
             score -= ply;
         }
         long entry = 0;
@@ -160,31 +166,30 @@ public final class TranspositionTable {
         return entry;
     }
 
-    public static int getMove(long entry){
+    public static int getMove(long entry) {
         return (int) (entry & MOVE_MASK_WITHOUT_CHECK);
     }
 
-    public static int getScore(long entry, int ply){
+    public static int getScore(long entry, int ply) {
         long l1 = (entry & SCORE_MASK) >>> scoreOffset;
         int score = (int) (l1 > twoFifteen ? l1 - twoSixteen : l1);
-        if (score > EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY){
+        if (score > EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY) {
             score -= ply;
-        }
-        else if (score < EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY){
+        } else if (score < EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY) {
             score += ply;
         }
         return score;
     }
 
-    public static int getDepth(long entry){
+    public static int getDepth(long entry) {
         return (int) ((entry & DEPTH_MASK) >>> depth_offset);
     }
 
-    public static int getFlag(long entry){
+    public static int getFlag(long entry) {
         return (int) ((entry & FLAG_MASK) >>> flagOffset);
     }
-    
-    public static int getAge(long entry){
+
+    public static int getAge(long entry) {
         return (int) ((entry & AGE_MASK) >>> ageOffset);
     }
 }

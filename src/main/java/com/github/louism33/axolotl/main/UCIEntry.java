@@ -30,17 +30,14 @@ public class UCIEntry extends AbstractEngine {
     // "uci"
     @Override
     public void receive(EngineInitializeRequestCommand command) {
-//        EngineBetter.reset();
-        EngineBetter.resetFull();
+        EngineBetter.reset();
         EngineBetter.uciEntry = this;
 
-        ProtocolInitializeAnswerCommand firstCommand 
-                = new ProtocolInitializeAnswerCommand("axolotl_v1.4", "Louis James Mackenzie-Smith");
-        
+        ProtocolInitializeAnswerCommand firstCommand
+                = new ProtocolInitializeAnswerCommand("axolotl_v1.5", "Louis James Mackenzie-Smith");
+
         firstCommand.addOption(Options.newHashOption( 16, 1, 64));
-        
-//        firstCommand.addOption(new SpinnerOption("Threads", 1, 1, 4));
-        
+
         this.getProtocol().send(firstCommand);
     }
 
@@ -55,7 +52,7 @@ public class UCIEntry extends AbstractEngine {
         if (command == null || command.name == null || command.name.isEmpty()){
             return;
         }
-        
+
         if (command.name.equalsIgnoreCase("Hash")){
             int size = Integer.parseInt(command.value);
             int number = size * TABLE_SIZE_PER_MB;
@@ -69,7 +66,6 @@ public class UCIEntry extends AbstractEngine {
                 TABLE_SIZE = MIN_TABLE_SIZE;
             }
         }
-
     }
 
     //debug on
@@ -88,7 +84,7 @@ public class UCIEntry extends AbstractEngine {
         moves = null;
         board = null;
         genericBoard = null;
-        EngineBetter.resetFull();
+        EngineBetter.reset();
     }
 
     // position fen N7/P3pk1p/3p2p1/r4p2/8/4b2B/4P1KP/1R6 w - - 0 34
@@ -102,14 +98,14 @@ public class UCIEntry extends AbstractEngine {
     // go movetime 30000
     @Override
     public void receive(EngineStartCalculatingCommand command) {
-        if (command == null){
+        if (command == null) {
             return;
         }
         int aiMove = calculatingHelper(command);
         EngineBetter.quitOnSingleMove = true;
         EngineBetter.computeMoves = true;
         MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
-        if (aiMove != 0){
+        if (aiMove != 0) {
             this.getProtocol().send(
                     new ProtocolBestMoveCommand(convertMyMoveToGenericMove(aiMove), null));
         }
@@ -179,7 +175,7 @@ public class UCIEntry extends AbstractEngine {
     }
 
     public static void main(String[] args) {
-        System.out.println("axolotl v1.4 by Louis James Mackenzie-Smith");
+        System.out.println("axolotl v1.5 by Louis James Mackenzie-Smith");
         Thread thread = new Thread( new UCIEntry() );
         thread.start();
     }

@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
-import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.EXACT;
-import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.ageModulo;
+import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
 public class TranspositionTable2Test {
@@ -51,32 +50,63 @@ public class TranspositionTable2Test {
         }
     }
 
-    @Test
-    void ageOutTest() {
-        EngineBetter.resetFull();
-        Chessboard board = new Chessboard();
+//    @Test
+//    void notAgeOutTest() {
+//        EngineBetter.resetFull();
+//        Chessboard board = new Chessboard();
+//
+//        agedOut = 0;
+//        
+//        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, EXACT, 10, 0);
+//        addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, EXACT, 10, 0);
+//        
+//        Assert.assertEquals(100, getMove(retrieveFromTable(board.zobristHash)));
+//        Assert.assertEquals(0, agedOut);
+//
+//        // one turn later
+//        addToTableReplaceByDepth(board.zobristHash, 200, 666, 10, EXACT, 10, 1);
+//        Assert.assertEquals(200, getMove(retrieveFromTable(board.zobristHash)));
+//        Assert.assertEquals(0, agedOut);
+//
+//        // entry is aged one
+//        // 2 turns later
+//        addToTableReplaceByDepth(board.zobristHash, 300, 666, 10, EXACT, 10, 1+2);
+//        Assert.assertEquals(300, getMove(retrieveFromTable(board.zobristHash)));
+//        Assert.assertEquals(0, agedOut);
+//
+//        agedOut = 0;
+//        EngineBetter.resetFull();
+//        
+//    }
 
-        int bestMove = 123, bestScore = 666, depth = 5, flag = EXACT, ply = 1, age = 2;
-
-        addToTableReplaceByDepth(board.zobristHash, 0, 666, 10, EXACT, 10, 0);
-        addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, EXACT, 10, 0);
-        addToTableReplaceByDepth(board.zobristHash, 200, 666, 10, EXACT, 10, 0);
-        addToTableReplaceByDepth(board.zobristHash, 300, 666, 10, EXACT, 10, 0);
-        addToTableReplaceByDepth(board.zobristHash, 400, 666, 10, EXACT, 10, 0);
-        addToTableReplaceByDepth(board.zobristHash, 500, 666, 10, EXACT, 10, 0);
-        addToTableReplaceByDepth(board.zobristHash, 600, 666, 10, EXACT, 10, 0);
-
-        long previousTableData = retrieveFromTable(board.zobristHash);
-
-        
-        Assert.assertTrue(previousTableData != 0);
-        Assert.assertEquals(bestScore, getScore(previousTableData, ply));
-        Assert.assertEquals(bestMove, getMove(previousTableData));
-        Assert.assertEquals(flag, getFlag(previousTableData));
-        Assert.assertEquals(age, getAge(previousTableData));
-
-        EngineBetter.resetFull();
-    }
+//    @Test
+//    void ageOutTest() {
+//        EngineBetter.resetFull();
+//        Chessboard board = new Chessboard();
+//
+//        agedOut = 0;
+//
+//        int initAge = 0;
+//        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, UPPERBOUND, 10, initAge);
+//        addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, UPPERBOUND, 10, (initAge + acceptableAges) % ageModulo);
+//
+//        Assert.assertEquals(100, getMove(retrieveFromTable(board.zobristHash)));
+//        Assert.assertEquals(1, agedOut);
+//
+//        // reset
+//        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, UPPERBOUND, 10, initAge);
+//        Assert.assertEquals(1, getMove(retrieveFromTable(board.zobristHash)));
+//        Assert.assertEquals(2, agedOut);
+//
+//
+//        addToTableReplaceByDepth(board.zobristHash, 200, 666, 10, UPPERBOUND, 10, (initAge + acceptableAges + 1) % ageModulo);
+//
+//        Assert.assertEquals(200, getMove(retrieveFromTable(board.zobristHash)));
+//        Assert.assertEquals(3, agedOut);
+//
+//        agedOut = 0;
+//        EngineBetter.resetFull();
+//    }
 
     @Test
     void retrieveFromTableSimpleTest() {

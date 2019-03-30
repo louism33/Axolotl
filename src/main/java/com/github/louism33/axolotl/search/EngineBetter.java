@@ -62,6 +62,11 @@ public final class EngineBetter {
         if (computeMoves) {
             rootMoves = null;
         }
+
+
+//        initTable(TABLE_SIZE);
+
+
         MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
         isReady = true;
         nps = 0;
@@ -98,10 +103,10 @@ public final class EngineBetter {
         manageTime = true;
 
         if (maxTime < 1000) {
-            return searchFixedDepth(board, 2);
+            return searchFixedDepth(board, 1);
         }
         if (maxTime < 5000) {
-            return searchFixedDepth(board, 4);
+            return searchFixedDepth(board, 2);
         }
         long timeLimit = allocateTime(maxTime, increment);
 
@@ -127,8 +132,8 @@ public final class EngineBetter {
 
 
     private static final int searchFixedTime(final Chessboard board, final long maxTime, final int depth) {
-//        resetBetweenMoves();
-        reset();
+//        reset();
+        resetBetweenMoves();
 
         startTime = System.currentTimeMillis() - 100;
 
@@ -249,6 +254,8 @@ public final class EngineBetter {
     }
 
 
+    static boolean inNull = false;
+
     static int principleVariationSearch(Chessboard board,
                                         int depth, int ply,
                                         int alpha, int beta,
@@ -353,6 +360,7 @@ public final class EngineBetter {
 
             int R = 2;
             if (isNullMoveOkHere(board, nullMoveCounter, depth, R)) {
+
                 board.makeNullMoveAndFlipTurn();
 
                 int nullScore = -principleVariationSearch(board,
@@ -360,7 +368,6 @@ public final class EngineBetter {
                         -beta, -beta + 1, nullMoveCounter + 1);
 
                 board.unMakeNullMoveAndFlipTurn();
-
 
                 if (nullScore >= beta) {
                     if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
@@ -382,12 +389,12 @@ public final class EngineBetter {
         int numberOfMovesSearched = 0;
 
         if (ply == 0 && hashMove != 0) {
-            Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
-            Assert.assertEquals(rootMoves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
+//            Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
+//            Assert.assertEquals(rootMoves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
         }
 
         if (ply != 0 && hashMove != 0) {
-            Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
+//            Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, hashMove);
         }
 
         for (int i = 0; i < lastMove; i++) {
@@ -411,8 +418,8 @@ public final class EngineBetter {
             Assert.assertTrue(moveScore != 0);
 
             if (ply != 0 && i == 0 && hashMove != 0) {
-                Assert.assertTrue(move == hashMove);
-                Assert.assertTrue(moveScore == hashScore);
+//                Assert.assertTrue(move == hashMove);
+//                Assert.assertTrue(moveScore == hashScore);
             }
 
             boolean captureMove = MoveParser.isCaptureMove(move);
@@ -467,7 +474,7 @@ public final class EngineBetter {
             numberOfMovesMade[0]++;
             numberOfMovesSearched++;
 
-            if (!captureMove && !promotionMove && board.isDrawByRepetition()) {
+            if (!captureMove && !promotionMove && board.isDrawByRepetition(1)) {
                 score = IN_STALEMATE_SCORE;
             } else {
                 score = alpha + 1;
@@ -526,7 +533,6 @@ public final class EngineBetter {
                 }
                 break;
             }
-
         }
 
         if (numberOfMovesSearched == 0) {
@@ -568,7 +574,7 @@ public final class EngineBetter {
                 Assert.assertTrue(i != 0);
                 System.arraycopy(rootMoves, 0,
                         rootMoves, 1, i);
-                rootMoves[0] = buildMoveScore(aiMoveMask, hashScore);
+                rootMoves[0] = buildMoveScore(aiMoveMask, hashScore); // todo
                 break;
             }
         }

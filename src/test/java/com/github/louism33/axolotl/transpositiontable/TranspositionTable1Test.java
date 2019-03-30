@@ -164,7 +164,7 @@ public class TranspositionTable1Test {
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
             int ply = r.nextInt(99);
-            int age = r.nextInt(8);
+            int age = 3; // not random so no overwrite
 
             moves.add(move);
             scores.add(score);

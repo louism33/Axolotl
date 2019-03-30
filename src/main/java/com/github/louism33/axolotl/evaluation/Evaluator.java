@@ -46,6 +46,9 @@ public final class Evaluator {
     public static int percentOfStartgame;
 
     public static int eval(Chessboard board, int[] moves) {
+//        if (true) {
+//            return 1;
+//        }
         Assert.assertTrue(moves != null);
 
         Arrays.fill(scoresForEPO[WHITE], 0);
@@ -63,6 +66,9 @@ public final class Evaluator {
 
         int score = evalTurn(board, turn) - evalTurn(board, 1 - turn);
 
+
+//        return score;
+        
         int mks = attackingEnemyKingLookup[1 - turn] >= 0
                 ? attackingEnemyKingLookup[1 - turn]
                 : 0;
@@ -183,18 +189,18 @@ public final class Evaluator {
 
         int knightsScore = 0;
 
-//        long allPawns = myPawns | enemyPawns;
-//        long wps = WHITE_COLOURED_SQUARES & allPawns;
-//        long bps = BLACK_COLOURED_SQUARES & allPawns;
-//
-//        long wpsc = wps & BoardConstants.centreRingSquares;
-//        long bpsc = bps & centreRingSquares;
-//
-//        long wpscc = wps & centreFourSquares;
-//        long bpscc = bps & centreFourSquares;
-//
-//        long developpedPawns = myPawns & ~PENULTIMATE_RANKS[1 - turn];
-//        long behindPawnSpots = turn == WHITE ? developpedPawns >>> 8 : developpedPawns << 8;
+        long allPawns = myPawns | enemyPawns;
+        long wps = WHITE_COLOURED_SQUARES & allPawns;
+        long bps = BLACK_COLOURED_SQUARES & allPawns;
+
+        long wpsc = wps & (centreNineSquares ^ centreFourSquares);
+        long bpsc = bps & (centreNineSquares ^ centreFourSquares);
+
+        long wpscc = wps & centreFourSquares;
+        long bpscc = bps & centreFourSquares;
+
+        long developpedPawns = myPawns & ~PENULTIMATE_RANKS[1 - turn];
+        long behindPawnSpots = turn == WHITE ? developpedPawns >>> 8 : developpedPawns << 8;
         
         // todo : outposts, pieces behind pawns, colour weakness, rook n pawns, 
         
@@ -209,9 +215,9 @@ public final class Evaluator {
                 mobilityScore += mobilityScores[KNIGHT - 2][populationCount(table)];
 
 
-//                if ((knight & behindPawnSpots) != 0) {
-//                    knightsScore += PIECE_BEHIND_PAWN;
-//                }
+                if ((knight & behindPawnSpots) != 0) {
+                    knightsScore += PIECE_BEHIND_PAWN;
+                }
                 
                 if ((knight & enemyKingBigArea) != 0) {
                     attackingEnemyKingLookup[turn] += 2;
@@ -238,21 +244,21 @@ public final class Evaluator {
                 
                 mobilityScore += mobilityScores[BISHOP - 2][populationCount(table)];
 
-//                if ((bishop & behindPawnSpots) != 0) {
-//                    bishopsScore += PIECE_BEHIND_PAWN;
-//                }
+                if ((bishop & behindPawnSpots) != 0) {
+                    bishopsScore += PIECE_BEHIND_PAWN;
+                }
                 
                 if (populationCount(table & centreFourSquares) > 1) {
                     bishopsScore += BISHOP_PRIME_DIAGONAL;
                 }
                 
-//                if ((bishop & WHITE_COLOURED_SQUARES) != 0) {
-//                    bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(wps) *
-//                            (1 + populationCount(wpscc) + populationCount(wpsc) / 2));
-//                } else {
-//                    bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(bps) *
-//                            (1 + populationCount(bpscc) + populationCount(bpsc) / 2));
-//                }
+                if ((bishop & WHITE_COLOURED_SQUARES) != 0) {
+                    bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(wps) *
+                            (1 + populationCount(wpscc) + populationCount(wpsc) / 2));
+                } else {
+                    bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(bps) *
+                            (1 + populationCount(bpscc) + populationCount(bpsc) / 2));
+                }
 
                 
                 if ((bishop & enemyKingBigArea) != 0) {
