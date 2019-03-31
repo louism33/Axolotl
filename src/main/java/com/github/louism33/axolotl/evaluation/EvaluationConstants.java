@@ -13,8 +13,8 @@ public final class EvaluationConstants {
 
     // piece values
     public static final int PAWN_SCORE                    = 100;
-    public static final int KNIGHT_SCORE                  = 310;
-    public static final int BISHOP_SCORE                  = 340;
+    public static final int KNIGHT_SCORE                  = 300;
+    public static final int BISHOP_SCORE                  = 330;
     public static final int ROOK_SCORE                    = 540;
     public static final int QUEEN_SCORE                   = 950;
 
