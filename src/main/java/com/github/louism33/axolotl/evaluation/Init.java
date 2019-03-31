@@ -74,6 +74,6 @@ final class Init {
 
         sq &= ~myKing;
         kingSafetyArea[turn] = sq;
-        attackingEnemyKingLookup[turn] = 16; 
+        attackingEnemyKingLookup[turn] = 20; 
     }
 }

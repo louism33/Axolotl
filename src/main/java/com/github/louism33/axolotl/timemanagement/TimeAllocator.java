@@ -7,11 +7,17 @@ public final class TimeAllocator {
 
     public static long lastPrint;
 
-    public static long allocateTime(long maxTime, long increment){
+    public static long allocateTime(long maxTime, long enemyTime, long increment, Integer movesToGo){
         if (maxTime < 10000){
             return 1000 + (increment / 3);
+        }        
+        long extraTime = maxTime > (enemyTime + (enemyTime / 5))
+                ? (maxTime - enemyTime) / 5
+                : 0;
+        if (movesToGo != null && movesToGo < 10) {
+            extraTime += maxTime / 20;
         }
-        return (maxTime / 25) + (increment / 3);
+        return (maxTime / 25) + (increment / 3) + extraTime;
     }
 
     public static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){

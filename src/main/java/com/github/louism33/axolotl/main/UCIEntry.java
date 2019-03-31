@@ -123,9 +123,12 @@ public class UCIEntry extends AbstractEngine {
         }
 
         long clock = timeOnClock(command);
+        long enemyClock = timeOnClockEnemy(command);
         if (clock != 0){
             Long clockIncrement = command.getClockIncrement(convertMyColourToGenericColour(board.isWhiteTurn()));
-            return EngineBetter.searchMyTime(board, clock, clockIncrement == null ? 0 : clockIncrement);
+            return EngineBetter.searchMyTime(board, clock, enemyClock, 
+                    clockIncrement == null ? 0 : clockIncrement, 
+                    command.getMovesToGo());
         }
         else if (command.getMoveTime() != null && command.getMoveTime() != 0){
             return EngineBetter.searchFixedTime(board, command.getMoveTime());
@@ -149,6 +152,16 @@ public class UCIEntry extends AbstractEngine {
         long time = 0;
         try {
             time = command.getClock(genericBoard.getActiveColor());
+        } catch (NullPointerException e){
+            return time;
+        }
+        return time;
+    }
+
+    private long timeOnClockEnemy(EngineStartCalculatingCommand command){
+        long time = 0;
+        try {
+            time = command.getClock(genericBoard.getActiveColor().opposite());
         } catch (NullPointerException e){
             return time;
         }

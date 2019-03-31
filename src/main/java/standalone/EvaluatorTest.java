@@ -21,8 +21,10 @@ public class EvaluatorTest {
     
     @Test
     public void highKingSafety() throws IllegalNotationException {
-        Chessboard board = new Chessboard("r1bqk1nr/1pppbppp/p1n5/4p3/4P3/3P1NP1/PPP2PBP/RNBQ1RK1 w KQkq -");
+        Chessboard board = new Chessboard();
         printNStuff(board);
+        Chessboard board1 = new Chessboard("rnbqkbnr/pppppppp/8/8/8/5NP1/PPPPPPBP/RNBQ1RK1 w KQkq -");
+        printNStuff(board1);
     }       
     
     

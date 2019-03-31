@@ -98,17 +98,17 @@ public final class EngineBetter {
         return rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
     }
 
-    public static int searchMyTime(Chessboard board, long maxTime, long increment) {
+    public static int searchMyTime(Chessboard board, long maxMyTime, long maxEnemyTime, long increment, Integer movesToGo) {
         EngineSpecifications.ALLOW_TIME_LIMIT = true;
         manageTime = true;
 
-        if (maxTime < 1000) {
+        if (maxMyTime < 1000) {
             return searchFixedDepth(board, 1);
         }
-        if (maxTime < 5000) {
+        if (maxMyTime < 5000) {
             return searchFixedDepth(board, 2);
         }
-        long timeLimit = allocateTime(maxTime, increment);
+        long timeLimit = allocateTime(maxMyTime, maxEnemyTime, increment, movesToGo);
 
         return searchFixedTime(board, timeLimit, MAX_DEPTH);
     }

@@ -13,10 +13,10 @@ public final class EvaluationConstants {
 
     // piece values
     public static final int PAWN_SCORE                    = 100;
-    public static final int KNIGHT_SCORE                  = 320;
-    public static final int BISHOP_SCORE                  = 330;
-    public static final int ROOK_SCORE                    = 500;
-    public static final int QUEEN_SCORE                   = 900;
+    public static final int KNIGHT_SCORE                  = 310;
+    public static final int BISHOP_SCORE                  = 340;
+    public static final int ROOK_SCORE                    = 540;
+    public static final int QUEEN_SCORE                   = 950;
 
     // misc factors
     static final int[] PINNED_PIECES = {0, -10, -25, -25, -50, -90, 0};
@@ -91,21 +91,24 @@ public final class EvaluationConstants {
     
     // queen valuation
     static final int QUEEN_ON_SEVENTH_BONUS               = 10;
-    static final int QUEEN_ATTACK_KING_UNITS              = 5;
+    static final int QUEEN_ATTACK_KING_LOOKUP_UNITS       = 5;
+    static final int MISSING_QUEEN_KING_SAFETY_UNITS      = 4;
     static final int QUEEN_PROTECTS_ROOK                  = 10;
     static final int QUEEN_HATES_PAWNS                    = 10;
     
     // king valuation
-    static final int KING_NEAR_SEMI_OPEN_FILE_LOOKUP      = 2;
-    static final int[] KING_SAFETY_ARRAY                  =  // - are good
+    static final int FRIENDLY_PIECE_NEAR_KING             = 1;
+    static final int KING_NEAR_SEMI_OPEN_FILE_LOOKUP      = 3;
+    static final int[] KING_SAFETY_ARRAY                  =  // -s are good
             {   
-                    -40, -39, -38, -37, -36, -35, -34, -32, 
-                    -26, -22, -18, -12, -10,  -8,  -4,  -2,
- /*neutral: 16 */     0,  12,   24, 48,  64,  96, 128, 256,
-                    300, 310,  320,330, 340, 350, 360, 370,
-                    380, 390, 400, 410, 420, 430, 440, 450,
+                    -96, -88, -74, -68, -66, -62, -54, -46, 
+                    -36, -30, -26, -22, -18, -16,  -10, -6,
+ /* neutral: 20 */    0,  12,  24,  48,  64,  96, 128, 156,
+                    166, 206, 210, 225, 250, 275, 300, 320,
+                    330, 340, 350, 360, 370, 380, 390, 400,
                     460, 470, 480, 490, 500, 510, 520, 530,
                     540, 541, 542, 543, 544, 545, 546, 547,
                     548, 549, 550, 551, 552, 553, 554, 555,
             };
+
 }
