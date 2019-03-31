@@ -474,7 +474,9 @@ public final class EngineBetter {
             numberOfMovesMade[0]++;
             numberOfMovesSearched++;
 
-            if (!captureMove && !promotionMove && board.isDrawByRepetition(1)) {
+            if (board.isDrawByInsufficientMaterial() 
+                    || (!captureMove && !promotionMove && 
+                    (board.isDrawByRepetition(1) || board.isDrawByFiftyMoveRule()))) {
                 score = IN_STALEMATE_SCORE;
             } else {
                 score = alpha + 1;

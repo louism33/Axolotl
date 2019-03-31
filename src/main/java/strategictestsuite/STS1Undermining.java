@@ -48,9 +48,9 @@ public class STS1Undermining {
 
     @Test
     public void test() {
-        System.out.println(EPDObject.getBoardFen());
+        System.out.println(EPDObject.getFullString());
         System.out.println(EPDObject.getBoard());
-        int[] winningMoves = EPDObject.getBestMoves();
+        int[] winningMoves = EPDObject.getBestMovesFromComments();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.DEBUG = false;
         int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);

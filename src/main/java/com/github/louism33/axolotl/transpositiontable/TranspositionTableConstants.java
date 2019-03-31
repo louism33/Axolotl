@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.transpositiontable;
 
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.BitOperations;
 
 @SuppressWarnings("ALL")

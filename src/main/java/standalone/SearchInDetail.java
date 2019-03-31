@@ -113,11 +113,13 @@ public class SearchInDetail {
     public void testMoveFourKPkpKN(){
         Chessboard board = new Chessboard();
 
+        EngineSpecifications.DEBUG = true;
+        
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e2e4"));
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e7e5"));
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "g1f3"));
 
-        getMoveHierarchy(board, 14, 10000, 3, true);
+        getMoveHierarchy(board, 16, 10000, 3, true);
     }
 
     @Test
@@ -135,6 +137,8 @@ public class SearchInDetail {
     @Test
     public void testMoveSixKPkpKNqn(){
         Chessboard board = new Chessboard();
+        
+        EngineSpecifications.DEBUG = true;
 
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e2e4"));
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e7e5"));

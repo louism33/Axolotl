@@ -73,7 +73,7 @@ final class EvaluatorPositionConstant {
             -50,-60,-60,-80,-80,-60,-60,-50,
             -25,-50,-50,-50,-50,-50,-50,-25,
             20, 20, -35,-35,-35,-35, 20, 20,
-            40, 60, 25,-25, -25, 25, 60, 40
+            40, 60, 25,-35, -25, 25, 60, 40
     };
 
     static final int[] KING_POSITION_SCORES_END_WHITE =   {
@@ -143,7 +143,7 @@ final class EvaluatorPositionConstant {
 
         mobilityScores[2] = new int[] { //Rook
                 -30, -25, -20, -5, 0, 5, 8, 
-                10, 25, 30, 35, 40, 45, 50,
+                20, 25, 30, 35, 40, 45, 50,
                 50
         };
 

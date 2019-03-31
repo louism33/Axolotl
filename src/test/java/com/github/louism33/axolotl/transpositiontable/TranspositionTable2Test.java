@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
-import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
+import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.EXACT;
+import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.ageModulo;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
 public class TranspositionTable2Test {

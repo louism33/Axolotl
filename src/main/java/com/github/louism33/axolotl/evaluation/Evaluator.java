@@ -1,8 +1,5 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.Art;
-import com.github.louism33.chesscore.BitOperations;
-import com.github.louism33.chesscore.BoardConstants;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 
@@ -13,8 +10,8 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.POSITION_SCORES;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.mobilityScores;
 import static com.github.louism33.axolotl.evaluation.Init.*;
-import static com.github.louism33.chesscore.BitOperations.getFirstPiece;
-import static com.github.louism33.chesscore.BitOperations.populationCount;
+import static com.github.louism33.chesscore.BitOperations.fileForward;
+import static com.github.louism33.chesscore.BitOperations.*;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.PieceMove.*;
 import static java.lang.Long.numberOfTrailingZeros;
@@ -45,10 +42,14 @@ public final class Evaluator {
     public static int percentOfEndgame;
     public static int percentOfStartgame;
 
-    public static int eval(Chessboard board, int[] moves) {
-//        if (true) {
-//            return 1;
-//        }
+    /**
+     todo:
+     trapped pieces
+     pinned pieces, and to queen
+     */
+    static final long[] turnThreatensSquares = new long[2];
+    
+    public static int eval(final Chessboard board, final int[] moves) {
         Assert.assertTrue(moves != null);
 
         Arrays.fill(scoresForEPO[WHITE], 0);
@@ -62,24 +63,39 @@ public final class Evaluator {
 
         EvalPrintObject.percentOfEndgame = percentOfEndgame;
 
-        int turn = board.turn;
+        final int turn = board.turn;
 
         int score = evalTurn(board, turn) - evalTurn(board, 1 - turn);
 
+        int myPassedPawnScore = PassedPawns.evalPassedPawnsByTurn(board, turn);
+        int enemyPassedPawnScore = PassedPawns.evalPassedPawnsByTurn(board, 1 - turn);
 
-//        return score;
+        scoresForEPO[turn][passedPawnsScore] = myPassedPawnScore;
+        scoresForEPO[1 - turn][passedPawnsScore] = enemyPassedPawnScore;
+
+        score += myPassedPawnScore;
+        score -= enemyPassedPawnScore;
         
         int mks = attackingEnemyKingLookup[1 - turn] >= 0
                 ? attackingEnemyKingLookup[1 - turn]
                 : 0;
 
+        if (mks >= KING_SAFETY_ARRAY.length) {
+            mks = KING_SAFETY_ARRAY.length - 1;
+        }
         int myKingSafety = -KING_SAFETY_ARRAY[mks];
 
         int yks = attackingEnemyKingLookup[turn] >= 0
                 ? attackingEnemyKingLookup[turn]
                 : 0;
 
+        if (yks >= KING_SAFETY_ARRAY.length) {
+            yks = KING_SAFETY_ARRAY.length - 1;
+        }
         int yourKingSafety = -KING_SAFETY_ARRAY[yks];
+
+        myKingSafety = (percentOfStartgame * myKingSafety) / 100;
+        yourKingSafety = (percentOfStartgame * yourKingSafety) / 100;
 
         scoresForEPO[turn][kingSafetyScore] += myKingSafety;
         scoresForEPO[1 - turn][kingSafetyScore] += yourKingSafety;
@@ -87,7 +103,7 @@ public final class Evaluator {
         score += myKingSafety;
         score -= yourKingSafety;
 
-        int turnBonus = (percentOfStartgame * MY_TURN_BONUS) / 100;
+        final int turnBonus = (percentOfStartgame * MY_TURN_BONUS) / 100;
         scoresForEPO[WHITE][turnScore] = turnBonus;
         score += turnBonus;
 
@@ -96,11 +112,13 @@ public final class Evaluator {
         return score;
     }
 
-    static int[][] scoresForEPO = new int[2][32];
+    public static int[][] scoresForEPO = new int[2][32];
 
     private final static int evalTurn(Chessboard board, int turn){
         //please generate moves before calling this
         final long[][] pieces = board.pieces;
+        
+        long squaresIThreatenWithPieces = 0;
 
         long myPawns, myKnights, myBishops, myRooks, myQueens, myKing;
         long enemyPawns, enemyKnights, enemyBishops, enemyRooks, enemyQueens, enemyKing;
@@ -127,39 +145,55 @@ public final class Evaluator {
         Assert.assertTrue(enemies != 0);
 
         final long allPieces = friends | enemies;
-        long pinnedPieces = board.pinnedPieces;
-        boolean inCheck = board.inCheckRecorder;
+        final long pinnedPieces = board.pinnedPieces;
+        final boolean inCheck = board.inCheckRecorder;
 
         int finalScore = 0, materialScore = 0;
 
-        materialScore += BitOperations.populationCount(myPawns) * PAWN_SCORE;
-        materialScore += BitOperations.populationCount(myKnights) * KNIGHT_SCORE;
-        materialScore += BitOperations.populationCount(myBishops) * BISHOP_SCORE;
-        materialScore += BitOperations.populationCount(myRooks) * ROOK_SCORE;
-        materialScore += BitOperations.populationCount(myQueens) * QUEEN_SCORE;
+        materialScore += populationCount(myPawns) * PAWN_SCORE;
+        materialScore += populationCount(myKnights) * KNIGHT_SCORE;
+        materialScore += populationCount(myBishops) * BISHOP_SCORE;
+        materialScore += populationCount(myRooks) * ROOK_SCORE;
+        materialScore += populationCount(myQueens) * QUEEN_SCORE;
 
         scoresForEPO[turn][EvalPrintObject.materialScore] = materialScore;
 
         finalScore += materialScore;
 
-        long ignoreThesePieces = 0; // maybe pins
+        final long ignoreThesePieces = 0; // maybe pins
+
+        final long enemyBigPieces = enemies & ~enemyPawns;
 
         int positionScore = 0;
         int mobilityScore = 0;
 
-        long squaresMyPawnsThreaten = pawnTables[turn][CAPTURES];
+        int threatsScore = 0;
 
-        long squaresEnemyPawnsThreaten = pawnTables[1 - turn][CAPTURES];
-        long enemyPawnShifts = turn == WHITE ? enemyPawns >>> 8 : enemyPawns << 8;
-        long myBlockedPawns = enemyPawnShifts & myPawns;
-        long myBackwardsPawns = myPawns & (PENULTIMATE_RANKS[1 - turn] | INTERMEDIATE_RANKS[turn]);
+        final long squaresMyPawnsThreaten = pawnTables[turn][CAPTURES];
+        final long squaresEnemyPawnsThreaten = pawnTables[1 - turn][CAPTURES];
 
-        long safeMobSquares = ~(myKing | myQueens | myBackwardsPawns | myBlockedPawns | squaresEnemyPawnsThreaten);
+        final long myPawnAttackSpan = pawnTables[turn][SPANS];
+        final long enemyPawnAttackSpan = pawnTables[1 - turn][SPANS];
+
+        final boolean whiteToPlay = turn == WHITE;
+        final long outpostRanks = whiteToPlay ? (RANK_FOUR | RANK_FIVE | RANK_SIX) : (RANK_FIVE | RANK_FOUR | RANK_THREE);
+        final long unthreatenableOutpostSpots = outpostRanks & ~(enemyPawnAttackSpan | squaresEnemyPawnsThreaten);
+
+        final long fileWithoutMyPawns = filesWithNoPlayerPawns[turn];
+        final long fileWithoutEnemyPawns = filesWithNoPlayerPawns[1 - turn];
+        final long openFiles = fileWithoutEnemyPawns & fileWithoutMyPawns;
+        final long closedFiles = ~openFiles;
+
+        final long enemyPawnShifts = whiteToPlay ? enemyPawns >>> 8 : enemyPawns << 8;
+        final long myBlockedPawns = enemyPawnShifts & myPawns;
+        final long myBackwardsPawns = myPawns & (PENULTIMATE_RANKS[1 - turn] | INTERMEDIATE_RANKS[turn]);
+
+        final long safeMobSquares = ~(myKing | myQueens | myBackwardsPawns | myBlockedPawns | squaresEnemyPawnsThreaten);
 
         if (percentOfStartgame != 0) {
             //space
             long mySafeSquares = (~myPawns
-                    & (turn == WHITE ? (RANK_TWO | RANK_THREE | RANK_FOUR) : (RANK_FIVE | RANK_SIX | RANK_SEVEN))
+                    & (whiteToPlay ? (RANK_TWO | RANK_THREE | RANK_FOUR) : (RANK_FIVE | RANK_SIX | RANK_SEVEN))
                     & (FILE_C | FILE_D | FILE_E | FILE_F)
                     & ~squaresEnemyPawnsThreaten);
 
@@ -168,9 +202,9 @@ public final class Evaluator {
             long myDevelopedPawns = myPawns & ~(RANK_SEVEN | RANK_TWO);
             while (myDevelopedPawns != 0) {
                 final int pawnIndex = numberOfTrailingZeros(myDevelopedPawns);
-                final long fileBack = BitOperations.fileForward(pawnIndex, turn == BLACK) & mySafeSquares;
+                final long fileBack = fileForward(pawnIndex, turn == BLACK) & mySafeSquares;
 
-                spaceScore += populationCount(fileBack) * SPACE;
+                spaceScore += populationCount(fileBack) * (1 + SPACE);
                 myDevelopedPawns &= myDevelopedPawns - 1;
             }
 
@@ -178,52 +212,71 @@ public final class Evaluator {
 
             scoresForEPO[turn][EvalPrintObject.spaceScore] = spaceScore;
         }
-        
-        long enemyKingBigArea = kingBigArea[1 - turn];
-        long enemyKingSmallArea = kingSmallArea[1 - turn];
 
-        long myKingBigArea = kingBigArea[turn];
-        long myKingSmallArea = kingSmallArea[turn];
+        final long enemyKingSmallArea = squareCentredOnIndex(numberOfTrailingZeros(enemyKing));
+        final long enemyKingSafetyArea = kingSafetyArea[1 - turn];
+
+        final long myKingSmallArea = squareCentredOnIndex(numberOfTrailingZeros(myKing));
+        final long myKingSafetyArea = kingSafetyArea[turn];
 
         int defendingMyKingLookup = 0;
 
+        final long allPawns = myPawns | enemyPawns;
+
+        final int numberOfPawns = populationCount(allPawns);
+
+        final long wps = WHITE_COLOURED_SQUARES & allPawns;
+        final long bps = BLACK_COLOURED_SQUARES & allPawns;
+
+        final long wpsc = wps & (centreNineSquares ^ centreFourSquares);
+        final long bpsc = bps & (centreNineSquares ^ centreFourSquares);
+
+        final long wpscc = wps & centreFourSquares;
+        final long bpscc = bps & centreFourSquares;
+
+        final long developpedPawns = myPawns & ~PENULTIMATE_RANKS[1 - turn];
+        final long behindPawnSpots = whiteToPlay ? developpedPawns >>> 8 : developpedPawns << 8;
+
         int knightsScore = 0;
 
-        long allPawns = myPawns | enemyPawns;
-        long wps = WHITE_COLOURED_SQUARES & allPawns;
-        long bps = BLACK_COLOURED_SQUARES & allPawns;
-
-        long wpsc = wps & (centreNineSquares ^ centreFourSquares);
-        long bpsc = bps & (centreNineSquares ^ centreFourSquares);
-
-        long wpscc = wps & centreFourSquares;
-        long bpscc = bps & centreFourSquares;
-
-        long developpedPawns = myPawns & ~PENULTIMATE_RANKS[1 - turn];
-        long behindPawnSpots = turn == WHITE ? developpedPawns >>> 8 : developpedPawns << 8;
-        
-        // todo : outposts, pieces behind pawns, colour weakness, rook n pawns, 
-        
         while (myKnights != 0){
             final long knight = getFirstPiece(myKnights);
             if ((knight & ignoreThesePieces) == 0) {
                 final int knightIndex = numberOfTrailingZeros(knight);
                 positionScore += POSITION_SCORES[turn][KNIGHT][63 - knightIndex];
 
-                final long table = KNIGHT_MOVE_TABLE[knightIndex] & safeMobSquares;
+                final long pseudoMoves = KNIGHT_MOVE_TABLE[knightIndex];
+                final long table = pseudoMoves & safeMobSquares;
 
+                squaresIThreatenWithPieces |= pseudoMoves;
+                
                 mobilityScore += mobilityScores[KNIGHT - 2][populationCount(table)];
 
+                knightsScore += numberOfPawns * KNIGHT_PAWN_NUMBER_BONUS;
+
+                if ((knight & squaresMyPawnsThreaten) != 0) {
+                    knightsScore += KNIGHT_PROTECTED_PAWN;
+                }
+
+                //outpost, double score if defended by friendly pawn
+                if ((knight & unthreatenableOutpostSpots) != 0) {
+                    knightsScore += KNIGHT_ON_OUTPOST_BONUS * (1 + (populationCount(squaresMyPawnsThreaten & knight)));
+                } else {
+                    long myThreatsToEmptyOutposts = table & (unthreatenableOutpostSpots & ~friends);
+                    if (myThreatsToEmptyOutposts != 0) {
+                        knightsScore += KNIGHT_REACH_OUTPOST_BONUS * (1 + (populationCount(squaresMyPawnsThreaten & myThreatsToEmptyOutposts)));
+                    }
+                }
 
                 if ((knight & behindPawnSpots) != 0) {
                     knightsScore += PIECE_BEHIND_PAWN;
                 }
-                
-                if ((knight & enemyKingBigArea) != 0) {
-                    attackingEnemyKingLookup[turn] += 2;
+
+                if ((knight & enemyKingSafetyArea) != 0) {
+                    attackingEnemyKingLookup[turn] += KNIGHT_ATTACK_KING_UNITS;
                 }
 
-                attackingEnemyKingLookup[turn] += populationCount(table & enemyKingSmallArea);
+                attackingEnemyKingLookup[turn] += populationCount(table & enemyKingSafetyArea) * KNIGHT_ATTACK_KING_UNITS;
             }
             myKnights &= (myKnights - 1);
         }
@@ -240,18 +293,35 @@ public final class Evaluator {
                 final int bishopIndex = numberOfTrailingZeros(bishop);
                 positionScore += POSITION_SCORES[turn][BISHOP][63 - bishopIndex];
 
-                final long table = singleBishopTable(allPieces, bishopIndex, UNIVERSE) & safeMobSquares;
+                final long pseudoMoves = singleBishopTable(allPieces, bishopIndex, UNIVERSE);
+                final long table = pseudoMoves & safeMobSquares;
+
+                squaresIThreatenWithPieces |= pseudoMoves;
                 
                 mobilityScore += mobilityScores[BISHOP - 2][populationCount(table)];
+
+                if ((bishop & squaresMyPawnsThreaten) != 0) {
+                    bishopsScore += BISHOP_PROTECTED_PAWN;
+                }
+
+                //outpost, double score if defended by friendly pawn
+                if ((bishop & unthreatenableOutpostSpots) != 0) {
+                    bishopsScore += BISHOP_ON_OUTPOST_BONUS * (1 + (populationCount(squaresMyPawnsThreaten & bishop)));
+                } else {
+                    long myThreatsToEmptyOutposts = table & (unthreatenableOutpostSpots & ~friends);
+                    if (myThreatsToEmptyOutposts != 0) {
+                        bishopsScore += BISHOP_REACH_OUTPOST_BONUS * (1 + (populationCount(squaresMyPawnsThreaten & myThreatsToEmptyOutposts)));
+                    }
+                }
 
                 if ((bishop & behindPawnSpots) != 0) {
                     bishopsScore += PIECE_BEHIND_PAWN;
                 }
-                
-                if (populationCount(table & centreFourSquares) > 1) {
+
+                if (populationCount(pseudoMoves & centreFourSquares) > 1) {
                     bishopsScore += BISHOP_PRIME_DIAGONAL;
                 }
-                
+
                 if ((bishop & WHITE_COLOURED_SQUARES) != 0) {
                     bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(wps) *
                             (1 + populationCount(wpscc) + populationCount(wpsc) / 2));
@@ -260,12 +330,12 @@ public final class Evaluator {
                             (1 + populationCount(bpscc) + populationCount(bpsc) / 2));
                 }
 
-                
-                if ((bishop & enemyKingBigArea) != 0) {
-                    attackingEnemyKingLookup[turn] += 2;
+
+                if ((bishop & enemyKingSafetyArea) != 0) {
+                    attackingEnemyKingLookup[turn] += BISHOP_ATTACK_KING_UNITS;
                 }
 
-                attackingEnemyKingLookup[turn] += populationCount(table & enemyKingSmallArea);
+                attackingEnemyKingLookup[turn] += populationCount(table & enemyKingSafetyArea) * BISHOP_ATTACK_KING_UNITS;
             }
             myBishops &= (myBishops - 1);
         }
@@ -278,20 +348,57 @@ public final class Evaluator {
                 final int rookIndex = numberOfTrailingZeros(rook);
                 positionScore += POSITION_SCORES[turn][ROOK][63 - rookIndex];
 
-                final long table = singleRookTable(allPieces, rookIndex, UNIVERSE) & safeMobSquares;
+                final long pseudoMoves = singleRookTable(allPieces, rookIndex, UNIVERSE);
+                final long table = pseudoMoves & safeMobSquares;
 
+                squaresIThreatenWithPieces |= pseudoMoves;
+                
                 mobilityScore += mobilityScores[ROOK - 2][populationCount(table)];
 
-                if ((rook & enemyKingBigArea) != 0) {
-                    attackingEnemyKingLookup[turn] += 3;
+                //table does not include pawns defended by pawns
+                rooksScore += (populationCount(table & enemyPawns)) * ROOKS_ATTACK_UNDEFENDED_PAWNS;
+
+                //trapped by king
+                if (percentOfStartgame > 50) {
+                    final long startingSpotsForKing = whiteToPlay
+                            ? (INITIAL_WHITE_KING | INITIAL_WHITE_QUEEN)
+                            : (INITIAL_BLACK_KING | INITIAL_BLACK_QUEEN);
+                    if (((myKing & startingSpotsForKing) != 0)
+                            && populationCount(pseudoMoves) <= 5
+                            && ((rook & FINAL_RANKS[1 - turn]) != 0)) {
+                        rooksScore -= TRAPPED_ROOK;
+                        if ((board.castlingRights & (whiteToPlay ? 0b11 : 0b1100)) == 0) {
+                            rooksScore -= TRAPPED_ROOK;
+                        }
+                    }
                 }
 
-                attackingEnemyKingLookup[turn] += populationCount(table & enemyKingSmallArea);
+                if ((rook & PENULTIMATE_RANKS[turn]) != 0) {
+                    rooksScore += (percentOfStartgame * ROOK_ON_SEVENTH_BONUS) / 100;
+                }
+
+                if ((myRooks & (FILES[rookIndex % 8] ^ rook)) != 0) {
+                    rooksScore += ROOK_BATTERY_SCORE;
+                }
+
+                if ((rook & openFiles) != 0) {
+                    rooksScore += ROOK_OPEN_FILE_BONUS;
+                } else if ((rook & fileWithoutMyPawns) != 0) {
+                    rooksScore += ROOK_ON_SEMI_OPEN_FILE_BONUS;
+                }
+
+                if ((rook & enemyKingSafetyArea) != 0) {
+                    attackingEnemyKingLookup[turn] += ROOK_ATTACK_KING_UNITS;
+                }
+
+                attackingEnemyKingLookup[turn] += populationCount(table & enemyKingSafetyArea) * ROOK_ATTACK_KING_UNITS;
             }
             myRooks &= (myRooks - 1);
         }
-
+      
         int queensScore = 0;
+
+        long defendedByMyQueen = 0;
 
         while (myQueens != 0){
             final long queen = getFirstPiece(myQueens);
@@ -299,46 +406,67 @@ public final class Evaluator {
                 final int queenIndex = numberOfTrailingZeros(queen);
                 positionScore += POSITION_SCORES[turn][QUEEN][63 - queenIndex];
 
-                final long table = singleQueenTable(allPieces, queenIndex, UNIVERSE) & safeMobSquares;
+                long pseudoMoves = singleQueenTable(allPieces, queenIndex, UNIVERSE);
+                final long table = pseudoMoves & safeMobSquares;
+
+                squaresIThreatenWithPieces |= pseudoMoves;
+                
+                defendedByMyQueen |= pseudoMoves;
 
                 mobilityScore += mobilityScores[QUEEN - 2][populationCount(table)];
 
-                if ((queen & enemyKingBigArea) != 0) {
-                    attackingEnemyKingLookup[turn] += 4;
+                if ((queen & enemyKingSafetyArea) != 0) {
+                    attackingEnemyKingLookup[turn] += QUEEN_ATTACK_KING_UNITS;
                 }
 
-                attackingEnemyKingLookup[turn] += populationCount(table & enemyKingSmallArea);
+                attackingEnemyKingLookup[turn] += populationCount(table & enemyKingSafetyArea) * QUEEN_ATTACK_KING_UNITS;
             }
             myQueens &= (myQueens - 1);
         }
 
-        attackingEnemyKingLookup[turn] += populationCount(squaresMyPawnsThreaten & enemyKingSmallArea);
+        attackingEnemyKingLookup[turn] += populationCount(squaresMyPawnsThreaten & enemyKingSafetyArea);
 
         myPawns = pieces[turn][PAWN] & ~ignoreThesePieces;
+        attackingEnemyKingLookup[1 - turn] -= populationCount(myPawns & myKingSafetyArea);
         attackingEnemyKingLookup[1 - turn] -= populationCount(myPawns & myKingSmallArea);
+        attackingEnemyKingLookup[1 - turn] -= populationCount(squaresMyPawnsThreaten & myKingSafetyArea);
 
+        /*
+        regular pawns
+         */
         int pawnsScore = 0;
-
+        pawnsScore += populationCount(squaresMyPawnsThreaten & myPawns) * PAWN_PROTECTED_BY_PAWNS;
         while (myPawns != 0){
             final long pawn = getFirstPiece(myPawns);
             final int pawnIndex = numberOfTrailingZeros(pawn);
             positionScore += POSITION_SCORES[turn][PAWN][63 - pawnIndex];
 
-            if ((pawn & enemyKingBigArea) != 0) {
+            if ((pawn & enemyKingSafetyArea) != 0) {
                 attackingEnemyKingLookup[turn] += 1;
             }
 
             myPawns &= myPawns - 1;
         }
+        
+
+        threatsScore += populationCount(squaresMyPawnsThreaten & enemyBigPieces) * PAWN_THREATENS_BIG_THINGS;
+
+        attackingEnemyKingLookup[turn] += populationCount(squaresMyPawnsThreaten & enemyKingSafetyArea);
 
         Assert.assertTrue(percentOfEndgame >= 0 && percentOfEndgame <= 100);
         Assert.assertTrue(percentOfStartgame >= 0 && percentOfStartgame <= 100);
 
-        // king
+       
+        /*
+        king
+         */
         int kingIndex = numberOfTrailingZeros(myKing);
+        long kingPseudoMoves = KING_MOVE_TABLE[kingIndex];
+        
+        squaresIThreatenWithPieces |= kingPseudoMoves;
+        
         positionScore += (percentOfStartgame == 0 ? 0
                 : (percentOfStartgame * POSITION_SCORES[turn][KING][63 - kingIndex]) / 100);
-
 
         positionScore += percentOfEndgame == 0 ? 0
                 : (percentOfEndgame * POSITION_SCORES[turn][KING-KING][63 - kingIndex]) / 100;
@@ -347,8 +475,17 @@ public final class Evaluator {
             attackingEnemyKingLookup[turn] -= 2;
         }
 
+        if ((myKingSafetyArea & fileWithoutMyPawns) != 0) {
+            attackingEnemyKingLookup[1 - turn] += KING_NEAR_SEMI_OPEN_FILE_LOOKUP;
+        }
+
+
+        turnThreatensSquares[turn] = squaresIThreatenWithPieces;
+
+
         finalScore += positionScore;
         finalScore += mobilityScore;
+        finalScore += threatsScore;
 
         finalScore += pawnsScore;
         finalScore += knightsScore;
@@ -364,6 +501,7 @@ public final class Evaluator {
 
         scoresForEPO[turn][EvalPrintObject.mobilityScore] = mobilityScore;
         scoresForEPO[turn][EvalPrintObject.positionScore] = positionScore;
+        scoresForEPO[turn][EvalPrintObject.threatsScore] = threatsScore;
 
         return finalScore;
     }
@@ -381,7 +519,7 @@ public final class Evaluator {
 
         answer -= pawnCountW * 2;
         answer -= pawnCountB * 2;
-        
+
         if (pawnCountB < 3) {
             answer += 15;
         }

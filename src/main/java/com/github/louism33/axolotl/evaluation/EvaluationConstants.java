@@ -21,7 +21,6 @@ public final class EvaluationConstants {
     // misc factors
     static final int[] PINNED_PIECES = {0, -10, -25, -25, -50, -90, 0};
     static final int MOVE_NUMBER_POINT                    = 1; // /10
-    static final int BATTERY_SCORE                        = 10;
     static final int I_CONTROL_OPEN_FILE                  = 25;
     static final int MY_TURN_BONUS                        = 25;
     static final int CENTRE_PIECE                         = 10;
@@ -29,13 +28,16 @@ public final class EvaluationConstants {
     static final int SPACE                                = 2;
 
     // pawn valuation
+    static final int PAWN_UNBLOCKED                       = 12;
+    static final int PASSED_NEIGHBOUR                     = 22;
+    static final int PAWN_OPEN_STOP_SQUARE                = 12;
     static final int PAWN_PASSED                          = 15;
+    static final int ROOK_OR_QUEEN_BEHIND_PP              = 12;
     static final int PAWN_DOUBLED                         = -10;
     static final int PAWN_ON_CENTRE                       = 10;
     static final int PAWN_ON_SUPER_CENTRE                 = 15;
-    static final int PAWN_UNBLOCKED                       = 10;
-    static final int PAWN_PROTECTED_BY_PAWNS              = 3;
-    static final int PAWN_THREATENS_BIG_THINGS            = 10;
+    static final int PAWN_PROTECTED_BY_PAWNS              = 4;
+    static final int PAWN_THREATENS_BIG_THINGS            = 8;
     static final int PAWN_THREATENS_BISHOPS               = 10;
     static final int PAWN_BLOCKED                         = -5;
     static final int PAWN_THREATEN_CENTRE                 = 5;
@@ -61,49 +63,49 @@ public final class EvaluationConstants {
     static final int PIECE_BEHIND_PAWN                    = 10;
 
     // knights valuation
-    static final int KNIGHT_OUTPOST_BONUS                 = 15;
-    static final int KNIGHT_ADVANCED_BONUS                = 5;
-    static final int KNIGHT_MOBILITY_SCORE                = 3;
+    static final int KNIGHT_PAWN_NUMBER_BONUS             = 1;
+    static final int KNIGHT_ATTACK_KING_UNITS             = 2;
+    static final int KNIGHT_ON_OUTPOST_BONUS              = 20;
+    static final int KNIGHT_REACH_OUTPOST_BONUS           = 8;
+    static final int KNIGHT_PROTECTED_PAWN                = 8;
     static final int KNIGHT_THREATEN_BIG                  = 10;
     static final int KNIGHT_FORK                          = 35;
     
     // bishop valuation
     static final int BISHOP_COLOUR_PAWNS                  = 1;
-    static final int BISHOP_DOUBLE                        = 15;
+    static final int BISHOP_PROTECTED_PAWN                = 6;
+    static final int BISHOP_ATTACK_KING_UNITS             = 2;
+    static final int BISHOP_DOUBLE                        = 25;
     static final int BISHOP_PRIME_DIAGONAL                = 10;
-    static final int BISHOP_OUTPOST_BONUS                 = 18;
-    static final int BISHOP_ADVANCED_BONUS                = 5;
-    static final int BISHOP_MOBILITY_SCORE                = 1;
-    static final int BISHOP_UNDEVELOPED_PENALTY           = -20;
+    static final int BISHOP_ON_OUTPOST_BONUS              = 12;
+    static final int BISHOP_REACH_OUTPOST_BONUS           = 6;
 
     // rook valuation
     static final int ROOK_ON_SEVENTH_BONUS                = 25;
-    static final int ROOK_MOBILITY_SCORE                  = 2;
-    static final int ROOK_NOT_DEVELOPED                   = -5;
-    static final int ROOK_OPEN_FILE_BONUS                 = 15;
+    static final int ROOK_OPEN_FILE_BONUS                 = 18;
+    static final int ROOK_ATTACK_KING_UNITS               = 3;
     static final int ROOK_ON_SEMI_OPEN_FILE_BONUS         = 10;
-    static final int ROOK_SAME_ROW                        = 5;
-    static final int ROOKS_ATTACK_PAWNS                   = 15;
+    static final int TRAPPED_ROOK                         = 16;
+    static final int ROOKS_ATTACK_UNDEFENDED_PAWNS = 6;
+    static final int ROOK_BATTERY_SCORE                   = 8;
     
     // queen valuation
     static final int QUEEN_ON_SEVENTH_BONUS               = 10;
-    static final int QUEEN_MOBILITY_SCORE                 = 1;
+    static final int QUEEN_ATTACK_KING_UNITS              = 5;
     static final int QUEEN_PROTECTS_ROOK                  = 10;
     static final int QUEEN_HATES_PAWNS                    = 10;
     
     // king valuation
-    static final int KING_PAWN_PROTECT_BONUS              = 5;
-    static final int KING_HOME_RANK                       = 10;
-    static final int[] KING_SAFETY_ARRAY                  = 
+    static final int KING_NEAR_SEMI_OPEN_FILE_LOOKUP      = 2;
+    static final int[] KING_SAFETY_ARRAY                  =  // - are good
             {   
-                    0,  2,  3,  6,   12, 18, 25, 37, 
-                    50, 75, 100,125, 150,175,200,225,
-                    250,275,300,325, 350,375,400,425,
-                    450,475,500,525,550,575, 600,600,
-                    600,600,600,600,600,600, 600,600,
-                    600,600,600,600,600,600, 600,600,
-                    600,600,600,600,600,600, 600,600,
-                    600,600,600,600,600,600, 600,600,
+                    -40, -39, -38, -37, -36, -35, -34, -32, 
+                    -26, -22, -18, -12, -10,  -8,  -4,  -2,
+ /*neutral: 16 */     0,  12,   24, 48,  64,  96, 128, 256,
+                    300, 310,  320,330, 340, 350, 360, 370,
+                    380, 390, 400, 410, 420, 430, 440, 450,
+                    460, 470, 480, 490, 500, 510, 520, 530,
+                    540, 541, 542, 543, 544, 545, 546, 547,
+                    548, 549, 550, 551, 552, 553, 554, 555,
             };
-
 }

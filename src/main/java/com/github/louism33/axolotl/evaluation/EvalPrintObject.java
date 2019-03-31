@@ -1,7 +1,5 @@
 package com.github.louism33.axolotl.evaluation;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.MY_TURN_BONUS;
-import static com.github.louism33.axolotl.evaluation.Evaluator.percentOfStartgame;
 import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.chesscore.BoardConstants.WHITE;
 
@@ -22,7 +20,7 @@ public final class EvalPrintObject {
     static final int threatsScore = 10;
     static final int passedPawnsScore = 11;
     static final int positionScore = 12;   
-    static final int spaceScore = 13;   
+    public static final int spaceScore = 13;   
     static final int turnScore = 14;   
     static int turn = WHITE;
     static int percentOfEndgame;

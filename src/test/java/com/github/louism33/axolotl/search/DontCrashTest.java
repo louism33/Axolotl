@@ -10,7 +10,6 @@ import com.fluxchess.jcpi.protocols.NoProtocolException;
 import com.github.louism33.axolotl.main.PVLine;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
-import com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.MoveParserFromAN;
@@ -18,7 +17,6 @@ import com.github.louism33.utils.PGNParser;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("ALL")

@@ -87,7 +87,7 @@ class StandAlone {
 
                 board.makeMoveAndFlipTurn(move);
                 totalMoves++;
-                System.out.println(prompt + " made move "+move);
+                System.out.println(prompt + " made move " + MoveParser.toString(move));
             }
 
 

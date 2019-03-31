@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.chesscore.Art;
+import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveConstants;
 import com.github.louism33.chesscore.MoveParser;
@@ -19,18 +19,15 @@ import static com.github.louism33.chesscore.MoveParser.*;
 
 public final class MoveOrdererBetter {
 
-
     public static boolean ready = false;
     public static int[][] mateKillers;
     public static int[][][] killerMoves;
-    public static int[][][] historyMoves;
 
     public static final int whichThread = 0;
 
     public static void initMoveOrderer(){
         mateKillers = new int[THREAD_NUMBER][MAX_DEPTH_HARD];
         killerMoves = new int[THREAD_NUMBER][MAX_DEPTH_HARD][2];
-        historyMoves = new int[THREAD_NUMBER * 2][64][64]; // one for each side to move. number of squares ** 2
         ready = true;
     }
 
@@ -57,14 +54,6 @@ public final class MoveOrdererBetter {
 
         int i1 = score << moveScoreOffset;
 
-        if (i1 < 0) {
-            System.out.println(isCaptureMove(move));
-            MoveParser.printMove(move);
-            System.out.println(move + "    "+ score);
-            Art.printLong(move);
-            Art.printLong(i1);
-        }
-
         Assert.assertTrue(i1 > 0);
         int i = move | i1;
 
@@ -77,12 +66,21 @@ public final class MoveOrdererBetter {
             initMoveOrderer();
         }
 
+        long entry = retrieveFromTable(board.zobristHash);
+        int hashMove = 0;
+        if (entry != 0) {
+            hashMove = TranspositionTable.getMove(entry);
+        }
+
         for (int i = 0; i < numberOfMoves; i++) {
             if (moves[i] == 0){
                 break;
             }
 
-            if (isPromotionToQueen(moves[i])) {
+            if (moves[i] == hashMove) {
+                moves[i] = buildMoveScore(moves[i], hashScore);
+            }
+            else if (isPromotionToQueen(moves[i])) {
                 if (isCaptureMove(moves[i])) {
                     moves[i] = buildMoveScore(moves[i], queenCapturePromotionScore);
                 }
@@ -363,16 +361,6 @@ public final class MoveOrdererBetter {
         boolean checkingMove = board.inCheck(board.isWhiteTurn());
         board.unMakeMoveAndFlipTurn();
         return checkingMove;
-    }
-
-    public static void updateHistoryMoves(int whichThread, int move, int ply, int turnOfMover){
-        historyMoves[whichThread + turnOfMover][getSourceIndex(move)][getDestinationIndex(move)] += (ply * ply);
-    }
-
-    public static int historyMoveScore(int move, int whichThread, int turn){
-        int maxMoveScoreOfHistory = maxNodeQuietScore;
-        int historyScore = historyMoves[whichThread + turn][getSourceIndex(move)][getDestinationIndex(move)];
-        return historyScore > maxMoveScoreOfHistory ? maxMoveScoreOfHistory : historyScore;
     }
 
     public static void updateKillerMoves(int whichThread, int move, int ply){

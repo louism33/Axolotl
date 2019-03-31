@@ -3,7 +3,7 @@ package com.github.louism33.axolotl.timemanagement;
 import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 
-public class TimeAllocator {
+public final class TimeAllocator {
 
     public static long lastPrint;
 

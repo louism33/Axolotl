@@ -281,7 +281,7 @@
         <dependency>
             <groupId>com.github.louism33</groupId>
             <artifactId>chesscore</artifactId>
-            <version>1.30-SNAPSHOT</version>
+            <version>1.36-SNAPSHOT</version>
         </dependency>
 
         <dependency>
