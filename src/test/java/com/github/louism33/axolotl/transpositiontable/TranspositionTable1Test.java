@@ -1,10 +1,14 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
+import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.MoveConstants;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +20,18 @@ import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHEC
 
 public class TranspositionTable1Test {
 
+    @BeforeAll
+    static void setup() {
+        EngineBetter.resetFull();
+        EngineBetter.uciEntry = null;
+    }
+
+    @AfterAll
+    static void reset() {
+        EngineBetter.resetFull();
+        EngineBetter.uciEntry = null;
+    }
+    
     @Test
     public void buildTableEntrySingleTest() {
         int total = 1_000_000;
@@ -89,6 +105,7 @@ public class TranspositionTable1Test {
         int total = EngineSpecifications.TABLE_SIZE;
 
         TranspositionTable.initTable(total);
+        total /= 2; // because two arrays in the TT
 
         List<Long> allEntries = new ArrayList<>();
         List<Integer> moves = new ArrayList<>();
@@ -147,7 +164,7 @@ public class TranspositionTable1Test {
         int total = bucketSize;
 
         TranspositionTable.initTable(total);
-
+        total /= 2; // because two arrays in the TT
         List<Long> allEntries = new ArrayList<>();
         List<Integer> moves = new ArrayList<>();
         List<Integer> scores = new ArrayList<>();
@@ -199,7 +216,7 @@ public class TranspositionTable1Test {
         int total = EngineSpecifications.TABLE_SIZE;
 
         TranspositionTable.initTable(total);
-
+        total /= 2; // because two arrays in the TT
         List<Long> allEntries = new ArrayList<>();
         List<Integer> moves = new ArrayList<>();
         List<Integer> scores = new ArrayList<>();

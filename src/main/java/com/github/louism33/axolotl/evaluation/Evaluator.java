@@ -58,6 +58,8 @@ public final class Evaluator {
         init(board, WHITE);
         init(board, BLACK);
 
+        // todo colour has insuf mat to mate
+        
         percentOfEndgame = getPercentageOfEndgameness(board);
         percentOfStartgame = 100 - percentOfEndgame;
 
@@ -261,7 +263,7 @@ public final class Evaluator {
                 
                 mobilityScore += mobilityScores[KNIGHT - 2][populationCount(table)];
 
-                knightsScore += numberOfPawns * KNIGHT_PAWN_NUMBER_BONUS;
+                knightsScore += (numberOfPawns * KNIGHT_PAWN_NUMBER_BONUS) / 2;
 
                 if ((knight & squaresMyPawnsThreaten) != 0) {
                     knightsScore += KNIGHT_PROTECTED_PAWN;
@@ -339,10 +341,10 @@ public final class Evaluator {
 
                 if ((bishop & WHITE_COLOURED_SQUARES) != 0) {
                     bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(wps) *
-                            (1 + populationCount(wpscc) + populationCount(wpsc) / 2));
+                            (1 + populationCount(wpscc) / 2 + populationCount(wpsc) / 3));
                 } else {
                     bishopsScore -= (BISHOP_COLOUR_PAWNS * populationCount(bps) *
-                            (1 + populationCount(bpscc) + populationCount(bpsc) / 2));
+                            (1 + populationCount(bpscc) / 2 + populationCount(bpsc) / 3));
                 }
 
                 attackingMyKingLookupCounter -= populationCount(table & myKingSafetyArea);

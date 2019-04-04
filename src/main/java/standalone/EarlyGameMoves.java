@@ -186,6 +186,7 @@ public class EarlyGameMoves {
         List<String> bestMoves = Arrays.asList("b5a4");
 
         int move = EngineBetter.searchFixedDepth(board, depth);
+//        int move = EngineBetter.searchMyTime(board, 60000L, 0, 0, 0);
 
         String m = MoveParser.toString(move);
 

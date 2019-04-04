@@ -15,13 +15,14 @@ public final class TranspositionTable {
     public static long[] keys = new long[EngineSpecifications.TABLE_SIZE];
     public static long[] entries = new long[EngineSpecifications.TABLE_SIZE];
     public static boolean tableReady = false;
-    public static int moduloAmount = EngineSpecifications.TABLE_SIZE;
+    public static int moduloAmount = EngineSpecifications.TABLE_SIZE; // todo replace with shift
     static final int bucketSize = 4;
 
     public static void initTable(int maxEntries) {
         EngineSpecifications.TABLE_SIZE = maxEntries;
-        moduloAmount = maxEntries;
 
+        int actualTableSize = maxEntries / 2;
+        moduloAmount = actualTableSize;
         newEntries = 0;
         agedOut = 0;
         hit = 0;
@@ -29,12 +30,12 @@ public final class TranspositionTable {
         hitReplace = 0;
         override = 0;
 
-        if (keys != null && keys.length == maxEntries) {
+        if (keys != null && keys.length == actualTableSize) {
             Arrays.fill(keys, 0);
             Arrays.fill(entries, 0);
         } else {
-            keys = new long[maxEntries];
-            entries = new long[maxEntries];
+            keys = new long[actualTableSize];
+            entries = new long[actualTableSize];
         }
 
         tableReady = true;

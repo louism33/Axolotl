@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.moveordering;
 
+import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.MoveOrdererBetter;
 import com.github.louism33.axolotl.search.MoveOrderingConstants;
 import com.github.louism33.chesscore.Chessboard;
@@ -7,6 +8,8 @@ import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.MoveParserFromAN;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.search.MoveOrdererBetter.*;
@@ -16,6 +19,18 @@ import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHEC
 
 public class MoveOrdererTest {
 
+    @BeforeAll
+    static void setup() {
+        EngineBetter.resetFull();
+        EngineBetter.uciEntry = null;
+    }
+
+    @AfterAll
+    static void reset() {
+        EngineBetter.resetFull();
+        EngineBetter.uciEntry = null;
+    }
+    
     @Test
     public void moveOrdererRootTest() {
         Chessboard board = new Chessboard();

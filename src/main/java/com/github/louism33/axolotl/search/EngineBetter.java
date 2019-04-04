@@ -4,6 +4,7 @@ import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.main.UCIPrinter;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
+import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
@@ -14,10 +15,10 @@ import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.MoveOrdererBetter.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
-import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocateTime;
-import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
+import static com.github.louism33.axolotl.timemanagement.TimeAllocator.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
+import static com.github.louism33.chesscore.BoardConstants.ALL_COLOUR_PIECES;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_SCORE_MASK;
 
@@ -33,11 +34,13 @@ public final class EngineBetter {
 
     static long[] numberOfQMovesMade = new long[1];
     static boolean manageTime = true;
+    static boolean weHavePanicked = false;
 
     private static long startTime = 0;
     private static boolean isReady = false;
 
     private static long timeLimitMillis;
+    private static long absoluteMaxTimeLimit;
 
     public static boolean quitOnSingleMove = true;
     public static boolean computeMoves = true;
@@ -62,11 +65,7 @@ public final class EngineBetter {
         if (computeMoves) {
             rootMoves = null;
         }
-
-
-//        initTable(TABLE_SIZE);
-
-
+        weHavePanicked = false;
         MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
         isReady = true;
         nps = 0;
@@ -102,22 +101,16 @@ public final class EngineBetter {
         EngineSpecifications.ALLOW_TIME_LIMIT = true;
         manageTime = true;
 
-        if (maxMyTime < 1000) {
-            return searchFixedDepth(board, 1);
-        }
-        if (maxMyTime < 5000) {
-            return searchFixedDepth(board, 2);
-        }
-        long timeLimit = allocateTime(maxMyTime, maxEnemyTime, increment, movesToGo);
+        long timeLimit = allocateTime(maxMyTime, maxEnemyTime, increment, movesToGo, board.fullMoveCounter);
 
-        return searchFixedTime(board, timeLimit, MAX_DEPTH);
+        return searchFixedTime(board, timeLimit, maxMyTime, MAX_DEPTH);
     }
 
     public static final int searchFixedDepth(Chessboard board, int depth) {
         EngineSpecifications.ALLOW_TIME_LIMIT = false;
         manageTime = false;
         MAX_DEPTH = depth;
-        return searchFixedTime(board, 0, depth);
+        return searchFixedTime(board, 0, 0, depth);
     }
 
     static boolean stopSearch(long startTime, long timeLimiMillis) {
@@ -127,17 +120,18 @@ public final class EngineBetter {
     public static final int searchFixedTime(final Chessboard board, final long maxTime) {
         EngineSpecifications.ALLOW_TIME_LIMIT = true;
         manageTime = false;
-        return searchFixedTime(board, maxTime, MAX_DEPTH);
+        return searchFixedTime(board, maxTime, maxTime, MAX_DEPTH);
     }
 
 
-    private static final int searchFixedTime(final Chessboard board, final long maxTime, final int depth) {
-//        reset();
+    private static final int searchFixedTime(final Chessboard board, final long maxTime,
+                                             final long absoluteMaxTime, final int depth) {
         resetBetweenMoves();
 
         startTime = System.currentTimeMillis() - 100;
 
         timeLimitMillis = maxTime;
+        absoluteMaxTimeLimit = absoluteMaxTime;
 
         //UCI can provide root moves if doing searchmoves
         if (rootMoves == null && computeMoves) {
@@ -207,11 +201,20 @@ public final class EngineBetter {
             depth++;
 
             int previousAi = rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
+            int previousAiScore = 0;
 
             while (true) {
 
                 score = principleVariationSearch(board, depth, 0,
                         alpha, beta, 0);
+
+                if ((manageTime && !weHavePanicked)
+                        && (depth >= 6 && aiMoveScore < previousAiScore - PANIC_SCORE_DELTA)) {
+                    timeLimitMillis = allocatePanicTime(timeLimitMillis, absoluteMaxTimeLimit);
+                    weHavePanicked = true;
+                }
+
+                previousAiScore = aiMoveScore;
 
                 if (stopNow || stopSearch(startTime, timeLimitMillis)) {
                     break everything;
@@ -266,10 +269,10 @@ public final class EngineBetter {
 
         int[] moves = ply == 0 ? rootMoves : board.generateLegalMoves();
 
-        boolean boardInCheck = board.inCheckRecorder;
+        boolean inCheck = board.inCheckRecorder;
 
         if (ply + depth < MAX_DEPTH_HARD - 2) {
-            depth += extensions(board, ply, boardInCheck, moves);
+            depth += extensions(board, ply, inCheck, moves);
         }
 
         Assert.assertTrue(depth >= 0);
@@ -278,7 +281,8 @@ public final class EngineBetter {
             if (ply >= MAX_DEPTH_HARD) {
                 return Evaluator.eval(board, moves);
             }
-            Assert.assertTrue(!board.inCheck(board.isWhiteTurn()));
+//            Assert.assertTrue(!board.inCheck(board.isWhiteTurn()));
+//            Assert.assertTrue(!inCheck);
             return QuiescenceBetter.quiescenceSearchBetter(board, alpha, beta);
         }
 
@@ -334,7 +338,7 @@ public final class EngineBetter {
 
         int staticBoardEval = SHORT_MINIMUM;
 
-        if (!thisIsAPrincipleVariationNode && !boardInCheck) {
+        if (!thisIsAPrincipleVariationNode && !inCheck) {
 
             staticBoardEval = Evaluator.eval(board, moves);
 
@@ -474,18 +478,20 @@ public final class EngineBetter {
             numberOfMovesMade[0]++;
             numberOfMovesSearched++;
 
-            if (board.isDrawByInsufficientMaterial() 
-                    || (!captureMove && !promotionMove && 
+            if (board.isDrawByInsufficientMaterial()
+                    || (!captureMove && !promotionMove &&
                     (board.isDrawByRepetition(1) || board.isDrawByFiftyMoveRule()))) {
                 score = IN_STALEMATE_SCORE;
-            } else {
+            }
+
+            else {
                 score = alpha + 1;
 
                 int R = 2;
 
                 if (numberOfMovesSearched > 3
                         && depth > R && !captureMove && !queenPromotionMove
-                        && !pawnToSeven && !boardInCheck && !givesCheckMove) {
+                        && !pawnToSeven && !inCheck && !givesCheckMove) {
 
                     score = -principleVariationSearch(board,
                             depth - R - 1, ply + 1,

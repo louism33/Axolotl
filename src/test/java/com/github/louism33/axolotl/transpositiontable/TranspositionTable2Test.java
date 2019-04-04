@@ -3,9 +3,12 @@ package com.github.louism33.axolotl.transpositiontable;
 import com.fluxchess.jcpi.models.GenericMove;
 import com.github.louism33.axolotl.main.PVLine;
 import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,6 +20,18 @@ import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHEC
 
 public class TranspositionTable2Test {
 
+    @BeforeAll
+    static void setup() {
+        EngineBetter.resetFull();
+        EngineBetter.uciEntry = null;
+    }
+
+    @AfterAll
+    static void reset() {
+        EngineBetter.resetFull();
+        EngineBetter.uciEntry = null;
+    }
+    
     @Test
     public void persistenceTest() {
 

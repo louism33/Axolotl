@@ -17,6 +17,18 @@ public class EvaluatorTest {
     public void start() throws IllegalNotationException {
         Chessboard board = new Chessboard();
         printNStuff(board);
+    } 
+    
+    @Test
+    public void startMirrorKing() throws IllegalNotationException {
+        Chessboard board = new Chessboard();
+        printNStuff(board);
+
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e2e4"));
+        printNStuff(board);
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e7e5"));
+//        printNStuff(board);
+        
     }    
     
     @Test

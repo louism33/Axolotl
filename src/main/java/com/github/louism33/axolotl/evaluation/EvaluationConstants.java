@@ -22,10 +22,10 @@ public final class EvaluationConstants {
     static final int[] PINNED_PIECES = {0, -10, -25, -25, -50, -90, 0};
     static final int MOVE_NUMBER_POINT                    = 1; // /10
     static final int I_CONTROL_OPEN_FILE                  = 25;
-    static final int MY_TURN_BONUS                        = 25;
+    static final int MY_TURN_BONUS                        = 8;
     static final int CENTRE_PIECE                         = 10;
     static final int IN_CHECK_PENALTY                     = -15;
-    static final int SPACE                                = 2;
+    static final int SPACE                                = 4;
 
     // pawn valuation
     static final int PAWN_UNBLOCKED                       = 12;
@@ -72,10 +72,10 @@ public final class EvaluationConstants {
     static final int KNIGHT_FORK                          = 35;
     
     // bishop valuation
-    static final int BISHOP_COLOUR_PAWNS                  = 1;
+    static final int BISHOP_COLOUR_PAWNS                  = 2;
     static final int BISHOP_PROTECTED_PAWN                = 6;
     static final int BISHOP_ATTACK_KING_UNITS             = 2;
-    static final int BISHOP_DOUBLE                        = 25;
+    static final int BISHOP_DOUBLE                        = 20;
     static final int BISHOP_PRIME_DIAGONAL                = 10;
     static final int BISHOP_ON_OUTPOST_BONUS              = 12;
     static final int BISHOP_REACH_OUTPOST_BONUS           = 6;
