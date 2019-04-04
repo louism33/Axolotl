@@ -1,6 +1,9 @@
 package com.github.louism33.axolotl.transpositiontable;
 
-public class TranspositionTableConstants {
+import com.github.louism33.chesscore.BitOperations;
+
+@SuppressWarnings("ALL")
+public final class TranspositionTableConstants {
 
     // 7 free bits
     /*
@@ -12,6 +15,21 @@ public class TranspositionTableConstants {
     11111111
     11111111
     11111111
+    
+        aaaf
+    fddddddd
+    ssssssss
+    ssssssss
+    mmmmmmmm
+    mmmmmmmm
+    mmmmmmmm
+    mmmmmmmm
+    
+    a: age
+    f: flag
+    d: depth
+    m: move
+    s: score
      */
 
     public static final int LOWERBOUND = 0;
@@ -32,5 +50,10 @@ public class TranspositionTableConstants {
 
     public static final long FLAG_MASK = 0x180000000000000L;
     public static final int flagOffset = 55;
+
+    public static final long AGE_MASK = 0xe00000000000000L;
+    public static final int ageOffset = 57;
+    public static final int ageModulo = 1 << BitOperations.populationCount(AGE_MASK);
+    public static final int acceptableAges = 3;
 
 }

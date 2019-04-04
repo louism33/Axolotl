@@ -3,25 +3,54 @@ package com.github.louism33.axolotl.timemanagement;
 import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 
-public class TimeAllocator {
+public final class TimeAllocator {
 
-    public static long lastPrint;
-
-    public static long allocateTime(long maxTime, long increment){
-        if (maxTime < 10000){
-            return 1000;
+    public static long allocateTime(long maxTime, long enemyTime, long increment, Integer movesToGo, int fullMovesCounter){
+        if (maxTime < 1000) {
+            return 100;
         }
-        return (maxTime / 25) + (increment / 3);
+        
+        if (maxTime < 5000){
+            return 1000 + (increment / 3);
+        }
+
+        long time;
+
+        if (fullMovesCounter <= 40) {
+            time = maxTime / 22 + increment / 2;
+        } else {
+            time = maxTime / 25 + increment / 2;
+        }
+
+        if (maxTime > enemyTime + enemyTime / 5) {
+            final long dominanceBonus = (maxTime - enemyTime) / 7;
+            time = Math.min(time * 2, time + dominanceBonus);
+        }
+
+        if (movesToGo != null && movesToGo != 0 && movesToGo < 10) {
+            time += maxTime / (14 * movesToGo);
+        }
+
+        long absoluteMaximumTime = maxTime >>> 3;
+        if (time > absoluteMaximumTime) {
+            time = absoluteMaximumTime;
+        }
+
+        return time;
+    }
+
+    public static long allocatePanicTime(long timeLimitMillis, long absoluteMaxTimeLimit) {
+        if (timeLimitMillis > (absoluteMaxTimeLimit >>> 3)) {
+            return timeLimitMillis << 1;
+        }
+        return timeLimitMillis;
     }
 
     public static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){
-//        return false;
-        return timeLeftMillis < (timeLimitMillis) / 3;
+        return timeLeftMillis < (timeLimitMillis) / 2;
     }
 
-    public static boolean outOfTime(long startTime, long timeLimitMillis, boolean allowTimeLimit){
-
-        lastPrint = Math.max(lastPrint, startTime);
+    public static boolean outOfTime(long startTime, long timeLimitMillis, boolean manageTime){
 
         boolean outOfTime = false;
         if (!EngineSpecifications.ALLOW_TIME_LIMIT){
@@ -32,11 +61,10 @@ public class TimeAllocator {
         long stopTime = startTime + timeLimitMillis;
         long timeLeftMillis = stopTime - currentTime;
 
-
         if (timeLeftMillis < 0) {
             outOfTime = true;
         }
-        if (allowTimeLimit && weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
+        if (manageTime && weShouldStopSearching(timeLimitMillis, timeLeftMillis)) {
             // not enough time to search another ply
             outOfTime = true;
         }

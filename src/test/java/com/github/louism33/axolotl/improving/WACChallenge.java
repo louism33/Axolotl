@@ -1,12 +1,14 @@
 package com.github.louism33.axolotl.improving;
 
 import com.github.louism33.axolotl.search.EngineBetter;
-import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -28,6 +30,7 @@ public class WACChallenge {
 
     @BeforeClass
     public static void setup(){
+        Util.reset();
         final String str = "Testing " + splitUpPositions.length + " WAC positions. " +
                 "Time per position: " + timeLimit + " milliseconds."
                 +"\nIf more than " + targetSuccesses + " are correct, success.";

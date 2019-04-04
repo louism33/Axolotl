@@ -15,6 +15,38 @@ import static com.github.louism33.axolotl.main.UCIBoardParser.convertMyMoveToGen
 
 public final class UCIPrinter {
 
+    public static void sendInfoCommandScoreOnly(int aiMove, int nodeScore, int depth, long time, long nodes){
+        ProtocolInformationCommand protocolInformationCommand = new ProtocolInformationCommand();
+
+        if (depth != 0) {
+            protocolInformationCommand.setDepth(depth);
+        }
+
+        protocolInformationCommand.setCurrentMove(convertMyMoveToGenericMove(aiMove));
+
+        protocolInformationCommand.setNodes(EngineBetter.numberOfMovesMade[0]);
+
+        protocolInformationCommand.setNodes(nodes);
+
+        EngineBetter.calculateNPS();
+        long nps = EngineBetter.nps;
+        protocolInformationCommand.setNps(nps);
+
+        protocolInformationCommand.setTime(time);
+
+        boolean mateFound = mateFound(nodeScore);
+        if (mateFound){
+            protocolInformationCommand.setMate(distanceToMate(nodeScore));
+        }
+        else {
+            protocolInformationCommand.setCentipawns(nodeScore);
+        }
+
+        if (EngineBetter.uciEntry != null){
+            EngineBetter.uciEntry.sendInformation(protocolInformationCommand);
+        }
+    }
+    
     public static void sendInfoCommand(Chessboard board, int aiMove, int nodeScore, int depth, long time, long nodes){
         ProtocolInformationCommand protocolInformationCommand = new ProtocolInformationCommand();
 
@@ -47,11 +79,11 @@ public final class UCIPrinter {
             protocolInformationCommand.setCentipawns(nodeScore);
         }
 
-        if (EngineBetter.getUciEntry() == null){
+        if (EngineBetter.uciEntry == null){
             System.out.println(buildString
                     (aiMove, nodeScore, depth, mateFound, 2*distanceToMate(nodeScore), pvMoves, nps, time, nodes));
         } else {
-            EngineBetter.getUciEntry().sendInformation(protocolInformationCommand);
+            EngineBetter.uciEntry.sendInformation(protocolInformationCommand);
         }
     }
     

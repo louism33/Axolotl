@@ -20,7 +20,9 @@ final class QuiescenceBetter {
         
         int standPatScore = EvaluationConstants.SHORT_MINIMUM;
 
-        if (!board.inCheck(board.isWhiteTurn())){
+        boolean inCheck = board.inCheckRecorder;
+        
+        if (!inCheck){
             standPatScore = Evaluator.eval(board, moves);
 
             if (standPatScore >= beta){
@@ -32,18 +34,16 @@ final class QuiescenceBetter {
             }
         }
 
-        boolean inCheck = board.inCheck(board.isWhiteTurn());
-
         Assert.assertFalse(standPatScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
 
         if (!inCheck) {
             scoreMovesQuiescence(moves, board);
-            int realMoves = MoveParser.numberOfRealMoves(moves);
+            final int realMoves = MoveParser.numberOfRealMoves(moves);
             Ints.sortDescending(moves, 0, realMoves);
         }
         else {
             scoreMoves(moves, board, 0, 0);
-            int realMoves = MoveParser.numberOfRealMoves(moves);
+            final int realMoves = MoveParser.numberOfRealMoves(moves);
             Ints.sortDescending(moves, 0, realMoves);
         }
 
@@ -54,7 +54,7 @@ final class QuiescenceBetter {
                 break;
             }
 
-            int loudMoveScore = getMoveScore(move);
+            final int loudMoveScore = getMoveScore(move);
 
             final boolean captureMove = MoveParser.isCaptureMove(move);
             final boolean promotionMove = MoveParser.isPromotionMove(move);
@@ -67,7 +67,7 @@ final class QuiescenceBetter {
                 break;
             }
 
-            int loudMove = move & MOVE_MASK_WITH_CHECK;
+            final int loudMove = move & MOVE_MASK_WITH_CHECK;
             if (!inCheck) {
                 if (i == 0) {
                     Assert.assertTrue(moves[i] >= moves[i + 1]);

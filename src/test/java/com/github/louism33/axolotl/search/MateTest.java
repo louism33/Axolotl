@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.search;
 
+import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
@@ -24,6 +25,8 @@ public class MateTest {
     
     @BeforeClass
     public static void setup(){
+        Util.reset();
+        
         final String str = "Testing " + checkmatePositions.length + " Mate positions. " +
                 "Time per position: " + timeLimit + " milliseconds."
                 +"\nIf more than " + targetSuccesses + " are correct, success.";

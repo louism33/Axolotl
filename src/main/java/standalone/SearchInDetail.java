@@ -2,6 +2,7 @@ package standalone;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.MoveParserFromAN;
@@ -18,7 +19,7 @@ public class SearchInDetail {
     public void master(){
         Chessboard board = new Chessboard();
         
-        int totalMoves = 6;
+        int totalMoves = 5;
         int[] recorder = new int[totalMoves + 1];
         int[] scoreRecorder = new int[totalMoves];
         recorder[recorder.length - 1] = totalMoves;
@@ -112,11 +113,13 @@ public class SearchInDetail {
     public void testMoveFourKPkpKN(){
         Chessboard board = new Chessboard();
 
+        EngineSpecifications.DEBUG = true;
+        
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e2e4"));
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e7e5"));
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "g1f3"));
 
-        getMoveHierarchy(board, 14, 10000, 3, true);
+        getMoveHierarchy(board, 16, 10000, 3, true);
     }
 
     @Test
@@ -134,12 +137,30 @@ public class SearchInDetail {
     @Test
     public void testMoveSixKPkpKNqn(){
         Chessboard board = new Chessboard();
+        
+        EngineSpecifications.DEBUG = true;
 
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e2e4"));
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e7e5"));
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "g1f3"));
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "b8c6"));
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "f1b5"));
+
+        getMoveHierarchy(board, 14, 10000, 3, true);
+    }    
+    
+    @Test
+    public void testTradeBishopKnight(){
+        Chessboard board = new Chessboard();
+
+        EngineSpecifications.DEBUG = true;
+        
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e2e4"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e7e5"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "g1f3"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "b8c6"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "f1b5"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "a7a6"));
 
         getMoveHierarchy(board, 14, 10000, 3, true);
     }
@@ -182,6 +203,8 @@ public class SearchInDetail {
     public void getMoveHierarchyHelper(Chessboard board, int[] moves,
                                        int depth, long time, int iter, int doUntil, boolean print, int[] bestMoves, int[] bestMoveScores) {
 
+        EngineBetter.resetFull();
+        
         System.out.println();
         System.out.println();
 

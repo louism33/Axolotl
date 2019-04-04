@@ -107,7 +107,7 @@ public class EarlyGameMoves {
         EngineSpecifications.DEBUG = false;
         System.out.println("In this position: ");
         System.out.println(board);
-        List<String> bestMoves = Arrays.asList("b8c6");
+        List<String> bestMoves = Arrays.asList("b8c6", "g8f6");
 
         int move = EngineBetter.searchFixedDepth(board, depth);
 
@@ -122,7 +122,7 @@ public class EarlyGameMoves {
 
 
     @org.junit.Test
-    public void testMoveFiveKPkpKNQN(){
+    public void testMoveFiveKPkpKNkn(){
         Chessboard board = new Chessboard();
 
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e2e4"));
@@ -135,7 +135,58 @@ public class EarlyGameMoves {
         System.out.println(board);
         List<String> bestMoves = Arrays.asList("f1b5", "f1c4", "d2d4");
 
+        int move = EngineBetter.searchFixedDepth(board, depth+3);
+
+        String m = MoveParser.toString(move);
+
+        System.out.println("best moves: " + bestMoves);
+        System.out.println("my move: " + MoveParser.toString(move));
+
+        Assert.assertTrue(bestMoves.contains(m));
+    }
+
+    @org.junit.Test
+    public void testMoveFiveKPkpKNqn(){
+        Chessboard board = new Chessboard();
+
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e2e4"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e7e5"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "g1f3"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "b8c6"));
+
+        EngineSpecifications.DEBUG = false;
+        System.out.println("In this position: ");
+        System.out.println(board);
+        List<String> bestMoves = Arrays.asList("f1b5", "f1c4", "b1c3");
+
         int move = EngineBetter.searchFixedDepth(board, depth);
+
+        String m = MoveParser.toString(move);
+
+        System.out.println("best moves: " + bestMoves);
+        System.out.println("my move: " + MoveParser.toString(move));
+
+        Assert.assertTrue(bestMoves.contains(m));
+    }
+
+    @org.junit.Test
+    public void testMoveDontTradeBforN(){
+        Chessboard board = new Chessboard();
+
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e2e4"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e7e5"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "g1f3"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "b8c6"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "f1b5"));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "a7a6"));
+
+        EngineSpecifications.DEBUG = true;
+        System.out.println("In this position: ");
+        System.out.println(board);
+        List<String> bestMoves = Arrays.asList("b5a4");
+
+        int move = EngineBetter.searchFixedDepth(board, depth);
+//        int move = EngineBetter.searchMyTime(board, 60000L, 0, 0, 0);
 
         String m = MoveParser.toString(move);
 

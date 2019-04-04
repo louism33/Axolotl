@@ -3,7 +3,7 @@ package com.github.louism33.axolotl.evaluation;
 import static com.github.louism33.chesscore.BoardConstants.*;
 
 @SuppressWarnings("ALL")
-class EvaluatorPositionConstant {
+final class EvaluatorPositionConstant {
 
     /*
     thanks to Tomasz Michniewski
@@ -36,7 +36,7 @@ class EvaluatorPositionConstant {
             -10,  0,  0,  0,  0,  0,  0,-10,
             -10,  0,  5, 10, 10,  5,  0,-10,
             -10,  5,  5, 10, 10,  5,  5,-10,
-            -10,  0, 10, 10, 10, 10,  0,-10,
+              0,  0, 10, 10, 10, 10,  0,  0,
             -10, 10, 10, 10, 10, 10, 10,-10,
             -10,  5,  0,  0,  0,  0,  5,-10,
             -20,-10,-20,-10,-10,-25,-10,-20,
@@ -73,7 +73,7 @@ class EvaluatorPositionConstant {
             -50,-60,-60,-80,-80,-60,-60,-50,
             -25,-50,-50,-50,-50,-50,-50,-25,
             20, 20, -35,-35,-35,-35, 20, 20,
-            40, 60, 25,-25, -25, 25, 60, 40
+            40, 60, 25,-35, -25, 25, 60, 40
     };
 
     static final int[] KING_POSITION_SCORES_END_WHITE =   {
@@ -133,27 +133,26 @@ class EvaluatorPositionConstant {
     
     static{
         mobilityScores[0] = new int[] { //Knight
-                -50, -40, -20, -10, -2, 4, 8, 10, 12 
+                -25, -15, 0, 0, 2, 4, 6, 7, 8 
         };
 
         mobilityScores[1] = new int[] { //Bishop
-                -30, -20, -5, -2,  0, 10, 15,
-                 20,  25, 30, 35, 40, 45, 50
+                -20, -18, -16, -8,  -2, 4, 6,
+                 8,  12, 13, 14, 15, 16, 17
         };
 
         mobilityScores[2] = new int[] { //Rook
-                -30, -25, -20, -5, 0, 5, 8, 
-                10, 25, 30, 35, 40, 45, 50,
-                50
+                -20, -10, -9, -8, -2, 2, 4, 
+                8, 12, 14, 16, 17, 18, 19,
+                20
         };
 
         mobilityScores[3] = new int[] { //Queen
-                -30, -25, -15, -5, 0, 1, 2,
-                4,  8,  12, 15, 16, 17, 18,
-                19,  20,  21, 22, 23, 24, 25,
-                26,  27,  28, 29, 30, 31, 32,
+                -20, -10, -8, -4, 0, 4, 6,
+                7,  8,  9, 10, 11, 12, 13,
+                14,  15,  16, 17, 18, 19, 20,
+                21,  22,  23, 24, 25, 26, 27,
         };
     }
 
-    
 }

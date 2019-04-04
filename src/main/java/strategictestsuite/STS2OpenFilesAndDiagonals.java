@@ -2,6 +2,7 @@ package strategictestsuite;
 
 import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -48,13 +49,15 @@ public class STS2OpenFilesAndDiagonals {
 
     @Test
     public void test() {
-        System.out.println(EPDObject.getBoardFen());
+        System.out.println(EPDObject.getFullString());
         System.out.println(EPDObject.getBoard());
-        int[] winningMoves = EPDObject.getBestMoves();
+        int[] winningMoves = EPDObject.getBestMovesFromComments();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.DEBUG = false;
         int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
+        System.out.println("my move: " + MoveParser.toString(move));
+        
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }
 

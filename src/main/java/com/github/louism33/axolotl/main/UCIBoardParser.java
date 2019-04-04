@@ -32,16 +32,24 @@ public final class UCIBoardParser {
         return genericMove;
     }
 
-    static Chessboard convertGenericBoardToChessboard(GenericBoard genericBoard, List<GenericMove> moves){
-        if (genericBoard == null || moves == null){
-            return null;
+    static int convertGenericBoardToChessboard(Chessboard board, GenericBoard genericBoard,
+                                                      List<GenericMove> moves, int lastMoveMade){
+        
+        if (genericBoard == null || moves == null || moves.size() == 0){
+            return 0;
         }
-        Chessboard board = new Chessboard(genericBoard.toString());
-        for (int i = 0; i < moves.size(); i++) {
+        
+        if (!genericBoard.toString().equals("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")) {
+            board = new Chessboard(genericBoard.toString());
+            lastMoveMade = 0;
+        }
+
+        for (int i = lastMoveMade; i < moves.size(); i++) {
             GenericMove genericMove = moves.get(i);
             board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMove.toString()));
         }
-        return board;
+
+        return moves.size();
     }
 
     public static int[] convertGenericMovesToMyMoves(Chessboard board, List<GenericMove> genMoves) {
