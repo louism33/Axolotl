@@ -7,7 +7,7 @@ As external libraries, in addition to my chesscore, JCPI is used for the UCI pro
 
 There is support for Blitz tournaments, fixed time per move, and "infinite" depth. Other, less common modes will be implemented in later versions.
 
-You will need the latest JRE, JRE 11 to run axolotl.
+You will need the latest JRE 11 to run axolotl.
     
 You are free to use Axolotl however you see fit. If you have any questions, simply open an issue and I will try to get back to you.
 
@@ -20,7 +20,7 @@ Louis
 
 <repository>
     <id>com.github.louism33</id>
-    <url>https://oss.sonatype.org/content/repositories/releases/com/github/louism33/axolotl/1.2/</url>
+    <url>https://oss.sonatype.org/content/repositories/snapshots/com/github/louism33/axolotl/</url>
 </repository>
 ```
 ```
@@ -28,6 +28,6 @@ Louis
 <dependency>
   <groupId>com.github.louism33</groupId>
   <artifactId>axolotl</artifactId>
-  <version>1.2</version>
+  <version>1.5</version>
 </dependency>
 ```
