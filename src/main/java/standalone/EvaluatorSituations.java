@@ -11,7 +11,7 @@ import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.chesscore.BoardConstants.WHITE;
 
 @SuppressWarnings("All")
-public class EvaluatorTest {
+public class EvaluatorSituations {
 
     @Test
     public void start() throws IllegalNotationException {
