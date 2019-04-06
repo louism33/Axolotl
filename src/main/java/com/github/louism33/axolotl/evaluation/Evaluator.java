@@ -10,6 +10,8 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.POSITION_SCORES;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.mobilityScores;
 import static com.github.louism33.axolotl.evaluation.Init.*;
+import static com.github.louism33.axolotl.evaluation.PassedPawns.evalPassedPawnsByTurn;
+import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.*;
 import static com.github.louism33.chesscore.BitOperations.fileForward;
 import static com.github.louism33.chesscore.BitOperations.*;
 import static com.github.louism33.chesscore.BoardConstants.*;
@@ -39,6 +41,16 @@ public final class Evaluator {
         System.out.println(epo);
     }
 
+    public static EvalPrintObject stringEval(Chessboard board, int turn){
+        return stringEval(board, turn, board.generateLegalMoves());
+    }
+    public static EvalPrintObject stringEval(Chessboard board, int turn, int[] moves){
+        eval(board, moves);
+        EvalPrintObject epo = new EvalPrintObject(scoresForEPO);
+        epo.turn = board.turn;
+        return epo;
+    }
+
     public static int percentOfEndgame;
     public static int percentOfStartgame;
 
@@ -48,7 +60,7 @@ public final class Evaluator {
      pinned pieces, and to queen
      */
     static final long[] turnThreatensSquares = new long[2];
-    
+
     public static int eval(final Chessboard board, final int[] moves) {
         Assert.assertTrue(moves != null);
 
@@ -58,8 +70,22 @@ public final class Evaluator {
         init(board, WHITE);
         init(board, BLACK);
 
+        long[] pawnData = PawnTranspositionTable.retrieveFromTable(board.zobristPawnHash);
+
+        if (pawnData == null) {
+            pawnData = PawnEval.calculatePawnData(board);
+            PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, pawnData, PawnEval.pawnScores);
+        }
+        int score = 0;
+
+        score += PawnEval.pawnScores[turn];
+        score -= PawnEval.pawnScores[1 - turn];
+
+        scoresForEPO[turn][EvalPrintObject.pawnScore] += PawnEval.pawnScores[turn];
+        scoresForEPO[1 - turn][EvalPrintObject.pawnScore] += PawnEval.pawnScores[1 - turn];
+
         // todo colour has insuf mat to mate
-        
+
         percentOfEndgame = getPercentageOfEndgameness(board);
         percentOfStartgame = 100 - percentOfEndgame;
 
@@ -67,10 +93,11 @@ public final class Evaluator {
 
         final int turn = board.turn;
 
-        int score = evalTurn(board, turn) - evalTurn(board, 1 - turn);
+        score += evalTurn(board, turn, pawnData);
+        score -= evalTurn(board, 1 - turn, pawnData);
 
-        int myPassedPawnScore = PassedPawns.evalPassedPawnsByTurn(board, turn);
-        int enemyPassedPawnScore = PassedPawns.evalPassedPawnsByTurn(board, 1 - turn);
+        int myPassedPawnScore = evalPassedPawnsByTurn(board, turn, pawnData); // todo bring together?
+        int enemyPassedPawnScore = evalPassedPawnsByTurn(board, 1 - turn, pawnData);
 
         scoresForEPO[turn][passedPawnsScore] = myPassedPawnScore;
         scoresForEPO[1 - turn][passedPawnsScore] = enemyPassedPawnScore;
@@ -78,9 +105,6 @@ public final class Evaluator {
         score += myPassedPawnScore;
         score -= enemyPassedPawnScore;
 
-//        System.out.println("white " + (turn == WHITE));
-//        System.out.println("attackingEnemyKingLookup[1 - turn] is " + (attackingEnemyKingLookup[1 - turn]));
-        
         int mks = attackingEnemyKingLookup[1 - turn] >= 0
                 ? attackingEnemyKingLookup[1 - turn]
                 : 0;
@@ -90,8 +114,6 @@ public final class Evaluator {
         }
         int myKingSafety = -KING_SAFETY_ARRAY[mks];
 
-//        System.out.println("attackingEnemyKingLookup[turn] is " + (attackingEnemyKingLookup[turn]));
-        
         int yks = attackingEnemyKingLookup[turn] >= 0
                 ? attackingEnemyKingLookup[turn]
                 : 0;
@@ -121,10 +143,10 @@ public final class Evaluator {
 
     public static int[][] scoresForEPO = new int[2][32];
 
-    private final static int evalTurn(Chessboard board, int turn){
+    private final static int evalTurn(Chessboard board, int turn, long[] pawnData){
         //please generate moves before calling this
         final long[][] pieces = board.pieces;
-        
+
         long squaresIThreatenWithPieces = 0;
 
         long myPawns, myKnights, myBishops, myRooks, myQueens, myKing;
@@ -176,20 +198,20 @@ public final class Evaluator {
 
         int threatsScore = 0;
 
-        final long squaresMyPawnsThreaten = pawnTables[turn][CAPTURES];
-        final long squaresMyPawnsDoubleThreaten = pawnTables[turn][DOUBLE_CAPTURES];
-        final long squaresEnemyPawnsThreaten = pawnTables[1 - turn][CAPTURES];
-        final long squaresEnemyPawnsDoubleThreaten = pawnTables[1 - turn][DOUBLE_CAPTURES];
+        final long squaresMyPawnsThreaten = pawnData[CAPTURES + turn];
+        final long squaresMyPawnsDoubleThreaten = pawnData[DOUBLE_CAPTURES + turn];
+        final long squaresEnemyPawnsThreaten = pawnData[CAPTURES + 1 - turn];
+        final long squaresEnemyPawnsDoubleThreaten = pawnData[DOUBLE_CAPTURES + 1 - turn];
 
-        final long myPawnAttackSpan = pawnTables[turn][SPANS];
-        final long enemyPawnAttackSpan = pawnTables[1 - turn][SPANS];
+        final long myPawnAttackSpan = pawnData[SPANS + turn];
+        final long enemyPawnAttackSpan = pawnData[SPANS + 1 - turn];
 
         final boolean whiteToPlay = turn == WHITE;
         final long outpostRanks = whiteToPlay ? (RANK_FOUR | RANK_FIVE | RANK_SIX) : (RANK_FIVE | RANK_FOUR | RANK_THREE);
         final long unthreatenableOutpostSpots = outpostRanks & ~(enemyPawnAttackSpan | squaresEnemyPawnsThreaten);
 
-        final long fileWithoutMyPawns = filesWithNoPlayerPawns[turn];
-        final long fileWithoutEnemyPawns = filesWithNoPlayerPawns[1 - turn];
+        final long fileWithoutMyPawns = pawnData[FILE_WITHOUT_MY_PAWNS + turn];
+        final long fileWithoutEnemyPawns = pawnData[FILE_WITHOUT_MY_PAWNS + 1 - turn];
         final long openFiles = fileWithoutEnemyPawns & fileWithoutMyPawns;
         final long closedFiles = ~openFiles;
 
@@ -260,7 +282,7 @@ public final class Evaluator {
                 final long table = pseudoMoves & safeMobSquares;
 
                 squaresIThreatenWithPieces |= pseudoMoves;
-                
+
                 mobilityScore += mobilityScores[KNIGHT - 2][populationCount(table)];
 
                 knightsScore += (numberOfPawns * KNIGHT_PAWN_NUMBER_BONUS) / 2;
@@ -288,7 +310,7 @@ public final class Evaluator {
                 if ((knight & myKingSafetyArea) != 0) {
                     attackingMyKingLookupCounter -= FRIENDLY_PIECE_NEAR_KING;
                 }
-                
+
                 if ((knight & enemyKingSafetyArea) != 0) {
                     attackingEnemyKingLookupCounter += KNIGHT_ATTACK_KING_UNITS;
                 }
@@ -314,7 +336,7 @@ public final class Evaluator {
                 final long table = pseudoMoves & safeMobSquares;
 
                 squaresIThreatenWithPieces |= pseudoMoves;
-                
+
                 mobilityScore += mobilityScores[BISHOP - 2][populationCount(table)];
 
                 if ((bishop & squaresMyPawnsThreaten) != 0) {
@@ -348,7 +370,7 @@ public final class Evaluator {
                 }
 
                 attackingMyKingLookupCounter -= populationCount(table & myKingSafetyArea);
-                
+
                 if ((bishop & myKingSafetyArea) != 0) {
                     attackingMyKingLookupCounter -= FRIENDLY_PIECE_NEAR_KING;
                 }
@@ -373,7 +395,7 @@ public final class Evaluator {
                 final long table = pseudoMoves & safeMobSquares;
 
                 squaresIThreatenWithPieces |= pseudoMoves;
-                
+
                 mobilityScore += mobilityScores[ROOK - 2][populationCount(table)];
 
                 //table does not include pawns defended by pawns
@@ -413,7 +435,7 @@ public final class Evaluator {
                 if ((rook & myKingSafetyArea) != 0) {
                     attackingMyKingLookupCounter -= FRIENDLY_PIECE_NEAR_KING;
                 }
-                
+
                 if ((rook & enemyKingSafetyArea) != 0) {
                     attackingEnemyKingLookupCounter += ROOK_ATTACK_KING_UNITS;
                 }
@@ -422,7 +444,7 @@ public final class Evaluator {
             }
             myRooks &= (myRooks - 1);
         }
-      
+
         int queensScore = 0;
 
         long defendedByMyQueen = 0;
@@ -437,7 +459,7 @@ public final class Evaluator {
                 final long table = pseudoMoves & safeMobSquares;
 
                 squaresIThreatenWithPieces |= pseudoMoves;
-                
+
                 defendedByMyQueen |= pseudoMoves;
 
                 mobilityScore += mobilityScores[QUEEN - 2][populationCount(table)];
@@ -475,7 +497,7 @@ public final class Evaluator {
 
             myPawns &= myPawns - 1;
         }
-        
+
 
         threatsScore += populationCount(squaresMyPawnsThreaten & enemyBigPieces) * PAWN_THREATENS_BIG_THINGS;
 
@@ -490,9 +512,9 @@ public final class Evaluator {
          */
         int kingIndex = numberOfTrailingZeros(myKing);
         long kingPseudoMoves = KING_MOVE_TABLE[kingIndex];
-        
+
         squaresIThreatenWithPieces |= kingPseudoMoves;
-        
+
         positionScore += (percentOfStartgame == 0 ? 0
                 : (percentOfStartgame * POSITION_SCORES[turn][KING][63 - kingIndex]) / 100);
 
@@ -521,7 +543,7 @@ public final class Evaluator {
         finalScore += rooksScore;
         finalScore += queensScore;
 
-        scoresForEPO[turn][EvalPrintObject.pawnScore] = pawnsScore;
+        scoresForEPO[turn][EvalPrintObject.pawnScore] += pawnsScore;
         scoresForEPO[turn][EvalPrintObject.knightScore] = knightsScore;
         scoresForEPO[turn][EvalPrintObject.bishopScore] = bishopsScore;
         scoresForEPO[turn][EvalPrintObject.rookScore] = rooksScore;
@@ -532,7 +554,7 @@ public final class Evaluator {
         scoresForEPO[turn][EvalPrintObject.threatsScore] = threatsScore;
 
         attackingEnemyKingLookup[1 - turn] = attackingMyKingLookupCounter;
-                
+
         return finalScore;
     }
 

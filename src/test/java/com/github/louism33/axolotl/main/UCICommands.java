@@ -1,32 +1,29 @@
 package com.github.louism33.axolotl.main;
 
 import com.fluxchess.jcpi.commands.EngineDebugCommand;
-import com.github.louism33.axolotl.search.EngineBetter;
-import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.util.Util;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.github.louism33.axolotl.search.EngineSpecifications.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.DEBUG;
 
 public class UCICommands {
 
     @BeforeAll
     static void setup() {
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        Util.reset();
     }
 
     @AfterAll
     static void reset() {
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        Util.reset();
     }
     
     @Test
     void debugTrueTest() {
-        UCIEntry uciEntry = new UCIEntry();
+        UCIEntryOld uciEntry = new UCIEntryOld();
         DEBUG = false;
 
         uciEntry.receive(new EngineDebugCommand(false, true));
@@ -47,7 +44,7 @@ public class UCICommands {
 
     @Test
     void debugFalseTest() {
-        UCIEntry uciEntry = new UCIEntry();
+        UCIEntryOld uciEntry = new UCIEntryOld();
         DEBUG = true;
 
         uciEntry.receive(new EngineDebugCommand(false, false));

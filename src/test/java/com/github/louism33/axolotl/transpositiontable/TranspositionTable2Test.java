@@ -3,7 +3,6 @@ package com.github.louism33.axolotl.transpositiontable;
 import com.fluxchess.jcpi.models.GenericMove;
 import com.github.louism33.axolotl.main.PVLine;
 import com.github.louism33.axolotl.search.EngineBetter;
-import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
@@ -23,13 +22,11 @@ public class TranspositionTable2Test {
     @BeforeAll
     static void setup() {
         EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
     }
 
     @AfterAll
     static void reset() {
         EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
     }
     
     @Test
@@ -66,34 +63,34 @@ public class TranspositionTable2Test {
         }
     }
 
-//    @Test
-//    void notAgeOutTest() {
-//        EngineBetter.resetFull();
-//        Chessboard board = new Chessboard();
-//
-//        agedOut = 0;
-//        
-//        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, EXACT, 10, 0);
-//        addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, EXACT, 10, 0);
-//        
-//        Assert.assertEquals(100, getMove(retrieveFromTable(board.zobristHash)));
-//        Assert.assertEquals(0, agedOut);
-//
-//        // one turn later
-//        addToTableReplaceByDepth(board.zobristHash, 200, 666, 10, EXACT, 10, 1);
-//        Assert.assertEquals(200, getMove(retrieveFromTable(board.zobristHash)));
-//        Assert.assertEquals(0, agedOut);
-//
-//        // entry is aged one
-//        // 2 turns later
-//        addToTableReplaceByDepth(board.zobristHash, 300, 666, 10, EXACT, 10, 1+2);
-//        Assert.assertEquals(300, getMove(retrieveFromTable(board.zobristHash)));
-//        Assert.assertEquals(0, agedOut);
-//
-//        agedOut = 0;
-//        EngineBetter.resetFull();
-//        
-//    }
+    @Test
+    void notAgeOutTest() {
+        EngineBetter.resetFull();
+        Chessboard board = new Chessboard();
+
+        agedOut = 0;
+
+        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, EXACT, 10, 0);
+        addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, EXACT, 10, 0);
+
+        Assert.assertEquals(100, getMove(retrieveFromTable(board.zobristHash)));
+        Assert.assertEquals(0, agedOut);
+
+        // one turn later
+        addToTableReplaceByDepth(board.zobristHash, 200, 666, 10, EXACT, 10, 1);
+        Assert.assertEquals(200, getMove(retrieveFromTable(board.zobristHash)));
+        Assert.assertEquals(0, agedOut);
+
+        // entry is aged one
+        // 2 turns later
+        addToTableReplaceByDepth(board.zobristHash, 300, 666, 10, EXACT, 10, 1+2);
+        Assert.assertEquals(300, getMove(retrieveFromTable(board.zobristHash)));
+        Assert.assertEquals(0, agedOut);
+
+        agedOut = 0;
+        EngineBetter.resetFull();
+
+    }
 
 //    @Test
 //    void ageOutTest() {
@@ -104,7 +101,7 @@ public class TranspositionTable2Test {
 //
 //        int initAge = 0;
 //        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, UPPERBOUND, 10, initAge);
-//        addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, UPPERBOUND, 10, (initAge + acceptableAges) % ageModulo);
+//        addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, UPPERBOUND, 10, (initAge + 3+acceptableAges) % ageModulo);
 //
 //        Assert.assertEquals(100, getMove(retrieveFromTable(board.zobristHash)));
 //        Assert.assertEquals(1, agedOut);

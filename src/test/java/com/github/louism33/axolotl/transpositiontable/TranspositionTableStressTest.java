@@ -1,12 +1,10 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.fluxchess.jcpi.commands.EngineSetOptionCommand;
-import com.github.louism33.axolotl.main.UCIEntry;
+import com.github.louism33.axolotl.main.UCIEntryOld;
 import com.github.louism33.axolotl.search.EngineBetter;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
-import org.junit.AfterClass;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,14 +18,12 @@ public class TranspositionTableStressTest {
 
     @BeforeAll
     static void setup() {
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        Util.reset();
     }
 
     @AfterAll
     static void reset() {
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        Util.reset();
     }
     
     @Test
@@ -49,7 +45,7 @@ public class TranspositionTableStressTest {
     }
 
     private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize) {
-        UCIEntry uciEntry = new UCIEntry();
+        UCIEntryOld uciEntry = new UCIEntryOld();
         EngineSetOptionCommand e = new EngineSetOptionCommand("Hash", "" + hashSize);
         uciEntry.receive(e);
 

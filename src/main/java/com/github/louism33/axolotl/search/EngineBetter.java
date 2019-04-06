@@ -1,10 +1,9 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
+import com.github.louism33.axolotl.evaluation.PawnTranspositionTable;
 import com.github.louism33.axolotl.main.UCIEntry;
-import com.github.louism33.axolotl.main.UCIPrinter;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
-import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
@@ -18,7 +17,6 @@ import static com.github.louism33.axolotl.search.SearchUtils.*;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
-import static com.github.louism33.chesscore.BoardConstants.ALL_COLOUR_PIECES;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_SCORE_MASK;
 
@@ -47,7 +45,8 @@ public final class EngineBetter {
 
     public static int age = 0;
 
-    public static UCIEntry uciEntry;
+    //    public static UCIEntryOld uciEntry;
+    public static UCIEntry uciEntry = new UCIEntry(true);
 
     public static void setup() {
 
@@ -57,6 +56,7 @@ public final class EngineBetter {
         resetBetweenMoves();
         age = 0;
         initTable(TABLE_SIZE);
+        PawnTranspositionTable.initPawnTable(PAWN_TABLE_SIZE);
         MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
     }
 
@@ -245,17 +245,16 @@ public final class EngineBetter {
 
             if (DEBUG) {
                 long time = System.currentTimeMillis() - startTime;
-                UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth, time, numberOfMovesMade[0]);
+                uciEntry.send(board, rootMoves[0], aiMoveScore, depth, time, numberOfMovesMade[0]);
             }
 
             aspirationScore = score;
         }
         if (DEBUG) {
             long time = System.currentTimeMillis() - startTime;
-            UCIPrinter.sendInfoCommand(board, rootMoves[0], aiMoveScore, depth, time, numberOfMovesMade[0]);
+            uciEntry.send(board, rootMoves[0], aiMoveScore, depth, time, numberOfMovesMade[0]);
         }
     }
-
 
     static boolean inNull = false;
 
@@ -475,6 +474,7 @@ public final class EngineBetter {
             }
 
             board.makeMoveAndFlipTurn(move);
+            
             numberOfMovesMade[0]++;
             numberOfMovesSearched++;
 

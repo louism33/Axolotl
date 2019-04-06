@@ -24,26 +24,21 @@ public final class EvaluationConstants {
     static final int I_CONTROL_OPEN_FILE                  = 25;
     static final int MY_TURN_BONUS                        = 8;
     static final int CENTRE_PIECE                         = 10;
-    static final int IN_CHECK_PENALTY                     = -15;
     static final int SPACE                                = 4;
 
     // pawn valuation
     static final int PAWN_UNBLOCKED                       = 12;
-    static final int PASSED_NEIGHBOUR                     = 22;
     static final int PAWN_OPEN_STOP_SQUARE                = 12;
-    static final int PAWN_PASSED                          = 15;
+    static final int PAWN_ISOLATED                        = 12;
+    static final int PAWN_BACKWARDS                       = 10;
     static final int ROOK_OR_QUEEN_BEHIND_PP              = 12;
-    static final int PAWN_DOUBLED                         = -10;
-    static final int PAWN_ON_CENTRE                       = 10;
-    static final int PAWN_ON_SUPER_CENTRE                 = 15;
-    static final int PAWN_PROTECTED_BY_PAWNS              = 4;
+    static final int PAWN_DOUBLED                         = 10;
+    static final int PAWN_PROTECTED_BY_PAWNS              = 6;
+    static final int PAWN_NEIGHBOURS                      = 2;
     static final int PAWN_THREATENS_BIG_THINGS            = 8;
-    static final int PAWN_THREATENS_BISHOPS               = 10;
-    static final int PAWN_BLOCKED                         = -5;
-    static final int PAWN_THREATEN_CENTRE                 = 5;
-    static final int PAWN_THREATEN_SUPER_CENTRE           = 10;
+    static final int PAWN_CANDIDATE                       = 6;
+    static final int PAWN_YOUNG_PASSED                    = 4;
     // backward pawns
-    static final int PAWN_ISOLATED                        = -15;
     static final int PAWN_HANGING                         = -15;
     static final int PAWN_HANGING_PROTECTED               = 10;
     static final int PAWN_HANGING_UNDER_THREAT            = -25;
@@ -86,7 +81,7 @@ public final class EvaluationConstants {
     static final int ROOK_ATTACK_KING_UNITS               = 3;
     static final int ROOK_ON_SEMI_OPEN_FILE_BONUS         = 10;
     static final int TRAPPED_ROOK                         = 16;
-    static final int ROOKS_ATTACK_UNDEFENDED_PAWNS = 6;
+    static final int ROOKS_ATTACK_UNDEFENDED_PAWNS        = 6;
     static final int ROOK_BATTERY_SCORE                   = 8;
     
     // queen valuation

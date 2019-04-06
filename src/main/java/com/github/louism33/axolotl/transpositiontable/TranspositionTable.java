@@ -1,28 +1,37 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
-import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.chesscore.BitOperations;
 import org.junit.Assert;
 
 import java.util.Arrays;
 
+import static com.github.louism33.axolotl.search.EngineSpecifications.TABLE_SIZE;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
+import static java.lang.Long.numberOfTrailingZeros;
 
 public final class TranspositionTable {
 
-    public static long[] keys = new long[EngineSpecifications.TABLE_SIZE];
-    public static long[] entries = new long[EngineSpecifications.TABLE_SIZE];
+    public static long[] keys = new long[TABLE_SIZE];
+    public static long[] entries = new long[TABLE_SIZE];
     public static boolean tableReady = false;
-    public static int moduloAmount = EngineSpecifications.TABLE_SIZE; // todo replace with shift
+    public static int shiftAmount = 64 - numberOfTrailingZeros(TABLE_SIZE >> 1); 
     static final int bucketSize = 4;
 
     public static void initTable(int maxEntries) {
-        EngineSpecifications.TABLE_SIZE = maxEntries;
+        if (BitOperations.populationCount(maxEntries) != 1) {
+            System.out.println("please select a multiple of two for the hash table size");
+        }
 
-        int actualTableSize = maxEntries / 2;
-        moduloAmount = actualTableSize;
+        TABLE_SIZE = maxEntries;
+
+        int actualTableSize = maxEntries >> 1;
+        shiftAmount = 64 - numberOfTrailingZeros(actualTableSize);
+        
+        actualTableSize += 4;
+        
         newEntries = 0;
         agedOut = 0;
         hit = 0;
@@ -51,7 +60,7 @@ public final class TranspositionTable {
     public static void addToTableReplaceByDepth(long key, int bestMove,
                                                 int bestScore, int depth, int flag, int ply, int age) {
         if (!tableReady) {
-            initTable(EngineSpecifications.TABLE_SIZE);
+            initTable(TABLE_SIZE);
         }
 
         int index = getIndex(key);
@@ -59,15 +68,13 @@ public final class TranspositionTable {
         int replaceMeIndex = 0;
         int worstDepth = EvaluationConstants.SHORT_MAXIMUM;
 
-        for (int i = 0; i < bucketSize; i++) {
-            int enhancedIndex = (index + i) % moduloAmount;
-
-            long currentKey = (keys[enhancedIndex] ^ entries[enhancedIndex]);
-            long currentEntry = entries[enhancedIndex];
+        for (int i = index; i < index + bucketSize; i++) {
+            long currentKey = (keys[i] ^ entries[i]);
+            long currentEntry = entries[i];
 
             if (currentEntry == 0) {
                 newEntries++;
-                replaceMeIndex = enhancedIndex;
+                replaceMeIndex = i;
                 break;
             }
 
@@ -80,7 +87,7 @@ public final class TranspositionTable {
                     return;
                 }
                 hitReplace++;
-                replaceMeIndex = enhancedIndex;
+                replaceMeIndex = i;
                 break;
             }
             
@@ -88,7 +95,7 @@ public final class TranspositionTable {
 
             if (isTooOld(ageOfEntryInTable, age)) {
                 agedOut++;
-                replaceMeIndex = enhancedIndex;
+                replaceMeIndex = i;
                 break;
             }
             
@@ -96,7 +103,7 @@ public final class TranspositionTable {
 
             if (currentDepth < worstDepth) {
                 worstDepth = currentDepth;
-                replaceMeIndex = enhancedIndex;
+                replaceMeIndex = i;
             }
         }
 
@@ -108,15 +115,14 @@ public final class TranspositionTable {
 
     public static long retrieveFromTable(long key) {
         if (!tableReady) {
-            initTable(EngineSpecifications.TABLE_SIZE);
+            initTable(TABLE_SIZE);
         }
 
         int index = getIndex(key);
 
-        for (int i = 0; i < bucketSize; i++) {
-            int enhancedIndex = (index + i) % moduloAmount;
-            if ((keys[enhancedIndex] ^ entries[enhancedIndex]) == key) {
-                return entries[enhancedIndex];
+        for (int i = index; i < index + bucketSize; i++) {
+            if ((keys[i] ^ entries[i]) == key) {
+                return entries[i];
             }
         }
 
@@ -137,11 +143,7 @@ public final class TranspositionTable {
     }
 
     public static int getIndex(long key) {
-        int index = (int) (key % moduloAmount);
-
-        if (index < 0) {
-            index += moduloAmount;
-        }
+        int index = (int) (key >>> shiftAmount);
 
         Assert.assertTrue(index >= 0);
 

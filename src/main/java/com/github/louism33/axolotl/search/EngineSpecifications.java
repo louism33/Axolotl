@@ -30,4 +30,7 @@ public final class EngineSpecifications {
     public static int TABLE_SIZE                                     = DEFAULT_TABLE_SIZE_MB * TABLE_SIZE_PER_MB;
     public static final int MIN_TABLE_SIZE                           = MIN_TABLE_SIZE_MB * TABLE_SIZE_PER_MB;
     public static final int MAX_TABLE_SIZE                           = MAX_TABLE_SIZE_MB * TABLE_SIZE_PER_MB;
+
+    public static int DEFAULT_PAWN_TABLE_SIZE_MB                     = 16;
+    public static int PAWN_TABLE_SIZE                                = DEFAULT_PAWN_TABLE_SIZE_MB * TABLE_SIZE_PER_MB;
 }
