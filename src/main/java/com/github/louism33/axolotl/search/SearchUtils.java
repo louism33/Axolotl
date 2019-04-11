@@ -3,7 +3,7 @@ package com.github.louism33.axolotl.search;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstantsOld.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
 
@@ -58,7 +58,7 @@ final class SearchUtils {
 
     static boolean isNullMoveOkHere(Chessboard board, int nullMoveCounter, int depth, int R){
         return nullMoveCounter < 2
-                && depth > R
+//                && depth > R
                 && !maybeInEndgame(board)
                 && notJustPawnsLeft(board)
                 && !maybeInZugzwang(board);

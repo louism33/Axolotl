@@ -9,8 +9,8 @@ import com.github.louism33.chesscore.MoveParser;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstantsOld.CHECKMATE_ENEMY_SCORE;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstantsOld.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.main.UCIBoardParser.convertMyMoveToGenericMove;
 
 public final class UCIPrinter {

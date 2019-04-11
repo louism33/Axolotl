@@ -1,5 +1,7 @@
 package com.github.louism33.axolotl.evaluation;
 
+import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
@@ -7,8 +9,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static com.github.louism33.axolotl.search.EngineBetter.*;
 import static com.github.louism33.axolotl.search.EngineBetter.searchFixedDepth;
 
 public class PawnEvalTest {
@@ -29,7 +33,7 @@ public class PawnEvalTest {
         Assert.assertNull(pawnData);
 
         pawnData = PawnEval.calculatePawnData(board);
-        PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, pawnData, PawnEval.pawnScores);
+        PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, pawnData, PawnEval.pawnScore);
 
 
         Assert.assertNotNull(pawnData);
@@ -40,21 +44,35 @@ public class PawnEvalTest {
     public static int newZob = 0;
 
 
-
     @Test
     void aaaTest() {
-//
-//        int pawnIndex = 36;
-//        int turn = WHITE;
-//        long pawn = BitOperations.newPieceOnSquare(pawnIndex);
-//
-//        Art.printLong(pawn);
-//        Art.printLong(pawnAttackSpans[1 - turn][pawnIndex + (8 - (16 * turn))]);
-//        Art.printLong(pawnAttackSpans[1 - turn][pawnIndex]);
-//
-//        for (int i = 0; i < 64; i++) {
-////            Art.printLong(pawnAttackSpans[1 - turn][i]);
-//        }
+        Chessboard board = new Chessboard();
+//        Evaluator.printEval(board, board.turn);
+        searchFixedDepth(board, 4);
+    }
+    
+    @Test
+    void bTest() {
+        for (int depth = 1; depth < 64; depth++) {
+            System.out.println("depth " + depth);
+            System.out.println(Arrays.toString(reductions[depth]));
+        }
+    }
+    
+    @Test
+    void branchingFactorTest() {
+        for (int i = 8; i < 15; i++) {
+            Chessboard board = new Chessboard();
+            System.out.println("depth " + i);
+            EngineBetter.resetFull();
+            searchFixedDepth(board, i);
+            System.out.println();
+            System.out.println(nonTerminalTime);
+            System.out.println(terminalTime);
+            System.out.println("branching factor is " + ((double) (nonTerminalNodes + terminalNodes)) / ((double) nonTerminalNodes));
+            System.out.println("branching factor by time is " + ((double) (nonTerminalTime + terminalTime)) / ((double) nonTerminalTime));
+            System.out.println();
+        }
     }
     
     /**

@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.transpositiontable;
 
-import com.github.louism33.axolotl.evaluation.EvaluationConstants;
+import com.github.louism33.axolotl.evaluation.EvaluationConstantsOld;
 import com.github.louism33.chesscore.BitOperations;
 import org.junit.Assert;
 
@@ -66,7 +66,7 @@ public final class TranspositionTable {
         int index = getIndex(key);
 
         int replaceMeIndex = 0;
-        int worstDepth = EvaluationConstants.SHORT_MAXIMUM;
+        int worstDepth = EvaluationConstantsOld.SHORT_MAXIMUM;
 
         for (int i = index; i < index + bucketSize; i++) {
             long currentKey = (keys[i] ^ entries[i]);
@@ -155,9 +155,9 @@ public final class TranspositionTable {
         Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
         Assert.assertTrue(flag >= 0 && flag < 4);
 
-        if (score > EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+        if (score > EvaluationConstantsOld.CHECKMATE_ENEMY_SCORE_MAX_PLY) {
             score += ply;
-        } else if (score < EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY) {
+        } else if (score < EvaluationConstantsOld.IN_CHECKMATE_SCORE_MAX_PLY) {
             score -= ply;
         }
         long entry = 0;
@@ -176,9 +176,9 @@ public final class TranspositionTable {
     public static int getScore(long entry, int ply) {
         long l1 = (entry & SCORE_MASK) >>> scoreOffset;
         int score = (int) (l1 > twoFifteen ? l1 - twoSixteen : l1);
-        if (score > EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+        if (score > EvaluationConstantsOld.CHECKMATE_ENEMY_SCORE_MAX_PLY) {
             score -= ply;
-        } else if (score < EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY) {
+        } else if (score < EvaluationConstantsOld.IN_CHECKMATE_SCORE_MAX_PLY) {
             score += ply;
         }
         return score;

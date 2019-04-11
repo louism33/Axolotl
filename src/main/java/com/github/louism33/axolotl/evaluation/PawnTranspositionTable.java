@@ -26,6 +26,7 @@ public final class PawnTranspositionTable {
     private static final int XOR_INDEX = PUSHES;
     
     public static long[] keys = new long[PAWN_TABLE_SIZE];
+    public static int[] scores = new int[PAWN_TABLE_SIZE];
     public static long[] pawnMoveData = new long[PAWN_TABLE_SIZE * ENTRIES_PER_KEY];
     
     public static boolean tableReady = false;
@@ -35,6 +36,7 @@ public final class PawnTranspositionTable {
     public static void reset() {
         Arrays.fill(keys, 0);
         Arrays.fill(pawnMoveData, 0);
+        Arrays.fill(scores, 0);
     }
     
     public static void initPawnTable(int maxEntries) {
@@ -59,9 +61,11 @@ public final class PawnTranspositionTable {
         if (keys != null && keys.length == actualTableSize) {
             Arrays.fill(keys, 0);
             Arrays.fill(pawnMoveData, 0);
+            Arrays.fill(scores, 0);
         } else {
             keys = new long[actualTableSize];
             pawnMoveData = new long[actualTableSize * ENTRIES_PER_KEY];
+            scores = new int[actualTableSize];
         }
 
         tableReady = true;
@@ -74,7 +78,7 @@ public final class PawnTranspositionTable {
     public static int hitReplace = 0;
     public static int override = 0;
 
-    public static void addToTableReplaceArbitrarily(long key, long[] pawnTable, int[] score) {
+    public static void addToTableReplaceArbitrarily(long key, long[] pawnTable, int score) {
         if (!tableReady) {
             initPawnTable(PAWN_TABLE_SIZE);
         }
@@ -106,6 +110,7 @@ public final class PawnTranspositionTable {
         }
 
         keys[replaceMeIndex] = key ^ pawnTable[XOR_INDEX];
+        scores[replaceMeIndex] = score;
         System.arraycopy(pawnTable, 0, pawnMoveData, replaceMeIndex * ENTRIES_PER_KEY, ENTRIES_PER_KEY);
     }
 
@@ -123,6 +128,7 @@ public final class PawnTranspositionTable {
             final int entryIndex = i * ENTRIES_PER_KEY;
             if ((keys[i] ^ pawnMoveData[entryIndex]) == key) {
                 System.arraycopy(pawnMoveData, entryIndex, returnArray, 0, ENTRIES_PER_KEY);
+                PawnEval.pawnScore = scores[i];
                 return returnArray;
             }
         }
@@ -141,9 +147,9 @@ public final class PawnTranspositionTable {
         Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
         Assert.assertTrue(flag >= 0 && flag < 4);
 
-        if (score > EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+        if (score > EvaluationConstantsOld.CHECKMATE_ENEMY_SCORE_MAX_PLY) {
             score += ply;
-        } else if (score < EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY) {
+        } else if (score < EvaluationConstantsOld.IN_CHECKMATE_SCORE_MAX_PLY) {
             score -= ply;
         }
         long entry = 0;
@@ -162,9 +168,9 @@ public final class PawnTranspositionTable {
     public static int getScore(long entry, int ply) {
         long l1 = (entry & SCORE_MASK) >>> scoreOffset;
         int score = 0; //(int) (l1 > twoFifteen ? l1 - twoSixteen : l1);
-        if (score > EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+        if (score > EvaluationConstantsOld.CHECKMATE_ENEMY_SCORE_MAX_PLY) {
             score -= ply;
-        } else if (score < EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY) {
+        } else if (score < EvaluationConstantsOld.IN_CHECKMATE_SCORE_MAX_PLY) {
             score += ply;
         }
         return score;

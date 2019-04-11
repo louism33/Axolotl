@@ -3,6 +3,7 @@ package com.github.louism33.axolotl.evaluation;
 import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.chesscore.BoardConstants.WHITE;
 
+@SuppressWarnings("ALL")
 public final class EvalPrintObject {
 
     int[][] scores = new int[2][32];

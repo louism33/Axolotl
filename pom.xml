@@ -247,7 +247,7 @@
                         <outputDirectory>${user.dir}</outputDirectory>
                         <archive>
                             <manifest>
-                                <mainClass>com.github.louism33.axolotl.main.UCIEntryOld</mainClass>
+                                <mainClass>com.github.louism33.axolotl.main.UCIEntry</mainClass>
                             </manifest>
                         </archive>
                         <descriptorRefs>
@@ -281,7 +281,7 @@
         <dependency>
             <groupId>com.github.louism33</groupId>
             <artifactId>chesscore</artifactId>
-            <version>1.39-SNAPSHOT</version>
+            <version>1.46-SNAPSHOT</version>
         </dependency>
 
         <dependency>

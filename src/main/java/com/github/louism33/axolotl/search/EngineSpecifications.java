@@ -7,7 +7,7 @@ public final class EngineSpecifications {
     public static int THREAD_NUMBER                                  = 1;
     public static final int MAX_THREADS                              = 8;
     public static boolean DEBUG                                      = true;
-    public static boolean PRINT                                      = false;
+    public static boolean PRINT_EVAL                                 = false;
     public static int MAX_DEPTH                                      = Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH - 2;
     public final static int ABSOLUTE_MAX_DEPTH                       = Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH - 2;
     public final static int MAX_DEPTH_HARD                           = Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH - 2;

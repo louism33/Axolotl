@@ -4,6 +4,7 @@ import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +23,12 @@ public class STS6Recapturing {
 
 
     private static final int timeLimit = 10_000;
+    private static int successes = 0;
 
+    @AfterClass
+    public static void finalSuccessTally(){
+        System.out.println("Successes: " + successes + " out of " + splitUpPositions.length);
+    }
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -57,8 +63,12 @@ public class STS6Recapturing {
         int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         System.out.println("my move: " + MoveParser.toString(move));
-        
-        Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
+
+        final boolean condition = contains(winningMoves, move) && !contains(losingMoves, move);
+        if (condition) {
+            successes++;
+        }
+        Assert.assertTrue(condition);
     }
 
     private static final String positions = "" +

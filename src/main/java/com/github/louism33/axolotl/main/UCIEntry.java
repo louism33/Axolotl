@@ -5,23 +5,23 @@ import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
+import com.github.louism33.utils.Perft;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstantsOld.CHECKMATE_ENEMY_SCORE;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstantsOld.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.chesscore.BoardConstants.WHITE;
 import static com.github.louism33.utils.MoveParserFromAN.buildMoveFromLAN;
 
-public class UCIEntry extends Thread {
+public final class UCIEntry extends Thread {
 
     public Chessboard board = new Chessboard();
-    int[] moves = new int[512];
     private int[] searchMoves = new int[8];
 
     private int lastMoveMade = 0;
@@ -39,13 +39,13 @@ public class UCIEntry extends Thread {
 
         EngineBetter.uciEntry = this;
     }
-    
+
     private UCIEntry() throws IOException {
         input = new BufferedReader(new InputStreamReader(System.in));
         output = new PrintStream(System.out);
 
         EngineBetter.uciEntry = this;
-        
+
         while (true) {
             loop();
         }
@@ -257,16 +257,13 @@ public class UCIEntry extends Thread {
                                 myinc, movestogo);
                     }
 
-
                     // reset things
                     Arrays.fill(searchMoves, 0);
                     EngineBetter.quitOnSingleMove = true;
                     EngineBetter.computeMoves = true;
                     MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
 
-
                     output.println("bestmove " + MoveParser.toString(aiMove));
-
 
                     break;
 
@@ -287,6 +284,23 @@ public class UCIEntry extends Thread {
                     output.println(Evaluator.stringEval(board, board.turn));
                 } else if (token.equalsIgnoreCase("d")) {
                     output.println(board);
+                } else if (token.equalsIgnoreCase("perft")) {
+                    try {
+                        final int d = Integer.parseInt(tokens[1]);
+                        output.println("Performing perft to depth " + d);
+                        long t1 = System.currentTimeMillis();
+                        long nodes = Perft.perftTest(board, d);
+                        long t2 = System.currentTimeMillis();
+                        long t = t2 - t1; 
+                        output.println(board);
+                        output.println("depth: " + d + ", total leaf nodes: " + nodes);
+                        if (t > 1000) {
+                            System.out.println("Time: " + t + " millis, NPS: " + ((nodes / t) * 1000) );
+                        }
+                        
+                    } catch (Exception | Error e) {
+                        output.println("didn't understand perft command");
+                    }
                 }
 
                 if (tokens.length > 1) {
@@ -304,11 +318,11 @@ public class UCIEntry extends Thread {
         }
     }
 
-    private static boolean mateFound(int score){
+    private static boolean mateFound(int score) {
         return score >= CHECKMATE_ENEMY_SCORE_MAX_PLY;
     }
 
-    private static int distanceToMate(int score){
+    private static int distanceToMate(int score) {
         return CHECKMATE_ENEMY_SCORE - score;
     }
 
@@ -321,8 +335,7 @@ public class UCIEntry extends Thread {
 
         if (mateFound(aiMoveScore)) {
             infoCommand += " score mate " + distanceToMate(aiMoveScore);
-        }
-        else {
+        } else {
             infoCommand += " score cp " + aiMoveScore;
         }
 

@@ -1,24 +1,24 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.evaluation.EvaluationConstants;
+import com.github.louism33.axolotl.evaluation.EvaluationConstantsOld;
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstantsOld.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.search.MoveOrdererBetter.*;
 import static com.github.louism33.chesscore.MoveConstants.FIRST_FREE_BIT;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 
-final class QuiescenceBetter {
+public final class QuiescenceBetter {
 
-    static int quiescenceSearchBetter(Chessboard board, int alpha, int beta){
+    public static int quiescenceSearch(Chessboard board, int alpha, int beta){
 
         int[] moves = board.generateLegalMoves();
         
-        int standPatScore = EvaluationConstants.SHORT_MINIMUM;
+        int standPatScore = EvaluationConstantsOld.SHORT_MINIMUM;
 
         boolean inCheck = board.inCheckRecorder;
         
@@ -85,7 +85,7 @@ final class QuiescenceBetter {
             board.makeMoveAndFlipTurn(loudMove);
             EngineBetter.numberOfQMovesMade[0]++;
 
-            int score = -quiescenceSearchBetter(board, -beta, -alpha);
+            int score = -quiescenceSearch(board, -beta, -alpha);
 
             board.unMakeMoveAndFlipTurn();
 

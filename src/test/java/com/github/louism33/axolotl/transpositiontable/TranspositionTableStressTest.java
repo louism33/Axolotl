@@ -1,7 +1,5 @@
 package com.github.louism33.axolotl.transpositiontable;
 
-import com.fluxchess.jcpi.commands.EngineSetOptionCommand;
-import com.github.louism33.axolotl.main.UCIEntryOld;
 import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
@@ -45,9 +43,8 @@ public class TranspositionTableStressTest {
     }
 
     private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize) {
-        UCIEntryOld uciEntry = new UCIEntryOld();
-        EngineSetOptionCommand e = new EngineSetOptionCommand("Hash", "" + hashSize);
-        uciEntry.receive(e);
+        int number = hashSize * TABLE_SIZE_PER_MB;
+        TranspositionTable.initTable(number);
 
         EngineBetter.searchFixedDepth(board, depth);
         
