@@ -16,7 +16,7 @@ public class PSQTParam {
     int[] startRecorder;
 
     List<Integer> onlyDo;
-    int delta = 1;
+    public static int delta = 4;
 
     public PSQTParam(String name){
         this.name = name;
@@ -61,14 +61,19 @@ public class PSQTParam {
     }
 
     public void printOne(int p) {
-        System.out.println();
+        System.out.println(strOne(p));
+    }
+
+    public String strOne(int p) {
+        String s = "\n";
         for (int j = 0; j < 64; j++) {
-            System.out.print(values[BLACK][p][MIRRORED_UP_DOWN[j]] + ", ");
+            s += values[BLACK][p][MIRRORED_UP_DOWN[j]] + ", ";
             if (j > 0 && j % 8 == 7) {
-                System.out.println();
+                s += "\n";
             }
         }
-        System.out.println();
+        s += "\n";
+        return s;
     }
 
     public static void main(String[] args) {

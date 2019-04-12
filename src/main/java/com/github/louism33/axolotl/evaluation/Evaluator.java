@@ -79,7 +79,7 @@ public final class Evaluator {
 
         if (pawnData == null || PRINT_EVAL) {
             pawnData = PawnEval.calculatePawnData(board);
-//            PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, pawnData, PawnEval.pawnScore);
+            PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, pawnData, PawnEval.pawnScore);
         }
         int score = 0;
 
@@ -199,13 +199,15 @@ public final class Evaluator {
 
         int threatsScore = 0;
 
-        long pins = pinnedPieces;
-        while (pins != 0) {
-            final int i = numberOfTrailingZeros(pins);
-            final int pinnedPiece = board.pieceSquareTable[i];
-            final int colourBlindPiece = pinnedPiece < 7 ? pinnedPiece : pinnedPiece - 6;
-            threatsScore += pinnedPiecesScores[colourBlindPiece];
-            pins &= pins - 1;
+        if (turn == board.turn) {
+            long pins = pinnedPieces;
+            while (pins != 0) {
+                final int i = numberOfTrailingZeros(pins);
+                final int pinnedPiece = board.pieceSquareTable[i];
+                final int colourBlindPiece = pinnedPiece < 7 ? pinnedPiece : pinnedPiece - 6;
+                threatsScore += pinnedPiecesScores[colourBlindPiece];
+                pins &= pins - 1;
+            }
         }
 
         final long squaresMyPawnsThreaten = pawnData[CAPTURES + turn];

@@ -11,7 +11,7 @@ public class TexelParam {
     int[] startRecorder;
 
     List<Integer> dontChange;
-    int delta = 1;
+    public static int delta = 3;
 
     public TexelParam(String name, int[] values){
         this.name = name;
@@ -41,6 +41,7 @@ public class TexelParam {
         return "TexelParam{" +
                 "name='" + name + '\'' +
                 ", values=" + Arrays.toString(values) +
+                "\n delta: " + delta + 
                 '}';
     }
 }

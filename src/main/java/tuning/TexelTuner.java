@@ -8,11 +8,18 @@ import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.TexelPosLoader;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.QuiescenceBetter.*;
@@ -32,6 +39,13 @@ public class TexelTuner {
 //        minimiseK();
 //        test();
     }
+    
+    static List<TexelPosLoader.TexelPos> texelPosList;
+    final static int totalThreads = 3;
+    static List<ErrorCalculator> calculators = new ArrayList<>();
+
+    static ExecutorService executorService = Executors.newFixedThreadPool(totalThreads);
+
 
 
     static void startUpNTransform(String dir) throws Exception {
@@ -49,111 +63,155 @@ public class TexelTuner {
         transformPGNFile(file, dest);
     }
 
-
     TexelTuner(String fenPos) throws Exception {
-        final List<TexelPosLoader.TexelPos> texelPosList = TexelPosLoader.readFile(fenPos);
-        localOptimise(texelPosList);
+        texelPosList = TexelPosLoader.readFile(fenPos);
+
+        for (int i = 0; i < totalThreads; i++) {
+            calculators.add(new ErrorCalculator());
+        }
+
+        for (int i = 0; i < texelPosList.size(); i++) {
+            calculators.get(i % totalThreads).add(texelPosList.get(i));
+        }
+
+        localOptimise();
     }
 
-    static void localOptimise(List<TexelPosLoader.TexelPos> texelPosList) {
-        long startTime = System.currentTimeMillis();
-        System.out.println("===");
-        reset();
-        double bestPredictionError = getPredictionError(texelPosList);
-        System.out.println("prediction error takes " + ((System.currentTimeMillis() - startTime) / 1000) + " s to do.");
-        double initE = bestPredictionError;
-        System.out.println("initial prediction error " + bestPredictionError);
+    static void localOptimise() throws IOException {
+        try (BufferedWriter br = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "/tuning/results.txt"))) {
 
-        List<TexelParam> bestParams = getParams();
-        int n = bestParams.size();
-        boolean improved = true;
-        int iterations = 0;
-        while (improved && iterations < 100) {
-            iterations++;
-            improved = false;
-            System.out.println("++++++++++++++++++++++++++++++++++++++");
-            System.out.println("iteration " + iterations);
-            System.out.println("time " + ((System.currentTimeMillis() - startTime) / 1000) + "s");
-            System.out.println();
+            long startTime = System.currentTimeMillis();
+            System.out.println("===");
+            reset();
+            double bestPredictionError = getPredictionErrorMT();
+            System.out.println("prediction error takes " + ((System.currentTimeMillis() - startTime) / 1000) + " s to do.");
+            double initE = bestPredictionError;
+            System.out.println("initial prediction error " + bestPredictionError);
 
-            for (TexelParam t : bestParams) {
-                System.out.println(t);
-            }
-            
-            System.out.println();
-            System.out.println("++++++++++++++++++++++++++++++++++++++");
+            List<TexelParam> bestParams = getParams();
+            int n = bestParams.size();
 
-            for (int p = 0; p < n; p++) {
-                final TexelParam texelParam = bestParams.get(p);
-                for (int i = 0; i < texelParam.values.length; i++) {
-                    if (texelParam.dontChange.contains(i)) {
-                        continue;
+            TexelParam.delta = 13;
+
+            while (TexelParam.delta >= 1) {
+
+                boolean improved = true;
+                int iterations = 0;
+                while (improved && iterations < 100) {
+                    iterations++;
+                    improved = false;
+                    System.out.println("++++++++++++++++++++++++++++++++++++++");
+                    System.out.println("iteration " + iterations + " with delta " + TexelParam.delta);
+                    final long millis = System.currentTimeMillis() - startTime;
+                    System.out.println("time " + (millis / 1000) + "s");
+                    final String cuteTime = String.format("%d min, %d sec",
+                            TimeUnit.MILLISECONDS.toMinutes(millis),
+                            TimeUnit.MILLISECONDS.toSeconds(millis) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+                    );
+                    System.out.println(cuteTime);
+                    System.out.println();
+
+                    for (TexelParam t : bestParams) {
+                        System.out.println(t);
                     }
 
-                    texelParam.makeUpChange(i);
-                    reset();
-                    double newPredictionError = getPredictionError(texelPosList);
+                    System.out.println();
+                    System.out.println("++++++++++++++++++++++++++++++++++++++");
 
-                    if (newPredictionError < bestPredictionError) {
-                        bestPredictionError = newPredictionError;
-                        improved = true;
-                    } else {
-                        texelParam.makeDownChange(i); 
-                        texelParam.makeDownChange(i);
-                        reset();
-                        newPredictionError = getPredictionError(texelPosList);
+                    for (int p = 0; p < n; p++) {
+                        final TexelParam texelParam = bestParams.get(p);
+                        for (int i = 0; i < texelParam.values.length; i++) {
+                            if (texelParam.dontChange.contains(i)) {
+                                continue;
+                            }
 
-                        if (newPredictionError < bestPredictionError) {
-                            bestPredictionError = newPredictionError;
-                            improved = true;
-                        } else {
                             texelParam.makeUpChange(i);
+                            reset();
+                            double newPredictionError = getPredictionErrorMT();
+
+                            if (newPredictionError < bestPredictionError) {
+                                bestPredictionError = newPredictionError;
+                                improved = true;
+                            } else {
+                                texelParam.makeDownChange(i);
+                                texelParam.makeDownChange(i);
+                                reset();
+                                newPredictionError = getPredictionErrorMT();
+
+                                if (newPredictionError < bestPredictionError) {
+                                    bestPredictionError = newPredictionError;
+                                    improved = true;
+                                } else {
+                                    texelParam.makeUpChange(i);
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            System.out.println("iteration: " + iterations 
-                    + ", bestPredictionError " + bestPredictionError 
-                    + ", improvement of: " + (initE - bestPredictionError));
-            System.out.println("time taken " + ((System.currentTimeMillis() - startTime) / 1000) + "s");
+                    System.out.println("iteration: " + iterations
+                            + ", bestPredictionError " + bestPredictionError
+                            + ", improvement of: " + (initE - bestPredictionError));
+                    final long millis2 = System.currentTimeMillis() - startTime;
+                    System.out.println("time taken " + (millis2 / 1000) + "s");
+                    final String cuteTime2 = String.format("%d min, %d sec",
+                            TimeUnit.MILLISECONDS.toMinutes(millis),
+                            TimeUnit.MILLISECONDS.toSeconds(millis) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+                    );
+                    System.out.println(cuteTime2);
+                }
+                long stopTime = System.currentTimeMillis();
+                System.out.println();
+                System.out.println("AFTER " + iterations + " iterations: ");
+                System.out.println();
+                System.out.println("best params: ");
+                for (TexelParam t : bestParams) {
+                    final String name = t.name + "\n" 
+                            + "started at: " + Arrays.toString(t.startRecorder) + "\n" +
+                            "ended at:   " + Arrays.toString(t.values);
+                    System.out.println(name);
+                    br.write("\n"+name + "\n");
+                }
+                final long millis = System.currentTimeMillis() - startTime;
+                System.out.println("total time " + (millis / 1000) + "s");
+                final String cuteTime = String.format("%d min, %d sec",
+                        TimeUnit.MILLISECONDS.toMinutes(millis),
+                        TimeUnit.MILLISECONDS.toSeconds(millis) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+                );
+                System.out.println(cuteTime);
+                reset();
+                double finalPredictionError = getPredictionErrorMT();
+                System.out.println();
+                System.out.println("initial prediction error " + initE);
+                System.out.println("final prediction error   " + finalPredictionError);
+                System.out.println("improvement of " + (initE - finalPredictionError));
+
+                TexelParam.delta -= 2;
+            }
         }
-        long stopTime = System.currentTimeMillis();
-        System.out.println();
-        System.out.println("AFTER " + iterations + " iterations: ");
-        System.out.println();
-        System.out.println("best params: ");
-        for (TexelParam t : bestParams) {
-            System.out.println(t.name);
-            System.out.println("started at: " + Arrays.toString(t.startRecorder));
-            System.out.println("ended at:   " + Arrays.toString(t.values));
-        }
-        System.out.println("total time: " + ((stopTime - startTime) / 1000));
-        reset();
-        double finalPredictionError = getPredictionError(texelPosList);
-        System.out.println();
-        System.out.println("initial prediction error " + initE);
-        System.out.println("final prediction error " + finalPredictionError);
-        System.out.println("improvement of " + (initE - finalPredictionError));
     }
 
 
-    static double getPredictionError(List<TexelPosLoader.TexelPos> texelPosList) {
-        final double N = texelPosList.size();
+    static double getPredictionErrorMT() {
+        List<Future<Double>> list = new ArrayList<>();
+        for (int i = 0; i < totalThreads; i++) {
+            final Future<Double> submit = executorService.submit(calculators.get(i));
+            list.add(submit);
+        }
 
         double totalError = 0;
-        for (int i = 0; i < N; i++) {
-            final TexelPosLoader.TexelPos x = texelPosList.get(i);
-            final String fen = x.fen;
-            final double R = x.score;
-//            final double q = getQScore(fen, R);
-            final double q = getEvalScore(fen, R);
 
-            final double sigmoid = sigmoid(q);
-            final double thisError = Math.pow((R - sigmoid), 2);
-            totalError += thisError;
+        for (Future<Double> f : list) {
+            try {
+                totalError += f.get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return totalError / N;
+
+        return totalError / ((double) texelPosList.size());
     }
 
     static void minimiseK() throws Exception {
@@ -228,8 +286,6 @@ public class TexelTuner {
     static int getEvalScore(String fen, double result) {
         final Chessboard board = new Chessboard(fen);
 
-//        PawnTranspositionTable.reset();
-        
         int turnFac = 1;
         if (board.turn == BLACK) {
             turnFac = -1;
@@ -237,12 +293,8 @@ public class TexelTuner {
         return turnFac * Evaluator.eval(board, board.generateLegalMoves());
     }
 
-    static void test() throws Exception {
-        final List<TexelPosLoader.TexelPos> texelPosList = TexelPosLoader.readFile("tuning/test.fen");
-        localOptimise(texelPosList);
-    }
     static void reset() {
-//        PawnTranspositionTable.reset();
+        PawnTranspositionTable.reset();
 //        EngineBetter.resetFull();
     }
 
@@ -251,9 +303,9 @@ public class TexelTuner {
 
         texelParams.add(new TexelParam("material scores", material, Arrays.asList(0)));
         
-//        texelParams.add(new TexelParam("pinned pieces scores", pinnedPiecesScores)); // would this apply in Q pos?
+        texelParams.add(new TexelParam("pinned pieces scores", pinnedPiecesScores, Arrays.asList(0, 6))); // would this apply in Q pos?
         
-        texelParams.add(new TexelParam("misc features", miscFeatures, Arrays.asList(0)));
+//        texelParams.add(new TexelParam("misc features", miscFeatures, Arrays.asList(0)));
         
         texelParams.add(new TexelParam("pawn features", pawnFeatures));
         texelParams.add(new TexelParam("knight features", knightFeatures));
