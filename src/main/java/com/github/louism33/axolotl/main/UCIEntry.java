@@ -12,8 +12,8 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstantsOld.CHECKMATE_ENEMY_SCORE;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstantsOld.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.chesscore.BoardConstants.WHITE;

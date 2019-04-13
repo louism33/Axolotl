@@ -1,6 +1,8 @@
 package com.github.louism33.axolotl.search;
 
+import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.evaluation.Evaluator;
+import com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant;
 import com.github.louism33.axolotl.evaluation.PawnTranspositionTable;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
@@ -8,11 +10,11 @@ import com.github.louism33.chesscore.Chessboard;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstantsOld.*;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.MoveOrdererBetter.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
-import static com.github.louism33.axolotl.search.QuiescenceBetter.*;
+import static com.github.louism33.axolotl.search.QuiescenceBetter.quiescenceSearch;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
@@ -45,6 +47,8 @@ public final class EngineBetter {
     public static boolean computeMoves = true;
 
     public static int age = 0;
+    
+    public static int iidSuccess = 0, iidFail = 0, iidTotal = 0;
 
     public static UCIEntry uciEntry = new UCIEntry(true);
 
@@ -65,6 +69,13 @@ public final class EngineBetter {
         initTable(TABLE_SIZE);
         PawnTranspositionTable.initPawnTable(PAWN_TABLE_SIZE);
         MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
+        if (!EvaluationConstants.ready) {
+            EvaluationConstants.setup();
+        }
+
+        if (!EvaluatorPositionConstant.ready) {
+            EvaluatorPositionConstant.setup();
+        }
     }
 
     public static void resetBetweenMoves() {
@@ -398,6 +409,21 @@ public final class EngineBetter {
                     return nullScore;
                 }
             }
+            
+     
+        }
+
+        if (hashMove == 0
+                && depth >= iidDepth) {
+            int d = thisIsAPrincipleVariationNode ? depth - 2 : depth >> 1;
+            principleVariationSearch(board, d, ply, alpha, beta, nullMoveCounter + 1);
+            hashMove = getMove(retrieveFromTable(board.zobristHash));
+            if (hashMove == 0) {
+                iidFail++;
+            } else {
+                iidSuccess++;
+            }
+            iidTotal++;
         }
 
         int bestScore = SHORT_MINIMUM;

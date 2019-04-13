@@ -1,54 +1,43 @@
 package tuning;
 
-import com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.github.louism33.chesscore.BoardConstants.BLACK;
-import static com.github.louism33.chesscore.BoardConstants.WHITE;
-
 @SuppressWarnings("ALL")
 public class PSQTParam {
     String name;
-    int[][][] values;
+    int[] values;
     int[] startRecorder;
 
     List<Integer> onlyDo;
     public static int delta = 4;
 
-    public PSQTParam(String name){
+    public PSQTParam(String name, int[] values){
         this.name = name;
-        this.values = EvaluatorPositionConstant.POSITION_SCORES;
+        this.values = values;
         this.onlyDo = new ArrayList<>();
     }
 
-    public PSQTParam(String name, Integer onlyDo){
+    public PSQTParam(String name, int[] values, Integer onlyDo){
         this.name = name;
-        this.values = EvaluatorPositionConstant.POSITION_SCORES;
+        this.values = values;
         this.onlyDo = Arrays.asList(onlyDo);
     }
 
-    public PSQTParam(String name, List<Integer> onlyDo){
+    public PSQTParam(String name, int[] values, List<Integer> onlyDo){
         this.name = name;
-        this.values = EvaluatorPositionConstant.POSITION_SCORES;
+        this.values = values;
         this.onlyDo = onlyDo;
     }
 
-    public void makeUpChange (int piece, int sq) {
-        values[WHITE][piece][sq] += delta;
-        values[WHITE][piece][MIRRORED_LEFT_RIGHT[sq]] += delta;
-        
-        values[BLACK][piece][MIRRORED_UP_DOWN[sq]] += delta;
-        values[BLACK][piece][MIRRORED_LEFT_RIGHT[MIRRORED_UP_DOWN[sq]]] += delta;
+    public void makeUpChange (int sq) {
+        values[sq] += delta;
+        values[MIRRORED_LEFT_RIGHT[sq]] += delta;
     }
-    public void makeDownChange (int piece, int sq) {
-        values[WHITE][piece][sq] -= delta;
-        values[WHITE][piece][MIRRORED_LEFT_RIGHT[sq]] -= delta;
-
-        values[BLACK][piece][MIRRORED_UP_DOWN[sq]] -= delta;
-        values[BLACK][piece][MIRRORED_LEFT_RIGHT[MIRRORED_UP_DOWN[sq]]] -= delta;
+    public void makeDownChange (int sq) {
+        values[sq] -= delta;
+        values[MIRRORED_LEFT_RIGHT[sq]] -= delta;
     }
 
 
@@ -60,26 +49,20 @@ public class PSQTParam {
                 '}';
     }
 
-    public void printOne(int p) {
-        System.out.println(strOne(p));
+    public void printMe() {
+        System.out.println(str());
     }
 
-    public String strOne(int p) {
-        String s = "\n";
+    public String str() {
+        String s = "\n"+name+"\n";
         for (int j = 0; j < 64; j++) {
-            s += values[BLACK][p][MIRRORED_UP_DOWN[j]] + ", ";
+            s += values[j] + ", ";
             if (j > 0 && j % 8 == 7) {
                 s += "\n";
             }
         }
         s += "\n";
         return s;
-    }
-
-    public static void main(String[] args) {
-        PSQTParam p = new PSQTParam("ssss");
-        p.printOne(1);
-        
     }
 
     public static final int[] MIRRORED_LEFT_RIGHT = new int[64];

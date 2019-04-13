@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.transpositiontable;
 
-import com.github.louism33.axolotl.evaluation.EvaluationConstantsOld;
+import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.MoveConstants;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.EXACT;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
@@ -39,7 +40,7 @@ public class TranspositionTable1Test {
             Random r = new Random();
 
             int move = r.nextInt(MoveConstants.CHECKING_MOVE_MASK - 1) + 1;
-            int score = r.nextInt(EvaluationConstantsOld.SHORT_MAXIMUM * 2) - EvaluationConstantsOld.SHORT_MAXIMUM;
+            int score = r.nextInt(SHORT_MAXIMUM * 2) - SHORT_MAXIMUM;
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
             int ply = r.nextInt(99);
@@ -63,7 +64,7 @@ public class TranspositionTable1Test {
             Random r = new Random();
 
             int move = r.nextInt(MoveConstants.CHECKING_MOVE_MASK);
-            int score = r.nextInt(EvaluationConstantsOld.SHORT_MAXIMUM * 2) - EvaluationConstantsOld.SHORT_MAXIMUM;
+            int score = r.nextInt(SHORT_MAXIMUM * 2) - SHORT_MAXIMUM;
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
             int ply = r.nextInt(99);
@@ -122,7 +123,7 @@ public class TranspositionTable1Test {
             if (move == 0){
                 move = 1;
             }
-            int score = r.nextInt(EvaluationConstantsOld.SHORT_MAXIMUM * 2) - EvaluationConstantsOld.SHORT_MAXIMUM;
+            int score = r.nextInt(SHORT_MAXIMUM * 2) - SHORT_MAXIMUM;
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
             int ply = r.nextInt(99);
@@ -179,7 +180,7 @@ public class TranspositionTable1Test {
             Random r = new Random();
 
             int move = r.nextInt() & MOVE_MASK_WITHOUT_CHECK;
-            int score = r.nextInt(EvaluationConstantsOld.SHORT_MAXIMUM * 2) - EvaluationConstantsOld.SHORT_MAXIMUM;
+            int score = r.nextInt(SHORT_MAXIMUM * 2) - SHORT_MAXIMUM;
             int depth = r.nextInt(127);
             int flag = r.nextInt(3);
             int ply = r.nextInt(99);
@@ -236,7 +237,7 @@ public class TranspositionTable1Test {
             if (move == 0){
                 move = 1;
             }
-            int score = r.nextInt(EvaluationConstantsOld.SHORT_MAXIMUM * 2) - EvaluationConstantsOld.SHORT_MAXIMUM;
+            int score = r.nextInt(SHORT_MAXIMUM * 2) - SHORT_MAXIMUM;
             int depth = 10;
             int flag = r.nextInt(3);
             int ply = r.nextInt(99);
@@ -253,7 +254,7 @@ public class TranspositionTable1Test {
             if (move == 0){
                 move = 1;
             }
-            int score = r.nextInt(EvaluationConstantsOld.SHORT_MAXIMUM * 2) - EvaluationConstantsOld.SHORT_MAXIMUM;
+            int score = r.nextInt(SHORT_MAXIMUM * 2) - SHORT_MAXIMUM;
             int depth = 20;
             int flag = r.nextInt(3);
             int ply = r.nextInt(99);

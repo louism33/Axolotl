@@ -3,8 +3,6 @@ package tuning;
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant;
-import com.github.louism33.axolotl.evaluation.PawnTranspositionTable;
-import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.TexelPosLoader;
 
@@ -12,7 +10,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +19,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.search.QuiescenceBetter.*;
+import static com.github.louism33.axolotl.search.QuiescenceBetter.quiescenceSearch;
 import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.utils.PGNtoFEN.transformPGNFile;
 
@@ -41,7 +38,7 @@ public class TexelTuner {
     }
     
     static List<TexelPosLoader.TexelPos> texelPosList;
-    final static int totalThreads = 3;
+    final static int totalThreads = 1; // static variables make race conditions in multi :(
     static List<ErrorCalculator> calculators = new ArrayList<>();
 
     static ExecutorService executorService = Executors.newFixedThreadPool(totalThreads);
@@ -78,14 +75,17 @@ public class TexelTuner {
     }
 
     static void localOptimise() throws IOException {
-        try (BufferedWriter br = new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "/tuning/results.txt"))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("tuning/texelLog", true))) {
 
             long startTime = System.currentTimeMillis();
+            
+            bw.write("\n\n\n NEW");
+            bw.flush();
             System.out.println("===");
             reset();
             double bestPredictionError = getPredictionErrorMT();
             System.out.println("prediction error takes " + ((System.currentTimeMillis() - startTime) / 1000) + " s to do.");
-            double initE = bestPredictionError;
+            final double initE = bestPredictionError;
             System.out.println("initial prediction error " + bestPredictionError);
 
             List<TexelParam> bestParams = getParams();
@@ -114,10 +114,12 @@ public class TexelTuner {
 
                     for (TexelParam t : bestParams) {
                         System.out.println(t);
+                        bw.write("\n"+t + "\n");
+                        bw.flush();
                     }
 
                     System.out.println();
-                    System.out.println("++++++++++++++++++++++++++++++++++++++");
+                    System.out.println("-----------------------------------------");
 
                     for (int p = 0; p < n; p++) {
                         final TexelParam texelParam = bestParams.get(p);
@@ -150,6 +152,7 @@ public class TexelTuner {
                     }
 
                     System.out.println("iteration: " + iterations
+                            + ", initial pred error  " + initE 
                             + ", bestPredictionError " + bestPredictionError
                             + ", improvement of: " + (initE - bestPredictionError));
                     final long millis2 = System.currentTimeMillis() - startTime;
@@ -163,7 +166,11 @@ public class TexelTuner {
                 }
                 long stopTime = System.currentTimeMillis();
                 System.out.println();
-                System.out.println("AFTER " + iterations + " iterations: ");
+                final String x = "AFTER " + iterations + " iterations with delta " + TexelParam.delta + " : ";
+                bw.write(x);
+                bw.flush();
+                System.out.println(x);
+                
                 System.out.println();
                 System.out.println("best params: ");
                 for (TexelParam t : bestParams) {
@@ -171,7 +178,8 @@ public class TexelTuner {
                             + "started at: " + Arrays.toString(t.startRecorder) + "\n" +
                             "ended at:   " + Arrays.toString(t.values);
                     System.out.println(name);
-                    br.write("\n"+name + "\n");
+                    bw.write("\n"+name + "\n");
+                    bw.flush();
                 }
                 final long millis = System.currentTimeMillis() - startTime;
                 System.out.println("total time " + (millis / 1000) + "s");
@@ -294,25 +302,35 @@ public class TexelTuner {
     }
 
     static void reset() {
-        PawnTranspositionTable.reset();
+        EvaluatorPositionConstant.setup();
+        EvaluationConstants.setup();
+//        PawnTranspositionTable.reset();
 //        EngineBetter.resetFull();
     }
 
     static List<TexelParam> getParams() {
         List<TexelParam> texelParams = new ArrayList<>();
 
-        texelParams.add(new TexelParam("material scores", material, Arrays.asList(0)));
+//        texelParams.add(new TexelParam("early material scores", startMaterial, Arrays.asList(0)));
+//        texelParams.add(new TexelParam("late material scores", endMaterial, Arrays.asList(0)));
         
-        texelParams.add(new TexelParam("pinned pieces scores", pinnedPiecesScores, Arrays.asList(0, 6))); // would this apply in Q pos?
+//        texelParams.add(new TexelParam("pinned pieces scores", pinnedPiecesScores, Arrays.asList(0, 6))); // would this apply in Q pos?
         
 //        texelParams.add(new TexelParam("misc features", miscFeatures, Arrays.asList(0)));
         
-        texelParams.add(new TexelParam("pawn features", pawnFeatures));
-        texelParams.add(new TexelParam("knight features", knightFeatures));
-        texelParams.add(new TexelParam("bishop features", bishopFeatures));
-        texelParams.add(new TexelParam("rook features", rookFeatures));
+//        texelParams.add(new TexelParam("pawn features start", startPawnFeatures));
+//        texelParams.add(new TexelParam("pawn features end", endPawnFeatures));
         
-        texelParams.add(new TexelParam("kingSafetyMisc features", kingSafetyMisc));
+//        texelParams.add(new TexelParam("knight features start", startKnightFeatures));
+//        texelParams.add(new TexelParam("knight features end", endKnightFeatures));
+        
+        texelParams.add(new TexelParam("bishop features start", startBishopFeatures));
+        texelParams.add(new TexelParam("bishop features end", endBishopFeatures));
+        
+        texelParams.add(new TexelParam("rook features start", startRookFeatures));
+        texelParams.add(new TexelParam("rook features end", endRookFeatures));
+        
+//        texelParams.add(new TexelParam("kingSafetyMisc features", kingSafetyMisc));
         
 //        texelParams.add(new TexelParam("King safety", EvaluationConstants.KING_SAFETY_ARRAY));
         

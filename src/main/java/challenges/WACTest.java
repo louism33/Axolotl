@@ -20,7 +20,7 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 @RunWith(Parameterized.class)
 public class WACTest {
 
-    private static final int timeLimit = 1_000;
+    private static final int timeLimit = 5_000;
 
     // tough at 5 sec
     private static final int[] infamousIndexes = {86, 163, 180, 196, 222, 230, 243, 293};

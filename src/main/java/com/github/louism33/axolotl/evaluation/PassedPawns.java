@@ -2,7 +2,7 @@ package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.Chessboard;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.pawnFeatures;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.startPawnFeatures;
 import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.*;
 import static com.github.louism33.chesscore.BitOperations.getFirstPiece;
 import static com.github.louism33.chesscore.BoardConstants.*;
@@ -45,28 +45,28 @@ public final class PassedPawns {
         while (myPassedPawns != 0) {
             final long pawn = getFirstPiece(myPassedPawns);
             final int pawnIndex = Long.numberOfTrailingZeros(pawn);
-            passedPawnScore |= pawnFeatures[EvaluationConstants.PAWN_UNBLOCKED];
+            passedPawnScore |= startPawnFeatures[EvaluationConstants.PAWN_UNBLOCKED];
             
             if ((pawn & notHomeRanks) != 0) {
                 final long stopSq = turn == WHITE ? pawn << 8 : pawn >>> 8;
 
                 if ((stopSq & allPieces) == 0) {
-                    passedPawnScore += pawnFeatures[EvaluationConstants.PAWN_OPEN_STOP_SQUARE];
+                    passedPawnScore += startPawnFeatures[EvaluationConstants.PAWN_OPEN_STOP_SQUARE];
                 }
 
                 if ((stopSq & squaresEnemyThreatens) == 0) {
-                    passedPawnScore += pawnFeatures[EvaluationConstants.PAWN_OPEN_STOP_SQUARE];
+                    passedPawnScore += startPawnFeatures[EvaluationConstants.PAWN_OPEN_STOP_SQUARE];
                 }
 
                 long fileBehind = fileForward[1 - turn][pawnIndex];
 
                 if ((fileBehind & (board.pieces[turn][ROOK] | board.pieces[turn][QUEEN])) != 0) {
-                    passedPawnScore += pawnFeatures[EvaluationConstants.ROOK_OR_QUEEN_BEHIND_PP];
+                    passedPawnScore += startPawnFeatures[EvaluationConstants.ROOK_OR_QUEEN_BEHIND_PP];
                 }
 
             } else {
                 // small bonus for passed pawns a long way away from promoting
-                passedPawnScore += pawnFeatures[EvaluationConstants.PAWN_YOUNG_PASSED];
+                passedPawnScore += startPawnFeatures[EvaluationConstants.PAWN_YOUNG_PASSED];
             } 
 
             myPassedPawns &= myPassedPawns - 1;

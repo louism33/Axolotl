@@ -3,16 +3,49 @@ package com.github.louism33.axolotl.evaluation;
 public final class EvaluationConstants {
 
     // general numbers
-    public static int SHORT_MINIMUM = -31000;
-    public static int SHORT_MAXIMUM = 31000;
-    public static int IN_CHECKMATE_SCORE = -30000;
-    public static int CHECKMATE_ENEMY_SCORE = -IN_CHECKMATE_SCORE;
-    public static int IN_CHECKMATE_SCORE_MAX_PLY = IN_CHECKMATE_SCORE + 100;
-    public static int CHECKMATE_ENEMY_SCORE_MAX_PLY = -IN_CHECKMATE_SCORE_MAX_PLY;
-    public static int IN_STALEMATE_SCORE = 0;
+    public static final int SHORT_MINIMUM = -31000;
+    public static final int SHORT_MAXIMUM = 31000;
+    public static final int IN_CHECKMATE_SCORE = -30000;
+    public static final int CHECKMATE_ENEMY_SCORE = -IN_CHECKMATE_SCORE;
+    public static final int IN_CHECKMATE_SCORE_MAX_PLY = IN_CHECKMATE_SCORE + 100;
+    public static final int CHECKMATE_ENEMY_SCORE_MAX_PLY = -IN_CHECKMATE_SCORE_MAX_PLY;
+    public static final int IN_STALEMATE_SCORE = 0;
 
+    public static boolean ready = false;
+    
+    public static void setup() {
+        material = new int[startMaterial.length];
+        for (int i = 0; i < startMaterial.length; i++) {
+            material[i] = Score.bs(startMaterial[i], endMaterial[i]);
+        }
+
+        pawnFeatures = new int[startPawnFeatures.length];
+        for (int i = 0; i < startPawnFeatures.length; i++) {
+            pawnFeatures[i] = Score.bs(startPawnFeatures[i], endPawnFeatures[i]);
+        }
+
+        knightFeatures = new int[startKnightFeatures.length];
+        for (int i = 0; i < startKnightFeatures.length; i++) {
+            knightFeatures[i] = Score.bs(startKnightFeatures[i], endKnightFeatures[i]);
+        }
+
+        bishopFeatures = new int[startBishopFeatures.length];
+        for (int i = 0; i < startBishopFeatures.length; i++) {
+            bishopFeatures[i] = Score.bs(startBishopFeatures[i], endBishopFeatures[i]);
+        }
+
+        rookFeatures = new int[startRookFeatures.length];
+        for (int i = 0; i < startRookFeatures.length; i++) {
+            rookFeatures[i] = Score.bs(startRookFeatures[i], endRookFeatures[i]);
+        }
+        
+        ready = true;
+    }
+    
     // piece values
-    public static int[] material = {100, 308, 327, 526, 1006};
+    public static final int[] startMaterial = {100, 411, 427, 597, 1283};
+    public static final int[] endMaterial = {100, 295, 319, 536, 1048};
+    static int[] material;
 
     static final int P                  = 0;
     static final int K                  = 1;
@@ -20,7 +53,7 @@ public final class EvaluationConstants {
     static final int R                  = 3;
     static final int Q                  = 4;
 
-    public static int[] pinnedPiecesScores = {0, 11, -20, -12, -19, -19, 0};
+    public static final int[] pinnedPiecesScores = {0, 11, -7, -12, -45, -6, 0};
 
     // misc factors
     static final int MY_TURN_BONUS                        = 0;
@@ -31,60 +64,72 @@ public final class EvaluationConstants {
     public static final int[] miscFeatures = {8, 0, 15};
 
     // pawn valuation
-    static int PAWN_UNBLOCKED                       = 0;
-    static int PAWN_OPEN_STOP_SQUARE                = 1;
-    static int PAWN_ISOLATED                        = 2;
-    static int PAWN_BACKWARDS                       = 3;
-    static int ROOK_OR_QUEEN_BEHIND_PP              = 4;
-    static int PAWN_DOUBLED                         = 5;
-    static int PAWN_PROTECTED_BY_PAWNS              = 6;
-    static int PAWN_NEIGHBOURS                      = 7;
-    static int PAWN_THREATENS_BIG_THINGS            = 8;
-    static int PAWN_CANDIDATE                       = 9;
-    static int PAWN_YOUNG_PASSED                    = 10;
+    static final int PAWN_UNBLOCKED                       = 0;
+    static final int PAWN_OPEN_STOP_SQUARE                = 1;
+    static final int PAWN_ISOLATED                        = 2;
+    static final int PAWN_BACKWARDS                       = 3;
+    static final int ROOK_OR_QUEEN_BEHIND_PP              = 4;
+    static final int PAWN_DOUBLED                         = 5;
+    static final int PAWN_PROTECTED_BY_PAWNS              = 6;
+    static final int PAWN_NEIGHBOURS                      = 7;
+    static final int PAWN_THREATENS_BIG_THINGS            = 8;
+    static final int PAWN_CANDIDATE                       = 9;
+    static final int PAWN_YOUNG_PASSED                    = 10;
 
-    public static int[] pawnFeatures = {0, 0, 0, 2, -3, 0, 0, 0, -7, 3, 0};
-
+    public static final int[] startPawnFeatures = {13, 13, 0, 2, -16, 0, 0, 0, 6, 3, -13};
+    public static final int[] endPawnFeatures =   {13, 13, 0, 2, 10, 0, 0, 0, -7, 3, 0};
+    static int[] pawnFeatures;
+    
     // knights valuation
-    static int KNIGHT_PAWN_NUMBER_BONUS             = 0;
-    static int KNIGHT_ATTACK_KING_UNITS             = 1;
-    static int KNIGHT_ON_OUTPOST_BONUS              = 2;
-    static int KNIGHT_REACH_OUTPOST_BONUS           = 3;
-    static int KNIGHT_PROTECTED_PAWN                = 4;
-    static int KNIGHT_FORK                          = 5;
+    static final int KNIGHT_PAWN_NUMBER_BONUS             = 0;
+    static final int KNIGHT_ATTACK_KING_UNITS             = 1;
+    static final int KNIGHT_ON_OUTPOST_BONUS              = 2;
+    static final int KNIGHT_REACH_OUTPOST_BONUS           = 3;
+    static final int KNIGHT_PROTECTED_PAWN                = 4;
+    static final int KNIGHT_FORK                          = 5;
 
-    public static int[] knightFeatures = {2, 4, 6, -3, 1, 17};
+    public static final int[] startKnightFeatures = {1, 18, 32, 9, 1, 69};
+    public static final int[] endKnightFeatures =   {1, 30, 6, -1, 2, 75};
+    static int[] knightFeatures;
 
 
     // bishop valuation
-    static int BISHOP_COLOUR_PAWNS                  = 0;
-    static int BISHOP_PROTECTED_PAWN                = 1;
-    static int BISHOP_ATTACK_KING_UNITS             = 2;
-    static int BISHOP_DOUBLE                        = 3;
-    static int BISHOP_PRIME_DIAGONAL                = 4;
-    static int BISHOP_ON_OUTPOST_BONUS              = 5;
-    static int BISHOP_REACH_OUTPOST_BONUS           = 6;
+    static final int BISHOP_COLOUR_PAWNS                  = 0;
+    static final int BISHOP_PROTECTED_PAWN                = 1;
+    static final int BISHOP_ATTACK_KING_UNITS             = 2;
+    static final int BISHOP_DOUBLE                        = 3;
+    static final int BISHOP_PRIME_DIAGONAL                = 4;
+    static final int BISHOP_ON_OUTPOST_BONUS              = 5;
+    static final int BISHOP_REACH_OUTPOST_BONUS           = 6;
 
-    public static int[] bishopFeatures = {0, 0, 10, 48, 9, 5, 1};
+    public static final int[] startBishopFeatures = {0, 0, 10, 48, 22, 31, 14};
+    public static final int[] endBishopFeatures =   {26, 13, 10, 35, 9, -8, 1};
+    public static int[] bishopFeatures;
 
     // rook valuation
-    static int ROOK_ON_SEVENTH_BONUS                = 0;
-    static int ROOK_OPEN_FILE_BONUS                 = 1;
-    static int ROOK_ATTACK_KING_UNITS               = 2;
-    static int ROOK_ON_SEMI_OPEN_FILE_BONUS         = 3;
-    static int TRAPPED_ROOK                         = 4;
-    static int ROOKS_ATTACK_UNDEFENDED_PAWNS        = 5;
-    static int ROOK_BATTERY_SCORE                   = 6;
+    static final int ROOK_ON_SEVENTH_BONUS                = 0;
+    static final int ROOK_OPEN_FILE_BONUS                 = 1;
+    static final int ROOK_ATTACK_KING_UNITS               = 2;
+    static final int ROOK_ON_SEMI_OPEN_FILE_BONUS         = 3;
+    static final int TRAPPED_ROOK                         = 4;
+    static final int ROOKS_ATTACK_UNDEFENDED_PAWNS        = 5;
+    static final int ROOK_BATTERY_SCORE                   = 6;
 
-    public static int[] rookFeatures = {46, 8, 22, 7, 13, 2, 26};
+    public static final int[] startRookFeatures = {46, 34, 9, 20, 13, 2, 26};
+    public static final int[] endRookFeatures =   {46, 8, 22, 7, 13, 2, 26};
+    public static int[] rookFeatures;
 
+    public static final int[] startQueenFeatures = {};
+    public static final int[] endQueenFeatures =   {};
+    public static int[] queenFeatures;
+    
     //safety
-    static int QUEEN_ATTACK_KING_LOOKUP_UNITS       = 0;
-    static int MISSING_QUEEN_KING_SAFETY_UNITS      = 1;
-    static int FRIENDLY_PIECE_NEAR_KING             = 2;
-    static int KING_NEAR_SEMI_OPEN_FILE_LOOKUP      = 3;
+    static final int QUEEN_ATTACK_KING_LOOKUP_UNITS       = 0;
+    static final int MISSING_QUEEN_KING_SAFETY_UNITS      = 1;
+    static final int FRIENDLY_PIECE_NEAR_KING             = 2;
+    static final int KING_NEAR_SEMI_OPEN_FILE_LOOKUP      = 3;
 
-    public static int[] kingSafetyMisc = {21, 5, 0, 3};
+    public static final int[] kingSafetyMisc = {21, 5, 0, 3};
 
     public static final int[] KING_SAFETY_ARRAY                  =  // -s are good
             // /* neutral: 20 */

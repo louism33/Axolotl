@@ -9,18 +9,45 @@ public final class EvaluatorPositionConstant {
     thanks to Tomasz Michniewski
     https://www.chessprogramming.org/Simplified_Evaluation_Function
      */
-    static final int[] PAWN_POSITION_SCORES_WHITE = {
+
+    public static boolean ready = false;
+
+    public static final int[] PAWN_START_WHITE = {
             0, 0, 0, 0, 0, 0, 0, 0,
-            86, 86, 76, 74, 74, 76, 86, 86,
-            43, 43, 46, 48, 48, 46, 43, 43,
-            15, 19, 8, 6, 6, 8, 19, 15,
-            -3, 5, -5, 4, 4, -5, 5, -3,
-            -4, 8, -1, -1, -1, -1, 8, -4,
-            -8, 12, 3, -16, -16, 3, 12, -8,
+            96, 91, 86, 59, 59, 86, 91, 96,
+            43, 48, 46, 48, 48, 46, 48, 43,
+            0, 29, 8, 11, 11, 8, 29, 0,
+            -13, 0, -5, 19, 19, -5, 0, -13,
+            -4, 18, -1, -1, -1, -1, 18, -4,
+            -13, 17, -7, -21, -21, -7, 17, -13,
+            0, 0, 0, 0, 0, 0, 0, 0,
+    };   
+    
+    public static final int[] PAWN_END_WHITE = {
+            0, 0, 0, 0, 0, 0, 0, 0,
+            96, 96, 86, 79, 79, 86, 96, 96,
+            53, 53, 56, 48, 48, 56, 53, 53,
+            20, 19, 8, -4, -4, 8, 19, 20,
+            -3, 5, -10, -6, -6, -10, 5, -3,
+            -4, 8, -6, -1, -1, -6, 8, -4,
+            -3, 7, 8, -6, -6, 8, 7, -3,
             0, 0, 0, 0, 0, 0, 0, 0,
     };
 
-    static final int[] KNIGHT_POSITION_SCORES_WHITE = {
+
+
+    public static final int[] KNIGHT_START_WHITE = {
+            -50, -44, -25, -35, -35, -25, -44, -50,
+            -35, -19, 9, -9, -9, 9, -19, -35,
+            -42, 8, 10, 21, 21, 10, 8, -42,
+            -30, 5, 15, 15, 15, 15, 5, -30,
+            -30, 0, 15, 19, 19, 15, 0, -30,
+            -29, 4, 10, 20, 20, 10, 4, -29,
+            -40, -20, 0, 2, 2, 0, -20, -40,
+            -56, -32, -29, -30, -30, -29, -32, -56,
+    };
+
+    public static final int[] KNIGHT_END_WHITE = {
             -50, -39, -30, -30, -30, -30, -39, -50,
             -40, -19, 9, -9, -9, 9, -19, -40,
             -42, 8, 10, 21, 21, 10, 8, -42,
@@ -31,21 +58,32 @@ public final class EvaluatorPositionConstant {
             -51, -32, -29, -30, -30, -29, -32, -51,
     };
 
-    static final int[] BISHOP_POSITION_SCORES_WHITE = {
-            -22, -8, -10, -10, -10, -10, -8, -22,
-            -11, -1, 2, -1, -1, 2, -1, -11,
-            -10, 2, 5, 10, 10, 5, 2, -10,
+    public static final int[] BISHOP_START_WHITE = {
+            -22, -13, -5, -15, -15, -5, -13, -22,
+            -16, -1, 2, -6, -6, 2, -1, -16,
+            -5, 2, 5, 10, 10, 5, 2, -5,
             -10, 5, 6, 10, 10, 6, 5, -10,
             -1, 0, 7, 10, 10, 7, 0, -1,
             -10, 9, 10, 10, 10, 10, 9, -10,
-            -11, 3, -1, -2, -2, -1, 3, -11,
-            -21, -13, -12, -12, -12, -12, -13, -21,
+            -11, 8, 4, -2, -2, 4, 8, -11,
+            -26, -13, -12, -12, -12, -12, -13, -26,
     };
 
-    static final int[] ROOK_POSITION_SCORES_WHITE =   {
-            1, -1, 0, 1, 1, 0, -1, 1,
-            6, 11, 11, 10, 10, 11, 11, 6,
-            -5, 0, 1, 0, 0, 1, 0, -5,
+    public static final int[] BISHOP_END_WHITE = {
+            -22, -13, -5, -15, -15, -5, -13, -22,
+            -16, -1, 2, -6, -6, 2, -1, -16,
+            -5, 2, 5, 10, 10, 5, 2, -5,
+            -10, 5, 6, 10, 10, 6, 5, -10,
+            -1, 0, 7, 10, 10, 7, 0, -1,
+            -10, 9, 10, 10, 10, 10, 9, -10,
+            -11, 8, 4, -2, -2, 4, 8, -11,
+            -26, -13, -12, -12, -12, -12, -13, -26,
+    };
+
+    public static final int[] ROOK_START_WHITE =   {
+            1, -4, 3, -2, -2, 3, -4, 1,
+            6, 14, 11, 10, 10, 11, 14, 6,
+            -5, 3, 1, 0, 0, 1, 3, -5,
             -5, 0, 0, 0, 0, 0, 0, -5,
             -5, 0, 0, 1, 1, 0, 0, -5,
             -5, 0, 0, 0, 0, 0, 0, -5,
@@ -53,7 +91,18 @@ public final class EvaluatorPositionConstant {
             -1, 0, -1, 5, 5, 4, 0, -1,
     };
 
-    static final int[] QUEEN_POSITION_SCORES_WHITE =   {
+    public static final int[] ROOK_END_WHITE =   {
+            1, -1, 0, 1, 1, 0, -1, 1,
+            6, 11, 14, 10, 10, 14, 11, 6,
+            -5, 0, 1, 0, 0, 1, 0, -5,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            -5, 0, 0, 1, 1, 0, 0, -5,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            -4, 3, -1, 5, 5, 4, 3, -4,
+    };
+
+    public static final int[] QUEEN_START_WHITE =   {
             -20, -10, -10, -4, -4, -10, -10, -20,
             -10, 0, 1, 0, 0, 1, 0, -10,
             -10, -1, 5, 6, 6, 5, -1, -10,
@@ -62,10 +111,20 @@ public final class EvaluatorPositionConstant {
             -10, 5, 5, 5, 5, 5, 0, -10,
             -10, 0, 6, 0, 0, 1, 0, -10,
             -19, -10, -10, -3, -3, -10, -10, -19,
-
     };
 
-    static final int[] KING_POSITION_SCORES_START_WHITE =   {
+    public static final int[] QUEEN_END_WHITE =   {
+            -20, -10, -10, -4, -4, -10, -10, -20,
+            -10, 0, 1, 0, 0, 1, 0, -10,
+            -10, -1, 5, 6, 6, 5, -1, -10,
+            -5, 0, 5, 5, 5, 5, 0, -5,
+            0, 0, 4, 5, 5, 4, 0, -5,
+            -10, 5, 5, 5, 5, 5, 0, -10,
+            -10, 0, 6, 0, 0, 1, 0, -10,
+            -19, -10, -10, -3, -3, -10, -10, -19,
+    };
+
+    public static final int[] KING_START_WHITE =   {
             -52, -87, -73, -99, -99, -73, -87, -52,
             -60, -81, -79, -100, -100, -79, -81, -60,
             -60, -81, -80, -99, -99, -80, -81, -60,
@@ -76,7 +135,7 @@ public final class EvaluatorPositionConstant {
             39, 65, 24, -14, -14, 24, 65, 39
     };
 
-    static final int[] KING_POSITION_SCORES_END_WHITE =   {
+    public static final int[] KING_END_WHITE =   {
             -55, -40, -30, -20, -20, -30, -40, -55,
             -25, -20, -10, 0, 0, -10, -20, -25,
             -30, -15, 20, 30, 30, 20, -15, -30,
@@ -87,46 +146,30 @@ public final class EvaluatorPositionConstant {
             -50, -30, -30, -30, -30, -30, -30, -50,
     };
     
-    static final int[] PAWN_POSITION_SCORES_BLACK = new int[64];
-    static final int[] KNIGHT_POSITION_SCORES_BLACK = new int[64];
-    static final int[] BISHOP_POSITION_SCORES_BLACK = new int[64];
-    static final int[] ROOK_POSITION_SCORES_BLACK = new int[64];
-    static final int[] QUEEN_POSITION_SCORES_BLACK = new int[64];
-    static final int[] KING_POSITION_SCORES_START_BLACK = new int[64];
-    static final int[] KING_POSITION_SCORES_END_BLACK = new int[64];
-
-
-    public static final int[][][] POSITION_SCORES = new int[2][7][64];
-    static {
-
+    public static int[][][] POSITION_SCORES;
+    
+    public static void setup() {
+        POSITION_SCORES = new int[2][7][64];
         for (int i = 0; i < 64; i++) {
             int index = (7 - i / 8) * 8 + (i & 7);
-            PAWN_POSITION_SCORES_BLACK[i] = PAWN_POSITION_SCORES_WHITE[index];
-            KNIGHT_POSITION_SCORES_BLACK[i] = KNIGHT_POSITION_SCORES_WHITE[index];
-            BISHOP_POSITION_SCORES_BLACK[i] = BISHOP_POSITION_SCORES_WHITE[index];
-            ROOK_POSITION_SCORES_BLACK[i] = ROOK_POSITION_SCORES_WHITE[index];
-            QUEEN_POSITION_SCORES_BLACK[i] = QUEEN_POSITION_SCORES_WHITE[index];
-            KING_POSITION_SCORES_START_BLACK[i] = KING_POSITION_SCORES_START_WHITE[index];
-            KING_POSITION_SCORES_END_BLACK[i] = KING_POSITION_SCORES_END_WHITE[index];
-        }
-        
-        
-        POSITION_SCORES[WHITE][PAWN] = PAWN_POSITION_SCORES_WHITE;
-        POSITION_SCORES[WHITE][KNIGHT] = KNIGHT_POSITION_SCORES_WHITE;
-        POSITION_SCORES[WHITE][BISHOP] = BISHOP_POSITION_SCORES_WHITE;
-        POSITION_SCORES[WHITE][ROOK] = ROOK_POSITION_SCORES_WHITE;
-        POSITION_SCORES[WHITE][QUEEN] = QUEEN_POSITION_SCORES_WHITE;
-        POSITION_SCORES[WHITE][KING] = KING_POSITION_SCORES_START_WHITE;
-        POSITION_SCORES[WHITE][KING-KING] = KING_POSITION_SCORES_END_WHITE;
+            POSITION_SCORES[WHITE][PAWN][i] = Score.bs(PAWN_START_WHITE[i], PAWN_END_WHITE[i]);
+            POSITION_SCORES[WHITE][KNIGHT][i] = Score.bs(KNIGHT_START_WHITE[i], KNIGHT_END_WHITE[i]);
+            POSITION_SCORES[WHITE][BISHOP][i] = Score.bs(BISHOP_START_WHITE[i], BISHOP_END_WHITE[i]);
+            POSITION_SCORES[WHITE][ROOK][i] = Score.bs(ROOK_START_WHITE[i], ROOK_END_WHITE[i]);
+            POSITION_SCORES[WHITE][QUEEN][i] = Score.bs(QUEEN_START_WHITE[i], QUEEN_END_WHITE[i]);
+            POSITION_SCORES[WHITE][KING][i] = Score.bs(KING_START_WHITE[i], KING_END_WHITE[i]);
 
-        POSITION_SCORES[BLACK][PAWN] = PAWN_POSITION_SCORES_BLACK;
-        POSITION_SCORES[BLACK][KNIGHT] = KNIGHT_POSITION_SCORES_BLACK;
-        POSITION_SCORES[BLACK][BISHOP] = BISHOP_POSITION_SCORES_BLACK;
-        POSITION_SCORES[BLACK][ROOK] = ROOK_POSITION_SCORES_BLACK;
-        POSITION_SCORES[BLACK][QUEEN] = QUEEN_POSITION_SCORES_BLACK;
-        POSITION_SCORES[BLACK][KING] = KING_POSITION_SCORES_START_BLACK;
-        POSITION_SCORES[BLACK][KING-KING] = KING_POSITION_SCORES_END_BLACK;
+            POSITION_SCORES[BLACK][PAWN][i] = Score.bs(PAWN_START_WHITE[index], PAWN_END_WHITE[index]);
+            POSITION_SCORES[BLACK][KNIGHT][i] = Score.bs(KNIGHT_START_WHITE[index], KNIGHT_END_WHITE[index]);
+            POSITION_SCORES[BLACK][BISHOP][i] = Score.bs(BISHOP_START_WHITE[index], BISHOP_END_WHITE[index]);
+            POSITION_SCORES[BLACK][ROOK][i] = Score.bs(ROOK_START_WHITE[index], ROOK_END_WHITE[index]);
+            POSITION_SCORES[BLACK][QUEEN][i] = Score.bs(QUEEN_START_WHITE[index], QUEEN_END_WHITE[index]);
+            POSITION_SCORES[BLACK][KING][i] = Score.bs(KING_START_WHITE[index], KING_END_WHITE[index]);
+        }
+
+        ready = true;
     }
+    
 
 
     public static final int[][] mobilityScores = new int[4][32]; // no mobility for pawns or kings
