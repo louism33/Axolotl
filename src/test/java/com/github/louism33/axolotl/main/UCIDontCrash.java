@@ -20,7 +20,7 @@ public class UCIDontCrash {
     
 
 //    @Test
-//    void searchResetSearch() throws IllegalNotationException {
+//    void searchResetSearch()  {
 //        UCIEntryOld uciEntry = new UCIEntryOld();
 //        EngineBetter.resetFull();
 //        EngineBetter.uciEntry = uciEntry;

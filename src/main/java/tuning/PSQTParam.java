@@ -45,7 +45,7 @@ public class PSQTParam {
     public String toString() {
         return "PSQTParam{" +
                 "name='" + name + '\'' +
-                ", onlyDo=" + onlyDo +
+                ", onlyDo=" + onlyDo + " , delta: " + delta + 
                 '}';
     }
 

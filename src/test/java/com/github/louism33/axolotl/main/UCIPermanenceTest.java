@@ -17,7 +17,7 @@ public class UCIPermanenceTest {
     }
     
 //    @Test
-//    void persistBoardTest() throws IllegalNotationException {
+//    void persistBoardTest()  {
 //        String mmm = "e2e4 ";
 //        GenericBoard genericBoard = new GenericBoard(518);
 //        EngineBetter.resetFull();

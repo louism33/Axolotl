@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.transpositiontable;
 
-import com.fluxchess.jcpi.models.GenericMove;
 import com.github.louism33.axolotl.main.PVLine;
 import com.github.louism33.axolotl.search.EngineBetter;
 import com.github.louism33.chesscore.Chessboard;
@@ -39,11 +38,11 @@ public class TranspositionTable2Test {
 
         Assert.assertEquals(bestMove, move);
 
-        List<GenericMove> genericMoves = PVLine.retrievePV(board);
+        List<String> genericMoves = PVLine.retrievePV(board);
 
-        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0).toString()));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0)));
 
-        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(1).toString()));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(1)));
 
         EngineBetter.resetFull();
     }
@@ -207,10 +206,10 @@ public class TranspositionTable2Test {
         long previousTableData1 = retrieveFromTable(board.zobristHash);
         Assert.assertTrue(previousTableData1 != 0);
 
-        List<GenericMove> genericMoves = PVLine.retrievePV(board);
+        List<String> genericMoves = PVLine.retrievePV(board);
 
-        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0).toString()));
-        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(1).toString()));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0)));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(1)));
 
         EngineBetter.resetBetweenMoves();
         long previousTableData2 = retrieveFromTable(board.zobristHash);
@@ -229,9 +228,9 @@ public class TranspositionTable2Test {
         long previousTableData1 = retrieveFromTable(board.zobristHash);
         Assert.assertTrue(previousTableData1 != 0);
 
-        List<GenericMove> genericMoves = PVLine.retrievePV(board);
+        List<String> genericMoves = PVLine.retrievePV(board);
 
-        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0).toString()));
+        board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0)));
 
         EngineBetter.resetFull();
         long previousTableData2 = retrieveFromTable(board.zobristHash);

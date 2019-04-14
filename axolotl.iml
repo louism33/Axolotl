@@ -20,7 +20,6 @@
     <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.2.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.j2objc:j2objc-annotations:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.mojo:animal-sniffer-annotations:1.17" level="project" />
-    <orderEntry type="library" name="Maven: com.fluxchess.jcpi:jcpi:1.4.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven.plugins:maven-surefire-plugin:2.22.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven.surefire:maven-surefire-common:2.22.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven:maven-plugin-api:2.2.1" level="project" />

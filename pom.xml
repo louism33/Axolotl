@@ -260,10 +260,10 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>maven.fluxchess.com</id>
-            <url>http://maven.fluxchess.com/release</url>
-        </repository>
+        <!--<repository>-->
+            <!--<id>maven.fluxchess.com</id>-->
+            <!--<url>http://maven.fluxchess.com/release</url>-->
+        <!--</repository>-->
 
         <!--<repository>-->
             <!--<id>com.github.louism33</id>-->
@@ -290,11 +290,11 @@
             <version>27.0.1-jre</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.fluxchess.jcpi</groupId>
-            <artifactId>jcpi</artifactId>
-            <version>1.4.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.fluxchess.jcpi</groupId>-->
+            <!--<artifactId>jcpi</artifactId>-->
+            <!--<version>1.4.1</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>

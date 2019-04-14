@@ -1,6 +1,5 @@
 package standalone;
 
-import com.fluxchess.jcpi.models.IllegalNotationException;
 import com.github.louism33.axolotl.evaluation.EvalPrintObject;
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.chesscore.Chessboard;
@@ -14,13 +13,13 @@ import static com.github.louism33.chesscore.BoardConstants.WHITE;
 public class EvaluatorSituations {
 
     @Test
-    public void start() throws IllegalNotationException {
+    public void start()  {
         Chessboard board = new Chessboard();
         printNStuff(board);
     } 
     
     @Test
-    public void startMirrorKing() throws IllegalNotationException {
+    public void startMirrorKing() {
         Chessboard board = new Chessboard();
         printNStuff(board);
 
@@ -32,7 +31,7 @@ public class EvaluatorSituations {
     }    
     
     @Test
-    public void highKingSafety() throws IllegalNotationException {
+    public void highKingSafety()  {
         Chessboard board = new Chessboard();
         printNStuff(board);
         Chessboard board1 = new Chessboard("rnbqkbnr/pppppppp/8/8/8/5NP1/PPPPPPBP/RNBQ1RK1 w KQkq -");
@@ -41,13 +40,13 @@ public class EvaluatorSituations {
     
     
     @Test
-    public void neutralKingSafety() throws IllegalNotationException {
+    public void neutralKingSafety()  {
         Chessboard board = new Chessboard("rnbqkbnr/pppppppp/8/8/8/8/2K5/8 w KQkq -");
         printNStuff(board);
     }    
     
     @Test
-    public void ksWithoutQueen() throws IllegalNotationException {
+    public void ksWithoutQueen()  {
         Chessboard board = new Chessboard("r1bqk1nr/1pppbppp/p1n5/4p3/B3P3/3P1N2/PPP2PPP/RNBQK2R w KQkq -");
         printNStuff(board);
 
@@ -58,13 +57,13 @@ public class EvaluatorSituations {
     }    
     
     @Test
-    public void castle() throws IllegalNotationException {
+    public void castle()  {
         Chessboard board = new Chessboard("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQ1RK1 w kq -");
         printNStuff(board);
     }
 
     @Test
-    public void prePostCastle() throws IllegalNotationException {
+    public void prePostCastle()  {
         Chessboard board = new Chessboard("r1bqk1nr/1pppbppp/p1n5/4p3/B3P3/3P1N2/PPP2PPP/RNBQK2R w KQkq -");
         printNStuff(board);
 
@@ -76,19 +75,19 @@ public class EvaluatorSituations {
     }
     
     @Test
-    public void postCastle() throws IllegalNotationException {
+    public void postCastle()  {
         Chessboard board = new Chessboard("r1bqk1nr/1ppp1ppp/p1n5/2b1p3/B3P3/3P1N2/PPP2PPP/RNBQ1RK1 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void bishopExtremeColourWeakness() throws IllegalNotationException {
+    public void bishopExtremeColourWeakness()  {
         Chessboard board = new Chessboard("4k3/1p3p1p/p1p1p1p1/3p4/4P3/1P1P1P1P/P1P3P1/4KB2 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void space() throws IllegalNotationException {
+    public void space()  {
         Chessboard board = new Chessboard();
         printNStuff(board);
 
@@ -102,7 +101,7 @@ public class EvaluatorSituations {
     }
 
     @Test
-    public void compareBishopColourScores() throws IllegalNotationException {
+    public void compareBishopColourScores()  {
         Chessboard board = new Chessboard();
         printNStuff(board);
 
@@ -118,7 +117,7 @@ public class EvaluatorSituations {
     }
 
     @Test
-    public void compareKnights2() throws IllegalNotationException {
+    public void compareKnights2()  {
         Chessboard board = new Chessboard();
 
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e2e4"));
@@ -136,7 +135,7 @@ public class EvaluatorSituations {
     }
     
     @Test
-    public void compareKnights() throws IllegalNotationException {
+    public void compareKnights()  {
         Chessboard board = new Chessboard();
         printNStuff(board);
 
@@ -152,7 +151,7 @@ public class EvaluatorSituations {
     }
 
     @Test
-    public void compareBnTradeToRetreat() throws IllegalNotationException {
+    public void compareBnTradeToRetreat()  {
         Chessboard board = new Chessboard();
 
         printNStuff(board);
@@ -180,91 +179,91 @@ public class EvaluatorSituations {
     }
 
     @Test
-    public void oneBishopReachUndefOutpost() throws IllegalNotationException {
+    public void oneBishopReachUndefOutpost()  {
         Chessboard board = new Chessboard("4k3/pp1p1ppp/8/8/8/2B5/8/4K3 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void oneBishopReachDefOutpost() throws IllegalNotationException {
+    public void oneBishopReachDefOutpost()  {
         Chessboard board = new Chessboard("4k3/pp1p1ppp/8/8/4P3/1B6/8/4K3 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void oneBishopOnUndefOutpost() throws IllegalNotationException {
+    public void oneBishopOnUndefOutpost()  {
         Chessboard board = new Chessboard("4k3/pp1p1ppp/8/3B4/8/8/8/4K3 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void oneBishopOnDefOutpost() throws IllegalNotationException {
+    public void oneBishopOnDefOutpost()  {
         Chessboard board = new Chessboard("4k3/pp1p1ppp/8/3B4/4P3/8/8/4K3 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void oneKnightReachUndefOutpost() throws IllegalNotationException {
+    public void oneKnightReachUndefOutpost()  {
         Chessboard board = new Chessboard("4k3/pp1p1ppp/8/8/8/2N5/8/4K3 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void oneKnightReachDefOutpost() throws IllegalNotationException {
+    public void oneKnightReachDefOutpost()  {
         Chessboard board = new Chessboard("4k3/pp1p1ppp/8/8/4P3/2N5/8/4K3 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void oneKnightOnUndefOutpost() throws IllegalNotationException {
+    public void oneKnightOnUndefOutpost()  {
         Chessboard board = new Chessboard("4k3/pp1p1ppp/8/3N4/8/8/8/4K3 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void oneKnightOnDefOutpost() throws IllegalNotationException {
+    public void oneKnightOnDefOutpost()  {
         Chessboard board = new Chessboard("4k3/pp1p1ppp/8/3N4/4P3/8/8/4K3 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void reach2Outposts() throws IllegalNotationException {
+    public void reach2Outposts()  {
         Chessboard board = new Chessboard("rnbqkbnr/1p1p1ppp/8/8/P3P3/2N5/1PPP1PPP/R1BQKBNR w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void knightReach2OutpostsUndefended() throws IllegalNotationException {
+    public void knightReach2OutpostsUndefended()  {
         Chessboard board = new Chessboard("4k3/1p1p1ppp/8/8/8/2N5/PPPPPPPP/4K3 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void rookSemi() throws IllegalNotationException {
+    public void rookSemi()  {
         Chessboard board = new Chessboard("4k3/pppppppp/8/8/8/8/8/R2K4 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void rookThreatenPawns() throws IllegalNotationException {
+    public void rookThreatenPawns()  {
         Chessboard board = new Chessboard("4k3/1ppppppp/p7/8/8/8/8/R2K4 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void rookOpen() throws IllegalNotationException {
+    public void rookOpen()  {
         Chessboard board = new Chessboard("4k3/1ppppppp/8/8/8/8/8/R2K4 w KQkq -");
         printNStuff(board);
     }
 
     @Test
-    public void rookBattery() throws IllegalNotationException {
+    public void rookBattery()  {
         Chessboard board = new Chessboard("4k3/pppppppp/8/8/8/R7/8/R2K4 w KQkq -");
         printNStuff(board);
     }
     
     @Test
-    public void whiteCantCastle() throws IllegalNotationException {
+    public void whiteCantCastle()  {
         Chessboard board = new Chessboard();
         printNStuff(board);
         Chessboard board1 = new Chessboard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w kq -");

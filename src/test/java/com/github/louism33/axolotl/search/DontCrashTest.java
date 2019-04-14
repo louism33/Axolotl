@@ -35,7 +35,7 @@
 //    }
 //    
 //    @Test
-//    void searchMovesTest() throws IllegalNotationException {
+//    void searchMovesTest()  {
 //        String mmm = "d2d4";
 //        String[] ms = mmm.split(" ");
 //
@@ -74,7 +74,7 @@
 //    }
 //
 //    @Test
-//    void movesToGoTest() throws IllegalNotationException {
+//    void movesToGoTest()  {
 //        String mmm = "d2d4";
 //        String[] ms = mmm.split(" ");
 //
@@ -110,7 +110,7 @@
 //
 //
 //    @Test
-//    void ttStressTest() throws IllegalNotationException {
+//    void ttStressTest()  {
 //        String mmm = "e2e4 ";
 //        GenericBoard board = new GenericBoard(518);
 //        EngineBetter.resetFull();
@@ -150,7 +150,7 @@
 //    }
 //
 //    @Test
-//    void depthTest() throws IllegalNotationException {
+//    void depthTest()  {
 //        String mmm = "d2d4";
 //        String[] ms = mmm.split(" ");
 //
@@ -184,7 +184,7 @@
 //    }
 //
 //    @Test
-//    void clockTest() throws IllegalNotationException {
+//    void clockTest()  {
 //        String mmm = "d2d4";
 //        String[] ms = mmm.split(" ");
 //
@@ -221,7 +221,7 @@
 //    }
 //
 //    @Test
-//    void tirsaTest() throws IllegalNotationException {
+//    void tirsaTest()  {
 //        /*
 //        position startpos moves d2d4 d7d5 c2c4 e7e6 b1c3 c7c5 c4d5 c5d4 d1a4 c8d7 a4d4 e6d5 g1f3 b8c6 d4d1 f8b4 e2e3 g8f6
 //         */
@@ -261,7 +261,7 @@
 //
 //
 //    @Test
-//    void endgameTest() throws IllegalNotationException {
+//    void endgameTest()  {
 //
 //        String mmm = "c2c4 e7e5 b1c3 g8f6 g1f3 b8c6 e2e4 f8b4 d2d3 d7d6 f1e2 h7h6 e1g1 b4c3 b2c3 a7a5 c1e3 e8e7 d1c2 c8g4 a1b1 d8c8 d3d4 e5d4 f3d4 g4e2 c2e2 e7d7 f2f3 a5a4 d4f5 h8g8 e2d3 c6e5 d3e2 d7e6 a2a3 c7c5 b1b6 e5c6 f1d1 f6e8 f3f4 c8c7 d1b1 a8b8 e2f3 g8f8 f5g3 e8f6 f4f5 e6d7 f3e2 f8e8 e3f4 h6h5 e2d1 c6e5 f4g5 e8h8 g5f6 g7f6 g3h5 d7c8 d1e2 e5d7 b6b2 c7a5 b2c2 c8c7 h5f4 c7c6 e2d3 d7e5 d3d5 c6c7 f4d3 h8f8 d3e5 f6e5 f5f6 a5a6 c2f2 a6c6 d5d3 f8h8 h2h3 c6e8 d3d5 e8d7 f2f1 h8g8 g1h2 g8h8 h2g1 h8g8 g1h2 g8h8 b1b2 b7b6 b2f2 b6b5 f2d2 b5c4 d5c4 b8b6 d2d3 h8b8 f1d1 b8d8 d3d2 d7e6 c4a4 e6f6 h2g1 f6e6 c3c4 e6g6 a4a7 c7c6 d1e1 d8b8 a7a4 c6c7 a4a7 b8b7 a7a5 g6e6 d2c2 c7d7 a5d2 f7f5 d2d5 e6d5 e4d5 b6b3 e1a1 b7b8 g1h2 f5f4 a3a4 b3b1 a1b1 b8b1 c2a2 b1b4 a4a5 d7c8 a5a6 c8b8 h3h4 b8a7 h2h3 b4c4 h4h5 c4c3 h3g4 c3c1 g4f5 c1h1 f5e6 h1h2 a2a1 h2h5 e6d6 h5g5 d6c6 g5g2 d5d6 g2d2 d6d7 e5e4 a1a4 c5c4 a4c4 f4f3 c4e4 d2c2 c6d6 c2d2 d6e7 f3f2 e4f4 d2e2 e7d6 e2d2 d6e6 d2e2 e6d5 e2d2 d5e6 d2e2 e6d5 e2d2 d5c6 d2c2 c6b5 c2d2 d7d8q d2d8 f4f7 a7a8 f7f2 d8b8 b5a5 b8e8 f2f6 a8b8 a5b6 b8a8 f6c6 e8b8 b6a5 b8d8 a5b5 d8b8 c6b6 a8a7 b6b8 a7b8 b5b6 b8a8 b6c6 a8b8 c6c5";
 //        String[] ms = mmm.split(" ");
@@ -297,7 +297,7 @@
 //    } 
 //    
 //    @Test
-//    void extremeEndgameTest() throws IllegalNotationException {
+//    void extremeEndgameTest()  {
 //
 //        String mmm = "d2d4 d7d5 c1f4 e7e6 e2e3 f8d6 d1f3 g8f6 b1c3 e8g8 f1d3 c7c5 d4c5 d6c5 g1e2 b8c6 f4g5 c8d7 e1g1 c5e7 f3f4 e6e5 f4h4 e5e4 d3b5 c6e5 b5d7 d8d7 h4g3 e7d6 f2f4 e4f3 g5f6 e5g4 g3f3 g4f6 a1d1 f8d8 e2f4 d6f4 f3f4 d7e7 f4d4 a7a5 f1f4 a8c8 d4d3 d8e8 d1e1 e7e6 e1e2 e6c6 e2f2 e8e5 f4f5 c8e8 f2f3 e5f5 f3f5 e8d8 d3d4 d8d6 f5e5 b7b6 e5f5 d6d7 a2a3 h7h6 b2b4 c6e6 f5e5 e6c6 h2h3 d7d6 b4b5 c6d7 g2g4 d7d8 g1g2 d6d7 g4g5 h6g5 e5g5 d7d6 h3h4 d8e7 g2f2 e7e6 h4h5 g8h7 f2e2 e6d7 a3a4 h7h6 g5e5 d6e6 e5f5 e6d6 d4f4 h6h7 h5h6 d5d4 c3e4 f6e4 f4e4 d7e6 f5e5 e6g6 h6g7 g6e4 e5e4 d4e3 e4g4 h7g8 e2e3 d6h6 e3d4 h6h2 c2c3 h2a2 d4d5 f7f5 g4c4 g8g7 d5c6 g7f6 c6b6 f6e5 b6a5 a2g2 b5b6 g2b2 c4b4 b2d2 b6b7 d2d8 b7b8q d8b8 b4b8 e5e6 b8b7 f5f4 c3c4 e6e5 b7f7 e5e4 a5b6 e4e5 a4a5 e5e6 f7f8 e6e7 f8f4 e7e6 a5a6 e6e5 f4f8 e5d4 b6b5 d4e4 a6a7 e4d3 f8f3 d3e2 a7a8q e2d1 f3f1 d1d2 a8e4 d2c3 e4a8 c3d2 f1f4 d2c2 f4f8 c2d3 f8f3 d3e2 b5b4 e2d1 b4b5 d1e2 f3f4 e2d2 b5b4 d2d3 b4b5";
 //        
@@ -334,7 +334,7 @@
 //    }
 //    
 //    @Test
-//    void previousCrashTest() throws IllegalNotationException {
+//    void previousCrashTest()  {
 //
 //        String mmm = "d2d4 g8f6 c2c4 g7g6 b1c3 d7d6 e2e4 f8g7 g1f3 e8g8 f1d3 e7e5 e1g1 c8g4 d4d5 b8a6 c1g5 a6c5 b2b4 c5d3 d1d3 h7h6 g5f6 d8f6 f3d2 g6g5 a2a4 f6e7 f2f3 g4d7 b4b5 b7b6 d3c2 e7f6 d2b3 f6f4 c2e2 h6h5 b3c1 f4f6 c1d3 h5h4 e2b2 h4h3 g2g4 a7a5 b2e2 f8e8 d3f2 f6h6 c3d1 a8b8 d1e3 g7f6 e2d3 e8f8 f1d1 g8g7 a1a2 f8h8 d3b3 g7g8 a2c2 f6e7 d1f1 h6f6 f2h1 b8e8 h1g3 f6g6 b3c3 g8h7 c3d3 h7g8 f1d1 g6f6 d3c3 g8h7 c2f2 e8a8 c3d3 f6h6 d3f1 a8b8 g3h5 b8d8 f1h3 h7g8 h3g2 h6g6 f2c2 d8e8 g2f1 e8a8 f1e2 e7f6 e2d3 g8h7 d3b3 f6e7 c2d2 h7g8 h5g3 a8d8 d1e1 e7f6 d2c2 d8a8 b3d3 g8h7 c2e2 h7g7 g1h1 g7g8 e2b2 a8d8 e1c1 f6g7 h1g1 g7f6 b2a2 f6g7 c1f1 g7f6 d3c3 d8b8 a2e2 b8d8 f1c1 d8e8 c3b3 e8d8 e2d2 g8h7 b3d3 h7g8 g3h5 d8a8 d2e2 f6g7 e2c2";
 //        
@@ -372,7 +372,7 @@
 //
 //
 //    @Test
-//    void superLongGameTest() throws IllegalNotationException {
+//    void superLongGameTest()  {
 //        String mmm = "c2c4 e7e5 b1c3 g8f6 g1f3 b8c6 e2e4 f8b4 d2d3 d7d6 f1e2 h7h6 e1g1 b4c3 b2c3 a7a5 c1e3 e8e7 d1c2 c8g4 a1b1 d8c8 d3d4 e5d4 f3d4 g4e2 c2e2 e7d7 f2f3 a5a4 d4f5 h8g8 e2d3 c6e5 d3e2 d7e6 a2a3 c7c5 b1b6 e5c6 f1d1 f6e8 f3f4 c8c7 d1b1 a8b8 e2f3 g8f8 f5g3 e8f6 f4f5 e6d7 f3e2 f8e8 e3f4 h6h5 e2d1 c6e5 f4g5 e8h8 g5f6 g7f6 g3h5 d7c8 d1e2 e5d7 b6b2 c7a5 b2c2 c8c7 h5f4 c7c6 e2d3 d7e5 d3d5 c6c7 f4d3 h8f8 d3e5 f6e5 f5f6 a5a6 c2f2 a6c6 d5d3 f8h8 h2h3 c6e8 d3d5 e8d7 f2f1 h8g8 g1h2 g8h8 h2g1 h8g8 g1h2 g8h8 b1b2 b7b6 b2f2 b6b5 f2d2 b5c4 d5c4 b8b6 d2d3 h8b8 f1d1 b8d8 d3d2 d7e6 c4a4 e6f6 h2g1 f6e6 c3c4 e6g6 a4a7 c7c6 d1e1 d8b8 a7a4 c6c7 a4a7 b8b7 a7a5 g6e6 d2c2 c7d7 a5d2 f7f5 d2d5 e6d5 e4d5 b6b3 e1a1 b7b8 g1h2 f5f4 a3a4 b3b1 a1b1 b8b1 c2a2 b1b4 a4a5 d7c8 a5a6 c8b8 h3h4 b8a7 h2h3 b4c4 h4h5 c4c3 h3g4 c3c1 g4f5 c1h1 f5e6 h1h2 a2a1 h2h5 e6d6 h5g5 d6c6 g5g2 d5d6 g2d2 d6d7 e5e4 a1a4 c5c4 a4c4 f4f3 c4e4 d2c2 c6d6 c2d2 d6e7 f3f2 e4f4 d2e2 e7d6 e2d2 d6e6 d2e2 e6d5 e2d2 d5e6 d2e2 e6d5 e2d2 d5c6 d2c2 c6b5 c2d2 d7d8q d2d8 f4f7 a7a8 f7f2 d8b8 b5a5 b8e8 f2f6 a8b8 a5b6 b8a8 f6c6 e8b8 b6a5 b8d8 a5b5 d8b8 c6b6 a8a7 b6b8 a7b8 b5b6 b8a8 b6c6 a8b8 c6c5";
 //        String[] ms = mmm.split(" ");
 //

@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.main;
 
-import com.fluxchess.jcpi.models.GenericMove;
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MoveParser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,36 +15,8 @@ public final class PVLine {
 
     public static final int maxPVLength = 10;
 
-    public static List<GenericMove> retrievePVold(Chessboard board) {
-        Chessboard dummyBoard = new Chessboard(board);
-
-        List<GenericMove> pvMoves = new ArrayList<>(maxPVLength);
-
-        int i = 0;
-
-        while(i < maxPVLength) {
-            long entry = retrieveFromTable(dummyBoard.zobristHash);
-            if (entry == 0) {
-                break;
-            }
-
-            int move = getMove(entry) & MOVE_MASK_WITH_CHECK;
-
-            try {
-                dummyBoard.makeMoveAndFlipTurn(move);
-            } catch (Exception ignored) {
-                break;
-            }
-
-            pvMoves.add(UCIBoardParser.convertMyMoveToGenericMove(move));
-            i++;
-        }
-
-        return pvMoves;
-    }
-
-    public static List<GenericMove> retrievePV(Chessboard board) {
-        List<GenericMove> pvMoves = new ArrayList<>(maxPVLength);
+    public static List<String> retrievePV(Chessboard board) {
+        List<String> pvMoves = new ArrayList<>(maxPVLength);
 
         int i = 0;
 
@@ -58,7 +30,7 @@ public final class PVLine {
 
             board.makeMoveAndFlipTurn(move);
 
-            pvMoves.add(UCIBoardParser.convertMyMoveToGenericMove(move));
+            pvMoves.add(MoveParser.toString(move));
             i++;
         }
 

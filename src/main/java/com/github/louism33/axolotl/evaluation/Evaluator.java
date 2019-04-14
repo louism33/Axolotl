@@ -594,6 +594,9 @@ public final class Evaluator {
 
 
     static int getPercentageOfEndgameness(Chessboard board) {
+        /*
+        The latter is usually calculated without paying attention to Pawns, e.g. Q=6, R=3, N=B=1, P=0. Then the game phase can range from 32 (100% opening, 0% end-game) to 0 (0% opening, 100% end-game).
+         */
         int answer = 150;
 
         int pawnCountW = populationCount(board.pieces[WHITE][PAWN]);

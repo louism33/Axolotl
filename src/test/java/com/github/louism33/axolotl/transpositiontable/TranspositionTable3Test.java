@@ -19,7 +19,7 @@ public class TranspositionTable3Test {
     }
 
 //    @Test
-//    void depthTest() throws IllegalNotationException {
+//    void depthTest()  {
 //        UCIEntryOld uciEntry = new UCIEntryOld();
 //        EngineSpecifications.DEBUG = false;
 //        

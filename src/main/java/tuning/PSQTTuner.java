@@ -93,13 +93,13 @@ public class PSQTTuner {
 //            params.add(new PSQTParam("psqt knight start ", KNIGHT_START_WHITE));
 //            params.add(new PSQTParam("psqt knight end ", KNIGHT_END_WHITE));
 //            params.add(new PSQTParam("psqt bish start ", BISHOP_START_WHITE));
-//            params.add(new PSQTParam("psqt bish end ", BISHOP_END_WHITE));
-            params.add(new PSQTParam("psqt rook start ", ROOK_START_WHITE));
-            params.add(new PSQTParam("psqt rook end ", ROOK_END_WHITE));
+            params.add(new PSQTParam("psqt bish end ", BISHOP_END_WHITE));
+//            params.add(new PSQTParam("psqt rook start ", ROOK_START_WHITE));
+//            params.add(new PSQTParam("psqt rook end ", ROOK_END_WHITE));
 //            params.add(new PSQTParam("psqt queen start ", QUEEN_START_WHITE));
 //            params.add(new PSQTParam("psqt queen end ", QUEEN_END_WHITE));
 //            params.add(new PSQTParam("psqt king start ", KING_START_WHITE));
-//            params.add(new PSQTParam("psqt king end ", KING_END_WHITE));
+            params.add(new PSQTParam("psqt king end ", KING_END_WHITE));
 
 
             PSQTParam.delta = 3;
@@ -124,6 +124,8 @@ public class PSQTTuner {
                         List<Integer> changedIndexes = new ArrayList<>();
                         System.out.println(param);
                         param.printMe();
+                        bw.write("\n\nNEW\n");
+                        bw.flush();
                         bw.write(param.str());
                         bw.flush();
 
