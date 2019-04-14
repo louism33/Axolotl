@@ -91,7 +91,7 @@ public class TexelTuner {
             List<TexelParam> bestParams = getParams();
             int n = bestParams.size();
 
-            TexelParam.delta = 13;
+            TexelParam.delta = 5;
 
             while (TexelParam.delta >= 1) {
 
@@ -320,15 +320,12 @@ public class TexelTuner {
         
 //        texelParams.add(new TexelParam("pawn features start", startPawnFeatures));
 //        texelParams.add(new TexelParam("pawn features end", endPawnFeatures));
-        
-//        texelParams.add(new TexelParam("knight features start", startKnightFeatures));
-//        texelParams.add(new TexelParam("knight features end", endKnightFeatures));
-        
+        texelParams.add(new TexelParam("knight features start", startKnightFeatures));
+        texelParams.add(new TexelParam("knight features end", endKnightFeatures));
         texelParams.add(new TexelParam("bishop features start", startBishopFeatures));
         texelParams.add(new TexelParam("bishop features end", endBishopFeatures));
-        
-        texelParams.add(new TexelParam("rook features start", startRookFeatures));
-        texelParams.add(new TexelParam("rook features end", endRookFeatures));
+//        texelParams.add(new TexelParam("rook features start", startRookFeatures));
+//        texelParams.add(new TexelParam("rook features end", endRookFeatures));
         
 //        texelParams.add(new TexelParam("kingSafetyMisc features", kingSafetyMisc));
         

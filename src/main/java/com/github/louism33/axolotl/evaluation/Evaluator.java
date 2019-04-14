@@ -96,15 +96,14 @@ public final class Evaluator {
 
         // todo colour has insuf mat to mate
 
-
-
         final int turn = board.turn;
         
         final int myTurnScore = evalTurn(board, turn, pawnData);
         final int yourTurnScore = evalTurn(board, 1 - turn, pawnData);
 
-        int myPassedPawnScore = evalPassedPawnsByTurn(board, turn, pawnData); // todo bring together?
-        int enemyPassedPawnScore = evalPassedPawnsByTurn(board, 1 - turn, pawnData);
+        // todo bring together?
+        int myPassedPawnScore = Score.getScore(evalPassedPawnsByTurn(board, turn, pawnData), percentOfStartgame);
+        int enemyPassedPawnScore = Score.getScore(evalPassedPawnsByTurn(board, 1 - turn, pawnData), percentOfStartgame);
 
         int mks = attackingEnemyKingLookup[1 - turn] >= 0
                 ? attackingEnemyKingLookup[1 - turn]
@@ -198,17 +197,6 @@ public final class Evaluator {
         materialScore += populationCount(myBishops) * material[B];
         materialScore += populationCount(myRooks) * material[R];
         materialScore += populationCount(myQueens) * material[Q];
-
-        materialScore = Score.getScore(materialScore, percentOfStartgame);
-        
-//        materialScore += populationCount(myPawns) * startMaterial[P];
-//        materialScore += populationCount(myKnights) * startMaterial[K];
-//        materialScore += populationCount(myBishops) * startMaterial[B];
-//        materialScore += populationCount(myRooks) * startMaterial[R];
-//        materialScore += populationCount(myQueens) * startMaterial[Q];
-
-        
-        finalScore += materialScore;
 
         final long ignoreThesePieces = 0; // maybe pins
 
@@ -363,7 +351,7 @@ public final class Evaluator {
         int bishopsScore = 0;
 
         if (populationCount(myBishops) >= 2) {
-            bishopsScore += startBishopFeatures[EvaluationConstants.BISHOP_DOUBLE];
+            bishopsScore += bishopFeatures[EvaluationConstants.BISHOP_DOUBLE];
         }
 
         while (myBishops != 0){
@@ -380,16 +368,16 @@ public final class Evaluator {
                 mobilityScore += mobilityScores[BISHOP - 2][populationCount(table)];
 
                 if ((bishop & squaresMyPawnsThreaten) != 0) {
-                    bishopsScore += startBishopFeatures[EvaluationConstants.BISHOP_PROTECTED_PAWN];
+                    bishopsScore += bishopFeatures[EvaluationConstants.BISHOP_PROTECTED_PAWN];
                 }
 
                 //outpost, double score if defended by friendly pawn
                 if ((bishop & unthreatenableOutpostSpots) != 0) {
-                    bishopsScore += startBishopFeatures[EvaluationConstants.BISHOP_ON_OUTPOST_BONUS] * (1 + (populationCount(squaresMyPawnsThreaten & bishop)));
+                    bishopsScore += bishopFeatures[EvaluationConstants.BISHOP_ON_OUTPOST_BONUS] * (1 + (populationCount(squaresMyPawnsThreaten & bishop)));
                 } else {
                     long myThreatsToEmptyOutposts = table & (unthreatenableOutpostSpots & ~friends);
                     if (myThreatsToEmptyOutposts != 0) {
-                        bishopsScore += startBishopFeatures[EvaluationConstants.BISHOP_REACH_OUTPOST_BONUS] * (1 + (populationCount(squaresMyPawnsThreaten & myThreatsToEmptyOutposts)));
+                        bishopsScore += bishopFeatures[EvaluationConstants.BISHOP_REACH_OUTPOST_BONUS] * (1 + (populationCount(squaresMyPawnsThreaten & myThreatsToEmptyOutposts)));
                     }
                 }
 
@@ -398,14 +386,14 @@ public final class Evaluator {
                 }
 
                 if (populationCount(pseudoMoves & centreFourSquares) > 1) {
-                    bishopsScore += startBishopFeatures[EvaluationConstants.BISHOP_PRIME_DIAGONAL];
+                    bishopsScore += bishopFeatures[EvaluationConstants.BISHOP_PRIME_DIAGONAL];
                 }
 
                 if ((bishop & WHITE_COLOURED_SQUARES) != 0) {
-                    bishopsScore += (startBishopFeatures[BISHOP_COLOUR_PAWNS] * populationCount(wps) *
+                    bishopsScore += (bishopFeatures[BISHOP_COLOUR_PAWNS] * populationCount(wps) *
                             (1 + populationCount(wpscc) / 2 + populationCount(wpsc) / 3));
                 } else {
-                    bishopsScore += (startBishopFeatures[BISHOP_COLOUR_PAWNS] * populationCount(bps) *
+                    bishopsScore += (bishopFeatures[BISHOP_COLOUR_PAWNS] * populationCount(bps) *
                             (1 + populationCount(bpscc) / 2 + populationCount(bpsc) / 3));
                 }
 
@@ -415,10 +403,10 @@ public final class Evaluator {
                     attackingMyKingLookupCounter -= kingSafetyMisc[EvaluationConstants.FRIENDLY_PIECE_NEAR_KING];
                 }
                 if ((bishop & enemyKingSafetyArea) != 0) {
-                    attackingEnemyKingLookupCounter += startBishopFeatures[EvaluationConstants.BISHOP_ATTACK_KING_UNITS];
+                    attackingEnemyKingLookupCounter += bishopFeatures[EvaluationConstants.BISHOP_ATTACK_KING_UNITS];
                 }
 
-                attackingEnemyKingLookupCounter += populationCount(table & enemyKingSafetyArea) * startBishopFeatures[EvaluationConstants.BISHOP_ATTACK_KING_UNITS];
+                attackingEnemyKingLookupCounter += populationCount(table & enemyKingSafetyArea) * bishopFeatures[EvaluationConstants.BISHOP_ATTACK_KING_UNITS];
             }
             myBishops &= (myBishops - 1);
         }
@@ -439,7 +427,7 @@ public final class Evaluator {
                 mobilityScore += mobilityScores[ROOK - 2][populationCount(table)];
 
                 //table does not include pawns defended by pawns
-                rooksScore += (populationCount(table & enemyPawns)) * startRookFeatures[EvaluationConstants.ROOKS_ATTACK_UNDEFENDED_PAWNS];
+                rooksScore += (populationCount(table & enemyPawns)) * rookFeatures[EvaluationConstants.ROOKS_ATTACK_UNDEFENDED_PAWNS];
 
                 //trapped by king
                 if (percentOfStartgame > 50) {
@@ -449,25 +437,25 @@ public final class Evaluator {
                     if (((myKing & startingSpotsForKing) != 0)
                             && populationCount(pseudoMoves) <= 5
                             && ((rook & FINAL_RANKS[1 - turn]) != 0)) {
-                        rooksScore += startRookFeatures[EvaluationConstants.TRAPPED_ROOK];
+                        rooksScore += rookFeatures[EvaluationConstants.TRAPPED_ROOK];
                         if ((board.castlingRights & (whiteToPlay ? 0b11 : 0b1100)) == 0) {
-                            rooksScore += startRookFeatures[EvaluationConstants.TRAPPED_ROOK];
+                            rooksScore += rookFeatures[EvaluationConstants.TRAPPED_ROOK];
                         }
                     }
                 }
 
                 if ((rook & PENULTIMATE_RANKS[turn]) != 0) {
-                    rooksScore += (percentOfStartgame * startRookFeatures[EvaluationConstants.ROOK_ON_SEVENTH_BONUS]) / 100;
+                    rooksScore += (percentOfStartgame * rookFeatures[EvaluationConstants.ROOK_ON_SEVENTH_BONUS]) / 100;
                 }
 
                 if ((myRooks & (FILES[rookIndex % 8] ^ rook)) != 0) {
-                    rooksScore += startRookFeatures[EvaluationConstants.ROOK_BATTERY_SCORE];
+                    rooksScore += rookFeatures[EvaluationConstants.ROOK_BATTERY_SCORE];
                 }
 
                 if ((rook & openFiles) != 0) {
-                    rooksScore += startRookFeatures[EvaluationConstants.ROOK_OPEN_FILE_BONUS];
+                    rooksScore += rookFeatures[EvaluationConstants.ROOK_OPEN_FILE_BONUS];
                 } else if ((rook & fileWithoutMyPawns) != 0) {
-                    rooksScore += startRookFeatures[EvaluationConstants.ROOK_ON_SEMI_OPEN_FILE_BONUS];
+                    rooksScore += rookFeatures[EvaluationConstants.ROOK_ON_SEMI_OPEN_FILE_BONUS];
                 }
 
                 attackingMyKingLookupCounter -= populationCount(table & myKingSafetyArea) / 2;
@@ -477,10 +465,10 @@ public final class Evaluator {
                 }
 
                 if ((rook & enemyKingSafetyArea) != 0) {
-                    attackingEnemyKingLookupCounter += startRookFeatures[EvaluationConstants.ROOK_ATTACK_KING_UNITS];
+                    attackingEnemyKingLookupCounter += rookFeatures[EvaluationConstants.ROOK_ATTACK_KING_UNITS];
                 }
 
-                attackingEnemyKingLookupCounter += populationCount(table & enemyKingSafetyArea) * startRookFeatures[EvaluationConstants.ROOK_ATTACK_KING_UNITS];
+                attackingEnemyKingLookupCounter += populationCount(table & enemyKingSafetyArea) * rookFeatures[EvaluationConstants.ROOK_ATTACK_KING_UNITS];
             }
             myRooks &= (myRooks - 1);
         }
@@ -566,7 +554,7 @@ public final class Evaluator {
         turnThreatensSquares[turn] += squaresIThreatenWithPieces;
         turnThreatensSquares[1 - turn] += attackingEnemyKingLookupCounter;
 
-
+        finalScore += Score.getScore(materialScore, percentOfStartgame);
         finalScore += Score.getScore(positionScore, percentOfStartgame);
         finalScore += mobilityScore;
         finalScore += threatsScore;
@@ -577,14 +565,15 @@ public final class Evaluator {
         finalScore += Score.getScore(queensScore, percentOfStartgame);
 
         if (PRINT_EVAL) {
-            scoresForEPO[turn][EvalPrintObject.materialScore] = materialScore;
+            scoresForEPO[turn][EvalPrintObject.materialScore] = Score.getScore(materialScore, percentOfStartgame);
+            scoresForEPO[turn][EvalPrintObject.positionScore] = Score.getScore(positionScore, percentOfStartgame);
+            scoresForEPO[turn][EvalPrintObject.mobilityScore] = mobilityScore;
+            scoresForEPO[turn][EvalPrintObject.threatsScore] = threatsScore;
+            
             scoresForEPO[turn][EvalPrintObject.knightScore] = Score.getScore(knightsScore, percentOfStartgame);
             scoresForEPO[turn][EvalPrintObject.bishopScore] = Score.getScore(bishopsScore, percentOfStartgame);
             scoresForEPO[turn][EvalPrintObject.rookScore] = Score.getScore(rooksScore, percentOfStartgame);
             scoresForEPO[turn][EvalPrintObject.queenScore] = Score.getScore(queensScore, percentOfStartgame);
-            scoresForEPO[turn][EvalPrintObject.mobilityScore] = mobilityScore;
-            scoresForEPO[turn][EvalPrintObject.positionScore] = Score.getScore(positionScore, percentOfStartgame);
-            scoresForEPO[turn][EvalPrintObject.threatsScore] = threatsScore;
         }
         
         attackingEnemyKingLookup[1 - turn] = attackingMyKingLookupCounter;

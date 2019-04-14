@@ -61,7 +61,7 @@ public final class EvaluationConstants {
     // common
     static final int PIECE_BEHIND_PAWN                    = 2;
 
-    public static final int[] miscFeatures = {8, 0, 15};
+    public static final int[] miscFeatures = {8, 2, 15};
 
     // pawn valuation
     static final int PAWN_UNBLOCKED                       = 0;
@@ -76,8 +76,8 @@ public final class EvaluationConstants {
     static final int PAWN_CANDIDATE                       = 9;
     static final int PAWN_YOUNG_PASSED                    = 10;
 
-    public static final int[] startPawnFeatures = {13, 13, 0, 2, -16, 0, 0, 0, 6, 3, -13};
-    public static final int[] endPawnFeatures =   {13, 13, 0, 2, 10, 0, 0, 0, -7, 3, 0};
+    public static final int[] startPawnFeatures = {-13, 13, 0, 2, -3, 0, 0, 0, 19, 3, -6};
+    public static final int[] endPawnFeatures =   {26, 13, 0, -3, 23, 0, 0, 0, -20, 3, -13};
     static int[] pawnFeatures;
     
     // knights valuation
