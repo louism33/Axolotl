@@ -22,26 +22,23 @@ public class MoveOrdererTest {
     @BeforeAll
     static void setup() {
         EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
     }
 
     @AfterAll
     static void reset() {
         EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        
     }
     
     @Test
     public void moveOrdererRootTest() {
         Chessboard board = new Chessboard();
 
+        int move = MoveParserFromAN.buildMoveFromLAN(board, "e2e4");
 
-
-        int move = MoveParserFromAN.buildMoveFromLAN(board, "e7e3");
-
-//        addToTableReplaceByDepth(board.zobristHash,
-//                e2e4 & MOVE_MASK_WITHOUT_CHECK,
-//                123, 1, 1, 1, 1);
+        addToTableReplaceByDepth(board.zobristHash,
+                move & MOVE_MASK_WITHOUT_CHECK,
+                123, 1, 1, 1, 1);
 
         int[] moves = board.generateLegalMoves();
 
@@ -57,17 +54,12 @@ public class MoveOrdererTest {
             int mm = moves[m];
             int moveScore = getMoveScore(mm);
             String s = MoveParser.toString(mm);
-            System.out.println(s + " with score " + moveScore);
+//            System.out.println(s + " with score " + moveScore);
         }
 
-
         MoveParser.printMove(move);
-        int i = MoveOrdererBetter.quietHeuristicMoveScore(move, BLACK, 20);
 
-
-        System.out.println(i);
-
-//        Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, e2e4);
+        Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, move);
     }
 
 

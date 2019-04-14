@@ -23,13 +23,13 @@ public class TranspositionTable1Test {
     @BeforeAll
     static void setup() {
         EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        
     }
 
     @AfterAll
     static void reset() {
         EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        
     }
     
     @Test

@@ -9,13 +9,13 @@ public class UCIDontCrash {
     @BeforeAll
     static void setup() {
         EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        
     }
 
     @AfterAll
     static void reset() {
         EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        
     }
     
 
