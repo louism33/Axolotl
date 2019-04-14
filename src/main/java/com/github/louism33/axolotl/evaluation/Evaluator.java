@@ -24,16 +24,6 @@ import static java.lang.Long.numberOfTrailingZeros;
 @SuppressWarnings("ALL")
 public final class Evaluator {
 
-    static boolean isEndgame = false;
-
-    static int[] whiteThreatsToSquare = new int[64];
-    static int[] blackThreatsToSquare = new int[64];
-
-    static void resetThreats(){
-        Arrays.fill(whiteThreatsToSquare, 0);
-        Arrays.fill(blackThreatsToSquare, 0);
-    }
-
     public static void printEval(Chessboard board, int turn){
         printEval(board, turn, board.generateLegalMoves());
     }
@@ -340,10 +330,10 @@ public final class Evaluator {
                 }
 
                 if ((knight & enemyKingSafetyArea) != 0) {
-                    attackingEnemyKingLookupCounter += knightFeatures[EvaluationConstants.KNIGHT_ATTACK_KING_UNITS];
+                    attackingEnemyKingLookupCounter += kingAttacksValues[EvaluationConstants.KNIGHT_ATTACK_KING_UNITS];
                 }
 
-                attackingEnemyKingLookupCounter += populationCount(table & enemyKingSafetyArea) * knightFeatures[EvaluationConstants.KNIGHT_ATTACK_KING_UNITS];
+                attackingEnemyKingLookupCounter += populationCount(table & enemyKingSafetyArea) * kingAttacksValues[EvaluationConstants.KNIGHT_ATTACK_KING_UNITS];
             }
             myKnights &= (myKnights - 1);
         }
@@ -403,10 +393,10 @@ public final class Evaluator {
                     attackingMyKingLookupCounter -= kingSafetyMisc[EvaluationConstants.FRIENDLY_PIECE_NEAR_KING];
                 }
                 if ((bishop & enemyKingSafetyArea) != 0) {
-                    attackingEnemyKingLookupCounter += bishopFeatures[EvaluationConstants.BISHOP_ATTACK_KING_UNITS];
+                    attackingEnemyKingLookupCounter += kingAttacksValues[EvaluationConstants.BISHOP_ATTACK_KING_UNITS];
                 }
 
-                attackingEnemyKingLookupCounter += populationCount(table & enemyKingSafetyArea) * bishopFeatures[EvaluationConstants.BISHOP_ATTACK_KING_UNITS];
+                attackingEnemyKingLookupCounter += populationCount(table & enemyKingSafetyArea) * kingAttacksValues[EvaluationConstants.BISHOP_ATTACK_KING_UNITS];
             }
             myBishops &= (myBishops - 1);
         }
@@ -465,10 +455,10 @@ public final class Evaluator {
                 }
 
                 if ((rook & enemyKingSafetyArea) != 0) {
-                    attackingEnemyKingLookupCounter += rookFeatures[EvaluationConstants.ROOK_ATTACK_KING_UNITS];
+                    attackingEnemyKingLookupCounter += kingAttacksValues[EvaluationConstants.ROOK_ATTACK_KING_UNITS];
                 }
 
-                attackingEnemyKingLookupCounter += populationCount(table & enemyKingSafetyArea) * rookFeatures[EvaluationConstants.ROOK_ATTACK_KING_UNITS];
+                attackingEnemyKingLookupCounter += populationCount(table & enemyKingSafetyArea) * kingAttacksValues[EvaluationConstants.ROOK_ATTACK_KING_UNITS];
             }
             myRooks &= (myRooks - 1);
         }
@@ -493,10 +483,10 @@ public final class Evaluator {
                 mobilityScore += mobilityScores[QUEEN - 2][populationCount(table)];
 
                 if ((queen & enemyKingSafetyArea) != 0) {
-                    attackingEnemyKingLookupCounter += kingSafetyMisc[EvaluationConstants.QUEEN_ATTACK_KING_LOOKUP_UNITS];
+                    attackingEnemyKingLookupCounter += kingAttacksValues[EvaluationConstants.QUEEN_ATTACK_KING_LOOKUP_UNITS];
                 }
 
-                attackingEnemyKingLookupCounter += populationCount(table & enemyKingSafetyArea) * kingSafetyMisc[EvaluationConstants.QUEEN_ATTACK_KING_LOOKUP_UNITS];
+                attackingEnemyKingLookupCounter += populationCount(table & enemyKingSafetyArea) * kingAttacksValues[EvaluationConstants.QUEEN_ATTACK_KING_LOOKUP_UNITS];
             }
             myQueens &= (myQueens - 1);
         }
@@ -552,7 +542,7 @@ public final class Evaluator {
         }
 
         turnThreatensSquares[turn] += squaresIThreatenWithPieces;
-        turnThreatensSquares[1 - turn] += attackingEnemyKingLookupCounter;
+//        turnThreatensSquares[1 - turn] += attackingEnemyKingLookupCounter;
 
         finalScore += Score.getScore(materialScore, percentOfStartgame);
         finalScore += Score.getScore(positionScore, percentOfStartgame);

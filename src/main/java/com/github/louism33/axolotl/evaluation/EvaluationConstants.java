@@ -82,34 +82,35 @@ public final class EvaluationConstants {
     
     // knights valuation
     static final int KNIGHT_PAWN_NUMBER_BONUS             = 0;
-    static final int KNIGHT_ATTACK_KING_UNITS             = 1;
+    static final int kEMPTY                                = 1;
     static final int KNIGHT_ON_OUTPOST_BONUS              = 2;
     static final int KNIGHT_REACH_OUTPOST_BONUS           = 3;
     static final int KNIGHT_PROTECTED_PAWN                = 4;
     static final int KNIGHT_FORK                          = 5;
 
-    public static final int[] startKnightFeatures = {1, 18, 32, 9, 1, 69};
-    public static final int[] endKnightFeatures =   {1, 30, 6, -1, 2, 75};
+    public static final int[] startKnightFeatures = {1, 26, 40, 17, 1, 76};
+    public static final int[] endKnightFeatures =   {3, 28, 4, 2, 5, 75};
     static int[] knightFeatures;
 
 
     // bishop valuation
     static final int BISHOP_COLOUR_PAWNS                  = 0;
     static final int BISHOP_PROTECTED_PAWN                = 1;
-    static final int BISHOP_ATTACK_KING_UNITS             = 2;
+    static final int BEMPTY                                = 2;
     static final int BISHOP_DOUBLE                        = 3;
     static final int BISHOP_PRIME_DIAGONAL                = 4;
     static final int BISHOP_ON_OUTPOST_BONUS              = 5;
     static final int BISHOP_REACH_OUTPOST_BONUS           = 6;
 
-    public static final int[] startBishopFeatures = {0, 0, 10, 48, 22, 31, 14};
-    public static final int[] endBishopFeatures =   {26, 13, 10, 35, 9, -8, 1};
+    public static final int[] startBishopFeatures = {-2, -5, 20, 62, 27, 46, 14};
+    public static final int[] endBishopFeatures =   {0, 8, 18, 43, 7, 2, 7};
     public static int[] bishopFeatures;
 
     // rook valuation
     static final int ROOK_ON_SEVENTH_BONUS                = 0;
     static final int ROOK_OPEN_FILE_BONUS                 = 1;
-    static final int ROOK_ATTACK_KING_UNITS               = 2;
+    static final int EMPTY                                = 2;
+
     static final int ROOK_ON_SEMI_OPEN_FILE_BONUS         = 3;
     static final int TRAPPED_ROOK                         = 4;
     static final int ROOKS_ATTACK_UNDEFENDED_PAWNS        = 5;
@@ -124,12 +125,17 @@ public final class EvaluationConstants {
     public static int[] queenFeatures;
     
     //safety
-    static final int QUEEN_ATTACK_KING_LOOKUP_UNITS       = 0;
     static final int MISSING_QUEEN_KING_SAFETY_UNITS      = 1;
     static final int FRIENDLY_PIECE_NEAR_KING             = 2;
     static final int KING_NEAR_SEMI_OPEN_FILE_LOOKUP      = 3;
 
     public static final int[] kingSafetyMisc = {21, 5, 0, 3};
+
+    static final int KNIGHT_ATTACK_KING_UNITS             = 0;
+    static final int BISHOP_ATTACK_KING_UNITS             = 1;
+    static final int ROOK_ATTACK_KING_UNITS               = 2;
+    static final int QUEEN_ATTACK_KING_LOOKUP_UNITS       = 3;
+    public static final int[] kingAttacksValues = {3, 3, 4, 5};
 
     public static final int[] KING_SAFETY_ARRAY                  =  // -s are good
             // /* neutral: 20 */
