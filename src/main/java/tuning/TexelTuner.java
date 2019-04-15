@@ -114,6 +114,9 @@ public class TexelTuner {
 
                     for (TexelParam t : bestParams) {
                         System.out.println(t);
+                        if (t.values == KING_SAFETY_ARRAY) {
+                            t.printMe();
+                        }
                         bw.write("\n"+t + "\n");
                         bw.flush();
                     }
@@ -303,7 +306,7 @@ public class TexelTuner {
 
     static void reset() {
         EvaluatorPositionConstant.setup();
-        EvaluationConstants.setup();
+        setup();
 //        PawnTranspositionTable.reset();
 //        EngineBetter.resetFull();
     }
@@ -313,28 +316,26 @@ public class TexelTuner {
 
 //        texelParams.add(new TexelParam("early material scores", startMaterial, Arrays.asList(0)));
 //        texelParams.add(new TexelParam("late material scores", endMaterial, Arrays.asList(0)));
-        
 //        texelParams.add(new TexelParam("pinned pieces scores", pinnedPiecesScores, Arrays.asList(0, 6))); // would this apply in Q pos?
-        
+//        
 //        texelParams.add(new TexelParam("misc features", miscFeatures, Arrays.asList(0)));
         
 //        texelParams.add(new TexelParam("pawn features start", startPawnFeatures));
 //        texelParams.add(new TexelParam("pawn features end", endPawnFeatures));
-        texelParams.add(new TexelParam("knight features start", startKnightFeatures));
-        texelParams.add(new TexelParam("knight features end", endKnightFeatures));
-        texelParams.add(new TexelParam("bishop features start", startBishopFeatures));
-        texelParams.add(new TexelParam("bishop features end", endBishopFeatures));
+//        texelParams.add(new TexelParam("knight features start", startKnightFeatures));
+//        texelParams.add(new TexelParam("knight features end", endKnightFeatures));
+//        texelParams.add(new TexelParam("bishop features start", startBishopFeatures));
+//        texelParams.add(new TexelParam("bishop features end", endBishopFeatures));
 //        texelParams.add(new TexelParam("rook features start", startRookFeatures));
 //        texelParams.add(new TexelParam("rook features end", endRookFeatures));
         
-//        texelParams.add(new TexelParam("kingSafetyMisc features", kingSafetyMisc));
+//        texelParams.add(new TexelParam("kingSafetyMisc features", kingSafetyMisc, Arrays.asList(0, 1))); // careful
+        texelParams.add(new TexelParam("King safety", KING_SAFETY_ARRAY));
         
-//        texelParams.add(new TexelParam("King safety", EvaluationConstants.KING_SAFETY_ARRAY));
-        
-//        texelParams.add(new TexelParam("Knight mob", EvaluatorPositionConstant.mobilityScores[0]));
-//        texelParams.add(new TexelParam("Bishop mob", EvaluatorPositionConstant.mobilityScores[1]));
-//        texelParams.add(new TexelParam("Rook mob", EvaluatorPositionConstant.mobilityScores[2]));
-//        texelParams.add(new TexelParam("Queen mob", EvaluatorPositionConstant.mobilityScores[3]));
+        texelParams.add(new TexelParam("Knight mob", EvaluatorPositionConstant.mobilityScores[0]));
+        texelParams.add(new TexelParam("Bishop mob", EvaluatorPositionConstant.mobilityScores[1]));
+        texelParams.add(new TexelParam("Rook mob", EvaluatorPositionConstant.mobilityScores[2]));
+        texelParams.add(new TexelParam("Queen mob", EvaluatorPositionConstant.mobilityScores[3]));
 
         return texelParams;
     }

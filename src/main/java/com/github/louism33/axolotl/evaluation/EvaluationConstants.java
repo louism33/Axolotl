@@ -43,8 +43,8 @@ public final class EvaluationConstants {
     }
     
     // piece values
-    public static final int[] startMaterial = {100, 411, 427, 597, 1283};
-    public static final int[] endMaterial = {100, 295, 319, 536, 1048};
+    public static final int[] startMaterial = {100, 486, 502, 672, 1418};
+    public static final int[] endMaterial = {100, 300, 329, 581, 1153};
     static int[] material;
 
     static final int P                  = 0;
@@ -53,7 +53,7 @@ public final class EvaluationConstants {
     static final int R                  = 3;
     static final int Q                  = 4;
 
-    public static final int[] pinnedPiecesScores = {0, 11, -7, -12, -45, -6, 0};
+    public static final int[] pinnedPiecesScores = {0, 31, -22, -32, -90, -121, 0};
 
     // misc factors
     static final int MY_TURN_BONUS                        = 0;
@@ -88,8 +88,8 @@ public final class EvaluationConstants {
     static final int KNIGHT_PROTECTED_PAWN                = 4;
     static final int KNIGHT_FORK                          = 5;
 
-    public static final int[] startKnightFeatures = {1, 26, 40, 17, 1, 76};
-    public static final int[] endKnightFeatures =   {3, 28, 4, 2, 5, 75};
+    public static final int[] startKnightFeatures = {1, 29, 40, 20, 1, 71};
+    public static final int[] endKnightFeatures =   {3, 28, 9, 2, 5, 85};
     static int[] knightFeatures;
 
 
@@ -102,8 +102,8 @@ public final class EvaluationConstants {
     static final int BISHOP_ON_OUTPOST_BONUS              = 5;
     static final int BISHOP_REACH_OUTPOST_BONUS           = 6;
 
-    public static final int[] startBishopFeatures = {-2, -5, 20, 62, 27, 46, 14};
-    public static final int[] endBishopFeatures =   {0, 8, 18, 43, 7, 2, 7};
+    public static final int[] startBishopFeatures = {-2, -5, 25, 62, 27, 46, 14};
+    public static final int[] endBishopFeatures =   {0, 8, 18, 48, 2, 7, 12};
     public static int[] bishopFeatures;
 
     // rook valuation
@@ -116,8 +116,8 @@ public final class EvaluationConstants {
     static final int ROOKS_ATTACK_UNDEFENDED_PAWNS        = 5;
     static final int ROOK_BATTERY_SCORE                   = 6;
 
-    public static final int[] startRookFeatures = {46, 34, 9, 20, 13, 2, 26};
-    public static final int[] endRookFeatures =   {46, 8, 22, 7, 13, 2, 26};
+    public static final int[] startRookFeatures = {51, 49, 19, 15, 13, 2, 26};
+    public static final int[] endRookFeatures =   {50, 22, 22, 17, 4, 7, 26};
     public static int[] rookFeatures;
 
     public static final int[] startQueenFeatures = {};
@@ -125,11 +125,13 @@ public final class EvaluationConstants {
     public static int[] queenFeatures;
     
     //safety
+    static final int STARTING_PENALTY                     = 0;
     static final int MISSING_QUEEN_KING_SAFETY_UNITS      = 1;
-    static final int FRIENDLY_PIECE_NEAR_KING             = 2;
+    static final int PINNED_PIECES_KING_SAFETY_LOOKUP     = 2;
     static final int KING_NEAR_SEMI_OPEN_FILE_LOOKUP      = 3;
+    static final int NUMBER_OF_ATTACKS_FACTOR             = 4;
 
-    public static final int[] kingSafetyMisc = {21, 5, 0, 3};
+    public static final int[] kingSafetyMisc = {10, 5, 2, 3, 2};
 
     static final int KNIGHT_ATTACK_KING_UNITS             = 0;
     static final int BISHOP_ATTACK_KING_UNITS             = 1;
@@ -138,16 +140,15 @@ public final class EvaluationConstants {
     public static final int[] kingAttacksValues = {3, 3, 4, 5};
 
     public static final int[] KING_SAFETY_ARRAY                  =  // -s are good
-            // /* neutral: 20 */
             {
-                    -97, -86, -72, -67, -66, -61, -51, -43,
-                    -35, -30, -28, -25, -22, -16, -12, -6,
-                    2,  13,  25, 48, 65, 96, 128, 156,
-                    166, 207, 211, 225, 250, 275, 301, 319,
-                    330, 341, 350, 360, 370, 380, 390, 400,
-                    461, 470, 480, 491, 500, 510, 520, 530,
-                    540, 541, 542, 543, 544, 545, 546, 547,
-                    548, 549, 550, 551, 552, 553, 554, 554
+                    100, 104, 118, 123, 124, 129, 139, 137,
+                    150, 155, 152, 155, 158, 154, 158, 149,
+                    167, 158, 175, 168, 180, 181, 183, 186,
+                    191, 182, 191, 190, 195, 190, 201, 199,
+                    195, 206, 210, 220, 225, 235, 225, 240,
+                    271, 280, 290, 301, 310, 320, 330, 340,
+                    350, 351, 352, 353, 354, 355, 356, 357,
+                    358, 359, 360, 361, 362, 363, 364, 364,
             };
 
 }

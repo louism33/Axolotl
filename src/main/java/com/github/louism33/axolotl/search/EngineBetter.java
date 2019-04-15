@@ -7,8 +7,11 @@ import com.github.louism33.axolotl.evaluation.PawnTranspositionTable;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
+
+import java.util.Arrays;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
@@ -390,7 +393,7 @@ public final class EngineBetter {
             }
 
             int R = depth > 6 ? 3 : 2;
-            if (isNullMoveOkHere(board, nullMoveCounter, depth, R)) {
+            if (false && isNullMoveOkHere(board, nullMoveCounter, depth, R)) {
 
                 board.makeNullMoveAndFlipTurn();
 
@@ -416,8 +419,8 @@ public final class EngineBetter {
         if (hashMove == 0
                 && depth >= iidDepth) {
             int d = thisIsAPrincipleVariationNode ? depth - 2 : depth >> 1;
-            principleVariationSearch(board, d, ply, alpha, beta, nullMoveCounter + 1);
-            hashMove = getMove(retrieveFromTable(board.zobristHash));
+//            principleVariationSearch(board, d, ply, alpha, beta, nullMoveCounter + 1);
+//            hashMove = getMove(retrieveFromTable(board.zobristHash));
             if (hashMove == 0) {
                 iidFail++;
             } else {

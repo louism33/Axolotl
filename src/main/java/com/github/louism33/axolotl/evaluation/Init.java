@@ -8,10 +8,7 @@ import static java.lang.Long.numberOfTrailingZeros;
 
 final class Init {
 
-    static final long[] kingSafetyArea = new long[2];
-    static final int[] attackingEnemyKingLookup = new int[2];
-
-    static void init(Chessboard board, int turn) {
+    static long kingSafetyArea(Chessboard board, int turn) {
         final long myKing = board.pieces[turn][KING];
         final int kingIndex = numberOfTrailingZeros(myKing);
         long sq = BitOperations.squareCentredOnIndex(kingIndex);
@@ -29,7 +26,6 @@ final class Init {
         }
 
         sq &= ~myKing;
-        kingSafetyArea[turn] = sq;
-        attackingEnemyKingLookup[turn] = 20; 
+        return sq;
     }
 }

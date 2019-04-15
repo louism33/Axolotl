@@ -44,4 +44,21 @@ public class TexelParam {
                 "\n delta: " + delta + 
                 '}';
     }
+
+
+    public void printMe() {
+        System.out.println(str());
+    }
+
+    public String str() {
+        String s = "\n"+name+"\n";
+        for (int j = 0; j < 64; j++) {
+            s += values[j] + ", ";
+            if (j > 0 && j % 8 == 7) {
+                s += "\n";
+            }
+        }
+        s += "\n";
+        return s;
+    }
 }

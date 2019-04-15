@@ -9,7 +9,7 @@ import static com.github.louism33.chesscore.BoardConstants.*;
 
 public final class PassedPawns {
 
-    static int evalPassedPawnsByTurn(Chessboard board, int turn, long[] pawnData) {
+    static int evalPassedPawnsByTurn(Chessboard board, int turn, long[] pawnData, long[] turnThreatensSquares) {
         int passedPawnScore = 0;
 
         final long squaresMyPawnsThreaten = pawnData[CAPTURES + turn];
@@ -34,8 +34,8 @@ public final class PassedPawns {
         long friends = board.pieces[turn][ALL_COLOUR_PIECES];
         long enemies = board.pieces[1 - turn][ALL_COLOUR_PIECES];
         long allPieces = friends | enemies;
-        long squaresIProtect = Evaluator.turnThreatensSquares[turn];
-        long squaresEnemyThreatens = Evaluator.turnThreatensSquares[1 - turn];
+        long squaresIProtect = turnThreatensSquares[turn];
+        long squaresEnemyThreatens = turnThreatensSquares[1 - turn];
 
         long myPassedPawns = pawnData[PASSED_PAWNS + turn];
         

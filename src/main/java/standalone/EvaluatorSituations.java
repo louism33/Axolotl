@@ -13,7 +13,7 @@ import static com.github.louism33.chesscore.BoardConstants.WHITE;
 public class EvaluatorSituations {
 
     @Test
-    public void start()  {
+    public void aaastart()  {
         Chessboard board = new Chessboard();
         printNStuff(board);
     } 

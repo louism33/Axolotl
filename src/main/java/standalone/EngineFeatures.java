@@ -14,6 +14,13 @@ public class EngineFeatures {
 
     
     @Test
+    public void aaa() {
+        Chessboard board = new Chessboard("2r1r2k/1q3ppp/p2Rp3/2p1P3/6QB/p3P3/bP3PPP/3R2K1 w - -");
+//        EngineBetter.searchFixedTime(board, 60000);
+        EngineBetter.searchFixedDepth(board, 12);
+    }
+    
+    @Test
     public void testIID() {
         EngineSpecifications.DEBUG = false;
         for (int depth = 8; depth < 15; depth++) {
