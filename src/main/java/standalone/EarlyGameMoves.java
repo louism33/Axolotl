@@ -1,6 +1,6 @@
 package standalone;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
@@ -24,7 +24,7 @@ public class EarlyGameMoves {
         System.out.println(board);
         List<String> bestMoves = Arrays.asList("d2d4", "e2e4");
         
-        int move = EngineBetter.searchFixedDepth(board, depth);
+        int move = Engine.searchFixedDepth(board, depth);
 
         String m = MoveParser.toString(move);
         
@@ -44,7 +44,7 @@ public class EarlyGameMoves {
         System.out.println(board);
         List<String> bestMoves = Arrays.asList("d7d5", "e7e5", "e7e6");
         
-        int move = EngineBetter.searchFixedDepth(board, depth);
+        int move = Engine.searchFixedDepth(board, depth);
 
         String m = MoveParser.toString(move);
 
@@ -64,7 +64,7 @@ public class EarlyGameMoves {
         System.out.println(board);
         List<String> bestMoves = Arrays.asList("d7d5", "e7e6");
 
-        int move = EngineBetter.searchFixedDepth(board, depth);
+        int move = Engine.searchFixedDepth(board, depth);
 
         String m = MoveParser.toString(move);
 
@@ -86,7 +86,7 @@ public class EarlyGameMoves {
         System.out.println(board);
         List<String> bestMoves = Arrays.asList("g1f3", "f1c4");
 
-        int move = EngineBetter.searchFixedDepth(board, depth);
+        int move = Engine.searchFixedDepth(board, depth);
 
         String m = MoveParser.toString(move);
 
@@ -109,7 +109,7 @@ public class EarlyGameMoves {
         System.out.println(board);
         List<String> bestMoves = Arrays.asList("b8c6", "g8f6");
 
-        int move = EngineBetter.searchFixedDepth(board, depth);
+        int move = Engine.searchFixedDepth(board, depth);
 
         String m = MoveParser.toString(move);
 
@@ -135,7 +135,7 @@ public class EarlyGameMoves {
         System.out.println(board);
         List<String> bestMoves = Arrays.asList("f1b5", "f1c4", "d2d4");
 
-        int move = EngineBetter.searchFixedDepth(board, depth+3);
+        int move = Engine.searchFixedDepth(board, depth+3);
 
         String m = MoveParser.toString(move);
 
@@ -159,7 +159,7 @@ public class EarlyGameMoves {
         System.out.println(board);
         List<String> bestMoves = Arrays.asList("f1b5", "f1c4", "b1c3");
 
-        int move = EngineBetter.searchFixedDepth(board, depth);
+        int move = Engine.searchFixedDepth(board, depth);
 
         String m = MoveParser.toString(move);
 
@@ -185,7 +185,7 @@ public class EarlyGameMoves {
         System.out.println(board);
         List<String> bestMoves = Arrays.asList("b5a4");
 
-        int move = EngineBetter.searchFixedDepth(board, depth);
+        int move = Engine.searchFixedDepth(board, depth);
 //        int move = EngineBetter.searchMyTime(board, 60000L, 0, 0, 0);
 
         String m = MoveParser.toString(move);

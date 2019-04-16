@@ -13,9 +13,6 @@ public final class EngineSpecifications {
     public final static int MAX_DEPTH_HARD                           = Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH - 2;
     public static boolean ALLOW_TIME_LIMIT                           = true;
 
-    static final int[] ASPIRATION_WINDOWS                            = {50, 100, 1000};
-    static final int ASPIRATION_MAX_TRIES                            = ASPIRATION_WINDOWS.length;
-    public static final int PANIC_SCORE_DELTA                        = 100;
     /*
     one mb is 1024 KB
     1024 * 1024 Bytes

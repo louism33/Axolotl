@@ -1,7 +1,7 @@
 package standalone;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
@@ -171,8 +171,8 @@ public class SearchInDetail {
     }
 
     public void getMoveHierarchy(Chessboard board, int depth, long time, int doUntil, boolean print) {
-        EngineBetter.quitOnSingleMove = false;
-        EngineBetter.computeMoves = false;
+        Engine.quitOnSingleMove = false;
+        Engine.computeMoves = false;
         int[] moves = board.generateLegalMoves();
 
         System.out.println(board);
@@ -203,7 +203,7 @@ public class SearchInDetail {
     public void getMoveHierarchyHelper(Chessboard board, int[] moves,
                                        int depth, long time, int iter, int doUntil, boolean print, int[] bestMoves, int[] bestMoveScores) {
 
-        EngineBetter.resetFull();
+        Engine.resetFull();
         
         System.out.println();
         System.out.println();
@@ -220,25 +220,25 @@ public class SearchInDetail {
             return;
         }
 
-        EngineBetter.rootMoves = moves;
+        Engine.rootMoves = moves;
 
         if (depth == 0) {
-            move = EngineBetter.searchFixedTime(board, time);
+            move = Engine.searchFixedTime(board, time);
         }
         else {
-            move = EngineBetter.searchFixedDepth(board, depth);
+            move = Engine.searchFixedDepth(board, depth);
         }
 
         System.out.println();
         System.out.println("        best move: " + MoveParser.toString(move));
-        System.out.println("        with score: "  + EngineBetter.aiMoveScore);
+        System.out.println("        with score: "  + Engine.aiMoveScore);
 
         bestMoves[iter - 1] = move;
-        bestMoveScores[iter - 1] = EngineBetter.aiMoveScore;
+        bestMoveScores[iter - 1] = Engine.aiMoveScore;
         
         if (iter == 1) {
             favouriteMove = move;
-            favouriteMoveScore = EngineBetter.aiMoveScore;
+            favouriteMoveScore = Engine.aiMoveScore;
         }
 
         if (print) {

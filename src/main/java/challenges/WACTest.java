@@ -1,6 +1,6 @@
 package challenges;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
@@ -73,7 +73,7 @@ public class WACTest {
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
         MoveParser.printMove(move);
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }

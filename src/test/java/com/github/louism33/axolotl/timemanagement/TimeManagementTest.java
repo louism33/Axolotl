@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.timemanagement;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,12 +12,12 @@ public class TimeManagementTest {
 
     @BeforeAll
     static void setup() {
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
 
     @AfterAll
     static void reset() {
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
@@ -37,14 +37,14 @@ public final class UCIEntry extends Thread {
         input = new BufferedReader(new InputStreamReader(System.in));
         output = new PrintStream(System.out);
 
-        EngineBetter.uciEntry = this;
+        Engine.uciEntry = this;
     }
 
     private UCIEntry() throws IOException {
         input = new BufferedReader(new InputStreamReader(System.in));
         output = new PrintStream(System.out);
 
-        EngineBetter.uciEntry = this;
+        Engine.uciEntry = this;
 
         while (true) {
             loop();
@@ -110,7 +110,7 @@ public final class UCIEntry extends Thread {
                 } else if (token.equalsIgnoreCase("ucinewgame")) {
                     board = new Chessboard();
                     lastMoveMade = 0;
-                    EngineBetter.resetFull();
+                    Engine.resetFull();
                     inStartPos = true;
                     break;
 
@@ -232,35 +232,35 @@ public final class UCIEntry extends Thread {
 
                     MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
 
-                    EngineBetter.quitOnSingleMove = true;
+                    Engine.quitOnSingleMove = true;
                     if (searchMoves[0] != 0) {
-                        EngineBetter.quitOnSingleMove = false;
-                        EngineBetter.computeMoves = false;
-                        EngineBetter.rootMoves = searchMoves;
+                        Engine.quitOnSingleMove = false;
+                        Engine.computeMoves = false;
+                        Engine.rootMoves = searchMoves;
                     }
 
                     int aiMove = 0;
 
 
                     if (depth != 0) {
-                        aiMove = EngineBetter.searchFixedDepth(board, depth);
+                        aiMove = Engine.searchFixedDepth(board, depth);
                     } else if (nodes != 0) {
 //                        aiMove = EngineBetter.searchFixedDepth(board, depth);
                     } else if (mate) {
-                        aiMove = EngineBetter.searchFixedDepth(board, MAX_DEPTH);
+                        aiMove = Engine.searchFixedDepth(board, MAX_DEPTH);
                     } else if (infinite) {
-                        aiMove = EngineBetter.searchFixedDepth(board, MAX_DEPTH);
+                        aiMove = Engine.searchFixedDepth(board, MAX_DEPTH);
                     } else if (moveTime != 0) {
-                        aiMove = EngineBetter.searchFixedTime(board, moveTime);
+                        aiMove = Engine.searchFixedTime(board, moveTime);
                     } else {
-                        aiMove = EngineBetter.searchMyTime(board, myTime, enemyTime,
+                        aiMove = Engine.searchMyTime(board, myTime, enemyTime,
                                 myinc, movestogo);
                     }
 
                     // reset things
                     Arrays.fill(searchMoves, 0);
-                    EngineBetter.quitOnSingleMove = true;
-                    EngineBetter.computeMoves = true;
+                    Engine.quitOnSingleMove = true;
+                    Engine.computeMoves = true;
                     MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
 
                     output.println("bestmove " + MoveParser.toString(aiMove));
@@ -268,11 +268,11 @@ public final class UCIEntry extends Thread {
                     break;
 
                 } else if (token.equalsIgnoreCase("stop")) {
-                    int aiMove = EngineBetter.getAiMove();
+                    int aiMove = Engine.getAiMove();
                     if (aiMove != 0) {
                         output.println("bestmove " + aiMove); // + ponder
                     }
-                    EngineBetter.stopNow = true;
+                    Engine.stopNow = true;
                     break;
                 } else if (token.equalsIgnoreCase("ponderhit")) {
                     output.println("I don't know how to ponder yet sorry");
@@ -339,10 +339,10 @@ public final class UCIEntry extends Thread {
             infoCommand += " score cp " + aiMoveScore;
         }
 
-        EngineBetter.calculateNPS();
+        Engine.calculateNPS();
         infoCommand += " time " + time;
         infoCommand += " nodes " + nodes;
-        infoCommand += " nps " + EngineBetter.nps;
+        infoCommand += " nps " + Engine.nps;
 
         infoCommand += " pv ";
         final int[] pv = PVLine.getPV(board);

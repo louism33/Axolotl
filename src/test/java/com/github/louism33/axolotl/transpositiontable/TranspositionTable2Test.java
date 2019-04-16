@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.main.PVLine;
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
@@ -20,12 +20,12 @@ public class TranspositionTable2Test {
 
     @BeforeAll
     static void setup() {
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
 
     @AfterAll
     static void reset() {
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
     
     @Test
@@ -33,7 +33,7 @@ public class TranspositionTable2Test {
 
         Chessboard board = new Chessboard();
 
-        int bestMove = EngineBetter.searchFixedDepth(board, 3);
+        int bestMove = Engine.searchFixedDepth(board, 3);
         int move = getMove(retrieveFromTable(board.zobristHash));
 
         Assert.assertEquals(bestMove, move);
@@ -44,14 +44,14 @@ public class TranspositionTable2Test {
 
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(1)));
 
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
 
     @Test
     public void ageTest() {
         Chessboard board = new Chessboard();
 
-        int bestMove = EngineBetter.searchFixedDepth(board, 6);
+        int bestMove = Engine.searchFixedDepth(board, 6);
 
         int length = entries.length;
         for (int i = 0; i < length; i++) {
@@ -64,7 +64,7 @@ public class TranspositionTable2Test {
 
     @Test
     void notAgeOutTest() {
-        EngineBetter.resetFull();
+        Engine.resetFull();
         Chessboard board = new Chessboard();
 
         agedOut = 0;
@@ -87,7 +87,7 @@ public class TranspositionTable2Test {
         Assert.assertEquals(0, agedOut);
 
         agedOut = 0;
-        EngineBetter.resetFull();
+        Engine.resetFull();
 
     }
 
@@ -137,7 +137,7 @@ public class TranspositionTable2Test {
         Assert.assertEquals(flag, getFlag(previousTableData));
         Assert.assertEquals(age, getAge(previousTableData));
 
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
 
 
@@ -145,26 +145,26 @@ public class TranspositionTable2Test {
     void isWritingTest() {
         Chessboard board = new Chessboard();
 
-        EngineBetter.searchFixedDepth(board, 3);
+        Engine.searchFixedDepth(board, 3);
 
         long previousTableData = retrieveFromTable(board.zobristHash);
         Assert.assertTrue(previousTableData != 0);
 
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
 
     @Test
     void isModuloingTest() {
-        EngineBetter.resetFull();
-        Assert.assertEquals(EngineBetter.age, 0);
+        Engine.resetFull();
+        Assert.assertEquals(Engine.age, 0);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < ageModulo; j++) {
-                Assert.assertEquals(EngineBetter.age, j);
-                EngineBetter.resetBetweenMoves();
+                Assert.assertEquals(Engine.age, j);
+                Engine.resetBetweenMoves();
             }
         }
 
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
 
     @Test
@@ -179,7 +179,7 @@ public class TranspositionTable2Test {
         Assert.assertTrue(isTooOld(1, 7));
         Assert.assertTrue(isTooOld(0, 7));
 
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
 
     @Test
@@ -194,14 +194,14 @@ public class TranspositionTable2Test {
         Assert.assertTrue(isTooOld(3, 1));
         Assert.assertTrue(isTooOld(2, 1));
 
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
 
     @Test
     void isPersistingTest() {
         Chessboard board = new Chessboard();
 
-        int bestMove = EngineBetter.searchFixedDepth(board, 6);
+        int bestMove = Engine.searchFixedDepth(board, 6);
 
         long previousTableData1 = retrieveFromTable(board.zobristHash);
         Assert.assertTrue(previousTableData1 != 0);
@@ -211,19 +211,19 @@ public class TranspositionTable2Test {
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0)));
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(1)));
 
-        EngineBetter.resetBetweenMoves();
+        Engine.resetBetweenMoves();
         long previousTableData2 = retrieveFromTable(board.zobristHash);
         Assert.assertTrue(previousTableData2 != 0);
         System.out.println("persisting ok");
 
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
 
     @Test
     void fullResetTest() {
         Chessboard board = new Chessboard();
 
-        int bestMove = EngineBetter.searchFixedDepth(board, 6);
+        int bestMove = Engine.searchFixedDepth(board, 6);
 
         long previousTableData1 = retrieveFromTable(board.zobristHash);
         Assert.assertTrue(previousTableData1 != 0);
@@ -232,12 +232,12 @@ public class TranspositionTable2Test {
 
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, genericMoves.get(0)));
 
-        EngineBetter.resetFull();
+        Engine.resetFull();
         long previousTableData2 = retrieveFromTable(board.zobristHash);
         Assert.assertEquals(0, previousTableData2);
         System.out.println("full reset working");
 
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
 
 }

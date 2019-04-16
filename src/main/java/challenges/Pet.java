@@ -1,6 +1,6 @@
 package challenges;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.Assert;
@@ -49,7 +49,7 @@ public class Pet {
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.DEBUG = false;
-        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }

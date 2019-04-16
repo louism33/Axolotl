@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.transpositiontable;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -8,13 +8,13 @@ public class TranspositionTable3Test {
 
     @BeforeAll
     static void setup() {
-        EngineBetter.resetFull();
+        Engine.resetFull();
         
     }
 
     @AfterAll
     static void reset() {
-        EngineBetter.resetFull();
+        Engine.resetFull();
         
     }
 

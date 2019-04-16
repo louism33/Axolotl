@@ -77,14 +77,15 @@ public final class Evaluator {
         percentOfEndgame = 100 - percentOfStartgame;
         
         long[] pawnData = null; // = PawnTranspositionTable.retrieveFromTable(board.zobristPawnHash, percentOfStartgame);
-
+int pawnFeatureScore = 0;
         if (pawnData == null || PRINT_EVAL) {
             pawnData = PawnEval.calculatePawnData(board, percentOfStartgame);
-//            PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, pawnData, PawnEval.pawnScore);
+            pawnFeatureScore = (int)pawnData[16];
+            PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, pawnData, pawnFeatureScore);
         }
         int score = 0;
 
-        score += Score.getScore((int)pawnData[16], percentOfStartgame);
+        score += Score.getScore(pawnFeatureScore, percentOfStartgame);
 
         // todo colour has insuf mat to mate
 

@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.moveordering;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.MoveOrdererBetter;
 import com.github.louism33.axolotl.search.MoveOrderingConstants;
 import com.github.louism33.chesscore.Chessboard;
@@ -21,12 +21,12 @@ public class MoveOrdererTest {
 
     @BeforeAll
     static void setup() {
-        EngineBetter.resetFull();
+        Engine.resetFull();
     }
 
     @AfterAll
     static void reset() {
-        EngineBetter.resetFull();
+        Engine.resetFull();
         
     }
     

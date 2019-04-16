@@ -70,7 +70,7 @@ public class MateTest {
         int[] winningMoves = EPDObject.getBestMoves();
         EngineSpecifications.DEBUG = false;
         final Chessboard board = EPDObject.getBoard();
-        int move = EngineBetter.searchFixedTime(board, timeLimit);
+        int move = Engine.searchFixedTime(board, timeLimit);
 
         if (contains(winningMoves, move)){
             System.out.println("success");

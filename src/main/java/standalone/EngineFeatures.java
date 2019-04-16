@@ -1,6 +1,6 @@
 package standalone;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.louism33.axolotl.search.EngineBetter.*;
+import static com.github.louism33.axolotl.search.Engine.*;
 
 public class EngineFeatures {
 
@@ -17,19 +17,19 @@ public class EngineFeatures {
     public void aaa() {
         Chessboard board = new Chessboard("2r1r2k/1q3ppp/p2Rp3/2p1P3/6QB/p3P3/bP3PPP/3R2K1 w - -");
 //        EngineBetter.searchFixedTime(board, 60000);
-        EngineBetter.searchFixedDepth(board, 12);
+        Engine.searchFixedDepth(board, 12);
     }
     
     @Test
     public void testIID() {
         EngineSpecifications.DEBUG = false;
         for (int depth = 8; depth < 15; depth++) {
-            EngineBetter.resetFull();
+            Engine.resetFull();
             iidFail = 0;
             iidSuccess = 0;
             iidTotal = 0;
             Chessboard board = new Chessboard();
-            EngineBetter.searchFixedDepth(board, depth);
+            Engine.searchFixedDepth(board, depth);
             System.out.println("\nfor depth " + depth);
             System.out.println("iid successes: " + iidSuccess);
             System.out.println("iid fails : " + iidFail);
@@ -43,7 +43,7 @@ public class EngineFeatures {
         for (int i = 8; i < 15; i++) {
             Chessboard board = new Chessboard();
             System.out.println("depth " + i);
-            EngineBetter.resetFull();
+            Engine.resetFull();
             searchFixedDepth(board, i);
             System.out.println();
             System.out.println(nonTerminalTime);

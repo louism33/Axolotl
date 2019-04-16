@@ -1,6 +1,6 @@
 package standalone;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 
@@ -66,7 +66,7 @@ class StandAlone {
 
                     switch (command) {
                         case "go":
-                            move = EngineBetter.searchFixedTime(board, timeLimit);
+                            move = Engine.searchFixedTime(board, timeLimit);
                             break label;
                         case "quit":
                             System.out.println("QUIT.\n");

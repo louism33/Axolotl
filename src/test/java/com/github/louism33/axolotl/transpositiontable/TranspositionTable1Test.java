@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.transpositiontable;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.MoveConstants;
 import org.junit.Assert;
@@ -21,13 +21,13 @@ public class TranspositionTable1Test {
 
     @BeforeAll
     static void setup() {
-        EngineBetter.resetFull();
+        Engine.resetFull();
         
     }
 
     @AfterAll
     static void reset() {
-        EngineBetter.resetFull();
+        Engine.resetFull();
         
     }
     

@@ -1,6 +1,6 @@
 package challenges;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
@@ -47,7 +47,7 @@ public class MateTest {
         int[] winningMoves = EPDObject.getBestMoves();
         EngineSpecifications.DEBUG = false;
         final Chessboard board = EPDObject.getBoard();
-        int move = EngineBetter.searchFixedTime(board, timeLimit);
+        int move = Engine.searchFixedTime(board, timeLimit);
 
         Assert.assertTrue(Utils.contains(winningMoves, move));
 

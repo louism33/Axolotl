@@ -83,7 +83,7 @@ public final class QuiescenceBetter {
             }
 
             board.makeMoveAndFlipTurn(loudMove);
-            EngineBetter.numberOfQMovesMade[0]++;
+            Engine.numberOfQMovesMade[0]++;
 
             int score = -quiescenceSearch(board, -beta, -alpha);
 

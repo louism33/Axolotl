@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.transpositiontable;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.jupiter.api.AfterAll;
@@ -46,7 +46,7 @@ public class TranspositionTableStressTest {
         int number = hashSize * TABLE_SIZE_PER_MB;
         TranspositionTable.initTable(number);
 
-        EngineBetter.searchFixedDepth(board, depth);
+        Engine.searchFixedDepth(board, depth);
         
         System.out.println("new entries:           " + newEntries);
         System.out.println("aged out entries:      " + agedOut);

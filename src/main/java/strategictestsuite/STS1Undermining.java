@@ -1,6 +1,6 @@
 package strategictestsuite;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
@@ -60,7 +60,7 @@ public class STS1Undermining {
         int[] winningMoves = EPDObject.getBestMovesFromComments();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.DEBUG = false;
-        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         final boolean condition = contains(winningMoves, move) && !contains(losingMoves, move);
         if (condition) {
