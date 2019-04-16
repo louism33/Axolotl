@@ -62,11 +62,11 @@ public class TranspositionTable1Test {
 
             Random r = new Random();
 
-            int move = r.nextInt(MoveConstants.CHECKING_MOVE_MASK);
+            int move = r.nextInt(MoveConstants.CHECKING_MOVE_MASK-1)+1;
             int score = r.nextInt(SHORT_MAXIMUM * 2) - SHORT_MAXIMUM;
-            int depth = r.nextInt(127);
+            int depth = r.nextInt(126)+1;
             int flag = r.nextInt(3);
-            int ply = r.nextInt(99);
+            int ply = r.nextInt(98)+1;
             int age = r.nextInt(8);
 
             long entry = buildTableEntry(move, score, depth, flag, ply, age);
