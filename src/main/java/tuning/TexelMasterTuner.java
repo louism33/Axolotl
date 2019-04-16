@@ -16,9 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.*;
-import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.KING_END_WHITE;
 import static com.github.louism33.utils.PGNtoFEN.transformPGNFile;
 
 @SuppressWarnings("ALL")
@@ -121,7 +119,7 @@ public class TexelMasterTuner {
                         
                         for (int i = 0; i < param.values.length; i++) {
                             changedIndexes.add(0);
-                            if (param.dontChange.contains(i)) {
+                            if (param.dontChange.contains(i) || param.ignoreMe(i)) {
                                 continue;
                             }
 
@@ -151,6 +149,8 @@ public class TexelMasterTuner {
                         System.out.println("one value done: ");
                         param.printMe();
                         System.out.println("--- with indexes of changes " + changedIndexes);
+                        System.out.println(niceError(iterations, initE, bestPredictionError));
+                        System.out.println();
                     }
 
                     System.out.println("looped though all params. Improved is " + improved);
@@ -215,27 +215,30 @@ public class TexelMasterTuner {
 
     static List<TexelMasterParam> getParams() {
         List<TexelMasterParam> params = new ArrayList<>();
+        /*
+        16/04 
+        -> 0.05983255927529707
+         */
 
-        params.add(new TexelMasterParam("early material scores", startMaterial, Arrays.asList(0)));
-        params.add(new TexelMasterParam("late material scores", endMaterial, Arrays.asList(0)));
-        params.add(new TexelMasterParam("pinned pieces scores", pinnedPiecesScores, Arrays.asList(0, 6)));
-
-
-        params.add(new TexelMasterParam("pawn features start", startPawnFeatures));
-        params.add(new TexelMasterParam("pawn features end", endPawnFeatures));
-        params.add(new TexelMasterParam("knight features start", startKnightFeatures));
-        params.add(new TexelMasterParam("knight features end", endKnightFeatures));
-        params.add(new TexelMasterParam("bishop features start", startBishopFeatures));
-        params.add(new TexelMasterParam("bishop features end", endBishopFeatures));
-        params.add(new TexelMasterParam("rook features start", startRookFeatures));
-        params.add(new TexelMasterParam("rook features end", endRookFeatures));
-
-        params.add(new TexelMasterParam("King safety", KING_SAFETY_ARRAY));
-        
-        params.add(new TexelMasterParam("Knight mob", EvaluatorPositionConstant.mobilityScores[0]));
-        params.add(new TexelMasterParam("Bishop mob", EvaluatorPositionConstant.mobilityScores[1]));
-        params.add(new TexelMasterParam("Rook mob", EvaluatorPositionConstant.mobilityScores[2]));
-        params.add(new TexelMasterParam("Queen mob", EvaluatorPositionConstant.mobilityScores[3]));
+//        params.add(new TexelMasterParam("early material scores", startMaterial, Arrays.asList(0)));
+//        params.add(new TexelMasterParam("late material scores", endMaterial, Arrays.asList(0)));
+//        params.add(new TexelMasterParam("pinned pieces scores", pinnedPiecesScores, Arrays.asList(0, 6)));
+//
+//        params.add(new TexelMasterParam("pawn features start", startPawnFeatures));
+//        params.add(new TexelMasterParam("pawn features end", endPawnFeatures));
+//        params.add(new TexelMasterParam("knight features start", startKnightFeatures));
+//        params.add(new TexelMasterParam("knight features end", endKnightFeatures));
+//        params.add(new TexelMasterParam("bishop features start", startBishopFeatures));
+//        params.add(new TexelMasterParam("bishop features end", endBishopFeatures));
+//        params.add(new TexelMasterParam("rook features start", startRookFeatures));
+//        params.add(new TexelMasterParam("rook features end", endRookFeatures));
+//
+//        params.add(new TexelMasterParam("King safety", KING_SAFETY_ARRAY));
+//        
+//        params.add(new TexelMasterParam("Knight mob", EvaluatorPositionConstant.mobilityScores[0]));
+//        params.add(new TexelMasterParam("Bishop mob", EvaluatorPositionConstant.mobilityScores[1]));
+//        params.add(new TexelMasterParam("Rook mob", EvaluatorPositionConstant.mobilityScores[2]));
+//        params.add(new TexelMasterParam("Queen mob", EvaluatorPositionConstant.mobilityScores[3]));
 
         
         //pst

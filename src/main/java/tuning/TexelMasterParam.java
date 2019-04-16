@@ -97,7 +97,7 @@ public class TexelMasterParam {
 
     public String str() {
         String s = "\n"+name+"\n";
-        for (int j = 0; j < 64; j++) {
+        for (int j = 0; j < values.length; j++) {
             s += values[j] + ", ";
             if (j > 0 && j % 8 == 7) {
                 s += "\n";

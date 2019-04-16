@@ -2,8 +2,6 @@ package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.Chessboard;
 
-import java.util.Arrays;
-
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.Evaluator.scoresForEPO;
 import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.*;

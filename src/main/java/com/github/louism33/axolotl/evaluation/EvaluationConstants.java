@@ -49,8 +49,8 @@ public final class EvaluationConstants {
     }
     
     // piece values
-    public static final int[] startMaterial = {100, 456, 502, 642, 1393};
-    public static final int[] endMaterial = {100, 295, 324, 576, 1128};
+    public static final int[] startMaterial = {100, 455, 504, 643, 1393};
+    public static final int[] endMaterial = {100, 296, 322, 576, 1129};
     static int[] material;
 
     static final int P                  = 0;
@@ -59,7 +59,7 @@ public final class EvaluationConstants {
     static final int R                  = 3;
     static final int Q                  = 4;
 
-    public static final int[] pinnedPiecesScores = {0, 26, -22, -27, -75, -121, 0};
+    public static final int[] pinnedPiecesScores = {0, 25, -20, -25, -69, -120, 0};
 
     // misc factors
     static final int MY_TURN_BONUS                        = 0;
@@ -84,8 +84,8 @@ public final class EvaluationConstants {
     static final int PAWN_CANDIDATE                       = 9;
     static final int PAWN_YOUNG_PASSED                    = 10;
 
-    public static final int[] startPawnFeatures = {-3, 3, -5, 2, 17, 5, 0, 0, 19, -2, -6};
-    public static final int[] endPawnFeatures =   {1, 28, 0, -3, 8, -5, 0, 0, -20, -7, 2};
+    public static final int[] startPawnFeatures = {-2, 6, -3, -1, 18, 0, 0, 0, 19, -4, -2};
+    public static final int[] endPawnFeatures =   {1, 34, 1, 1, 14, -3, 0, 0, -20, -5, -1};
     static int[] pawnFeatures;
     
     // knights valuation
@@ -96,8 +96,8 @@ public final class EvaluationConstants {
     static final int KNIGHT_PROTECTED_PAWN                = 4;
     static final int KNIGHT_FORK                          = 5;
 
-    public static final int[] startKnightFeatures = {1, 29, 45, 20, 6, 116};
-    public static final int[] endKnightFeatures =   {3, 28, 19, 7, 0, 140};
+    public static final int[] startKnightFeatures = {1, 29, 41, 17, 8, 117};
+    public static final int[] endKnightFeatures =   {3, 28, 15, 10, 0, 142};
     static int[] knightFeatures;
 
 
@@ -110,8 +110,8 @@ public final class EvaluationConstants {
     static final int BISHOP_ON_OUTPOST_BONUS              = 5;
     static final int BISHOP_REACH_OUTPOST_BONUS           = 6;
 
-    public static final int[] startBishopFeatures = {-2, -5, 25, 27, 27, 36, 9};
-    public static final int[] endBishopFeatures =   {0, 8, 18, 63, 2, 12, 12};
+    public static final int[] startBishopFeatures = {-3, -5, 25, 29, 22, 40, 11};
+    public static final int[] endBishopFeatures =   {0, 6, 18, 65, 1, 10, 9};
     public static int[] bishopFeatures;
 
     // rook valuation
@@ -124,8 +124,8 @@ public final class EvaluationConstants {
     static final int ROOKS_ATTACK_UNDEFENDED_PAWNS        = 5;
     static final int ROOK_BATTERY_SCORE                   = 6;
 
-    public static final int[] startRookFeatures = {36, 59, 19, 20, 13, 2, 26};
-    public static final int[] endRookFeatures =   {5, 17, 22, 7, -46, 2, 11};
+    public static final int[] startRookFeatures = {38, 55, 19, 18, 11, 6, 23};
+    public static final int[] endRookFeatures =   {10, 12, 22, 10, -45, 7, 8};
     public static int[] rookFeatures;
 
     public static final int[] startQueenFeatures = {};
@@ -149,14 +149,14 @@ public final class EvaluationConstants {
 
     public static final int[] KING_SAFETY_ARRAY                  =  // -s are good
             {
-                    155, 159, 173, 178, 179, 184, 194, 192,
-                    190, 190, 192, 195, 193, 189, 193, 189,
-                    202, 193, 205, 198, 205, 206, 208, 206,
-                    211, 207, 216, 210, 215, 210, 221, 219,
-                    215, 221, 225, 230, 235, 240, 230, 245,
-                    236, 240, 245, 251, 255, 265, 275, 285,
-                    295, 296, 297, 298, 299, 300, 301, 302,
-                    303, 304, 305, 306, 307, 308, 309, 309,
+                    160, 164, 178, 183, 184, 189, 198, 197,
+                    195, 195, 197, 196, 198, 194, 198, 194,
+                    206, 198, 204, 203, 202, 211, 203, 211,
+                    206, 212, 211, 215, 210, 215, 216, 224,
+                    216, 223, 230, 225, 240, 235, 235, 240,
+                    240, 235, 243, 246, 250, 260, 270, 280,
+                    290, 291, 292, 293, 294, 295, 296, 297,
+                    298, 299, 300, 301, 302, 303, 304, 304,
             };
 
 }

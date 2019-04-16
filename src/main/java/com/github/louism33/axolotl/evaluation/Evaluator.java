@@ -11,7 +11,7 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.Q;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.POSITION_SCORES;
 import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.mobilityScores;
-import static com.github.louism33.axolotl.evaluation.Init.*;
+import static com.github.louism33.axolotl.evaluation.Init.kingSafetyArea;
 import static com.github.louism33.axolotl.evaluation.PassedPawns.evalPassedPawnsByTurn;
 import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_EVAL;

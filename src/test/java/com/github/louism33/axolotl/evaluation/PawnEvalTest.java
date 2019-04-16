@@ -1,19 +1,8 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.axolotl.search.EngineBetter;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.util.Util;
-import com.github.louism33.chesscore.Chessboard;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.github.louism33.axolotl.search.EngineBetter.*;
-import static com.github.louism33.axolotl.search.EngineBetter.searchFixedDepth;
 
 public class PawnEvalTest {
 

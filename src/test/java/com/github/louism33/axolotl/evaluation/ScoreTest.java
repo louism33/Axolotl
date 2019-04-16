@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.Art;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
