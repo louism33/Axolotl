@@ -50,32 +50,33 @@ public final class Evaluator {
      */
 
 
-    public static int eval(final Chessboard board, final int[] moves) {
-        if (!ready) {
+    public static final int eval(final Chessboard board, final int[] moves) {
+        if (!EvaluationConstants.ready) {
             setup();
-        }   
-        
+        }
+        if (!EvaluatorPositionConstant.ready) {
+            EvaluatorPositionConstant.setup();
+        }
+
         int percentOfEndgame;
         int percentOfStartgame;
 
         long[] turnThreatensSquares = new long[2];
         
-        if (!EvaluatorPositionConstant.ready) {
-            EvaluatorPositionConstant.setup();
-        }
-        
         Assert.assertTrue(moves != null);
 
-        Arrays.fill(scoresForEPO[WHITE], 0);
-        Arrays.fill(scoresForEPO[BLACK], 0);
+        if (PRINT_EVAL) {
+            Arrays.fill(scoresForEPO[WHITE], 0);
+            Arrays.fill(scoresForEPO[BLACK], 0);
+        }
 
         long myKingSafetyArea = kingSafetyArea(board, turn);
         long enemyKingSafetyArea = kingSafetyArea(board, 1 - turn);
+
+        percentOfStartgame = getPercentageOfStartGame(board);
+        percentOfEndgame = 100 - percentOfStartgame;
         
-        percentOfEndgame = getPercentageOfEndgameness(board);
-        percentOfStartgame = 100 - percentOfEndgame;
-        
-        long[] pawnData = PawnTranspositionTable.retrieveFromTable(board.zobristPawnHash, percentOfStartgame);
+        long[] pawnData = null; // = PawnTranspositionTable.retrieveFromTable(board.zobristPawnHash, percentOfStartgame);
 
         if (pawnData == null || PRINT_EVAL) {
             pawnData = PawnEval.calculatePawnData(board, percentOfStartgame);
@@ -83,7 +84,7 @@ public final class Evaluator {
         }
         int score = 0;
 
-        score += Score.getScore(PawnEval.pawnScore, percentOfStartgame);
+        score += Score.getScore((int)pawnData[16], percentOfStartgame);
 
         // todo colour has insuf mat to mate
 
@@ -96,7 +97,7 @@ public final class Evaluator {
         int myPassedPawnScore = Score.getScore(evalPassedPawnsByTurn(board, turn, pawnData, turnThreatensSquares), percentOfStartgame);
         int enemyPassedPawnScore = Score.getScore(evalPassedPawnsByTurn(board, 1 - turn, pawnData, turnThreatensSquares), percentOfStartgame);
 
-        final int turnBonus = (percentOfStartgame * miscFeatures[MY_TURN_BONUS]) / 100;
+        final int turnBonus = Score.getScore(miscFeatures[MY_TURN_BONUS], percentOfStartgame);
 
         score += turnBonus;
         score += myTurnScore;
@@ -108,14 +109,9 @@ public final class Evaluator {
             EvalPrintObject.percentOfEndgame = percentOfEndgame;
             scoresForEPO[turn][passedPawnsScore] = myPassedPawnScore;
             scoresForEPO[1 - turn][passedPawnsScore] = enemyPassedPawnScore;
-
             // hacks
             scoresForEPO[WHITE][turnScore] = turnBonus; 
             scoresForEPO[WHITE][totalScore] = score; // total score from white's pov
-        }
-        if (score > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
-            System.out.println(board);
-            System.out.println();
         }
 
         Assert.assertTrue(score > IN_CHECKMATE_SCORE_MAX_PLY);
@@ -130,6 +126,8 @@ public final class Evaluator {
         //please generate moves before calling this
         final long[][] pieces = board.pieces;
 
+        // todo consider xray instead of real attacks for brq
+        
         int kingAttackers = 0;
         int kingAttacks = 0;
         int kingAttackersWeights = 0;
@@ -191,7 +189,7 @@ public final class Evaluator {
                 pins &= pins - 1;
             }
         }
-
+        
         final long squaresMyPawnsThreaten = pawnData[CAPTURES + turn];
         final long squaresMyPawnsDoubleThreaten = pawnData[DOUBLE_CAPTURES + turn];
         final long squaresEnemyPawnsThreaten = pawnData[CAPTURES + 1 - turn];
@@ -233,6 +231,9 @@ public final class Evaluator {
                 myDevelopedPawns &= myDevelopedPawns - 1;
             }
 
+
+            spaceScore = Score.getScore(spaceScore, percentOfStartgame);
+            
             finalScore += spaceScore;
 
             if (PRINT_EVAL) {
@@ -440,6 +441,9 @@ public final class Evaluator {
                 positionScore += POSITION_SCORES[turn][QUEEN][63 - queenIndex];
 
                 long pseudoMoves = singleQueenTable(allPieces, queenIndex, UNIVERSE);
+                //todo pins to queen
+//                long pseudoXRayMoves = xrayQueenAttacks(allPieces, blockers, queen);
+                        
                 final long table = pseudoMoves & safeMobSquares;
 
                 squaresIThreatenWithPieces |= pseudoMoves;
@@ -480,7 +484,7 @@ public final class Evaluator {
         
         threatsScore += populationCount(squaresMyPawnsThreaten & enemyBigPieces) * PAWN_THREATENS_BIG_THINGS;
 
-        Assert.assertTrue(percentOfEndgame >= 0 && percentOfEndgame <= 100);
+
         Assert.assertTrue(percentOfStartgame >= 0 && percentOfStartgame <= 100);
 
        
@@ -543,63 +547,17 @@ public final class Evaluator {
         return finalScore;
     }
 
+    // thanks H.G.Muller
+    static int getPercentageOfStartGame(Chessboard board) {
+        int answer = 0;
 
-    static int getPercentageOfEndgameness(Chessboard board) {
-        /*
-        The latter is usually calculated without paying attention to Pawns, e.g. Q=6, R=3, N=B=1, P=0. Then the game phase can range from 32 (100% opening, 0% end-game) to 0 (0% opening, 100% end-game).
-         */
-        int answer = 150;
-
-        int pawnCountW = populationCount(board.pieces[WHITE][PAWN]);
-        int pawnCountB = populationCount(board.pieces[BLACK][PAWN]);
-
-        if (pawnCountB + pawnCountW < 2) {
-            return 100;
+        for (int t = WHITE; t <= BLACK; t++) {
+            answer += populationCount(board.pieces[t][QUEEN]) * 6;
+            answer += populationCount(board.pieces[t][ROOK]) * 3;
+            answer += populationCount(board.pieces[t][BISHOP]);
+            answer += populationCount(board.pieces[t][KNIGHT]);
         }
 
-        answer -= pawnCountW * 2;
-        answer -= pawnCountB * 2;
-
-        if (pawnCountB < 3) {
-            answer += 15;
-        }
-
-        if (pawnCountW < 3) {
-            answer += 15;
-        }
-
-        long wk = board.pieces[WHITE][KNIGHT];
-        long wb = board.pieces[WHITE][BISHOP];
-        long wr = board.pieces[WHITE][ROOK];
-        long wq = board.pieces[WHITE][QUEEN];
-
-        long bk = board.pieces[BLACK][KNIGHT];
-        long bb = board.pieces[BLACK][BISHOP];
-        long br = board.pieces[BLACK][ROOK];
-        long bq = board.pieces[BLACK][QUEEN];
-
-        answer -= populationCount(wk) * 5;
-        answer -= populationCount(bk) * 5;
-
-        answer -= populationCount(wb) * 7;
-        answer -= populationCount(bb) * 7;
-
-        answer -= populationCount(wr) * 10;
-        answer -= populationCount(br) * 10;
-
-        answer -= populationCount(wq) * 22;
-        answer -= populationCount(bq) * 22;
-
-        answer += board.fullMoveCounter / 5;
-
-        if (answer < 0) {
-            return 0;
-        }
-
-        if (answer > 100) {
-            return 100;
-        }
-
-        return answer;
+        return Math.min((answer * 100) / 32, 100);
     }
 }

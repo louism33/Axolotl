@@ -17,13 +17,17 @@ import static java.lang.Long.numberOfTrailingZeros;
 @SuppressWarnings("ALL")
 public final class PawnEval {
 
-//    static final int[] pawnScoresForDisplay = new int[2];
-    static int pawnScore;
-    static final long[] pawnMoveData = new long[16];
+//    static int pawnScore;
+//    static final long[] pawnMoveData = new long[16];
 
+    // todo state or no state ???
     static long[] calculatePawnData(Chessboard board, int percentOfStart) {
-        Arrays.fill(pawnMoveData, 0);
-        pawnScore = 0;
+//        Arrays.fill(pawnMoveData, 0);
+        
+        long[] pawnMoveData = new long[17];
+        
+        int pawnScore = 0;
+//        pawnScore = 0;
 
         final long allPieces = board.allPieces();
 
@@ -131,6 +135,7 @@ public final class PawnEval {
             } 
         }
 
+        pawnMoveData[16] = pawnScore;
         return pawnMoveData;
     }
 

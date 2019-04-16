@@ -21,7 +21,6 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 @RunWith(Parameterized.class)
 public class STS12CenterControl {
 
-
     private static final int timeLimit = 10_000;
     private static int successes = 0;
 

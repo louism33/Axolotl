@@ -116,7 +116,7 @@ public final class PawnTranspositionTable {
         System.arraycopy(pawnTable, 0, pawnMoveData, replaceMeIndex * ENTRIES_PER_KEY, ENTRIES_PER_KEY);
     }
 
-    private static long[] returnArray = new long[ENTRIES_PER_KEY];
+    private static long[] returnArray = new long[ENTRIES_PER_KEY + 1 ];
     
     public static long[] retrieveFromTable(long key, int percentOfStart) {
         Arrays.fill(returnArray, 0);
@@ -130,7 +130,7 @@ public final class PawnTranspositionTable {
             final int entryIndex = i * ENTRIES_PER_KEY;
             if ((keys[i] ^ pawnMoveData[entryIndex]) == key) {
                 System.arraycopy(pawnMoveData, entryIndex, returnArray, 0, ENTRIES_PER_KEY);
-                PawnEval.pawnScore = Score.getScore(scores[i], percentOfStart);
+//                PawnEval.pawnScore = Score.getScore(scores[i], percentOfStart);
                 return returnArray;
             }
         }

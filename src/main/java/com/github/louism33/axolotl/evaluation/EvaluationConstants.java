@@ -38,13 +38,19 @@ public final class EvaluationConstants {
         for (int i = 0; i < startRookFeatures.length; i++) {
             rookFeatures[i] = Score.bs(startRookFeatures[i], endRookFeatures[i]);
         }
+                
+        
+        miscFeatures = new int[startMiscFeatures.length];
+        for (int i = 0; i < startMiscFeatures.length; i++) {
+            miscFeatures[i] = Score.bs(startMiscFeatures[i], endMiscFeatures[i]);
+        }
         
         ready = true;
     }
     
     // piece values
-    public static final int[] startMaterial = {100, 486, 502, 672, 1418};
-    public static final int[] endMaterial = {100, 300, 329, 581, 1153};
+    public static final int[] startMaterial = {100, 456, 502, 642, 1393};
+    public static final int[] endMaterial = {100, 295, 324, 576, 1128};
     static int[] material;
 
     static final int P                  = 0;
@@ -53,7 +59,7 @@ public final class EvaluationConstants {
     static final int R                  = 3;
     static final int Q                  = 4;
 
-    public static final int[] pinnedPiecesScores = {0, 31, -22, -32, -90, -121, 0};
+    public static final int[] pinnedPiecesScores = {0, 26, -22, -27, -75, -121, 0};
 
     // misc factors
     static final int MY_TURN_BONUS                        = 0;
@@ -61,7 +67,9 @@ public final class EvaluationConstants {
     // common
     static final int PIECE_BEHIND_PAWN                    = 2;
 
-    public static final int[] miscFeatures = {8, 2, 15};
+    public static final int[] startMiscFeatures = {8, 2, 15};
+    public static final int[] endMiscFeatures =   {2, 1, 15};
+    public static int[] miscFeatures;
 
     // pawn valuation
     static final int PAWN_UNBLOCKED                       = 0;
@@ -76,8 +84,8 @@ public final class EvaluationConstants {
     static final int PAWN_CANDIDATE                       = 9;
     static final int PAWN_YOUNG_PASSED                    = 10;
 
-    public static final int[] startPawnFeatures = {-13, 13, 0, 2, -3, 0, 0, 0, 19, 3, -6};
-    public static final int[] endPawnFeatures =   {26, 13, 0, -3, 23, 0, 0, 0, -20, 3, -13};
+    public static final int[] startPawnFeatures = {-3, 3, -5, 2, 17, 5, 0, 0, 19, -2, -6};
+    public static final int[] endPawnFeatures =   {1, 28, 0, -3, 8, -5, 0, 0, -20, -7, 2};
     static int[] pawnFeatures;
     
     // knights valuation
@@ -88,8 +96,8 @@ public final class EvaluationConstants {
     static final int KNIGHT_PROTECTED_PAWN                = 4;
     static final int KNIGHT_FORK                          = 5;
 
-    public static final int[] startKnightFeatures = {1, 29, 40, 20, 1, 71};
-    public static final int[] endKnightFeatures =   {3, 28, 9, 2, 5, 85};
+    public static final int[] startKnightFeatures = {1, 29, 45, 20, 6, 116};
+    public static final int[] endKnightFeatures =   {3, 28, 19, 7, 0, 140};
     static int[] knightFeatures;
 
 
@@ -102,8 +110,8 @@ public final class EvaluationConstants {
     static final int BISHOP_ON_OUTPOST_BONUS              = 5;
     static final int BISHOP_REACH_OUTPOST_BONUS           = 6;
 
-    public static final int[] startBishopFeatures = {-2, -5, 25, 62, 27, 46, 14};
-    public static final int[] endBishopFeatures =   {0, 8, 18, 48, 2, 7, 12};
+    public static final int[] startBishopFeatures = {-2, -5, 25, 27, 27, 36, 9};
+    public static final int[] endBishopFeatures =   {0, 8, 18, 63, 2, 12, 12};
     public static int[] bishopFeatures;
 
     // rook valuation
@@ -116,8 +124,8 @@ public final class EvaluationConstants {
     static final int ROOKS_ATTACK_UNDEFENDED_PAWNS        = 5;
     static final int ROOK_BATTERY_SCORE                   = 6;
 
-    public static final int[] startRookFeatures = {51, 49, 19, 15, 13, 2, 26};
-    public static final int[] endRookFeatures =   {50, 22, 22, 17, 4, 7, 26};
+    public static final int[] startRookFeatures = {36, 59, 19, 20, 13, 2, 26};
+    public static final int[] endRookFeatures =   {5, 17, 22, 7, -46, 2, 11};
     public static int[] rookFeatures;
 
     public static final int[] startQueenFeatures = {};
@@ -141,14 +149,14 @@ public final class EvaluationConstants {
 
     public static final int[] KING_SAFETY_ARRAY                  =  // -s are good
             {
-                    100, 104, 118, 123, 124, 129, 139, 137,
-                    150, 155, 152, 155, 158, 154, 158, 149,
-                    167, 158, 175, 168, 180, 181, 183, 186,
-                    191, 182, 191, 190, 195, 190, 201, 199,
-                    195, 206, 210, 220, 225, 235, 225, 240,
-                    271, 280, 290, 301, 310, 320, 330, 340,
-                    350, 351, 352, 353, 354, 355, 356, 357,
-                    358, 359, 360, 361, 362, 363, 364, 364,
+                    155, 159, 173, 178, 179, 184, 194, 192,
+                    190, 190, 192, 195, 193, 189, 193, 189,
+                    202, 193, 205, 198, 205, 206, 208, 206,
+                    211, 207, 216, 210, 215, 210, 221, 219,
+                    215, 221, 225, 230, 235, 240, 230, 245,
+                    236, 240, 245, 251, 255, 265, 275, 285,
+                    295, 296, 297, 298, 299, 300, 301, 302,
+                    303, 304, 305, 306, 307, 308, 309, 309,
             };
 
 }

@@ -133,7 +133,7 @@ public final class EngineBetter {
                                              final long absoluteMaxTime, final int depth) {
         resetBetweenMoves();
 
-        startTime = System.currentTimeMillis() - 100;
+        startTime = System.currentTimeMillis();
 
         timeLimitMillis = maxTime;
         absoluteMaxTimeLimit = absoluteMaxTime;
