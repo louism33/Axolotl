@@ -36,6 +36,25 @@ public class EngineFeatures {
             System.out.println("iid total: " + iidTotal);
         }
     }
+
+    @Test
+    public void testFutility() {
+        EngineSpecifications.DEBUG = false;
+        for (int depth = 8; depth < 15; depth++) {
+            Engine.resetFull();
+            futilityFail = 0;
+            futilitySuccess = 0;
+            futilityTotal = 0;
+            Chessboard board = new Chessboard();
+            Engine.searchFixedDepth(board, depth);
+            System.out.println("\nfor depth " + depth);
+            System.out.println("futility successes:  " + futilitySuccess);
+            System.out.println("futility fails :     " + futilityFail);
+            System.out.println("futility total:      " + futilityTotal);
+            System.out.println("successes of total:  " + (((double) futilitySuccess) / (double) futilityTotal));
+        }
+    }
+    
     
     
     @Test

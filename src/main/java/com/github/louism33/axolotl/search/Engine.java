@@ -47,8 +47,6 @@ public final class Engine {
 
     public static int age = 0;
     
-    public static int iidSuccess = 0, iidFail = 0, iidTotal = 0;
-
     public static UCIEntry uciEntry = new UCIEntry(true);
 
     // chess22k / ethereal reduction idea and numbers
@@ -76,6 +74,7 @@ public final class Engine {
         }
     }
 
+    // todo modulos to bitwise
     public static void resetBetweenMoves() {
         //don't reset moves if uci will provide them
         if (computeMoves) {
@@ -182,11 +181,18 @@ public final class Engine {
         }
     }
 
+    // todo, testing features
     public static int nonTerminalNodes = 0;
     public static int terminalNodes = 0;
     public static long nonTerminalTime = 0;
     public static long terminalTime = 0;
     public static boolean terminal = false;
+    
+    public static int iidSuccess = 0, iidFail = 0, iidTotal = 0;
+    public static int futilitySuccess = 0, futilityFail = 0, futilityTotal = 0;
+//    public static int iidSuccess = 0, iidFail = 0, iidTotal = 0;
+//    public static int iidSuccess = 0, iidFail = 0, iidTotal = 0;
+//    public static int iidSuccess = 0, iidFail = 0, iidTotal = 0;
 
     private static void search(Chessboard board, int depthLimit) {
         nonTerminalNodes = 0;
@@ -388,7 +394,7 @@ public final class Engine {
             }
 
             int R = depth > 6 ? 3 : 2;
-            if (false && isNullMoveOkHere(board, nullMoveCounter, depth, R)) {
+            if (isNullMoveOkHere(board, nullMoveCounter, depth, R)) {
 
                 board.makeNullMoveAndFlipTurn();
 
@@ -414,8 +420,8 @@ public final class Engine {
         if (hashMove == 0
                 && depth >= iidDepth) {
             int d = thisIsAPrincipleVariationNode ? depth - 2 : depth >> 1;
-//            principleVariationSearch(board, d, ply, alpha, beta, nullMoveCounter + 1);
-//            hashMove = getMove(retrieveFromTable(board.zobristHash));
+            principleVariationSearch(board, d, ply, alpha, beta, nullMoveCounter + 1);
+            hashMove = getMove(retrieveFromTable(board.zobristHash));
             if (hashMove == 0) {
                 iidFail++;
             } else {
@@ -487,6 +493,8 @@ public final class Engine {
                 if (isFutilityPruningAllowedHere(depth,
                         queenPromotionMove, givesCheckMove, pawnToSix, pawnToSeven, numberOfMovesSearched)) {
 
+                    futilityTotal++;
+                    
                     if (staticBoardEval == SHORT_MINIMUM) {
                         staticBoardEval = Evaluator.eval(board,
                                 moves);
@@ -495,11 +503,13 @@ public final class Engine {
                     int futilityScore = staticBoardEval + futilityMargin[depth];
 
                     if (futilityScore <= alpha) {
+                        futilitySuccess++;
                         if (futilityScore > bestScore) {
                             bestScore = futilityScore;
                         }
                         continue;
                     }
+                    futilityFail++;
                 }
             }
 

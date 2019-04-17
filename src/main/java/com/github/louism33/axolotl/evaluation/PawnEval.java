@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
+import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
@@ -11,22 +12,27 @@ import static com.github.louism33.chesscore.BoardConstants.fileForward;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.PieceMove.singlePawnCaptures;
 import static java.lang.Long.numberOfTrailingZeros;
+import static java.lang.Long.toUnsignedString;
 
 @SuppressWarnings("ALL")
 public final class PawnEval {
 
-//    static int pawnScore;
-//    static final long[] pawnMoveData = new long[16];
+    public static final long whiteFilesMask = 0xff;
+    public static final long blackFilesMask = 0xff00000000000000L;
 
-    // todo state or no state ???
     static long[] calculatePawnData(Chessboard board, int percentOfStart) {
-//        Arrays.fill(pawnMoveData, 0);
-        
-        long[] pawnMoveData = new long[17];
-        
-        int pawnScore = 0;
-//        pawnScore = 0;
+        if (!EvaluationConstants.ready) {
+            setup();
+        }
+        if (!EvaluatorPositionConstant.ready) {
+            EvaluatorPositionConstant.setup();
+        }
 
+        long[] pawnMoveData = new long[17];
+        int pawnScore = 0;
+
+        long outpostsFilesWeaks = 0;
+        
         final long allPieces = board.allPieces();
 
         for (int turn = WHITE; turn <= BLACK; turn++) {
@@ -90,6 +96,9 @@ public final class PawnEval {
             pawnMoveData[CAPTURES + turn] = allPawnCaptures;
             pawnMoveData[DOUBLE_CAPTURES + turn] = pawnDoubleCaptures;
             pawnMoveData[FILE_WITHOUT_MY_PAWNS + turn] = ~filesWithPawns;
+
+            outpostsFilesWeaks |= (~filesWithPawns & (turn == WHITE ? whiteFilesMask : blackFilesMask));
+            
             pawnMoveData[PASSED_PAWNS + turn] = myPassedPawns;
 
             boolean opposed, backwards;
@@ -134,9 +143,22 @@ public final class PawnEval {
         }
 
         pawnMoveData[16] = pawnScore;
+
         return pawnMoveData;
     }
 
+    /*
+    todo
+    
+    00000000 <- black open files
+    00000000 
+    00000000
+    00000000
+    00000000
+    00000000
+    00000000 ^ outposts and backwards...
+    00000000 <- white open files
+     */
 
     private static long bulkPawnPseudoPushes(long pawns, int turn, long legalPushes, long allPieces) {
         final long possiblePawnSinglePushes = turn == WHITE ? pawns << 8 : pawns >>> 8;

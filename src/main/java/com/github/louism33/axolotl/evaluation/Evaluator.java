@@ -123,7 +123,8 @@ int pawnFeatureScore = 0;
 
     public static int[][] scoresForEPO = new int[2][32];
 
-    private final static int evalTurn(Chessboard board, int turn, long[] pawnData, long[] turnThreatensSquares, int percentOfStartgame, long myKingSafetyArea, long enemyKingSafetyArea){
+    private final static int evalTurn(Chessboard board, int turn, long[] pawnData, 
+                                      long[] turnThreatensSquares, int percentOfStartgame, long myKingSafetyArea, long enemyKingSafetyArea){
         //please generate moves before calling this
         final long[][] pieces = board.pieces;
 
