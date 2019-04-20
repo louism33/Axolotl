@@ -130,7 +130,6 @@ public final class PawnTranspositionTable {
             final int entryIndex = i * ENTRIES_PER_KEY;
             if ((keys[i] ^ pawnMoveData[entryIndex]) == key) {
                 System.arraycopy(pawnMoveData, entryIndex, returnArray, 0, ENTRIES_PER_KEY);
-//                PawnEval.pawnScore = Score.getScore(scores[i], percentOfStart);
                 return returnArray;
             }
         }

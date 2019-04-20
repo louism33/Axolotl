@@ -62,7 +62,7 @@ public final class Evaluator {
         int percentOfStartgame;
 
         long[] turnThreatensSquares = new long[2];
-        
+
         Assert.assertTrue(moves != null);
 
         if (PRINT_EVAL) {
@@ -75,22 +75,28 @@ public final class Evaluator {
 
         percentOfStartgame = getPercentageOfStartGame(board);
         percentOfEndgame = 100 - percentOfStartgame;
+
         
-        long[] pawnData = null; // = PawnTranspositionTable.retrieveFromTable(board.zobristPawnHash, percentOfStartgame);
-int pawnFeatureScore = 0;
+        
+        
+        long[] pawnData = PawnTranspositionTable.retrieveFromTable(board.zobristPawnHash, percentOfStartgame);
+        int pawnFeatureScore = 0;
         if (pawnData == null || PRINT_EVAL) {
             pawnData = PawnEval.calculatePawnData(board, percentOfStartgame);
             pawnFeatureScore = (int)pawnData[16];
             PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, pawnData, pawnFeatureScore);
         }
         int score = 0;
+        
+        
+        
 
         score += Score.getScore(pawnFeatureScore, percentOfStartgame);
 
         // todo colour has insuf mat to mate
 
         final int turn = board.turn;
-        
+
         final int myTurnScore = evalTurn(board, turn, pawnData, turnThreatensSquares, percentOfStartgame, myKingSafetyArea, enemyKingSafetyArea);
         final int yourTurnScore = evalTurn(board, 1 - turn, pawnData, turnThreatensSquares, percentOfStartgame, enemyKingSafetyArea, myKingSafetyArea);
 
@@ -111,7 +117,7 @@ int pawnFeatureScore = 0;
             scoresForEPO[turn][passedPawnsScore] = myPassedPawnScore;
             scoresForEPO[1 - turn][passedPawnsScore] = enemyPassedPawnScore;
             // hacks
-            scoresForEPO[WHITE][turnScore] = turnBonus; 
+            scoresForEPO[WHITE][turnScore] = turnBonus;
             scoresForEPO[WHITE][totalScore] = score; // total score from white's pov
         }
 
@@ -123,17 +129,17 @@ int pawnFeatureScore = 0;
 
     public static int[][] scoresForEPO = new int[2][32];
 
-    private final static int evalTurn(Chessboard board, int turn, long[] pawnData, 
+    private final static int evalTurn(Chessboard board, int turn, long[] pawnData,
                                       long[] turnThreatensSquares, int percentOfStartgame, long myKingSafetyArea, long enemyKingSafetyArea){
         //please generate moves before calling this
         final long[][] pieces = board.pieces;
 
         // todo consider xray instead of real attacks for brq
-        
+
         int kingAttackers = 0;
         int kingAttacks = 0;
         int kingAttackersWeights = 0;
-        
+
         long squaresIThreatenWithPieces = 0;
 
         long myPawns, myKnights, myBishops, myRooks, myQueens, myKing;
@@ -191,7 +197,7 @@ int pawnFeatureScore = 0;
                 pins &= pins - 1;
             }
         }
-        
+
         final long squaresMyPawnsThreaten = pawnData[CAPTURES + turn];
         final long squaresMyPawnsDoubleThreaten = pawnData[DOUBLE_CAPTURES + turn];
         final long squaresEnemyPawnsThreaten = pawnData[CAPTURES + 1 - turn];
@@ -235,7 +241,7 @@ int pawnFeatureScore = 0;
 
 
             spaceScore = Score.getScore(spaceScore, percentOfStartgame);
-            
+
             finalScore += spaceScore;
 
             if (PRINT_EVAL) {
@@ -287,7 +293,7 @@ int pawnFeatureScore = 0;
                 if (populationCount(pseudoMoves & enemyBigPiecesForFork) > 1) {
                     knightsScore += knightFeatures[KNIGHT_FORK];
                 }
-                
+
                 if ((knight & squaresMyPawnsThreaten) != 0) {
                     knightsScore += knightFeatures[KNIGHT_PROTECTED_PAWN];
                 }
@@ -445,7 +451,7 @@ int pawnFeatureScore = 0;
                 long pseudoMoves = singleQueenTable(allPieces, queenIndex, UNIVERSE);
                 //todo pins to queen
 //                long pseudoXRayMoves = xrayQueenAttacks(allPieces, blockers, queen);
-                        
+
                 final long table = pseudoMoves & safeMobSquares;
 
                 squaresIThreatenWithPieces |= pseudoMoves;
@@ -483,7 +489,7 @@ int pawnFeatureScore = 0;
             kingAttackersWeights += 1;
             kingAttacks += populationCount(pseudoAttackEnemyKing);
         }
-        
+
         threatsScore += populationCount(squaresMyPawnsThreaten & enemyBigPieces) * PAWN_THREATENS_BIG_THINGS;
 
 
@@ -502,7 +508,7 @@ int pawnFeatureScore = 0;
 
 
         int enemyKingDanger = kingSafetyMisc[STARTING_PENALTY]
-                + kingAttackersWeights * kingAttackers 
+                + kingAttackersWeights * kingAttackers
                 + kingSafetyMisc[NUMBER_OF_ATTACKS_FACTOR] * kingAttacks
                 - (populationCount(board.pieces[turn][QUEEN]) == 0 ? kingSafetyMisc[MISSING_QUEEN_KING_SAFETY_UNITS] : 0)
                 + ((myKingSafetyArea & fileWithoutMyPawns) != 0 ? kingSafetyMisc[KING_NEAR_SEMI_OPEN_FILE_LOOKUP] : 0)
@@ -514,11 +520,11 @@ int pawnFeatureScore = 0;
 
 
         enemyKingDanger = Math.max(0, Math.min(enemyKingDanger, KING_SAFETY_ARRAY.length - 1));
-        
+
         finalScore += KING_SAFETY_ARRAY[enemyKingDanger];
-        
+
         turnThreatensSquares[turn] += squaresIThreatenWithPieces;
-        
+
         finalScore += Score.getScore(materialScore, percentOfStartgame);
         finalScore += Score.getScore(positionScore, percentOfStartgame);
         finalScore += mobilityScore;
@@ -534,15 +540,15 @@ int pawnFeatureScore = 0;
             scoresForEPO[turn][EvalPrintObject.positionScore] = Score.getScore(positionScore, percentOfStartgame);
             scoresForEPO[turn][EvalPrintObject.mobilityScore] = mobilityScore;
             scoresForEPO[turn][EvalPrintObject.threatsScore] = threatsScore;
-            
+
             scoresForEPO[turn][EvalPrintObject.knightScore] = Score.getScore(knightsScore, percentOfStartgame);
             scoresForEPO[turn][EvalPrintObject.bishopScore] = Score.getScore(bishopsScore, percentOfStartgame);
             scoresForEPO[turn][EvalPrintObject.rookScore] = Score.getScore(rooksScore, percentOfStartgame);
             scoresForEPO[turn][EvalPrintObject.queenScore] = Score.getScore(queensScore, percentOfStartgame);
-            
+
             scoresForEPO[1 - turn][kingSafetyScore] = -KING_SAFETY_ARRAY[enemyKingDanger];
         }
-        
+
         Assert.assertTrue(finalScore > IN_CHECKMATE_SCORE_MAX_PLY);
         Assert.assertTrue(finalScore < CHECKMATE_ENEMY_SCORE_MAX_PLY);
 
