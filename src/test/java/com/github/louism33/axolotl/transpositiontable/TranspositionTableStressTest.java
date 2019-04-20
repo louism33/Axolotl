@@ -42,15 +42,21 @@ public class TranspositionTableStressTest {
         stressTestToDepthTest(depth, new Chessboard(), MAX_TABLE_SIZE_MB);
     }
 
+    @Test
+    void testNumber() {
+        stressTestToDepthTest(14, new Chessboard(), DEFAULT_TABLE_SIZE_MB);
+    }
+
     private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize) {
         int number = hashSize * TABLE_SIZE_PER_MB;
         TranspositionTable.initTable(number);
 
         Engine.searchFixedDepth(board, depth);
         
+        System.out.println("total adds :           " + totalAdds);
         System.out.println("new entries:           " + newEntries);
         System.out.println("aged out entries:      " + agedOut);
-        System.out.println("hits:                  " + hit);
+        System.out.println("total hits:            " + totalHits);
         System.out.println("hits but already good: " + hitButAlreadyGood);
         System.out.println("hits to replace:       " + hitReplace);
         System.out.println("override:              " + override);

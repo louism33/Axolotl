@@ -22,7 +22,7 @@ public final class PawnTranspositionTable {
     private static final int bucketSize = 4;
     private static int shiftAmount = 64 - numberOfTrailingZeros(PAWN_TABLE_SIZE >> 1);
 
-    static final int CAPTURES = 0, SPANS = 2, FILE_WITHOUT_MY_PAWNS = 4, PASSED_PAWNS = 6, SCORE = 8;
+    public static final int CAPTURES = 0, SPANS = 2, FILE_WITHOUT_MY_PAWNS = 4, PASSED_PAWNS = 6, SCORE = 8;
     static final long[] noPawnsData = {0, 0, 0, 0, -1, -1, 0, 0, 0};
     private static final int XOR_INDEX = CAPTURES;
 
@@ -134,7 +134,6 @@ public final class PawnTranspositionTable {
                     System.arraycopy(pawnMoveData, entryIndex, returnArray, 0, ENTRIES_PER_KEY);
                     hit++;
 
-
                     if (GOD_DEBUG) {
                         final long[] testPawnData = PawnEval.calculatePawnData(board, percentOfStartgame);
                         if (!Arrays.equals(testPawnData, returnArray)) {
@@ -144,12 +143,9 @@ public final class PawnTranspositionTable {
                             System.out.println(board.toFenString());
                             System.out.println(Arrays.toString(testPawnData));
                             System.out.println(Arrays.toString(returnArray));
-//                            Art.printLong(testPawnData[0]);
-//                            Art.printLong(returnArray[0]);
                             Assert.assertArrayEquals(testPawnData, returnArray);
                         }
                     }
-                    
                     
                     return returnArray;
                 }

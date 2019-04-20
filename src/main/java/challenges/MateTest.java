@@ -3,7 +3,9 @@ package challenges;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
+import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +51,8 @@ public class MateTest {
         EngineSpecifications.DEBUG = false;
         final Chessboard board = EPDObject.getBoard();
         int move = Engine.searchFixedTime(board, timeLimit);
-
+        System.out.println(board);
+        MoveParser.printMove(move);
         Assert.assertTrue(Utils.contains(winningMoves, move));
 
     }

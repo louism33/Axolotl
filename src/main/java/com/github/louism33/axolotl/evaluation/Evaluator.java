@@ -80,26 +80,23 @@ public final class Evaluator {
 
         int score = 0;
         
-        // todo only if pawns (zob != 0)
         long[] pawnData = getPawnData(board, board.zobristPawnHash, percentOfStartgame);
 
-        int pawnFeatureScore = (int)pawnData[SCORE];
 
 
-        score += Score.getScore(pawnFeatureScore, percentOfStartgame);
-        if (GOD_DEBUG && board.zobristPawnHash != 0) {
+        score += Score.getScore((int)pawnData[SCORE], percentOfStartgame);
+        
+        if (GOD_DEBUG) {
             final long[] testPawnData = PawnEval.calculatePawnData(board, percentOfStartgame);
             if (!Arrays.equals(testPawnData, pawnData)) {
-                System.out.println("total requests          : " + totalRequests);
-                System.out.println("newEntries              : " + newEntries);
-                System.out.println("hit                     : " + hit);
-                System.out.println("override                : " + override);
                 System.out.println(board);
                 System.out.println(board.toFenString());
+                System.out.println("correct: ");
                 System.out.println(Arrays.toString(testPawnData));
+                System.out.println("table: ");
                 System.out.println(Arrays.toString(pawnData));
-                Art.printLong(testPawnData[0]);
-                Art.printLong(pawnData[0]);
+                Art.printLong(testPawnData[5]);
+                Art.printLong(pawnData[5]);
             }
             Assert.assertArrayEquals(testPawnData, pawnData);
         }

@@ -163,11 +163,11 @@ public final class MoveOrderer {
             else if (secondKiller == move) {
                 moves[i] = buildMoveScore(move, killerTwoScore);
             }
-//            else if (checkingMove(board, moves[i])) { // keeps moves[i] here
-//                moves[i] = MoveParser.setCheckingMove(moves[i]);
-//                Assert.assertTrue(MoveParser.isCheckingMove(moves[i]));
-//                moves[i] = buildMoveScore(moves[i], giveCheckMove);
-//            }
+            else if (checkingMove(board, moves[i])) { // keeps moves[i] here
+                moves[i] = MoveParser.setCheckingMove(moves[i]);
+                Assert.assertTrue(MoveParser.isCheckingMove(moves[i]));
+                moves[i] = buildMoveScore(moves[i], giveCheckMove);
+            }
             else if (isCastlingMove(move)) {
                 moves[i] = buildMoveScore(move, castlingMove);
             }

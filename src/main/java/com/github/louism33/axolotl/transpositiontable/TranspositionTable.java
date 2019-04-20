@@ -34,7 +34,7 @@ public final class TranspositionTable {
         
         newEntries = 0;
         agedOut = 0;
-        hit = 0;
+        totalHits = 0;
         hitButAlreadyGood = 0;
         hitReplace = 0;
         override = 0;
@@ -50,9 +50,10 @@ public final class TranspositionTable {
         tableReady = true;
     }
 
+    public static int totalAdds = 0;
     public static int newEntries = 0;
     public static int agedOut = 0;
-    public static int hit = 0;
+    public static int totalHits = 0;
     public static int hitButAlreadyGood = 0;
     public static int hitReplace = 0;
     public static int override = 0;
@@ -63,6 +64,8 @@ public final class TranspositionTable {
             initTable(TABLE_SIZE);
         }
 
+        totalAdds++;
+        
         int index = getIndex(key);
 
         int replaceMeIndex = 0;
@@ -81,7 +84,7 @@ public final class TranspositionTable {
             int currentDepth = getDepth(currentEntry);
 
             if (key == currentKey) {
-                hit++;
+                totalHits++;
                 if (depth < currentDepth && flag != EXACT) {
                     hitButAlreadyGood++;
                     return;

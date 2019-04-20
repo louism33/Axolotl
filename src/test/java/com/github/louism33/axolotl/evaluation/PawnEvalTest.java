@@ -109,5 +109,7 @@ public class PawnEvalTest {
         System.out.println("override                : " + override);
         System.out.println("ratio new total         : " + ((double)newEntries / (double)totalRequests));
         System.out.println("ratio hit total         : " + ((double)hit / (double)totalRequests));
+
+        EngineSpecifications.GOD_DEBUG = false;
     }
 }

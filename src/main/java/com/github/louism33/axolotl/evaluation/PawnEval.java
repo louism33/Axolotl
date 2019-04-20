@@ -20,7 +20,7 @@ public final class PawnEval {
     public static final long whiteFilesMask = 0xff;
     public static final long blackFilesMask = 0xff00000000000000L;
 
-    static long[] calculatePawnData(Chessboard board, int percentOfStart) {
+    public static long[] calculatePawnData(Chessboard board, int percentOfStart) {
         if (!EvaluationConstants.ready) {
             setup();
         }
@@ -97,10 +97,6 @@ public final class PawnEval {
 
             outpostsFilesWeaks |= (~filesWithPawns & (turn == WHITE ? whiteFilesMask : blackFilesMask));
 
-            if (board.zobristPawnHash == 0) {
-                return pawnMoveData;
-            }
-            
             pawnMoveData[PASSED_PAWNS + turn] = myPassedPawns;
 
             boolean opposed, backwards;
