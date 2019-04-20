@@ -1,46 +1,52 @@
 package com.github.louism33.axolotl.evaluation;
 
+import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.BitOperations;
+import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 
 import java.util.Arrays;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY;
-import static com.github.louism33.axolotl.search.EngineSpecifications.PAWN_TABLE_SIZE;
-import static com.github.louism33.axolotl.search.EngineSpecifications.TABLE_SIZE;
+import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 import static java.lang.Long.numberOfTrailingZeros;
 
 @SuppressWarnings("ALL")
 public final class PawnTranspositionTable {
-    
+
+    public static boolean tableReady = false;
+    static final int ENTRIES_PER_KEY = 9;
+    private static final int bucketSize = 4;
+    private static int shiftAmount = 64 - numberOfTrailingZeros(PAWN_TABLE_SIZE >> 1);
+
+    static final int CAPTURES = 0, SPANS = 2, FILE_WITHOUT_MY_PAWNS = 4, PASSED_PAWNS = 6, SCORE = 8;
+    static final long[] noPawnsData = {0, 0, 0, 0, -1, -1, 0, 0, 0};
+    private static final int XOR_INDEX = CAPTURES;
+
+    public static int totalRequests = 0;
+    public static int newEntries = 0;
+    public static int hit = 0;
+    public static int override = 0;
+
     /*
     what to store:
     one long for each type of pawn
     one long for weak squares
      */
+    public static long[] keys = new long[PAWN_TABLE_SIZE]; // todo, add to thread
+    private static long[] returnArray = new long[ENTRIES_PER_KEY]; // todo, will become owned by a searchthread
+    public static long[] pawnMoveData = new long[PAWN_TABLE_SIZE * ENTRIES_PER_KEY]; // todo, will become owned by a searchthread
 
-    private static final int ENTRIES_PER_KEY = 16;
-
-    static final int PUSHES = 0, CAPTURES = 2, DOUBLE_CAPTURES = 4, SPANS = 6, FILE_WITHOUT_MY_PAWNS = 8, PASSED_PAWNS = 10;
-    private static final int XOR_INDEX = PUSHES;
-    
-    public static long[] keys = new long[PAWN_TABLE_SIZE];
-    public static int[] scores = new int[PAWN_TABLE_SIZE];
-    public static long[] pawnMoveData = new long[PAWN_TABLE_SIZE * ENTRIES_PER_KEY];
-    
-    public static boolean tableReady = false;
-    public static int shiftAmount = 64 - numberOfTrailingZeros(PAWN_TABLE_SIZE >> 1);
-    static final int bucketSize = 4;
 
     public static void reset() {
         Arrays.fill(keys, 0);
         Arrays.fill(pawnMoveData, 0);
-        Arrays.fill(scores, 0);
+        Arrays.fill(returnArray, 0);
     }
-    
+
     public static void initPawnTable(int maxEntries) {
         if (BitOperations.populationCount(maxEntries) != 1) {
             System.out.println("please select a multiple of two for the hash table size");
@@ -54,88 +60,109 @@ public final class PawnTranspositionTable {
         actualTableSize += ENTRIES_PER_KEY;
 
         newEntries = 0;
-        agedOut = 0;
         hit = 0;
-        hitButAlreadyGood = 0;
-        hitReplace = 0;
         override = 0;
-
+        totalRequests = 0;
+        
         if (keys != null && keys.length == actualTableSize) {
             Arrays.fill(keys, 0);
             Arrays.fill(pawnMoveData, 0);
-            Arrays.fill(scores, 0);
+            Arrays.fill(returnArray, 0);
         } else {
             keys = new long[actualTableSize];
             pawnMoveData = new long[actualTableSize * ENTRIES_PER_KEY];
-            scores = new int[actualTableSize];
+            returnArray = new long[ENTRIES_PER_KEY];
         }
 
         tableReady = true;
     }
 
-    public static int newEntries = 0;
-    public static int agedOut = 0;
-    public static int hit = 0;
-    public static int hitButAlreadyGood = 0;
-    public static int hitReplace = 0;
-    public static int override = 0;
-
-    public static void addToTableReplaceArbitrarily(long key, long[] pawnTable, int score) {
-        if (!tableReady) {
-            initPawnTable(PAWN_TABLE_SIZE);
-        }
+    private static void addToTableReplaceArbitrarily(long key, long[] pawnData, int score) {
+        Assert.assertTrue(tableReady);
 
         int index = getIndex(key);
 
         int replaceMeIndex = 0;
 
+        boolean newEntry = false;
+        
         for (int i = index; i < index + bucketSize; i++) {
             final int entryIndex = i * ENTRIES_PER_KEY;
             final long pawnMoveDatum = pawnMoveData[entryIndex];
             final long currentKey = (keys[i] ^ pawnMoveDatum);
             final long currentEntry = pawnMoveDatum;
 
-            if (pawnTable[XOR_INDEX] != 0 && currentEntry == 0) {
-                newEntries++;
+            if (currentEntry == 0) {
+                newEntry = true;
                 replaceMeIndex = i;
                 break;
             }
 
-            if (key == currentKey) {
-                hit++;
-                return;
-            }
-
-            override++;
-
             replaceMeIndex = i;
         }
 
-        keys[replaceMeIndex] = key ^ pawnTable[XOR_INDEX];
-        scores[replaceMeIndex] = score;
-        System.arraycopy(pawnTable, 0, pawnMoveData, replaceMeIndex * ENTRIES_PER_KEY, ENTRIES_PER_KEY);
+        if (newEntry) {
+            newEntries++;
+        } else {
+            override++;
+        }
+        
+        keys[replaceMeIndex] = key ^ pawnData[XOR_INDEX];
+        System.arraycopy(pawnData, 0, pawnMoveData, replaceMeIndex * ENTRIES_PER_KEY, ENTRIES_PER_KEY);
     }
 
-    private static long[] returnArray = new long[ENTRIES_PER_KEY + 1 ];
-    
-    public static long[] retrieveFromTable(long key, int percentOfStart) {
-        Arrays.fill(returnArray, 0);
+
+    public static long[] getPawnData(Chessboard board, long key, int percentOfStartgame) {
         if (!tableReady) {
             initPawnTable(PAWN_TABLE_SIZE);
         }
 
-        int index = getIndex(key);
+        if (key == 0) {
+            return noPawnsData;
+        }
+        
+        Arrays.fill(returnArray, 0);
+        
+        totalRequests++;
+                
+        if (!PRINT_EVAL) {
+            int index = getIndex(key);
+            for (int i = index; i < index + bucketSize; i++) {
+                final int entryIndex = i * ENTRIES_PER_KEY;
+                if ((keys[i] ^ pawnMoveData[entryIndex]) == key) {
+                    
+                    System.arraycopy(pawnMoveData, entryIndex, returnArray, 0, ENTRIES_PER_KEY);
+                    hit++;
 
-        for (int i = index; i < index + bucketSize; i++) {
-            final int entryIndex = i * ENTRIES_PER_KEY;
-            if ((keys[i] ^ pawnMoveData[entryIndex]) == key) {
-                System.arraycopy(pawnMoveData, entryIndex, returnArray, 0, ENTRIES_PER_KEY);
-                return returnArray;
+
+                    if (GOD_DEBUG) {
+                        final long[] testPawnData = PawnEval.calculatePawnData(board, percentOfStartgame);
+                        if (!Arrays.equals(testPawnData, returnArray)) {
+                            System.out.println("-------");
+                            System.out.println(board);
+                            System.out.println(board);
+                            System.out.println(board.toFenString());
+                            System.out.println(Arrays.toString(testPawnData));
+                            System.out.println(Arrays.toString(returnArray));
+//                            Art.printLong(testPawnData[0]);
+//                            Art.printLong(returnArray[0]);
+                            Assert.assertArrayEquals(testPawnData, returnArray);
+                        }
+                    }
+                    
+                    
+                    return returnArray;
+                }
             }
         }
 
-        return null;
+        returnArray = PawnEval.calculatePawnData(board, percentOfStartgame);
+        int pawnFeatureScore = (int)returnArray[SCORE];
+        PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, returnArray, pawnFeatureScore);
+
+        return returnArray;
     }
+
 
     public static int getIndex(long key) {
         int index = (int) (key >>> shiftAmount);
@@ -188,5 +215,5 @@ public final class PawnTranspositionTable {
     public static int getAge(long entry) {
         return (int) ((entry & AGE_MASK) >>> ageOffset);
     }
-    
+
 }

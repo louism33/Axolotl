@@ -7,6 +7,7 @@ public final class EngineSpecifications {
     public static int THREAD_NUMBER                                  = 1;
     public static final int MAX_THREADS                              = 8;
     public static boolean DEBUG                                      = true;
+    public static boolean GOD_DEBUG                                      = false;
     public static boolean PRINT_EVAL                                 = false;
     public static int MAX_DEPTH                                      = Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH - 2;
     public final static int ABSOLUTE_MAX_DEPTH                       = Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH - 2;
@@ -28,6 +29,6 @@ public final class EngineSpecifications {
     public static final int MIN_TABLE_SIZE                           = MIN_TABLE_SIZE_MB * TABLE_SIZE_PER_MB;
     public static final int MAX_TABLE_SIZE                           = MAX_TABLE_SIZE_MB * TABLE_SIZE_PER_MB;
 
-    public static int DEFAULT_PAWN_TABLE_SIZE_MB                     = 16; // todo, what is a good size
+    public static int DEFAULT_PAWN_TABLE_SIZE_MB                     = 1; // todo, what is a good size
     public static int PAWN_TABLE_SIZE                                = DEFAULT_PAWN_TABLE_SIZE_MB * TABLE_SIZE_PER_MB;
 }

@@ -102,18 +102,18 @@ public class TranspositionTable2Test {
 //        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, UPPERBOUND, 10, initAge);
 //        addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, UPPERBOUND, 10, (initAge + 3+acceptableAges) % ageModulo);
 //
-//        Assert.assertEquals(100, getMove(retrieveFromTable(board.zobristHash)));
+//        Assert.assertEquals(100, getMove(getPawnData(board.zobristHash)));
 //        Assert.assertEquals(1, agedOut);
 //
 //        // reset
 //        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, UPPERBOUND, 10, initAge);
-//        Assert.assertEquals(1, getMove(retrieveFromTable(board.zobristHash)));
+//        Assert.assertEquals(1, getMove(getPawnData(board.zobristHash)));
 //        Assert.assertEquals(2, agedOut);
 //
 //
 //        addToTableReplaceByDepth(board.zobristHash, 200, 666, 10, UPPERBOUND, 10, (initAge + acceptableAges + 1) % ageModulo);
 //
-//        Assert.assertEquals(200, getMove(retrieveFromTable(board.zobristHash)));
+//        Assert.assertEquals(200, getMove(getPawnData(board.zobristHash)));
 //        Assert.assertEquals(3, agedOut);
 //
 //        agedOut = 0;

@@ -55,9 +55,9 @@ public class TranspositionTable3Test {
 //
 //            resetBetweenMoves();
 //
-//            Assert.assertTrue(TranspositionTable.retrieveFromTable(board.zobristHash) != 0);
+//            Assert.assertTrue(TranspositionTable.getPawnData(board.zobristHash) != 0);
 //            resetFull();
-//            Assert.assertEquals(0, TranspositionTable.retrieveFromTable(board.zobristHash));
+//            Assert.assertEquals(0, TranspositionTable.getPawnData(board.zobristHash));
 //
 //        } catch (Exception e) {
 //            throw new AssertionError("crashed on depth searched");

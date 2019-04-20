@@ -28,7 +28,7 @@ public final class PawnEval {
             EvaluatorPositionConstant.setup();
         }
 
-        long[] pawnMoveData = new long[17];
+        long[] pawnMoveData = new long[PawnTranspositionTable.ENTRIES_PER_KEY];
         int pawnScore = 0;
 
         long outpostsFilesWeaks = 0;
@@ -91,13 +91,15 @@ public final class PawnEval {
             }
 
             // general move and capture data
-            pawnMoveData[PUSHES + turn] = bulkPawnPseudoPushes(ps, turn, UNIVERSE, allPieces);
             pawnMoveData[SPANS + turn] = allPawnSpans;
             pawnMoveData[CAPTURES + turn] = allPawnCaptures;
-            pawnMoveData[DOUBLE_CAPTURES + turn] = pawnDoubleCaptures;
             pawnMoveData[FILE_WITHOUT_MY_PAWNS + turn] = ~filesWithPawns;
 
             outpostsFilesWeaks |= (~filesWithPawns & (turn == WHITE ? whiteFilesMask : blackFilesMask));
+
+            if (board.zobristPawnHash == 0) {
+                return pawnMoveData;
+            }
             
             pawnMoveData[PASSED_PAWNS + turn] = myPassedPawns;
 
@@ -142,7 +144,7 @@ public final class PawnEval {
             } 
         }
 
-        pawnMoveData[16] = pawnScore;
+        pawnMoveData[SCORE] = pawnScore;
 
         return pawnMoveData;
     }

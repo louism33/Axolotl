@@ -13,9 +13,7 @@ public final class PassedPawns {
         int passedPawnScore = 0;
 
         final long squaresMyPawnsThreaten = pawnData[CAPTURES + turn];
-        final long squaresMyPawnsDoubleThreaten = pawnData[DOUBLE_CAPTURES + turn];
         final long squaresEnemyPawnsThreaten = pawnData[CAPTURES + 1 - turn];
-        final long squaresEnemyPawnsDoubleThreaten = pawnData[DOUBLE_CAPTURES + 1 - turn];
 
         final long myPawnAttackSpan = pawnData[SPANS + turn];
         final long enemyPawnAttackSpan = pawnData[SPANS + 1 - turn];

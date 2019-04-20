@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
+import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 
@@ -14,6 +15,7 @@ import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.m
 import static com.github.louism33.axolotl.evaluation.Init.kingSafetyArea;
 import static com.github.louism33.axolotl.evaluation.PassedPawns.evalPassedPawnsByTurn;
 import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.GOD_DEBUG;
 import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_EVAL;
 import static com.github.louism33.chesscore.BitOperations.fileForward;
 import static com.github.louism33.chesscore.BitOperations.*;
@@ -76,22 +78,35 @@ public final class Evaluator {
         percentOfStartgame = getPercentageOfStartGame(board);
         percentOfEndgame = 100 - percentOfStartgame;
 
-        
-        
-        
-        long[] pawnData = PawnTranspositionTable.retrieveFromTable(board.zobristPawnHash, percentOfStartgame);
-        int pawnFeatureScore = 0;
-        if (pawnData == null || PRINT_EVAL) {
-            pawnData = PawnEval.calculatePawnData(board, percentOfStartgame);
-            pawnFeatureScore = (int)pawnData[16];
-            PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, pawnData, pawnFeatureScore);
-        }
         int score = 0;
+        
+        // todo only if pawns (zob != 0)
+        long[] pawnData = getPawnData(board, board.zobristPawnHash, percentOfStartgame);
+
+        int pawnFeatureScore = (int)pawnData[SCORE];
+
+
+        score += Score.getScore(pawnFeatureScore, percentOfStartgame);
+        if (GOD_DEBUG && board.zobristPawnHash != 0) {
+            final long[] testPawnData = PawnEval.calculatePawnData(board, percentOfStartgame);
+            if (!Arrays.equals(testPawnData, pawnData)) {
+                System.out.println("total requests          : " + totalRequests);
+                System.out.println("newEntries              : " + newEntries);
+                System.out.println("hit                     : " + hit);
+                System.out.println("override                : " + override);
+                System.out.println(board);
+                System.out.println(board.toFenString());
+                System.out.println(Arrays.toString(testPawnData));
+                System.out.println(Arrays.toString(pawnData));
+                Art.printLong(testPawnData[0]);
+                Art.printLong(pawnData[0]);
+            }
+            Assert.assertArrayEquals(testPawnData, pawnData);
+        }
         
         
         
 
-        score += Score.getScore(pawnFeatureScore, percentOfStartgame);
 
         // todo colour has insuf mat to mate
 
@@ -199,9 +214,7 @@ public final class Evaluator {
         }
 
         final long squaresMyPawnsThreaten = pawnData[CAPTURES + turn];
-        final long squaresMyPawnsDoubleThreaten = pawnData[DOUBLE_CAPTURES + turn];
         final long squaresEnemyPawnsThreaten = pawnData[CAPTURES + 1 - turn];
-        final long squaresEnemyPawnsDoubleThreaten = pawnData[DOUBLE_CAPTURES + 1 - turn];
 
         final long myPawnAttackSpan = pawnData[SPANS + turn];
         final long enemyPawnAttackSpan = pawnData[SPANS + 1 - turn];
