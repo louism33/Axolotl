@@ -23,11 +23,13 @@ public final class TranspositionTable {
     public static void initTable(int maxEntries) {
         if (BitOperations.populationCount(maxEntries) != 1) {
             System.out.println("please select a multiple of two for the hash table size");
+            maxEntries = Integer.highestOneBit(maxEntries) << 1; // round up
         }
 
         TABLE_SIZE = maxEntries;
 
-        int actualTableSize = maxEntries >> 1;
+//        int actualTableSize = maxEntries >> 1;
+        int actualTableSize = maxEntries;
         shiftAmount = 64 - numberOfTrailingZeros(actualTableSize);
         
         actualTableSize += 4;

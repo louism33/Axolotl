@@ -18,7 +18,7 @@ import static java.lang.Long.numberOfTrailingZeros;
 public final class PawnTranspositionTable {
 
     public static boolean tableReady = false;
-    static final int ENTRIES_PER_KEY = 9;
+    public static final int ENTRIES_PER_KEY = 9;
     private static final int bucketSize = 4;
     private static int shiftAmount = 64 - numberOfTrailingZeros(PAWN_TABLE_SIZE >> 1);
 
@@ -49,12 +49,12 @@ public final class PawnTranspositionTable {
 
     public static void initPawnTable(int maxEntries) {
         if (BitOperations.populationCount(maxEntries) != 1) {
-            System.out.println("please select a multiple of two for the hash table size");
+            maxEntries = Integer.highestOneBit(maxEntries) << 1; // round up
         }
 
         TABLE_SIZE = maxEntries;
 
-        int actualTableSize = maxEntries >> 1;
+        int actualTableSize = maxEntries;
         shiftAmount = 64 - numberOfTrailingZeros(actualTableSize);
 
         actualTableSize += ENTRIES_PER_KEY;
