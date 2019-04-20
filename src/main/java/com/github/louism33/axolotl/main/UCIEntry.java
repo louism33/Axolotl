@@ -114,7 +114,6 @@ public final class UCIEntry extends Thread {
                     inStartPos = true;
                     break;
 
-
                 } else if (token.equalsIgnoreCase("position")) {
 
                     String[] list = (tokens[1]).split("\\s");

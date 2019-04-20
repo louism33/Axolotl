@@ -49,7 +49,8 @@ public class BT2630 {
 
     @Test
     public void test() {
-        System.out.println(EPDObject.getBoardFen());
+        Engine.resetFull();
+        System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.DEBUG = false;

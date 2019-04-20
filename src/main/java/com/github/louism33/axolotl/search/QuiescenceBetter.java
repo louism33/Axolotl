@@ -8,7 +8,7 @@ import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.SHORT_MINIMUM;
-import static com.github.louism33.axolotl.search.MoveOrdererBetter.*;
+import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.chesscore.MoveConstants.FIRST_FREE_BIT;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 

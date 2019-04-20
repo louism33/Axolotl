@@ -12,7 +12,7 @@ import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
-import static com.github.louism33.axolotl.search.MoveOrdererBetter.*;
+import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.search.QuiescenceBetter.quiescenceSearch;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
@@ -88,7 +88,7 @@ public final class Engine {
         numberOfMovesMade[0] = 0;
         numberOfQMovesMade[0] = 0;
         stopNow = false;
-        initMoveOrderer();
+        resetMoveOrderer();
         age = (age + 1) % ageModulo;
     }
 
@@ -180,6 +180,9 @@ public final class Engine {
             throw new RuntimeException();
         }
     }
+    
+    
+    
 
     // todo, testing features
     public static int nonTerminalNodes = 0;
@@ -190,10 +193,15 @@ public final class Engine {
     
     public static int iidSuccess = 0, iidFail = 0, iidTotal = 0;
     public static int futilitySuccess = 0, futilityFail = 0, futilityTotal = 0;
-//    public static int iidSuccess = 0, iidFail = 0, iidTotal = 0;
-//    public static int iidSuccess = 0, iidFail = 0, iidTotal = 0;
-//    public static int iidSuccess = 0, iidFail = 0, iidTotal = 0;
+    public static int nullSuccess = 0, nullFail = 0, nullTotal = 0;
+    public static int betaSuccess = 0, betaFail = 0, betaTotal = 0;
+    public static int alphaSuccess = 0, alphaFail = 0, alphaTotal = 0;
 
+    public static int lmpTotal = 0;
+    public static int aspSuccess = 0, aspFailA = 0, aspFailB = 0, aspTotal = 0;
+
+    
+    
     private static void search(Chessboard board, int depthLimit) {
         nonTerminalNodes = 0;
         terminalNodes = 0;
@@ -247,7 +255,9 @@ public final class Engine {
                     break everything;
                 }
 
+                aspTotal++;
                 if (score <= alpha) {
+                    aspFailA++;
                     alphaAspirationAttempts++;
                     if (alphaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES) {
                         alpha = SHORT_MINIMUM;
@@ -255,6 +265,7 @@ public final class Engine {
                         alpha = aspirationScore - ASPIRATION_WINDOWS[alphaAspirationAttempts];
                     }
                 } else if (score >= beta) {
+                    aspFailB++;
                     betaAspirationAttempts++;
                     if (betaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES) {
                         beta = SHORT_MAXIMUM;
@@ -262,6 +273,7 @@ public final class Engine {
                         beta = aspirationScore - ASPIRATION_WINDOWS[betaAspirationAttempts];
                     }
                 } else {
+                    aspSuccess++;
                     break;
                 }
             }
@@ -374,22 +386,28 @@ public final class Engine {
             staticBoardEval = Evaluator.eval(board, moves);
 
             if (isBetaRazoringOkHere(depth, staticBoardEval)) {
+                betaTotal++;
                 int specificBetaRazorMargin = betaRazorMargin[depth];
                 if (staticBoardEval - specificBetaRazorMargin >= beta) {
+                    betaSuccess++;
                     return staticBoardEval;
                 }
+                betaFail++;
             }
 
             if (isAlphaRazoringMoveOkHere(depth, alpha)) {
                 int specificAlphaRazorMargin = alphaRazorMargin[depth];
                 if (staticBoardEval + specificAlphaRazorMargin < alpha) {
+                    alphaTotal++;
                     int qScore = quiescenceSearch(board,
                             alpha - specificAlphaRazorMargin,
                             alpha - specificAlphaRazorMargin + 1);
 
                     if (qScore + specificAlphaRazorMargin <= alpha) {
+                        alphaSuccess++;
                         return qScore;
                     }
+                    alphaFail++;
                 }
             }
 
@@ -398,6 +416,8 @@ public final class Engine {
 
                 board.makeNullMoveAndFlipTurn();
 
+                nullTotal++;
+                
                 int d = Math.max(depth - R - 1, 0);
                 
                 int nullScore = -principleVariationSearch(board,
@@ -410,8 +430,10 @@ public final class Engine {
                     if (nullScore > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
                         nullScore = beta;
                     }
+                    nullSuccess++;
                     return nullScore;
                 }
+                nullFail++;
             }
             
      
@@ -420,7 +442,7 @@ public final class Engine {
         if (hashMove == 0
                 && depth >= iidDepth) {
             int d = thisIsAPrincipleVariationNode ? depth - 2 : depth >> 1;
-            principleVariationSearch(board, d, ply, alpha, beta, nullMoveCounter + 1);
+            principleVariationSearch(board, d, ply, alpha, beta, nullMoveCounter); // todo, allow null move?
             hashMove = getMove(retrieveFromTable(board.zobristHash));
             if (hashMove == 0) {
                 iidFail++;
@@ -469,7 +491,7 @@ public final class Engine {
             final boolean quietMove = !(captureMove || promotionMove);
 
             if (captureMove && !promotionMove) {
-                Assert.assertTrue(moveScore >= (captureBias + 1 - 5));
+                Assert.assertTrue(moveScore >= (neutralCapture - 5));
             }
 
             if (queenPromotionMove) {
@@ -486,6 +508,7 @@ public final class Engine {
                             && !pawnToSeven
                             && depth <= 4
                             && numberOfMovesSearched >= depth * 3 + 3) {
+                        lmpTotal++;
                         continue;
                     }
                 }

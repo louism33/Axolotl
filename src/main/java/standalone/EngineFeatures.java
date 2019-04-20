@@ -34,6 +34,7 @@ public class EngineFeatures {
             System.out.println("iid successes: " + iidSuccess);
             System.out.println("iid fails : " + iidFail);
             System.out.println("iid total: " + iidTotal);
+            System.out.println("successes of total:  " + (((double) iidSuccess) / (double) iidTotal));
         }
     }
 
@@ -54,8 +55,44 @@ public class EngineFeatures {
             System.out.println("successes of total:  " + (((double) futilitySuccess) / (double) futilityTotal));
         }
     }
-    
-    
+
+    @Test
+    public void testNull() {
+        EngineSpecifications.DEBUG = false;
+        for (int depth = 8; depth < 15; depth++) {
+            Engine.resetFull();
+            nullFail = 0;
+            nullSuccess = 0;
+            nullTotal = 0;
+            Chessboard board = new Chessboard();
+            Engine.searchFixedDepth(board, depth);
+            System.out.println("\nfor depth " + depth);
+            System.out.println("null successes:  " + nullSuccess);
+            System.out.println("null fails :     " + nullFail);
+            System.out.println("null total:      " + nullTotal);
+            System.out.println("successes of total:  " + (((double) nullSuccess) / (double) nullTotal));
+        }
+    }
+
+    @Test
+    public void testAsp() {
+        EngineSpecifications.DEBUG = false;
+        for (int depth = 8; depth < 15; depth++) {
+            Engine.resetFull();
+            aspFailA = 0;
+            aspFailB = 0;
+            aspSuccess = 0;
+            aspTotal = 0;
+            Chessboard board = new Chessboard();
+            Engine.searchFixedDepth(board, depth);
+            System.out.println("\nfor depth " + depth);
+            System.out.println("asp successes:  " + aspSuccess);
+            System.out.println("aspA fails :     " + aspFailA);
+            System.out.println("aspB fails :     " + aspFailB);
+            System.out.println("asp total:      " + aspTotal);
+            System.out.println("successes of total:  " + (((double) aspSuccess) / (double) aspTotal));
+        }
+    }
     
     @Test
     public void branchingFactorTest() {

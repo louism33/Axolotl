@@ -67,6 +67,7 @@ public class WACChallenge {
 
     @Test
     public void test() {
+        Engine.resetFull();
         System.out.println(EPDObject.getFullString());
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();

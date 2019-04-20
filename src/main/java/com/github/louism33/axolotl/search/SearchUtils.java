@@ -21,7 +21,8 @@ final class SearchUtils {
     static final int[] betaRazorMargin = {0, 250, 350, 450, 550, 750, 1000};
     public static final int betaRazorBelowThisDepth = betaRazorMargin.length;
     
-    static final int[] ASPIRATION_WINDOWS                            = {50, 100, 1000};
+//    static final int[] ASPIRATION_WINDOWS                            = {50, 100, 1000};
+    static final int[] ASPIRATION_WINDOWS                            = {25, 50, 100, 200, 1000};
     static final int ASPIRATION_MAX_TRIES                            = ASPIRATION_WINDOWS.length;
 
     static int extensions(Chessboard board, int ply, boolean boardInCheck, int[] moves){
@@ -63,6 +64,7 @@ final class SearchUtils {
 
     static boolean isNullMoveOkHere(Chessboard board, int nullMoveCounter, int depth, int R){
         return nullMoveCounter < 2
+                && depth >= 2
                 && !maybeInEndgame(board)
                 && notJustPawnsLeft(board)
                 && !maybeInZugzwang(board);

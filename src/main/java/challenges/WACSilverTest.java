@@ -51,6 +51,7 @@ public class WACSilverTest {
 
     @Test
     public void test() {
+        Engine.resetFull();
         System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();

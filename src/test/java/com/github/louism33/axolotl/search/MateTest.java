@@ -65,6 +65,7 @@ public class MateTest {
 
     @Test
     public void test() {
+        Engine.resetFull();
         System.out.println(EPDObject.getFullString());
 
         int[] winningMoves = EPDObject.getBestMoves();

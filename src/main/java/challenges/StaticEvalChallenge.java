@@ -1,6 +1,7 @@
 package challenges;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.Test;
@@ -43,6 +44,7 @@ public class StaticEvalChallenge {
 
     @Test
     public void test() {
+        Engine.resetFull();
         System.out.println(EPDObject.getFullString());
         Chessboard board = EPDObject.getBoard();
 
