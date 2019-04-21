@@ -96,7 +96,6 @@ public class PawnEvalTest {
     @Test
     public void percentStuff() {
         Chessboard board = new Chessboard();
-        EngineSpecifications.GOD_DEBUG = true;
         Engine.searchFixedDepth(board, 14);
 
         System.out.println("size of pawn table in mb: " + EngineSpecifications.DEFAULT_PAWN_TABLE_SIZE_MB);
@@ -110,6 +109,5 @@ public class PawnEvalTest {
         System.out.println("ratio new total         : " + ((double)newEntries / (double)totalRequests));
         System.out.println("ratio hit total         : " + ((double)hit / (double)totalRequests));
 
-        EngineSpecifications.GOD_DEBUG = false;
     }
 }

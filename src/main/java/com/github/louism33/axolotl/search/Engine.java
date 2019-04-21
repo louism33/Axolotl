@@ -74,7 +74,6 @@ public final class Engine {
         }
     }
 
-    // todo modulos to bitwise
     public static void resetBetweenMoves() {
         //don't reset moves if uci will provide them
         if (computeMoves) {

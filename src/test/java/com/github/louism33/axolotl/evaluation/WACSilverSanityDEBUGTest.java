@@ -3,10 +3,8 @@ package com.github.louism33.axolotl.evaluation;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.util.Util;
-import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +29,6 @@ public class WACSilverSanityDEBUGTest {
     
     @AfterClass
     public static void finalSuccessTally(){
-        EngineSpecifications.GOD_DEBUG = false;
     }
 
     @Parameters(name = "{index} Test: {1}")
@@ -58,7 +55,6 @@ public class WACSilverSanityDEBUGTest {
 
     @Test
     public void test() {
-        EngineSpecifications.GOD_DEBUG = true;
         Engine.resetFull();
         System.out.println(EPDObject.getFullString());
         Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);

@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
@@ -134,19 +133,6 @@ public final class PawnTranspositionTable {
                     System.arraycopy(pawnMoveData, entryIndex, returnArray, 0, ENTRIES_PER_KEY);
                     hit++;
 
-                    if (GOD_DEBUG) {
-                        final long[] testPawnData = PawnEval.calculatePawnData(board, percentOfStartgame);
-                        if (!Arrays.equals(testPawnData, returnArray)) {
-                            System.out.println("-------");
-                            System.out.println(board);
-                            System.out.println(board);
-                            System.out.println(board.toFenString());
-                            System.out.println(Arrays.toString(testPawnData));
-                            System.out.println(Arrays.toString(returnArray));
-                            Assert.assertArrayEquals(testPawnData, returnArray);
-                        }
-                    }
-                    
                     return returnArray;
                 }
             }

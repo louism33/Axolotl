@@ -28,7 +28,6 @@ public final class TranspositionTable {
 
         TABLE_SIZE = maxEntries;
 
-//        int actualTableSize = maxEntries >> 1;
         int actualTableSize = maxEntries;
         shiftAmount = 64 - numberOfTrailingZeros(actualTableSize);
         

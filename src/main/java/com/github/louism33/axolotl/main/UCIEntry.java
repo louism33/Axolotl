@@ -30,6 +30,8 @@ public final class UCIEntry extends Thread {
     private final PrintStream output;
     private boolean protocolReady = false;
     private boolean inStartPos = true;
+    private boolean fenSet = false;
+    private int indexOfMoves = 0;
 
     private final Matcher optionMatcher = Pattern.compile("setoption name (\\w+) value (\\w+)").matcher("");
 
@@ -63,7 +65,7 @@ public final class UCIEntry extends Thread {
                 final String token = tokens[0];
 
                 if (token.equalsIgnoreCase("uci")) {
-                    output.println("id name axolotl_v1.5");
+                    output.println("id name axolotl_v1.6");
                     output.println("id author Louis James Mackenzie-Smith");
                     output.println("option name Hash type spin default 128 min 1 max 1024");
                     output.println("uciok");
@@ -112,6 +114,7 @@ public final class UCIEntry extends Thread {
                     lastMoveMade = 0;
                     Engine.resetFull();
                     inStartPos = true;
+                    fenSet = false;
                     break;
 
                 } else if (token.equalsIgnoreCase("position")) {
@@ -122,6 +125,7 @@ public final class UCIEntry extends Thread {
                         if (!inStartPos) {
                             board = new Chessboard();
                             inStartPos = true;
+                            lastMoveMade = 0;
                         }
                         if (length == 1) {
                             return;
@@ -137,20 +141,36 @@ public final class UCIEntry extends Thread {
                         }
 
                     }
-                    // position fen 3rk2r/1pR2p2/b2BpPp1/p2p4/8/1P6/P4PPP/4R1K1 w - - 1 0
+                    // position fen 3rk2r/1pR2p2/b2BpPp1/p2p4/8/1P6/P4PPP/4R1K1 w - - 1 0 moves h2h3
+                    // position fen 3rk2r/1pR2p2/b2BpPp1/p2p4/8/1P6/P4PPP/4R1K1 w - - 1 0 moves h2h3 h8h7 a2a3 d8c8
                     else if (list[0].equalsIgnoreCase("fen")) {
-                        inStartPos = false;
-                        StringBuilder fen = new StringBuilder();
-                        for (int i = 1; i < list.length; i++) {
-                            fen.append(list[i]).append(" ");
+                        inStartPos = false; 
+                        if (!fenSet) {
+                            StringBuilder fen = new StringBuilder();
+                            for (int i = 1; i < list.length; i++) {
+                                final String str = list[i];
+                                if (str.equalsIgnoreCase("moves")) {
+                                    indexOfMoves = i;
+                                    break;
+                                }
+                                fen.append(str).append(" ");
+                            }
+                            board = new Chessboard(fen.toString());
+                            fenSet = true;
+                            lastMoveMade = 0;
                         }
-                        board = new Chessboard(fen.toString());
+                        if (length == indexOfMoves) {
+                            return;
+                        }
+                        if (list[indexOfMoves].equalsIgnoreCase("moves")) {
+                            for (int s = indexOfMoves + 1 + lastMoveMade; s < length; s++) {
+                                final int move = buildMoveFromLAN(board, list[s].trim());
+                                board.makeMoveAndFlipTurn(move);
+                                lastMoveMade++;
+                            }
+                        }
                     }
-
-
                     break;
-
-
                 } else if (token.equalsIgnoreCase("go")) {
 
                     String[] list = (tokens[1]).split("\\s");
@@ -309,8 +329,6 @@ public final class UCIEntry extends Thread {
                 }
             }
 
-            // Get the next command from the queue
-//                engineCommand = queue.poll();
         } else {
             // Something's wrong with the communication channel
             throw new EOFException();
@@ -351,7 +369,7 @@ public final class UCIEntry extends Thread {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println("axolotl v1.5 by Louis James Mackenzie-Smith");
+        System.out.println("axolotl v1.6 by Louis James Mackenzie-Smith");
         Thread thread = new Thread(new UCIEntry());
         thread.start();
     }

@@ -15,7 +15,6 @@ import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.m
 import static com.github.louism33.axolotl.evaluation.Init.kingSafetyArea;
 import static com.github.louism33.axolotl.evaluation.PassedPawns.evalPassedPawnsByTurn;
 import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.*;
-import static com.github.louism33.axolotl.search.EngineSpecifications.GOD_DEBUG;
 import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_EVAL;
 import static com.github.louism33.chesscore.BitOperations.fileForward;
 import static com.github.louism33.chesscore.BitOperations.*;
@@ -82,29 +81,8 @@ public final class Evaluator {
         
         long[] pawnData = getPawnData(board, board.zobristPawnHash, percentOfStartgame);
 
-
-
         score += Score.getScore((int)pawnData[SCORE], percentOfStartgame);
         
-        if (GOD_DEBUG) {
-            final long[] testPawnData = PawnEval.calculatePawnData(board, percentOfStartgame);
-            if (!Arrays.equals(testPawnData, pawnData)) {
-                System.out.println(board);
-                System.out.println(board.toFenString());
-                System.out.println("correct: ");
-                System.out.println(Arrays.toString(testPawnData));
-                System.out.println("table: ");
-                System.out.println(Arrays.toString(pawnData));
-                Art.printLong(testPawnData[5]);
-                Art.printLong(pawnData[5]);
-            }
-            Assert.assertArrayEquals(testPawnData, pawnData);
-        }
-        
-        
-        
-
-
         // todo colour has insuf mat to mate
 
         final int turn = board.turn;
@@ -501,7 +479,6 @@ public final class Evaluator {
         }
 
         threatsScore += populationCount(squaresMyPawnsThreaten & enemyBigPieces) * PAWN_THREATENS_BIG_THINGS;
-
 
         Assert.assertTrue(percentOfStartgame >= 0 && percentOfStartgame <= 100);
 

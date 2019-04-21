@@ -21,12 +21,10 @@ final class SearchUtils {
     static final int[] betaRazorMargin = {0, 250, 350, 450, 550, 750, 1000};
     public static final int betaRazorBelowThisDepth = betaRazorMargin.length;
     
-//    static final int[] ASPIRATION_WINDOWS                            = {50, 100, 1000};
     static final int[] ASPIRATION_WINDOWS                            = {25, 50, 100, 200, 1000};
     static final int ASPIRATION_MAX_TRIES                            = ASPIRATION_WINDOWS.length;
 
     static int extensions(Chessboard board, int ply, boolean boardInCheck, int[] moves){
-
         if (ply < 1){
             return 0;
         }

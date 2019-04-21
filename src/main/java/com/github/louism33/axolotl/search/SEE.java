@@ -1,17 +1,17 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.chesscore.*;
-import com.github.louism33.utils.MoveParserFromAN;
+import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 
-import java.util.Arrays;
-
-import static com.github.louism33.chesscore.BitOperations.*;
+import static com.github.louism33.chesscore.BitOperations.newPieceOnSquare;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MoveParser.*;
-import static com.github.louism33.chesscore.Utils.*;
-import static java.lang.Long.*;
-import static java.lang.Math.*;
+import static com.github.louism33.chesscore.Utils.squareDirectlyAttackedBy;
+import static com.github.louism33.chesscore.Utils.xRayToSquare;
+import static java.lang.Long.lowestOneBit;
+import static java.lang.Long.numberOfTrailingZeros;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public final class SEE {
 

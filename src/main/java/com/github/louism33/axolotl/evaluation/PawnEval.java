@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
@@ -12,7 +11,6 @@ import static com.github.louism33.chesscore.BoardConstants.fileForward;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.PieceMove.singlePawnCaptures;
 import static java.lang.Long.numberOfTrailingZeros;
-import static java.lang.Long.toUnsignedString;
 
 @SuppressWarnings("ALL")
 public final class PawnEval {

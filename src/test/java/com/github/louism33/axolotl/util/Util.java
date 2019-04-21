@@ -1,19 +1,8 @@
 package com.github.louism33.axolotl.util;
 
-import com.github.louism33.axolotl.evaluation.PawnEval;
-import com.github.louism33.axolotl.evaluation.PawnTranspositionTable;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
-import com.github.louism33.chesscore.Art;
-import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveParser;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.Arrays;
-
-import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.*;
-import static com.github.louism33.axolotl.main.PVLine.getPV;
 
 public class Util {
     
