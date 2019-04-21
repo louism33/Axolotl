@@ -1,12 +1,11 @@
 # Axolotl
 ## Though she be but little, she is fierce
-UCI compliant chess engine written in Java. Can be played on the command line through the UCI protocol, but best connected to a GUI, such as arena. There is also a standalone class, which is not contained in the JAR file.
+UCI compliant chess engine written in Java. Can be played on the command line through the UCI protocol, but best connected to a GUI, such as arena or cutechess.
 Uses chesscore https://github.com/louism33/ChessCore for legal move generation, through maven.
-As external libraries, in addition to my chesscore, JCPI is used for the UCI protocol.
 
 You will need the latest JRE 11 to run axolotl.
     
-Version 1.5 is about 2200 elo.
+Version 1.6 is about 2300 elo. If you run any games with axolotl, I would be very happy to hear the results.
     
 You are free to use Axolotl however you see fit. If you have any questions, simply open an issue and I will try to get back to you.
 
@@ -27,6 +26,6 @@ Louis
 <dependency>
   <groupId>com.github.louism33</groupId>
   <artifactId>axolotl</artifactId>
-  <version>1.5</version>
+  <version>1.6</version>
 </dependency>
 ```
