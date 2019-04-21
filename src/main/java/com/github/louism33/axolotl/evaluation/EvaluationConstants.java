@@ -147,7 +147,7 @@ public final class EvaluationConstants {
     static final int QUEEN_ATTACK_KING_LOOKUP_UNITS       = 3;
     public static final int[] kingAttacksValues = {3, 3, 4, 5};
 
-    public static final int[] KING_SAFETY_ARRAY                  =  // -s are good
+    public static final int[] KING_SAFETY_ARRAY                  =  
             {
                     160, 164, 178, 183, 184, 189, 198, 197,
                     195, 195, 197, 196, 198, 194, 198, 194,

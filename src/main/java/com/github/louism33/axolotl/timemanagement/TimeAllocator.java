@@ -23,7 +23,7 @@ public final class TimeAllocator {
         }
 
         if (maxTime > enemyTime + enemyTime / 5) {
-            final long dominanceBonus = (maxTime - enemyTime) / 7;
+            final long dominanceBonus = (maxTime - enemyTime) / 6;
             time = Math.min(time * 2, time + dominanceBonus);
         }
 
@@ -41,7 +41,7 @@ public final class TimeAllocator {
 
     public static long allocatePanicTime(long timeLimitMillis, long absoluteMaxTimeLimit) {
         if (timeLimitMillis > (absoluteMaxTimeLimit >>> 3)) {
-            return timeLimitMillis << 1;
+            return timeLimitMillis << 2;
         }
         return timeLimitMillis;
     }
