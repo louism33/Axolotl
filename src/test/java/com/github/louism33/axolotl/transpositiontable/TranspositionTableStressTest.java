@@ -1,12 +1,8 @@
 package com.github.louism33.axolotl.transpositiontable;
 
-import com.fluxchess.jcpi.commands.EngineSetOptionCommand;
-import com.github.louism33.axolotl.main.UCIEntry;
-import com.github.louism33.axolotl.search.EngineBetter;
-import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
-import org.junit.AfterClass;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,14 +16,12 @@ public class TranspositionTableStressTest {
 
     @BeforeAll
     static void setup() {
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        Util.reset();
     }
 
     @AfterAll
     static void reset() {
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        Util.reset();
     }
     
     @Test
@@ -48,16 +42,21 @@ public class TranspositionTableStressTest {
         stressTestToDepthTest(depth, new Chessboard(), MAX_TABLE_SIZE_MB);
     }
 
-    private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize) {
-        UCIEntry uciEntry = new UCIEntry();
-        EngineSetOptionCommand e = new EngineSetOptionCommand("Hash", "" + hashSize);
-        uciEntry.receive(e);
+    @Test
+    void testNumber() {
+        stressTestToDepthTest(14, new Chessboard(), DEFAULT_TABLE_SIZE_MB);
+    }
 
-        EngineBetter.searchFixedDepth(board, depth);
+    private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize) {
+        int number = hashSize * TABLE_SIZE_PER_MB;
+        TranspositionTable.initTable(number);
+
+        Engine.searchFixedDepth(board, depth);
         
+        System.out.println("total adds :           " + totalAdds);
         System.out.println("new entries:           " + newEntries);
         System.out.println("aged out entries:      " + agedOut);
-        System.out.println("hits:                  " + hit);
+        System.out.println("total hits:            " + totalHits);
         System.out.println("hits but already good: " + hitButAlreadyGood);
         System.out.println("hits to replace:       " + hitReplace);
         System.out.println("override:              " + override);

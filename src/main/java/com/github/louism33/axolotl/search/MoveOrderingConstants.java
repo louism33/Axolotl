@@ -9,8 +9,8 @@ public final class MoveOrderingConstants {
     public static final int hashScore = 31;
     public static final int queenCapturePromotionScore = 30;
     public static final int queenQuietPromotionScore = 29;
-    public static final int captureBias = 26; // between 30 and 23
     public static final int mateKillerScore = 25;
+    public static final int neutralCapture = 24; // between 19 and 29
     public static final int killerOneScore = 24;
     public static final int killerTwoScore = 23;
     public static final int pawnPushToSeven = 23;

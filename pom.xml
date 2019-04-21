@@ -6,7 +6,7 @@
 
     <groupId>com.github.louism33</groupId>
     <artifactId>axolotl</artifactId>
-    <version>1.5-SNAPSHOT</version> 
+    <version>1.6-SNAPSHOT</version> 
     <name>axolotl</name>
     <description>Amphibious Java Chess Engine</description>
     <url>https://github.com/louism33/Axolotl</url>
@@ -242,7 +242,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <finalName>axolotl_v1.5</finalName>
+                        <finalName>axolotl_v1.6</finalName>
                         <appendAssemblyId>false</appendAssemblyId>
                         <outputDirectory>${user.dir}</outputDirectory>
                         <archive>
@@ -260,11 +260,6 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>maven.fluxchess.com</id>
-            <url>http://maven.fluxchess.com/release</url>
-        </repository>
-
         <!--<repository>-->
             <!--<id>com.github.louism33</id>-->
             <!--<url>https://oss.sonatype.org/content/repositories/releases/com/github/louism33/chesscore/1.6</url>-->
@@ -281,19 +276,13 @@
         <dependency>
             <groupId>com.github.louism33</groupId>
             <artifactId>chesscore</artifactId>
-            <version>1.36-SNAPSHOT</version>
+            <version>1.51-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>27.0.1-jre</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fluxchess.jcpi</groupId>
-            <artifactId>jcpi</artifactId>
-            <version>1.4.1</version>
         </dependency>
 
         <dependency>

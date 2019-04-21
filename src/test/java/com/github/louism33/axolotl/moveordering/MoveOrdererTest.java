@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.moveordering;
 
-import com.github.louism33.axolotl.search.EngineBetter;
-import com.github.louism33.axolotl.search.MoveOrdererBetter;
+import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.MoveOrderer;
 import com.github.louism33.axolotl.search.MoveOrderingConstants;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.github.louism33.axolotl.search.MoveOrdererBetter.*;
+import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.addToTableReplaceByDepth;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
@@ -21,34 +21,31 @@ public class MoveOrdererTest {
 
     @BeforeAll
     static void setup() {
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        Engine.resetFull();
     }
 
     @AfterAll
     static void reset() {
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = null;
+        Engine.resetFull();
+        
     }
     
     @Test
     public void moveOrdererRootTest() {
         Chessboard board = new Chessboard();
 
+        int move = MoveParserFromAN.buildMoveFromLAN(board, "e2e4");
 
-
-        int move = MoveParserFromAN.buildMoveFromLAN(board, "e7e3");
-
-//        addToTableReplaceByDepth(board.zobristHash,
-//                e2e4 & MOVE_MASK_WITHOUT_CHECK,
-//                123, 1, 1, 1, 1);
+        addToTableReplaceByDepth(board.zobristHash,
+                move & MOVE_MASK_WITHOUT_CHECK,
+                123, 1, 1, 1, 1);
 
         int[] moves = board.generateLegalMoves();
 
         MoveParser.printMove(moves);
 
         int l = moves[moves.length - 1];
-        MoveOrdererBetter.scoreMovesAtRoot(moves, l, board);
+        MoveOrderer.scoreMovesAtRoot(moves, l, board);
         Ints.sortDescending(moves, 0, l);
 
         MoveParser.printMove(moves);
@@ -57,17 +54,12 @@ public class MoveOrdererTest {
             int mm = moves[m];
             int moveScore = getMoveScore(mm);
             String s = MoveParser.toString(mm);
-            System.out.println(s + " with score " + moveScore);
+//            System.out.println(s + " with score " + moveScore);
         }
 
-
         MoveParser.printMove(move);
-        int i = MoveOrdererBetter.quietHeuristicMoveScore(move, BLACK, 20);
 
-
-        System.out.println(i);
-
-//        Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, e2e4);
+        Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, move);
     }
 
 
@@ -103,7 +95,7 @@ public class MoveOrdererTest {
         int[] moves = board.generateLegalMoves();
 
         int l = moves[moves.length - 1];
-        MoveOrdererBetter.scoreMovesAtRoot(moves, l, board);
+        MoveOrderer.scoreMovesAtRoot(moves, l, board);
         Ints.sortDescending(moves, 0, l);
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, e2e4);
     }
@@ -121,7 +113,7 @@ public class MoveOrdererTest {
         int[] moves = board.generateLegalMoves();
 
         int l = moves[moves.length - 1];
-        MoveOrdererBetter.scoreMovesAtRoot(moves, l, board);
+        MoveOrderer.scoreMovesAtRoot(moves, l, board);
         Ints.sortDescending(moves, 0, l);
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, m);
     }
@@ -139,7 +131,7 @@ public class MoveOrdererTest {
         int[] moves = board.generateLegalMoves();
 
         int l = moves[moves.length - 1];
-        MoveOrdererBetter.scoreMovesAtRoot(moves, l, board);
+        MoveOrderer.scoreMovesAtRoot(moves, l, board);
         Ints.sortDescending(moves, 0, l);
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, m);
     }
@@ -159,7 +151,7 @@ public class MoveOrdererTest {
         int[] moves = board.generateLegalMoves();
 
         int l = moves[moves.length - 1];
-        MoveOrdererBetter.scoreMovesAtRoot(moves, l, board);
+        MoveOrderer.scoreMovesAtRoot(moves, l, board);
         Ints.sortDescending(moves, 0, l);
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, m);
 

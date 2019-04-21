@@ -43,7 +43,7 @@ public class WACSilverSanityTest {
         List<Object[]> answers = new ArrayList<>(splitUpPositions.length);
 
         for (int i = 0; i < splitUpPositions.length; i++) {
-
+            
             String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
@@ -62,10 +62,11 @@ public class WACSilverSanityTest {
 
     @Test
     public void test() {
-        System.out.println(EPDObject.getBoardFen());
+        Engine.resetFull();
+        System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
         MoveParser.printMove(move);
         if (contains(winningMoves, move) && !contains(losingMoves, move)){
             System.out.println("success");

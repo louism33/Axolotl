@@ -1,16 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.fluxchess.jcpi.commands.EngineAnalyzeCommand;
-import com.fluxchess.jcpi.commands.EngineNewGameCommand;
-import com.fluxchess.jcpi.commands.EngineStartCalculatingCommand;
-import com.fluxchess.jcpi.models.GenericBoard;
-import com.fluxchess.jcpi.models.GenericColor;
-import com.fluxchess.jcpi.models.GenericMove;
-import com.fluxchess.jcpi.models.IllegalNotationException;
-import com.fluxchess.jcpi.protocols.NoProtocolException;
-import com.github.louism33.axolotl.main.PVLine;
-import com.github.louism33.axolotl.main.UCIEntry;
-import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
@@ -34,378 +23,7 @@ public class DontCrashTest {
     static void reset() {
         Util.reset();
     }
-    
-    @Test
-    void searchMovesTest() throws IllegalNotationException {
-        String mmm = "d2d4";
-        String[] ms = mmm.split(" ");
 
-        GenericBoard board = new GenericBoard(518);
-
-        List<GenericMove> moves = new ArrayList<>();
-        for (String m : ms) {
-            moves.add(new GenericMove(m));
-        }
-
-        EngineAnalyzeCommand eac = new EngineAnalyzeCommand(board, moves);
-
-        UCIEntry uciEntry = new UCIEntry();
-
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = uciEntry;
-
-        EngineStartCalculatingCommand start = new EngineStartCalculatingCommand();
-        start.setMoveTime(5000L);
-
-        List<GenericMove> searchmoves = new ArrayList<>();
-        searchmoves.add(new GenericMove("d7d5"));
-        searchmoves.add(new GenericMove("a7a5"));
-        start.setSearchMoveList(searchmoves);
-
-        try {
-            uciEntry.receive(eac);
-            uciEntry.receive(start);
-        } catch (NoProtocolException ignored) {
-
-        } catch (Exception | Error e) {
-            throw new AssertionError("crashed on search moves");
-        }
-
-        System.out.println("search moves ok");
-    }
-
-    @Test
-    void movesToGoTest() throws IllegalNotationException {
-        String mmm = "d2d4";
-        String[] ms = mmm.split(" ");
-
-        GenericBoard board = new GenericBoard(518);
-
-        List<GenericMove> moves = new ArrayList<>();
-        for (String m : ms) {
-            moves.add(new GenericMove(m));
-        }
-
-        EngineAnalyzeCommand eac = new EngineAnalyzeCommand(board, moves);
-
-        UCIEntry uciEntry = new UCIEntry();
-
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = uciEntry;
-
-        EngineStartCalculatingCommand start = new EngineStartCalculatingCommand();
-        start.setMoveTime(5000L);
-        start.setMovesToGo(12);
-
-        try {
-            uciEntry.receive(eac);
-            uciEntry.receive(start);
-        } catch (NoProtocolException ignored) {
-
-        } catch (Exception | Error e) {
-            throw new AssertionError("crashed on moves to go");
-        }
-
-        System.out.println("moves to go ok");
-    }
-
-
-    @Test
-    void ttStressTest() throws IllegalNotationException {
-        String mmm = "e2e4 ";
-        GenericBoard board = new GenericBoard(518);
-        EngineBetter.resetFull();
-        int max = 20;
-        int d = 10;
-        UCIEntry uciEntry = new UCIEntry();
-        EngineBetter.uciEntry = uciEntry;
-        for (int i = 0; i < max; i++) {
-            TranspositionTable.agedOut = 0;
-            String[] ms = mmm.split(" ");
-
-            List<GenericMove> moves = new ArrayList<>();
-            for (String m : ms) {
-                moves.add(new GenericMove(m));
-            }
-
-            EngineAnalyzeCommand eac = new EngineAnalyzeCommand(board, moves);
-
-            EngineStartCalculatingCommand start = new EngineStartCalculatingCommand();
-            start.setDepth(d);
-
-            try {
-                uciEntry.receive(eac);
-                uciEntry.receive(start);
-            } catch (NoProtocolException ignored) {
-                List<GenericMove> genericMoves = PVLine.retrievePV(uciEntry.board);
-                String s = MoveParser.toString(EngineBetter.getAiMove());
-                mmm += genericMoves.get(0) + " " + genericMoves.get(1) + " ";
-
-            } catch (Exception | Error e) {
-                throw new AssertionError("crashed on tt stress test");
-            }
-
-        }
-
-        System.out.println("tt stress test ok");
-    }
-
-    @Test
-    void depthTest() throws IllegalNotationException {
-        String mmm = "d2d4";
-        String[] ms = mmm.split(" ");
-
-        GenericBoard board = new GenericBoard(518);
-
-        List<GenericMove> moves = new ArrayList<>();
-        for (String m : ms) {
-            moves.add(new GenericMove(m));
-        }
-
-        EngineAnalyzeCommand eac = new EngineAnalyzeCommand(board, moves);
-
-        UCIEntry uciEntry = new UCIEntry();
-
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = uciEntry;
-
-        EngineStartCalculatingCommand start = new EngineStartCalculatingCommand();
-        start.setDepth(7);
-
-        try {
-            uciEntry.receive(eac);
-            uciEntry.receive(start);
-        } catch (NoProtocolException ignored) {
-
-        } catch (Exception | Error e) {
-            throw new AssertionError("crashed on depth searched");
-        }
-
-        System.out.println("depth ok");
-    }
-
-    @Test
-    void clockTest() throws IllegalNotationException {
-        String mmm = "d2d4";
-        String[] ms = mmm.split(" ");
-
-        GenericBoard board = new GenericBoard(518);
-
-        List<GenericMove> moves = new ArrayList<>();
-        for (String m : ms) {
-            moves.add(new GenericMove(m));
-        }
-
-        EngineAnalyzeCommand eac = new EngineAnalyzeCommand(board, moves);
-
-        UCIEntry uciEntry = new UCIEntry();
-
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = uciEntry;
-
-        EngineStartCalculatingCommand start = new EngineStartCalculatingCommand();
-        start.setClock(GenericColor.BLACK, 2000L);
-        start.setClock(GenericColor.WHITE, 2000L);
-        start.setClockIncrement(GenericColor.BLACK, 1000L);
-        start.setClockIncrement(GenericColor.WHITE, 1000L);
-
-        try {
-            uciEntry.receive(eac);
-            uciEntry.receive(start);
-        } catch (NoProtocolException ignored) {
-
-        } catch (Exception | Error e) {
-            throw new AssertionError("crashed on clock");
-        }
-
-        System.out.println("clock ok");
-    }
-
-    @Test
-    void tirsaTest() throws IllegalNotationException {
-        /*
-        position startpos moves d2d4 d7d5 c2c4 e7e6 b1c3 c7c5 c4d5 c5d4 d1a4 c8d7 a4d4 e6d5 g1f3 b8c6 d4d1 f8b4 e2e3 g8f6
-         */
-
-        String mmm = "d2d4 d7d5 c2c4 e7e6 b1c3 c7c5 c4d5 c5d4 d1a4 c8d7 a4d4 e6d5 g1f3 b8c6 d4d1 f8b4 e2e3 g8f6";
-        String[] ms = mmm.split(" ");
-
-        GenericBoard board = new GenericBoard(518);
-
-        List<GenericMove> moves = new ArrayList<>();
-        for (String m : ms) {
-            moves.add(new GenericMove(m));
-        }
-
-        EngineAnalyzeCommand eac = new EngineAnalyzeCommand(board, moves);
-
-        UCIEntry uciEntry = new UCIEntry();
-
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = uciEntry;
-
-        EngineStartCalculatingCommand start = new EngineStartCalculatingCommand();
-        start.setMoveTime(5000L);
-
-        try {
-            uciEntry.receive(eac);
-            uciEntry.receive(start);
-        } catch (NoProtocolException ignored) {
-
-        } catch (Exception | Error e) {
-            throw new AssertionError("crashed on tirsa's position");
-        }
-
-        System.out.println("tirsa ok");
-    }
-
-
-
-    @Test
-    void endgameTest() throws IllegalNotationException {
-
-        String mmm = "c2c4 e7e5 b1c3 g8f6 g1f3 b8c6 e2e4 f8b4 d2d3 d7d6 f1e2 h7h6 e1g1 b4c3 b2c3 a7a5 c1e3 e8e7 d1c2 c8g4 a1b1 d8c8 d3d4 e5d4 f3d4 g4e2 c2e2 e7d7 f2f3 a5a4 d4f5 h8g8 e2d3 c6e5 d3e2 d7e6 a2a3 c7c5 b1b6 e5c6 f1d1 f6e8 f3f4 c8c7 d1b1 a8b8 e2f3 g8f8 f5g3 e8f6 f4f5 e6d7 f3e2 f8e8 e3f4 h6h5 e2d1 c6e5 f4g5 e8h8 g5f6 g7f6 g3h5 d7c8 d1e2 e5d7 b6b2 c7a5 b2c2 c8c7 h5f4 c7c6 e2d3 d7e5 d3d5 c6c7 f4d3 h8f8 d3e5 f6e5 f5f6 a5a6 c2f2 a6c6 d5d3 f8h8 h2h3 c6e8 d3d5 e8d7 f2f1 h8g8 g1h2 g8h8 h2g1 h8g8 g1h2 g8h8 b1b2 b7b6 b2f2 b6b5 f2d2 b5c4 d5c4 b8b6 d2d3 h8b8 f1d1 b8d8 d3d2 d7e6 c4a4 e6f6 h2g1 f6e6 c3c4 e6g6 a4a7 c7c6 d1e1 d8b8 a7a4 c6c7 a4a7 b8b7 a7a5 g6e6 d2c2 c7d7 a5d2 f7f5 d2d5 e6d5 e4d5 b6b3 e1a1 b7b8 g1h2 f5f4 a3a4 b3b1 a1b1 b8b1 c2a2 b1b4 a4a5 d7c8 a5a6 c8b8 h3h4 b8a7 h2h3 b4c4 h4h5 c4c3 h3g4 c3c1 g4f5 c1h1 f5e6 h1h2 a2a1 h2h5 e6d6 h5g5 d6c6 g5g2 d5d6 g2d2 d6d7 e5e4 a1a4 c5c4 a4c4 f4f3 c4e4 d2c2 c6d6 c2d2 d6e7 f3f2 e4f4 d2e2 e7d6 e2d2 d6e6 d2e2 e6d5 e2d2 d5e6 d2e2 e6d5 e2d2 d5c6 d2c2 c6b5 c2d2 d7d8q d2d8 f4f7 a7a8 f7f2 d8b8 b5a5 b8e8 f2f6 a8b8 a5b6 b8a8 f6c6 e8b8 b6a5 b8d8 a5b5 d8b8 c6b6 a8a7 b6b8 a7b8 b5b6 b8a8 b6c6 a8b8 c6c5";
-        String[] ms = mmm.split(" ");
-
-        GenericBoard board = new GenericBoard(518);
-
-        List<GenericMove> moves = new ArrayList<>();
-        for (String m : ms) {
-            moves.add(new GenericMove(m));
-        }
-
-        EngineAnalyzeCommand eac = new EngineAnalyzeCommand(board, moves);
-
-        UCIEntry uciEntry = new UCIEntry();
-
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = uciEntry;
-
-        EngineStartCalculatingCommand start = new EngineStartCalculatingCommand();
-        start.setMoveTime(5000L);
-
-
-        try {
-            uciEntry.receive(eac);
-            uciEntry.receive(start);
-        } catch (NoProtocolException ignored) {
-
-        } catch (Exception | Error e) {
-            throw new AssertionError("crashed on endgame position");
-        }
-
-        System.out.println("endgame ok");
-    } 
-    
-    @Test
-    void extremeEndgameTest() throws IllegalNotationException {
-
-        String mmm = "d2d4 d7d5 c1f4 e7e6 e2e3 f8d6 d1f3 g8f6 b1c3 e8g8 f1d3 c7c5 d4c5 d6c5 g1e2 b8c6 f4g5 c8d7 e1g1 c5e7 f3f4 e6e5 f4h4 e5e4 d3b5 c6e5 b5d7 d8d7 h4g3 e7d6 f2f4 e4f3 g5f6 e5g4 g3f3 g4f6 a1d1 f8d8 e2f4 d6f4 f3f4 d7e7 f4d4 a7a5 f1f4 a8c8 d4d3 d8e8 d1e1 e7e6 e1e2 e6c6 e2f2 e8e5 f4f5 c8e8 f2f3 e5f5 f3f5 e8d8 d3d4 d8d6 f5e5 b7b6 e5f5 d6d7 a2a3 h7h6 b2b4 c6e6 f5e5 e6c6 h2h3 d7d6 b4b5 c6d7 g2g4 d7d8 g1g2 d6d7 g4g5 h6g5 e5g5 d7d6 h3h4 d8e7 g2f2 e7e6 h4h5 g8h7 f2e2 e6d7 a3a4 h7h6 g5e5 d6e6 e5f5 e6d6 d4f4 h6h7 h5h6 d5d4 c3e4 f6e4 f4e4 d7e6 f5e5 e6g6 h6g7 g6e4 e5e4 d4e3 e4g4 h7g8 e2e3 d6h6 e3d4 h6h2 c2c3 h2a2 d4d5 f7f5 g4c4 g8g7 d5c6 g7f6 c6b6 f6e5 b6a5 a2g2 b5b6 g2b2 c4b4 b2d2 b6b7 d2d8 b7b8q d8b8 b4b8 e5e6 b8b7 f5f4 c3c4 e6e5 b7f7 e5e4 a5b6 e4e5 a4a5 e5e6 f7f8 e6e7 f8f4 e7e6 a5a6 e6e5 f4f8 e5d4 b6b5 d4e4 a6a7 e4d3 f8f3 d3e2 a7a8q e2d1 f3f1 d1d2 a8e4 d2c3 e4a8 c3d2 f1f4 d2c2 f4f8 c2d3 f8f3 d3e2 b5b4 e2d1 b4b5 d1e2 f3f4 e2d2 b5b4 d2d3 b4b5";
-        
-        String[] ms = mmm.split(" ");
-
-        GenericBoard board = new GenericBoard(518);
-
-        List<GenericMove> moves = new ArrayList<>();
-        for (String m : ms) {
-            moves.add(new GenericMove(m));
-        }
-
-        EngineAnalyzeCommand eac = new EngineAnalyzeCommand(board, moves);
-
-        UCIEntry uciEntry = new UCIEntry();
-
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = uciEntry;
-
-        EngineStartCalculatingCommand start = new EngineStartCalculatingCommand();
-        start.setClock(GenericColor.BLACK, 86000L);
-        start.setClock(GenericColor.WHITE, 20000L);
-
-        try {
-            uciEntry.receive(eac);
-            uciEntry.receive(start);
-        } catch (NoProtocolException ignored) {
-
-        } catch (Exception | Error e) {
-            throw new AssertionError("crashed on endgame position");
-        }
-
-        System.out.println("extreme endgame ok");
-    }
-    
-    @Test
-    void previousCrashTest() throws IllegalNotationException {
-
-        String mmm = "d2d4 g8f6 c2c4 g7g6 b1c3 d7d6 e2e4 f8g7 g1f3 e8g8 f1d3 e7e5 e1g1 c8g4 d4d5 b8a6 c1g5 a6c5 b2b4 c5d3 d1d3 h7h6 g5f6 d8f6 f3d2 g6g5 a2a4 f6e7 f2f3 g4d7 b4b5 b7b6 d3c2 e7f6 d2b3 f6f4 c2e2 h6h5 b3c1 f4f6 c1d3 h5h4 e2b2 h4h3 g2g4 a7a5 b2e2 f8e8 d3f2 f6h6 c3d1 a8b8 d1e3 g7f6 e2d3 e8f8 f1d1 g8g7 a1a2 f8h8 d3b3 g7g8 a2c2 f6e7 d1f1 h6f6 f2h1 b8e8 h1g3 f6g6 b3c3 g8h7 c3d3 h7g8 f1d1 g6f6 d3c3 g8h7 c2f2 e8a8 c3d3 f6h6 d3f1 a8b8 g3h5 b8d8 f1h3 h7g8 h3g2 h6g6 f2c2 d8e8 g2f1 e8a8 f1e2 e7f6 e2d3 g8h7 d3b3 f6e7 c2d2 h7g8 h5g3 a8d8 d1e1 e7f6 d2c2 d8a8 b3d3 g8h7 c2e2 h7g7 g1h1 g7g8 e2b2 a8d8 e1c1 f6g7 h1g1 g7f6 b2a2 f6g7 c1f1 g7f6 d3c3 d8b8 a2e2 b8d8 f1c1 d8e8 c3b3 e8d8 e2d2 g8h7 b3d3 h7g8 g3h5 d8a8 d2e2 f6g7 e2c2";
-        
-        String[] ms = mmm.split(" ");
-
-        GenericBoard board = new GenericBoard(518);
-
-        List<GenericMove> moves = new ArrayList<>();
-        for (String m : ms) {
-            moves.add(new GenericMove(m));
-        }
-
-        EngineAnalyzeCommand eac = new EngineAnalyzeCommand(board, moves);
-
-        UCIEntry uciEntry = new UCIEntry();
-
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = uciEntry;
-
-        EngineStartCalculatingCommand start = new EngineStartCalculatingCommand();
-        start.setMoveTime(5000L);
-//        start.setMoveTime(25000L);
-
-        try {
-            uciEntry.receive(eac);
-            uciEntry.receive(start);
-        } catch (NoProtocolException ignored) {
-
-        } catch (Exception | Error e) {
-            throw new AssertionError("crashed on previous position");
-        }
-
-        System.out.println("crash test ok");
-    }
-
-
-    @Test
-    void superLongGameTest() throws IllegalNotationException {
-        String mmm = "c2c4 e7e5 b1c3 g8f6 g1f3 b8c6 e2e4 f8b4 d2d3 d7d6 f1e2 h7h6 e1g1 b4c3 b2c3 a7a5 c1e3 e8e7 d1c2 c8g4 a1b1 d8c8 d3d4 e5d4 f3d4 g4e2 c2e2 e7d7 f2f3 a5a4 d4f5 h8g8 e2d3 c6e5 d3e2 d7e6 a2a3 c7c5 b1b6 e5c6 f1d1 f6e8 f3f4 c8c7 d1b1 a8b8 e2f3 g8f8 f5g3 e8f6 f4f5 e6d7 f3e2 f8e8 e3f4 h6h5 e2d1 c6e5 f4g5 e8h8 g5f6 g7f6 g3h5 d7c8 d1e2 e5d7 b6b2 c7a5 b2c2 c8c7 h5f4 c7c6 e2d3 d7e5 d3d5 c6c7 f4d3 h8f8 d3e5 f6e5 f5f6 a5a6 c2f2 a6c6 d5d3 f8h8 h2h3 c6e8 d3d5 e8d7 f2f1 h8g8 g1h2 g8h8 h2g1 h8g8 g1h2 g8h8 b1b2 b7b6 b2f2 b6b5 f2d2 b5c4 d5c4 b8b6 d2d3 h8b8 f1d1 b8d8 d3d2 d7e6 c4a4 e6f6 h2g1 f6e6 c3c4 e6g6 a4a7 c7c6 d1e1 d8b8 a7a4 c6c7 a4a7 b8b7 a7a5 g6e6 d2c2 c7d7 a5d2 f7f5 d2d5 e6d5 e4d5 b6b3 e1a1 b7b8 g1h2 f5f4 a3a4 b3b1 a1b1 b8b1 c2a2 b1b4 a4a5 d7c8 a5a6 c8b8 h3h4 b8a7 h2h3 b4c4 h4h5 c4c3 h3g4 c3c1 g4f5 c1h1 f5e6 h1h2 a2a1 h2h5 e6d6 h5g5 d6c6 g5g2 d5d6 g2d2 d6d7 e5e4 a1a4 c5c4 a4c4 f4f3 c4e4 d2c2 c6d6 c2d2 d6e7 f3f2 e4f4 d2e2 e7d6 e2d2 d6e6 d2e2 e6d5 e2d2 d5e6 d2e2 e6d5 e2d2 d5c6 d2c2 c6b5 c2d2 d7d8q d2d8 f4f7 a7a8 f7f2 d8b8 b5a5 b8e8 f2f6 a8b8 a5b6 b8a8 f6c6 e8b8 b6a5 b8d8 a5b5 d8b8 c6b6 a8a7 b6b8 a7b8 b5b6 b8a8 b6c6 a8b8 c6c5";
-        String[] ms = mmm.split(" ");
-
-        GenericBoard board = new GenericBoard(518);
-
-        List<GenericMove> moves = new ArrayList<>();
-        for (String m : ms) {
-            moves.add(new GenericMove(m));
-        }
-
-        EngineAnalyzeCommand eac = new EngineAnalyzeCommand(board, moves);
-
-        UCIEntry uciEntry = new UCIEntry();
-
-        EngineBetter.resetFull();
-        EngineBetter.uciEntry = uciEntry;
-
-        EngineStartCalculatingCommand start = new EngineStartCalculatingCommand();
-        start.setMoveTime(5000L);
-
-
-        try {
-            uciEntry.receive(eac);
-            uciEntry.receive(start);
-        } catch (NoProtocolException ignored) {
-
-        } catch (Exception | Error e) {
-            throw new AssertionError("crashed on endgame position");
-        }
-
-        System.out.println("endgame ok");
-    }
 
     @Test
     void crashedTest() {
@@ -450,7 +68,7 @@ public class DontCrashTest {
         pgns.add(pgn);
         try{
             for (int p = 0; p < pgns.size(); p++) {
-                List<String> s = PGNParser.parsePGN(pgns.get(p));
+                List<String> s = PGNParser.parsePGNSimple(pgns.get(p));
 
                 Chessboard board = new Chessboard();
                 for (int i = 0; i < s.size(); i++) {
@@ -471,6 +89,106 @@ public class DontCrashTest {
                     }
                     board.makeMoveAndFlipTurn(move1);
                 }
+                Engine.searchFixedTime(board, 5000);
+            }
+        } catch (Exception | Error e) {
+            throw new AssertionError("failed on stress test");
+        }
+    }
+
+    @Test
+    void crashed2Test() {
+        String pgn = "" +
+                "1. e4 {book} c5 {book} 2. Nf3 {book} d6 {book} 3. d4 {book} cxd4 {book}\n" +
+                "4. Nxd4 {book} Nf6 {book} 5. Nc3 {book} a6 {book} 6. Be2 {book} e5 {book}\n" +
+                "7. Nb3 {book} Be7 {book} 8. O-O {book} O-O {book} 9. Be3 {+0.42/11 0.24s}\n" +
+                "Nc6 {0.57s} 10. f4 {+0.33/10 0.24s} Bd7 {0.57s} 11. f5 {+0.19/9 0.25s}\n" +
+                "Qc7 {0.57s} 12. a3 {+0.53/10 0.34s} b5 {0.57s} 13. Qd2 {+0.69/10 0.36s}\n" +
+                "Rac8 {0.57s} 14. Bf3 {+0.87/10 0.38s} Qb7 {0.57s} 15. Rad1 {+1.33/9 0.39s}\n" +
+                "Rfe8 {0.57s} 16. Qf2 {+1.22/9 0.39s} a5 {0.57s} 17. a4 {+1.37/11 0.40s}\n" +
+                "bxa4 {0.57s} 18. Nxa4 {-0.70/11 0.41s} Nd4 {0.57s} 19. Bxd4 {-0.62/12 0.41s}\n" +
+                "Bxa4 {0.57s} 20. Bc3 {-1.00/11 0.42s} Nxe4 {0.57s} 21. Ra1 {-0.65/10 0.42s}\n" +
+                "Bxb3 {0.57s} 22. Bxe4 {-0.70/12 0.43s} Qxe4 {0.57s} 23. cxb3 {-0.60/11 0.43s}\n" +
+                "Qb7 {0.57s} 24. Qg3 {-1.00/10 0.44s} Qb6+ {0.57s} 25. Kh1 {-0.34/11 0.44s}\n" +
+                "Rc5 {0.57s} 26. f6 {+0.50/11 0.44s} Bf8 {0.57s} 27. Bd2 {+0.26/12 0.45s}\n" +
+                "d5 {0.57s} 28. fxg7 {+0.03/12 0.45s} Bxg7 {0.57s} 29. Qf2 {-0.24/14 0.45s}\n" +
+                "Rf8 {0.57s} 30. Bxa5 {+0.01/12 0.46s} Qb5 {0.57s} 31. Kg1 {-0.49/11 0.46s}\n" +
+                "Rc6 {0.57s} 32. b4 {-0.04/9 0.46s} e4 {0.57s} 33. Rfc1 {-0.54/10 0.46s}\n" +
+                "Re6 {0.57s} 34. Rc5 {-2.82/8 0.47s} Qd3 {0.57s} 35. Qe1 {-2.86/12 0.47s}\n" +
+                "Bd4+ {0.57s} 36. Kh1 {-2.76/13 0.47s} Bxc5 {0.57s} 37. bxc5 {-2.76/11 0.47s}\n" +
+                "Ra8 {0.57s} 38. Ra3 {-2.50/10 0.47s} Qc4 {0.57s} 39. Rg3+ {-2.53/9 0.48s}\n" +
+                "Kf8 {0.57s} 40. b4 {-2.41/10 0.48s} d4 {0.57s} 41. Kg1 {-2.71/8 0.48s}\n" +
+                "e3 {0.57s} 42. h3 {-4.10/9 0.48s} Qd5 {0.57s} 43. Bc7 {-6.23/7 0.48s} d3 {0.57s}\n" +
+                "44. Bd6+ {-10.60/10 0.48s} Rxd6 {0.57s} 45. Rxe3 {-10.64/12 0.48s} d2 {0.57s}\n" +
+                "46. Qd1 {-10.74/14 0.48s} Ra1 {0.57s} 47. Qxa1 {-12.05/13 0.48s} d1=Q+ {0.57s}\n" +
+                "48. Qxd1 {-12.31/13 0.49s} Qxd1+ {0.57s} 49. Kh2 {-12.37/13 0.49s} Rd4 {0.57s}\n" +
+                "50. Rf3 {-12.33/10 0.49s} Qc2 {0.57s} 51. Re3 {-13.16/11 0.49s} Rxb4 {0.57s}\n" +
+                "52. Re5 {-14.15/10 0.49s} Qf2 {0.57s} 53. Rg5 {-M14/12 0.49s} Qf4+\n" +
+                "54. Rg3 {-M12/13 0.49s} Rb3" +
+                "";
+        String pgn2 = "" +
+                "1. e4 {book} c5 {book} 2. Nc3 {book} Nc6 {book} 3. g3 {book} g6 {book}\n" +
+                "4. Bg2 {book} Bg7 {book} 5. d3 {book} d6 {book} 6. f4 {book} e6 {book}\n" +
+                "7. Nf3 {book} Nge7 {book} 8. O-O {book} O-O {book} 9. a4 {+0.21/10 0.24s}\n" +
+                "Bd7 {0.57s} 10. Nb5 {+0.42/9 0.24s} d5 {0.57s} 11. Nd6 {+0.37/10 0.25s}\n" +
+                "Qb6 {0.57s} 12. e5 {-0.11/9 0.34s} f6 {0.57s} 13. a5 {-0.26/8 0.36s}\n" +
+                "Nxa5 {0.57s} 14. Qe2 {-0.28/8 0.38s} Nac6 {0.57s} 15. c3 {-0.55/8 0.39s}\n" +
+                "Nxe5 {0.57s} 16. fxe5 {-0.49/11 0.39s} fxe5 {0.57s} 17. Nxe5 {-0.23/11 0.40s}\n" +
+                "Rxf1+ {0.57s} 18. Qxf1 {+0.08/12 0.41s} c4+ {0.57s} 19. d4 {+0.88/11 0.41s}\n" +
+                "Rf8 {0.57s} 20. Qe2 {-0.51/10 0.42s} Qxd6 {0.57s} 21. Rxa7 {-0.45/11 0.42s}\n" +
+                "Bxe5 {0.57s} 22. Qxe5 {-0.04/14 0.43s} Qxe5 {0.57s} 23. dxe5 {+0.20/14 0.43s}\n" +
+                "Nc6 {0.57s} 24. Rxb7 {+0.46/15 0.44s} Nxe5 {0.57s} 25. Bf4 {+0.40/15 0.44s}\n" +
+                "Bc8 {0.57s} 26. Rc7 {+0.33/14 0.44s} Nd7 {0.57s} 27. Bd6 {+0.35/15 0.45s}\n" +
+                "Re8 {0.57s} 28. Ra7 {+0.31/16 0.45s} Nf6 {0.57s} 29. Bh3 {+0.17/15 0.45s}\n" +
+                "g5 {0.57s} 30. Be5 {+0.08/16 0.46s} Nd7 {0.57s} 31. Bd4 {+0.08/16 0.46s}\n" +
+                "Kf7 {0.57s} 32. Be3 {+0.42/11 0.46s} Rg8 {0.57s} 33. Bg4 {+0.32/12 0.46s}\n" +
+                "Kf6 {0.57s} 34. h3 {+0.54/12 0.47s} Ke5 {0.57s} 35. Kg2 {+0.78/12 0.47s}\n" +
+                "Kd6 {0.57s} 36. Bf2 {0.00/9 0.47s} Nf6 {0.57s} 37. Bf3 {-0.41/12 0.47s}\n" +
+                "Bd7 {0.57s} 38. Bb6 {0.00/10 0.47s} Rc8 {0.57s} 39. Ba5 {-0.17/11 0.48s}\n" +
+                "h5 {0.57s} 40. Kg1 {-0.07/10 0.48s} g4 {0.57s} 41. hxg4 {-0.52/11 0.48s}\n" +
+                "hxg4 {0.57s} 42. Bd1 {-0.53/12 0.48s} e5 {0.57s} 43. Bc2 {-1.00/11 0.48s}\n" +
+                "e4 {0.57s} 44. Bb6 {0.00/11 0.48s} Bc6 {0.57s} 45. Be3 {-0.22/9 0.48s}\n" +
+                "Ke6 {0.57s} 46. Bd4 {-0.27/10 0.48s} Nd7 {0.57s} 47. Kf1 {-0.48/11 0.49s}\n" +
+                "Ne5 {0.57s} 48. Rh7 {-0.69/11 0.49s} Nf7 {0.57s} 49. Bd1 {+0.38/11 0.49s}\n" +
+                "Rg8 {0.57s} 50. Kg2 {+0.09/11 0.49s} Be8 {0.57s} 51. Rh5 {+0.15/10 0.49s}\n" +
+                "Bd7 {0.57s} 52. Be2 {+0.18/11 0.49s} Kd6 {0.57s} 53. Be3 {0.00/12 0.49s}\n" +
+                "Kc6 {0.57s} 54. Bf4 {-0.05/11 0.49s} Be6 {0.57s} 55. Rh7 {0.00/12 0.49s}\n" +
+                "Rg6 {0.57s} 56. Bd1 {+0.24/11 0.49s} Kd7 {0.57s} 57. Rh5 {+0.18/11 0.49s}\n" +
+                "Rg8 {0.57s} 58. Ba4+ {0.00/11 0.49s} Ke7 {0.57s} 59. Bd1 {-0.40/12 0.49s}\n" +
+                "Kf6 {0.57s} 60. Rh4 {-0.52/12 0.49s} Ne5 {0.57s} 61. Rh6+ {-0.35/10 0.49s}\n" +
+                "Ng6 {0.57s} 62. Bc1 {-0.54/11 0.49s} Rb8 {0.57s} 63. Rh5 {-0.95/11 0.49s}\n" +
+                "Bf5 {0.57s} 64. Bg5+ {-1.00/12 0.49s} Ke6 {0.57s} 65. Bc1 {-1.39/13 0.50s}\n" +
+                "Ra8 {0.57s} 66. Bc2 {-0.49/10 0.50s} Rc8 {0.57s} 67. Ba4 {-0.26/12 0.50s}\n" +
+                "Ne5 {0.57s} 68. Rh6+ {-0.31/12 0.50s} Kf7 {0.57s} 69. Rh5 {-0.55/12 0.50s}\n" +
+                "Kf6 {0.57s} 70. Rh6+" +
+                "";
+        List<String> pgns = new ArrayList<>();
+        pgns.add(pgn);
+        pgns.add(pgn2);
+        try{
+            for (int p = 0; p < pgns.size(); p++) {
+                List<String> s = PGNParser.parsePGNSimple(pgns.get(p));
+
+                Chessboard board = new Chessboard();
+                for (int i = 0; i < s.size(); i++) {
+                    String move = s.get(i);
+
+                    move = move.trim();
+
+                    int move1 = 0;
+                    try {
+                        move1 = MoveParserFromAN.buildMoveFromANWithOO(board, move);
+                    } catch (Exception | Error e) {
+                        System.out.println(s);
+                        System.out.println(board);
+                        System.out.println(board.zobristHash);
+                        System.out.println(move);
+                        System.out.println(MoveParser.toString(move1));
+                        e.printStackTrace();
+                    }
+                    board.makeMoveAndFlipTurn(move1);
+                }
+                Engine.searchFixedTime(board, 5000);
             }
         } catch (Exception | Error e) {
             throw new AssertionError("failed on stress test");

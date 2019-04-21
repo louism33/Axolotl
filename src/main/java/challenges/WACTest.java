@@ -1,6 +1,6 @@
 package challenges;
 
-import com.github.louism33.axolotl.search.EngineBetter;
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
@@ -40,11 +40,14 @@ public class WACTest {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.DEBUG = false;
+        EngineSpecifications.DEBUG = true;
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
             if (!contains(infamousIndexes, i + 1)) {
+//                continue;
+            }
+            if (i > 3) {
 //                continue;
             }
             
@@ -66,11 +69,12 @@ public class WACTest {
 
     @Test
     public void test() {
+        Engine.resetFull();
         System.out.println(EPDObject.getFullString());
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        int move = EngineBetter.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
         MoveParser.printMove(move);
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }

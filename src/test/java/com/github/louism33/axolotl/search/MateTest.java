@@ -65,12 +65,13 @@ public class MateTest {
 
     @Test
     public void test() {
+        Engine.resetFull();
         System.out.println(EPDObject.getFullString());
 
         int[] winningMoves = EPDObject.getBestMoves();
         EngineSpecifications.DEBUG = false;
         final Chessboard board = EPDObject.getBoard();
-        int move = EngineBetter.searchFixedTime(board, timeLimit);
+        int move = Engine.searchFixedTime(board, timeLimit);
 
         if (contains(winningMoves, move)){
             System.out.println("success");
