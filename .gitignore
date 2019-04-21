@@ -10,6 +10,11 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+#texel
+tuning/
+src/**/tuning/
+src/**/standalone/
+
 # Package Files #
 *.war
 *.nar
