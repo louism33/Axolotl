@@ -21,7 +21,7 @@ public class TranspositionTable3Test {
 //    @Test
 //    void depthTest()  {
 //        UCIEntryOld uciEntry = new UCIEntryOld();
-//        EngineSpecifications.DEBUG = false;
+//        EngineSpecifications.PRINT_PV = false;
 //        
 //        EngineBetter.resetFull();
 //        EngineBetter.uciEntry = uciEntry;

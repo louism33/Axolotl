@@ -49,7 +49,7 @@ public class Arasan20 {
         System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.DEBUG = false;
+        EngineSpecifications.PRINT_PV = false;
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));

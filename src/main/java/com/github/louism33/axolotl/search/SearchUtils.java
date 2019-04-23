@@ -7,12 +7,12 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMA
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
 
-final class SearchUtils {
+public final class SearchUtils {
 
     public static final int PANIC_SCORE_DELTA                        = 100;
     static final int iidDepth = 5;
     
-    static final int[] futilityMargin = {0, 180, 250, 350, 450};
+    public static final int[] futilityMargin = {0, 180, 250, 350, 450};
     public static final int futilityBelowThisDepth = futilityMargin.length;
 
     static final int[] alphaRazorMargin = {0, 400, 600, 800};

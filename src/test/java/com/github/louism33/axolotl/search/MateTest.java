@@ -69,7 +69,7 @@ public class MateTest {
         System.out.println(EPDObject.getFullString());
 
         int[] winningMoves = EPDObject.getBestMoves();
-        EngineSpecifications.DEBUG = false;
+        EngineSpecifications.PRINT_PV = false;
         final Chessboard board = EPDObject.getBoard();
         int move = Engine.searchFixedTime(board, timeLimit);
 

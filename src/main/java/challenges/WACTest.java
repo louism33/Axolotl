@@ -40,7 +40,7 @@ public class WACTest {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.DEBUG = true;
+        EngineSpecifications.PRINT_PV = true;
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 

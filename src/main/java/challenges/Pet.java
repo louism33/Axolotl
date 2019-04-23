@@ -50,7 +50,7 @@ public class Pet {
         System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.DEBUG = false;
+        EngineSpecifications.PRINT_PV = false;
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         System.out.println("my move: " + MoveParser.toString(move));

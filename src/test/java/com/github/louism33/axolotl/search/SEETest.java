@@ -92,7 +92,7 @@ public class SEETest {
     @Test
     public void aTest() {
         Chessboard board = new Chessboard("8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - -");
-//        Engine.searchFixedDepth(board, 5);
+//        Engine.searchFixedDepth(masterBoard, 5);
         System.out.println(900 / 200);
     }
 }

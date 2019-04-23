@@ -9,7 +9,7 @@ import org.junit.Assert;
 import java.util.Arrays;
 
 import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_DEPTH_HARD;
-import static com.github.louism33.axolotl.search.EngineSpecifications.THREAD_NUMBER;
+import static com.github.louism33.axolotl.search.EngineSpecifications.NUMBER_OF_THREADS;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.retrieveFromTable;
 import static com.github.louism33.chesscore.BoardConstants.*;
@@ -18,13 +18,18 @@ import static com.github.louism33.chesscore.MoveParser.*;
 
 public final class MoveOrderer {
 
-    private static int[][] mateKillers = new int[THREAD_NUMBER][MAX_DEPTH_HARD];
-    private static int[][] killerMoves = new int[THREAD_NUMBER][MAX_DEPTH_HARD * 2]; 
+    private static int[][] mateKillers = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD];
+    private static int[][] killerMoves = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD * 2]; 
 
     private static final int whichThread = 0;
 
+    static void setupMoveOrderer() {
+        mateKillers = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD];
+        killerMoves = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD * 2];
+    }
+    
     static void resetMoveOrderer(){
-        for (int i = 0; i < THREAD_NUMBER; i++) {
+        for (int i = 0; i < NUMBER_OF_THREADS; i++) {
             Arrays.fill(mateKillers[i], 0);
             Arrays.fill(killerMoves[i], 0);
         }
@@ -273,9 +278,18 @@ public final class MoveOrderer {
     }
 
     private static boolean checkingMove(Chessboard board, int move){ // todo, make cheaper?
-        board.makeMoveAndFlipTurn(move);
-        boolean checkingMove = board.inCheck(board.isWhiteTurn());
-        board.unMakeMoveAndFlipTurn();
+        boolean checkingMove = false;
+        try {
+            board.makeMoveAndFlipTurn(move);
+            checkingMove = board.inCheck(board.isWhiteTurn());
+            board.unMakeMoveAndFlipTurn();
+        } catch (Exception | Error e) {
+            System.out.println(board);
+            MoveParser.printMove(move);
+            System.out.println();
+            System.out.println();
+            System.out.println();
+        }
         return checkingMove;
     }
 

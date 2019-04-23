@@ -34,7 +34,7 @@ public class STS15PointlessExchange {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.DEBUG = true;
+        EngineSpecifications.PRINT_PV = true;
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
@@ -61,7 +61,7 @@ public class STS15PointlessExchange {
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMovesFromComments();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.DEBUG = false;
+        EngineSpecifications.PRINT_PV = false;
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         System.out.println("my move: " + MoveParser.toString(move));

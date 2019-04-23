@@ -24,7 +24,7 @@ public class WACSilverTest {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.DEBUG = true;
+        EngineSpecifications.PRINT_PV = true;
         
         int stopAt = 10;
         
@@ -55,7 +55,7 @@ public class WACSilverTest {
         System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.DEBUG = false;
+        EngineSpecifications.PRINT_PV = false;
         int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
 
         Assert.assertTrue(Utils.contains(winningMoves, move) && !Utils.contains(losingMoves, move));

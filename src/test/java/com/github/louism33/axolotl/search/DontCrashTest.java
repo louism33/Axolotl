@@ -162,13 +162,50 @@ public class DontCrashTest {
                 "Ne5 {0.57s} 68. Rh6+ {-0.31/12 0.50s} Kf7 {0.57s} 69. Rh5 {-0.55/12 0.50s}\n" +
                 "Kf6 {0.57s} 70. Rh6+" +
                 "";
+        
+        String pgn3 = "" +
+                "1. f4 {book} d5 {book} 2. Nf3 {book} Nf6 {book} 3. b3 {book} g6 {book}\n" +
+                "4. Bb2 {book} Bg7 {book} 5. e3 {book} O-O {book} 6. Be2 {book} c5 {book}\n" +
+                "7. O-O {book} Nc6 {book} 8. Ne5 {book} Bd7 9. Nc3 {-0.20/2 0.25s} d4\n" +
+                "10. exd4 {-0.27/4 0.26s} Nxd4 11. Nxd7 {+0.02/3 0.27s} Qxd7\n" +
+                "12. Bd3 {-0.28/5 0.26s} Rad8 13. Re1 {-0.50/7 0.27s} Ne6 14. Ne4 {-0.50/7 0.28s}\n" +
+                "Nxf4 15. Bf1 {-1.35/8 0.28s} Nxe4 16. Bxg7 {-1.70/9 0.28s} Kxg7\n" +
+                "17. Rxe4 {-1.72/10 0.28s} e5 18. g3 {-1.67/10 0.29s} Ne6\n" +
+                "19. Rxe5 {-1.57/11 0.29s} Qd4+ 20. Re3 {-1.52/12 0.30s} Qxd2\n" +
+                "21. Qxd2 {-1.24/14 0.30s} Rxd2 22. c3 {-1.30/13 0.28s} Rfd8\n" +
+                "23. Bh3 {-1.32/12 0.29s} Ng5 24. Bg2 {-1.48/12 0.29s} b6 25. a4 {-1.45/12 0.30s}\n" +
+                "h6 26. a5 {-1.64/10 0.30s} Rd1+ 27. Rxd1 {-1.75/13 0.30s} Rxd1+\n" +
+                "28. Kf2 {-1.84/14 0.31s} Rd2+ 29. Re2 {-1.06/15 0.31s} Rxe2+\n" +
+                "30. Kxe2 {-1.24/16 0.32s} bxa5 31. Kd3 {-1.00/15 0.32s} f5\n" +
+                "32. Kc4 {-1.17/15 0.32s} Ne4 33. Kb5 {-1.26/15 0.33s} Nxc3+\n" +
+                "34. Kxa5 {-1.28/15 0.33s} Kf6 35. Ka6 {-1.35/15 0.33s} g5\n" +
+                "36. Kxa7 {-1.25/14 0.34s} Ke5 37. Kb6 {-1.23/14 0.34s} Kd6\n" +
+                "38. Bf3 {-2.00/13 0.34s} Ne4 39. Be2 {-2.82/12 0.35s} Nd2\n" +
+                "40. Bd1 {-3.35/14 0.35s} f4 41. gxf4 {-3.16/15 0.35s} gxf4\n" +
+                "42. Kb5 {-3.34/15 0.36s} f3 43. b4 {-3.39/16 0.36s} cxb4\n" +
+                "44. Kxb4 {-3.59/17 0.36s} f2 45. Be2 {-3.59/17 0.36s} f1=Q\n" +
+                "46. Bxf1 {-4.01/18 0.37s} Nxf1 47. h3 {-4.50/17 0.37s} Ng3\n" +
+                "48. Kb5 {-4.88/17 0.37s} h5 49. Kc4 {-5.49/19 0.38s} Ne2\n" +
+                "50. Kd3 {-5.21/19 0.38s} Nf4+ 51. Ke3 {-6.25/20 0.38s} Nxh3\n" +
+                "52. Kf3 {-6.91/19 0.39s} Ke5 53. Kg3 {-7.13/21 0.38s} Nf4\n" +
+                "54. Kh4 {-7.13/19 0.39s} Kf5 55. Kg3 Ng6 56. Kg2 {-16.52/17 0.40s} Kg4\n" +
+                "57. Kf2 {-16.67/16 0.40s} h4 58. Ke3 {-16.67/14 0.40s} h3\n" +
+                "59. Kd4 {-16.67/13 0.41s} h2 60. Kc5 {-16.67/12 0.41s} h1=Q\n" +
+                "61. Kb5 {-M42/10 0.41s} Qd5+ 62. Kb4 {-M52/11 0.41s} Ne5 63. Kc3 {-M14/10 0.41s}\n" +
+                "Qc4+ 64. Kd2 {-M6/126 0.26s} Qd3+ 65. Ke1 {-M6/126 0.32s} Nf3+ 66. Kf2\n" +
+                "Qd2+ " +
+                "";
         List<String> pgns = new ArrayList<>();
         pgns.add(pgn);
         pgns.add(pgn2);
+        pgns.add(pgn3);
+        
         try{
             for (int p = 0; p < pgns.size(); p++) {
                 List<String> s = PGNParser.parsePGNSimple(pgns.get(p));
 
+                Util.reset();
+                
                 Chessboard board = new Chessboard();
                 for (int i = 0; i < s.size(); i++) {
                     String move = s.get(i);
@@ -191,6 +228,7 @@ public class DontCrashTest {
                 Engine.searchFixedTime(board, 5000);
             }
         } catch (Exception | Error e) {
+            e.printStackTrace();
             throw new AssertionError("failed on stress test");
         }
     }

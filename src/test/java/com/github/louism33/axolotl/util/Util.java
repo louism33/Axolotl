@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class Util {
     
     public static void reset() {
-        EngineSpecifications.DEBUG = false;
+        EngineSpecifications.PRINT_PV = false;
         Engine.resetFull();
     }
 

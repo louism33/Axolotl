@@ -6,6 +6,7 @@ import org.junit.Assert;
 import java.util.Arrays;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.DEBUG;
 import static com.github.louism33.axolotl.search.EngineSpecifications.TABLE_SIZE;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
@@ -24,6 +25,10 @@ public final class TranspositionTable {
         if (BitOperations.populationCount(maxEntries) != 1) {
             System.out.println("please select a multiple of two for the hash table size");
             maxEntries = Integer.highestOneBit(maxEntries) << 1; // round up
+        }
+        
+        if (DEBUG) {
+            System.out.println("initialising hash table with value " + maxEntries);
         }
 
         TABLE_SIZE = maxEntries;
