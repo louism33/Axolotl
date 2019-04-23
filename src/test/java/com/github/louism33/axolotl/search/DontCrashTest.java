@@ -14,6 +14,9 @@ import java.util.List;
 
 @SuppressWarnings("ALL")
 public class DontCrashTest {
+    private Engine engine = new Engine();
+
+
     @BeforeAll
     static void setup() {
         Util.reset();
@@ -66,7 +69,7 @@ public class DontCrashTest {
 
         List<String> pgns = new ArrayList<>();
         pgns.add(pgn);
-        try{
+        try {
             for (int p = 0; p < pgns.size(); p++) {
                 List<String> s = PGNParser.parsePGNSimple(pgns.get(p));
 
@@ -89,7 +92,8 @@ public class DontCrashTest {
                     }
                     board.makeMoveAndFlipTurn(move1);
                 }
-                Engine.searchFixedTime(board, 5000);
+                engine.receiveSearchSpecs(board, true, 5000);
+                int move = engine.simpleSearch();
             }
         } catch (Exception | Error e) {
             throw new AssertionError("failed on stress test");
@@ -162,7 +166,7 @@ public class DontCrashTest {
                 "Ne5 {0.57s} 68. Rh6+ {-0.31/12 0.50s} Kf7 {0.57s} 69. Rh5 {-0.55/12 0.50s}\n" +
                 "Kf6 {0.57s} 70. Rh6+" +
                 "";
-        
+
         String pgn3 = "" +
                 "1. f4 {book} d5 {book} 2. Nf3 {book} Nf6 {book} 3. b3 {book} g6 {book}\n" +
                 "4. Bb2 {book} Bg7 {book} 5. e3 {book} O-O {book} 6. Be2 {book} c5 {book}\n" +
@@ -199,13 +203,13 @@ public class DontCrashTest {
         pgns.add(pgn);
         pgns.add(pgn2);
         pgns.add(pgn3);
-        
-        try{
+
+        try {
             for (int p = 0; p < pgns.size(); p++) {
                 List<String> s = PGNParser.parsePGNSimple(pgns.get(p));
 
                 Util.reset();
-                
+
                 Chessboard board = new Chessboard();
                 for (int i = 0; i < s.size(); i++) {
                     String move = s.get(i);
@@ -225,7 +229,8 @@ public class DontCrashTest {
                     }
                     board.makeMoveAndFlipTurn(move1);
                 }
-                Engine.searchFixedTime(board, 5000);
+                engine.receiveSearchSpecs(board, true, 5000);
+                int move = engine.simpleSearch();
             }
         } catch (Exception | Error e) {
             e.printStackTrace();

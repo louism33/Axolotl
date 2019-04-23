@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.axolotl.search.WACSilverSanityTest.contains;
+import static challenges.Utils.contains;
 
 @RunWith(Parameterized.class)
 public class MateTestMTSingle {
@@ -25,28 +25,28 @@ public class MateTestMTSingle {
     private static int successes = 0;
     private static final int targetSuccesses = 145;
     private static Engine engine = new Engine();
-    
+
     @BeforeClass
-    public static void setup(){
+    public static void setup() {
         Util.reset();
         EngineSpecifications.PRINT_PV = false;
         Engine.setThreads(threads);
-        
+
         final String str = "Testing " + checkmatePositions.length + " Mate positions MT. " +
                 "Time per position: " + timeLimit + " milliseconds."
-                +"\nIf more than " + targetSuccesses + " are correct, success.";
+                + "\nIf more than " + targetSuccesses + " are correct, success.";
         System.out.println(str);
     }
 
     @AfterClass
-    public static void finalSuccessTally(){
-        System.out.println("Successful Mate MT sanity tests: " + successes + " out of " + checkmatePositions.length 
+    public static void finalSuccessTally() {
+        System.out.println("Successful Mate MT sanity tests: " + successes + " out of " + checkmatePositions.length
                 + ". Anything above " + targetSuccesses + " can be thought of as ok.");
         EngineSpecifications.PRINT_PV = false;
         Assert.assertTrue(successes > targetSuccesses);
     }
-    
-    
+
+
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -79,11 +79,10 @@ public class MateTestMTSingle {
         final int move = engine.simpleSearch();
         MoveParser.printMove(move);
 
-        if (contains(winningMoves, move)){
+        if (contains(winningMoves, move)) {
             System.out.println("success");
             successes++;
-        }
-        else {
+        } else {
             System.out.println("failure");
         }
 

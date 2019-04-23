@@ -16,8 +16,8 @@ public final class EvaluatorPositionConstant {
             -9, 15, 4, 11, 11, 4, 15, -9,
             -17, 23, 10, -1, -1, 10, 23, -17,
             0, 0, 0, 0, 0, 0, 0, 0,
-    };   
-    
+    };
+
     public static final int[] PAWN_END_WHITE = {
             0, 0, 0, 0, 0, 0, 0, 0,
             140, 143, 130, 120, 120, 130, 143, 140,
@@ -28,7 +28,6 @@ public final class EvaluatorPositionConstant {
             4, 4, 8, 11, 11, 8, 4, 4,
             0, 0, 0, 0, 0, 0, 0, 0,
     };
-
 
 
     public static final int[] KNIGHT_START_WHITE = {
@@ -75,7 +74,7 @@ public final class EvaluatorPositionConstant {
             -20, -6, -6, -6, -6, -6, -6, -20,
     };
 
-    public static final int[] ROOK_START_WHITE =   {
+    public static final int[] ROOK_START_WHITE = {
             25, 20, 13, 26, 26, 13, 20, 25,
             -12, -14, 19, 20, 20, 19, -14, -12,
             -1, 26, 18, 15, 15, 18, 26, -1,
@@ -86,7 +85,7 @@ public final class EvaluatorPositionConstant {
             -4, -10, 10, 19, 19, 15, -10, -4,
     };
 
-    public static final int[] ROOK_END_WHITE =   {
+    public static final int[] ROOK_END_WHITE = {
             29, 28, 26, 26, 26, 26, 28, 29,
             17, 19, 2, -2, -2, 2, 19, 17,
             18, 15, 9, 9, 9, 9, 15, 18,
@@ -97,7 +96,7 @@ public final class EvaluatorPositionConstant {
             2, 9, -4, -7, -7, 1, 9, 2,
     };
 
-    public static final int[] QUEEN_START_WHITE =   {
+    public static final int[] QUEEN_START_WHITE = {
             -9, 7, 21, 25, 25, 21, 7, -9,
             -8, -32, 20, 11, 11, 20, -32, -8,
             19, 18, 14, 20, 20, 14, 18, 19,
@@ -108,7 +107,7 @@ public final class EvaluatorPositionConstant {
             -9, -7, -9, 13, 13, -9, -7, -9,
     };
 
-    public static final int[] QUEEN_END_WHITE =   {
+    public static final int[] QUEEN_END_WHITE = {
             1, 14, 18, 25, 25, 18, 14, 1,
             -2, 25, 27, 29, 29, 27, 25, -2,
             -8, 3, 23, 35, 35, 23, 3, -8,
@@ -119,7 +118,7 @@ public final class EvaluatorPositionConstant {
             -46, -35, -38, -31, -31, -38, -35, -46,
     };
 
-    public static final int[] KING_START_WHITE =   {
+    public static final int[] KING_START_WHITE = {
             -45, -58, -45, -73, -73, -45, -58, -45,
             -35, -52, -50, -71, -71, -50, -52, -35,
             -32, -52, -51, -75, -75, -51, -52, -32,
@@ -130,7 +129,7 @@ public final class EvaluatorPositionConstant {
             28, 59, -5, -6, -6, -5, 59, 28,
     };
 
-    public static final int[] KING_END_WHITE =   {
+    public static final int[] KING_END_WHITE = {
             -48, -13, -3, -18, -18, -3, -13, -48,
             -6, 9, 19, 20, 20, 19, 9, -6,
             -1, 14, 42, 25, 25, 42, 14, -1,
@@ -140,9 +139,9 @@ public final class EvaluatorPositionConstant {
             -52, -29, 0, 8, 8, 0, -29, -52,
             -79, -54, -34, -34, -34, -34, -54, -79,
     };
-    
+
     public static int[][][] POSITION_SCORES;
-    
+
     public static void setup() {
         POSITION_SCORES = new int[2][7][64];
         for (int i = 0; i < 64; i++) {
@@ -164,28 +163,27 @@ public final class EvaluatorPositionConstant {
 
         ready = true;
     }
-    
 
 
     public static final int[][] mobilityScores = new int[4][32]; // no mobility for pawns or kings
 
-    static{
-        mobilityScores[0] = new int[] { //Knight
+    static {
+        mobilityScores[0] = new int[]{ //Knight
                 -28, -13, 1, -3, 2, 6, 9, 10,
                 5,
         };
 
-        mobilityScores[1] = new int[] { //Bishop
+        mobilityScores[1] = new int[]{ //Bishop
                 -28, -24, -7, -2, 4, 8, 12, 12,
                 15, 14, 13, 17, 20, 13,
         };
 
-        mobilityScores[2] = new int[] { //Rook
+        mobilityScores[2] = new int[]{ //Rook
                 -28, -16, -10, -6, -4, 1, 7, 11,
                 16, 20, 22, 24, 27, 24, 22,
         };
 
-        mobilityScores[3] = new int[] { //Queen
+        mobilityScores[3] = new int[]{ //Queen
                 -17, -4, -13, -10, -7, -1, 1, 3,
                 6, 11, 12, 14, 17, 18, 19, 20,
                 22, 22, 25, 26, 28, 26, 27, 28,

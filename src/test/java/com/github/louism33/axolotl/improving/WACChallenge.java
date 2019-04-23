@@ -25,24 +25,25 @@ public class WACChallenge {
     private static final int timeLimit = 5_000;
     private static int successes = 0;
     private static final int targetSuccesses = 280;
+    private Engine engine = new Engine();
 
     @BeforeClass
-    public static void setup(){
+    public static void setup() {
         Util.reset();
         final String str = "Testing " + splitUpPositions.length + " WAC positions. " +
                 "Time per position: " + timeLimit + " milliseconds."
-                +"\nIf more than " + targetSuccesses + " are correct, success.";
+                + "\nIf more than " + targetSuccesses + " are correct, success.";
         System.out.println(str);
     }
 
     @AfterClass
-    public static void finalSuccessTally(){
+    public static void finalSuccessTally() {
         System.out.println("Successful WAC tests: " + successes + " out of "
                 + splitUpPositions.length + ". Success starts at " + targetSuccesses);
         Assert.assertTrue(successes >= targetSuccesses);
     }
 
-    
+
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -72,17 +73,17 @@ public class WACChallenge {
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        int move = engine.simpleSearch();
         MoveParser.printMove(move);
 
-        if (contains(winningMoves, move) && !contains(losingMoves, move)){
+        if (contains(winningMoves, move) && !contains(losingMoves, move)) {
             System.out.println("success");
             successes++;
-        }
-        else {
+        } else {
             System.out.println("failure");
         }
-        
+
     }
 
     private static final String positions = "" +

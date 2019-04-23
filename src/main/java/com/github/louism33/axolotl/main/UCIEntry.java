@@ -2,7 +2,6 @@ package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.search.SearchUtils;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
@@ -107,16 +106,16 @@ public final class UCIEntry {
                             if (DEBUG) {
                                 output.println("received option Hash with parsed value " + size);
                             }
-                            int number = size * TABLE_SIZE_PER_MB;
-                            if (number >= MIN_TABLE_SIZE && number <= MAX_TABLE_SIZE) {
-                                TABLE_SIZE = number;
-                            } else if (number > MAX_TABLE_SIZE) {
-                                TABLE_SIZE = MAX_TABLE_SIZE;
+//                            int number = size * TABLE_SIZE_PER_MB;
+                            if (size >= MIN_TABLE_SIZE_MB && size <= MAX_TABLE_SIZE_MB) {
+                                TABLE_SIZE_MB = size;
+                            } else if (size > MAX_TABLE_SIZE_MB) {
+                                TABLE_SIZE_MB = MAX_TABLE_SIZE_MB;
                             } else {
-                                TABLE_SIZE = MIN_TABLE_SIZE;
+                                TABLE_SIZE_MB = MIN_TABLE_SIZE_MB;
                             }
 
-                            TranspositionTable.initTable(TABLE_SIZE);
+                            TranspositionTable.initTableMegaByte(TABLE_SIZE_MB);
 
                             // setoption name Threads value 2
                         } else if (nameToken.equalsIgnoreCase("Threads")) {
@@ -294,13 +293,13 @@ public final class UCIEntry {
                             Engine.computeMoves = false;
                             Engine.rootMoves[MASTER_THREAD] = searchMoves;
                         }
-                        
+
                         // hack to avoid needing to type in "position startpos" everytime
                         if (boards == null) {
                             boards = new Chessboard[NUMBER_OF_THREADS];
                         }
                         if (boards[MASTER_THREAD] == null) {
-                            for (int i = 0; i < NUMBER_OF_THREADS; i++) { 
+                            for (int i = 0; i < NUMBER_OF_THREADS; i++) {
                                 boards[i] = new Chessboard(board);
                             }
                         }

@@ -20,7 +20,7 @@ public final class PVLine {
 
         int i = 0;
 
-        while(i < maxPVLength) {
+        while (i < maxPVLength) {
             long entry = retrieveFromTable(board.zobristHash);
             if (entry == 0) {
                 break;
@@ -42,13 +42,13 @@ public final class PVLine {
     }
 
     private static int[] pv = new int[maxPVLength + 1];
-    
+
     public static int[] getPV(Chessboard board) {
         Arrays.fill(pv, 0);
 
         int i = 0;
 
-        while(i < maxPVLength) {
+        while (i < maxPVLength) {
             long entry = retrieveFromTable(board.zobristHash);
             if (entry == 0) {
                 break;
@@ -61,7 +61,7 @@ public final class PVLine {
             pv[i] = move;
             i++;
         }
-        
+
         pv[maxPVLength] = i;
 
         for (int j = i; j > 0; j--) {
@@ -71,7 +71,7 @@ public final class PVLine {
         return pv;
     }
 
-    public static boolean verifyMove(int move, int[] moves){
+    public static boolean verifyMove(int move, int[] moves) {
         for (int j = 0; j < moves.length; j++) {
             int possibleMove = moves[j];
             if (possibleMove == 0) {

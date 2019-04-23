@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 
@@ -25,17 +24,19 @@ import static java.lang.Long.numberOfTrailingZeros;
 @SuppressWarnings("ALL")
 public final class Evaluator {
 
-    public static void printEval(Chessboard board, int turn){
+    public static void printEval(Chessboard board, int turn) {
         printEval(board, turn, board.generateLegalMoves());
     }
-    public static void printEval(Chessboard board, int turn, int[] moves){
+
+    public static void printEval(Chessboard board, int turn, int[] moves) {
         System.out.println(stringEval(board, turn, moves));
     }
 
-    public static EvalPrintObject stringEval(Chessboard board, int turn){
+    public static EvalPrintObject stringEval(Chessboard board, int turn) {
         return stringEval(board, turn, board.generateLegalMoves());
     }
-    public static EvalPrintObject stringEval(Chessboard board, int turn, int[] moves){
+
+    public static EvalPrintObject stringEval(Chessboard board, int turn, int[] moves) {
         PRINT_EVAL = true;
         eval(board, moves);
         EvalPrintObject epo = new EvalPrintObject(scoresForEPO);
@@ -45,9 +46,9 @@ public final class Evaluator {
     }
 
     /**
-     todo:
-     trapped pieces
-     pinned pieces, and to queen
+     * todo:
+     * trapped pieces
+     * pinned pieces, and to queen
      */
 
 
@@ -78,11 +79,11 @@ public final class Evaluator {
         percentOfEndgame = 100 - percentOfStartgame;
 
         int score = 0;
-        
+
         long[] pawnData = getPawnData(board, board.zobristPawnHash, percentOfStartgame);
 
-        score += Score.getScore((int)pawnData[SCORE], percentOfStartgame);
-        
+        score += Score.getScore((int) pawnData[SCORE], percentOfStartgame);
+
         // todo colour has insuf mat to mate
 
         final int turn = board.turn;
@@ -120,7 +121,7 @@ public final class Evaluator {
     public static int[][] scoresForEPO = new int[2][32];
 
     private final static int evalTurn(Chessboard board, int turn, long[] pawnData,
-                                      long[] turnThreatensSquares, int percentOfStartgame, long myKingSafetyArea, long enemyKingSafetyArea){
+                                      long[] turnThreatensSquares, int percentOfStartgame, long myKingSafetyArea, long enemyKingSafetyArea) {
         //please generate moves before calling this
         final long[][] pieces = board.pieces;
 
@@ -263,7 +264,7 @@ public final class Evaluator {
 
         final long enemyBigPiecesForFork = enemyBigPieces ^ enemyKnights;
 
-        while (myKnights != 0){
+        while (myKnights != 0) {
             final long knight = getFirstPiece(myKnights);
             if ((knight & ignoreThesePieces) == 0) {
                 final int knightIndex = numberOfTrailingZeros(knight);
@@ -292,7 +293,7 @@ public final class Evaluator {
                 } else {
                     long myThreatsToEmptyOutposts = table & (unthreatenableOutpostSpots & ~friends);
                     if (myThreatsToEmptyOutposts != 0) {
-                        knightsScore += knightFeatures[KNIGHT_REACH_OUTPOST_BONUS ]* (1 + (populationCount(squaresMyPawnsThreaten & myThreatsToEmptyOutposts)));
+                        knightsScore += knightFeatures[KNIGHT_REACH_OUTPOST_BONUS] * (1 + (populationCount(squaresMyPawnsThreaten & myThreatsToEmptyOutposts)));
                     }
                 }
 
@@ -316,7 +317,7 @@ public final class Evaluator {
             bishopsScore += bishopFeatures[BISHOP_DOUBLE];
         }
 
-        while (myBishops != 0){
+        while (myBishops != 0) {
             final long bishop = getFirstPiece(myBishops);
             if ((bishop & ignoreThesePieces) == 0) {
                 final int bishopIndex = numberOfTrailingZeros(bishop);
@@ -371,7 +372,7 @@ public final class Evaluator {
 
         int rooksScore = 0;
 
-        while (myRooks != 0){
+        while (myRooks != 0) {
             final long rook = getFirstPiece(myRooks);
             if ((rook & ignoreThesePieces) == 0) {
                 final int rookIndex = numberOfTrailingZeros(rook);
@@ -430,7 +431,7 @@ public final class Evaluator {
 
         long defendedByMyQueen = 0;
 
-        while (myQueens != 0){
+        while (myQueens != 0) {
             final long queen = getFirstPiece(myQueens);
             if ((queen & ignoreThesePieces) == 0) {
                 final int queenIndex = numberOfTrailingZeros(queen);
@@ -463,7 +464,7 @@ public final class Evaluator {
         /*
         regular pawns
          */
-        while (myPawns != 0){
+        while (myPawns != 0) {
             final long pawn = getFirstPiece(myPawns);
             final int pawnIndex = numberOfTrailingZeros(pawn);
             positionScore += POSITION_SCORES[turn][PAWN][63 - pawnIndex];
@@ -502,8 +503,7 @@ public final class Evaluator {
                 + (turn == board.turn ? 1 : 0)
                 + (populationCount(pinnedPieces) * kingSafetyMisc[PINNED_PIECES_KING_SAFETY_LOOKUP])
                 - (populationCount(enemies & enemyKingSafetyArea))
-                - (populationCount((enemyPawns & enemyKingSafetyArea) >> 1))
-                ;
+                - (populationCount((enemyPawns & enemyKingSafetyArea) >> 1));
 
 
         enemyKingDanger = Math.max(0, Math.min(enemyKingDanger, KING_SAFETY_ARRAY.length - 1));

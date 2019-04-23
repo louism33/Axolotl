@@ -12,7 +12,7 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.
 
 public class TranspositionTableStressTest {
 
-    static final int depth = 10;
+    static final int depth = 12;
 
     @BeforeAll
     static void setup() {
@@ -23,19 +23,19 @@ public class TranspositionTableStressTest {
     static void reset() {
         Util.reset();
     }
-    
+
     @Test
     void testMin() {
         System.out.println("min: ");
         stressTestToDepthTest(depth, new Chessboard(), MIN_TABLE_SIZE_MB);
     }
-    
+
     @Test
     void testDefault() {
         System.out.println("default: ");
         stressTestToDepthTest(depth, new Chessboard(), DEFAULT_TABLE_SIZE_MB);
     }
-    
+
     @Test
     void testMax() {
         System.out.println("max:");
@@ -44,15 +44,17 @@ public class TranspositionTableStressTest {
 
     @Test
     void testNumber() {
-        stressTestToDepthTest(14, new Chessboard(), DEFAULT_TABLE_SIZE_MB);
+        int d = 18;
+        System.out.println("default to depth " + d);
+        stressTestToDepthTest(d, new Chessboard(), DEFAULT_TABLE_SIZE_MB);
     }
 
     private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize) {
-        int number = hashSize * TABLE_SIZE_PER_MB;
-        TranspositionTable.initTable(number);
+        TranspositionTable.initTableMegaByte(hashSize);
+        Engine engine = new Engine();
+        engine.receiveSearchSpecs(board, depth);
+        engine.simpleSearch();
 
-        Engine.searchFixedDepth(board, depth);
-        
         System.out.println("total adds :           " + totalAdds);
         System.out.println("new entries:           " + newEntries);
         System.out.println("aged out entries:      " + agedOut);
@@ -60,10 +62,13 @@ public class TranspositionTableStressTest {
         System.out.println("hits but already good: " + hitButAlreadyGood);
         System.out.println("hits to replace:       " + hitReplace);
         System.out.println("override:              " + override);
+        System.out.println("successfulLookup:      " + successfulLookup);
+        System.out.println("ratio succ total       " + ((double) successfulLookup / (double) totalLookup));
+        System.out.println("ratio miss total       " + ((double) failedLookup / (double) totalLookup));
         System.out.println("real keys :            " + countRealEntries(keys, false));
         System.out.println("real entries:          " + countRealEntries(entries, false));
         System.out.println("---");
-        
+
         long tks = countRealEntries(keys, true);
         System.out.println("total keys:            " + tks);
         long tes = countRealEntries(entries, true);
@@ -74,8 +79,8 @@ public class TranspositionTableStressTest {
         System.out.println();
         System.out.println();
     }
-    
-    private static long countRealEntries(long[] arr, boolean t) {
+
+    public static long countRealEntries(long[] arr, boolean t) {
         long total = 0;
         if (t) {
             return arr.length;

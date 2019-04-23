@@ -1,18 +1,10 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.main.UCIEntry;
-import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
@@ -26,11 +18,12 @@ public class BasicMTSearch {
         DEBUG = false;
         engine.uciEntry = new UCIEntry();
     }
+
     @AfterClass
     public static void tearDown() {
         PRINT_PV = false;
     }
-    
+
     @Test
     public void testSingleSet() {
         Engine.resetFull();
@@ -53,7 +46,7 @@ public class BasicMTSearch {
         Engine.resetFull();
         final Chessboard board = new Chessboard();
         int threads = 2;
-        
+
         Engine.setThreads(threads);
         engine.receiveSearchSpecs(board, 8);
         engine.simpleSearch();

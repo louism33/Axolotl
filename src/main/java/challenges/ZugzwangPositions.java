@@ -17,6 +17,8 @@ public class ZugzwangPositions {
 
     private static final int timeLimit = 10000;
 
+    private static Engine engine = new Engine();
+
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -45,7 +47,8 @@ public class ZugzwangPositions {
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.PRINT_PV = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        final int move = engine.simpleSearch();
 
         Assert.assertTrue(Utils.contains(winningMoves, move) && !Utils.contains(losingMoves, move));
     }

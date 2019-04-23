@@ -15,7 +15,7 @@ public class ScoreTest {
         Assert.assertEquals(m, getMGScore(score));
         Assert.assertEquals(e, getEGScore(score));
     }
-    
+
     @Test
     void mScoreTest() {
         int m = 123;
@@ -90,7 +90,7 @@ public class ScoreTest {
         int[] earlyMaterial = {100, 200, 300, 400, 500};
         int[] endMaterial = {111, 222, 333, 444, 555};
         int[] material = new int[earlyMaterial.length];
-        
+
         for (int i = 0; i < earlyMaterial.length; i++) {
             material[i] = Score.bs(earlyMaterial[i], endMaterial[i]);
         }
@@ -113,7 +113,7 @@ public class ScoreTest {
 
         int testTotalm = 0;
         int testTotale = 0;
-        
+
         for (int i = 0; i < endMaterial.length; i++) {
             material[i] = Score.bs(earlyMaterial[i], endMaterial[i]);
             testTotalm += earlyMaterial[i];
@@ -121,7 +121,7 @@ public class ScoreTest {
         }
 
         int total = 0;
-        
+
         for (int i = 0; i < endMaterial.length; i++) {
             total += material[i];
         }

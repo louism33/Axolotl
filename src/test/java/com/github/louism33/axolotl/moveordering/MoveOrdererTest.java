@@ -27,9 +27,9 @@ public class MoveOrdererTest {
     @AfterAll
     static void reset() {
         Engine.resetFull();
-        
+
     }
-    
+
     @Test
     public void moveOrdererRootTest() {
         Chessboard board = new Chessboard();
@@ -77,7 +77,7 @@ public class MoveOrdererTest {
             }
         } catch (Exception e) {
             throw new AssertionError("quiet heuristic orderer failed.");
-        }  
+        }
     }
 
 
@@ -181,9 +181,9 @@ public class MoveOrdererTest {
         Chessboard board = new Chessboard("r2r2k1/pp2bppp/2p1p3/4qb1P/8/1BP1BQ2/PP3PP1/2KR3R b - - 0 1");
 
         int[] moves = board.generateLegalMoves();
-        for (int m = 0; m < moves.length; m++){
+        for (int m = 0; m < moves.length; m++) {
             int move = moves[m];
-            if (move == 0){
+            if (move == 0) {
                 break;
             }
             int max = MoveOrderingConstants.hashScore;

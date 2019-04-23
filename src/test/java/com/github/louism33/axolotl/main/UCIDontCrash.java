@@ -9,15 +9,15 @@ public class UCIDontCrash {
     @BeforeAll
     static void setup() {
         Engine.resetFull();
-        
+
     }
 
     @AfterAll
     static void reset() {
         Engine.resetFull();
-        
+
     }
-    
+
 
 //    @Test
 //    void searchResetSearch()  {

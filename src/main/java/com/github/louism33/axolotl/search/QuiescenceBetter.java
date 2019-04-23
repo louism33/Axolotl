@@ -14,22 +14,22 @@ import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 
 public final class QuiescenceBetter {
 
-    public static int quiescenceSearch(Chessboard board, int alpha, int beta){
+    public static int quiescenceSearch(Chessboard board, int alpha, int beta) {
 
         int[] moves = board.generateLegalMoves();
-        
+
         int standPatScore = SHORT_MINIMUM;
 
         boolean inCheck = board.inCheckRecorder;
-        
-        if (!inCheck){
+
+        if (!inCheck) {
             standPatScore = Evaluator.eval(board, moves);
 
-            if (standPatScore >= beta){
+            if (standPatScore >= beta) {
                 return standPatScore;
             }
 
-            if (standPatScore > alpha){
+            if (standPatScore > alpha) {
                 alpha = standPatScore;
             }
         }
@@ -40,8 +40,7 @@ public final class QuiescenceBetter {
             scoreMovesQuiescence(moves, board);
             final int realMoves = MoveParser.numberOfRealMoves(moves);
             Ints.sortDescending(moves, 0, realMoves);
-        }
-        else {
+        } else {
             scoreMoves(moves, board, 0, 0);
             final int realMoves = MoveParser.numberOfRealMoves(moves);
             Ints.sortDescending(moves, 0, realMoves);
@@ -50,7 +49,7 @@ public final class QuiescenceBetter {
         for (int i = 0; i < moves.length; i++) {
 
             final int move = moves[i];
-            if (move == 0){
+            if (move == 0) {
                 break;
             }
 
@@ -58,11 +57,11 @@ public final class QuiescenceBetter {
 
             final boolean captureMove = MoveParser.isCaptureMove(move);
             final boolean promotionMove = MoveParser.isPromotionMove(move);
-            
+
             if (!inCheck && loudMoveScore != 0) {
                 Assert.assertTrue(captureMove || promotionMove);
             }
-            
+
             if (!inCheck && loudMoveScore == 0) {
                 break;
             }

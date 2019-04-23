@@ -21,7 +21,7 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 public class SilentButDeadlyTest {
 
     private static final int timeLimit = 5_000;
-
+    private static Engine engine = new Engine();
     // tough at 5 sec
     private static final int[] infamousIndexes = {86, 163, 180, 196, 222, 230, 243, 293};
 
@@ -60,7 +60,8 @@ public class SilentButDeadlyTest {
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        final int move = engine.simpleSearch();
         MoveParser.printMove(move);
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }

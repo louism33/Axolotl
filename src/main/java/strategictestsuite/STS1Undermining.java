@@ -21,11 +21,12 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 public class STS1Undermining {
 
     private static final int timeLimit = 10_000;
+    private Engine engine = new Engine();
 
     private static int successes = 0;
 
     @AfterClass
-    public static void finalSuccessTally(){
+    public static void finalSuccessTally() {
         System.out.println("Successes: " + successes + " out of " + splitUpPositions.length);
     }
 
@@ -61,7 +62,8 @@ public class STS1Undermining {
         int[] winningMoves = EPDObject.getBestMovesFromComments();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.PRINT_PV = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        final int move = engine.simpleSearch();
 
         final boolean condition = contains(winningMoves, move) && !contains(losingMoves, move);
         if (condition) {

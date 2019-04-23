@@ -6,15 +6,15 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 public class SEETest {
-    
+
     @Test
     public void rxpTest() {
         Chessboard board = new Chessboard("1k1r4/1pp4p/p7/4p3/8/P5P1/1PP4P/2K1R3 w - -");
         board.generateLegalMoves();
         final int see = SEE.getSEE(board, MoveParserFromAN.buildMoveFromANWithOO(board, "Rxe5"));
         Assert.assertEquals(100, see);
-    }   
-    
+    }
+
     @Test
     public void nxe5Test() {
         Chessboard board = new Chessboard("1k1r3q/1ppn3p/p4b2/4p3/8/P2N2P1/1PP1R1BP/2K1Q3 w - -");

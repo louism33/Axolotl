@@ -22,13 +22,15 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 public class STS11KingActivity {
 
     private static final int timeLimit = 10_000;
+    private Engine engine = new Engine();
 
     private static int successes = 0;
 
     @AfterClass
-    public static void finalSuccessTally(){
+    public static void finalSuccessTally() {
         System.out.println("Successes: " + successes + " out of " + splitUpPositions.length);
     }
+
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -61,7 +63,8 @@ public class STS11KingActivity {
         int[] winningMoves = EPDObject.getBestMovesFromComments();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.PRINT_PV = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        final int move = engine.simpleSearch();
 
         System.out.println("my move: " + MoveParser.toString(move));
 

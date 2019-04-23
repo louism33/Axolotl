@@ -12,7 +12,6 @@ public final class ChessThread extends Thread {
     private UCIEntry uciEntry = null;
     private int whichThread;
     Chessboard board;
-    int[] rootMoves;
 
     ChessThread(int whichThread, Chessboard board) {
         Assert.assertTrue(whichThread != MASTER_THREAD);
@@ -32,7 +31,7 @@ public final class ChessThread extends Thread {
         if (EngineSpecifications.DEBUG) {
             System.out.println("    start run of " + this.getName() + " with thread number " + whichThread);
         }
-        
+
         search(board, uciEntry, whichThread);
 
         if (EngineSpecifications.DEBUG) {

@@ -36,15 +36,15 @@ public final class PassedPawns {
         long squaresEnemyThreatens = turnThreatensSquares[1 - turn];
 
         long myPassedPawns = pawnData[PASSED_PAWNS + turn];
-        
+
         long notHomeRanks = ~(PENULTIMATE_RANKS[1 - turn] | INTERMEDIATE_RANKS[turn]);
-        
-        
+
+
         while (myPassedPawns != 0) {
             final long pawn = getFirstPiece(myPassedPawns);
             final int pawnIndex = Long.numberOfTrailingZeros(pawn);
             passedPawnScore |= pawnFeatures[EvaluationConstants.PAWN_UNBLOCKED];
-            
+
             if ((pawn & notHomeRanks) != 0) {
                 final long stopSq = turn == WHITE ? pawn << 8 : pawn >>> 8;
 
@@ -65,7 +65,7 @@ public final class PassedPawns {
             } else {
                 // small bonus for passed pawns a long way away from promoting
                 passedPawnScore += pawnFeatures[EvaluationConstants.PAWN_YOUNG_PASSED];
-            } 
+            }
 
             myPassedPawns &= myPassedPawns - 1;
         }

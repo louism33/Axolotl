@@ -71,7 +71,7 @@ public final class Engine {
         resetBetweenMoves();
         age = 0;
         initTable(TABLE_SIZE);
-        PawnTranspositionTable.initPawnTable(PAWN_TABLE_SIZE);
+        PawnTranspositionTable.initPawnTableMegaByte();
         MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
         if (!EvaluationConstants.ready) {
             EvaluationConstants.setup();
@@ -111,8 +111,7 @@ public final class Engine {
     public static void setThreads(int totalThreads) {
         if (totalThreads > MAX_THREADS) {
             totalThreads = MAX_THREADS;
-        }
-        else if (totalThreads < 0) {
+        } else if (totalThreads < 0) {
             totalThreads = DEFAULT_THREAD_NUMBER;
         }
 
@@ -139,31 +138,31 @@ public final class Engine {
         return (EngineSpecifications.ALLOW_TIME_LIMIT && outOfTime(startTime, timeLimiMillis, manageTime));
     }
 
-    public static int searchMyTime(Chessboard chessboard, long maxMyTime, long maxEnemyTime, long increment, Integer movesToGo) {
-        EngineSpecifications.ALLOW_TIME_LIMIT = true;
-        manageTime = true;
-        masterBoard = chessboard;
-        timeLimitMillis = allocateTime(maxMyTime, maxEnemyTime, increment, movesToGo, masterBoard.fullMoveCounter);
-
-        return searchFixedTime(new UCIEntry(), 0);
-    }
-
-    public static final int searchFixedDepth(Chessboard chessboard, int depth) {
-        EngineSpecifications.ALLOW_TIME_LIMIT = false;
-        masterBoard = chessboard;
-        manageTime = false;
-        timeLimitMillis = absoluteMaxTimeLimit = 0;
-        MAX_DEPTH = depth;
-        return searchFixedTime(new UCIEntry(), 0);
-    }
-
-    public static final int searchFixedTime(final Chessboard chessboard, final long maxTime) {
-        EngineSpecifications.ALLOW_TIME_LIMIT = true;
-        masterBoard = chessboard;
-        manageTime = false;
-        timeLimitMillis = absoluteMaxTimeLimit = maxTime;
-        return searchFixedTime(new UCIEntry(), 0);
-    }
+//    public static int searchMyTime(Chessboard chessboard, long maxMyTime, long maxEnemyTime, long increment, Integer movesToGo) {
+//        EngineSpecifications.ALLOW_TIME_LIMIT = true;
+//        manageTime = true;
+//        masterBoard = chessboard;
+//        timeLimitMillis = allocateTime(maxMyTime, maxEnemyTime, increment, movesToGo, masterBoard.fullMoveCounter);
+//
+//        return searchFixedTime(new UCIEntry(), 0);
+//    }
+//
+//    public static final int searchFixedDepth(Chessboard chessboard, int depth) {
+//        EngineSpecifications.ALLOW_TIME_LIMIT = false;
+//        masterBoard = chessboard;
+//        manageTime = false;
+//        timeLimitMillis = absoluteMaxTimeLimit = 0;
+//        MAX_DEPTH = depth;
+//        return searchFixedTime(new UCIEntry(), 0);
+//    }
+//
+//    public static final int searchFixedTime(final Chessboard chessboard, final long maxTime) {
+//        EngineSpecifications.ALLOW_TIME_LIMIT = true;
+//        masterBoard = chessboard;
+//        manageTime = false;
+//        timeLimitMillis = absoluteMaxTimeLimit = maxTime;
+//        return searchFixedTime(new UCIEntry(), 0);
+//    }
 
     public final void receiveSearchSpecs(final Chessboard chessboard, final int fixedDepth) {
         Chessboard[] chessboards = new Chessboard[NUMBER_OF_THREADS];
@@ -486,7 +485,7 @@ public final class Engine {
             searchFinished = true;
         }
     }
-    
+
 
     static int principleVariationSearch(Chessboard board,
                                         int depth, int ply,
@@ -739,10 +738,21 @@ public final class Engine {
                 System.err.println(Thread.currentThread());
                 System.err.println(board);
                 System.err.println(board.toFenString());
+                System.out.println("move i am considering");
+                MoveParser.printMove(move);
+                System.out.println("moves i am considering");
                 MoveParser.printMove(moves);
+                System.out.println();
+                System.out.println();
+                System.out.println("now i try to generate moves");
+                System.out.println();
+                System.out.println();
+                MoveParser.printMove(board.generateLegalMoves());
+                System.out.println();
+                System.out.println();
+                System.out.println();
                 e.printStackTrace();
-                System.out.println();
-                System.out.println();
+                throw new RuntimeException(e);
             }
 
             numberOfMovesMade[whichThread]++;

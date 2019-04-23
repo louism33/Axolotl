@@ -15,28 +15,30 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static challenges.Utils.contains;
+
 @RunWith(Parameterized.class)
 public class WACSilverSanityTestMTMulti {
-    
+
     private static final int threads = 4;
-    private static final int timeLimit = 5_000;
+    private static final int timeLimit = 1_000;
     private static int successes = 0;
-    private static final int targetSuccesses = 180;
+    private static final int targetSuccesses = 170;
     private static Engine engine = new Engine();
-    
+
     @BeforeClass
-    public static void setup(){
+    public static void setup() {
         Util.reset();
         EngineSpecifications.PRINT_PV = false;
         Engine.setThreads(threads);
         final String str = "Testing " + splitUpPositions.length + " WAC silver positions. " +
-                "Time per position: " + timeLimit + " milliseconds." 
-                +"\nIf more than " + targetSuccesses + " are correct, success.";
+                "Time per position: " + timeLimit + " milliseconds."
+                + "\nIf more than " + targetSuccesses + " are correct, success.";
         System.out.println(str);
-    }    
-    
+    }
+
     @AfterClass
-    public static void finalSuccessTally(){
+    public static void finalSuccessTally() {
         System.out.println("Successful WAC Silver sanity tests: " + successes + " out of "
                 + splitUpPositions.length + ". Success starts at " + targetSuccesses);
         Assert.assertTrue(successes >= targetSuccesses);
@@ -47,7 +49,7 @@ public class WACSilverSanityTestMTMulti {
         List<Object[]> answers = new ArrayList<>(splitUpPositions.length);
 
         for (int i = 0; i < splitUpPositions.length; i++) {
-            
+
             String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
@@ -74,23 +76,13 @@ public class WACSilverSanityTestMTMulti {
         engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
         final int move = engine.simpleSearch();
         MoveParser.printMove(move);
-        
-        if (contains(winningMoves, move) && !contains(losingMoves, move)){
+
+        if (contains(winningMoves, move) && !contains(losingMoves, move)) {
             System.out.println("success");
             successes++;
-        }
-        else {
+        } else {
             System.out.println("failure");
         }
-    }
-
-    public static boolean contains(int[] ints, int target) {
-        for (int i = 0; i < ints.length; i++) {
-            if (ints[i] == target) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private static final String positions = "" +

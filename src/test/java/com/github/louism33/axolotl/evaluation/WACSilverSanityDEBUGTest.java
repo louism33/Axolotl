@@ -1,7 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
@@ -19,16 +18,17 @@ import java.util.List;
 public class WACSilverSanityDEBUGTest {
 
     private static final int timeLimit = 1_000;
+    private Engine engine = new Engine();
 
     @BeforeClass
-    public static void setup(){
+    public static void setup() {
         Util.reset();
         final String str = "Testing " + splitUpPositions.length + " WAC silver positions with God Debug on. Don't crash!. ";
         System.out.println(str);
-    }    
-    
+    }
+
     @AfterClass
-    public static void finalSuccessTally(){
+    public static void finalSuccessTally() {
     }
 
     @Parameters(name = "{index} Test: {1}")
@@ -36,7 +36,7 @@ public class WACSilverSanityDEBUGTest {
         List<Object[]> answers = new ArrayList<>(splitUpPositions.length);
 
         for (int i = 0; i < splitUpPositions.length; i++) {
-            
+
             String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);
@@ -57,7 +57,8 @@ public class WACSilverSanityDEBUGTest {
     public void test() {
         Engine.resetFull();
         System.out.println(EPDObject.getFullString());
-        Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        int move = engine.simpleSearch();
     }
 
     private static final String positions = "" +

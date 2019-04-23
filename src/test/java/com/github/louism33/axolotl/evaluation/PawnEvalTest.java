@@ -1,7 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
@@ -19,7 +18,7 @@ public class PawnEvalTest {
     static void reset() {
         Util.reset();
     }
-    
+
     @Test
     void retrieveFromTableSimpleTest() {
         PawnTranspositionTable.reset();
@@ -31,8 +30,8 @@ public class PawnEvalTest {
         long[] pawnDataTest = PawnEval.calculatePawnData(board, 0);
         Assert.assertNotNull(pawnDataTest);
         Assert.assertArrayEquals(pawnDataTest, pawnData);
-    }    
-    
+    }
+
     @Test
     void retrieveFromTableFenTest() {
         PawnTranspositionTable.reset();
@@ -55,8 +54,8 @@ public class PawnEvalTest {
             Art.printLong(pawnData[0]);
         }
         Assert.assertArrayEquals(testPawnData, pawnData);
-    }    
-    
+    }
+
     @Test
     void retrieveFromTableFen2Test() {
         PawnTranspositionTable.reset();
@@ -96,9 +95,12 @@ public class PawnEvalTest {
     @Test
     public void percentStuff() {
         Chessboard board = new Chessboard();
-        Engine.searchFixedDepth(board, 14);
+        Engine engine = new Engine();
+        System.out.println();
+        engine.receiveSearchSpecs(board, 16);
+        final int move = engine.simpleSearch();
 
-        System.out.println("size of pawn table in mb: " + EngineSpecifications.DEFAULT_PAWN_TABLE_SIZE_MB);
+        System.out.println("size of pawn table in mb: " + DEFAULT_PAWN_TABLE_SIZE_MB);
         System.out.println("entries in pawnMoveData : " + pawnMoveData.length);
         System.out.println("total keys              : " + keys.length);
         System.out.println();
@@ -106,8 +108,8 @@ public class PawnEvalTest {
         System.out.println("newEntries              : " + newEntries);
         System.out.println("hit                     : " + hit);
         System.out.println("override                : " + override);
-        System.out.println("ratio new total         : " + ((double)newEntries / (double)totalRequests));
-        System.out.println("ratio hit total         : " + ((double)hit / (double)totalRequests));
+        System.out.println("ratio new total         : " + ((double) newEntries / (double) totalRequests));
+        System.out.println("ratio hit total         : " + ((double) hit / (double) totalRequests));
 
     }
 }

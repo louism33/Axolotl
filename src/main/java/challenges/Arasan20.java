@@ -22,6 +22,8 @@ public class Arasan20 {
 
     private static final int timeLimit = 60_000;
 
+    private static Engine engine = new Engine();
+
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -50,7 +52,10 @@ public class Arasan20 {
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.PRINT_PV = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+
+
+        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        final int move = engine.simpleSearch();
 
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }
