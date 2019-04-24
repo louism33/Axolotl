@@ -72,7 +72,7 @@ public final class UCIEntry {
                     final String token = tokens[0];
 
                     if (token.equalsIgnoreCase("uci")) {
-                        output.println("id name axolotl_v1.6");
+                        output.println("id name axolotl_v1.7");
                         output.println("id author Louis James Mackenzie-Smith");
                         output.println("option name Hash type spin default 128 min 1 max 1024");
                         output.println("option name Threads type spin default 1 min 1 max " + MAX_THREADS);
@@ -422,33 +422,8 @@ public final class UCIEntry {
         output.println(infoCommand);
     }
 
-//    public void send(Chessboard board, int depth, long time, long nodes) {
-//        String infoCommand = "info";
-//
-//        if (depth != 0) {
-//            infoCommand += " depth " + depth;
-//        }
-//
-//        if (mateFound(aiMoveScore)) {
-//            infoCommand += " score mate " + distanceToMate(aiMoveScore);
-//        } else {
-//            infoCommand += " score cp " + aiMoveScore;
-//        }
-//
-//        Engine.calculateNPS();
-//        infoCommand += " time " + time;
-//        infoCommand += " nodes " + nodes;
-//        infoCommand += " nps " + Engine.nps;
-//
-//        infoCommand += " pv ";
-//        final int[] pv = PVLine.getPV(board);
-//        infoCommand += MoveParser.toPVString(pv);
-//
-//        output.println(infoCommand);
-//    }
-
     public static void main(String[] args) throws IOException {
-        System.out.println("axolotl v1.6 by Louis James Mackenzie-Smith");
+        System.out.println("axolotl v1.7 by Louis James Mackenzie-Smith");
         UCIEntry uci = new UCIEntry();
         uci.loop();
     }
