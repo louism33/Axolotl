@@ -47,7 +47,7 @@ public class FamousPositionsTest {
         String pos = "7K/8/k1P5/7p/8/8/8/8 w - -";
         ExtendedPositionDescriptionParser.EPDObject EPDObject =
                 ExtendedPositionDescriptionParser.parseEDPPosition(pos);
-        System.out.println(EPDObject.getBoard());
+//        System.out.println(EPDObject.getBoard());
         
         engine.receiveSearchSpecs(EPDObject.getBoard(), true, 1_000);
         final int move = engine.simpleSearch();

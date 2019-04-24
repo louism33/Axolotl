@@ -103,11 +103,18 @@ public final class UCIEntry {
                         }
 
                         if (nameToken.equalsIgnoreCase("Hash")) {
-                            int size = Integer.parseInt(valueToken);
+                            int size = DEFAULT_TABLE_SIZE_MB;
+
+                            try {
+                                size = Integer.parseInt(valueToken);
+                            } catch (Exception | Error e) {
+                                output.println("could not read hash value, sticking to " + DEFAULT_TABLE_SIZE_MB + "mb");
+                            }
+                            
                             if (DEBUG) {
                                 output.println("received option Hash with parsed value " + size);
                             }
-//                            int number = size * TABLE_SIZE_PER_MB;
+                            
                             if (size >= MIN_TABLE_SIZE_MB && size <= MAX_TABLE_SIZE_MB) {
                                 TABLE_SIZE_MB = size;
                             } else if (size > MAX_TABLE_SIZE_MB) {
@@ -120,13 +127,20 @@ public final class UCIEntry {
 
                             // setoption name Threads value 2
                         } else if (nameToken.equalsIgnoreCase("Threads")) {
-                            int number = Integer.parseInt(valueToken);
+
+                            int number = DEFAULT_THREAD_NUMBER;
+                            try {
+                                number = Integer.parseInt(valueToken);
+                            } catch (Exception | Error e) {
+                                output.println("could not read threads value, sticking to " + DEFAULT_THREAD_NUMBER + "mb");
+                            }
+                            
                             if (DEBUG) {
                                 output.println("received option Hash with parsed value " + number);
                             }
 
                             Engine.setThreads(number);
-                            boards = new Chessboard[number];
+                            boards = new Chessboard[NUMBER_OF_THREADS];
 
                         } else if (SPSA && nameToken.equalsIgnoreCase("futilityOne")) {
                             SearchUtils.futilityMargin[1] = Integer.parseInt(valueToken);

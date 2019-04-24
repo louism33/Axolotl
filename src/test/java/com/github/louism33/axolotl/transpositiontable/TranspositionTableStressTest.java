@@ -3,9 +3,7 @@ package com.github.louism33.axolotl.transpositiontable;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,12 +15,12 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.
 public class TranspositionTableStressTest {
 
     static final int depth = 12;
-
+    static Engine engine = new Engine();
+    
     @BeforeEach
     public void setup() {
         PRINT_PV = false;
         Util.reset();
-        
     }
 
     @AfterAll
@@ -85,8 +83,10 @@ public class TranspositionTableStressTest {
     
     private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize, int numThreads) {
         TranspositionTable.initTableMegaByte(hashSize);
-        Engine engine = new Engine();
         Engine.setThreads(numThreads);
+
+        Assert.assertEquals(Engine.numberOfMovesMade.length, numThreads);
+        
         engine.receiveSearchSpecs(board, depth);
         engine.simpleSearch();
 

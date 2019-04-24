@@ -7,7 +7,6 @@ import com.github.louism33.axolotl.evaluation.PawnTranspositionTable;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
@@ -32,10 +31,10 @@ public final class Engine {
     public static int aiMoveScore;
     public static long nps;
     public static volatile boolean stopNow = false;
-    public static int[][] rootMoves = new int[NUMBER_OF_THREADS][];
+    public static int[][] rootMoves;
 
-    public static long[] numberOfMovesMade = new long[1];
-    static long[] numberOfQMovesMade = new long[1];
+    public static long[] numberOfMovesMade;
+    static long[] numberOfQMovesMade;
     static boolean manageTime = true;
     static boolean weHavePanicked = false;
 
@@ -86,11 +85,18 @@ public final class Engine {
         //don't reset moves if uci will provide them
         hashTableReturn = 0;
         final int length = rootMoves.length;
-        Assert.assertEquals(length, NUMBER_OF_THREADS);
+        Assert.assertEquals(length, NUMBER_OF_THREADS);    
+        if (numberOfMovesMade == null) {
+            numberOfMovesMade = new long[NUMBER_OF_THREADS];
+        }
+        if (numberOfQMovesMade == null) {
+            numberOfQMovesMade = new long[NUMBER_OF_THREADS];
+        }
         for (int i = 0; i < length; i++) {
             if (rootMoves[i] == null) {
                 rootMoves[i] = new int[Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH];
             }
+
             numberOfMovesMade[i] = 0;
             numberOfQMovesMade[i] = 0;
             Arrays.fill(rootMoves[i], 0);
