@@ -14,10 +14,12 @@ import java.util.List;
 
 import static challenges.Utils.contains;
 
-@RunWith(Parameterized.class )
+@RunWith(Parameterized.class)
 public class QuickTest {
 
     private static final int timeLimit = 10_000;
+
+    private static Engine engine = new Engine();
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -46,8 +48,9 @@ public class QuickTest {
         System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.DEBUG = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        EngineSpecifications.PRINT_PV = false;
+        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        final int move = engine.simpleSearch();
 
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }

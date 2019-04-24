@@ -5,12 +5,12 @@ import com.github.louism33.axolotl.search.EngineSpecifications;
 
 public final class TimeAllocator {
 
-    public static long allocateTime(long maxTime, long enemyTime, long increment, Integer movesToGo, int fullMovesCounter){
+    public static long allocateTime(long maxTime, long enemyTime, long increment, Integer movesToGo, int fullMovesCounter) {
         if (maxTime < 1000) {
             return 100;
         }
-        
-        if (maxTime < 5000){
+
+        if (maxTime < 5000) {
             return 1000 + (increment / 3);
         }
 
@@ -46,14 +46,14 @@ public final class TimeAllocator {
         return timeLimitMillis;
     }
 
-    public static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis){
+    public static boolean weShouldStopSearching(long timeLimitMillis, long timeLeftMillis) {
         return timeLeftMillis < (timeLimitMillis) / 2;
     }
 
-    public static boolean outOfTime(long startTime, long timeLimitMillis, boolean manageTime){
+    public static boolean outOfTime(long startTime, long timeLimitMillis, boolean manageTime) {
 
         boolean outOfTime = false;
-        if (!EngineSpecifications.ALLOW_TIME_LIMIT){
+        if (!EngineSpecifications.ALLOW_TIME_LIMIT) {
             return false;
         }
 
@@ -69,7 +69,7 @@ public final class TimeAllocator {
             outOfTime = true;
         }
 
-        if (outOfTime){
+        if (outOfTime) {
             Engine.stopNow = true;
         }
         return outOfTime;

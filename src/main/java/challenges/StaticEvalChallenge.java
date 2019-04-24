@@ -15,6 +15,8 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class StaticEvalChallenge {
 
+    private static Engine engine = new Engine();
+
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -24,8 +26,8 @@ public class StaticEvalChallenge {
             if (i != 15) {
                 continue;
             }
-            
-            
+
+
             String pos = splitUpZZs[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(pos);

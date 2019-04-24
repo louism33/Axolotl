@@ -30,7 +30,7 @@ public final class PawnEval {
         int pawnScore = 0;
 
         long outpostsFilesWeaks = 0;
-        
+
         final long allPieces = board.allPieces();
 
         for (int turn = WHITE; turn <= BLACK; turn++) {
@@ -76,13 +76,12 @@ public final class PawnEval {
 
                 // doesn't include being attacked by a pawn atm?
                 final long myPromotionSpan = fileForward[turn][pawnIndex] | myAttackSpan;
-                final long myPromotionEnemies = eps & myPromotionSpan; 
+                final long myPromotionEnemies = eps & myPromotionSpan;
                 if (myPromotionEnemies == 0) {
                     myPassedPawns |= pawn;
-                }
-                else if (populationCount(myBackupSquares & ps) > populationCount(myPromotionEnemies)) {
+                } else if (populationCount(myBackupSquares & ps) > populationCount(myPromotionEnemies)) {
                     myPawnScore += pawnFeatures[PAWN_CANDIDATE];
-                    
+
                 }
 
                 pawns &= pawns - 1;
@@ -117,10 +116,10 @@ public final class PawnEval {
             }
 
             long neighbourPawns = allAdjacentSquares & ps;
-            
+
             while (neighbourPawns != 0) {
-                final int i = turn == BLACK 
-                        ? (7 - (numberOfTrailingZeros(neighbourPawns) / 8)) 
+                final int i = turn == BLACK
+                        ? (7 - (numberOfTrailingZeros(neighbourPawns) / 8))
                         : numberOfTrailingZeros(neighbourPawns) / 8;
                 myPawnScore += i * pawnFeatures[PAWN_NEIGHBOURS];
                 neighbourPawns &= neighbourPawns - 1;
@@ -130,12 +129,12 @@ public final class PawnEval {
             if (PRINT_EVAL) {
                 scoresForEPO[turn][EvalPrintObject.pawnScore] += Score.getScore(myPawnScore, percentOfStart);
             }
-            
+
             if (turn == WHITE) {
                 pawnScore += myPawnScore;
             } else {
                 pawnScore -= myPawnScore;
-            } 
+            }
         }
 
         pawnMoveData[SCORE] = pawnScore;

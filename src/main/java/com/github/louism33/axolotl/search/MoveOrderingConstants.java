@@ -40,6 +40,7 @@ public final class MoveOrderingConstants {
     };
 
     static int[] quietsILikeToMove = new int[7];
+
     static {
         quietsILikeToMove[PAWN] = 3;
         quietsILikeToMove[KNIGHT] = 4;

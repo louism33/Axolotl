@@ -39,7 +39,7 @@ public class TimeManagementTest {
     }
 
     @Test
-    void dominantTest(){
+    void dominantTest() {
         long allocateTime = TimeAllocator.allocateTime(485370, 38948, 6000, 0, 200);
 
         System.out.println(allocateTime);

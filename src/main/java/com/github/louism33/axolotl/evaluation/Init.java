@@ -14,8 +14,7 @@ final class Init {
         long sq = BitOperations.squareCentredOnIndex(kingIndex);
         if ((myKing & FILE_A) != 0) {
             sq |= (sq >>> 1);
-        }
-        else if ((myKing & FILE_H) != 0) {
+        } else if ((myKing & FILE_H) != 0) {
             sq |= (sq << 1);
         }
 

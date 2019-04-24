@@ -6,7 +6,7 @@
 
     <groupId>com.github.louism33</groupId>
     <artifactId>axolotl</artifactId>
-    <version>1.6-SNAPSHOT</version> 
+    <version>1.7-SNAPSHOT</version> 
     <name>axolotl</name>
     <description>Amphibious Java Chess Engine</description>
     <url>https://github.com/louism33/Axolotl</url>
@@ -242,7 +242,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <finalName>axolotl_v1.6</finalName>
+                        <finalName>axolotl_v1.7</finalName>
                         <appendAssemblyId>false</appendAssemblyId>
                         <outputDirectory>${user.dir}</outputDirectory>
                         <archive>

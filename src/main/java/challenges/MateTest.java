@@ -19,6 +19,8 @@ public class MateTest {
 
     private static final int timeLimit = 5_000;
 
+    private static Engine engine = new Engine();
+
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -47,9 +49,10 @@ public class MateTest {
         System.out.println(EPDObject.getFullString());
 
         int[] winningMoves = EPDObject.getBestMoves();
-        EngineSpecifications.DEBUG = false;
+        EngineSpecifications.PRINT_PV = false;
         final Chessboard board = EPDObject.getBoard();
-        int move = Engine.searchFixedTime(board, timeLimit);
+        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        final int move = engine.simpleSearch();
         System.out.println(board);
         MoveParser.printMove(move);
         Assert.assertTrue(Utils.contains(winningMoves, move));

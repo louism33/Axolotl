@@ -7,7 +7,7 @@ import static com.github.louism33.chesscore.BoardConstants.WHITE;
 public final class EvalPrintObject {
 
     int[][] scores = new int[2][32];
-    
+
     static final int totalScore = 0;
     static final int materialScore = 1;
     static final int imbalanceScore = 2;
@@ -20,15 +20,15 @@ public final class EvalPrintObject {
     static final int kingSafetyScore = 9;
     static final int threatsScore = 10;
     static final int passedPawnsScore = 11;
-    static final int positionScore = 12;   
-    public static final int spaceScore = 13;   
-    static final int turnScore = 14;   
+    static final int positionScore = 12;
+    public static final int spaceScore = 13;
+    static final int turnScore = 14;
     static int turn = WHITE;
     static int percentOfEndgame;
 
     public EvalPrintObject(int[][] scores) {
-        System.arraycopy(scores[WHITE], 0 , this.scores[WHITE], 0, scores[WHITE].length);
-        System.arraycopy(scores[BLACK], 0 , this.scores[BLACK], 0, scores[BLACK].length);
+        System.arraycopy(scores[WHITE], 0, this.scores[WHITE], 0, scores[WHITE].length);
+        System.arraycopy(scores[BLACK], 0, this.scores[BLACK], 0, scores[BLACK].length);
     }
 
     @Override
@@ -63,7 +63,7 @@ public final class EvalPrintObject {
 
                 String.format("   Space     |     % 5d     |     % 5d     |    % 5d\n",
                         this.scores[WHITE][spaceScore], this.scores[BLACK][spaceScore], (this.scores[WHITE][spaceScore] - this.scores[BLACK][spaceScore])) +
-                
+
                 String.format("King Safety  |     % 5d     |     % 5d     |    % 5d\n",
                         this.scores[WHITE][kingSafetyScore], this.scores[BLACK][kingSafetyScore], (this.scores[WHITE][kingSafetyScore] - this.scores[BLACK][kingSafetyScore])) +
 
@@ -75,7 +75,7 @@ public final class EvalPrintObject {
 
                 ""
                 + "\nTurn bonus: " + this.scores[WHITE][turnScore]
-                + "\nWe are " + percentOfEndgame +"% in the endgame"
+                + "\nWe are " + percentOfEndgame + "% in the endgame"
                 + "\nTotal from white's POV: " + ((turn == BLACK ? -1 : 1) * this.scores[WHITE][totalScore]) + " cp";
 
         return evalString;

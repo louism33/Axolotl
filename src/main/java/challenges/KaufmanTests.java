@@ -19,6 +19,8 @@ public class KaufmanTests {
 
     private static final int timeLimit = 10000;
 
+    private static Engine engine = new Engine();
+
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
@@ -46,11 +48,13 @@ public class KaufmanTests {
         System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.DEBUG = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        EngineSpecifications.PRINT_PV = false;
+        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        final int move = engine.simpleSearch();
 
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }
+
     private static final String positions = "" +
             "1rbq1rk1/p1b1nppp/1p2p3/8/1B1pN3/P2B4/1P3PPP/2RQ1R1K w - - bm Nf6+; id \"position 01\";\n" +
             "3r2k1/p2r1p1p/1p2p1p1/q4n2/3P4/PQ5P/1P1RNPP1/3R2K1 b - - bm Nxd4 id \"position 02\";\n" +
@@ -80,5 +84,5 @@ public class KaufmanTests {
             "";
 
     private static final String[] splitUpPositions = positions.split("\n");
-    
+
 }

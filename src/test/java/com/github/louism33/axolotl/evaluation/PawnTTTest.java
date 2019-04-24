@@ -52,7 +52,7 @@ public class PawnTTTest {
         PawnTranspositionTable.reset();
         System.out.println(EPDObject.getFullString());
         Chessboard board = new Chessboard(EPDObject.getBoardFen());
-        
+
         long[] pawnData = PawnTranspositionTable.getPawnData(board, board.zobristPawnHash, 0);
         Assert.assertNotNull(pawnData);
         long[] testPawnData = PawnEval.calculatePawnData(board, 0);

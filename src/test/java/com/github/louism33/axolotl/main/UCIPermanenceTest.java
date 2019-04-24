@@ -15,7 +15,7 @@ public class UCIPermanenceTest {
     static void reset() {
         Util.reset();
     }
-    
+
 //    @Test
 //    void persistBoardTest()  {
 //        String mmm = "e2e4 ";

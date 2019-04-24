@@ -19,20 +19,21 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 public class WACSilverTest {
 
     private static final int timeLimit = 5_000;
+    private static Engine engine = new Engine();
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.DEBUG = true;
-        
+        EngineSpecifications.PRINT_PV = true;
+
         int stopAt = 10;
-        
+
         for (int i = 0; i < splitUpPositions.length; i++) {
-            if (i == stopAt){
+            if (i == stopAt) {
 //                break;
             }
-            
+
             String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             EPDObject EPDObject = parseEDPPosition(splitUpWAC);
@@ -55,8 +56,9 @@ public class WACSilverTest {
         System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.DEBUG = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        EngineSpecifications.PRINT_PV = false;
+        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        final int move = engine.simpleSearch();
 
         Assert.assertTrue(Utils.contains(winningMoves, move) && !Utils.contains(losingMoves, move));
 

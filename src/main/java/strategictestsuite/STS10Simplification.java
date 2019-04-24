@@ -21,19 +21,20 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 @RunWith(Parameterized.class)
 public class STS10Simplification {
 
-
     private static final int timeLimit = 10_000;
+    private Engine engine = new Engine();
     private static int successes = 0;
 
     @AfterClass
-    public static void finalSuccessTally(){
+    public static void finalSuccessTally() {
         System.out.println("Successes: " + successes + " out of " + splitUpPositions.length);
     }
+
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.DEBUG = true;
+        EngineSpecifications.PRINT_PV = true;
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
@@ -60,8 +61,10 @@ public class STS10Simplification {
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMovesFromComments();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.DEBUG = false;
-        int move = Engine.searchFixedTime(EPDObject.getBoard(), timeLimit);
+        EngineSpecifications.PRINT_PV = false;
+
+        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        final int move = engine.simpleSearch();
 
         System.out.println("my move: " + MoveParser.toString(move));
 

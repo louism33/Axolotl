@@ -10,7 +10,10 @@ import com.github.louism33.chesscore.Chessboard;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
+import java.util.Arrays;
+
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
+import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
@@ -27,12 +30,11 @@ import static com.github.louism33.chesscore.MoveParser.*;
 public final class Engine {
     public static int aiMoveScore;
     public static long nps;
-    public static long[] numberOfMovesMade = new long[1];
-    public static boolean stopNow = false;
-    public static int whichThread = 0;
-    public static int[] rootMoves;
+    public static volatile boolean stopNow = false;
+    public static int[][] rootMoves;
 
-    static long[] numberOfQMovesMade = new long[1];
+    public static long[] numberOfMovesMade;
+    static long[] numberOfQMovesMade;
     static boolean manageTime = true;
     static boolean weHavePanicked = false;
 
@@ -46,11 +48,12 @@ public final class Engine {
     public static boolean computeMoves = true;
 
     public static int age = 0;
-    
-    public static UCIEntry uciEntry = new UCIEntry(true);
+
+    public UCIEntry uciEntry = new UCIEntry(this);
 
     // chess22k / ethereal reduction idea and numbers
     public final static int[][] reductions = new int[64][64];
+
     static {
         for (int depth = 1; depth < 64; depth++) {
             for (int moveNumber = 1; moveNumber < 64; moveNumber++) {
@@ -60,10 +63,14 @@ public final class Engine {
     }
 
     public static void resetFull() {
+        rootMoves = new int[NUMBER_OF_THREADS][];
+        for (int i = 0; i < NUMBER_OF_THREADS; i++) {
+            rootMoves[i] = new int[Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH];
+        }
         resetBetweenMoves();
         age = 0;
         initTable(TABLE_SIZE);
-        PawnTranspositionTable.initPawnTable(PAWN_TABLE_SIZE);
+        PawnTranspositionTable.initPawnTableMegaByte();
         MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
         if (!EvaluationConstants.ready) {
             EvaluationConstants.setup();
@@ -74,97 +81,191 @@ public final class Engine {
         }
     }
 
-    public static void resetBetweenMoves() {
+    public static void resetBetweenMoves() { // todo
         //don't reset moves if uci will provide them
+        hashTableReturn = 0;
+        final int length = rootMoves.length;
+        Assert.assertEquals(length, NUMBER_OF_THREADS);    
+        if (numberOfMovesMade == null) {
+            numberOfMovesMade = new long[NUMBER_OF_THREADS];
+        }
+        if (numberOfQMovesMade == null) {
+            numberOfQMovesMade = new long[NUMBER_OF_THREADS];
+        }
+        for (int i = 0; i < length; i++) {
+            if (rootMoves[i] == null) {
+                rootMoves[i] = new int[Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH];
+            }
+
+            numberOfMovesMade[i] = 0;
+            numberOfQMovesMade[i] = 0;
+            Arrays.fill(rootMoves[i], 0);
+        }
         if (computeMoves) {
-            rootMoves = null;
+            rootMoves[MASTER_THREAD] = null; // todo
         }
         weHavePanicked = false;
         MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
         isReady = true;
         nps = 0;
         aiMoveScore = SHORT_MINIMUM;
-        numberOfMovesMade[0] = 0;
-        numberOfQMovesMade[0] = 0;
+
         stopNow = false;
         resetMoveOrderer();
         age = (age + 1) % ageModulo;
     }
 
+    public static void setThreads(int totalThreads) {
+        if (totalThreads > MAX_THREADS) {
+            totalThreads = MAX_THREADS;
+        } else if (totalThreads < 0) {
+            totalThreads = DEFAULT_THREAD_NUMBER;
+        }
+
+        if (DEBUG) {
+            System.out.println("setting threads from " + NUMBER_OF_THREADS + " to " + totalThreads);
+        }
+
+        NUMBER_OF_THREADS = totalThreads;
+        rootMoves = new int[NUMBER_OF_THREADS][];
+        for (int i = 0; i < NUMBER_OF_THREADS; i++) {
+            rootMoves[i] = new int[Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH];
+        }
+        numberOfMovesMade = new long[NUMBER_OF_THREADS];
+        numberOfQMovesMade = new long[NUMBER_OF_THREADS];
+
+        setupMoveOrderer();
+    }
+
     public static int getAiMove() {
-        return rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
-    }
-
-    public static int searchMyTime(Chessboard board, long maxMyTime, long maxEnemyTime, long increment, Integer movesToGo) {
-        EngineSpecifications.ALLOW_TIME_LIMIT = true;
-        manageTime = true;
-
-        long timeLimit = allocateTime(maxMyTime, maxEnemyTime, increment, movesToGo, board.fullMoveCounter);
-
-        return searchFixedTime(board, timeLimit, maxMyTime, MAX_DEPTH);
-    }
-
-    public static final int searchFixedDepth(Chessboard board, int depth) {
-        EngineSpecifications.ALLOW_TIME_LIMIT = false;
-        manageTime = false;
-        MAX_DEPTH = depth;
-        return searchFixedTime(board, 0, 0, depth);
+        return rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
     }
 
     static boolean stopSearch(long startTime, long timeLimiMillis) {
         return (EngineSpecifications.ALLOW_TIME_LIMIT && outOfTime(startTime, timeLimiMillis, manageTime));
     }
 
-    public static final int searchFixedTime(final Chessboard board, final long maxTime) {
-        EngineSpecifications.ALLOW_TIME_LIMIT = true;
-        manageTime = false;
-        return searchFixedTime(board, maxTime, maxTime, MAX_DEPTH);
+    public final void receiveSearchSpecs(final Chessboard chessboard, final int fixedDepth) {
+        Chessboard[] chessboards = new Chessboard[NUMBER_OF_THREADS];
+        chessboards[MASTER_THREAD] = chessboard;
+        if (NUMBER_OF_THREADS > 1) {
+            for (int t = 1; t < NUMBER_OF_THREADS; t++) {
+                chessboards[t] = new Chessboard(chessboard);
+            }
+        }
+        receiveSearchSpecs(chessboards, fixedDepth, 0, false, 0, 0, 0, 0);
+    }
+
+    public final void receiveSearchSpecs(final Chessboard chessboard, final boolean fixedTimeIgnored, final long fixedTime) {
+        Chessboard[] chessboards = new Chessboard[NUMBER_OF_THREADS];
+        chessboards[MASTER_THREAD] = chessboard;
+        if (NUMBER_OF_THREADS > 1) {
+            for (int t = 1; t < NUMBER_OF_THREADS; t++) {
+                chessboards[t] = new Chessboard(chessboard);
+            }
+        }
+        receiveSearchSpecs(chessboards, 0, fixedTime, false, 0, 0, 0, 0);
+    }
+
+    public final void receiveSearchSpecs(final Chessboard[] chessboards, final int fixedDepth, final long fixedTime,
+                                         boolean myTime, long maxMyTime, long maxEnemyTime, long increment, Integer movesToGo) {
+        boards = chessboards;
+        masterBoard = boards[0];
+        rootMoves = new int[boards.length][];
+        receiveSearchSpecs(masterBoard, fixedDepth, fixedTime, myTime, maxMyTime, maxEnemyTime, increment, movesToGo);
+    }
+
+    public final void receiveSearchSpecs(final Chessboard chessboard, final int fixedDepth, final long fixedTime,
+                                         boolean myTime, long maxMyTime, long maxEnemyTime, long increment, Integer movesToGo) {
+        masterBoard = chessboard;
+        resetBetweenMoves();
+        if (myTime) {
+            EngineSpecifications.ALLOW_TIME_LIMIT = true;
+            manageTime = true;
+            timeLimitMillis = allocateTime(maxMyTime, maxEnemyTime, increment, movesToGo, masterBoard.fullMoveCounter);
+            absoluteMaxTimeLimit = maxMyTime;
+            MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
+
+        } else if (fixedDepth != 0) {
+            EngineSpecifications.ALLOW_TIME_LIMIT = false;
+            manageTime = false;
+            timeLimitMillis = absoluteMaxTimeLimit = 0;
+            MAX_DEPTH = fixedDepth;
+
+        } else if (fixedTime != 0) {
+            EngineSpecifications.ALLOW_TIME_LIMIT = true;
+            manageTime = false;
+            timeLimitMillis = absoluteMaxTimeLimit = fixedTime;
+        }
     }
 
 
-    private static final int searchFixedTime(final Chessboard board, final long maxTime,
-                                             final long absoluteMaxTime, final int depth) {
-        resetBetweenMoves();
+    private static boolean searchFinished = false;
 
+    // set threads first if you want more than one
+    public int simpleSearch() {
+        searchFinished = false;
+        go();
+        while (true) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                return getAiMove();
+            }
+            if (searchFinished) {
+                return getAiMove();
+            }
+        }
+    }
+
+    static Chessboard masterBoard;
+    static Chessboard[] boards;
+
+    public static boolean sendBestMove = true;
+
+    public void go() {
+        searchFixedTime(uciEntry, true);
+    }
+
+    public static final void searchFixedTime(UCIEntry uciEntry, boolean whatever) {
         startTime = System.currentTimeMillis();
 
-        timeLimitMillis = maxTime;
-        absoluteMaxTimeLimit = absoluteMaxTime;
-
         //UCI can provide root moves if doing searchmoves
-        if (rootMoves == null && computeMoves) {
-            rootMoves = board.generateLegalMoves();
+        if (rootMoves[MASTER_THREAD] == null && computeMoves) {
+            rootMoves[MASTER_THREAD] = masterBoard.generateLegalMoves();
         }
 
-        int numberOfRealMoves = rootMoves[rootMoves.length - 1];
+        int numberOfRealMoves = rootMoves[MASTER_THREAD][rootMoves[MASTER_THREAD].length - 1];
         if (numberOfRealMoves == 0) {
-            return 0;
+            uciEntry.sendBestMove(0);
+            searchFinished = true;
+            return;
         }
 
         if (numberOfRealMoves == 1 && quitOnSingleMove) {
-            return rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
+            uciEntry.sendBestMove(rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK);
+            searchFinished = true;
+            return;
         }
 
-        scoreMovesAtRoot(rootMoves, numberOfRealMoves, board);
-        Ints.sortDescending(rootMoves, 0, numberOfRealMoves);
+        scoreMovesAtRoot(rootMoves[MASTER_THREAD], numberOfRealMoves, masterBoard);
+        Ints.sortDescending(rootMoves[MASTER_THREAD], 0, numberOfRealMoves);
 
-        search(board, depth);
+        // to avoid regenerating and rescoring root moves
+        for (int i = 1; i < NUMBER_OF_THREADS; i++) {
+            System.arraycopy(rootMoves[MASTER_THREAD], 0, rootMoves[i], 0, rootMoves[MASTER_THREAD].length);
+        }
 
-        long endTime = System.currentTimeMillis();
-
-        long time = endTime - startTime;
-
-        if (time != 0) {
-            if (time < 1000) {
-                nps = 0;
-            } else {
-                calculateNPS();
+        if (NUMBER_OF_THREADS == 1) {
+            new ChessThread(uciEntry, masterBoard).start();
+        } else {
+            for (int t = 1; t < NUMBER_OF_THREADS; t++) {
+                new ChessThread(t, boards[t]).start();
             }
+            new ChessThread(uciEntry, boards[0]).start();
         }
-
-        final int bestMove = rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
-        return bestMove;
     }
+
 
     public static void calculateNPS() {
         final long l = System.currentTimeMillis();
@@ -172,16 +273,17 @@ public final class Engine {
         if (time < 1000) {
             nps = 0;
         } else {
-            final long total = numberOfMovesMade[0] + numberOfQMovesMade[0];
+            long total = 0;
+            for (int i = 0; i < numberOfMovesMade.length; i++) {
+                total += numberOfMovesMade[i] + numberOfQMovesMade[i];
+            }
             nps = ((1000 * total) / time);
         }
         if (nps < 0) {
             throw new RuntimeException();
         }
     }
-    
-    
-    
+
 
     // todo, testing features
     public static int nonTerminalNodes = 0;
@@ -189,7 +291,7 @@ public final class Engine {
     public static long nonTerminalTime = 0;
     public static long terminalTime = 0;
     public static boolean terminal = false;
-    
+
     public static int iidSuccess = 0, iidFail = 0, iidTotal = 0;
     public static int futilitySuccess = 0, futilityFail = 0, futilityTotal = 0;
     public static int nullSuccess = 0, nullFail = 0, nullTotal = 0;
@@ -199,14 +301,16 @@ public final class Engine {
     public static int lmpTotal = 0;
     public static int aspSuccess = 0, aspFailA = 0, aspFailB = 0, aspTotal = 0;
 
-    
-    
-    private static void search(Chessboard board, int depthLimit) {
+    public static int hashTableReturn = 0;
+
+    static void search(Chessboard board, UCIEntry uciEntry, int whichThread) {
         nonTerminalNodes = 0;
         terminalNodes = 0;
         nonTerminalTime = 0;
         terminalTime = 0;
         terminal = false;
+
+        final boolean masterThread = whichThread == MASTER_THREAD;
 
         int depth = 0;
         int aspirationScore = 0;
@@ -221,14 +325,23 @@ public final class Engine {
 
         int score;
 
+        if (DEBUG) {
+            System.out.println("STARTING MAIN I-D LOOP FOR THREAD " + whichThread + ", " + Thread.currentThread());
+            System.out.println();
+        }
+
         everything:
-        while (depth < depthLimit) {
+        while (depth < MAX_DEPTH) {
             depth++;
 
-            int previousAi = rootMoves[0] & MOVE_MASK_WITHOUT_CHECK;
+            if (DEBUG) {
+                System.out.println("- " + Thread.currentThread() + " is at depth " + depth);
+            }
+
+            int previousAi = rootMoves[whichThread][0] & MOVE_MASK_WITHOUT_CHECK;
             int previousAiScore = 0;
 
-            if (depth == depthLimit) {
+            if (depth == MAX_DEPTH) {
                 nonTerminalTime = System.currentTimeMillis() - startTime;
                 terminal = true;
             }
@@ -236,7 +349,7 @@ public final class Engine {
             while (true) {
 
                 score = principleVariationSearch(board, depth, 0,
-                        alpha, beta, 0);
+                        alpha, beta, 0, whichThread);
 
                 if ((manageTime && !weHavePanicked)
                         && (depth >= 6 && aiMoveScore < previousAiScore - PANIC_SCORE_DELTA)) {
@@ -277,33 +390,56 @@ public final class Engine {
                 }
             }
 
-            if (DEBUG) {
+            if (PRINT_PV && masterThread) {
                 long time = System.currentTimeMillis() - startTime;
-                uciEntry.send(board, rootMoves[0], aiMoveScore, depth, time, numberOfMovesMade[0]);
+                uciEntry.send(board, aiMoveScore, depth, time, numberOfMovesMade[0]);
             }
 
             aspirationScore = score;
         }
 
-        if (depth == depthLimit) {
+        if (depth == MAX_DEPTH) {
             terminalTime = System.currentTimeMillis() - startTime;
         }
 
-        if (DEBUG) {
+        if (PRINT_PV && masterThread) {
             long time = System.currentTimeMillis() - startTime;
-            uciEntry.send(board, rootMoves[0], aiMoveScore, depth, time, numberOfMovesMade[0]);
+            uciEntry.send(board, aiMoveScore, depth, time, numberOfMovesMade[0]);
+        }
+
+
+        long endTime = System.currentTimeMillis();
+
+        long time = endTime - startTime;
+
+        if (time != 0) {
+            if (time < 1000) {
+                nps = 0;
+            } else {
+                calculateNPS();
+            }
+        }
+
+        if (masterThread) {
+            final int bestMove = rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
+            if (sendBestMove) {
+                uciEntry.sendBestMove(bestMove);
+            }
+            searchFinished = true;
         }
     }
+
 
     static int principleVariationSearch(Chessboard board,
                                         int depth, int ply,
                                         int alpha, int beta,
-                                        int nullMoveCounter) {
+                                        int nullMoveCounter,
+                                        int whichThread) {
 
         final int originalAlpha = alpha;
         final int turn = board.turn;
 
-        int[] moves = ply == 0 ? rootMoves : board.generateLegalMoves();
+        int[] moves = ply == 0 ? rootMoves[whichThread] : board.generateLegalMoves();
 
         boolean inCheck = board.inCheckRecorder;
 
@@ -338,6 +474,7 @@ public final class Engine {
         int score;
 
         long previousTableData = retrieveFromTable(board.zobristHash);
+
         if (previousTableData != 0) {
             score = getScore(previousTableData, ply);
             hashMove = getMove(previousTableData);
@@ -346,34 +483,38 @@ public final class Engine {
                 int flag = getFlag(previousTableData);
                 if (flag == EXACT) {
                     if (ply == 0) {
+                        putAIMoveFirst(hashMove, whichThread);
                         if (whichThread == 0) {
-                            putAIMoveFirst(hashMove);
                             aiMoveScore = score;
                         }
                     }
+                    hashTableReturn++;
                     return score;
                 } else if (flag == LOWERBOUND) {
                     if (score >= beta) {
                         if (ply == 0) {
+                            putAIMoveFirst(hashMove, whichThread);
                             if (whichThread == 0) {
-                                putAIMoveFirst(hashMove);
                                 aiMoveScore = score;
                             }
                         }
+                        hashTableReturn++;
                         return score;
                     }
                 } else if (flag == UPPERBOUND) {
                     if (score <= alpha) {
                         if (ply == 0) {
+                            putAIMoveFirst(hashMove, whichThread);
                             if (whichThread == 0) {
-                                putAIMoveFirst(hashMove);
                                 aiMoveScore = score;
                             }
                         }
+                        hashTableReturn++;
                         return score;
                     }
                 }
             }
+
         }
 
         boolean thisIsAPrincipleVariationNode = (beta - alpha != 1);
@@ -416,12 +557,12 @@ public final class Engine {
                 board.makeNullMoveAndFlipTurn();
 
                 nullTotal++;
-                
+
                 int d = Math.max(depth - R - 1, 0);
-                
+
                 int nullScore = -principleVariationSearch(board,
                         d, ply + 1,
-                        -beta, -beta + 1, nullMoveCounter + 1);
+                        -beta, -beta + 1, nullMoveCounter + 1, whichThread);
 
                 board.unMakeNullMoveAndFlipTurn();
 
@@ -430,18 +571,17 @@ public final class Engine {
                         nullScore = beta;
                     }
                     nullSuccess++;
+                    
                     return nullScore;
                 }
                 nullFail++;
             }
-            
-     
         }
 
         if (hashMove == 0
                 && depth >= iidDepth) {
             int d = thisIsAPrincipleVariationNode ? depth - 2 : depth >> 1;
-            principleVariationSearch(board, d, ply, alpha, beta, nullMoveCounter); // todo, allow null move?
+            principleVariationSearch(board, d, ply, alpha, beta, nullMoveCounter, whichThread); // todo, allow null move?
             hashMove = getMove(retrieveFromTable(board.zobristHash));
             if (hashMove == 0) {
                 iidFail++;
@@ -516,7 +656,7 @@ public final class Engine {
                         queenPromotionMove, givesCheckMove, pawnToSix, pawnToSeven, numberOfMovesSearched)) {
 
                     futilityTotal++;
-                    
+
                     if (staticBoardEval == SHORT_MINIMUM) {
                         staticBoardEval = Evaluator.eval(board,
                                 moves);
@@ -537,7 +677,7 @@ public final class Engine {
 
             board.makeMoveAndFlipTurn(move);
 
-            numberOfMovesMade[0]++;
+            numberOfMovesMade[whichThread]++;
             numberOfMovesSearched++;
 
             if (board.isDrawByInsufficientMaterial()
@@ -546,7 +686,6 @@ public final class Engine {
                 score = IN_STALEMATE_SCORE;
             } else {
                 score = alpha + 1;
-
 
                 if (numberOfMovesSearched > 1
                         && depth > 1 && quietMove
@@ -565,19 +704,19 @@ public final class Engine {
 
                     score = -principleVariationSearch(board,
                             d, ply + 1,
-                            -alpha - 1, -alpha, nullMoveCounter);
+                            -alpha - 1, -alpha, nullMoveCounter, whichThread);
                 }
 
                 if (numberOfMovesSearched > 1 && score > alpha) {
                     score = -principleVariationSearch(board,
                             depth - 1, ply + 1,
-                            -alpha - 1, -alpha, 0);
+                            -alpha - 1, -alpha, 0, whichThread);
                 }
 
                 if (score > alpha) {
                     score = -principleVariationSearch(board,
                             depth - 1, ply + 1,
-                            -beta, -alpha, 0);
+                            -beta, -alpha, 0, whichThread);
                 }
             }
 
@@ -593,8 +732,8 @@ public final class Engine {
                 alpha = Math.max(alpha, score);
 
                 if (ply == 0) {
+                    putAIMoveFirst(bestMove, whichThread);
                     if (whichThread == 0) {
-                        putAIMoveFirst(bestMove);
                         aiMoveScore = score;
                     }
                 }
@@ -639,22 +778,24 @@ public final class Engine {
     }
 
 
-    private static void putAIMoveFirst(int aiMove) {
+    private static void putAIMoveFirst(int aiMove, int whichThread) {
         final int aiMoveMask = aiMove & MOVE_MASK_WITHOUT_CHECK;
-        if ((rootMoves[0] & MOVE_MASK_WITHOUT_CHECK) == aiMoveMask) {
+        if ((rootMoves[whichThread][0] & MOVE_MASK_WITHOUT_CHECK) == aiMoveMask) {
             return;
         }
 
-        final int maxMoves = rootMoves.length - 1;
+        final int maxMoves = rootMoves[whichThread].length - 1;
         for (int i = 0; i < maxMoves; i++) {
-            final int rootMove = rootMoves[i] & MOVE_MASK_WITHOUT_CHECK;
+            final int rootMove = rootMoves[whichThread][i] & MOVE_MASK_WITHOUT_CHECK;
             if (rootMove == aiMove || rootMove == aiMoveMask) {
                 Assert.assertTrue(i != 0);
-                System.arraycopy(rootMoves, 0,
-                        rootMoves, 1, i);
-                rootMoves[0] = buildMoveScore(aiMoveMask, hashScore); // todo
+                System.arraycopy(rootMoves[whichThread], 0,
+                        rootMoves[whichThread], 1, i);
+                rootMoves[whichThread][0] = buildMoveScore(aiMoveMask, hashScore); // todo
                 break;
             }
         }
     }
+
+
 }
