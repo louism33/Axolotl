@@ -15,7 +15,7 @@ public class TTPositions {
 
     private Engine engine = new Engine();
     
-    private static final int timeLimit = 100_000;
+    private static final int timeLimit = 10_000;
 
     @BeforeAll
     public static void setup() {

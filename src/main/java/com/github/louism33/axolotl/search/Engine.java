@@ -84,6 +84,7 @@ public final class Engine {
 
     public static void resetBetweenMoves() { // todo
         //don't reset moves if uci will provide them
+        hashTableReturn = 0;
         final int length = rootMoves.length;
         Assert.assertEquals(length, NUMBER_OF_THREADS);
         for (int i = 0; i < length; i++) {
@@ -215,7 +216,7 @@ public final class Engine {
     static Chessboard[] boards;
 
     public static boolean sendBestMove = true;
-    
+
     public void go() {
         searchFixedTime(uciEntry, true);
     }
@@ -294,6 +295,7 @@ public final class Engine {
     public static int lmpTotal = 0;
     public static int aspSuccess = 0, aspFailA = 0, aspFailB = 0, aspTotal = 0;
 
+    public static int hashTableReturn = 0;
 
     static void search(Chessboard board, UCIEntry uciEntry, int whichThread) {
         nonTerminalNodes = 0;
@@ -466,7 +468,7 @@ public final class Engine {
         int score;
 
         long previousTableData = retrieveFromTable(board.zobristHash);
-        
+
         if (previousTableData != 0) {
             score = getScore(previousTableData, ply);
             hashMove = getMove(previousTableData);
@@ -480,6 +482,7 @@ public final class Engine {
                             aiMoveScore = score;
                         }
                     }
+                    hashTableReturn++;
                     return score;
                 } else if (flag == LOWERBOUND) {
                     if (score >= beta) {
@@ -489,6 +492,7 @@ public final class Engine {
                                 aiMoveScore = score;
                             }
                         }
+                        hashTableReturn++;
                         return score;
                     }
                 } else if (flag == UPPERBOUND) {
@@ -499,10 +503,12 @@ public final class Engine {
                                 aiMoveScore = score;
                             }
                         }
+                        hashTableReturn++;
                         return score;
                     }
                 }
             }
+
         }
 
         boolean thisIsAPrincipleVariationNode = (beta - alpha != 1);
@@ -559,12 +565,11 @@ public final class Engine {
                         nullScore = beta;
                     }
                     nullSuccess++;
+                    
                     return nullScore;
                 }
                 nullFail++;
             }
-
-
         }
 
         if (hashMove == 0
@@ -664,29 +669,7 @@ public final class Engine {
                 }
             }
 
-            try {
-                board.makeMoveAndFlipTurn(move);
-            } catch (Exception | Error e) {
-                System.err.println("error in search for thread " + Thread.currentThread());
-                System.err.println(Thread.currentThread());
-                System.err.println(board);
-                System.err.println(board.toFenString());
-                System.out.println("move i am considering");
-                MoveParser.printMove(move);
-                System.out.println("moves i am considering");
-                MoveParser.printMove(moves);
-                System.out.println();
-                System.out.println();
-                System.out.println("now i try to generate moves");
-                System.out.println();
-                System.out.println();
-                MoveParser.printMove(board.generateLegalMoves());
-                System.out.println();
-                System.out.println();
-                System.out.println();
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
+            board.makeMoveAndFlipTurn(move);
 
             numberOfMovesMade[whichThread]++;
             numberOfMovesSearched++;

@@ -214,7 +214,8 @@ public final class TranspositionTable {
     }
 
     static long buildTableEntry(int move, int score, int depth, int flag, int ply, int age) {
-        Assert.assertTrue(move != 0);
+        // move can be 0 if null move?
+//        Assert.assertTrue(move != 0);
         Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
         Assert.assertTrue(flag >= 0 && flag < 4);
 
