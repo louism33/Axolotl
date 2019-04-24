@@ -21,7 +21,7 @@ import static challenges.Utils.contains;
 public class MateTestMTSingle {
 
     private static final int threads = 1;
-    private static final int timeLimit = 5_000;
+    private static final int timeLimit = 1_000;
     private static int successes = 0;
     private static final int targetSuccesses = 145;
     private static Engine engine = new Engine();

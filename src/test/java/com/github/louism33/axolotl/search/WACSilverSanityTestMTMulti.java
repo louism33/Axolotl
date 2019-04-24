@@ -1,7 +1,6 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.util.Util;
-import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -31,7 +30,7 @@ public class WACSilverSanityTestMTMulti {
         Util.reset();
         EngineSpecifications.PRINT_PV = false;
         Engine.setThreads(threads);
-        final String str = "Testing " + splitUpPositions.length + " WAC silver positions. " +
+        final String str = "Testing " + splitUpPositions.length + " WAC silver positions with "+ threads + " threads. " +
                 "Time per position: " + timeLimit + " milliseconds."
                 + "\nIf more than " + targetSuccesses + " are correct, success.";
         System.out.println(str);
@@ -39,7 +38,7 @@ public class WACSilverSanityTestMTMulti {
 
     @AfterClass
     public static void finalSuccessTally() {
-        System.out.println("Successful WAC Silver sanity tests: " + successes + " out of "
+        System.out.println("Successful WAC Silver MT sanity tests: " + successes + " out of "
                 + splitUpPositions.length + ". Success starts at " + targetSuccesses);
         Assert.assertTrue(successes >= targetSuccesses);
     }

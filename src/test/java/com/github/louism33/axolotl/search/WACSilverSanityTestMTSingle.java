@@ -1,7 +1,6 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.util.Util;
-import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
 import org.junit.Assert;

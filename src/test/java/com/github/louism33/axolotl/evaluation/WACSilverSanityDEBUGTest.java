@@ -1,7 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.axolotl.search.EngineSpecifications.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
 
 @RunWith(Parameterized.class)
 public class WACSilverSanityDEBUGTest {

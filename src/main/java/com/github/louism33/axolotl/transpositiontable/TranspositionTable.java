@@ -32,12 +32,17 @@ public final class TranspositionTable {
 
         actualTableSize += bucketSize;
 
+        totalAdds = 0;
         newEntries = 0;
         agedOut = 0;
         totalHits = 0;
         hitButAlreadyGood = 0;
         hitReplace = 0;
         override = 0;
+
+        successfulLookup = 0;
+        failedLookup = 0;
+        totalLookup = 0;
 
         if (keys != null && keys.length == actualTableSize) {
             Arrays.fill(keys, 0);
@@ -73,6 +78,7 @@ public final class TranspositionTable {
 
         actualTableSize += bucketSize;
 
+        totalAdds = 0;
         newEntries = 0;
         agedOut = 0;
         totalHits = 0;
@@ -201,7 +207,7 @@ public final class TranspositionTable {
 
     public static int getIndex(long key) {
         int index = (int) (key >>> shiftAmount);
-
+        
         Assert.assertTrue(index >= 0);
 
         return index;

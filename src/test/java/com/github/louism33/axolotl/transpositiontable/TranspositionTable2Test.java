@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static com.github.louism33.axolotl.search.EngineSpecifications.DEFAULT_TABLE_SIZE_MB;
-import static com.github.louism33.axolotl.search.EngineSpecifications.TABLE_SIZE;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
@@ -71,112 +70,127 @@ public class TranspositionTable2Test {
 
     @Test
     void notAgeOutTest() {
-//        Engine.resetFull();
-//        Chessboard board = new Chessboard();
-//
-//        agedOut = 0;
-//
-//        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, EXACT, 10, 0);
-//        addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, EXACT, 10, 0);
-//
-//        Assert.assertEquals(100, getMove(retrieveFromTable(board.zobristHash)));
-//        Assert.assertEquals(0, agedOut);
-//
-//        // one turn later
-//        addToTableReplaceByDepth(board.zobristHash, 200, 666, 10, EXACT, 10, 1);
-//        Assert.assertEquals(200, getMove(retrieveFromTable(board.zobristHash)));
-//        Assert.assertEquals(0, agedOut);
-//
-//        // entry is aged one
-//        // 2 turns later
-//        addToTableReplaceByDepth(board.zobristHash, 300, 666, 10, EXACT, 10, 1 + 2);
-//        Assert.assertEquals(300, getMove(retrieveFromTable(board.zobristHash)));
-//        Assert.assertEquals(0, agedOut);
-//
-//        agedOut = 0;
+        Engine.resetFull();
+        Chessboard board = new Chessboard();
+
+        agedOut = 0;
+
+        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, EXACT, 10, 0);
+        addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, EXACT, 10, 0);
+
+        Assert.assertEquals(100, getMove(retrieveFromTable(board.zobristHash)));
+        Assert.assertEquals(0, agedOut);
+
+        // one turn later
+        addToTableReplaceByDepth(board.zobristHash, 200, 666, 10, EXACT, 10, 1);
+        Assert.assertEquals(200, getMove(retrieveFromTable(board.zobristHash)));
+        Assert.assertEquals(0, agedOut);
+
+        // entry is aged one
+        // 2 turns later
+        addToTableReplaceByDepth(board.zobristHash, 300, 666, 10, EXACT, 10, 1 + 2);
+        Assert.assertEquals(300, getMove(retrieveFromTable(board.zobristHash)));
+        Assert.assertEquals(0, agedOut);
+
+        agedOut = 0;
         Engine.resetFull();
 
     }
 
+
+    @Test
+    void dummyTest() {
+        Engine.resetFull();
+        TranspositionTable.initTableMegaByte(DEFAULT_TABLE_SIZE_MB);
+        final long basicKey = 1L << shiftAmount;
+
+        addToTableReplaceByDepth(basicKey, 1, 666, 10, UPPERBOUND, 10, 1);
+
+        Assert.assertTrue(retrieveFromTable(basicKey) != 0);
+        Engine.resetFull();
+    }
+    
     @Test
     void ageOutTest() {
         Engine.resetFull();
-        Chessboard board = new Chessboard();
         TranspositionTable.initTableMegaByte(DEFAULT_TABLE_SIZE_MB);
-//        System.out.println(TABLE_SIZE);
 
+        agedOut = 0;
 
-//        TranspositionTable.initTable(TABLE_SIZE);
-//        
-//        agedOut = 0;
-//
-//        int initAge = 0;
-//        addToTableReplaceByDepth(64 << shiftAmount, 1, 666, 10, UPPERBOUND, 10, initAge);
-//        addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, UPPERBOUND, 10, (initAge + 3+acceptableAges) % ageModulo);
+        int initAge = 0;
+        final long basicKey = 1L << shiftAmount;
+        
+        final int firstMove = 1;
 
-//        Assert.assertEquals(100, getMove(retrieveFromTable(board.zobristHash)));
-//
-//        System.out.println(agedOut);
-//
-//        System.out.println(TranspositionTableStressTest.countRealEntries(keys, false));
-//        System.out.println(TranspositionTableStressTest.countRealEntries(entries, false));
+        addToTableReplaceByDepth(basicKey, firstMove, 666, 10, UPPERBOUND, 10, initAge);
+        
+        Assert.assertEquals(firstMove, getMove(retrieveFromTable(basicKey)));
+        Assert.assertEquals(1, TranspositionTableStressTest.countRealEntries(keys, false));
+        Assert.assertEquals(1, TranspositionTableStressTest.countRealEntries(entries, false));
+        Assert.assertEquals(0, agedOut);
 
+        final int secondMove = 2;
 
-//        Assert.assertEquals(1, agedOut);
-//
-//        // reset
-//        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, UPPERBOUND, 10, initAge);
-//        Assert.assertEquals(1, getMove(retrieveFromTable(board.zobristHash)));
-//        Assert.assertEquals(2, agedOut);
-//
-//
-//        addToTableReplaceByDepth(board.zobristHash, 200, 666, 10, UPPERBOUND, 10, (initAge + acceptableAges + 1) % ageModulo);
-//
-//        Assert.assertEquals(200, getMove(retrieveFromTable(board.zobristHash)));
-//        Assert.assertEquals(3, agedOut);
-//
-//        agedOut = 0;
+        // with +1 we have a different key, which maps to the same entry (only highest bits are considered to get index, due to shift)
+        final long basicKeyPlusOne = basicKey + 1;
+        addToTableReplaceByDepth(basicKeyPlusOne, secondMove, 666, 10, UPPERBOUND, 10, (initAge + 3+acceptableAges) % ageModulo);
+
+        Assert.assertEquals(1, agedOut);
+        Assert.assertEquals(1, TranspositionTableStressTest.countRealEntries(keys, false));
+        Assert.assertEquals(1, TranspositionTableStressTest.countRealEntries(entries, false));
+        Assert.assertEquals(secondMove, getMove(retrieveFromTable(basicKeyPlusOne)));
+        Assert.assertEquals(0, getMove(retrieveFromTable(basicKey)));
+        Assert.assertEquals(0, retrieveFromTable(basicKey));
+
         Engine.resetFull();
     }
 
 
     @Test
     void ageOut2Test() {
+
         Engine.resetFull();
-        Chessboard board = new Chessboard();
+        TranspositionTable.initTableMegaByte(DEFAULT_TABLE_SIZE_MB);
 
         agedOut = 0;
 
         int initAge = 0;
-        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, UPPERBOUND, 10, initAge);
-        for (int i = 0; i < ageModulo; i++) {
-            addToTableReplaceByDepth(board.zobristHash, 100, 666, 10, UPPERBOUND, 10, (initAge + i) % ageModulo);
+        final long basicKey = 1L << shiftAmount;
+
+        final int firstMove = 1;
+
+        addToTableReplaceByDepth(basicKey, firstMove, 666, 10, UPPERBOUND, 10, initAge);
+
+        Assert.assertEquals(firstMove, getMove(retrieveFromTable(basicKey)));
+        Assert.assertEquals(1, TranspositionTableStressTest.countRealEntries(keys, false));
+        Assert.assertEquals(1, TranspositionTableStressTest.countRealEntries(entries, false));
+        Assert.assertEquals(0, agedOut);
+
+        int maxEntries = 100;
+
+        for (int i = 1; i <= maxEntries; i++) {
+            final int move = i + 1000;
+            initAge = (initAge + 3 + acceptableAges) % ageModulo;
+            // with +1 we have a different key, which maps to the same entry (only highest bits are considered to get index, due to shift)
+            final long basicKeyPlusI = basicKey + i;
+            addToTableReplaceByDepth(basicKeyPlusI, move, 666, 10, UPPERBOUND, 10, initAge);
+
+            Assert.assertEquals(i, agedOut);
+            Assert.assertEquals(1, TranspositionTableStressTest.countRealEntries(keys, false));
+            Assert.assertEquals(1, TranspositionTableStressTest.countRealEntries(entries, false));
+            Assert.assertEquals(move, getMove(retrieveFromTable(basicKeyPlusI)));
+            Assert.assertEquals(0, getMove(retrieveFromTable(basicKey)));
+            Assert.assertEquals(0, retrieveFromTable(basicKey));
         }
 
-//        Assert.assertEquals(100, getMove(retrieveFromTable(board.zobristHash)));
+        Assert.assertEquals(maxEntries, agedOut);
+        Assert.assertEquals(1, TranspositionTableStressTest.countRealEntries(keys, false));
+        Assert.assertEquals(1, TranspositionTableStressTest.countRealEntries(entries, false));
+        Assert.assertEquals(0, getMove(retrieveFromTable(basicKey)));
+        Assert.assertEquals(0, retrieveFromTable(basicKey));
 
-        System.out.println(agedOut);
-
-        System.out.println(TranspositionTableStressTest.countRealEntries(keys, false));
-
-        System.out.println(TranspositionTableStressTest.countRealEntries(entries, false));
-
-
-//        Assert.assertEquals(1, agedOut);
-//
-//        // reset
-//        addToTableReplaceByDepth(board.zobristHash, 1, 666, 10, UPPERBOUND, 10, initAge);
-//        Assert.assertEquals(1, getMove(retrieveFromTable(board.zobristHash)));
-//        Assert.assertEquals(2, agedOut);
-//
-//
-//        addToTableReplaceByDepth(board.zobristHash, 200, 666, 10, UPPERBOUND, 10, (initAge + acceptableAges + 1) % ageModulo);
-//
-//        Assert.assertEquals(200, getMove(retrieveFromTable(board.zobristHash)));
-//        Assert.assertEquals(3, agedOut);
-//
-//        agedOut = 0;
         Engine.resetFull();
+        
     }
 
 

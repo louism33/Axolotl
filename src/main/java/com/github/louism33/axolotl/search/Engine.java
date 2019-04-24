@@ -431,9 +431,6 @@ public final class Engine {
         final int originalAlpha = alpha;
         final int turn = board.turn;
 
-        if (whichThread != 0) {
-//            MoveParser.printMove(rootMoves[whichThread]);
-        }
         int[] moves = ply == 0 ? rootMoves[whichThread] : board.generateLegalMoves();
 
         boolean inCheck = board.inCheckRecorder;
@@ -469,6 +466,7 @@ public final class Engine {
         int score;
 
         long previousTableData = retrieveFromTable(board.zobristHash);
+        
         if (previousTableData != 0) {
             score = getScore(previousTableData, ply);
             hashMove = getMove(previousTableData);
@@ -477,8 +475,8 @@ public final class Engine {
                 int flag = getFlag(previousTableData);
                 if (flag == EXACT) {
                     if (ply == 0) {
+                        putAIMoveFirst(hashMove, whichThread);
                         if (whichThread == 0) {
-                            putAIMoveFirst(hashMove, whichThread);
                             aiMoveScore = score;
                         }
                     }
@@ -486,8 +484,8 @@ public final class Engine {
                 } else if (flag == LOWERBOUND) {
                     if (score >= beta) {
                         if (ply == 0) {
+                            putAIMoveFirst(hashMove, whichThread);
                             if (whichThread == 0) {
-                                putAIMoveFirst(hashMove, whichThread);
                                 aiMoveScore = score;
                             }
                         }
@@ -496,8 +494,8 @@ public final class Engine {
                 } else if (flag == UPPERBOUND) {
                     if (score <= alpha) {
                         if (ply == 0) {
+                            putAIMoveFirst(hashMove, whichThread);
                             if (whichThread == 0) {
-                                putAIMoveFirst(hashMove, whichThread);
                                 aiMoveScore = score;
                             }
                         }
@@ -745,8 +743,8 @@ public final class Engine {
                 alpha = Math.max(alpha, score);
 
                 if (ply == 0) {
+                    putAIMoveFirst(bestMove, whichThread);
                     if (whichThread == 0) {
-                        putAIMoveFirst(bestMove, whichThread);
                         aiMoveScore = score;
                     }
                 }

@@ -3,8 +3,11 @@ package com.github.louism33.axolotl.transpositiontable;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
@@ -14,13 +17,16 @@ public class TranspositionTableStressTest {
 
     static final int depth = 12;
 
-    @BeforeAll
-    static void setup() {
+    @BeforeEach
+    public void setup() {
+        PRINT_PV = false;
         Util.reset();
+        
     }
 
     @AfterAll
-    static void reset() {
+    public static void reset() {
+        PRINT_PV = false;
         Util.reset();
     }
 
@@ -49,12 +55,41 @@ public class TranspositionTableStressTest {
         stressTestToDepthTest(d, new Chessboard(), DEFAULT_TABLE_SIZE_MB);
     }
 
+    
+    
+    @Test
+    void testDefaultMT() {
+        System.out.println("default MT: ");
+        stressTestToDepthTest(16, new Chessboard(), DEFAULT_TABLE_SIZE_MB, 4);
+    }
+
+
+    @Test
+    void testFine70Single() {
+        System.out.println("fine 70 tt stats: ");
+        stressTestToDepthTest(32,
+                new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -"), DEFAULT_TABLE_SIZE_MB);
+    }
+
+    @Test
+    void testFine70MT() {
+        System.out.println("fine 70 tt stats: ");
+        stressTestToDepthTest(32, 
+                new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -"), DEFAULT_TABLE_SIZE_MB, 4);
+    }
+    
     private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize) {
+        stressTestToDepthTest(depth, board, hashSize, 1);
+    }
+    
+    private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize, int numThreads) {
         TranspositionTable.initTableMegaByte(hashSize);
         Engine engine = new Engine();
+        Engine.setThreads(numThreads);
         engine.receiveSearchSpecs(board, depth);
         engine.simpleSearch();
 
+        System.out.println();
         System.out.println("total adds :           " + totalAdds);
         System.out.println("new entries:           " + newEntries);
         System.out.println("aged out entries:      " + agedOut);
@@ -62,7 +97,14 @@ public class TranspositionTableStressTest {
         System.out.println("hits but already good: " + hitButAlreadyGood);
         System.out.println("hits to replace:       " + hitReplace);
         System.out.println("override:              " + override);
+        System.out.println();
         System.out.println("successfulLookup:      " + successfulLookup);
+        System.out.println("failed Lookup:         " + failedLookup);
+        System.out.println("total Lookup:          " + totalLookup);
+        System.out.println();
+        if (numThreads == 1) {
+            Assert.assertEquals(totalLookup - successfulLookup, failedLookup);
+        }
         System.out.println("ratio succ total       " + ((double) successfulLookup / (double) totalLookup));
         System.out.println("ratio miss total       " + ((double) failedLookup / (double) totalLookup));
         System.out.println("real keys :            " + countRealEntries(keys, false));
