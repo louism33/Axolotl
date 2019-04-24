@@ -14,7 +14,7 @@ You are free to use Axolotl however you see fit. If you have any questions, simp
 Louis
  
  
- PS: also available as a maven import
+Also available as a maven import
  
  ```
 
