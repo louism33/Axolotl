@@ -15,6 +15,9 @@ tuning/
 src/**/tuning/
 src/**/standalone/
 
+release.properties
+pom.xml.releaseBackup
+
 # Package Files #
 *.war
 *.nar
