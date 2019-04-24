@@ -138,32 +138,6 @@ public final class Engine {
         return (EngineSpecifications.ALLOW_TIME_LIMIT && outOfTime(startTime, timeLimiMillis, manageTime));
     }
 
-//    public static int searchMyTime(Chessboard chessboard, long maxMyTime, long maxEnemyTime, long increment, Integer movesToGo) {
-//        EngineSpecifications.ALLOW_TIME_LIMIT = true;
-//        manageTime = true;
-//        masterBoard = chessboard;
-//        timeLimitMillis = allocateTime(maxMyTime, maxEnemyTime, increment, movesToGo, masterBoard.fullMoveCounter);
-//
-//        return searchFixedTime(new UCIEntry(), 0);
-//    }
-//
-//    public static final int searchFixedDepth(Chessboard chessboard, int depth) {
-//        EngineSpecifications.ALLOW_TIME_LIMIT = false;
-//        masterBoard = chessboard;
-//        manageTime = false;
-//        timeLimitMillis = absoluteMaxTimeLimit = 0;
-//        MAX_DEPTH = depth;
-//        return searchFixedTime(new UCIEntry(), 0);
-//    }
-//
-//    public static final int searchFixedTime(final Chessboard chessboard, final long maxTime) {
-//        EngineSpecifications.ALLOW_TIME_LIMIT = true;
-//        masterBoard = chessboard;
-//        manageTime = false;
-//        timeLimitMillis = absoluteMaxTimeLimit = maxTime;
-//        return searchFixedTime(new UCIEntry(), 0);
-//    }
-
     public final void receiveSearchSpecs(final Chessboard chessboard, final int fixedDepth) {
         Chessboard[] chessboards = new Chessboard[NUMBER_OF_THREADS];
         chessboards[MASTER_THREAD] = chessboard;
@@ -240,6 +214,8 @@ public final class Engine {
     static Chessboard masterBoard;
     static Chessboard[] boards;
 
+    public static boolean sendBestMove = true;
+    
     public void go() {
         searchFixedTime(uciEntry, true);
     }
@@ -283,49 +259,6 @@ public final class Engine {
         }
     }
 
-    public static final int searchFixedTime(UCIEntry uciEntry, int whichThread) {
-        if (true) {
-            return 666;
-        }
-        startTime = System.currentTimeMillis();
-
-        //UCI can provide root moves if doing searchmoves
-        if (rootMoves == null && computeMoves) {
-            rootMoves[whichThread] = masterBoard.generateLegalMoves();
-        }
-
-        int numberOfRealMoves = rootMoves[whichThread][rootMoves.length - 1];
-        if (numberOfRealMoves == 0) {
-            return 0;
-        }
-
-        if (numberOfRealMoves == 1 && quitOnSingleMove) {
-            return rootMoves[whichThread][0] & MOVE_MASK_WITHOUT_CHECK;
-        }
-
-        scoreMovesAtRoot(rootMoves[whichThread], numberOfRealMoves, masterBoard);
-        Ints.sortDescending(rootMoves[whichThread], 0, numberOfRealMoves);
-
-        search(masterBoard, uciEntry, whichThread);
-
-        long endTime = System.currentTimeMillis();
-
-        long time = endTime - startTime;
-
-        if (time != 0) {
-            if (time < 1000) {
-                nps = 0;
-            } else {
-                calculateNPS();
-            }
-        }
-
-        final int bestMove = rootMoves[whichThread][0] & MOVE_MASK_WITHOUT_CHECK;
-        if (uciEntry != null) {
-            uciEntry.sendBestMove(bestMove);
-        }
-        return bestMove;
-    }
 
     public static void calculateNPS() {
         final long l = System.currentTimeMillis();
@@ -481,7 +414,9 @@ public final class Engine {
 
         if (masterThread) {
             final int bestMove = rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
-            uciEntry.sendBestMove(bestMove);
+            if (sendBestMove) {
+                uciEntry.sendBestMove(bestMove);
+            }
             searchFinished = true;
         }
     }

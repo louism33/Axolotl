@@ -124,7 +124,7 @@ public final class PawnTranspositionTable {
         tableReady = true;
     }
 
-    private static void addToTableReplaceArbitrarily(long key, long[] pawnData, int score) {
+    private static void addToTableReplaceArbitrarily(long key, long[] pawnData) {
         Assert.assertTrue(tableReady);
 
         int index = getIndex(key);
@@ -188,7 +188,7 @@ public final class PawnTranspositionTable {
 
         returnArray = PawnEval.calculatePawnData(board, percentOfStartgame);
         int pawnFeatureScore = (int) returnArray[SCORE];
-        PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, returnArray, pawnFeatureScore);
+        PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, returnArray);
 
         return returnArray;
     }

@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
+import static com.github.louism33.axolotl.search.Engine.sendBestMove;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.chesscore.BoardConstants.WHITE;
@@ -206,7 +207,6 @@ public final class UCIEntry {
 
                         break;
                     } else if (token.equalsIgnoreCase("go")) {
-
                         String[] list = (tokens[1]).split("\\s");
                         final int length = list.length;
 
@@ -321,6 +321,7 @@ public final class UCIEntry {
                             output.println(board);
                         }
 
+                        sendBestMove = true;
                         engine.go();
 
                         break;

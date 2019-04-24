@@ -1,7 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
@@ -15,17 +14,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.axolotl.search.EngineSpecifications.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
 
 @RunWith(Parameterized.class)
-public class WACSilverSanityDEBUGTest {
+public class WACSilverSanityDEBUGTestMT {
 
     private static final int timeLimit = 1_000;
-    private Engine engine = new Engine();
+    private static final int threads = 2;
+    private static Engine engine = new Engine();
 
     @BeforeClass
     public static void setup() {
         Util.reset();
+        Engine.setThreads(threads);
         MASTER_DEBUG = true;
         final String str = "Testing " + splitUpPositions.length + " WAC silver positions with God Debug on. Don't crash!. ";
         System.out.println(str);
@@ -55,7 +56,7 @@ public class WACSilverSanityDEBUGTest {
 
     private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
-    public WACSilverSanityDEBUGTest(Object edp, Object name) {
+    public WACSilverSanityDEBUGTestMT(Object edp, Object name) {
         EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
     }
 

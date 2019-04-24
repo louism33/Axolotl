@@ -14,7 +14,7 @@ import static com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant.m
 import static com.github.louism33.axolotl.evaluation.Init.kingSafetyArea;
 import static com.github.louism33.axolotl.evaluation.PassedPawns.evalPassedPawnsByTurn;
 import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.*;
-import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_EVAL;
+import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.BitOperations.fileForward;
 import static com.github.louism33.chesscore.BitOperations.*;
 import static com.github.louism33.chesscore.BoardConstants.*;
@@ -82,6 +82,13 @@ public final class Evaluator {
 
         long[] pawnData = getPawnData(board, board.zobristPawnHash, percentOfStartgame);
 
+        if (MASTER_DEBUG && NUMBER_OF_THREADS == 1) {
+            // this fails if pawn data is shared between threads
+            Assert.assertArrayEquals(pawnData, getPawnData(board, board.zobristPawnHash, percentOfStartgame));
+            Assert.assertArrayEquals(pawnData, PawnEval.calculatePawnData(board, percentOfStartgame));
+        }
+        
+        
         score += Score.getScore((int) pawnData[SCORE], percentOfStartgame);
 
         // todo colour has insuf mat to mate

@@ -75,7 +75,6 @@ public class WACSilverSanityTestMTSingle {
 
         engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
         final int move = engine.simpleSearch();
-        MoveParser.printMove(move);
 
         if (contains(winningMoves, move) && !contains(losingMoves, move)) {
             System.out.println("success");

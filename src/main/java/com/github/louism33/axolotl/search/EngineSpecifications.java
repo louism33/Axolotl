@@ -5,6 +5,7 @@ import com.github.louism33.chesscore.Chessboard;
 public final class EngineSpecifications {
 
     public static boolean SPSA = false;
+    public static boolean MASTER_DEBUG = false;
 
     public static int NUMBER_OF_THREADS = 1;
     public static int DEFAULT_THREAD_NUMBER = 1;
