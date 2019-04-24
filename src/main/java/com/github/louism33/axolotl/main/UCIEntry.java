@@ -192,12 +192,10 @@ public final class UCIEntry {
                         }
 
 
-                        if (NUMBER_OF_THREADS != DEFAULT_THREAD_NUMBER) {
-                            Assert.assertNotNull(boards);
-                            Assert.assertEquals(boards.length, NUMBER_OF_THREADS);
-                            for (int i = 0; i < boards.length; i++) { // todo, cheaper to increment all, or clone all?
-                                boards[i] = new Chessboard(board);
-                            }
+                        Assert.assertNotNull(boards);
+                        Assert.assertEquals(boards.length, NUMBER_OF_THREADS);
+                        for (int i = 0; i < boards.length; i++) { // todo, cheaper to increment all, or clone all?
+                            boards[i] = new Chessboard(board);
                         }
 
                         if (DEBUG) {
