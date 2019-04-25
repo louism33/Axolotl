@@ -6,6 +6,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Set;
+
 import static com.github.louism33.axolotl.search.Engine.sendBestMove;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
@@ -26,6 +28,8 @@ public class BasicMTSearch {
     @AfterClass
     public static void tearDown() {
         PRINT_PV = false;
+        DEBUG = false;
+        MASTER_DEBUG = false;
     }
 
     public void nps() {
@@ -48,6 +52,7 @@ public class BasicMTSearch {
     public void testSingleSet() {
         System.out.println("Testing simple search with one thread");
         final Chessboard board = new Chessboard();
+        MASTER_DEBUG = true;
         Engine.setThreads(1);
         engine.receiveSearchSpecs(board, true, timeLimit);
         engine.simpleSearch();
@@ -59,7 +64,6 @@ public class BasicMTSearch {
         System.out.println("Testing simple search with two threads");
         final Chessboard board = new Chessboard();
         int threads = 2;
-
         Engine.setThreads(threads);
         engine.receiveSearchSpecs(board, true, timeLimit);
         engine.simpleSearch();
@@ -71,7 +75,8 @@ public class BasicMTSearch {
         System.out.println("Testing simple search with " + MAX_THREADS + " threads");
         final Chessboard board = new Chessboard();
         Engine.setThreads(MAX_THREADS);
-
+//        DEBUG = true;
+        MASTER_DEBUG = true;
         engine.receiveSearchSpecs(board, true, timeLimit);
         engine.simpleSearch();
         nps();

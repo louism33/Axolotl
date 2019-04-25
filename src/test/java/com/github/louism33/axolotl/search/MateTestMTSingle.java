@@ -32,6 +32,8 @@ public class MateTestMTSingle {
         EngineSpecifications.PRINT_PV = false;
         Engine.setThreads(threads);
 
+        EngineSpecifications.MASTER_DEBUG = true;
+
         final String str = "Testing " + checkmatePositions.length + " Mate positions MT. " +
                 "Time per position: " + timeLimit + " milliseconds."
                 + "\nIf more than " + targetSuccesses + " are correct, success.";
@@ -43,6 +45,7 @@ public class MateTestMTSingle {
         System.out.println("Successful Mate MT sanity tests: " + successes + " out of " + checkmatePositions.length
                 + ". Anything above " + targetSuccesses + " can be thought of as ok.");
         EngineSpecifications.PRINT_PV = false;
+        EngineSpecifications.MASTER_DEBUG = false;
         Assert.assertTrue(successes > targetSuccesses);
     }
 

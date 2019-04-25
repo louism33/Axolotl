@@ -8,6 +8,8 @@ public class Util {
 
     public static void reset() {
         EngineSpecifications.PRINT_PV = false;
+        EngineSpecifications.MASTER_DEBUG = false;
+        EngineSpecifications.DEBUG = false;
         Engine.resetFull();
     }
 

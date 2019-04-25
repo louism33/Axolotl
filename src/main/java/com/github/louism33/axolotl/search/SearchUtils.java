@@ -9,6 +9,10 @@ import static com.github.louism33.chesscore.BoardConstants.*;
 
 public final class SearchUtils {
 
+    // idea from Ethereal
+    public static final int[] skipLookup = {2, 2, 2, 4, 4, 3, 2, 5}; // thread t will skip depth skipLookup[t] ...
+    public static final int[] skipBy =     {1, 1, 2, 2, 3, 2, 1, 3}; // ... by amount skipBy[t]
+
     public static final int PANIC_SCORE_DELTA = 100;
     static final int iidDepth = 5;
 

@@ -3,6 +3,7 @@ package challenges;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -14,24 +15,38 @@ import java.util.List;
 
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.EPDObject;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseEDPPosition;
-
+import static challenges.Utils.contains;
 @RunWith(Parameterized.class)
 public class WACSilverTest {
 
-    private static final int timeLimit = 5_000;
+    private static final int timeLimit = 2_000;
     private static Engine engine = new Engine();
+    private static final int totalThreads = 4;
+    
+    @BeforeClass
+    public static void setup() {
+        Engine.setThreads(totalThreads);
+    }
 
+    // 1 sec
+//    private static int[] difficultIndexes = 
+//            {16,18,43,53,56,63,110,121,124,134,140,144,147,156,162,167,174,178,190,195,199};
+
+    // 2 sec
+    private static int[] difficultIndexes =
+            {16,18,43,53,56,63,110,121,124,134,140,144,147,156,162,167,174,178,190,195,199};
+    
+    
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
         EngineSpecifications.PRINT_PV = true;
 
-        int stopAt = 10;
-
         for (int i = 0; i < splitUpPositions.length; i++) {
-            if (i == stopAt) {
-//                break;
+
+            if (!contains(difficultIndexes, i)) {
+                continue;
             }
 
             String splitUpWAC = splitUpPositions[i];
