@@ -233,13 +233,13 @@ public final class Engine {
                 break;
             }
         }
-        for (int i = 1; i < NUMBER_OF_THREADS; i++) {
-            try {
-                threads[i].join();
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            }
-        }
+//        for (int i = 1; i < NUMBER_OF_THREADS; i++) {
+//            try {
+//                threads[i].join();
+//            } catch (InterruptedException e1) {
+//                e1.printStackTrace();
+//            }
+//        }
         return getAiMove();
     }
 

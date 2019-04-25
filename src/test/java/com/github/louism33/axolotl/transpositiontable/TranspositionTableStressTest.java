@@ -19,13 +19,11 @@ public class TranspositionTableStressTest {
     
     @BeforeEach
     public void setup() {
-        PRINT_PV = false;
         Util.reset();
     }
 
     @AfterAll
     public static void reset() {
-        PRINT_PV = false;
         Util.reset();
     }
 
@@ -59,7 +57,8 @@ public class TranspositionTableStressTest {
     @Test
     void testDefaultMT() {
         System.out.println("default MT: ");
-        stressTestToDepthTest(16, new Chessboard(), DEFAULT_TABLE_SIZE_MB, 4);
+        PRINT_PV = true;
+        stressTestToDepthTest(12, new Chessboard(), DEFAULT_TABLE_SIZE_MB, 4);
     }
 
 

@@ -178,6 +178,7 @@ public final class UCIEntry {
                             }
 
                         }
+                        // position fen rnbqkbnr/pp1ppp1p/6p1/2p5/1P6/1QP5/P2PPPPP/RNB1KBNR b KQkq - 0 1;
                         // position fen 3rk2r/1pR2p2/b2BpPp1/p2p4/8/1P6/P4PPP/4R1K1 w - - 1 0 moves h2h3
                         // position fen 3rk2r/1pR2p2/b2BpPp1/p2p4/8/1P6/P4PPP/4R1K1 w - - 1 0 moves h2h3 h8h7 a2a3 d8c8
                         else if (list[0].equalsIgnoreCase("fen")) {
@@ -192,7 +193,8 @@ public final class UCIEntry {
                                     }
                                     fen.append(str).append(" ");
                                 }
-                                board = new Chessboard(fen.toString());
+                                
+                                board = new Chessboard(fen.toString().trim());
                                 fenSet = true;
                                 lastMoveMade = 0;
                             }
