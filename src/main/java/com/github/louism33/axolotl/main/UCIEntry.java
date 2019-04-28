@@ -74,8 +74,47 @@ public final class UCIEntry {
                     if (token.equalsIgnoreCase("uci")) {
                         output.println("id name axolotl_v1.7");
                         output.println("id author Louis James Mackenzie-Smith");
+                        output.println();
                         output.println("option name Hash type spin default 128 min 1 max 1024");
                         output.println("option name Threads type spin default 1 min 1 max " + MAX_THREADS);
+                        
+                        if (SPSA) {
+                            // futility
+                            output.println("option name futility1 type spin default " + SearchUtils.futilityMargin[1] 
+                                    + " min " + (SearchUtils.futilityMargin[1] / 2) + " max " +  (SearchUtils.futilityMargin[1] * 2));
+                            output.println("option name futility2 type spin default " + SearchUtils.futilityMargin[2]
+                                    + " min " + (SearchUtils.futilityMargin[2] / 2) + " max " +  (SearchUtils.futilityMargin[2] * 2));
+                            output.println("option name futility3 type spin default " + SearchUtils.futilityMargin[3]
+                                    + " min " + (SearchUtils.futilityMargin[3] / 2) + " max " +  (SearchUtils.futilityMargin[3] * 2));
+                            output.println("option name futility4 type spin default " + SearchUtils.futilityMargin[4]
+                                    + " min " + (SearchUtils.futilityMargin[4] / 2) + " max " +  (SearchUtils.futilityMargin[4] * 2));
+                            output.println("option name futility5 type spin default " + SearchUtils.futilityMargin[5]
+                                    + " min " + (SearchUtils.futilityMargin[5] / 2) + " max " +  (SearchUtils.futilityMargin[5] * 2));
+                            
+                            //alpha razor
+                            output.println("option name alphaRazor1 type spin default " + SearchUtils.alphaRazorMargin[1]
+                                    + " min " + (SearchUtils.alphaRazorMargin[1] / 2) + " max " +  (SearchUtils.alphaRazorMargin[1] * 2));
+                            output.println("option name alphaRazor2 type spin default " + SearchUtils.alphaRazorMargin[2]
+                                    + " min " + (SearchUtils.alphaRazorMargin[2] / 2) + " max " +  (SearchUtils.alphaRazorMargin[2] * 2));
+                            output.println("option name alphaRazor3 type spin default " + SearchUtils.alphaRazorMargin[3]
+                                    + " min " + (SearchUtils.alphaRazorMargin[3] / 2) + " max " +  (SearchUtils.alphaRazorMargin[3] * 2));
+                            
+                            // beta razor
+                            output.println("option name betaRazor1 type spin default " + SearchUtils.betaRazorMargin[1]
+                                    + " min " + (SearchUtils.betaRazorMargin[1] / 2) + " max " +  (SearchUtils.betaRazorMargin[1] * 2));
+                            output.println("option name betaRazor2 type spin default " + SearchUtils.betaRazorMargin[2]
+                                    + " min " + (SearchUtils.betaRazorMargin[2] / 2) + " max " +  (SearchUtils.betaRazorMargin[2] * 2));
+                            output.println("option name betaRazor3 type spin default " + SearchUtils.betaRazorMargin[3]
+                                    + " min " + (SearchUtils.betaRazorMargin[3] / 2) + " max " +  (SearchUtils.betaRazorMargin[3] * 2));
+                            output.println("option name betaRazor4 type spin default " + SearchUtils.betaRazorMargin[4]
+                                    + " min " + (SearchUtils.betaRazorMargin[4] / 2) + " max " +  (SearchUtils.betaRazorMargin[4] * 2));
+                            output.println("option name betaRazor5 type spin default " + SearchUtils.betaRazorMargin[5]
+                                    + " min " + (SearchUtils.betaRazorMargin[5] / 2) + " max " +  (SearchUtils.betaRazorMargin[5] * 2));
+
+                            output.println("option name betaRazor6 type spin default " + SearchUtils.betaRazorMargin[6]
+                                    + " min " + (SearchUtils.betaRazorMargin[6] / 2) + " max " +  (SearchUtils.betaRazorMargin[6] * 2));
+                        }
+                        
                         output.println("uciok");
                         protocolReady = true;
                     } else if (token.equalsIgnoreCase("debug")) {
@@ -110,11 +149,11 @@ public final class UCIEntry {
                             } catch (Exception | Error e) {
                                 output.println("could not read hash value, sticking to " + DEFAULT_TABLE_SIZE_MB + "mb");
                             }
-                            
+
                             if (DEBUG) {
                                 output.println("received option Hash with parsed value " + size);
                             }
-                            
+
                             if (size >= MIN_TABLE_SIZE_MB && size <= MAX_TABLE_SIZE_MB) {
                                 TABLE_SIZE_MB = size;
                             } else if (size > MAX_TABLE_SIZE_MB) {
@@ -134,7 +173,7 @@ public final class UCIEntry {
                             } catch (Exception | Error e) {
                                 output.println("could not read threads value, sticking to " + DEFAULT_THREAD_NUMBER + "mb");
                             }
-                            
+
                             if (DEBUG) {
                                 output.println("received option Hash with parsed value " + number);
                             }
@@ -142,10 +181,41 @@ public final class UCIEntry {
                             Engine.setThreads(number);
                             boards = new Chessboard[NUMBER_OF_THREADS];
 
-                        } else if (SPSA && nameToken.equalsIgnoreCase("futilityOne")) {
-                            SearchUtils.futilityMargin[1] = Integer.parseInt(valueToken);
-                        }
+                        } else if (SPSA) {
+                            if (nameToken.equalsIgnoreCase("futility1")) {
+                                SearchUtils.futilityMargin[1] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("futility2")) {
+                                SearchUtils.futilityMargin[2] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("futility3")) {
+                                SearchUtils.futilityMargin[3] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("futility4")) {
+                                SearchUtils.futilityMargin[4] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("futility5")) {
+                                SearchUtils.futilityMargin[5] = Integer.parseInt(valueToken);
+                            }
 
+                            else if (nameToken.equalsIgnoreCase("alphaRazor1")) {
+                                SearchUtils.alphaRazorMargin[1] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("alphaRazor2")) {
+                                SearchUtils.alphaRazorMargin[2] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("alphaRazor3")) {
+                                SearchUtils.alphaRazorMargin[3] = Integer.parseInt(valueToken);
+                            } 
+
+                            else if (nameToken.equalsIgnoreCase("betaRazor1")) {
+                                SearchUtils.betaRazorMargin[1] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("betaRazor2")) {
+                                SearchUtils.betaRazorMargin[2] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("betaRazor3")) {
+                                SearchUtils.betaRazorMargin[3] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("betaRazor4")) {
+                                SearchUtils.betaRazorMargin[4] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("betaRazor5")) {
+                                SearchUtils.betaRazorMargin[5] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("betaRazor6")) {
+                                SearchUtils.betaRazorMargin[6] = Integer.parseInt(valueToken);
+                            }
+                        } 
                         break;
                     } else if (token.equalsIgnoreCase("register")) {
                         break;
@@ -169,6 +239,7 @@ public final class UCIEntry {
                                 lastMoveMade = 0;
                             }
                             // position startpos moves e2e4 e7e5 d2d4
+                            // todo add trim for extra spaces which currently break everything
                             if (length != 1 && list[1].equalsIgnoreCase("moves")) {
                                 for (int s = 2 + lastMoveMade; s < length; s++) {
                                     final int move = buildMoveFromLAN(board, list[s].trim());
@@ -181,6 +252,9 @@ public final class UCIEntry {
                         // position fen rnbqkbnr/pp1ppp1p/6p1/2p5/1P6/1QP5/P2PPPPP/RNB1KBNR b KQkq - 0 1;
                         // position fen 3rk2r/1pR2p2/b2BpPp1/p2p4/8/1P6/P4PPP/4R1K1 w - - 1 0 moves h2h3
                         // position fen 3rk2r/1pR2p2/b2BpPp1/p2p4/8/1P6/P4PPP/4R1K1 w - - 1 0 moves h2h3 h8h7 a2a3 d8c8
+                        // position fen rnbqkb1r/1ppppppp/7n/p7/P7/6PP/1PPPPP2/RNBQKBNR b KQkq - 0 1 moves  d7d5 g1f3 b8c6 d2d4 h6f5 b1c3
+                        // position fen rnbqkbnr/ppp2ppp/3p4/4p3/8/3P2P1/PPPBPP1P/RN1QKBNR b KQkq - 0 1 moves  b8c6 g1f3 d6d5 e2e4 d5e4 
+
                         else if (list[0].equalsIgnoreCase("fen")) {
                             inStartPos = false;
                             if (!fenSet) {
@@ -193,21 +267,44 @@ public final class UCIEntry {
                                     }
                                     fen.append(str).append(" ");
                                 }
-                                
+
                                 board = new Chessboard(fen.toString().trim());
                                 fenSet = true;
                                 lastMoveMade = 0;
+                            } else {
+                                for (int i = 1; i < list.length; i++) {
+                                    final String str = list[i];
+                                    if (str.equalsIgnoreCase("moves")) {
+                                        indexOfMoves = i;
+                                        break;
+                                    }
+                                }
                             }
 
                             if (length != indexOfMoves && list[indexOfMoves].equalsIgnoreCase("moves")) {
                                 for (int s = indexOfMoves + 1 + lastMoveMade; s < length; s++) {
-                                    final int move = buildMoveFromLAN(board, list[s].trim());
+                                    if (list[s].trim().equals("")) {
+                                        continue;
+                                    }
+                                    int move = 0;
+
+                                    try {
+                                        move = buildMoveFromLAN(board, list[s].trim());
+                                    } catch (Exception | Error e) {
+                                        System.err.println("LAN PROBLEM: ");
+                                        System.err.println(board);
+                                        System.err.println("all received: ");
+                                        System.err.println(line);
+                                        System.err.println("and i try to parse");
+                                        System.err.println(Arrays.toString(list));
+                                        System.err.println(list[s]);
+                                        System.err.println(list[s].trim());
+                                    }
                                     board.makeMoveAndFlipTurn(move);
                                     lastMoveMade++;
                                 }
                             }
                         }
-
 
                         Assert.assertNotNull(boards);
                         Assert.assertEquals(boards.length, NUMBER_OF_THREADS);
@@ -298,6 +395,7 @@ public final class UCIEntry {
                         }
 
                         // go movetime 1000 searchmoves e2e4 d2d4 a2a3
+                        // go wtime 919 btime 825 winc 50 binc 50
 
                         MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
 
@@ -338,6 +436,7 @@ public final class UCIEntry {
                         }
 
                         sendBestMove = true;
+
                         engine.go();
 
                         break;
@@ -400,6 +499,11 @@ public final class UCIEntry {
         MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
     }
 
+    public void sendNoMove() {
+        output.println("bestmove (none)");
+        reset();
+    }
+    
     public void sendBestMove(int aiMove) {
         output.println("bestmove " + MoveParser.toString(aiMove));
         reset();
@@ -413,12 +517,16 @@ public final class UCIEntry {
         return CHECKMATE_ENEMY_SCORE - score;
     }
 
-    public void send(Chessboard board, int aiMoveScore, int depth, long time, long nodes) {
+    public void send(Chessboard board, int aiMoveScore, int depth, int seldepth, long time, long nodes) {
         String infoCommand = "info";
 
         if (depth != 0) {
             infoCommand += " depth " + depth;
         }
+        
+        infoCommand += " seldepth " + seldepth;
+
+        infoCommand += " multipv 1";
 
         if (mateFound(aiMoveScore)) {
             infoCommand += " score mate " + distanceToMate(aiMoveScore);
@@ -427,9 +535,10 @@ public final class UCIEntry {
         }
 
         Engine.calculateNPS();
-        infoCommand += " time " + time;
-        infoCommand += " nodes " + nodes;
+        infoCommand += " nodes " + Engine.totalMovesMade;
         infoCommand += " nps " + Engine.nps;
+        infoCommand += " tbhits 0";
+        infoCommand += " time " + time;
 
         infoCommand += " pv ";
         final int[] pv = PVLine.getPV(board);

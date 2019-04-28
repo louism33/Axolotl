@@ -74,6 +74,7 @@ public class TranspositionTableStressTest {
         System.out.println("fine 70 tt stats: ");
         stressTestToDepthTest(32, 
                 new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -"), DEFAULT_TABLE_SIZE_MB, 4);
+        Util.reset();
     }
     
     private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize) {

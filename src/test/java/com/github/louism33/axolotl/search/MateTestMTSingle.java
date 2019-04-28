@@ -79,6 +79,7 @@ public class MateTestMTSingle {
         int[] winningMoves = EPDObject.getBestMoves();
         final Chessboard board = EPDObject.getBoard();
         engine.receiveSearchSpecs(board, true, timeLimit);
+        
         final int move = engine.simpleSearch();
         MoveParser.printMove(move);
 

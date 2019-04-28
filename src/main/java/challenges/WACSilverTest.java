@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static challenges.Utils.contains;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.EPDObject;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseEDPPosition;
-import static challenges.Utils.contains;
 @RunWith(Parameterized.class)
 public class WACSilverTest {
 

@@ -16,13 +16,14 @@ public final class SearchUtils {
     public static final int PANIC_SCORE_DELTA = 100;
     static final int iidDepth = 5;
 
-    public static final int[] futilityMargin = {0, 180, 250, 350, 450};
+//    public static final int[] futilityMargin = {0, 180, 250, 350, 450, 650};
+    public static final int[] futilityMargin = {0, 142, 267, 329, 486, 669};
     public static final int futilityBelowThisDepth = futilityMargin.length;
 
-    static final int[] alphaRazorMargin = {0, 400, 600, 800};
+    public static final int[] alphaRazorMargin = {0, 400, 600, 800};
     public static final int alphaRazorBelowThisDepth = alphaRazorMargin.length;
 
-    static final int[] betaRazorMargin = {0, 250, 350, 450, 550, 750, 1000};
+    public static final int[] betaRazorMargin = {0, 250, 350, 450, 550, 750, 1000};
     public static final int betaRazorBelowThisDepth = betaRazorMargin.length;
 
     static final int[] ASPIRATION_WINDOWS = {25, 50, 100, 200, 1000};
@@ -65,7 +66,7 @@ public final class SearchUtils {
     }
 
     static boolean isNullMoveOkHere(Chessboard board, int nullMoveCounter, int depth, int R) {
-        return nullMoveCounter < 2
+        return nullMoveCounter < 1
                 && depth >= 2
                 && !maybeInEndgame(board)
                 && notJustPawnsLeft(board)

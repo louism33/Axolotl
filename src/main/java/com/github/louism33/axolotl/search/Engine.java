@@ -35,6 +35,7 @@ public final class Engine {
     public static volatile boolean stopNow = false;
     public static int[][] rootMoves;
 
+    public static long totalMovesMade;
     public static long[] numberOfMovesMade;
     static long[] numberOfQMovesMade;
     static boolean manageTime = true;
@@ -68,6 +69,8 @@ public final class Engine {
         if (DEBUG) {
             System.out.println("Full resetting");
         }
+        numberOfMovesMade = new long[NUMBER_OF_THREADS];
+        numberOfQMovesMade = new long[NUMBER_OF_THREADS];
         rootMoves = new int[NUMBER_OF_THREADS][];
         for (int i = 0; i < NUMBER_OF_THREADS; i++) {
             rootMoves[i] = new int[Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH];
@@ -97,10 +100,10 @@ public final class Engine {
         if (threads == null) {
             threads = new ChessThread[NUMBER_OF_THREADS];
         }
-        if (numberOfMovesMade == null) {
+        if (numberOfMovesMade == null || numberOfMovesMade.length != NUMBER_OF_THREADS) {
             numberOfMovesMade = new long[NUMBER_OF_THREADS];
         }
-        if (numberOfQMovesMade == null) {
+        if (numberOfQMovesMade == null || numberOfQMovesMade.length != NUMBER_OF_THREADS) {
             numberOfQMovesMade = new long[NUMBER_OF_THREADS];
         }
         for (int i = 0; i < length; i++) {
@@ -140,6 +143,8 @@ public final class Engine {
         NUMBER_OF_THREADS = totalThreads;
 
         threads = new ChessThread[NUMBER_OF_THREADS];
+
+        threadsStarted = false;
 
         rootMoves = new int[NUMBER_OF_THREADS][];
         for (int i = 0; i < NUMBER_OF_THREADS; i++) {
@@ -233,16 +238,11 @@ public final class Engine {
                 break;
             }
         }
-//        for (int i = 1; i < NUMBER_OF_THREADS; i++) {
-//            try {
-//                threads[i].join();
-//            } catch (InterruptedException e1) {
-//                e1.printStackTrace();
-//            }
-//        }
         return getAiMove();
     }
 
+
+    static boolean threadsStarted = false;
 
     private static boolean readyToSearch = false;
     static Chessboard cloneBoard;
@@ -282,7 +282,7 @@ public final class Engine {
 
         int numberOfRealMoves = rootMoves[MASTER_THREAD][rootMoves[MASTER_THREAD].length - 1];
         if (numberOfRealMoves == 0) {
-            uciEntry.sendBestMove(0);
+            uciEntry.sendNoMove();
             searchFinished = true;
             return;
         }
@@ -299,21 +299,12 @@ public final class Engine {
             }
         }
 
-        if (!MASTER_DEBUG) {
-            scoreMovesAtRoot(rootMoves[MASTER_THREAD], numberOfRealMoves, masterBoard);
-            Ints.sortDescending(rootMoves[MASTER_THREAD], 0, numberOfRealMoves);
+        scoreMovesAtRoot(rootMoves[MASTER_THREAD], numberOfRealMoves, masterBoard);
+        Ints.sortDescending(rootMoves[MASTER_THREAD], 0, numberOfRealMoves);
 
-            // to avoid regenerating and rescoring root moves
-            for (int i = 1; i < NUMBER_OF_THREADS; i++) {
-                System.arraycopy(rootMoves[MASTER_THREAD], 0, rootMoves[i], 0, rootMoves[MASTER_THREAD].length);
-            }
-        } else {
-            // todo, seeing if this fixed an infrequent cre
-            for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-                rootMoves[i] = boards[i].generateLegalMoves();
-                scoreMovesAtRoot(rootMoves[i], numberOfRealMoves, boards[i]);
-                Ints.sortDescending(rootMoves[i], 0, numberOfRealMoves);
-            }
+        // to avoid regenerating and rescoring root moves
+        for (int i = 1; i < NUMBER_OF_THREADS; i++) {
+            System.arraycopy(rootMoves[MASTER_THREAD], 0, rootMoves[i], 0, rootMoves[MASTER_THREAD].length);
         }
 
         if (MASTER_DEBUG) {
@@ -350,17 +341,17 @@ public final class Engine {
     public static void calculateNPS() {
         final long l = System.currentTimeMillis();
         long time = l - startTime;
-        if (time < 1000) {
-            nps = 0;
-        } else {
-            long total = 0;
-            for (int i = 0; i < numberOfMovesMade.length; i++) {
-                total += numberOfMovesMade[i] + numberOfQMovesMade[i];
-            }
+
+        long total = 0;
+        for (int i = 0; i < numberOfMovesMade.length; i++) {
+            total += numberOfMovesMade[i] + numberOfQMovesMade[i];
+        }
+        if (time > 500) {
             nps = ((1000 * total) / time);
         }
+        totalMovesMade = total;
         if (nps < 0) {
-            throw new RuntimeException();
+            throw new RuntimeException("nps below zero");
         }
     }
 
@@ -420,8 +411,8 @@ public final class Engine {
                         System.out.println(" -t" + whichThread + " will skip depth " + depth + " and go to depth " + (depth + skipBy[whichThread]));
                     }
                     depth += skipBy[whichThread];
-                }                   
-            } 
+                }
+            }
 
             if (DEBUG) {
                 if (!masterThread) {
@@ -448,8 +439,6 @@ public final class Engine {
                     System.err.println(cloneBoard);
                     System.err.println(board.zobristHash == cloneBoard.zobristHash);
                     System.err.println(board.zobristPawnHash == cloneBoard.zobristPawnHash);
-//                        System.err.println(Arrays.toString(MoveParser.toString(moves1)));
-
 
                     if (MASTER_DEBUG) {
                         for (int i = 0; i < NUMBER_OF_THREADS; i++) {
@@ -526,7 +515,7 @@ public final class Engine {
 
             if (PRINT_PV && masterThread) {
                 long time = System.currentTimeMillis() - startTime;
-                uciEntry.send(board, aiMoveScore, depth, time, numberOfMovesMade[0]);
+                uciEntry.send(board, aiMoveScore, depth, depth, time, numberOfMovesMade[0]);
             }
 
             aspirationScore = score;
@@ -538,7 +527,7 @@ public final class Engine {
 
         if (PRINT_PV && masterThread) {
             long time = System.currentTimeMillis() - startTime;
-            uciEntry.send(board, aiMoveScore, depth, time, numberOfMovesMade[0]);
+            uciEntry.send(board, aiMoveScore, depth, depth, time, numberOfMovesMade[0]);
         }
 
 
@@ -731,7 +720,6 @@ public final class Engine {
 
             int R = depth > 6 ? 3 : 2;
             if (isNullMoveOkHere(board, nullMoveCounter, depth, R)) {
-
                 board.makeNullMoveAndFlipTurn();
 
                 nullTotal++;
@@ -909,7 +897,7 @@ public final class Engine {
                     }
 
                     int d = Math.max(depth - R - 1, 0);
-
+//                    System.out.println("lmr, move: " + MoveParser.toString(move));
                     score = -principleVariationSearch(board,
                             d, ply + 1,
                             -alpha - 1, -alpha, nullMoveCounter, whichThread);
@@ -922,6 +910,7 @@ public final class Engine {
                 }
 
                 if (score > alpha) {
+//                    System.out.println("score > alpha, move: " + MoveParser.toString(move));
                     score = -principleVariationSearch(board,
                             depth - 1, ply + 1,
                             -beta, -alpha, 0, whichThread);

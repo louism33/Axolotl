@@ -9,8 +9,7 @@ import org.junit.Assert;
 import java.util.Arrays;
 import java.util.Set;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.SHORT_MINIMUM;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.chesscore.MoveConstants.FIRST_FREE_BIT;
@@ -27,6 +26,9 @@ public final class Quiescence {
         boolean inCheck = board.inCheckRecorder;
 
         if (!inCheck) {
+            if (MASTER_DEBUG) {
+                Assert.assertFalse(board.inCheck(board.isWhiteTurn()));
+            }
             standPatScore = Evaluator.eval(board, moves);
 
             if (standPatScore >= beta) {
@@ -112,11 +114,18 @@ public final class Quiescence {
             } else {
                 board.makeMoveAndFlipTurn(loudMove);
             }
-            
-            
-            Engine.numberOfQMovesMade[whichThread]++;
 
-            int score = -quiescenceSearch(board, -beta, -alpha, whichThread);
+            Engine.numberOfQMovesMade[whichThread]++;
+            
+            int score;
+            
+            if (board.isDrawByInsufficientMaterial()
+                    || (!captureMove && !promotionMove &&
+                    (board.isDrawByRepetition(1) || board.isDrawByFiftyMoveRule()))) {
+                score = IN_STALEMATE_SCORE;
+            } else {
+                score = -quiescenceSearch(board, -beta, -alpha, whichThread);
+            }
 
             board.unMakeMoveAndFlipTurn();
 

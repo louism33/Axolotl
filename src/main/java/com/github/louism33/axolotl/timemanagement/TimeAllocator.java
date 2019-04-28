@@ -6,13 +6,13 @@ import com.github.louism33.axolotl.search.EngineSpecifications;
 public final class TimeAllocator {
 
     public static long allocateTime(long maxTime, long enemyTime, long increment, Integer movesToGo, int fullMovesCounter) {
-        if (maxTime < 1000) {
-            return 100;
-        }
-
-        if (maxTime < 5000) {
-            return 1000 + (increment / 3);
-        }
+//        if (maxTime < 1000) {
+//            return 100;
+//        }
+//
+//        if (maxTime < 5000) {
+//            return 1000 + (increment / 3);
+//        }
 
         long time;
 

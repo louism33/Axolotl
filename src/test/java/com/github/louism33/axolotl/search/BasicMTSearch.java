@@ -1,12 +1,11 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.main.UCIEntry;
+import com.github.louism33.axolotl.util.Util;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.util.Set;
 
 import static com.github.louism33.axolotl.search.Engine.sendBestMove;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
@@ -18,11 +17,12 @@ public class BasicMTSearch {
     
     @BeforeClass
     public static void setup() {
+        Util.reset();
+        
         sendBestMove = false;
         PRINT_PV = false;
         DEBUG = false;
         engine.uciEntry = new UCIEntry();
-        Engine.resetFull();
     }
 
     @AfterClass
@@ -30,6 +30,7 @@ public class BasicMTSearch {
         PRINT_PV = false;
         DEBUG = false;
         MASTER_DEBUG = false;
+        Util.reset();
     }
 
     public void nps() {

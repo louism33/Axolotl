@@ -18,6 +18,7 @@ import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.BitOperations.fileForward;
 import static com.github.louism33.chesscore.BitOperations.*;
 import static com.github.louism33.chesscore.BoardConstants.*;
+import static com.github.louism33.chesscore.MaterialHashUtil.*;
 import static com.github.louism33.chesscore.PieceMove.*;
 import static java.lang.Long.numberOfTrailingZeros;
 
@@ -51,8 +52,52 @@ public final class Evaluator {
      * pinned pieces, and to queen
      */
 
-
     public static final int eval(final Chessboard board, final int[] moves) {
+        if (board.isDrawByInsufficientMaterial() || board.isDrawByFiftyMoveRule()
+                || board.isDrawByRepetition(1)) {
+            return 0;
+        }
+
+        // todo, add "certain" vs "uncertain" flags, only recalc on capture
+        switch (board.typeOfGameIAmIn) {
+            case CERTAIN_DRAW:
+                return 0;
+
+            case KRK:
+                board.typeOfGameIAmIn = KRK;
+                return EvaluatorEndgame.evaluateKRKorKQK(board, turn);
+            case KQK:
+                board.typeOfGameIAmIn = KQK;
+                return EvaluatorEndgame.evaluateKRKorKQK(board, turn);
+
+
+            case UNKNOWN:
+                switch (typeOfEndgame(board)) {
+//                    case KPK:
+//                        board.typeOfGameIAmIn = KPK;
+//                        return EvaluatorEndgame.evaluateKPK(board);
+//
+                    case KRK:
+                        board.typeOfGameIAmIn = KRK;
+                        return EvaluatorEndgame.evaluateKRKorKQK(board, turn);
+                    case KQK:
+                        board.typeOfGameIAmIn = KQK;
+                        return EvaluatorEndgame.evaluateKRKorKQK(board, turn);
+
+                    case CERTAIN_DRAW:
+                        board.typeOfGameIAmIn = CERTAIN_DRAW;
+                        return 0;
+
+                    case UNKNOWN:
+                        return evalGeneric(board, moves);
+                }
+            default:
+                return evalGeneric(board, moves);
+        }
+    }
+
+    public static final int evalGeneric(final Chessboard board, final int[] moves) {
+
         if (!EvaluationConstants.ready) {
             setup();
         }
@@ -87,8 +132,8 @@ public final class Evaluator {
             Assert.assertArrayEquals(pawnData, getPawnData(board, board.zobristPawnHash, percentOfStartgame));
             Assert.assertArrayEquals(pawnData, PawnEval.calculatePawnData(board, percentOfStartgame));
         }
-        
-        
+
+
         score += Score.getScore((int) pawnData[SCORE], percentOfStartgame);
 
         // todo colour has insuf mat to mate

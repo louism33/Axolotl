@@ -32,10 +32,6 @@ public final class ChessThread extends Thread {
             System.out.println("    start run of " + this.getName() + " with thread number " + whichThread);
         }
 
-//        System.out.println("thread: " + whichThread);
-//        System.out.println(board.zobristHash + "    " + board.zobristPawnHash);
-//        System.out.println(board.hashCode());
-        
         search(board, uciEntry, whichThread);
 
         if (EngineSpecifications.DEBUG) {
