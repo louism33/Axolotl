@@ -41,7 +41,7 @@ public final class Evaluator {
         PRINT_EVAL = true;
         eval(board, moves);
         EvalPrintObject epo = new EvalPrintObject(scoresForEPO);
-        epo.turn = board.turn;
+        epo.EOPturn = board.turn;
         PRINT_EVAL = false;
         return epo;
     }
@@ -64,40 +64,43 @@ public final class Evaluator {
                 return 0;
 
             case KRK:
-                board.typeOfGameIAmIn = KRK;
-                return EvaluatorEndgame.evaluateKRKorKQK(board, turn);
+//                board.typeOfGameIAmIn = KRK;
+//                return EvaluatorEndgame.evaluateKRKorKQK(board, EOPturn);
             case KQK:
-                board.typeOfGameIAmIn = KQK;
-                return EvaluatorEndgame.evaluateKRKorKQK(board, turn);
+//                board.typeOfGameIAmIn = KQK;
+//                return EvaluatorEndgame.evaluateKRKorKQK(board, EOPturn);
 
 
             case UNKNOWN:
+            default:
                 switch (typeOfEndgame(board)) {
+                    case CERTAIN_DRAW:
+                        board.typeOfGameIAmIn = CERTAIN_DRAW;
+                        return 0;
+
 //                    case KPK:
 //                        board.typeOfGameIAmIn = KPK;
 //                        return EvaluatorEndgame.evaluateKPK(board);
 //
                     case KRK:
-                        board.typeOfGameIAmIn = KRK;
-                        return EvaluatorEndgame.evaluateKRKorKQK(board, turn);
+//                        board.typeOfGameIAmIn = KRK;
+                        return EvaluatorEndgame.evaluateKRKorKQK(board);
                     case KQK:
-                        board.typeOfGameIAmIn = KQK;
-                        return EvaluatorEndgame.evaluateKRKorKQK(board, turn);
+//                        board.typeOfGameIAmIn = KQK;
+                        return EvaluatorEndgame.evaluateKRKorKQK(board);
 
-                    case CERTAIN_DRAW:
-                        board.typeOfGameIAmIn = CERTAIN_DRAW;
-                        return 0;
 
                     case UNKNOWN:
+                    default:
                         return evalGeneric(board, moves);
                 }
-            default:
-                return evalGeneric(board, moves);
+
         }
     }
 
     public static final int evalGeneric(final Chessboard board, final int[] moves) {
 
+        int turn = board.turn;
         if (!EvaluationConstants.ready) {
             setup();
         }
@@ -137,8 +140,6 @@ public final class Evaluator {
         score += Score.getScore((int) pawnData[SCORE], percentOfStartgame);
 
         // todo colour has insuf mat to mate
-
-        final int turn = board.turn;
 
         final int myTurnScore = evalTurn(board, turn, pawnData, turnThreatensSquares, percentOfStartgame, myKingSafetyArea, enemyKingSafetyArea);
         final int yourTurnScore = evalTurn(board, 1 - turn, pawnData, turnThreatensSquares, percentOfStartgame, enemyKingSafetyArea, myKingSafetyArea);

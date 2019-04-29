@@ -1,5 +1,7 @@
 package com.github.louism33.axolotl.evaluation;
 
+import com.github.louism33.chesscore.Chessboard;
+
 public final class EvaluationConstants {
 
     // general numbers
@@ -7,7 +9,7 @@ public final class EvaluationConstants {
     public static final int SHORT_MAXIMUM = 31000;
     public static final int IN_CHECKMATE_SCORE = -30000;
     public static final int CHECKMATE_ENEMY_SCORE = -IN_CHECKMATE_SCORE;
-    public static final int IN_CHECKMATE_SCORE_MAX_PLY = IN_CHECKMATE_SCORE + 100;
+    public static final int IN_CHECKMATE_SCORE_MAX_PLY = IN_CHECKMATE_SCORE + Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH;
     public static final int CHECKMATE_ENEMY_SCORE_MAX_PLY = -IN_CHECKMATE_SCORE_MAX_PLY;
     public static final int IN_STALEMATE_SCORE = 0;
 

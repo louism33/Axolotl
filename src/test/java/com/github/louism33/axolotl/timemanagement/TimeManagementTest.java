@@ -41,9 +41,13 @@ public class TimeManagementTest {
     @Test
     void dominantTest() {
         long allocateTime = TimeAllocator.allocateTime(485370, 38948, 6000, 0, 200);
-
         System.out.println(allocateTime);
+    }
 
+    @Test
+    void shortTCTest() {
+        long allocateTime = TimeAllocator.allocateTime(2000, 2000, 75, 0, 0);
+        System.out.println(allocateTime);
     }
 
 }

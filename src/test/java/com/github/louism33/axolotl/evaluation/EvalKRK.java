@@ -17,7 +17,6 @@ public class EvalKRK {
     void KQK() {
         Chessboard board = new Chessboard("8/8/8/8/8/8/8/KQk5");
         final int eval = Evaluator.eval(board, board.generateLegalMoves());
-        System.out.println(eval);
         Assert.assertTrue(eval > 3000);
     }
 }

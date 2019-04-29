@@ -14,8 +14,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.Engine.sendBestMove;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
@@ -512,11 +511,12 @@ public final class UCIEntry {
     }
 
     private static boolean mateFound(int score) {
-        return score >= CHECKMATE_ENEMY_SCORE_MAX_PLY;
+        return score >= CHECKMATE_ENEMY_SCORE_MAX_PLY || score <= IN_CHECKMATE_SCORE_MAX_PLY;
     }
 
     private static int distanceToMate(int score) {
-        return CHECKMATE_ENEMY_SCORE - score;
+        System.out.println(score);
+        return score > 0 ? (CHECKMATE_ENEMY_SCORE - score + 1) / 2 : (IN_CHECKMATE_SCORE - score) / 2;
     }
 
     public void send(Chessboard board, int aiMoveScore, int depth, int seldepth, long time, long nodes) {
