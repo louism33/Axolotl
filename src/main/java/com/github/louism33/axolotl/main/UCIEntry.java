@@ -77,10 +77,10 @@ public final class UCIEntry {
                         output.println();
                         output.println("option name Hash type spin default 128 min 1 max 1024");
                         output.println("option name Threads type spin default 1 min 1 max " + MAX_THREADS);
-                        
+
                         if (SPSA) {
                             // futility
-                            output.println("option name futility1 type spin default " + SearchUtils.futilityMargin[1] 
+                            output.println("option name futility1 type spin default " + SearchUtils.futilityMargin[1]
                                     + " min " + (SearchUtils.futilityMargin[1] / 2) + " max " +  (SearchUtils.futilityMargin[1] * 2));
                             output.println("option name futility2 type spin default " + SearchUtils.futilityMargin[2]
                                     + " min " + (SearchUtils.futilityMargin[2] / 2) + " max " +  (SearchUtils.futilityMargin[2] * 2));
@@ -90,7 +90,7 @@ public final class UCIEntry {
                                     + " min " + (SearchUtils.futilityMargin[4] / 2) + " max " +  (SearchUtils.futilityMargin[4] * 2));
                             output.println("option name futility5 type spin default " + SearchUtils.futilityMargin[5]
                                     + " min " + (SearchUtils.futilityMargin[5] / 2) + " max " +  (SearchUtils.futilityMargin[5] * 2));
-                            
+
                             //alpha razor
                             output.println("option name alphaRazor1 type spin default " + SearchUtils.alphaRazorMargin[1]
                                     + " min " + (SearchUtils.alphaRazorMargin[1] / 2) + " max " +  (SearchUtils.alphaRazorMargin[1] * 2));
@@ -98,7 +98,7 @@ public final class UCIEntry {
                                     + " min " + (SearchUtils.alphaRazorMargin[2] / 2) + " max " +  (SearchUtils.alphaRazorMargin[2] * 2));
                             output.println("option name alphaRazor3 type spin default " + SearchUtils.alphaRazorMargin[3]
                                     + " min " + (SearchUtils.alphaRazorMargin[3] / 2) + " max " +  (SearchUtils.alphaRazorMargin[3] * 2));
-                            
+
                             // beta razor
                             output.println("option name betaRazor1 type spin default " + SearchUtils.betaRazorMargin[1]
                                     + " min " + (SearchUtils.betaRazorMargin[1] / 2) + " max " +  (SearchUtils.betaRazorMargin[1] * 2));
@@ -114,7 +114,7 @@ public final class UCIEntry {
                             output.println("option name betaRazor6 type spin default " + SearchUtils.betaRazorMargin[6]
                                     + " min " + (SearchUtils.betaRazorMargin[6] / 2) + " max " +  (SearchUtils.betaRazorMargin[6] * 2));
                         }
-                        
+
                         output.println("uciok");
                         protocolReady = true;
                     } else if (token.equalsIgnoreCase("debug")) {
@@ -200,7 +200,7 @@ public final class UCIEntry {
                                 SearchUtils.alphaRazorMargin[2] = Integer.parseInt(valueToken);
                             } else if (nameToken.equalsIgnoreCase("alphaRazor3")) {
                                 SearchUtils.alphaRazorMargin[3] = Integer.parseInt(valueToken);
-                            } 
+                            }
 
                             else if (nameToken.equalsIgnoreCase("betaRazor1")) {
                                 SearchUtils.betaRazorMargin[1] = Integer.parseInt(valueToken);
@@ -215,7 +215,7 @@ public final class UCIEntry {
                             } else if (nameToken.equalsIgnoreCase("betaRazor6")) {
                                 SearchUtils.betaRazorMargin[6] = Integer.parseInt(valueToken);
                             }
-                        } 
+                        }
                         break;
                     } else if (token.equalsIgnoreCase("register")) {
                         break;
@@ -459,6 +459,8 @@ public final class UCIEntry {
                         output.println(Evaluator.stringEval(board, board.turn));
                     } else if (token.equalsIgnoreCase("d")) {
                         output.println(board);
+                    } else if (token.equalsIgnoreCase("tofen")) {
+                        output.println(board.toFenString());
                     } else if (token.equalsIgnoreCase("perft")) {
                         try {
                             final int d = Integer.parseInt(tokens[1]);
@@ -503,7 +505,7 @@ public final class UCIEntry {
         output.println("bestmove (none)");
         reset();
     }
-    
+
     public void sendBestMove(int aiMove) {
         output.println("bestmove " + MoveParser.toString(aiMove));
         reset();
@@ -523,7 +525,7 @@ public final class UCIEntry {
         if (depth != 0) {
             infoCommand += " depth " + depth;
         }
-        
+
         infoCommand += " seldepth " + seldepth;
 
         infoCommand += " multipv 1";

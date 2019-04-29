@@ -17,7 +17,7 @@ public class EndgameEvaluatorTest {
     @Test
     void isKPKTestBlack() {
         Chessboard board = new Chessboard("8/8/8/8/8/8/6pk/4K3");
-        Assert.assertEquals(-KPK, typeOfEndgame(board));
+        Assert.assertEquals(KPK, typeOfEndgame(board));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class EndgameEvaluatorTest {
     @Test
     void isKRKTestBlack() {
         Chessboard board = new Chessboard("8/8/8/8/8/8/6rk/4K3");
-        Assert.assertEquals(-KRK, typeOfEndgame(board));
+        Assert.assertEquals(KRK, typeOfEndgame(board));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class EndgameEvaluatorTest {
     @Test
     void isKQKTestBlack() {
         Chessboard board = new Chessboard("8/7q/8/8/8/8/7k/4K3");
-        Assert.assertEquals(-KQK, typeOfEndgame(board));
+        Assert.assertEquals(KQK, typeOfEndgame(board));
     }
 
     @Test
@@ -53,7 +53,7 @@ public class EndgameEvaluatorTest {
     @Test
     void isKBNKTestBlack() {
         Chessboard board = new Chessboard("8/6bn/8/8/8/8/7k/4K3");
-        Assert.assertEquals(-KNBK, typeOfEndgame(board));
+        Assert.assertEquals(KNBK, typeOfEndgame(board));
     }
 
     @Test
