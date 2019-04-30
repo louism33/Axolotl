@@ -1,10 +1,8 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveParser;
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -19,7 +17,7 @@ public class TTPositions {
 
     @BeforeAll
     public static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
         PRINT_PV = false;
         System.out.println("testing fine 70 with time " + timeLimit);
     }

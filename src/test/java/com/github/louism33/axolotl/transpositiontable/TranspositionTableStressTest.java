@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
@@ -21,12 +21,12 @@ public class TranspositionTableStressTest {
     @BeforeEach
     public void setup() throws InterruptedException {
         Thread.sleep(sleepBetween);
-        Util.reset();
+        ResettingUtils.reset();
     }
 
     @AfterAll
     public static void reset() {
-        Util.reset();
+        ResettingUtils.reset();
     }
 
     @Test
@@ -76,7 +76,7 @@ public class TranspositionTableStressTest {
         System.out.println("fine 70 tt stats: ");
         stressTestToDepthTest(32, 
                 new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -"), DEFAULT_TABLE_SIZE_MB, 4);
-        Util.reset();
+        ResettingUtils.reset();
     }
     
     private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize) {

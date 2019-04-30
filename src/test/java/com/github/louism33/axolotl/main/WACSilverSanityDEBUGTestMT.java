@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -25,7 +25,7 @@ public class WACSilverSanityDEBUGTestMT {
 
     @BeforeClass
     public static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
         Engine.setThreads(threads);
         
         DEBUG = true;
@@ -38,7 +38,7 @@ public class WACSilverSanityDEBUGTestMT {
 
     @AfterClass
     public static void finalSuccessTally() {
-        Util.reset();
+        ResettingUtils.reset();
         DEBUG = false;
         MASTER_DEBUG = false;
         PRINT_PV = false;

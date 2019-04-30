@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.main.UCIEntry;
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -17,7 +17,7 @@ public class BasicMTSearch {
     
     @BeforeClass
     public static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
         
         sendBestMove = false;
         PRINT_PV = false;
@@ -30,7 +30,7 @@ public class BasicMTSearch {
         PRINT_PV = false;
         DEBUG = false;
         MASTER_DEBUG = false;
-        Util.reset();
+        ResettingUtils.reset();
     }
 
     public void nps() {

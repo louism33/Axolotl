@@ -23,7 +23,7 @@ public final class EvalPrintObject {
     static final int positionScore = 12;
     public static final int spaceScore = 13;
     static final int turnScore = 14;
-    static int EOPturn = WHITE;
+    static int EPOturn = WHITE;
     static int percentOfEndgame;
 
     public EvalPrintObject(int[][] scores) {
@@ -76,7 +76,7 @@ public final class EvalPrintObject {
                 ""
                 + "\nTurn bonus: " + this.scores[WHITE][turnScore]
                 + "\nWe are " + percentOfEndgame + "% in the endgame"
-                + "\nTotal from white's POV: " + ((EOPturn == BLACK ? -1 : 1) * this.scores[WHITE][totalScore]) + " cp";
+                + "\nTotal from white's POV: " + ((EPOturn == BLACK ? -1 : 1) * this.scores[WHITE][totalScore]) + " cp";
 
         return evalString;
     }

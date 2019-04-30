@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
@@ -28,7 +28,7 @@ public class MateTestMTMulti {
 
     @BeforeClass
     public static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
 
         EngineSpecifications.MASTER_DEBUG = true;
 //        EngineSpecifications.PRINT_PV = true;

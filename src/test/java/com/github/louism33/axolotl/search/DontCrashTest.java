@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.MoveParserFromAN;
@@ -19,12 +19,12 @@ public class DontCrashTest {
 
     @BeforeAll
     static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
     }
 
     @AfterAll
     static void reset() {
-        Util.reset();
+        ResettingUtils.reset();
     }
 
 
@@ -208,7 +208,7 @@ public class DontCrashTest {
             for (int p = 0; p < pgns.size(); p++) {
                 List<String> s = PGNParser.parsePGNSimple(pgns.get(p));
 
-                Util.reset();
+                ResettingUtils.reset();
 
                 Chessboard board = new Chessboard();
                 for (int i = 0; i < s.size(); i++) {

@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.improving;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -29,7 +29,7 @@ public class WACChallenge {
 
     @BeforeClass
     public static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
         final String str = "Testing " + splitUpPositions.length + " WAC positions. " +
                 "Time per position: " + timeLimit + " milliseconds."
                 + "\nIf more than " + targetSuccesses + " are correct, success.";

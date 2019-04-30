@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
@@ -20,7 +20,7 @@ public class PawnTTTest {
 
     @BeforeClass
     public static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
         final String str = "Testing " + splitUpPositions.length + " position for pawn TT test. ";
         System.out.println(str);
     }

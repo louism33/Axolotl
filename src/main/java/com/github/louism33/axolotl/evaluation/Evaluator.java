@@ -41,7 +41,7 @@ public final class Evaluator {
         PRINT_EVAL = true;
         eval(board, moves);
         EvalPrintObject epo = new EvalPrintObject(scoresForEPO);
-        epo.EOPturn = board.turn;
+        epo.EPOturn = board.turn;
         PRINT_EVAL = false;
         return epo;
     }
@@ -64,10 +64,11 @@ public final class Evaluator {
                 return 0;
 
             case KRK:
-                return EvaluatorEndgame.evaluateKRKorKQK(board);
+                return EvaluatorEndgame.evaluateKRK(board);
             case KQK:
-                return EvaluatorEndgame.evaluateKRKorKQK(board);
-
+                return EvaluatorEndgame.evaluateKQK(board);
+//            case KRRK:
+//                return EvaluatorEndgame.evaluateKRRK(board);
 
             case UNKNOWN:
             default:
@@ -82,11 +83,13 @@ public final class Evaluator {
 //
                     case KRK:
                         board.typeOfGameIAmIn = KRK;
-                        return EvaluatorEndgame.evaluateKRKorKQK(board);
+                        return EvaluatorEndgame.evaluateKRK(board);
                     case KQK:
                         board.typeOfGameIAmIn = KQK;
-                        return EvaluatorEndgame.evaluateKRKorKQK(board);
-
+                        return EvaluatorEndgame.evaluateKQK(board);
+//                    case KRRK:
+//                        board.typeOfGameIAmIn = KRRK;
+//                        return EvaluatorEndgame.evaluateKRRK(board);
 
                     case UNKNOWN:
                     default:

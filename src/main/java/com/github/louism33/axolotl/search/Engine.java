@@ -564,9 +564,6 @@ public final class Engine {
 
         int[] moves = ply == 0 ? rootMoves[whichThread] : board.generateLegalMoves();
 
-        /**
-         * the board is not reset sometimes at ply == 0!
-         */
         if (MASTER_DEBUG && ply == 0) {
             if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash){
                 System.err.println("board");

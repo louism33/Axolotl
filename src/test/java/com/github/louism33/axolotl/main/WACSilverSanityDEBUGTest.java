@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -24,7 +24,7 @@ public class WACSilverSanityDEBUGTest {
 
     @BeforeClass
     public static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
         MASTER_DEBUG = true;
         final String str = "Testing " + splitUpPositions.length + " WAC silver positions with God Debug on. Don't crash!. ";
         System.out.println(str);
@@ -32,7 +32,7 @@ public class WACSilverSanityDEBUGTest {
 
     @AfterClass
     public static void finalSuccessTally() {
-        Util.reset();
+        ResettingUtils.reset();
         MASTER_DEBUG = false;
     }
 

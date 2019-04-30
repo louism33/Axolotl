@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -27,7 +27,7 @@ public class WACSilverSanityTestMTMulti {
 
     @BeforeClass
     public static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
         EngineSpecifications.PRINT_PV = false;
         Engine.setThreads(threads);
         final String str = "Testing " + splitUpPositions.length + " WAC silver positions with "+ threads + " threads. " +

@@ -2,9 +2,8 @@ package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,14 +15,14 @@ public class DTMTest {
 
     @BeforeEach
     void setup() {
-        Util.reset();
+        ResettingUtils.reset();
         EngineSpecifications.PRINT_PV = false;
     }
 
 
     @AfterEach
     void tearDown() {
-        Util.reset();
+        ResettingUtils.reset();
     }
 
     @Test

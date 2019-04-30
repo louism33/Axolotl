@@ -1,7 +1,7 @@
 package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
@@ -16,7 +16,7 @@ public class PawnEvalTest {
 
     @BeforeAll
     static void reset() {
-        Util.reset();
+        ResettingUtils.reset();
     }
 
     @Test

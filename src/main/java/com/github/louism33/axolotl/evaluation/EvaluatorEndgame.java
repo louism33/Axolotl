@@ -1,8 +1,10 @@
 package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.Chessboard;
+import org.junit.Assert;
 
 import static com.github.louism33.chesscore.BoardConstants.*;
+import static com.github.louism33.chesscore.MaterialHashUtil.KQK;
 import static java.lang.Long.numberOfTrailingZeros;
 
 public class EvaluatorEndgame {
@@ -11,36 +13,39 @@ public class EvaluatorEndgame {
         return 0;
     }
 
-    private static final int[] weakKingLocations = {
-            -400, -300, -300, -300, -300, -300, -300, -400,
-            -300, -250, -200, -200, -200, -200, -250, -300,
-            -300, -200, -100, -100, -100, -100, -200, -300,
-            -300, -200, -100,    0,    0, -100, -200, -300,
-            -300, -200, -100,    0,    0, -100, -200, -300,
-            -300, -200, -100, -100, -100, -100, -200, -300,
-            -300, -250, -200, -200, -200, -200, -250, -300,
-            -400, -300, -300, -300, -300, -300, -300, -400,
+    private static final int[] centreManhattanDistance = {
+            6, 5, 4, 3, 3, 4, 5, 6,
+            5, 4, 3, 2, 2, 3, 4, 5,
+            4, 3, 2, 1, 1, 2, 3, 4,
+            3, 2, 1, 0, 0, 1, 2, 3,
+            3, 2, 1, 0, 0, 1, 2, 3,
+            4, 3, 2, 1, 1, 2, 3, 4,
+            5, 4, 3, 2, 2, 3, 4, 5,
+            6, 5, 4, 3, 3, 4, 5, 6
     };
 
-    private static final int[] strongKingLocations = {
-            -40, -30, -30, -30, -30, -30, -30, -40,
-            -30, -25, -20, -20, -20, -20, -25, -30,
-            -30,  30,  40,  40,  40,  40,  30, -30,
-            -30, -20,  40,   0,   0,  40, -20, -30,
-            -30, -20,  40,   0,   0,  40, -20, -30,
-            -30,  30,  40,  40,  40,  40,  30, -30,
-            -30, -25, -20, -20, -20, -20, -25, -30,
-            -40, -30, -30, -30, -30, -30, -30, -40,
+    private static final int[] centreManhattanDistanceQ = {
+            9, 9, 9, 9, 9, 9, 9, 9,
+            9, 4, 3, 2, 2, 3, 4, 9,
+            9, 3, 2, 1, 1, 2, 3, 9,
+            9, 2, 1, 0, 0, 1, 2, 9,
+            9, 2, 1, 0, 0, 1, 2, 9,
+            9, 3, 2, 1, 1, 2, 3, 9,
+            9, 4, 3, 2, 2, 3, 4, 9,
+            9, 9, 9, 9, 9, 9, 9, 9
     };
 
-    public static int evaluateKRKorKQK(Chessboard board) {
+    public static int manFacRook = 78, chebFacRook = 78, centreFacRook = 124;
+    
+    public static int evaluateKRK(Chessboard board) {
         int score = 0, winningPlayer = -1;
 
+        Assert.assertEquals(KQK, board.typeOfGameIAmIn);
+
         for (int turn = WHITE; turn <= BLACK; turn++) {
-            final long myRook = board.pieces[turn][ROOK];
             final long myQueen = board.pieces[turn][QUEEN];
-            if (myRook != 0 || myQueen != 0) {
-                score += 1000;
+            if (myQueen != 0) {
+                score += 2000;
 
                 winningPlayer = turn;
                 long myKing = board.pieces[turn][KING];
@@ -48,33 +53,47 @@ public class EvaluatorEndgame {
                 final int myKingIndex = numberOfTrailingZeros(myKing);
                 final int enemyKingIndex = numberOfTrailingZeros(enemyKing);
 
-                // 16 16
-                final int i = 16 * manhattanDistance(myKingIndex, enemyKingIndex) + 16 * chebyshevDistance(myKingIndex, enemyKingIndex);
-                score -= i;
-
-                score -= weakKingLocations[numberOfTrailingZeros(enemyKing)];
-////                score += strongKingLocations[63 - myKingIndex];
-
-//                score += chebyshevDistance(enemyKingIndex, numberOfTrailingZeros(myRook)) * 10;
-//
-//                score += strongKingLocations[numberOfTrailingZeros(myQueen)];
-//                
-//                final long enemyKingPseudo = KING_MOVE_TABLE[enemyKingIndex];
-//
-//                long myPseudo = myRook != 0
-//                        ? PieceMove.singleRookTable(0, numberOfTrailingZeros(myRook), UNIVERSE)
-//                        : PieceMove.singleQueenTable(0, numberOfTrailingZeros(myQueen), UNIVERSE);
-//
-//                score += (populationCount(myPseudo & enemyKingPseudo)) * 10;
-////                score -= weakKingLocations[63 - enemyKingIndex];
+                score -= (manFacRook * manhattanDistance(myKingIndex, enemyKingIndex) + chebFacRook * chebyshevDistance(myKingIndex, enemyKingIndex));
+                score += centreFacRook * centreManhattanDistanceQ[numberOfTrailingZeros(enemyKing)];
             }
         }
 
-//        Assert.assertTrue(winningPlayer != -1);
-//        System.out.println("turn : " + (board.turn == WHITE) + ", score " + (board.turn == winningPlayer ? score : -score));
         return board.turn == winningPlayer ? score : -score;
     }
 
+    
+    public static int manFacQueen = 78, chebFacQueen = 78, centreFacQueen = 124;
+    
+    public static int evaluateKQK(Chessboard board) {
+        int score = 0, winningPlayer = -1;
+
+        Assert.assertEquals(KQK, board.typeOfGameIAmIn);
+
+        for (int turn = WHITE; turn <= BLACK; turn++) {
+            final long myQueen = board.pieces[turn][QUEEN];
+            if (myQueen != 0) {
+                score += 2000;
+
+                winningPlayer = turn;
+                long myKing = board.pieces[turn][KING];
+                long enemyKing = board.pieces[1 - turn][KING];
+                final int myKingIndex = numberOfTrailingZeros(myKing);
+                final int enemyKingIndex = numberOfTrailingZeros(enemyKing);
+
+                score -= (manFacQueen * manhattanDistance(myKingIndex, enemyKingIndex) + chebFacQueen * chebyshevDistance(myKingIndex, enemyKingIndex));
+                score += centreFacQueen * centreManhattanDistanceQ[numberOfTrailingZeros(enemyKing)];
+            }
+        }
+
+        return board.turn == winningPlayer ? score : -score;
+    }
+
+
+
+    public static int evaluateKRRK(Chessboard board) {
+        int score = 0, winningPlayer = -1;
+        return 0;
+    }
 
     public static int chebyshevDistance(int index1, int index2) {
         final int file1 = index1 & 7;

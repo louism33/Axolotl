@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.Assert;
@@ -17,7 +17,7 @@ public class FamousPositionsTest {
 
     @BeforeAll
     public static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
         PRINT_PV = true;
     }
 
