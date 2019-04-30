@@ -64,11 +64,9 @@ public final class Evaluator {
                 return 0;
 
             case KRK:
-//                board.typeOfGameIAmIn = KRK;
-//                return EvaluatorEndgame.evaluateKRKorKQK(board, EOPturn);
+                return EvaluatorEndgame.evaluateKRKorKQK(board);
             case KQK:
-//                board.typeOfGameIAmIn = KQK;
-//                return EvaluatorEndgame.evaluateKRKorKQK(board, EOPturn);
+                return EvaluatorEndgame.evaluateKRKorKQK(board);
 
 
             case UNKNOWN:
@@ -83,10 +81,10 @@ public final class Evaluator {
 //                        return EvaluatorEndgame.evaluateKPK(board);
 //
                     case KRK:
-//                        board.typeOfGameIAmIn = KRK;
+                        board.typeOfGameIAmIn = KRK;
                         return EvaluatorEndgame.evaluateKRKorKQK(board);
                     case KQK:
-//                        board.typeOfGameIAmIn = KQK;
+                        board.typeOfGameIAmIn = KQK;
                         return EvaluatorEndgame.evaluateKRKorKQK(board);
 
 

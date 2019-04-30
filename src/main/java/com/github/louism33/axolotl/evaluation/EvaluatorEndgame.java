@@ -48,7 +48,8 @@ public class EvaluatorEndgame {
                 final int myKingIndex = numberOfTrailingZeros(myKing);
                 final int enemyKingIndex = numberOfTrailingZeros(enemyKing);
 
-                final int i = 16 * manhattanDistance(myKingIndex, enemyKingIndex) + 8 * chebyshevDistance(myKingIndex, enemyKingIndex);
+                // 16 16
+                final int i = 16 * manhattanDistance(myKingIndex, enemyKingIndex) + 16 * chebyshevDistance(myKingIndex, enemyKingIndex);
                 score -= i;
 
                 score -= weakKingLocations[numberOfTrailingZeros(enemyKing)];

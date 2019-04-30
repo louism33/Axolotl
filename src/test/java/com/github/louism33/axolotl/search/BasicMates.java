@@ -47,8 +47,12 @@ public class BasicMates {
         PRINT_PV = true;
 
         String pos = "" +
-                "8/8/8/8/8/8/1Q6/K6k w - - 5 143\n" +
-                "8/8/8/5k2/8/8/1Q6/K7 w - - 5 143" + // mate in 10, b2d4
+                "8/8/8/8/8/8/1Q6/K6k w - - 1 1\n" +
+                "8/8/3Q4/8/8/7k/8/3K4 w - - 0 1\n" +
+                "8/3q4/8/8/2K1k3/8/8/8 b - - 1 1\n" +
+                "8/8/8/8/7q/7k/8/3K4 b - - 0 1\n" +
+                "8/8/8/5k2/8/8/1Q6/K7 w - - 1 1\n" + // mate in 10, b2d4
+                "7k/6q1/8/8/2K5/8/8/8 b - - 1 1" + // mate in 10, g7e5
                 "";
 
         String[] kqkPositions = pos.split("\n");
@@ -58,9 +62,8 @@ public class BasicMates {
             Chessboard board = new Chessboard(kqkPositions[i]);
             Assert.assertEquals(KQK, typeOfEndgame(board));
             System.out.println(board);
-            engine.receiveSearchSpecs(board, true, 600000);
+            engine.receiveSearchSpecs(board, true, 60_000);
 
-            Evaluator.eval(board, board.generateLegalMoves());
             engine.simpleSearch();
             System.out.println("score: " + aiMoveScore);
             Assert.assertTrue(aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);

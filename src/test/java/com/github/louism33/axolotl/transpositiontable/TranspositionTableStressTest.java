@@ -16,9 +16,11 @@ public class TranspositionTableStressTest {
 
     static final int depth = 12;
     static Engine engine = new Engine();
+    static long sleepBetween = 1000;
     
     @BeforeEach
-    public void setup() {
+    public void setup() throws InterruptedException {
+        Thread.sleep(sleepBetween);
         Util.reset();
     }
 
