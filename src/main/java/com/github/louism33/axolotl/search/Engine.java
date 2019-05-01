@@ -7,6 +7,7 @@ import com.github.louism33.axolotl.evaluation.PawnTranspositionTable;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MaterialHashUtil;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
@@ -792,6 +793,10 @@ public final class Engine {
             final boolean pawnToSeven = moveIsPawnPushSeven(turn, move);
             final boolean quietMove = !(captureMove || promotionMove);
 
+            if (captureMove || promotionMove) {
+                board.materialHash = MaterialHashUtil.typeOfEndgame(board);
+            }
+            
             if (captureMove && !promotionMove) {
                 Assert.assertTrue(moveScore >= (neutralCapture - 5));
             }

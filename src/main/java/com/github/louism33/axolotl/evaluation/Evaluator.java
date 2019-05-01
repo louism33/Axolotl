@@ -5,6 +5,9 @@ import org.junit.Assert;
 
 import java.util.Arrays;
 
+import static com.github.louism33.axolotl.evaluation.EndgameKQK.evaluateKQK;
+import static com.github.louism33.axolotl.evaluation.EndgameKRK.evaluateKRK;
+import static com.github.louism33.axolotl.evaluation.EndgameKRRK.evaluateKRRK;
 import static com.github.louism33.axolotl.evaluation.EvalPrintObject.*;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.K;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.Q;
@@ -64,11 +67,26 @@ public final class Evaluator {
                 return 0;
 
             case KRK:
-                return EvaluatorEndgame.evaluateKRK(board);
+                return evaluateKRK(board);
             case KQK:
-                return EvaluatorEndgame.evaluateKQK(board);
-//            case KRRK:
-//                return EvaluatorEndgame.evaluateKRRK(board);
+                return evaluateKQK(board);
+            case KRRK:
+
+                if (populationCount(board.pieces[WHITE][ROOK] | board.pieces[BLACK][ROOK]) != 2) {
+//                    System.out.println(board);
+                    while (true) {
+                        System.err.println("===");
+                        System.err.println(board);
+                        System.err.println(board.typeOfGameIAmIn);
+                        System.err.println(Arrays.toString(board.typeOfGameIAmInStack));
+                        System.err.println(board.toFenString());
+                        System.err.println();
+                        board.unMakeMoveAndFlipTurn();
+                    }
+                }       
+                Assert.assertEquals(2,
+                    populationCount(board.pieces[WHITE][ROOK] | board.pieces[BLACK][ROOK]));
+                return evaluateKRRK(board);
 
             case UNKNOWN:
             default:
@@ -83,13 +101,13 @@ public final class Evaluator {
 //
                     case KRK:
                         board.typeOfGameIAmIn = KRK;
-                        return EvaluatorEndgame.evaluateKRK(board);
+                        return evaluateKRK(board);
                     case KQK:
                         board.typeOfGameIAmIn = KQK;
-                        return EvaluatorEndgame.evaluateKQK(board);
-//                    case KRRK:
-//                        board.typeOfGameIAmIn = KRRK;
-//                        return EvaluatorEndgame.evaluateKRRK(board);
+                        return evaluateKQK(board);
+                    case KRRK:
+                        board.typeOfGameIAmIn = KRRK;
+                        return evaluateKRRK(board);
 
                     case UNKNOWN:
                     default:

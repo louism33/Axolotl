@@ -2,6 +2,7 @@ package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MaterialHashUtil;
 import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
@@ -64,6 +65,10 @@ public final class Quiescence {
             final boolean captureMove = MoveParser.isCaptureMove(move);
             final boolean promotionMove = MoveParser.isPromotionMove(move);
 
+            if (captureMove || promotionMove) {
+                board.materialHash = MaterialHashUtil.typeOfEndgame(board);
+            }
+            
             if (!inCheck && loudMoveScore != 0) {
                 Assert.assertTrue(captureMove || promotionMove);
             }
