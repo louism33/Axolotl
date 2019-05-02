@@ -48,13 +48,13 @@ public class EndgameEvaluatorTest {
     @Test
     void isKBNKTestWhite() {
         Chessboard board = new Chessboard("8/6BN/8/8/8/8/7k/4K3");
-        Assert.assertEquals(KNBK, typeOfEndgame(board));
+        Assert.assertEquals(KBNK, typeOfEndgame(board));
     }
 
     @Test
     void isKBNKTestBlack() {
         Chessboard board = new Chessboard("8/6bn/8/8/8/8/7k/4K3");
-        Assert.assertEquals(KNBK, typeOfEndgame(board));
+        Assert.assertEquals(KBNK, typeOfEndgame(board));
     }
 
     @Test
