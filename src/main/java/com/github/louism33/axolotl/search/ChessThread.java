@@ -2,9 +2,11 @@ package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MaterialHashUtil;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.search.Engine.search;
+import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
 
 public final class ChessThread extends Thread {
     public static final int MASTER_THREAD = 0;
@@ -30,6 +32,11 @@ public final class ChessThread extends Thread {
     public void run() {
         if (EngineSpecifications.DEBUG) {
             System.out.println("    start run of " + this.getName() + " with thread number " + whichThread);
+        }
+
+        if (MASTER_DEBUG) {
+            Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
+            Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
         }
 
         search(board, uciEntry, whichThread);

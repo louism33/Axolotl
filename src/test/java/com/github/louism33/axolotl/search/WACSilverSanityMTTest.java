@@ -77,10 +77,10 @@ public class WACSilverSanityMTTest {
         final int move = engine.simpleSearch();
 
         if (contains(winningMoves, move) && !contains(losingMoves, move)) {
-            System.out.println("success");
+            System.out.print(". ");
             successes++;
         } else {
-            System.out.println("failure");
+            System.out.print(EPDObject.getId() + " ");
         }
     }
 

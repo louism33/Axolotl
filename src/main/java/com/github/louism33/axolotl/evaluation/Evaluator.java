@@ -1,11 +1,14 @@
 package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MaterialHashUtil;
+import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import java.util.Arrays;
 
 import static com.github.louism33.axolotl.evaluation.EndgameKBBK.evaluateKBBK;
+import static com.github.louism33.axolotl.evaluation.EndgameKBNK.evaluateKBNK;
 import static com.github.louism33.axolotl.evaluation.EndgameKQK.evaluateKQK;
 import static com.github.louism33.axolotl.evaluation.EndgameKRK.evaluateKRK;
 import static com.github.louism33.axolotl.evaluation.EndgameKRRK.evaluateKRRK;
@@ -66,51 +69,96 @@ public final class Evaluator {
             return 0;
         }
 
+        Assert.assertTrue(board.materialHash != 0); // if no pieces, this is caught before here
+        
+        if (typeOfEndgame(board) != board.typeOfGameIAmIn) {
+            System.out.println(board);
+            System.out.println(board.toFenString());
+            System.out.println("type i am in " + board.typeOfGameIAmIn);
+            System.out.println("is draw?  " + (board.typeOfGameIAmIn == CERTAIN_DRAW));
+            System.out.println("correct " + typeOfEndgame(board));
+            System.out.println("is draw?  " + (typeOfEndgame(board) == CERTAIN_DRAW));
+            System.out.println();
+            System.out.println("is basically draw? " + isBasicallyDrawn(board));
+            System.out.println(board.materialHash);
+        }
+        Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
+        Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
+        
+        if (MASTER_DEBUG) {
+            Assert.assertTrue(board.materialHash != 0);
+            Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
+            Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
+        }
+        
         // todo, add "certain" vs "uncertain" flags, only recalc on capture
         switch (board.typeOfGameIAmIn) {
             case CERTAIN_DRAW:
+                Assert.assertTrue(isBasicallyDrawn(board));
                 return 0;
 
-            case KRK:
-                return evaluateKRK(board);
-            case KQK:
-                return evaluateKQK(board);
+            case KQQK:
+            case KQRK:
             case KRRK:
-                Assert.assertEquals(2,
-                        populationCount(board.pieces[WHITE][ROOK] | board.pieces[BLACK][ROOK]));
+                Assert.assertTrue(!isBasicallyDrawn(board));
                 return evaluateKRRK(board);
+            case KQK:
+                Assert.assertTrue(!isBasicallyDrawn(board));
+
+                return evaluateKQK(board);
+
+            case KRK:
+                Assert.assertTrue(!isBasicallyDrawn(board));
+                return evaluateKRK(board);
 
             case KBBK:
-                Assert.assertEquals(2,
-                        populationCount(board.pieces[WHITE][BISHOP] | board.pieces[BLACK][BISHOP]));
-                return evaluateKBBK(board);
+                Assert.assertTrue(!isBasicallyDrawn(board));
+                Assert.assertTrue(populationCount(board.pieces[WHITE][BISHOP]) >= 2
+                        || populationCount(board.pieces[BLACK][BISHOP]) >= 2);
+                return evaluateKBNK(board);
 
-//            case KBNK:
-//                Assert.assertTrue(2 == populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
-//                        || 2 == populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]));
-//                return evaluateKBNK(board);
+            case KBNK:
+                Assert.assertTrue(!isBasicallyDrawn(board));
+
+                Assert.assertTrue(2 == populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
+                        || 2 == populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]));
+                return evaluateKBNK(board);
+
 
             case UNKNOWN:
             default:
                 switch (typeOfEndgame(board)) {
                     case CERTAIN_DRAW:
+                        Assert.assertTrue(isBasicallyDrawn(board));
                         board.typeOfGameIAmIn = CERTAIN_DRAW;
                         return 0;
 
+                    case KQQK:
+                        Assert.assertTrue(!isBasicallyDrawn(board));
+                        board.typeOfGameIAmIn = KQQK;
+                        return evaluateKRRK(board);
+                    case KQRK:
+                        Assert.assertTrue(!isBasicallyDrawn(board));
+                        board.typeOfGameIAmIn = KQRK;
+                        return evaluateKRRK(board);
+                    case KRRK:
+                        Assert.assertTrue(!isBasicallyDrawn(board));
+                        board.typeOfGameIAmIn = KRRK;
+                        return evaluateKRRK(board);
 //                    case KPK:
 //                        board.typeOfGameIAmIn = KPK;
 //                        return EvaluatorEndgame.evaluateKPK(board);
 //
-                    case KRK:
-                        board.typeOfGameIAmIn = KRK;
-                        return evaluateKRK(board);
                     case KQK:
+                        Assert.assertTrue(!isBasicallyDrawn(board));
                         board.typeOfGameIAmIn = KQK;
                         return evaluateKQK(board);
-                    case KRRK:
-                        board.typeOfGameIAmIn = KRRK;
-                        return evaluateKRRK(board);
+                    case KRK:
+                        Assert.assertTrue(!isBasicallyDrawn(board));
+                        board.typeOfGameIAmIn = KRK;
+                        return evaluateKRK(board);
                     case KBBK:
+                        Assert.assertTrue(!isBasicallyDrawn(board));
                         board.typeOfGameIAmIn = KBBK;
                         return evaluateKBBK(board);
 //                    case KBNK:

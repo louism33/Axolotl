@@ -33,7 +33,7 @@ public class WACSilverSanitySTTest {
         Engine.setThreads(threads);
         final String str = "Testing " + splitUpPositions.length + " WAC silver positions. " +
                 "Time per position: " + timeLimit + " milliseconds."
-                + "\nIf more than " + targetSuccesses + " are correct, success.";
+                + "\nIf more than " + targetSuccesses + " are correct, success.\ngood: . bad: id";
         System.out.println(str);
     }
 
@@ -69,7 +69,7 @@ public class WACSilverSanitySTTest {
     @Test
     public void test() {
         Engine.resetFull();
-        System.out.println(EPDObject.getFullString());
+//        System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
 
@@ -78,10 +78,11 @@ public class WACSilverSanitySTTest {
         final int move = engine.simpleSearch();
 
         if (contains(winningMoves, move) && !contains(losingMoves, move)) {
-            System.out.println("success");
+//            System.out.println("success");
+            System.out.print(". ");
             successes++;
         } else {
-            System.out.println("failure");
+            System.out.print(EPDObject.getId() + " ");
         }
     }
 

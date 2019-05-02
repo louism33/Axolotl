@@ -42,22 +42,15 @@ public class MoveOrdererTest {
 
         int[] moves = board.generateLegalMoves();
 
-        MoveParser.printMove(moves);
-
         int l = moves[moves.length - 1];
         MoveOrderer.scoreMovesAtRoot(moves, l, board);
         Ints.sortDescending(moves, 0, l);
-
-        MoveParser.printMove(moves);
 
         for (int m = 0; m < l; m++) {
             int mm = moves[m];
             int moveScore = getMoveScore(mm);
             String s = MoveParser.toString(mm);
-//            System.out.println(s + " with score " + moveScore);
         }
-
-        MoveParser.printMove(move);
 
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, move);
     }

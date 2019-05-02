@@ -29,10 +29,7 @@ public class MateSTTest {
     @BeforeClass
     public static void setup() {
         ResettingUtils.reset();
-        EngineSpecifications.PRINT_PV = false;
         Engine.setThreads(threads);
-
-        EngineSpecifications.MASTER_DEBUG = true;
 
         final String str = "Testing " + checkmatePositions.length + " Mate positions with " + threads + " threads. " +
                 "Time per position: " + timeLimit + " milliseconds."

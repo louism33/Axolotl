@@ -65,10 +65,6 @@ public final class Quiescence {
             final boolean captureMove = MoveParser.isCaptureMove(move);
             final boolean promotionMove = MoveParser.isPromotionMove(move);
 
-            if (captureMove || promotionMove) {
-                board.materialHash = MaterialHashUtil.typeOfEndgame(board);
-            }
-            
             if (!inCheck && loudMoveScore != 0) {
                 Assert.assertTrue(captureMove || promotionMove);
             }
@@ -93,6 +89,11 @@ public final class Quiescence {
             }
 
 //            board.makeMoveAndFlipTurn(loudMove);
+
+            if (MASTER_DEBUG) {
+                Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
+                Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
+            }
 
             if (MASTER_DEBUG) {
                 try {

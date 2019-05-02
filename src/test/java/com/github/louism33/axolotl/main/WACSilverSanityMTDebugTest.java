@@ -19,7 +19,7 @@ import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 @RunWith(Parameterized.class)
 public class WACSilverSanityMTDebugTest {
 
-    private static final int timeLimit = 5_000;
+    private static final int timeLimit = 1_000;
     private static final int threads = 4;
     private static Engine engine = new Engine();
 
@@ -29,7 +29,7 @@ public class WACSilverSanityMTDebugTest {
         Engine.setThreads(threads);
         Engine.sendBestMove = false;
 
-        DEBUG = true;
+        DEBUG = false;
         MASTER_DEBUG = true;
 
         final String str = "Debug Testing " + splitUpPositions.length + " WAC silver positions with God Debug on and " + threads + " threads. Don't crash!. ";

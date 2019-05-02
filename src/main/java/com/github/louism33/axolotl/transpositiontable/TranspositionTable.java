@@ -116,7 +116,8 @@ public final class TranspositionTable {
     public static void addToTableReplaceByDepth(long key, int bestMove,
                                                 int bestScore, int depth, int flag, int ply, int age) {
         if (!tableReady) {
-            initTable(TABLE_SIZE);
+//            initTable(TABLE_SIZE);
+            initTableMegaByte(TABLE_SIZE_MB);
         }
 
         totalAdds++;
@@ -173,7 +174,8 @@ public final class TranspositionTable {
 
     public static long retrieveFromTable(long key) {
         if (!tableReady) {
-            initTable(TABLE_SIZE);
+//            initTable(TABLE_SIZE);
+            initTableMegaByte(TABLE_SIZE_MB);
         }
 
         totalLookup++;

@@ -29,13 +29,6 @@ public class MateMTTest {
     @BeforeClass
     public static void setup() {
         ResettingUtils.reset();
-
-        EngineSpecifications.MASTER_DEBUG = true;
-//        EngineSpecifications.PRINT_PV = true;
-//        EngineSpecifications.DEBUG = true;
-        EngineSpecifications.PRINT_PV = false;
-//        EngineSpecifications.MASTER_DEBUG = false;
-        EngineSpecifications.DEBUG = false;
         
         Engine.setThreads(threads);
         final String str = "Testing " + checkmatePositions.length + " Mate positions with " + threads + " threads. " +

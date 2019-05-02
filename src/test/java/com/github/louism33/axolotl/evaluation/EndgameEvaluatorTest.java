@@ -105,6 +105,13 @@ public class EndgameEvaluatorTest {
         Assert.assertFalse(isBasicallyDrawn(board));
         Assert.assertEquals(KRRK, typeOfEndgame(board));
     }
+    
+    @Test
+    void krrk() {
+        Chessboard board = new Chessboard("rr6/8/8/8/8/8/7K/k7 b");
+        System.out.println(board);
+        System.out.println(board.typeOfGameIAmIn);
+    }
 
     @Test
     void compareValuesOfEndgames() {

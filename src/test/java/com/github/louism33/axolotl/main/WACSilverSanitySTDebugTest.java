@@ -2,8 +2,10 @@ package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.util.ResettingUtils;
+import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,11 +17,12 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
+import static com.github.louism33.chesscore.MaterialHashUtil.typeOfEndgame;
 
 @RunWith(Parameterized.class)
 public class WACSilverSanitySTDebugTest {
 
-    private static final int timeLimit = 1_000;
+    private static final int timeLimit = 500;
     private Engine engine = new Engine();
 
     @BeforeClass
@@ -63,8 +66,12 @@ public class WACSilverSanitySTDebugTest {
     @Test
     public void test() {
         Engine.resetFull();
+        final Chessboard board = EPDObject.getBoard();
+
+        Assert.assertEquals(typeOfEndgame(board), board.typeOfGameIAmIn);
+        
         System.out.print(EPDObject.getId() + " ");
-        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
+        engine.receiveSearchSpecs(board, true, timeLimit);
         engine.simpleSearch();
     }
 

@@ -78,7 +78,8 @@ public final class Engine {
         }
         resetBetweenMoves();
         age = 0;
-        initTable(TABLE_SIZE);
+//        initTable(TABLE_SIZE);
+        initTableMegaByte(TABLE_SIZE_MB);
         PawnTranspositionTable.initPawnTableMegaByte();
         MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
         if (!EvaluationConstants.ready) {
@@ -411,6 +412,11 @@ public final class Engine {
 
             depth++;
 
+            if (MASTER_DEBUG) {
+                Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
+                Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
+            }
+
             if (!masterThread) {
                 if (depth % skipLookup[whichThread] == 0) {
                     if (DEBUG) {
@@ -438,6 +444,8 @@ public final class Engine {
 
 
             if (MASTER_DEBUG) {
+                Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
+                Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
                 if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash){
                     System.err.println("board");
                     System.err.println(board);
@@ -460,8 +468,70 @@ public final class Engine {
 
             while (true) {
 
+                if (MASTER_DEBUG) {
+                    if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash){
+                        System.err.println("board");
+                        System.err.println(board);
+                        System.err.println("clone");
+                        System.err.println(cloneBoard);
+                        System.err.println(board.zobristHash == cloneBoard.zobristHash);
+                        System.err.println(board.zobristPawnHash == cloneBoard.zobristPawnHash);
+                        System.err.println();
+                    }
+                    
+                    Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
+                    Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
+                    Assert.assertEquals(board.zobristPawnHash, cloneBoard.zobristPawnHash);
+                    Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);
+                }
+
+                score = principleVariationSearch(board, depth, 0,
+                        alpha, beta, 0, whichThread);
+
+                if (masterThread && (manageTime && !weHavePanicked)
+                        && (depth >= 6 && aiMoveScore < previousAiScore - PANIC_SCORE_DELTA)) {
+                    timeLimitMillis = allocatePanicTime(timeLimitMillis, absoluteMaxTimeLimit);
+                    weHavePanicked = true;
+                }
+
+                previousAiScore = aiMoveScore;
+
+                if (stopNow || stopSearch(startTime, timeLimitMillis)) {
+                    break everything;
+                }
+
+                if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+                    break everything;
+                }
+
+                aspTotal++;
+                if (score <= alpha) {
+                    aspFailA++;
+                    alphaAspirationAttempts++;
+                    if (alphaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES) {
+                        alpha = SHORT_MINIMUM;
+                    } else {
+                        alpha = aspirationScore - ASPIRATION_WINDOWS[alphaAspirationAttempts];
+                    }
+                } else if (score >= beta) {
+                    aspFailB++;
+                    betaAspirationAttempts++;
+                    if (betaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES) {
+                        beta = SHORT_MAXIMUM;
+                    } else {
+                        beta = aspirationScore - ASPIRATION_WINDOWS[betaAspirationAttempts];
+                    }
+                } else {
+                    aspSuccess++;
+                    break;
+                }
+            }
+            while (true) {
+
 
                 if (MASTER_DEBUG) {
+                    Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
+                    Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
                     if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash){
                         System.err.println("board");
                         System.err.println(board);
@@ -476,6 +546,13 @@ public final class Engine {
                     Assert.assertEquals(board.zobristPawnHash, cloneBoard.zobristPawnHash);
                     Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);
                 }
+
+                if (MASTER_DEBUG) {
+                    Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
+                    Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
+                }
+
+
 
                 score = principleVariationSearch(board, depth, 0,
                         alpha, beta, 0, whichThread);
@@ -798,10 +875,6 @@ public final class Engine {
             final boolean pawnToSeven = moveIsPawnPushSeven(turn, move);
             final boolean quietMove = !(captureMove || promotionMove);
 
-            if (captureMove || promotionMove) {
-                board.materialHash = MaterialHashUtil.typeOfEndgame(board);
-            }
-            
             if (captureMove && !promotionMove) {
                 Assert.assertTrue(moveScore >= (neutralCapture - 5));
             }
@@ -849,6 +922,11 @@ public final class Engine {
             }
 
             if (MASTER_DEBUG) {
+                Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
+                Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
+            }
+
+            if (MASTER_DEBUG) {
                 try {
                     board.makeMoveAndFlipTurn(move);
                 } catch (Exception | Error e) {
@@ -875,6 +953,7 @@ public final class Engine {
                     System.err.println(threadSet.size());
                     e.printStackTrace();
                     System.out.println();
+                    throw e;
                 }
             } else {
                 board.makeMoveAndFlipTurn(move);
