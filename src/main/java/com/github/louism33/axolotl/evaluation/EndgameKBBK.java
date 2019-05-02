@@ -10,13 +10,13 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.materia
 import static com.github.louism33.chesscore.BitOperations.*;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
-import static com.github.louism33.chesscore.MaterialHashUtil.KRK;
+import static com.github.louism33.chesscore.MaterialHashUtil.KBBK;
+import static java.lang.Long.numberOfLeadingZeros;
 import static java.lang.Long.numberOfTrailingZeros;
 
-public class EndgameKRK {
+public class EndgameKBBK {
 
-
-    public static final int[] weakKingLocationKRK = {
+    public static final int[] weakKingLocationKBBK = {
             14, 8, 10, 9, 9, 10, 8, 14,
             8, 4, 4, 2, 2, 4, 4, 8,
             10, 4, 2, 6, 6, 2, 4, 10,
@@ -28,21 +28,20 @@ public class EndgameKRK {
     };
 
 
-    public static int manFacRook = 0, chebFacRook = 1, centreFacRook = 2, rookNearEnemyKingMan = 3, rookNearEnemyKingCheb = 4;
-    public static int[] rookNumbers = {
-            -3, -18, 20, -5, -10
+    public static int manFacBishopBishop = 0, chebFacBishopBishop = 1, centreFacBishopBishop = 2, bishopBishopNearEnemyKingMan = 3, bishopBishopNearEnemyKingCheb = 4, bishopNearBishop = 5;
+    public static int[] bishopBishopNumbers = {
+            -3, -18, 20, -5, -10, 0
     };
 
-    public static int evaluateKRK(Chessboard board) {
+    public static int evaluateKBBK(Chessboard board) {
         int score = 0, winningPlayer = -1;
 
-        Assert.assertEquals(KRK, board.typeOfGameIAmIn);
+        Assert.assertEquals(KBBK, board.typeOfGameIAmIn);
 
         for (int turn = WHITE; turn <= BLACK; turn++) {
-            final long myRook = board.pieces[turn][ROOK];
-            if (myRook != 0) {
-                score += 8_000;
-
+            long myBishops = board.pieces[turn][BISHOP];
+            if (myBishops != 0) {
+                score += 7_000;
 
                 // included in order to stop losing pieces for no reason
                 int materialScore = 0;
@@ -53,18 +52,27 @@ public class EndgameKRK {
                 materialScore += populationCount(board.pieces[turn][QUEEN]) * material[Q];
                 score += Score.getScore(materialScore, 0);
                 
-                
                 winningPlayer = turn;
                 long myKing = board.pieces[turn][KING];
                 long enemyKing = board.pieces[1 - turn][KING];
                 final int myKingIndex = numberOfTrailingZeros(myKing);
                 final int enemyKingIndex = numberOfTrailingZeros(enemyKing);
-                final int myRookIndex = numberOfTrailingZeros(myRook);
+                final int bi1 = numberOfTrailingZeros(myBishops);
+                final int bi2 = numberOfLeadingZeros(myBishops);
+                
+                score += (bishopBishopNumbers[bishopNearBishop] * manhattanDistance(bi1, bi2) + bishopBishopNumbers[bishopNearBishop] * chebyshevDistance(bi1, bi2));
 
-                score += (rookNumbers[manFacRook] * manhattanDistance(myKingIndex, enemyKingIndex) + rookNumbers[chebFacRook] * chebyshevDistance(myKingIndex, enemyKingIndex));
-                score += rookNumbers[centreFacRook] * weakKingLocationKRK[enemyKingIndex];
+                score += (bishopBishopNumbers[manFacBishopBishop] * manhattanDistance(myKingIndex, enemyKingIndex) + bishopBishopNumbers[chebFacBishopBishop] * chebyshevDistance(myKingIndex, enemyKingIndex));
+                score += bishopBishopNumbers[centreFacBishopBishop] * weakKingLocationKBBK[enemyKingIndex];
 
-                score += (rookNumbers[rookNearEnemyKingMan] * manhattanDistance(myRookIndex, enemyKingIndex) + rookNumbers[rookNearEnemyKingCheb] * chebyshevDistance(myRookIndex, enemyKingIndex));
+                while (myBishops != 0) {
+
+                    int b = numberOfTrailingZeros(myBishops);
+
+                    score += (bishopBishopNumbers[bishopBishopNearEnemyKingMan] * manhattanDistance(b, enemyKingIndex) + bishopBishopNumbers[bishopBishopNearEnemyKingCheb] * chebyshevDistance(b, enemyKingIndex));
+
+                    myBishops &= myBishops - 1;
+                }
             }
         }
 

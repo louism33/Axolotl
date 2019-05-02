@@ -2,6 +2,8 @@ package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.util.ResettingUtils;
+import com.github.louism33.chesscore.Art;
+import com.github.louism33.chesscore.BoardConstants;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.MoveParserFromAN;
@@ -14,9 +16,9 @@ import org.junit.jupiter.api.Test;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.search.Engine.*;
-import static com.github.louism33.axolotl.search.EngineSpecifications.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.DEBUG;
+import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_PV;
 import static com.github.louism33.chesscore.MaterialHashUtil.*;
-import static com.github.louism33.chesscore.MaterialHashUtil.KRK;
 
 @Ignore
 public class BasicMates {
@@ -27,12 +29,14 @@ public class BasicMates {
     @BeforeEach
     void setup() {
         ResettingUtils.reset();
+        sendBestMove = false;
     }
 
 
     @AfterEach
     void tearDown() {
         ResettingUtils.reset();
+        sendBestMove = true;
     }
 
     @Test
@@ -55,12 +59,11 @@ public class BasicMates {
             Engine.resetFull();
             Chessboard board = new Chessboard(kqkPositions[i]);
             Assert.assertEquals(KQK, typeOfEndgame(board));
-            System.out.println(board);
+//            System.out.println(board);
             System.out.println("searching checkmate found for KQK: " + board.toFenString());
             engine.receiveSearchSpecs(board, true, 10_000);
 
             engine.simpleSearch();
-            System.out.println("score: " + aiMoveScore);
             Assert.assertTrue(aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
             System.out.println("checkmate found");
         }
@@ -87,19 +90,19 @@ public class BasicMates {
             Engine.resetFull();
             Chessboard board = new Chessboard(kqkPositions[i]);
             Assert.assertEquals(KQK, typeOfEndgame(board));
-            System.out.println(board);
+            System.out.println("searching my checkmate for KQK: " + board.toFenString());
             engine.receiveSearchSpecs(board, true, 20_000);
 
             Evaluator.eval(board, board.generateLegalMoves());
             engine.simpleSearch();
-            System.out.println("score: " + aiMoveScore);
             Assert.assertTrue(aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY);
+            System.out.println("checkmate found");
         }
     }
 
     @Test
     void KRKWins() {
-        PRINT_PV = true;
+//        PRINT_PV = true;
 
         //mate in 16
         String pos = "" +
@@ -110,20 +113,19 @@ public class BasicMates {
                 "8/8/2R5/8/8/3k4/8/K7 w\n" +
                 "";
 
-        String[] krkPositions = pos.split("\n");
+        String[] positions = pos.split("\n");
 
-        for (int i = 0; i < krkPositions.length; i++) {
+        for (int i = 0; i < positions.length; i++) {
             Engine.resetFull();
-            Chessboard board = new Chessboard(krkPositions[i]);
+            Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KRK, typeOfEndgame(board));
-            System.out.println(board);
+            System.out.println("searching checkmate for KRK: " + board.toFenString());
             engine.receiveSearchSpecs(board, true, 10_000);
 
             Evaluator.eval(board, board.generateLegalMoves());
-            final int move = engine.simpleSearch();
-            System.out.println("best move: " + MoveParser.toString(move));
-            System.out.println("score: " + aiMoveScore);
+            engine.simpleSearch();
             Assert.assertTrue(aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
+            System.out.println("checkmate found");
         }
     }
 
@@ -157,20 +159,17 @@ public class BasicMates {
             Engine.resetFull();
             Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KRRK, typeOfEndgame(board));
-            System.out.println(board);
-            engine.receiveSearchSpecs(board, true, 10000);
-
-            Evaluator.eval(board, board.generateLegalMoves());
-            final int move = engine.simpleSearch();
-            System.out.println("best move: " + MoveParser.toString(move));
-            System.out.println("score: " + aiMoveScore);
-//            Assert.assertTrue(aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
+            engine.receiveSearchSpecs(board, true, 4_000);
+            System.out.println("searching checkmate for KRRK: " + board.toFenString());
+            engine.simpleSearch();
+            Assert.assertTrue(aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
+            System.out.println("checkmate found");
         }
     }
 
     @Test
     void KRKlosses() {
-        PRINT_PV = true;
+//        PRINT_PV = true;
 
         //loss in 16
         String pos = "" +
@@ -186,20 +185,56 @@ public class BasicMates {
                 "8/2R5/8/8/8/8/2k5/K7 b" +
                 "";
 
-        String[] krkPositions = pos.split("\n");
+        String[] positions = pos.split("\n");
 
-        for (int i = 0; i < krkPositions.length; i++) {
+        for (int i = 0; i < positions.length; i++) {
             Engine.resetFull();
-            Chessboard board = new Chessboard(krkPositions[i]);
+            Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KRK, typeOfEndgame(board));
-            System.out.println(board);
-            engine.receiveSearchSpecs(board, true, 10000);
+            System.out.println("searching my checkmate for KRK: " + board.toFenString());
+            engine.receiveSearchSpecs(board, true, 10_000);
 
-            Evaluator.eval(board, board.generateLegalMoves());
             final int move = engine.simpleSearch();
-            System.out.println("best move: " + MoveParser.toString(move));
-            System.out.println("score: " + aiMoveScore);
             Assert.assertTrue(aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY);
+            System.out.println("checkmate found");
+        }
+    }   
+    
+    @Test
+    void KBBKwins() {
+//        PRINT_PV = true;
+
+        String pos = "" +
+                "8/8/8/8/7B/8/3k4/K2B4 w\n" +
+                "8/4B3/8/8/8/8/3k4/K2B4 w\n" +
+                "3B4/8/8/8/8/8/3k4/K2B4 w\n" +
+                "8/4B3/8/8/8/8/3kB3/K7 w\n" +
+                "8/8/8/8/B7/3k4/3B4/K7 w\n" +
+                "8/3B4/8/8/8/3k4/3B4/K7 w\n" +
+                "4B3/8/8/8/8/3k4/3B4/K7 w\n" +
+                "8/8/8/8/7B/4k3/4B3/K7 w\n" +
+                "8/4B3/8/8/8/4k3/4B3/K7 w\n" +
+                "8/8/8/6B1/2Bk4/8/8/K7 w\n" +
+                "8/8/8/8/5kB1/8/8/K3B3 w\n" +
+                "4B3/8/8/8/6kB/8/8/K7 w\n" +
+                "8/8/8/5kB1/B7/8/8/K7 w\n" +
+                "8/8/8/1B3kB1/8/8/8/K7 w\n" +
+                "4B3/8/8/5kB1/8/8/8/K7 w" +
+                "";
+
+        String[] positions = pos.split("\n");
+
+        for (int i = 0; i < positions.length; i++) {
+            Engine.resetFull();
+            Chessboard board = new Chessboard(positions[i]);
+            Assert.assertEquals(KBBK, typeOfEndgame(board));
+            System.out.println(board);
+            System.out.println("searching my checkmate for KRK: " + board.toFenString());
+            engine.receiveSearchSpecs(board, true, 10_000);
+
+            final int move = engine.simpleSearch();
+            Assert.assertTrue(aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY);
+            System.out.println("checkmate found");
         }
     }
     
@@ -228,6 +263,4 @@ public class BasicMates {
 
         Engine.resetFull();
     }
-
-
 }

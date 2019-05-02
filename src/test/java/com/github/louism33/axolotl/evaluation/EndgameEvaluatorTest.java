@@ -2,6 +2,7 @@ package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.chesscore.MaterialHashUtil.*;
@@ -78,5 +79,49 @@ public class EndgameEvaluatorTest {
     void isKBBKTestDiffSqBlack() {
         Chessboard board = new Chessboard("6bb/8/8/8/8/8/7k/K7");
         Assert.assertFalse(isBasicallyDrawn(board));
+        Assert.assertEquals(KBBK, typeOfEndgame(board));
+    }
+
+    @Test
+    void isKRRKTestBlack() {
+        Chessboard board = new Chessboard("rr6/8/8/8/8/8/7K/k7");
+        Assert.assertFalse(isBasicallyDrawn(board));
+        Assert.assertEquals(KRRK, typeOfEndgame(board));
+    }
+    
+    @Test
+    void isKRRKTestWhite() {
+        Chessboard board = new Chessboard("RR6/8/8/8/8/8/7k/K7");
+        Assert.assertFalse(isBasicallyDrawn(board));
+        Assert.assertEquals(KRRK, typeOfEndgame(board));
+    }
+
+    @Test
+    void compareValuesOfEndgames() {
+        // longest dtm
+
+        int krrk = Evaluator.eval(new Chessboard("rr6/8/8/8/8/8/7K/k7 b")); // 7
+        int kqk = Evaluator.eval(new Chessboard("8/7q/8/8/8/8/7k/4K3 b"));  // 10
+        int krk = Evaluator.eval(new Chessboard("8/8/8/8/8/8/6Rk/4K3 w"));  // 16
+        int kbbk = Evaluator.eval(new Chessboard("6bb/8/8/8/8/8/7k/K7 b")); // 19
+        int kpk = Evaluator.eval(new Chessboard("8/8/8/8/8/8/6Pk/4K3 w"));  // 28
+        int kbnk = Evaluator.eval(new Chessboard("8/6bn/8/8/8/8/7k/4K3 b"));// 33
+        
+        Assert.assertTrue(krrk > kqk);
+        Assert.assertTrue(kqk > krk);
+        Assert.assertTrue(krk > kbbk);
+        Assert.assertTrue(kbbk > kbnk);
+        
+//        Assert.assertTrue(kbbk > kpk); // make sure kpk is a won one
+//        Assert.assertTrue(kpk > kbnk);
+    }
+
+    @Test
+    @Ignore
+    void comparePureEndgameToEndgamePlusMaterialKRRK() {
+        int krrkPure = Evaluator.eval(new Chessboard("rr6/8/8/8/8/8/7K/k7 b"));
+        int krrkExtra = Evaluator.eval(new Chessboard("rrr5/8/8/8/8/8/7K/k7 b"));
+
+        Assert.assertTrue(krrkExtra > krrkPure);
     }
 }

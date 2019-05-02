@@ -5,6 +5,7 @@ import org.junit.Assert;
 
 import java.util.Arrays;
 
+import static com.github.louism33.axolotl.evaluation.EndgameKBBK.evaluateKBBK;
 import static com.github.louism33.axolotl.evaluation.EndgameKQK.evaluateKQK;
 import static com.github.louism33.axolotl.evaluation.EndgameKRK.evaluateKRK;
 import static com.github.louism33.axolotl.evaluation.EndgameKRRK.evaluateKRRK;
@@ -55,6 +56,10 @@ public final class Evaluator {
      * pinned pieces, and to queen
      */
 
+    public static final int eval(final Chessboard board) {
+        return eval(board, board.generateLegalMoves());
+    }
+
     public static final int eval(final Chessboard board, final int[] moves) {
         if (board.isDrawByInsufficientMaterial() || board.isDrawByFiftyMoveRule()
                 || board.isDrawByRepetition(1)) {
@@ -71,22 +76,19 @@ public final class Evaluator {
             case KQK:
                 return evaluateKQK(board);
             case KRRK:
-
-                if (populationCount(board.pieces[WHITE][ROOK] | board.pieces[BLACK][ROOK]) != 2) {
-//                    System.out.println(board);
-                    while (true) {
-                        System.err.println("===");
-                        System.err.println(board);
-                        System.err.println(board.typeOfGameIAmIn);
-                        System.err.println(Arrays.toString(board.typeOfGameIAmInStack));
-                        System.err.println(board.toFenString());
-                        System.err.println();
-                        board.unMakeMoveAndFlipTurn();
-                    }
-                }       
                 Assert.assertEquals(2,
-                    populationCount(board.pieces[WHITE][ROOK] | board.pieces[BLACK][ROOK]));
+                        populationCount(board.pieces[WHITE][ROOK] | board.pieces[BLACK][ROOK]));
                 return evaluateKRRK(board);
+
+            case KBBK:
+                Assert.assertEquals(2,
+                        populationCount(board.pieces[WHITE][BISHOP] | board.pieces[BLACK][BISHOP]));
+                return evaluateKBBK(board);
+
+//            case KBNK:
+//                Assert.assertTrue(2 == populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
+//                        || 2 == populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]));
+//                return evaluateKBNK(board);
 
             case UNKNOWN:
             default:
@@ -108,6 +110,14 @@ public final class Evaluator {
                     case KRRK:
                         board.typeOfGameIAmIn = KRRK;
                         return evaluateKRRK(board);
+                    case KBBK:
+                        board.typeOfGameIAmIn = KBBK;
+                        return evaluateKBBK(board);
+//                    case KBNK:
+//                        board.typeOfGameIAmIn = KBNK;
+//                        Assert.assertTrue(2 == populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
+//                                || 2 == populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]));
+//                        return evaluateKBNK(board);
 
                     case UNKNOWN:
                     default:

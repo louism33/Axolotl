@@ -4,15 +4,19 @@ import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 
-import static com.github.louism33.chesscore.BitOperations.chebyshevDistance;
-import static com.github.louism33.chesscore.BitOperations.manhattanDistance;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.K;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.Q;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.material;
+import static com.github.louism33.chesscore.BitOperations.*;
+import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
-import static com.github.louism33.chesscore.MaterialHashUtil.KRRK;
+import static com.github.louism33.chesscore.MaterialHashUtil.*;
 import static java.lang.Long.numberOfTrailingZeros;
 
 public class EndgameKRRK {
 
-    public static final int[] centreManhattanDistanceRR = {
+    public static final int[] weakKingLocationKRRK = {
             9, 8, 9, 9, 9, 9, 8, 9,
             8, 4, 4, 2, 2, 4, 4, 8,
             9, 4, 2, 1, 1, 2, 4, 9,
@@ -32,16 +36,25 @@ public class EndgameKRRK {
     public static int evaluateKRRK(Chessboard board) {
         int score = 0, winningPlayer = -1;
 
-        Assert.assertEquals(KRRK, board.typeOfGameIAmIn);
+        int[] allowedGames = {KQQK, KQRK, KRRK};
+
+        Assert.assertTrue(contains(allowedGames, board.typeOfGameIAmIn));
 
         for (int turn = WHITE; turn <= BLACK; turn++) {
-            long myRooks = board.pieces[turn][ROOK];
-            if (myRooks != 0) {
+            long myPieces = board.pieces[turn][ROOK] | board.pieces[turn][QUEEN];
+            if (myPieces != 0) {
 
-                Assert.assertEquals(2, BitOperations.populationCount(myRooks));
+                score += 10_000;
 
-                score += 2000;
-
+                // included in order to stop losing pieces for no reason
+                int materialScore = 0;
+                materialScore += populationCount(board.pieces[turn][PAWN]) * material[P];
+                materialScore += populationCount(board.pieces[turn][KNIGHT]) * material[K];
+                materialScore += populationCount(board.pieces[turn][BISHOP]) * material[B];
+                materialScore += populationCount(board.pieces[turn][ROOK]) * material[R];
+                materialScore += populationCount(board.pieces[turn][QUEEN]) * material[Q];
+                score += Score.getScore(materialScore, 0);
+                
                 winningPlayer = turn;
                 long myKing = board.pieces[turn][KING];
                 long enemyKing = board.pieces[1 - turn][KING];
@@ -50,15 +63,15 @@ public class EndgameKRRK {
 
                 score += (rookRookNumbers[manFacRookRook] * manhattanDistance(myKingIndex, enemyKingIndex) + rookRookNumbers[chebFacRookRook] * chebyshevDistance(myKingIndex, enemyKingIndex));
 
-                score += rookRookNumbers[centreFacRookRook] * centreManhattanDistanceRR[numberOfTrailingZeros(enemyKing)];
+                score += rookRookNumbers[centreFacRookRook] * weakKingLocationKRRK[numberOfTrailingZeros(enemyKing)];
 
-                while (myRooks != 0) {
+                while (myPieces != 0) {
 
-                    int r = numberOfTrailingZeros(myRooks);
+                    int r = numberOfTrailingZeros(myPieces);
 
                     score += (rookRookNumbers[rookRookNearEnemyKingMan] * manhattanDistance(r, enemyKingIndex) + rookRookNumbers[rookRookNearEnemyKingCheb] * chebyshevDistance(r, enemyKingIndex));
 
-                    myRooks &= myRooks - 1;
+                    myPieces &= myPieces - 1;
                 }
             }
         }
