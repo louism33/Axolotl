@@ -10,7 +10,7 @@ import org.junit.Test;
 import static com.github.louism33.axolotl.search.Engine.sendBestMove;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
-public class BasicMTSearch {
+public class BasicMTSearchTest {
 
     private static Engine engine = new Engine();
     private static int timeLimit = 10_000;

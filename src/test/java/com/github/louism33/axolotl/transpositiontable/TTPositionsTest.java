@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_PV;
 
-public class TTPositions {
+public class TTPositionsTest {
 
     private Engine engine = new Engine();
     

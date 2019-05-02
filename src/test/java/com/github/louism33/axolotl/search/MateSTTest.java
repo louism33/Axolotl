@@ -18,9 +18,9 @@ import java.util.List;
 import static challenges.Utils.contains;
 
 @RunWith(Parameterized.class)
-public class MateTestMTMulti {
+public class MateSTTest {
 
-    private static final int threads = 4;
+    private static final int threads = 1;
     private static final int timeLimit = 1_000;
     private static int successes = 0;
     private static final int targetSuccesses = 145;
@@ -29,15 +29,11 @@ public class MateTestMTMulti {
     @BeforeClass
     public static void setup() {
         ResettingUtils.reset();
+        EngineSpecifications.PRINT_PV = false;
+        Engine.setThreads(threads);
 
         EngineSpecifications.MASTER_DEBUG = true;
-//        EngineSpecifications.PRINT_PV = true;
-//        EngineSpecifications.DEBUG = true;
-        EngineSpecifications.PRINT_PV = false;
-//        EngineSpecifications.MASTER_DEBUG = false;
-        EngineSpecifications.DEBUG = false;
-        
-        Engine.setThreads(threads);
+
         final String str = "Testing " + checkmatePositions.length + " Mate positions with " + threads + " threads. " +
                 "Time per position: " + timeLimit + " milliseconds."
                 + "\nIf more than " + targetSuccesses + " are correct, success.";
@@ -50,7 +46,6 @@ public class MateTestMTMulti {
                 + ". Anything above " + targetSuccesses + " can be thought of as ok.");
         EngineSpecifications.PRINT_PV = false;
         EngineSpecifications.MASTER_DEBUG = false;
-        EngineSpecifications.DEBUG = false;
         Assert.assertTrue(successes > targetSuccesses);
     }
 
@@ -73,7 +68,7 @@ public class MateTestMTMulti {
 
     private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
-    public MateTestMTMulti(Object edp, Object name) {
+    public MateSTTest(Object edp, Object name) {
         EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
     }
 
@@ -83,9 +78,8 @@ public class MateTestMTMulti {
         System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         final Chessboard board = EPDObject.getBoard();
-        System.out.println(board);
         engine.receiveSearchSpecs(board, true, timeLimit);
-
+        
         final int move = engine.simpleSearch();
         MoveParser.printMove(move);
 
@@ -95,7 +89,6 @@ public class MateTestMTMulti {
         } else {
             System.out.println("failure");
         }
-
 
     }
 
@@ -238,8 +231,8 @@ public class MateTestMTMulti {
             "r1b1k2r/pp2bpp1/1np1p2p/8/4BB2/3R1N2/qPP1QPPP/2K4R b kq - 0 1 bm Qa1+; \n" +
             "2r3k1/p4p2/1p2P1pQ/3bR2p/1q6/1B6/PP2RPr1/5K2 w - - 1 0 bm exf7+; \n" +
             "r1bkr3/1p3ppp/p1p5/4P3/2B1n3/2P1B3/P1P3PP/R4RK1 w - - 1 0 bm Bb6+; \n" +
-            "r4r1k/pppq1p1p/3p4/5p1Q/2B1Pp2/3P3P/PPn2P1K/R5R1 w - - 1 0 bm Rg7; \n" + // had problem
-            "2kr1b1r/ppq5/1np1pp2/P3Pn2/1P3P2/2P2Qp1/6P1/RNB1RBK1 b - - 0 1 bm Rh1+; \n" + // 
+            "r4r1k/pppq1p1p/3p4/5p1Q/2B1Pp2/3P3P/PPn2P1K/R5R1 w - - 1 0 bm Rg7; \n" +
+            "2kr1b1r/ppq5/1np1pp2/P3Pn2/1P3P2/2P2Qp1/6P1/RNB1RBK1 b - - 0 1 bm Rh1+; \n" +
             "2Q5/4ppbk/3p4/3P1NPp/4P3/5NB1/5PPK/rq6 w - - 1 0 bm g6+; \n" +
             "5r1k/p1p1q1pp/1p1p4/8/2PPn3/B1P1P3/P1Q1P2p/1R5K b - - 0 1 bm f8f2 Nf2+; \n" +
             "2b5/3qr2k/5Q1p/P3B3/1PB1PPp1/4K1P1/8/8 w - - 1 0 bm Bg8+; \n" +

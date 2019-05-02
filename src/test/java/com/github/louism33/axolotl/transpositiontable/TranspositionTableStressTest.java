@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.search.Engine.hashTableReturn;
@@ -14,6 +15,7 @@ import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 
 @Ignore
+@Disabled
 public class TranspositionTableStressTest {
 
     static final int depth = 12;

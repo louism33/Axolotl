@@ -4,7 +4,7 @@ import com.github.louism33.axolotl.search.Engine;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
-public class UCIDontCrash {
+public class UCIDontCrashTest {
 
     @BeforeAll
     static void setup() {

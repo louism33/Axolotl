@@ -239,6 +239,11 @@ public final class Engine {
                 break;
             }
         }
+
+        for (int t = 1; t < NUMBER_OF_THREADS; t++) {
+            threads[t].interrupt();
+        }
+        
         return getAiMove();
     }
 

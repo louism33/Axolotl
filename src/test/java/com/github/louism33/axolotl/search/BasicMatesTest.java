@@ -2,26 +2,22 @@ package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.util.ResettingUtils;
-import com.github.louism33.chesscore.Art;
-import com.github.louism33.chesscore.BoardConstants;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.search.Engine.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.DEBUG;
-import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_PV;
 import static com.github.louism33.chesscore.MaterialHashUtil.*;
 
-@Ignore
-public class BasicMates {
+public class BasicMatesTest {
 
     // thanks to guido for many of these positions  http://kirill-kryukov.com/chess/discussion-board/viewtopic.php?f=6&t=920
     Engine engine = new Engine();
@@ -41,8 +37,6 @@ public class BasicMates {
 
     @Test
     void KRRKWins() {
-        PRINT_PV = true;
-
         //mate in 7 at worst
         String pos = "" +
                 "8/8/8/8/8/3k4/2R5/KR6 w\n" +
@@ -97,7 +91,6 @@ public class BasicMates {
             Engine.resetFull();
             Chessboard board = new Chessboard(kqkPositions[i]);
             Assert.assertEquals(KQK, typeOfEndgame(board));
-//            System.out.println(board);
             System.out.println("searching checkmate found for KQK: " + board.toFenString());
             engine.receiveSearchSpecs(board, true, 10_000);
 
@@ -108,7 +101,6 @@ public class BasicMates {
     }
 
     @Test
-    @Ignore
     void KQKloss() {
         //loss in 10
         String pos = "" +
@@ -140,8 +132,6 @@ public class BasicMates {
 
     @Test
     void KRKWins() {
-//        PRINT_PV = true;
-
         //mate in 16
         String pos = "" +
                 "8/8/5k1K/6r1/8/8/8/8 b - -\n" +
@@ -171,8 +161,6 @@ public class BasicMates {
 
     @Test
     void KRKlosses() {
-//        PRINT_PV = true;
-
         //loss in 16
         String pos = "" +
                 "K7/8/8/8/8/8/8/3k1R2 b\n" +
@@ -203,7 +191,7 @@ public class BasicMates {
     }   
     
     @Test
-    @Ignore
+    @Disabled
     void KBBKwins() {
 //        PRINT_PV = true;
 
@@ -242,7 +230,7 @@ public class BasicMates {
     }
 
     @Test
-    @Ignore
+    @Disabled
     void KBNKwins() {
 //        PRINT_PV = true;
 
@@ -286,7 +274,7 @@ public class BasicMates {
     }
 
     @Test
-    @Ignore
+    @Disabled
     void KBNKloss() {
 //        PRINT_PV = true;
 

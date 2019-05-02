@@ -11,7 +11,7 @@ import org.junit.Test;
 import static com.github.louism33.axolotl.search.Engine.sendBestMove;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
-public class BasicProblemSearches {
+public class BasicProblemSearchesTest {
 
     // tests from positions that at some point or other caused problems/crashes for the engine
     

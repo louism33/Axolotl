@@ -14,28 +14,34 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
+import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
 @RunWith(Parameterized.class)
-public class WACSilverSanityDEBUGTest {
+public class WACSilverSanityMTDebugTest {
 
-    private static final int timeLimit = 1_000;
-    private Engine engine = new Engine();
+    private static final int timeLimit = 5_000;
+    private static final int threads = 4;
+    private static Engine engine = new Engine();
 
     @BeforeClass
     public static void setup() {
         ResettingUtils.reset();
-        MASTER_DEBUG = true;
+        Engine.setThreads(threads);
         Engine.sendBestMove = false;
-        
-        final String str = "Testing " + splitUpPositions.length + " WAC silver positions with God Debug on nad one thread. Don't crash!. ";
+
+        DEBUG = true;
+        MASTER_DEBUG = true;
+
+        final String str = "Debug Testing " + splitUpPositions.length + " WAC silver positions with God Debug on and " + threads + " threads. Don't crash!. ";
         System.out.println(str);
     }
 
     @AfterClass
     public static void finalSuccessTally() {
         ResettingUtils.reset();
+        DEBUG = false;
         MASTER_DEBUG = false;
+        PRINT_PV = false;
     }
 
     @Parameters(name = "{index} Test: {1}")
@@ -56,7 +62,7 @@ public class WACSilverSanityDEBUGTest {
 
     private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
-    public WACSilverSanityDEBUGTest(Object edp, Object name) {
+    public WACSilverSanityMTDebugTest(Object edp, Object name) {
         EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
     }
 

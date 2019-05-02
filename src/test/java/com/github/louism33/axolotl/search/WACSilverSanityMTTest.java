@@ -17,7 +17,7 @@ import java.util.List;
 import static challenges.Utils.contains;
 
 @RunWith(Parameterized.class)
-public class WACSilverSanityTestMTMulti {
+public class WACSilverSanityMTTest {
 
     private static final int threads = 4;
     private static final int timeLimit = 1_000;
@@ -62,7 +62,7 @@ public class WACSilverSanityTestMTMulti {
 
     private static ExtendedPositionDescriptionParser.EPDObject EPDObject;
 
-    public WACSilverSanityTestMTMulti(Object edp, Object name) {
+    public WACSilverSanityMTTest(Object edp, Object name) {
         EPDObject = (ExtendedPositionDescriptionParser.EPDObject) edp;
     }
 
