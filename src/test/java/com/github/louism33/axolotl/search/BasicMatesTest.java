@@ -112,6 +112,7 @@ public class BasicMatesTest {
     }
 
     @Test
+    @Disabled
     void KQKloss() {
         System.out.println("\nsearching my checkmate for KQK positions: ");
         //loss in 10
@@ -131,8 +132,9 @@ public class BasicMatesTest {
         for (int i = 0; i < kqkPositions.length; i++) {
             Engine.resetFull();
             Chessboard board = new Chessboard(kqkPositions[i]);
+            System.out.println(board);
             Assert.assertEquals(KQK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 20_000);
+            engine.receiveSearchSpecs(board, true, 30_000);
 
             Evaluator.eval(board, board.generateLegalMoves());
             engine.simpleSearch();

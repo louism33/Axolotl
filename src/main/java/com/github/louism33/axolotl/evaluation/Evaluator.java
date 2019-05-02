@@ -115,7 +115,7 @@ public final class Evaluator {
                 Assert.assertTrue(!isBasicallyDrawn(board));
                 Assert.assertTrue(populationCount(board.pieces[WHITE][BISHOP]) >= 2
                         || populationCount(board.pieces[BLACK][BISHOP]) >= 2);
-                return evaluateKBNK(board);
+                return evaluateKBBK(board);
 
             case KBNK:
                 Assert.assertTrue(!isBasicallyDrawn(board));

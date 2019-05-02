@@ -11,6 +11,7 @@ import static com.github.louism33.chesscore.BitOperations.*;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MaterialHashUtil.KBBK;
+import static com.github.louism33.chesscore.MaterialHashUtil.KBNK;
 import static java.lang.Long.numberOfLeadingZeros;
 import static java.lang.Long.numberOfTrailingZeros;
 
@@ -36,7 +37,7 @@ public class EndgameKBNK {
     public static int evaluateKBNK(Chessboard board) {
         int score = 0, winningPlayer = -1;
 
-        Assert.assertEquals(KBBK, board.typeOfGameIAmIn);
+        Assert.assertEquals(KBNK, board.typeOfGameIAmIn);
 
         for (int turn = WHITE; turn <= BLACK; turn++) {
             long myBishops = board.pieces[turn][BISHOP];
