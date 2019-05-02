@@ -23,7 +23,9 @@ public class TranspositionTableStressTest {
     @BeforeEach
     public void setup() throws InterruptedException {
         Thread.sleep(sleepBetween);
+        System.gc();
         ResettingUtils.reset();
+        Engine.sendBestMove = false;
     }
 
     @AfterAll
@@ -68,14 +70,14 @@ public class TranspositionTableStressTest {
 
     @Test
     void testFine70Single() {
-        System.out.println("fine 70 tt stats: ");
+        System.out.println("fine 70 tt stats single: ");
         stressTestToDepthTest(32,
                 new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -"), DEFAULT_TABLE_SIZE_MB);
     }
 
     @Test
     void testFine70MT() {
-        System.out.println("fine 70 tt stats: ");
+        System.out.println("fine 70 tt stats MT: ");
         stressTestToDepthTest(32, 
                 new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -"), DEFAULT_TABLE_SIZE_MB, 4);
         ResettingUtils.reset();

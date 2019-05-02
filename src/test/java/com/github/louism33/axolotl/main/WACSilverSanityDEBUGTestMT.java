@@ -27,12 +27,12 @@ public class WACSilverSanityDEBUGTestMT {
     public static void setup() {
         ResettingUtils.reset();
         Engine.setThreads(threads);
+        Engine.sendBestMove = false;
         
         DEBUG = true;
         MASTER_DEBUG = true;
-        PRINT_PV = true;
         
-        final String str = "Testing " + splitUpPositions.length + " WAC silver positions with God Debug on. Don't crash!. ";
+        final String str = "Testing " + splitUpPositions.length + " WAC silver positions with God Debug on and " + threads + " threads. Don't crash!. ";
         System.out.println(str);
     }
 
@@ -69,9 +69,9 @@ public class WACSilverSanityDEBUGTestMT {
     @Test
     public void test() {
         Engine.resetFull();
-        System.out.println(EPDObject.getFullString());
+        System.out.print(EPDObject.getId() + " ");
         engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
-        int move = engine.simpleSearch();
+        engine.simpleSearch();
     }
 
     private static final String positions = "" +

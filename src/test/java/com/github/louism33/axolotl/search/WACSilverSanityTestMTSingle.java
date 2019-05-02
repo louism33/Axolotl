@@ -29,6 +29,7 @@ public class WACSilverSanityTestMTSingle {
     public static void setup() {
         ResettingUtils.reset();
         EngineSpecifications.PRINT_PV = false;
+        Engine.sendBestMove = false;
         Engine.setThreads(threads);
         final String str = "Testing " + splitUpPositions.length + " WAC silver positions. " +
                 "Time per position: " + timeLimit + " milliseconds."

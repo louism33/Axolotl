@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
+import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
@@ -21,6 +22,7 @@ public class PawnTTTest {
     @BeforeClass
     public static void setup() {
         ResettingUtils.reset();
+        Engine.sendBestMove = false;
         final String str = "Testing " + splitUpPositions.length + " position for pawn TT test. ";
         System.out.println(str);
     }
@@ -50,7 +52,7 @@ public class PawnTTTest {
     @Test
     public void test() {
         PawnTranspositionTable.reset();
-        System.out.println(EPDObject.getFullString());
+        System.out.print(EPDObject.getId() + " ");
         Chessboard board = new Chessboard(EPDObject.getBoardFen());
 
         long[] pawnData = PawnTranspositionTable.getPawnData(board, board.zobristPawnHash, 0);

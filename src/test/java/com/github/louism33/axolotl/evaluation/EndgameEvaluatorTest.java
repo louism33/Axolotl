@@ -1,14 +1,24 @@
 package com.github.louism33.axolotl.evaluation;
 
+import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 import org.junit.Ignore;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.chesscore.MaterialHashUtil.*;
 
 public class EndgameEvaluatorTest {
 
+    Engine engine = new Engine();
+    
+    @BeforeAll
+    static void setup() {
+        ResettingUtils.reset();
+    }
+    
     @Test
     void isKPKTestWhite() {
         Chessboard board = new Chessboard("8/8/8/8/8/8/6Pk/4K3");

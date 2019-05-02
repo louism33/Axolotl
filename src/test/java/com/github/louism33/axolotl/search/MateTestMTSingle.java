@@ -34,7 +34,7 @@ public class MateTestMTSingle {
 
         EngineSpecifications.MASTER_DEBUG = true;
 
-        final String str = "Testing " + checkmatePositions.length + " Mate positions MT. " +
+        final String str = "Testing " + checkmatePositions.length + " Mate positions with " + threads + " threads. " +
                 "Time per position: " + timeLimit + " milliseconds."
                 + "\nIf more than " + targetSuccesses + " are correct, success.";
         System.out.println(str);

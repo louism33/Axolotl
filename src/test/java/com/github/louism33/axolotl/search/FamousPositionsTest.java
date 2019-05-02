@@ -18,7 +18,7 @@ public class FamousPositionsTest {
     @BeforeAll
     public static void setup() {
         ResettingUtils.reset();
-        PRINT_PV = true;
+        PRINT_PV = false;
     }
 
     @AfterAll
@@ -47,11 +47,8 @@ public class FamousPositionsTest {
         String pos = "7K/8/k1P5/7p/8/8/8/8 w - -";
         ExtendedPositionDescriptionParser.EPDObject EPDObject =
                 ExtendedPositionDescriptionParser.parseEDPPosition(pos);
-//        System.out.println(EPDObject.getBoard());
-        
         engine.receiveSearchSpecs(EPDObject.getBoard(), true, 1_000);
         final int move = engine.simpleSearch();
-        MoveParser.printMove(move);
         Assert.assertEquals(MoveParser.toString(move), "h8g7");
         Assert.assertEquals(Engine.aiMoveScore, 0);
     }
