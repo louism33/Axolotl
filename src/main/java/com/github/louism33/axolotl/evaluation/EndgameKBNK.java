@@ -3,35 +3,42 @@ package com.github.louism33.axolotl.evaluation;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.K;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.Q;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.material;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.chesscore.BitOperations.*;
-import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
-import static com.github.louism33.chesscore.MaterialHashUtil.KBBK;
 import static com.github.louism33.chesscore.MaterialHashUtil.KBNK;
-import static java.lang.Long.numberOfLeadingZeros;
 import static java.lang.Long.numberOfTrailingZeros;
 
 public class EndgameKBNK {
 
-    public static final int[] weakKingLocationKBBK = {
-            14, 8, 10, 9, 9, 10, 8, 14,
-            8, 4, 4, 2, 2, 4, 4, 8,
-            10, 4, 2, 6, 6, 2, 4, 10,
-            9, 2, 6, 0, 0, 6, 2, 9,
-            9, 2, 6, 0, 0, 6, 2, 9,
-            10, 4, 2, 6, 6, 2, 4, 10,
-            8, 4, 4, 2, 2, 4, 4, 8,
-            14, 8, 10, 9, 9, 10, 8, 14,
+    public static void makeBlackKingLocations() {
+        for (int i = 0; i < 64; i++) {
+            weakKingLocationKBNKBlackBishop[i] = weakKingLocationKBNKWhiteBishop[MIRRORED_LEFT_RIGHT[i]];
+        }
+    }
+
+    private static int[] weakKingLocationKBNKBlackBishop = new int[64];
+
+    public static final int[] weakKingLocationKBNKWhiteBishop = {
+            7, 6, 5, 4, 3, 2, 1, 0,
+            6, 5, 4, 3, 2, 1, 1, 0,
+            5, 4, 3, 2, 1, 1, 1, 1,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            1, 1, 1, 1, 1, 3, 4, 5,
+            1, 1, 1, 2, 3, 4, 5, 6,
+            0, 1, 2, 3, 4, 5, 6, 7,
     };
 
+    static {
+        makeBlackKingLocations();
+    }
 
-    public static int manFacBishopBishop = 0, chebFacBishopBishop = 1, centreFacBishopBishop = 2, bishopBishopNearEnemyKingMan = 3, bishopBishopNearEnemyKingCheb = 4, bishopNearBishop = 5;
-    public static int[] bishopBishopNumbers = {
-            -3, -18, 20, -5, -10, 0
+    public static int manKK = 0, chebKK = 1, psqtFacKBNK = 2, bNearEnemyKMan = 3, bNearEnemyKCheb = 4, bishopNearKnight = 5, nNearEnemyKMan = 6, nNearEnemyKCheb = 7;
+    public static int[] bishopKnightNumbers = {
+            -3, -18, 20, -5, -10, 0, 0, 0
     };
 
     public static int evaluateKBNK(Chessboard board) {
@@ -40,14 +47,19 @@ public class EndgameKBNK {
         Assert.assertEquals(KBNK, board.typeOfGameIAmIn);
 
         for (int turn = WHITE; turn <= BLACK; turn++) {
-            long myBishops = board.pieces[turn][BISHOP];
-            if (myBishops != 0) {
+            long myBishop = board.pieces[turn][BISHOP];
+            if (myBishop != 0) {
                 score += 6_000;
+
+                final long myKnight = board.pieces[turn][KNIGHT];
+                Assert.assertTrue(myKnight != 0);
+
+                boolean whiteBishop = (myBishop & WHITE_COLOURED_SQUARES) != 0;
 
                 // included in order to stop losing pieces for no reason
                 int materialScore = 0;
                 materialScore += populationCount(board.pieces[turn][PAWN]) * material[P];
-                materialScore += populationCount(board.pieces[turn][KNIGHT]) * material[K];
+                materialScore += populationCount(myKnight) * material[K];
                 materialScore += populationCount(board.pieces[turn][BISHOP]) * material[B];
                 materialScore += populationCount(board.pieces[turn][ROOK]) * material[R];
                 materialScore += populationCount(board.pieces[turn][QUEEN]) * material[Q];
@@ -58,22 +70,24 @@ public class EndgameKBNK {
                 long enemyKing = board.pieces[1 - turn][KING];
                 final int myKingIndex = numberOfTrailingZeros(myKing);
                 final int enemyKingIndex = numberOfTrailingZeros(enemyKing);
-                final int bi1 = numberOfTrailingZeros(myBishops);
-                final int bi2 = numberOfLeadingZeros(myBishops);
+                final int bi = numberOfTrailingZeros(myBishop);
+                final int kn = numberOfTrailingZeros(myKnight);
+
+                score += (bishopKnightNumbers[bishopNearKnight] * manhattanDistance(bi, kn) + bishopKnightNumbers[bishopNearKnight] * chebyshevDistance(bi, kn));
+
+                score += (bishopKnightNumbers[manKK] * manhattanDistance(myKingIndex, enemyKingIndex) + bishopKnightNumbers[chebKK] * chebyshevDistance(myKingIndex, enemyKingIndex));
                 
-                score += (bishopBishopNumbers[bishopNearBishop] * manhattanDistance(bi1, bi2) + bishopBishopNumbers[bishopNearBishop] * chebyshevDistance(bi1, bi2));
+                score += bishopKnightNumbers[psqtFacKBNK] *
+                        (whiteBishop ?
+                                weakKingLocationKBNKWhiteBishop[enemyKingIndex]
+                                : weakKingLocationKBNKBlackBishop[enemyKingIndex]);
 
-                score += (bishopBishopNumbers[manFacBishopBishop] * manhattanDistance(myKingIndex, enemyKingIndex) + bishopBishopNumbers[chebFacBishopBishop] * chebyshevDistance(myKingIndex, enemyKingIndex));
-                score += bishopBishopNumbers[centreFacBishopBishop] * weakKingLocationKBBK[enemyKingIndex];
 
-                while (myBishops != 0) {
 
-                    int b = numberOfTrailingZeros(myBishops);
+                score += (bishopKnightNumbers[bNearEnemyKMan] * manhattanDistance(bi, enemyKingIndex) + bishopKnightNumbers[bNearEnemyKCheb] * chebyshevDistance(bi, enemyKingIndex));
 
-                    score += (bishopBishopNumbers[bishopBishopNearEnemyKingMan] * manhattanDistance(b, enemyKingIndex) + bishopBishopNumbers[bishopBishopNearEnemyKingCheb] * chebyshevDistance(b, enemyKingIndex));
+                score += (bishopKnightNumbers[nNearEnemyKMan] * manhattanDistance(kn, enemyKingIndex) + bishopKnightNumbers[nNearEnemyKCheb] * chebyshevDistance(kn, enemyKingIndex));
 
-                    myBishops &= myBishops - 1;
-                }
             }
         }
 
@@ -82,5 +96,5 @@ public class EndgameKBNK {
         return board.turn == winningPlayer ? score : -score;
     }
 
-    
+
 }

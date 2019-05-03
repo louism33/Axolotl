@@ -17,20 +17,32 @@ import static java.lang.Long.numberOfTrailingZeros;
 public class EndgameKBBK {
 
     public static final int[] weakKingLocationKBBK = {
-            14, 8, 10, 9, 9, 10, 8, 14,
-            8, 4, 4, 2, 2, 4, 4, 8,
-            10, 4, 2, 6, 6, 2, 4, 10,
+            21, 8, 10, 9, 9, 10, 8, 21,
+            8, -3, 11, 2, 2, 11, -3, 8,
+            10, 11, 2, 6, 6, 2, 11, 10,
             9, 2, 6, 0, 0, 6, 2, 9,
             9, 2, 6, 0, 0, 6, 2, 9,
-            10, 4, 2, 6, 6, 2, 4, 10,
-            8, 4, 4, 2, 2, 4, 4, 8,
-            14, 8, 10, 9, 9, 10, 8, 14,
+            10, 11, 2, 6, 6, 2, 11, 10,
+            8, -3, 11, 2, 2, 11, -3, 8,
+            21, 8, 10, 9, 9, 10, 8, 21,
+    };
+
+    public static final int[] bishopLocations = {
+            0, 7, 0, 0, 0, 0, 7, 0,
+            7, -7, 0, 0, 0, 0, -7, 7,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            7, -7, 0, 0, 0, 0, -7, 7,
+            0, 7, 0, 0, 0, 0, 7, 0,
     };
 
 
     public static int manFacBishopBishop = 0, chebFacBishopBishop = 1, centreFacBishopBishop = 2, bishopBishopNearEnemyKingMan = 3, bishopBishopNearEnemyKingCheb = 4, bishopNearBishop = 5;
+
     public static int[] bishopBishopNumbers = {
-            -3, -18, 20, -5, -10, 0
+            -3, -11, 20, -5, -10, 0
     };
 
     public static int evaluateKBBK(Chessboard board) {
@@ -51,7 +63,7 @@ public class EndgameKBBK {
                 materialScore += populationCount(board.pieces[turn][ROOK]) * material[R];
                 materialScore += populationCount(board.pieces[turn][QUEEN]) * material[Q];
                 score += Score.getScore(materialScore, 0);
-                
+
                 winningPlayer = turn;
                 long myKing = board.pieces[turn][KING];
                 long enemyKing = board.pieces[1 - turn][KING];
@@ -59,15 +71,18 @@ public class EndgameKBBK {
                 final int enemyKingIndex = numberOfTrailingZeros(enemyKing);
                 final int bi1 = numberOfTrailingZeros(myBishops);
                 final int bi2 = numberOfLeadingZeros(myBishops);
-                
+
                 score += (bishopBishopNumbers[bishopNearBishop] * manhattanDistance(bi1, bi2) + bishopBishopNumbers[bishopNearBishop] * chebyshevDistance(bi1, bi2));
 
                 score += (bishopBishopNumbers[manFacBishopBishop] * manhattanDistance(myKingIndex, enemyKingIndex) + bishopBishopNumbers[chebFacBishopBishop] * chebyshevDistance(myKingIndex, enemyKingIndex));
+
                 score += bishopBishopNumbers[centreFacBishopBishop] * weakKingLocationKBBK[enemyKingIndex];
 
                 while (myBishops != 0) {
 
                     int b = numberOfTrailingZeros(myBishops);
+
+                    score += bishopLocations[b];
 
                     score += (bishopBishopNumbers[bishopBishopNearEnemyKingMan] * manhattanDistance(b, enemyKingIndex) + bishopBishopNumbers[bishopBishopNearEnemyKingCheb] * chebyshevDistance(b, enemyKingIndex));
 
@@ -81,5 +96,5 @@ public class EndgameKBBK {
         return board.turn == winningPlayer ? score : -score;
     }
 
-    
+
 }
