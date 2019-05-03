@@ -38,7 +38,7 @@ public class WACChallenge {
 
     @AfterClass
     public static void finalSuccessTally() {
-        System.out.println("Successful WAC tests: " + successes + " out of "
+        System.out.println("\nSuccessful WAC tests: " + successes + " out of "
                 + splitUpPositions.length + ". Success starts at " + targetSuccesses);
         Assert.assertTrue(successes >= targetSuccesses);
     }

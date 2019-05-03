@@ -39,7 +39,7 @@ public class WACSilverSanityMTTest {
 
     @AfterClass
     public static void finalSuccessTally() {
-        System.out.println("Successful WAC Silver MT sanity tests: " + successes + " out of "
+        System.out.println("\nSuccessful WAC Silver MT sanity tests: " + successes + " out of "
                 + splitUpPositions.length + ". Success starts at " + targetSuccesses);
         Assert.assertTrue(successes >= targetSuccesses);
     }
@@ -69,7 +69,6 @@ public class WACSilverSanityMTTest {
     @Test
     public void test() {
         Engine.resetFull();
-        System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
 

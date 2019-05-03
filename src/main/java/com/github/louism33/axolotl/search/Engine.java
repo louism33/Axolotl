@@ -243,7 +243,11 @@ public final class Engine {
 
         for (int t = 1; t < NUMBER_OF_THREADS; t++) {
             threads[t].interrupt();
+            threads[t] = null;
         }
+        
+        searchFinished = true;
+        stopNow = true;
         
         return getAiMove();
     }
@@ -537,11 +541,17 @@ public final class Engine {
                         System.err.println(board);
                         System.err.println("clone");
                         System.err.println(cloneBoard);
-
                         System.err.println(board.zobristHash == cloneBoard.zobristHash);
                         System.err.println(board.zobristPawnHash == cloneBoard.zobristPawnHash);
-
                         System.err.println();
+                        System.err.println();
+                        System.err.println("THREADS OVERVIEW");
+                        System.err.println(Arrays.toString(threads));
+                        for (int t = 0; t < threads.length; t++) {
+                            System.err.println(threads[t]);
+                            System.err.println(threads[t].board);
+                        }
+                        System.err.println(threads.length);
                     }
                     Assert.assertEquals(board.zobristPawnHash, cloneBoard.zobristPawnHash);
                     Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);
@@ -632,7 +642,7 @@ public final class Engine {
                 uciEntry.sendBestMove(bestMove);
             }
             searchFinished = true;
-        }
+        } 
     }
 
 
@@ -959,6 +969,13 @@ public final class Engine {
                 board.makeMoveAndFlipTurn(move);
             }
 
+            if (whichThread + 1 > numberOfMovesMade.length || whichThread + 1 > numberOfQMovesMade.length) {
+                System.out.println(board);
+                System.out.println(Arrays.toString(threads));
+                System.out.println(Arrays.toString(numberOfMovesMade));
+                System.out.println(numberOfMovesMade.length);
+            }
+
             numberOfMovesMade[whichThread]++;
             numberOfMovesSearched++;
 
@@ -1051,6 +1068,7 @@ public final class Engine {
             }
 
             if (whichThread != MASTER_THREAD && Engine.stopNow) {
+                Thread.currentThread().interrupt();
                 return 0;
             }
 

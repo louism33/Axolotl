@@ -39,7 +39,7 @@ public class WACSilverSanitySTTest {
 
     @AfterClass
     public static void finalSuccessTally() {
-        System.out.println("Successful WAC Silver sanity tests: " + successes + " out of "
+        System.out.println("\nSuccessful WAC Silver sanity tests: " + successes + " out of "
                 + splitUpPositions.length + ". Success starts at " + targetSuccesses);
         Assert.assertTrue(successes >= targetSuccesses);
     }
@@ -69,7 +69,6 @@ public class WACSilverSanitySTTest {
     @Test
     public void test() {
         Engine.resetFull();
-//        System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
 
@@ -78,7 +77,6 @@ public class WACSilverSanitySTTest {
         final int move = engine.simpleSearch();
 
         if (contains(winningMoves, move) && !contains(losingMoves, move)) {
-//            System.out.println("success");
             System.out.print(". ");
             successes++;
         } else {

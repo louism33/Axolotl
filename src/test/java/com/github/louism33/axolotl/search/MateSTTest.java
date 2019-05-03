@@ -72,7 +72,6 @@ public class MateSTTest {
     @Test
     public void test() {
         Engine.resetFull();
-        System.out.println(EPDObject.getFullString());
         int[] winningMoves = EPDObject.getBestMoves();
         final Chessboard board = EPDObject.getBoard();
         engine.receiveSearchSpecs(board, true, timeLimit);
@@ -81,10 +80,10 @@ public class MateSTTest {
         MoveParser.printMove(move);
 
         if (contains(winningMoves, move)) {
-            System.out.println("success");
+            System.out.print(". ");
             successes++;
         } else {
-            System.out.println("failure");
+            System.out.print(EPDObject.getId() + " ");
         }
 
     }

@@ -16,19 +16,20 @@ import static java.lang.Long.numberOfTrailingZeros;
 public class EndgameKQK {
 
     public static final int[] weakKingLocationKQK = {
-            14, 14, 14, 4, 4, 14, 14, 14,
-            14, 6, 3, 2, 2, 3, 6, 14,
-            14, 3, 2, -2, -2, 2, 3, 14,
+            14, 9, 14, 4, 4, 14, 9, 14,
+            9, 11, 3, 2, 2, 3, 11, 9,
+            14, 3, 7, -2, -2, 7, 3, 14,
             4, 2, -2, 0, 0, -2, 2, 4,
             4, 2, -2, 0, 0, -2, 2, 4,
-            14, 3, 2, -2, -2, 2, 3, 14,
-            14, 6, 3, 2, 2, 3, 6, 14,
-            14, 14, 14, 4, 4, 14, 14, 14,
+            14, 3, 7, -2, -2, 7, 3, 14,
+            9, 11, 3, 2, 2, 3, 11, 9,
+            14, 9, 14, 4, 4, 14, 9, 14,
     };
 
-    public static int manFacQueen = 0, chebFacQueen = 1, centreFacQueen = 2, queenNearKingMan = 3, queenNearKingCheb = 4;
+    public static int manFacQueen = 0, chebFacQueen = 1, centreFacQueen = 2, queenNearKingMan = 3, queenNearKingCheb = 4,
+            queenNearMyKingMan = 5, queenNearMyKingCheb = 6;
     public static int[] queenNumbers = {
-            -224, -24, 44, 0, -5
+            -219, -29, 37, 0, -10, 0, 0
     };
     
     public static int evaluateKQK(Chessboard board) {
@@ -61,6 +62,8 @@ public class EndgameKQK {
                 score += queenNumbers[centreFacQueen] * weakKingLocationKQK[enemyKingIndex];
 
                 score += (queenNumbers[queenNearKingMan] * manhattanDistance(myQueenIndex, enemyKingIndex) + queenNumbers[queenNearKingCheb] * chebyshevDistance(myQueenIndex, enemyKingIndex));
+
+                score += (queenNumbers[queenNearMyKingMan] * manhattanDistance(myQueenIndex, myKingIndex) + queenNumbers[queenNearMyKingCheb] * chebyshevDistance(myQueenIndex, myKingIndex));
             }
         }
 

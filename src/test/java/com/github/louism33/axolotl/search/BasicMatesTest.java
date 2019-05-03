@@ -96,8 +96,10 @@ public class BasicMatesTest {
         for (int i = 0; i < kqkPositions.length; i++) {
             Engine.resetFull();
             Chessboard board = new Chessboard(kqkPositions[i]);
+            System.out.println(board);
+            System.out.println(board.toFenString());
             Assert.assertEquals(KQK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 15_000);
+            engine.receiveSearchSpecs(board, true, 10_000);
 
             engine.simpleSearch();
 
@@ -134,7 +136,7 @@ public class BasicMatesTest {
             Chessboard board = new Chessboard(kqkPositions[i]);
             System.out.println(board);
             Assert.assertEquals(KQK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 30_000);
+            engine.receiveSearchSpecs(board, true, 60_000);
 
             Evaluator.eval(board, board.generateLegalMoves());
             engine.simpleSearch();

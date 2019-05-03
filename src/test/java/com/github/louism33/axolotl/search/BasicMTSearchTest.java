@@ -89,13 +89,13 @@ public class BasicMTSearchTest {
         final Chessboard board = new Chessboard();
         System.out.println("Testing search with number of Threads: ");
         for (int t = 1; t <= MAX_THREADS; t++) {
-            System.out.println(t);
+            System.out.print(t + " ");
             Engine.setThreads(t);
             engine.receiveSearchSpecs(board, 10);
             engine.simpleSearch();
             Engine.resetFull();
         }
-        System.out.println("All ok.");
+        System.out.println("\nAll ok.");
         MASTER_DEBUG = false;
     }
 }
