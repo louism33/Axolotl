@@ -75,11 +75,11 @@ public class MateMTTest {
         Engine.resetFull();
         int[] winningMoves = EPDObject.getBestMoves();
         final Chessboard board = EPDObject.getBoard();
-        System.out.println(board);
+//        System.out.println(board);
         engine.receiveSearchSpecs(board, true, timeLimit);
 
         final int move = engine.simpleSearch();
-        MoveParser.printMove(move);
+//        MoveParser.printMove(move);
 
         if (contains(winningMoves, move)) {
             System.out.print(". ");

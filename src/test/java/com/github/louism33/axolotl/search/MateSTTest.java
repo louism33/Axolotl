@@ -77,7 +77,7 @@ public class MateSTTest {
         engine.receiveSearchSpecs(board, true, timeLimit);
         
         final int move = engine.simpleSearch();
-        MoveParser.printMove(move);
+//        MoveParser.printMove(move);
 
         if (contains(winningMoves, move)) {
             System.out.print(". ");
