@@ -134,11 +134,20 @@ public class EndgameEvaluatorTest {
     }
 
     @Test
-    @Ignore
     void comparePureEndgameToEndgamePlusMaterialKRRK() {
         int krrkPure = Evaluator.eval(new Chessboard("rr6/8/8/8/8/8/7K/k7 b"));
         int krrkExtra = Evaluator.eval(new Chessboard("rrr5/8/8/8/8/8/7K/k7 b"));
 
         Assert.assertTrue(krrkExtra > krrkPure);
+    }
+
+    @Test
+    void KBNKCompareCorrectCornerBadCorner() {
+        final Chessboard board = new Chessboard("n7/8/8/8/8/7K/8/1B5k w");
+        int g = Evaluator.eval(board);
+        System.out.println(board);
+        System.out.println(g);
+        int krrkExtra = Evaluator.eval(new Chessboard("rrr5/8/8/8/8/8/7K/k7 b"));
+
     }
 }

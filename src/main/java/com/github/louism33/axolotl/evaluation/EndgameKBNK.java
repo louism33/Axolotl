@@ -38,7 +38,7 @@ public class EndgameKBNK {
 
     public static int manKK = 0, chebKK = 1, psqtFacKBNK = 2, bNearEnemyKMan = 3, bNearEnemyKCheb = 4, bishopNearKnight = 5, nNearEnemyKMan = 6, nNearEnemyKCheb = 7;
     public static int[] bishopKnightNumbers = {
-            -3, -18, 20, -5, -10, 0, 0, 0
+            -3, -18, 20, -5, -10, 1, 1, 1
     };
 
     public static int evaluateKBNK(Chessboard board) {
