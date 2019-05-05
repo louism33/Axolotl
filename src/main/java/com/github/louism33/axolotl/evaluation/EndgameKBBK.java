@@ -17,32 +17,32 @@ import static java.lang.Long.numberOfTrailingZeros;
 public class EndgameKBBK {
 
     public static final int[] weakKingLocationKBBK = {
-            21, 8, 17, 9, 9, 17, 8, 21,
-            8, -3, 11, 2, 2, 11, -3, 8,
-            17, 11, 2, 6, 6, 2, 11, 17,
+            21, 8, 18, 9, 9, 18, 8, 21,
+            8, -3, 17, 2, 2, 17, -3, 8,
+            18, 17, 2, 6, 6, 2, 17, 18,
             9, 2, 6, 0, 0, 6, 2, 9,
             9, 2, 6, 0, 0, 6, 2, 9,
-            17, 11, 2, 6, 6, 2, 11, 17,
-            8, -3, 11, 2, 2, 11, -3, 8,
-            21, 8, 17, 9, 9, 17, 8, 21,
+            18, 17, 2, 6, 6, 2, 17, 18,
+            8, -3, 17, 2, 2, 17, -3, 8,
+            21, 8, 18, 9, 9, 18, 8, 21,
     };
 
     public static final int[] bishopLocations = {
-            7, 0, 0, 0, 0, 0, 0, 7,
+            7, 0, 1, 1, 1, 1, 0, 7,
             0, -7, 5, 0, 0, 5, -7, 0,
-            0, 5, 0, 0, 0, 0, 5, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 5, 0, 0, 0, 0, 5, 0,
+            1, 5, 0, 0, 0, 0, 5, 1,
+            1, 0, 0, 0, 0, 0, 0, 1,
+            1, 0, 0, 0, 0, 0, 0, 1,
+            1, 5, 0, 0, 0, 0, 5, 1,
             0, -7, 5, 0, 0, 5, -7, 0,
-            7, 0, 0, 0, 0, 0, 0, 7,
+            7, 0, 1, 1, 1, 1, 0, 7,
     };
 
 
     public static int manFacBishopBishop = 0, chebFacBishopBishop = 1, centreFacBishopBishop = 2, bishopBishopNearEnemyKingMan = 3, bishopBishopNearEnemyKingCheb = 4, bishopNearBishop = 5;
 
     public static int[] bishopBishopNumbers = {
-            -3, -11, 20, -5, -10, 0
+            -3, -11, 20, -5, -10, 1
     };
 
     public static int evaluateKBBK(Chessboard board) {
