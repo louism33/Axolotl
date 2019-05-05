@@ -22,7 +22,6 @@ public class PawnTTTest {
     @BeforeClass
     public static void setup() {
         ResettingUtils.reset();
-        Engine.sendBestMove = false;
         final String str = "Testing " + splitUpPositions.length + " position for pawn TT test. ";
         System.out.println(str);
     }

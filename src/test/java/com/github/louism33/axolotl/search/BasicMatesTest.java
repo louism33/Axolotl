@@ -38,24 +38,12 @@ public class BasicMatesTest {
     @Test
     void KRRKWins() {
         System.out.println("\nsearching checkmate for KRRK positions: ");
-        //mate in 7 at worst
         String pos = "" +
-                "8/8/8/8/8/3k4/2R5/KR6 w\n" +
-                "8/8/8/8/8/3k4/2R5/K5R1 w\n" +
-                "8/8/8/8/8/3k4/2R5/K6R w\n" +
-                "8/8/8/8/8/3k4/R1R5/K7 w\n" +
                 "8/8/8/8/8/3k4/1RR5/K7 w\n" +
                 "8/8/8/8/8/3k4/2R3R1/K7 w\n" +
 
                 "8/8/8/8/8/3K4/2r4r/k7 b - - 0 1\n" +
                 "8/8/8/8/8/3K4/2r5/k5r1 b - - 0 1\n" +
-                "k6r/2r5/3K4/8/8/8/8/8 b - - 0 1\n" +
-                "7k/8/6r1/8/5K2/8/8/7r b - - 0 1\n" +
-
-                "7k/7r/7r/2K5/8/8/8/8 b - - 0 1\n" +
-                "8/7r/8/8/8/6K1/8/3r3k b - - 0 1\n" +
-                "8/8/8/4R3/4K3/3R4/8/7k w - - 0 1\n" +
-                "7R/7R/7K/8/8/8/8/k7 w - - 0 1\n" +
                 "";
 
         String[] positions = pos.split("\n");
@@ -75,20 +63,47 @@ public class BasicMatesTest {
             System.out.print(". ");
         }
     }
+    
+    @Test
+    void KRRKloss() {
+        System.out.println("\nsearching my checkmate for KRRK positions: ");
+        String pos = "" +
+                "8/8/8/8/8/3k4/R1R5/K7 b\n" +
+                "8/8/8/8/8/3k4/1RR5/K7 b\n" +
+                "8/8/8/8/8/3K4/2r4r/k7 w - - 0 1\n" +
+                "7k/8/6r1/8/5K2/8/8/7r w - - 0 1\n" +
+                "";
+
+        String[] kqkPositions = pos.split("\n");
+
+        for (int i = 0; i < kqkPositions.length; i++) {
+            Engine.resetFull();
+            Chessboard board = new Chessboard(kqkPositions[i]);
+            Assert.assertEquals(KRRK, typeOfEndgame(board));
+            engine.receiveSearchSpecs(board, true, 20_000);
+
+            Evaluator.eval(board, board.generateLegalMoves());
+            engine.simpleSearch();
+
+            final boolean condition = aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY;
+            if (!condition) {
+                System.err.println("fail:");
+                System.err.println(board.toFenString());
+            }
+            Assert.assertTrue(condition);
+            System.out.print(". ");
+        }
+    }
+    
 
     @Test
     void KQKwin() {
         System.out.println("\nsearching checkmate for KQK positions: ");
         String pos = "" +
-                "8/8/8/8/8/8/1Q6/K6k w - - 1 1\n" +
+                "3q4/3k4/8/8/8/8/7K/8 b - - 0 1\n" +
+                "4k3/8/1K6/8/8/8/4q3/8 b - - 0 1\n" +
+                "k7/6KQ/8/8/8/8/8/8 w - - 0 1\n" +
                 "8/8/3Q4/8/8/7k/8/3K4 w - - 0 1\n" +
-                "8/3q4/8/8/2K1k3/8/8/8 b - - 1 1\n" +
-                "8/8/8/8/7q/7k/8/3K4 b - - 0 1\n" +
-                
-                "8/8/8/5k2/8/8/1Q6/K7 w - - 1 1\n" + // mate in 10
-                "8/8/8/5K2/8/8/1q6/k7 b - - 1 1\n" + // mate in 10
-                "7k/6q1/8/8/2K5/8/8/8 b - - 1 1\n" + // mate in 10
-                "7K/6Q1/8/8/2k5/8/8/8 w - - 1 1\n" + // mate in 10
                 "";
 
         String[] kqkPositions = pos.split("\n");
@@ -96,8 +111,6 @@ public class BasicMatesTest {
         for (int i = 0; i < kqkPositions.length; i++) {
             Engine.resetFull(); 
             Chessboard board = new Chessboard(kqkPositions[i]);
-//            System.out.println(board);
-//            System.out.println(board.toFenString());
             Assert.assertEquals(KQK, typeOfEndgame(board));
             engine.receiveSearchSpecs(board, true, 20_000);
 
@@ -114,19 +127,13 @@ public class BasicMatesTest {
     }
 
     @Test
-//    @Disabled
     void KQKloss() {
         System.out.println("\nsearching my checkmate for KQK positions: ");
-        //loss in 10
         String pos = "" +
-                "7K/6Q1/8/8/8/8/2k5/8 b\n" +
-                "K7/1Q6/8/8/8/8/3k4/8 b\n" +
-//                "7K/6Q1/8/8/8/8/3k4/8 b\n" +
-//                "7K/6Q1/8/8/8/2k5/8/8 b\n" +
-//                "K7/1Q6/8/8/8/3k4/8/8 b\n" +
-//                "7K/6Q1/8/8/8/3k4/8/8 b\n" +
-//                "8/8/8/8/3k4/8/6Q1/7K b\n" +
-//                "7K/6Q1/8/8/3k4/8/8/8 b" +
+                "8/8/8/8/8/8/3k3K/7Q b - - 0 1\n" +
+                "4k3/8/1K6/8/8/8/2Q5/8 b - - 0 1\n" +
+                "3q4/3k4/8/8/8/8/7K/8 w - - 0 1\n" +
+                "8/8/8/8/7q/7k/8/3K4 w - - 0 1\n" +
                 "";
 
         String[] kqkPositions = pos.split("\n");
@@ -155,11 +162,10 @@ public class BasicMatesTest {
         System.out.println("\nsearching checkmate for KRK positions: ");
         //mate in 16
         String pos = "" +
-                "8/8/5k1K/6r1/8/8/8/8 b - -\n" +
-                "8/8/8/8/8/2k5/1R6/K7 w\n" +
-                "8/8/8/8/8/3k4/2R5/K7 w\n" +
-                "8/8/8/8/8/3k4/4R3/K7 w\n" +
-                "8/8/2R5/8/8/3k4/8/K7 w\n" +
+                "8/3K4/4r3/4k3/8/8/8/8 b - - 0 1\n" +
+                "4k3/8/2r5/8/8/8/8/4K3 b - - 0 1\n" +
+                "8/6KR/8/2k5/8/8/8/8 w - - 0 1\n" +
+                "8/8/k7/8/8/3K1R2/8/8 w - - 0 1\n" +
                 "";
 
         String[] positions = pos.split("\n");
@@ -186,18 +192,11 @@ public class BasicMatesTest {
     @Test
     void KRKlosses() {
         System.out.println("\nsearching my checkmate for KRK positions: ");
-        //loss in 16
         String pos = "" +
-                "K7/8/8/8/8/8/8/3k1R2 b\n" +
-                "7K/8/8/8/8/8/8/1R1k4 b\n" +
-                "7K/8/8/8/8/8/8/3k1R2 b\n" +
-                "8/8/1R6/8/8/8/1k6/7K b\n" +
-//                "7K/8/8/8/8/8/1k3R2/8 b\n" +
-//                "8/8/8/8/8/8/1Rk5/K7 b\n" +
-//                "8/8/8/8/8/8/2k1R3/K7 b\n" +
-//                "7K/8/5R2/8/8/8/1k6/8 b\n" +
-//                "8/8/2R5/8/8/8/2k5/K7 b\n" +
-//                "8/2R5/8/8/8/8/2k5/K7 b" +
+                "8/8/8/4k2K/3r4/8/8/8 w - - 0 1\n" +
+                "8/3K4/4r3/4k3/8/8/8/8 w - - 0 1\n" +
+                "K7/8/8/1R6/8/8/4k3/8 b - - 0 1\n" +
+                "6R1/6K1/8/8/6k1/8/8/8 b - - 0 1\n" +
                 "";
 
         String[] positions = pos.split("\n");
@@ -221,27 +220,14 @@ public class BasicMatesTest {
     }   
     
     @Test
-//    @Disabled
     void KBBKwins() {
         System.out.println("\nsearching checkmate for KBBK positions: ");
-//        PRINT_PV = true;
 
         String pos = "" +
-                "8/8/8/8/7B/8/3k4/K2B4 w\n" +
-//                "8/4B3/8/8/8/8/3k4/K2B4 w\n" +
-//                "3B4/8/8/8/8/8/3k4/K2B4 w\n" +
-//                "8/4B3/8/8/8/8/3kB3/K7 w\n" +
-//                "8/8/8/8/B7/3k4/3B4/K7 w\n" +
-//                "8/3B4/8/8/8/3k4/3B4/K7 w\n" +
-//                "4B3/8/8/8/8/3k4/3B4/K7 w\n" +
-//                "8/8/8/8/7B/4k3/4B3/K7 w\n" +
-//                "8/4B3/8/8/8/4k3/4B3/K7 w\n" +
-//                "8/8/8/6B1/2Bk4/8/8/K7 w\n" +
-//                "8/8/8/8/5kB1/8/8/K3B3 w\n" +
-//                "4B3/8/8/8/6kB/8/8/K7 w\n" +
-//                "8/8/8/5kB1/B7/8/8/K7 w\n" +
-//                "8/8/8/1B3kB1/8/8/8/K7 w\n" +
-                "4B3/8/8/5kB1/8/8/8/K7 w" +
+                "2bb4/8/8/4k3/8/8/2K5/8 b - - 0 1\n" +
+                "2bb4/8/8/4k3/8/8/2K5/8 b - - 0 1\n" +
+                "k4B2/8/8/8/6B1/8/2K5/8 w - - 0 1\n" +
+                "8/4B3/8/8/8/8/3k4/K2B4 w\n" +
                 "";
 
         String[] positions = pos.split("\n");
@@ -264,32 +250,14 @@ public class BasicMatesTest {
     }
 
     @Test
-//    @Disabled
     void KBNKwins() {
         System.out.println("\nsearching checkmate for KBNK positions: ");
-//        PRINT_PV = true;
 
         String pos = "" +
-                "8/8/8/8/8/8/3B4/K2k3N w\n" +
-//                "8/8/7N/8/8/8/8/K2kB3 w\n" +
-//                "8/8/7N/8/8/8/8/K1k1B3 w\n" +
-//                "8/6N1/8/8/8/8/3B4/K2k4 w\n" +
-//                "8/7N/8/8/8/8/8/K2kB3 w\n" +
-//                "8/7N/8/8/8/8/3B4/K2k4 w\n" +
-//                "N7/8/8/8/8/8/8/K2kB3 w\n" +
-//                "N7/8/8/8/8/8/3B4/K2k4 w\n" +
-//                "8/7N/8/8/8/8/8/K1k1B3 w\n" +
-//                "N7/8/8/8/7B/8/8/K1k5 w\n" +
-//                "5N2/8/8/8/8/8/8/K2kB3 w\n" +
-//                "5N2/8/8/8/8/8/3B4/K2k4 w\n" +
-//                "6N1/8/8/8/8/8/8/K2kB3 w\n" +
-//                "6N1/8/8/8/8/8/3B4/K2k4 w\n" +
-//                "7N/8/8/8/8/8/8/K2kB3 w\n" +
-//                "7N/8/8/8/8/8/3B4/K2k4 w\n" +
-//                "6N1/8/8/8/8/8/8/K1k1B3 w\n" +
-//                "7N/8/8/8/8/8/8/K1k1B3 w\n" +
-//                "8/8/8/8/8/B7/8/K5kN w\n" +
-                "8/4B3/8/8/8/8/8/K5kN w" +
+                "1k6/8/2K1BN2/8/8/8/8/8 w - - 0 1\n" +
+                "8/2B4N/8/2k5/8/8/8/K7 w - - 0 1\n" +
+                "8/8/8/8/4n1b1/8/6K1/4k3 b - - 0 1\n" +
+                "8/5n2/8/7k/8/8/8/3K2b1 b - - 0 1\n" +
                 "";
 
         String[] positions = pos.split("\n");
@@ -312,23 +280,12 @@ public class BasicMatesTest {
     }
 
     @Test
-//    @Disabled
     void KBNKloss() {
         System.out.println("\nsearching checkmate for KBNK positions: ");
-//        PRINT_PV = true;
 
         String pos = "" +
-                "8/8/8/8/8/8/4B3/K1kN4 b\n" +
-//                "8/8/8/8/8/8/4B3/K1k4N b\n" +
-//                "8/8/7N/8/8/8/8/K1k1B3 b\n" +
-//                "8/8/7N/8/7B/8/8/K1k5 b\n" +
-//                "8/4B3/7N/8/8/8/8/K1k5 b\n" +
-//                "8/N7/8/8/8/B7/8/K1k5 b\n" +
-//                "8/7N/8/8/8/8/8/K1k1B3 b\n" +
-//                "8/7N/8/8/8/B7/8/K1k5 b\n" +
-//                "N7/8/8/8/8/8/8/K1k1B3 b\n" +
-//                "N7/8/8/8/8/8/4B3/K1k5 b\n" +
-                "N7/8/8/8/8/4B3/8/K1k5 b" +
+                "8/8/8/8/1B6/3K4/8/k2N4 b - - 0 1\n" +
+                "8/2k1bn2/8/8/8/7K/8/8 w - - 0 1\n" +
                 "";
 
         String[] positions = pos.split("\n");
