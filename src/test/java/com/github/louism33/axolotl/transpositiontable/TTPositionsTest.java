@@ -36,13 +36,13 @@ public class TTPositionsTest {
 //        Assert.assertEquals(MoveParser.toString(move), "a1b1");
     }
 
-    @Test
-    void fine70MT() {
-        Engine.resetFull();
-        Chessboard board = new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -");
-        Engine.setThreads(4);
-        engine.receiveSearchSpecs(board, true, timeLimit);
-        int move = engine.simpleSearch();
-//        Assert.assertEquals(MoveParser.toString(move), "a1b1");
-    }
+//    @Test
+//    void fine70MT() {
+//        Engine.resetFull();
+//        Chessboard board = new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -");
+//        Engine.setThreads(4);
+//        engine.receiveSearchSpecs(board, true, timeLimit);
+//        int move = engine.simpleSearch();
+////        Assert.assertEquals(MoveParser.toString(move), "a1b1");
+//    }
 }

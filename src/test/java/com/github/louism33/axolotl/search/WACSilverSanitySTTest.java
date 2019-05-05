@@ -19,7 +19,6 @@ import static challenges.Utils.contains;
 @RunWith(Parameterized.class)
 public class WACSilverSanitySTTest {
 
-    private static final int threads = 1;
     private static final int timeLimit = 1_000;
     private static int successes = 0;
     private static final int targetSuccesses = 170;
@@ -30,8 +29,8 @@ public class WACSilverSanitySTTest {
         ResettingUtils.reset();
         EngineSpecifications.PRINT_PV = false;
         Engine.sendBestMove = false;
-        Engine.setThreads(threads);
-        final String str = "Testing " + splitUpPositions.length + " WAC silver positions. " +
+        Engine.setThreads(1);
+        final String str = "Testing " + splitUpPositions.length + " WAC silver positions with one thread. " +
                 "Time per position: " + timeLimit + " milliseconds."
                 + "\nIf more than " + targetSuccesses + " are correct, success.\ngood: . bad: id";
         System.out.println(str);
@@ -39,8 +38,9 @@ public class WACSilverSanitySTTest {
 
     @AfterClass
     public static void finalSuccessTally() {
-        System.out.println("\nSuccessful WAC Silver sanity tests: " + successes + " out of "
+        System.out.println("\nSuccessful WAC Silver sanity tests with one thread: " + successes + " out of "
                 + splitUpPositions.length + ". Success starts at " + targetSuccesses);
+        System.out.println();
         Assert.assertTrue(successes >= targetSuccesses);
     }
 

@@ -20,7 +20,6 @@ import static challenges.Utils.contains;
 @RunWith(Parameterized.class)
 public class MateSTTest {
 
-    private static final int threads = 1;
     private static final int timeLimit = 1_000;
     private static int successes = 0;
     private static final int targetSuccesses = 145;
@@ -29,9 +28,9 @@ public class MateSTTest {
     @BeforeClass
     public static void setup() {
         ResettingUtils.reset();
-        Engine.setThreads(threads);
+        Engine.setThreads(1);
 
-        final String str = "Testing " + checkmatePositions.length + " Mate positions with " + threads + " threads. " +
+        final String str = "Testing " + checkmatePositions.length + " Mate positions with " + 1 + " thread. " +
                 "Time per position: " + timeLimit + " milliseconds."
                 + "\nIf more than " + targetSuccesses + " are correct, success.";
         System.out.println(str);

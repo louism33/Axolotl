@@ -179,6 +179,7 @@ public class BasicMatesTest {
             Assert.assertTrue(aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
             System.out.print(". ");
         }
+        System.out.println();
     }
 
 
