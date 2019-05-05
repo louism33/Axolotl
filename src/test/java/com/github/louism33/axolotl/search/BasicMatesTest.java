@@ -94,7 +94,7 @@ public class BasicMatesTest {
         String[] kqkPositions = pos.split("\n");
 
         for (int i = 0; i < kqkPositions.length; i++) {
-            Engine.resetFull();
+            Engine.resetFull(); 
             Chessboard board = new Chessboard(kqkPositions[i]);
             System.out.println(board);
             System.out.println(board.toFenString());
