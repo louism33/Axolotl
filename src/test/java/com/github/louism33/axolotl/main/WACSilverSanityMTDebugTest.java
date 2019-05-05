@@ -6,6 +6,7 @@ import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -17,6 +18,7 @@ import java.util.List;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
 @RunWith(Parameterized.class)
+@Disabled
 public class WACSilverSanityMTDebugTest {
 
     private static final int timeLimit = 1_000;

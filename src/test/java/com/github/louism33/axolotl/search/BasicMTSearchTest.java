@@ -6,10 +6,12 @@ import com.github.louism33.chesscore.Chessboard;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 
 import static com.github.louism33.axolotl.search.Engine.sendBestMove;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
+@Disabled
 public class BasicMTSearchTest {
 
     private static Engine engine = new Engine();

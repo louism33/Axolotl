@@ -158,6 +158,7 @@ public class EndgameEvaluatorTest {
 
     @Test
     void kpkeval() {
-        Assert.assertTrue(Evaluator.eval(new Chessboard("8/7p/8/8/8/8/7K/k7 b")) > 1000);
+        final Chessboard board = new Chessboard("8/7P/8/8/8/8/7K/k7 w");
+        Assert.assertTrue(Evaluator.eval(board) > 1000);
     }
 }
