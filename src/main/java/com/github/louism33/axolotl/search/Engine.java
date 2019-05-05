@@ -347,7 +347,6 @@ public final class Engine {
             running = false;
 
             while (threadsNumber.get() != 0) {
-//                System.out.println("yield: " + threadsNumber.get());
                 Thread.yield();
             }
         }

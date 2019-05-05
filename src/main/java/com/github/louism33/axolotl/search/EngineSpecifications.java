@@ -8,7 +8,7 @@ public final class EngineSpecifications {
     public static boolean MASTER_DEBUG = false;
 
     public static int NUMBER_OF_THREADS = 1;
-    public static final int DEFAULT_THREAD_NUMBER = 1;
+    public static final int DEFAULT_THREAD_NUMBER = 3;
     public static final int MAX_THREADS = 8;
     public static boolean PRINT_PV = true;
     public static boolean DEBUG = false;
