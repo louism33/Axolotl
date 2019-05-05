@@ -1,18 +1,10 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import standalone.KPK;
 
-import java.util.ArrayList;
-
-import static com.github.louism33.chesscore.BitOperations.newPieceOnSquare;
-import static com.github.louism33.chesscore.BoardConstants.BLACK;
-import static com.github.louism33.chesscore.BoardConstants.WHITE;
-import static standalone.KPK.*;
+import static com.github.louism33.axolotl.evaluation.KPK.*;
 
 @SuppressWarnings("ALL")
 public class PKPTest {
