@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static com.github.louism33.axolotl.evaluation.KPK.*;
 
 @SuppressWarnings("ALL")
-public class PKPTest {
+public class KPKTest {
 
     @Test
     void flip() {

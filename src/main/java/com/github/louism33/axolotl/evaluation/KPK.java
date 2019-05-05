@@ -10,7 +10,7 @@ import static com.github.louism33.chesscore.BitOperations.*;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static java.lang.Long.numberOfTrailingZeros;
 
-public class KPK {
+public final class KPK {
 
     // code adapted from stockfish https://github.com/mcostalba/Stockfish/blob/master/src/bitbase.cpp
     // with assistance from carballo https://github.com/albertoruibal/carballo
@@ -116,16 +116,7 @@ public class KPK {
         }
         Assert.assertTrue((whitePawn & 7) < 4);
 
-        System.out.println("is white playing? " + (us == WHITE));
-        System.out.println("strong king: " + whiteKing);
-        Art.printLong(newPieceOnSquare(whiteKing));
-        System.out.println("weak king:" + blackKing);
-        Art.printLong(newPieceOnSquare(blackKing));
-        System.out.println("pawn:" + whitePawn);
-        Art.printLong(newPieceOnSquare(whitePawn));
-
-        final boolean w = probePKPForWinForWhite(whiteKing, whitePawn, blackKing, us);
-        return w;
+        return probePKPForWinForWhite(whiteKing, whitePawn, blackKing, us);
     }
 
     public static int flipCentre(int i) {
@@ -165,11 +156,8 @@ public class KPK {
     // bit 13-14: white pawn file (from FILE_A to FILE_D)
     // bit 15-17: white pawn RANK_7 - rank (from RANK_7 - RANK_7 to RANK_7 - RANK_2)
     public static int index(int us, int bksq, int wksq, int psq) {
-//        System.out.println(psq);
         return wksq | (bksq << 6) | (us << 12) | ((psq & 7) << 13) | ((6 - (psq / 8)) << 15);
     }
-
-    public static int WINNING_POSITION = 1, DRAW_POSITION = 0;
 
     private static int INVALID = 0,
             UNKNOWN = 1,
@@ -208,12 +196,6 @@ public class KPK {
             Assert.assertTrue(psq >= 8);
             Assert.assertTrue(psq < 56);
 
-//            if (((psq / 8) == 6) && psq != 48) {
-//                System.out.println(psq);
-//                Art.printLong(newPieceOnSquare(psq));
-//                System.out.println();
-//            }
-//            
             // Check if two pieces are on the same square or if a king can be captured
             if (chebyshevDistance(ksq[WHITE], ksq[BLACK]) <= 1
                     || ksq[WHITE] == psq
@@ -231,7 +213,6 @@ public class KPK {
                 final boolean pawnOnSix = (psq / 8) == 6;
                 final boolean whiteKingDoesNotBlockPromSquare = ksq[WHITE] != promSquareIndex;
                 final boolean blackKingDoesNotBlockPromSquare = ksq[BLACK] != promSquareIndex;
-//                final boolean b = chebyshevDistance(ksq[BLACK], promSquareIndex) > 1;
                 final boolean blackKingDoesNotThreatenPromSquare = (KING_MOVE_TABLE[ksq[BLACK]] & newPieceOnSquare(promSquareIndex)) == 0;
 
                 if (us == WHITE

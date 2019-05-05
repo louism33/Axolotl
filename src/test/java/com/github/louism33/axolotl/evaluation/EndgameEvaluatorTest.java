@@ -128,8 +128,8 @@ public class EndgameEvaluatorTest {
         Assert.assertTrue(krk > kbbk);
         Assert.assertTrue(kbbk > kbnk);
         
-//        Assert.assertTrue(kbbk > kpk); // make sure kpk is a won one
-//        Assert.assertTrue(kpk > kbnk);
+        Assert.assertTrue(kbbk > kpk); 
+        Assert.assertTrue(kpk > kbnk);
     }
 
     @Test
@@ -147,5 +147,17 @@ public class EndgameEvaluatorTest {
         int g = Evaluator.eval(boardGood);
         int b = Evaluator.eval(boardBad);
         Assert.assertTrue(g > b);
+    }
+
+
+    @Test
+    void kpk() {
+        Assert.assertEquals(KPK, new Chessboard("8/7p/8/8/8/8/7K/k7 b").typeOfGameIAmIn);
+        Assert.assertEquals(KPK, new Chessboard("8/7P/8/8/8/8/7K/k7 b").typeOfGameIAmIn);
+    }
+
+    @Test
+    void kpkeval() {
+        Assert.assertTrue(Evaluator.eval(new Chessboard("8/7p/8/8/8/8/7K/k7 b")) > 1000);
     }
 }

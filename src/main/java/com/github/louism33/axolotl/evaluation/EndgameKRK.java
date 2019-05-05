@@ -11,7 +11,7 @@ import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MaterialHashUtil.KRK;
 import static java.lang.Long.numberOfTrailingZeros;
 
-public class EndgameKRK {
+public final class EndgameKRK {
 
 
     public static final int[] weakKingLocationKRK = {

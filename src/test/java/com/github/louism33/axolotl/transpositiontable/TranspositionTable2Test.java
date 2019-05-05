@@ -2,6 +2,7 @@ package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.main.PVLine;
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
@@ -22,12 +23,12 @@ public class TranspositionTable2Test {
 
     @BeforeAll
     static void setup() {
-        Engine.resetFull();
+        ResettingUtils.reset();
     }
 
     @AfterAll
     static void reset() {
-        Engine.resetFull();
+        ResettingUtils.reset();
     }
 
     @Test

@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import static com.github.louism33.axolotl.evaluation.EndgameKBBK.evaluateKBBK;
 import static com.github.louism33.axolotl.evaluation.EndgameKBNK.evaluateKBNK;
+import static com.github.louism33.axolotl.evaluation.EndgameKPK.evaluateKPK;
 import static com.github.louism33.axolotl.evaluation.EndgameKQK.evaluateKQK;
 import static com.github.louism33.axolotl.evaluation.EndgameKRK.evaluateKRK;
 import static com.github.louism33.axolotl.evaluation.EndgameKRRK.evaluateKRRK;
@@ -68,29 +69,12 @@ public final class Evaluator {
             return 0;
         }
 
-        Assert.assertTrue(board.materialHash != 0); // if no pieces, this is caught before here
-        
-        if (typeOfEndgame(board) != board.typeOfGameIAmIn) {
-            System.out.println(board);
-            System.out.println(board.toFenString());
-            System.out.println("type i am in " + board.typeOfGameIAmIn);
-            System.out.println("is draw?  " + (board.typeOfGameIAmIn == CERTAIN_DRAW));
-            System.out.println("correct " + typeOfEndgame(board));
-            System.out.println("is draw?  " + (typeOfEndgame(board) == CERTAIN_DRAW));
-            System.out.println();
-            System.out.println("is basically draw? " + isBasicallyDrawn(board));
-            System.out.println(board.materialHash);
-        }
-        Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
-        Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
-        
         if (MASTER_DEBUG) {
             Assert.assertTrue(board.materialHash != 0);
             Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
             Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
         }
         
-        // todo, add "certain" vs "uncertain" flags, only recalc on capture
         switch (board.typeOfGameIAmIn) {
             case CERTAIN_DRAW:
                 Assert.assertTrue(isBasicallyDrawn(board));
@@ -115,6 +99,10 @@ public final class Evaluator {
                 Assert.assertTrue(populationCount(board.pieces[WHITE][BISHOP]) >= 2
                         || populationCount(board.pieces[BLACK][BISHOP]) >= 2);
                 return evaluateKBBK(board);
+                
+            case KPK:
+                Assert.assertTrue(!isBasicallyDrawn(board));
+                return evaluateKPK(board);
 
             case KBNK:
                 Assert.assertTrue(!isBasicallyDrawn(board));
@@ -122,7 +110,8 @@ public final class Evaluator {
                 Assert.assertTrue(2 == populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
                         || 2 == populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]));
                 return evaluateKBNK(board);
-
+                
+ 
 
             case UNKNOWN:
             default:
@@ -144,10 +133,6 @@ public final class Evaluator {
                         Assert.assertTrue(!isBasicallyDrawn(board));
                         board.typeOfGameIAmIn = KRRK;
                         return evaluateKRRK(board);
-//                    case KPK:
-//                        board.typeOfGameIAmIn = KPK;
-//                        return EvaluatorEndgame.evaluateKPK(board);
-//
                     case KQK:
                         Assert.assertTrue(!isBasicallyDrawn(board));
                         board.typeOfGameIAmIn = KQK;
@@ -160,11 +145,14 @@ public final class Evaluator {
                         Assert.assertTrue(!isBasicallyDrawn(board));
                         board.typeOfGameIAmIn = KBBK;
                         return evaluateKBBK(board);
-//                    case KBNK:
-//                        board.typeOfGameIAmIn = KBNK;
-//                        Assert.assertTrue(2 == populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
-//                                || 2 == populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]));
-//                        return evaluateKBNK(board);
+                    case KPK:
+                        board.typeOfGameIAmIn = KPK;
+                        return evaluateKPK(board);
+                    case KBNK:
+                        board.typeOfGameIAmIn = KBNK;
+                        Assert.assertTrue(2 == populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
+                                || 2 == populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]));
+                        return evaluateKBNK(board);
 
                     case UNKNOWN:
                     default:

@@ -11,7 +11,7 @@ import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MaterialHashUtil.KBNK;
 import static java.lang.Long.numberOfTrailingZeros;
 
-public class EndgameKBNK {
+public final class EndgameKBNK {
 
     public static void makeBlackKingLocations() {
         for (int i = 0; i < 64; i++) {
@@ -22,14 +22,14 @@ public class EndgameKBNK {
     private static int[] weakKingLocationKBNKBlackBishop = new int[64];
 
     public static final int[] weakKingLocationKBNKWhiteBishop = {
-            7, 6, 5, 4, 3, 2, 1, 0,
-            6, 5, 4, 3, 2, 1, 1, 0,
-            5, 4, 3, 2, 1, 1, 1, 1,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0,
-            1, 1, 1, 1, 1, 3, 4, 5,
-            1, 1, 1, 2, 3, 4, 5, 6,
-            0, 1, 2, 3, 4, 5, 6, 7,
+            14, 6, 5, 1, 4, 5, 1, 0,
+            6, 5, 4, 3, 2, 1, 0, 1,
+            5, 4, 3, 2, 1, 1, 1, 5,
+            1, 3, 2, 0, 0, 1, 2, 4,
+            4, 2, 1, 0, 0, 2, 3, 1,
+            5, 1, 1, 1, 2, 3, 4, 5,
+            1, 0, 1, 2, 3, 4, 5, 6,
+            0, 1, 5, 4, 1, 5, 6, 14,
     };
 
     static {
@@ -38,7 +38,7 @@ public class EndgameKBNK {
 
     public static int manKK = 0, chebKK = 1, psqtFacKBNK = 2, bNearEnemyKMan = 3, bNearEnemyKCheb = 4, bishopNearKnight = 5, nNearEnemyKMan = 6, nNearEnemyKCheb = 7;
     public static int[] bishopKnightNumbers = {
-            -3, -18, 20, -5, -10, 1, 1, 1
+            1, -20, 22, -5, -7, 1, 1, 1
     };
 
     public static int evaluateKBNK(Chessboard board) {
@@ -49,7 +49,7 @@ public class EndgameKBNK {
         for (int turn = WHITE; turn <= BLACK; turn++) {
             long myBishop = board.pieces[turn][BISHOP];
             if (myBishop != 0) {
-                score += 6_000;
+                score += 5_000;
 
                 final long myKnight = board.pieces[turn][KNIGHT];
                 Assert.assertTrue(myKnight != 0);

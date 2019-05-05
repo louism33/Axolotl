@@ -12,7 +12,7 @@ import static com.github.louism33.chesscore.MaterialHashUtil.KBBK;
 import static java.lang.Long.numberOfLeadingZeros;
 import static java.lang.Long.numberOfTrailingZeros;
 
-public class EndgameKBBK {
+public final class EndgameKBBK {
 
     public static final int[] weakKingLocationKBBK = {
             21, 8, 18, 9, 9, 18, 8, 21,
