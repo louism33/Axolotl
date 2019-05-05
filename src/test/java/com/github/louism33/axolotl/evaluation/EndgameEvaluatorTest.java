@@ -109,8 +109,7 @@ public class EndgameEvaluatorTest {
     @Test
     void krrk() {
         Chessboard board = new Chessboard("rr6/8/8/8/8/8/7K/k7 b");
-        System.out.println(board);
-        System.out.println(board.typeOfGameIAmIn);
+        Assert.assertEquals(KRRK, board.typeOfGameIAmIn);
     }
 
     @Test
@@ -143,11 +142,10 @@ public class EndgameEvaluatorTest {
 
     @Test
     void KBNKCompareCorrectCornerBadCorner() {
-        final Chessboard board = new Chessboard("n7/8/8/8/8/7K/8/1B5k w");
-        int g = Evaluator.eval(board);
-        System.out.println(board);
-        System.out.println(g);
-        int krrkExtra = Evaluator.eval(new Chessboard("rrr5/8/8/8/8/8/7K/k7 b"));
-
+        final Chessboard boardGood = new Chessboard("n7/8/8/8/8/7K/8/1B5k w");
+        final Chessboard boardBad = new Chessboard("n7/8/8/8/8/7K/8/B6k w");
+        int g = Evaluator.eval(boardGood);
+        int b = Evaluator.eval(boardBad);
+        Assert.assertTrue(g > b);
     }
 }

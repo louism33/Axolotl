@@ -250,7 +250,7 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KBBK, typeOfEndgame(board));
-            System.out.println(board);
+//            System.out.println(board);
             engine.receiveSearchSpecs(board, true, 10_000);
 
             engine.simpleSearch();

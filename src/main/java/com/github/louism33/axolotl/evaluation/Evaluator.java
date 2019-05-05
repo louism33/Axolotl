@@ -2,7 +2,6 @@ package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MaterialHashUtil;
-import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import java.util.Arrays;

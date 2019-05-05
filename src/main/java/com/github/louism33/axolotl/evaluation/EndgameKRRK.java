@@ -1,15 +1,12 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.chesscore.BitOperations;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.K;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.Q;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.material;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.chesscore.BitOperations.*;
-import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
 import static com.github.louism33.chesscore.MaterialHashUtil.*;
 import static java.lang.Long.numberOfTrailingZeros;
