@@ -14,6 +14,7 @@ import org.junit.Assert;
 
 import java.util.Arrays;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
@@ -230,16 +231,6 @@ public final class Engine {
     public int simpleSearch() {
         searchFinished = false;
         go();
-        while (true) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                break;
-            }
-            if (searchFinished) {
-                break;
-            }
-        }
 
         for (int t = 1; t < NUMBER_OF_THREADS; t++) {
             threads[t].interrupt();
@@ -254,20 +245,23 @@ public final class Engine {
 
 
     static boolean threadsStarted = false;
+    static boolean running = false;
 
     private static boolean readyToSearch = false;
     static Chessboard cloneBoard;
     static Chessboard masterBoard;
     static Chessboard[] boards;
     static ChessThread[] threads;
+    static AtomicInteger threadsNumber = new AtomicInteger(0);
 
     public static boolean sendBestMove = true;
 
     public void go() {
+        running = true;
         searchFixedTime(uciEntry, true);
     }
 
-    public static final void searchFixedTime(UCIEntry uciEntry, boolean whatever) {
+    private static final void searchFixedTime(UCIEntry uciEntry, boolean whatever) {
         startTime = System.currentTimeMillis();
 
         while (!readyToSearch) {
@@ -335,16 +329,27 @@ public final class Engine {
             }
         }
 
+        running = true;
+        
         if (NUMBER_OF_THREADS == 1) {
             threads[MASTER_THREAD] = new ChessThread(uciEntry, masterBoard);
-            threads[MASTER_THREAD].start();
+            threads[MASTER_THREAD].run();
+            running = false;
         } else {
             for (int t = 1; t < NUMBER_OF_THREADS; t++) {
                 threads[t] = new ChessThread(t, boards[t]);
+                threadsNumber.incrementAndGet();
                 threads[t].start();
             }
             threads[MASTER_THREAD] = new ChessThread(uciEntry, masterBoard);
-            threads[MASTER_THREAD].start();
+            threadsNumber.incrementAndGet();
+            threads[MASTER_THREAD].run();
+            running = false;
+
+            while (threadsNumber.get() != 0) {
+//                System.out.println("yield: " + threadsNumber.get());
+                Thread.yield();
+            }
         }
     }
 
@@ -405,14 +410,14 @@ public final class Engine {
         alpha = aspirationScore - ASPIRATION_WINDOWS[alphaAspirationAttempts];
         beta = aspirationScore + ASPIRATION_WINDOWS[betaAspirationAttempts];
 
-        int score;
+        int score = 0;
 
         if (DEBUG) {
             System.out.println("starting main id loop for thread " + whichThread + ", " + Thread.currentThread());
         }
 
         everything:
-        while (depth < MAX_DEPTH) {
+        while (depth < MAX_DEPTH && running) {
 
             depth++;
 
@@ -470,7 +475,7 @@ public final class Engine {
                 Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);
             }
 
-            while (true) {
+            while (running) {
 
                 if (MASTER_DEBUG) {
                     if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash){
@@ -530,7 +535,7 @@ public final class Engine {
                     break;
                 }
             }
-            while (true) {
+            while (running) {
 
 
                 if (MASTER_DEBUG) {
@@ -642,7 +647,9 @@ public final class Engine {
                 uciEntry.sendBestMove(bestMove);
             }
             searchFinished = true;
-        } 
+        }
+        
+        threadsNumber.decrementAndGet();
     }
 
 

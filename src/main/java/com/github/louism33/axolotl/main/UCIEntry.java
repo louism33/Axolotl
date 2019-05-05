@@ -48,6 +48,7 @@ public final class UCIEntry {
     }
 
     public UCIEntry() {
+        engineThread.start();
         input = new BufferedReader(new InputStreamReader(System.in));
         output = new PrintStream(System.out);
         this.engine = new Engine();
@@ -80,38 +81,38 @@ public final class UCIEntry {
                         if (SPSA) {
                             // futility
                             output.println("option name futility1 type spin default " + SearchUtils.futilityMargin[1]
-                                    + " min " + (SearchUtils.futilityMargin[1] / 2) + " max " +  (SearchUtils.futilityMargin[1] * 2));
+                                    + " min " + (SearchUtils.futilityMargin[1] / 2) + " max " + (SearchUtils.futilityMargin[1] * 2));
                             output.println("option name futility2 type spin default " + SearchUtils.futilityMargin[2]
-                                    + " min " + (SearchUtils.futilityMargin[2] / 2) + " max " +  (SearchUtils.futilityMargin[2] * 2));
+                                    + " min " + (SearchUtils.futilityMargin[2] / 2) + " max " + (SearchUtils.futilityMargin[2] * 2));
                             output.println("option name futility3 type spin default " + SearchUtils.futilityMargin[3]
-                                    + " min " + (SearchUtils.futilityMargin[3] / 2) + " max " +  (SearchUtils.futilityMargin[3] * 2));
+                                    + " min " + (SearchUtils.futilityMargin[3] / 2) + " max " + (SearchUtils.futilityMargin[3] * 2));
                             output.println("option name futility4 type spin default " + SearchUtils.futilityMargin[4]
-                                    + " min " + (SearchUtils.futilityMargin[4] / 2) + " max " +  (SearchUtils.futilityMargin[4] * 2));
+                                    + " min " + (SearchUtils.futilityMargin[4] / 2) + " max " + (SearchUtils.futilityMargin[4] * 2));
                             output.println("option name futility5 type spin default " + SearchUtils.futilityMargin[5]
-                                    + " min " + (SearchUtils.futilityMargin[5] / 2) + " max " +  (SearchUtils.futilityMargin[5] * 2));
+                                    + " min " + (SearchUtils.futilityMargin[5] / 2) + " max " + (SearchUtils.futilityMargin[5] * 2));
 
                             //alpha razor
                             output.println("option name alphaRazor1 type spin default " + SearchUtils.alphaRazorMargin[1]
-                                    + " min " + (SearchUtils.alphaRazorMargin[1] / 2) + " max " +  (SearchUtils.alphaRazorMargin[1] * 2));
+                                    + " min " + (SearchUtils.alphaRazorMargin[1] / 2) + " max " + (SearchUtils.alphaRazorMargin[1] * 2));
                             output.println("option name alphaRazor2 type spin default " + SearchUtils.alphaRazorMargin[2]
-                                    + " min " + (SearchUtils.alphaRazorMargin[2] / 2) + " max " +  (SearchUtils.alphaRazorMargin[2] * 2));
+                                    + " min " + (SearchUtils.alphaRazorMargin[2] / 2) + " max " + (SearchUtils.alphaRazorMargin[2] * 2));
                             output.println("option name alphaRazor3 type spin default " + SearchUtils.alphaRazorMargin[3]
-                                    + " min " + (SearchUtils.alphaRazorMargin[3] / 2) + " max " +  (SearchUtils.alphaRazorMargin[3] * 2));
+                                    + " min " + (SearchUtils.alphaRazorMargin[3] / 2) + " max " + (SearchUtils.alphaRazorMargin[3] * 2));
 
                             // beta razor
                             output.println("option name betaRazor1 type spin default " + SearchUtils.betaRazorMargin[1]
-                                    + " min " + (SearchUtils.betaRazorMargin[1] / 2) + " max " +  (SearchUtils.betaRazorMargin[1] * 2));
+                                    + " min " + (SearchUtils.betaRazorMargin[1] / 2) + " max " + (SearchUtils.betaRazorMargin[1] * 2));
                             output.println("option name betaRazor2 type spin default " + SearchUtils.betaRazorMargin[2]
-                                    + " min " + (SearchUtils.betaRazorMargin[2] / 2) + " max " +  (SearchUtils.betaRazorMargin[2] * 2));
+                                    + " min " + (SearchUtils.betaRazorMargin[2] / 2) + " max " + (SearchUtils.betaRazorMargin[2] * 2));
                             output.println("option name betaRazor3 type spin default " + SearchUtils.betaRazorMargin[3]
-                                    + " min " + (SearchUtils.betaRazorMargin[3] / 2) + " max " +  (SearchUtils.betaRazorMargin[3] * 2));
+                                    + " min " + (SearchUtils.betaRazorMargin[3] / 2) + " max " + (SearchUtils.betaRazorMargin[3] * 2));
                             output.println("option name betaRazor4 type spin default " + SearchUtils.betaRazorMargin[4]
-                                    + " min " + (SearchUtils.betaRazorMargin[4] / 2) + " max " +  (SearchUtils.betaRazorMargin[4] * 2));
+                                    + " min " + (SearchUtils.betaRazorMargin[4] / 2) + " max " + (SearchUtils.betaRazorMargin[4] * 2));
                             output.println("option name betaRazor5 type spin default " + SearchUtils.betaRazorMargin[5]
-                                    + " min " + (SearchUtils.betaRazorMargin[5] / 2) + " max " +  (SearchUtils.betaRazorMargin[5] * 2));
+                                    + " min " + (SearchUtils.betaRazorMargin[5] / 2) + " max " + (SearchUtils.betaRazorMargin[5] * 2));
 
                             output.println("option name betaRazor6 type spin default " + SearchUtils.betaRazorMargin[6]
-                                    + " min " + (SearchUtils.betaRazorMargin[6] / 2) + " max " +  (SearchUtils.betaRazorMargin[6] * 2));
+                                    + " min " + (SearchUtils.betaRazorMargin[6] / 2) + " max " + (SearchUtils.betaRazorMargin[6] * 2));
                         }
 
                         output.println("uciok");
@@ -191,17 +192,13 @@ public final class UCIEntry {
                                 SearchUtils.futilityMargin[4] = Integer.parseInt(valueToken);
                             } else if (nameToken.equalsIgnoreCase("futility5")) {
                                 SearchUtils.futilityMargin[5] = Integer.parseInt(valueToken);
-                            }
-
-                            else if (nameToken.equalsIgnoreCase("alphaRazor1")) {
+                            } else if (nameToken.equalsIgnoreCase("alphaRazor1")) {
                                 SearchUtils.alphaRazorMargin[1] = Integer.parseInt(valueToken);
                             } else if (nameToken.equalsIgnoreCase("alphaRazor2")) {
                                 SearchUtils.alphaRazorMargin[2] = Integer.parseInt(valueToken);
                             } else if (nameToken.equalsIgnoreCase("alphaRazor3")) {
                                 SearchUtils.alphaRazorMargin[3] = Integer.parseInt(valueToken);
-                            }
-
-                            else if (nameToken.equalsIgnoreCase("betaRazor1")) {
+                            } else if (nameToken.equalsIgnoreCase("betaRazor1")) {
                                 SearchUtils.betaRazorMargin[1] = Integer.parseInt(valueToken);
                             } else if (nameToken.equalsIgnoreCase("betaRazor2")) {
                                 SearchUtils.betaRazorMargin[2] = Integer.parseInt(valueToken);
@@ -436,7 +433,11 @@ public final class UCIEntry {
 
                         sendBestMove = true;
 
-                        engine.go();
+                        searching = true;
+//                        engine.go();
+                        synchronized (synchronizedObject) {
+                            synchronizedObject.notifyAll();
+                        }
 
                         break;
 
@@ -548,6 +549,12 @@ public final class UCIEntry {
 
         output.println(infoCommand);
     }
+
+
+    public final static Object synchronizedObject = new Object();
+    public final EngineThread engineThread = new EngineThread(this);
+    public static boolean searching = false;
+
 
     public static void main(String[] args) throws IOException {
         System.out.println("axolotl v1.7 by Louis James Mackenzie-Smith");

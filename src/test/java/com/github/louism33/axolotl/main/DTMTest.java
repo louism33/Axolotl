@@ -18,7 +18,6 @@ public class DTMTest {
     @BeforeEach
     void setup() {
         ResettingUtils.reset();
-        EngineSpecifications.PRINT_PV = false;
     }
 
 

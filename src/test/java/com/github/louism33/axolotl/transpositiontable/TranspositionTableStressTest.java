@@ -14,8 +14,8 @@ import static com.github.louism33.axolotl.search.Engine.hashTableReturn;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 
-@Ignore
-@Disabled
+//@Ignore
+//@Disabled
 public class TranspositionTableStressTest {
 
     static final int depth = 12;

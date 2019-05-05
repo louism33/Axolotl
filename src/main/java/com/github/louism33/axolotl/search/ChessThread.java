@@ -41,6 +41,7 @@ public final class ChessThread extends Thread {
 
         search(board, uciEntry, whichThread);
 
+        
         if (EngineSpecifications.DEBUG) {
             System.out.println("    stop run of " + this.getName() + " with thread number " + whichThread);
         }

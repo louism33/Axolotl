@@ -39,6 +39,7 @@ public class WACSilverSanitySTDebugTest {
     public static void finalSuccessTally() {
         ResettingUtils.reset();
         MASTER_DEBUG = false;
+        System.out.println();
     }
 
     @Parameters(name = "{index} Test: {1}")

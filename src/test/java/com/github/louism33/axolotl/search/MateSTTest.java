@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -38,11 +39,12 @@ public class MateSTTest {
 
     @AfterClass
     public static void finalSuccessTally() {
-        System.out.println("Successful Mate MT sanity tests: " + successes + " out of " + checkmatePositions.length
+        System.out.println("\nSuccessful Mate MT sanity tests: " + successes + " out of " + checkmatePositions.length
                 + ". Anything above " + targetSuccesses + " can be thought of as ok.");
-        EngineSpecifications.PRINT_PV = false;
-        EngineSpecifications.MASTER_DEBUG = false;
+        ResettingUtils.reset();
+        System.out.println();
         Assert.assertTrue(successes > targetSuccesses);
+        successes = 0;
     }
 
 

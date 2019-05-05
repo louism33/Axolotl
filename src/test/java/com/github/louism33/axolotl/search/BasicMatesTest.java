@@ -114,19 +114,19 @@ public class BasicMatesTest {
     }
 
     @Test
-    @Disabled
+//    @Disabled
     void KQKloss() {
         System.out.println("\nsearching my checkmate for KQK positions: ");
         //loss in 10
         String pos = "" +
                 "7K/6Q1/8/8/8/8/2k5/8 b\n" +
                 "K7/1Q6/8/8/8/8/3k4/8 b\n" +
-                "7K/6Q1/8/8/8/8/3k4/8 b\n" +
-                "7K/6Q1/8/8/8/2k5/8/8 b\n" +
-                "K7/1Q6/8/8/8/3k4/8/8 b\n" +
-                "7K/6Q1/8/8/8/3k4/8/8 b\n" +
-                "8/8/8/8/3k4/8/6Q1/7K b\n" +
-                "7K/6Q1/8/8/3k4/8/8/8 b" +
+//                "7K/6Q1/8/8/8/8/3k4/8 b\n" +
+//                "7K/6Q1/8/8/8/2k5/8/8 b\n" +
+//                "K7/1Q6/8/8/8/3k4/8/8 b\n" +
+//                "7K/6Q1/8/8/8/3k4/8/8 b\n" +
+//                "8/8/8/8/3k4/8/6Q1/7K b\n" +
+//                "7K/6Q1/8/8/3k4/8/8/8 b" +
                 "";
 
         String[] kqkPositions = pos.split("\n");
@@ -134,9 +134,8 @@ public class BasicMatesTest {
         for (int i = 0; i < kqkPositions.length; i++) {
             Engine.resetFull();
             Chessboard board = new Chessboard(kqkPositions[i]);
-            System.out.println(board);
             Assert.assertEquals(KQK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 60_000);
+            engine.receiveSearchSpecs(board, true, 20_000);
 
             Evaluator.eval(board, board.generateLegalMoves());
             engine.simpleSearch();
@@ -222,26 +221,26 @@ public class BasicMatesTest {
     }   
     
     @Test
-    @Disabled
+//    @Disabled
     void KBBKwins() {
         System.out.println("\nsearching checkmate for KBBK positions: ");
 //        PRINT_PV = true;
 
         String pos = "" +
                 "8/8/8/8/7B/8/3k4/K2B4 w\n" +
-                "8/4B3/8/8/8/8/3k4/K2B4 w\n" +
-                "3B4/8/8/8/8/8/3k4/K2B4 w\n" +
-                "8/4B3/8/8/8/8/3kB3/K7 w\n" +
-                "8/8/8/8/B7/3k4/3B4/K7 w\n" +
-                "8/3B4/8/8/8/3k4/3B4/K7 w\n" +
-                "4B3/8/8/8/8/3k4/3B4/K7 w\n" +
-                "8/8/8/8/7B/4k3/4B3/K7 w\n" +
-                "8/4B3/8/8/8/4k3/4B3/K7 w\n" +
-                "8/8/8/6B1/2Bk4/8/8/K7 w\n" +
-                "8/8/8/8/5kB1/8/8/K3B3 w\n" +
-                "4B3/8/8/8/6kB/8/8/K7 w\n" +
-                "8/8/8/5kB1/B7/8/8/K7 w\n" +
-                "8/8/8/1B3kB1/8/8/8/K7 w\n" +
+//                "8/4B3/8/8/8/8/3k4/K2B4 w\n" +
+//                "3B4/8/8/8/8/8/3k4/K2B4 w\n" +
+//                "8/4B3/8/8/8/8/3kB3/K7 w\n" +
+//                "8/8/8/8/B7/3k4/3B4/K7 w\n" +
+//                "8/3B4/8/8/8/3k4/3B4/K7 w\n" +
+//                "4B3/8/8/8/8/3k4/3B4/K7 w\n" +
+//                "8/8/8/8/7B/4k3/4B3/K7 w\n" +
+//                "8/4B3/8/8/8/4k3/4B3/K7 w\n" +
+//                "8/8/8/6B1/2Bk4/8/8/K7 w\n" +
+//                "8/8/8/8/5kB1/8/8/K3B3 w\n" +
+//                "4B3/8/8/8/6kB/8/8/K7 w\n" +
+//                "8/8/8/5kB1/B7/8/8/K7 w\n" +
+//                "8/8/8/1B3kB1/8/8/8/K7 w\n" +
                 "4B3/8/8/5kB1/8/8/8/K7 w" +
                 "";
 
@@ -251,8 +250,7 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KBBK, typeOfEndgame(board));
-//            System.out.println(board);
-            engine.receiveSearchSpecs(board, true, 10_000);
+            engine.receiveSearchSpecs(board, true, 60_000);
 
             engine.simpleSearch();
             final boolean condition = aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY;
@@ -266,31 +264,31 @@ public class BasicMatesTest {
     }
 
     @Test
-    @Disabled
+//    @Disabled
     void KBNKwins() {
         System.out.println("\nsearching checkmate for KBNK positions: ");
 //        PRINT_PV = true;
 
         String pos = "" +
                 "8/8/8/8/8/8/3B4/K2k3N w\n" +
-                "8/8/7N/8/8/8/8/K2kB3 w\n" +
-                "8/8/7N/8/8/8/8/K1k1B3 w\n" +
-                "8/6N1/8/8/8/8/3B4/K2k4 w\n" +
-                "8/7N/8/8/8/8/8/K2kB3 w\n" +
-                "8/7N/8/8/8/8/3B4/K2k4 w\n" +
-                "N7/8/8/8/8/8/8/K2kB3 w\n" +
-                "N7/8/8/8/8/8/3B4/K2k4 w\n" +
-                "8/7N/8/8/8/8/8/K1k1B3 w\n" +
-                "N7/8/8/8/7B/8/8/K1k5 w\n" +
-                "5N2/8/8/8/8/8/8/K2kB3 w\n" +
-                "5N2/8/8/8/8/8/3B4/K2k4 w\n" +
-                "6N1/8/8/8/8/8/8/K2kB3 w\n" +
-                "6N1/8/8/8/8/8/3B4/K2k4 w\n" +
-                "7N/8/8/8/8/8/8/K2kB3 w\n" +
-                "7N/8/8/8/8/8/3B4/K2k4 w\n" +
-                "6N1/8/8/8/8/8/8/K1k1B3 w\n" +
-                "7N/8/8/8/8/8/8/K1k1B3 w\n" +
-                "8/8/8/8/8/B7/8/K5kN w\n" +
+//                "8/8/7N/8/8/8/8/K2kB3 w\n" +
+//                "8/8/7N/8/8/8/8/K1k1B3 w\n" +
+//                "8/6N1/8/8/8/8/3B4/K2k4 w\n" +
+//                "8/7N/8/8/8/8/8/K2kB3 w\n" +
+//                "8/7N/8/8/8/8/3B4/K2k4 w\n" +
+//                "N7/8/8/8/8/8/8/K2kB3 w\n" +
+//                "N7/8/8/8/8/8/3B4/K2k4 w\n" +
+//                "8/7N/8/8/8/8/8/K1k1B3 w\n" +
+//                "N7/8/8/8/7B/8/8/K1k5 w\n" +
+//                "5N2/8/8/8/8/8/8/K2kB3 w\n" +
+//                "5N2/8/8/8/8/8/3B4/K2k4 w\n" +
+//                "6N1/8/8/8/8/8/8/K2kB3 w\n" +
+//                "6N1/8/8/8/8/8/3B4/K2k4 w\n" +
+//                "7N/8/8/8/8/8/8/K2kB3 w\n" +
+//                "7N/8/8/8/8/8/3B4/K2k4 w\n" +
+//                "6N1/8/8/8/8/8/8/K1k1B3 w\n" +
+//                "7N/8/8/8/8/8/8/K1k1B3 w\n" +
+//                "8/8/8/8/8/B7/8/K5kN w\n" +
                 "8/4B3/8/8/8/8/8/K5kN w" +
                 "";
 
@@ -300,8 +298,7 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KBNK, typeOfEndgame(board));
-            System.out.println(board);
-            engine.receiveSearchSpecs(board, true, 10_000);
+            engine.receiveSearchSpecs(board, true, 60_000);
 
             engine.simpleSearch();
             final boolean condition = aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY;
@@ -315,22 +312,22 @@ public class BasicMatesTest {
     }
 
     @Test
-    @Disabled
+//    @Disabled
     void KBNKloss() {
         System.out.println("\nsearching checkmate for KBNK positions: ");
 //        PRINT_PV = true;
 
         String pos = "" +
                 "8/8/8/8/8/8/4B3/K1kN4 b\n" +
-                "8/8/8/8/8/8/4B3/K1k4N b\n" +
-                "8/8/7N/8/8/8/8/K1k1B3 b\n" +
-                "8/8/7N/8/7B/8/8/K1k5 b\n" +
-                "8/4B3/7N/8/8/8/8/K1k5 b\n" +
-                "8/N7/8/8/8/B7/8/K1k5 b\n" +
-                "8/7N/8/8/8/8/8/K1k1B3 b\n" +
-                "8/7N/8/8/8/B7/8/K1k5 b\n" +
-                "N7/8/8/8/8/8/8/K1k1B3 b\n" +
-                "N7/8/8/8/8/8/4B3/K1k5 b\n" +
+//                "8/8/8/8/8/8/4B3/K1k4N b\n" +
+//                "8/8/7N/8/8/8/8/K1k1B3 b\n" +
+//                "8/8/7N/8/7B/8/8/K1k5 b\n" +
+//                "8/4B3/7N/8/8/8/8/K1k5 b\n" +
+//                "8/N7/8/8/8/B7/8/K1k5 b\n" +
+//                "8/7N/8/8/8/8/8/K1k1B3 b\n" +
+//                "8/7N/8/8/8/B7/8/K1k5 b\n" +
+//                "N7/8/8/8/8/8/8/K1k1B3 b\n" +
+//                "N7/8/8/8/8/8/4B3/K1k5 b\n" +
                 "N7/8/8/8/8/4B3/8/K1k5 b" +
                 "";
 
@@ -340,7 +337,6 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KBNK, typeOfEndgame(board));
-            System.out.println(board);
             engine.receiveSearchSpecs(board, true, 10_000);
 
             engine.simpleSearch();

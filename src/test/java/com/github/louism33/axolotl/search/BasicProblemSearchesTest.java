@@ -1,6 +1,7 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.axolotl.main.UCIEntry;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.AfterClass;
@@ -19,18 +20,12 @@ public class BasicProblemSearchesTest {
     
     @BeforeClass
     public static void setup() {
-        sendBestMove = false;
-        PRINT_PV = false;
-        DEBUG = false;
-        engine.uciEntry = new UCIEntry();
-        Engine.resetFull();
+        ResettingUtils.reset();
     }
 
     @AfterClass
     public static void tearDown() {
-        PRINT_PV = false;
-        DEBUG = false;
-        MASTER_DEBUG = false;
+        ResettingUtils.reset();
     }
 
 
