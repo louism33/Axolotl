@@ -99,7 +99,7 @@ public class BasicMatesTest {
             System.out.println(board);
             System.out.println(board.toFenString());
             Assert.assertEquals(KQK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 10_000);
+            engine.receiveSearchSpecs(board, true, 20_000);
 
             engine.simpleSearch();
 
