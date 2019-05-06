@@ -2,6 +2,7 @@ package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.main.PVLine;
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.MoveParserFromAN;
@@ -36,8 +37,8 @@ public class TranspositionTable2Test {
 
         Chessboard board = new Chessboard();
 
-        engine.receiveSearchSpecs(board, 6);
-        int bestMove = engine.simpleSearch();
+        SearchSpecs.basicDepthSearch(6);
+        final int bestMove = engine.simpleSearch(board);
         int move = getMove(retrieveFromTable(board.zobristHash));
 
         Assert.assertEquals(bestMove, move);
@@ -56,8 +57,8 @@ public class TranspositionTable2Test {
         Engine.resetFull();
         Chessboard board = new Chessboard();
 
-        engine.receiveSearchSpecs(board, 6);
-        int move = engine.simpleSearch();
+        SearchSpecs.basicDepthSearch(6);
+        final int bestMove = engine.simpleSearch(board);
 
         int length = entries.length;
         for (int i = 0; i < length; i++) {
@@ -222,8 +223,8 @@ public class TranspositionTable2Test {
         Engine.resetFull();
         Chessboard board = new Chessboard();
 
-        engine.receiveSearchSpecs(board, 3);
-        int move = engine.simpleSearch();
+        SearchSpecs.basicDepthSearch(3);
+        final int bestMove = engine.simpleSearch(board);
 
         long previousTableData = retrieveFromTable(board.zobristHash);
         Assert.assertTrue(previousTableData != 0);
@@ -282,8 +283,8 @@ public class TranspositionTable2Test {
         Engine.resetFull();
         Chessboard board = new Chessboard();
 
-        engine.receiveSearchSpecs(board, 6);
-        int move = engine.simpleSearch();
+        SearchSpecs.basicDepthSearch(6);
+        final int bestMove = engine.simpleSearch(board);
 
         long previousTableData1 = retrieveFromTable(board.zobristHash);
         Assert.assertTrue(previousTableData1 != 0);
@@ -306,8 +307,8 @@ public class TranspositionTable2Test {
         Engine.resetFull();
         Chessboard board = new Chessboard();
 
-        engine.receiveSearchSpecs(board, 6);
-        int move = engine.simpleSearch();
+        SearchSpecs.basicDepthSearch(6);
+        final int bestMove = engine.simpleSearch(board);
 
         long previousTableData1 = retrieveFromTable(board.zobristHash);
         Assert.assertTrue(previousTableData1 != 0);

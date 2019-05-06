@@ -1,6 +1,7 @@
 package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
@@ -71,8 +72,8 @@ public class WACSilverSanityMTDebugTest {
     public void test() {
         Engine.resetFull();
         System.out.print(EPDObject.getId() + " ");
-        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
-        engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(timeLimit);
+        final int move = engine.simpleSearch(EPDObject.getBoard());
     }
 
     private static final String positions = "" +

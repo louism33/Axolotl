@@ -1,10 +1,12 @@
 package challenges;
 
+
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -56,8 +58,9 @@ public class BT2630 {
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.PRINT_PV = false;
-        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
-        final int move = engine.simpleSearch();
+                
+        SearchSpecs.basicTimeSearch(timeLimit);
+        final int move = engine.simpleSearch(EPDObject.getBoard());
 
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }

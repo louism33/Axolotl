@@ -1,6 +1,7 @@
 package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
@@ -99,8 +100,8 @@ public class PawnEvalTest {
         Chessboard board = new Chessboard();
         Engine engine = new Engine();
         System.out.println();
-        engine.receiveSearchSpecs(board, 16);
-        final int move = engine.simpleSearch();
+        SearchSpecs.basicDepthSearch(16);
+        final int move = engine.simpleSearch(board);
 
         System.out.println("size of pawn table in mb: " + DEFAULT_PAWN_TABLE_SIZE_MB);
         System.out.println("entries in pawnMoveData : " + pawnMoveData.length);

@@ -31,7 +31,7 @@ public class TimeManagementTest {
             int movesToGo = r.nextInt(100);
             int fullMoves = r.nextInt(10000);
 
-            long allocateTime = TimeAllocator.allocateTime(maxTime, enemyTime, increment, movesToGo, fullMoves);
+            long allocateTime = TimeAllocator.allocateTime(maxTime, enemyTime, increment, movesToGo);
 
             Assert.assertTrue(allocateTime > 0);
             Assert.assertTrue(allocateTime < maxTime);
@@ -40,13 +40,13 @@ public class TimeManagementTest {
 
     @Test
     void dominantTest() {
-        long allocateTime = TimeAllocator.allocateTime(485370, 38948, 6000, 0, 200);
+        long allocateTime = TimeAllocator.allocateTime(485370, 38948, 6000, 0);
         System.out.println(allocateTime);
     }
 
     @Test
     void shortTCTest() {
-        long allocateTime = TimeAllocator.allocateTime(2000, 2000, 75, 0, 0);
+        long allocateTime = TimeAllocator.allocateTime(2000, 2000, 75, 0);
         System.out.println(allocateTime);
     }
 

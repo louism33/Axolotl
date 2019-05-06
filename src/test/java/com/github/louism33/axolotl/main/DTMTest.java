@@ -1,6 +1,7 @@
 package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
@@ -31,8 +32,11 @@ public class DTMTest {
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "e1e6"));
         board.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(board, "f7e6"));
         Engine.setThreads(1);
-        engine.receiveSearchSpecs(board, true, 1000);
-        final int move = engine.simpleSearch();
+//        System.out.println(board);
+//        MoveParser.printMove(board.generateLegalMoves());
+        SearchSpecs.basicTimeSearch(10_000);
+        final int move = engine.simpleSearch(board);
+        MoveParser.printMove(move);
         Assert.assertEquals("f6f7", MoveParser.toString(move));
     }
 }

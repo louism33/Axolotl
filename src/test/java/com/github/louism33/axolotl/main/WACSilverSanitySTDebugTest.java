@@ -1,6 +1,7 @@
 package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
@@ -72,8 +73,8 @@ public class WACSilverSanitySTDebugTest {
         Assert.assertEquals(typeOfEndgame(board), board.typeOfGameIAmIn);
         
         System.out.print(EPDObject.getId() + " ");
-        engine.receiveSearchSpecs(board, true, timeLimit);
-        engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(timeLimit);
+        final int move = engine.simpleSearch(EPDObject.getBoard());
     }
 
     private static final String positions = "" +

@@ -22,8 +22,10 @@ import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.search.Quiescence.quiescenceSearch;
+import static com.github.louism33.axolotl.search.SearchSpecs.*;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
-import static com.github.louism33.axolotl.timemanagement.TimeAllocator.*;
+import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocatePanicTime;
+import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
@@ -32,6 +34,7 @@ import static com.github.louism33.chesscore.MoveParser.*;
 
 @SuppressWarnings("ALL")
 public final class Engine {
+
     public static int aiMoveScore;
     public static long nps;
     public static volatile boolean stopNow = false;
@@ -40,14 +43,10 @@ public final class Engine {
     public static long totalMovesMade;
     public static long[] numberOfMovesMade;
     static long[] numberOfQMovesMade;
-    static boolean manageTime = true;
     static boolean weHavePanicked = false;
 
     private static long startTime = 0;
     private static boolean isReady = false;
-
-    private static long timeLimitMillis;
-    private static long absoluteMaxTimeLimit;
 
     public static boolean quitOnSingleMove = true;
     public static boolean computeMoves = true;
@@ -63,7 +62,7 @@ public final class Engine {
     public Engine(UCIEntry uciEntry) {
         this.uciEntry = uciEntry;
     }
-    
+
     // chess22k / ethereal reduction idea and numbers
     public final static int[][] reductions = new int[64][64];
 
@@ -75,7 +74,7 @@ public final class Engine {
         }
     }
 
-    public static void resetFull() {
+    public static final void resetFull() {
         if (DEBUG) {
             System.out.println("Full resetting");
         }
@@ -87,10 +86,9 @@ public final class Engine {
         }
         resetBetweenMoves();
         age = 0;
-//        initTable(TABLE_SIZE);
         initTableMegaByte(TABLE_SIZE_MB);
         PawnTranspositionTable.initPawnTableMegaByte();
-        MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
+        SearchSpecs.maxDepth = ABSOLUTE_MAX_DEPTH;
         if (!EvaluationConstants.ready) {
             EvaluationConstants.setup();
         }
@@ -107,7 +105,15 @@ public final class Engine {
         //don't reset moves if uci will provide them
         hashTableReturn = 0;
         final int length = rootMoves.length;
+
+        if (length != NUMBER_OF_THREADS) {
+            System.out.println(length);
+            System.out.println(NUMBER_OF_THREADS);
+            Thread.dumpStack();
+        }
+
         Assert.assertEquals(length, NUMBER_OF_THREADS);
+
         if (threads == null) {
             threads = new ChessThread[NUMBER_OF_THREADS];
         }
@@ -130,7 +136,7 @@ public final class Engine {
             rootMoves[MASTER_THREAD] = null; // todo
         }
         weHavePanicked = false;
-        MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
+        SearchSpecs.maxDepth = ABSOLUTE_MAX_DEPTH;
         isReady = true;
         nps = 0;
         aiMoveScore = SHORT_MINIMUM;
@@ -141,9 +147,9 @@ public final class Engine {
     }
 
     public static void setThreads(int totalThreads) {
-        
+
         Assert.assertEquals(0, threadsNumber.get());
-        
+
         if (totalThreads > MAX_THREADS) {
             totalThreads = MAX_THREADS;
         } else if (totalThreads < 0) {
@@ -174,77 +180,19 @@ public final class Engine {
         return rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
     }
 
-    static boolean stopSearch(long startTime, long timeLimiMillis) {
-        return (EngineSpecifications.ALLOW_TIME_LIMIT && outOfTime(startTime, timeLimiMillis, manageTime));
+    static boolean stopSearch(long startTime, long timeLimitMillis) {
+        return (SearchSpecs.allowTimeLimit && outOfTime(startTime, timeLimitMillis, manageTime));
     }
-
-    public final void receiveSearchSpecs(final Chessboard chessboard, final int fixedDepth) {
-        readyToSearch = false;
-        Chessboard[] chessboards = new Chessboard[NUMBER_OF_THREADS];
-        chessboards[MASTER_THREAD] = chessboard;
-        if (NUMBER_OF_THREADS > 1) {
-            for (int t = 1; t < NUMBER_OF_THREADS; t++) {
-                chessboards[t] = new Chessboard(chessboard);
-            }
-        }
-        receiveSearchSpecs(chessboards, fixedDepth, 0, false, 0, 0, 0, 0);
-    }
-
-    public final void receiveSearchSpecs(final Chessboard chessboard, final boolean fixedTimeIgnored, final long fixedTime) {
-        readyToSearch = false;
-        Chessboard[] chessboards = new Chessboard[NUMBER_OF_THREADS];
-        chessboards[MASTER_THREAD] = chessboard;
-        if (NUMBER_OF_THREADS > 1) {
-            for (int t = 1; t < NUMBER_OF_THREADS; t++) {
-                chessboards[t] = new Chessboard(chessboard);
-            }
-        }
-        receiveSearchSpecs(chessboards, 0, fixedTime, false, 0, 0, 0, 0);
-    }
-
-    public final void receiveSearchSpecs(final Chessboard[] chessboards, final int fixedDepth, final long fixedTime,
-                                         boolean myTime, long maxMyTime, long maxEnemyTime, long increment, Integer movesToGo) {
-        boards = chessboards;
-        masterBoard = boards[MASTER_THREAD];
-        rootMoves = new int[boards.length][];
-        receiveSearchSpecs(masterBoard, fixedDepth, fixedTime, myTime, maxMyTime, maxEnemyTime, increment, movesToGo);
-    }
-
-    public final void receiveSearchSpecs(final Chessboard chessboard, final int fixedDepth, final long fixedTime,
-                                         boolean myTime, long maxMyTime, long maxEnemyTime, long increment, Integer movesToGo) {
-        masterBoard = chessboard;
-        resetBetweenMoves();
-        if (myTime) {
-            EngineSpecifications.ALLOW_TIME_LIMIT = true;
-            manageTime = true;
-            timeLimitMillis = allocateTime(maxMyTime, maxEnemyTime, increment, movesToGo, masterBoard.fullMoveCounter);
-            absoluteMaxTimeLimit = maxMyTime;
-            MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
-
-        } else if (fixedDepth != 0) {
-            EngineSpecifications.ALLOW_TIME_LIMIT = false;
-            manageTime = false;
-            timeLimitMillis = absoluteMaxTimeLimit = 0;
-            MAX_DEPTH = fixedDepth;
-
-        } else if (fixedTime != 0) {
-            EngineSpecifications.ALLOW_TIME_LIMIT = true;
-            manageTime = false;
-            timeLimitMillis = absoluteMaxTimeLimit = fixedTime;
-        }
-        readyToSearch = true;
-    }
-
 
     private static boolean searchFinished = false;
 
     // set threads first if you want more than one
-    public int simpleSearch() {
+    public int simpleSearch(Chessboard board) {
         searchFinished = false;
 
         Assert.assertEquals(0, threadsNumber.get());
-        
-        go();
+
+        go(board);
 
         searchFinished = true;
         stopNow = true;
@@ -258,40 +206,26 @@ public final class Engine {
 
     private static boolean readyToSearch = false;
     static Chessboard cloneBoard;
-    static Chessboard masterBoard;
+    static Chessboard board;
     static Chessboard[] boards;
     static ChessThread[] threads;
     static AtomicInteger threadsNumber = new AtomicInteger(0);
 
     public static boolean sendBestMove = true;
 
-    public void go() {
+    public void go(Chessboard board) {
+        this.board = board;
         running = true;
-        searchFixedTime(uciEntry, true);
+
+        searchFixedTime(uciEntry, board);
     }
 
-    private static final void searchFixedTime(UCIEntry uciEntry, boolean whatever) {
+    private static final void searchFixedTime(UCIEntry uciEntry, Chessboard board) {
         startTime = System.currentTimeMillis();
 
-        while (!readyToSearch) {
-            try {
-                System.out.println("                                sleeping");
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                return;
-            }
-        }
-        Assert.assertTrue(readyToSearch);
-
-        if (MASTER_DEBUG) {
-            for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-                Assert.assertEquals(boards[0], boards[i]);
-            }
-        }
-
         //UCI can provide root moves if doing searchmoves
-        if (rootMoves[MASTER_THREAD] == null && computeMoves) {
-            rootMoves[MASTER_THREAD] = masterBoard.generateLegalMoves();
+        if (rootMoves[MASTER_THREAD] == null || computeMoves) {
+            rootMoves[MASTER_THREAD] = board.generateLegalMoves();
         }
 
         int numberOfRealMoves = rootMoves[MASTER_THREAD][rootMoves[MASTER_THREAD].length - 1];
@@ -307,51 +241,38 @@ public final class Engine {
             return;
         }
 
-        if (MASTER_DEBUG) {
-            for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-                Assert.assertEquals(boards[0], boards[i]);
-            }
-        }
-
-        scoreMovesAtRoot(rootMoves[MASTER_THREAD], numberOfRealMoves, masterBoard);
+        scoreMovesAtRoot(rootMoves[MASTER_THREAD], numberOfRealMoves, Engine.board);
         Ints.sortDescending(rootMoves[MASTER_THREAD], 0, numberOfRealMoves);
 
-        // to avoid regenerating and rescoring root moves
-        for (int i = 1; i < NUMBER_OF_THREADS; i++) {
-            System.arraycopy(rootMoves[MASTER_THREAD], 0, rootMoves[i], 0, rootMoves[MASTER_THREAD].length);
-        }
-
-        if (MASTER_DEBUG) {
-            Assert.assertEquals(masterBoard, boards[MASTER_THREAD]);
-            Assert.assertTrue(masterBoard == boards[MASTER_THREAD]);
-        }
-
-
-        if (MASTER_DEBUG) {
-            cloneBoard = new Chessboard(masterBoard);
-        }
-
-        if (MASTER_DEBUG) {
-            for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-                Assert.assertEquals(boards[0], boards[i]);
-                Assert.assertEquals(cloneBoard, boards[i]);
-            }
-        }
+        Engine.board = board;
 
         running = true;
 
+        if (MASTER_DEBUG) {
+            cloneBoard = new Chessboard(board);
+        }
+
+        if (boards == null || boards.length != NUMBER_OF_THREADS) {
+            boards = new Chessboard[NUMBER_OF_THREADS];
+        }
+
         if (NUMBER_OF_THREADS == 1) {
-            threads[MASTER_THREAD] = new ChessThread(uciEntry, masterBoard);
+            threads[MASTER_THREAD] = new ChessThread(uciEntry, Engine.board);
             threadsNumber.incrementAndGet();
             threads[MASTER_THREAD].run();
             running = false;
         } else {
+            final int totalMoves = rootMoves[MASTER_THREAD].length;
             for (int t = 1; t < NUMBER_OF_THREADS; t++) {
+                // to avoid regenerating and rescoring root moves
+                System.arraycopy(rootMoves[MASTER_THREAD], 0, rootMoves[t], 0, totalMoves);
+
+                boards[t] = new Chessboard(board);
                 threads[t] = new ChessThread(t, boards[t]);
                 threadsNumber.incrementAndGet();
                 threads[t].start();
             }
-            threads[MASTER_THREAD] = new ChessThread(uciEntry, masterBoard);
+            threads[MASTER_THREAD] = new ChessThread(uciEntry, Engine.board);
             threadsNumber.incrementAndGet();
             threads[MASTER_THREAD].run();
             running = false;
@@ -426,7 +347,7 @@ public final class Engine {
         }
 
         everything:
-        while (depth < MAX_DEPTH && running) {
+        while (depth < SearchSpecs.maxDepth && running) {
 
             depth++;
 
@@ -455,31 +376,14 @@ public final class Engine {
             int previousAi = rootMoves[whichThread][0] & MOVE_MASK_WITHOUT_CHECK;
             int previousAiScore = 0;
 
-            if (depth == MAX_DEPTH) {
+            if (depth == SearchSpecs.maxDepth) {
                 nonTerminalTime = System.currentTimeMillis() - startTime;
                 terminal = true;
             }
-
-
+            
             if (MASTER_DEBUG) {
                 Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
                 Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
-                if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash) {
-                    System.err.println("board");
-                    System.err.println(board);
-                    System.err.println("clone");
-                    System.err.println(cloneBoard);
-                    System.err.println(board.zobristHash == cloneBoard.zobristHash);
-                    System.err.println(board.zobristPawnHash == cloneBoard.zobristPawnHash);
-
-                    if (MASTER_DEBUG) {
-                        for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-                            Assert.assertEquals(boards[0], boards[i]);
-                        }
-                    }
-
-                    System.err.println();
-                }
                 Assert.assertEquals(board.zobristPawnHash, cloneBoard.zobristPawnHash);
                 Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);
             }
@@ -534,58 +438,6 @@ public final class Engine {
                     break;
                 }
             }
-            while (running) {
-
-
-                if (MASTER_DEBUG) {
-                    Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
-                    Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
-                    Assert.assertEquals(board.zobristPawnHash, cloneBoard.zobristPawnHash);
-                    Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);
-                }
-
-
-                score = principleVariationSearch(board, depth, 0,
-                        alpha, beta, 0, whichThread);
-
-                if (masterThread && (manageTime && !weHavePanicked)
-                        && (depth >= 6 && aiMoveScore < previousAiScore - PANIC_SCORE_DELTA)) {
-                    timeLimitMillis = allocatePanicTime(timeLimitMillis, absoluteMaxTimeLimit);
-                    weHavePanicked = true;
-                }
-
-                previousAiScore = aiMoveScore;
-
-                if (stopNow || stopSearch(startTime, timeLimitMillis)) {
-                    break everything;
-                }
-
-                if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
-                    break everything;
-                }
-
-                aspTotal++;
-                if (score <= alpha) {
-                    aspFailA++;
-                    alphaAspirationAttempts++;
-                    if (alphaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES) {
-                        alpha = SHORT_MINIMUM;
-                    } else {
-                        alpha = aspirationScore - ASPIRATION_WINDOWS[alphaAspirationAttempts];
-                    }
-                } else if (score >= beta) {
-                    aspFailB++;
-                    betaAspirationAttempts++;
-                    if (betaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES) {
-                        beta = SHORT_MAXIMUM;
-                    } else {
-                        beta = aspirationScore - ASPIRATION_WINDOWS[betaAspirationAttempts];
-                    }
-                } else {
-                    aspSuccess++;
-                    break;
-                }
-            }
 
             if (PRINT_PV && masterThread) {
                 long time = System.currentTimeMillis() - startTime;
@@ -595,7 +447,7 @@ public final class Engine {
             aspirationScore = score;
         }
 
-        if (depth == MAX_DEPTH) {
+        if (depth == SearchSpecs.maxDepth) {
             terminalTime = System.currentTimeMillis() - startTime;
         }
 
@@ -641,40 +493,6 @@ public final class Engine {
         int[] moves = ply == 0 ? rootMoves[whichThread] : board.generateLegalMoves();
 
         if (MASTER_DEBUG && ply == 0) {
-            if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash) {
-                System.err.println("board");
-                System.err.println(board);
-                System.err.println("clone");
-                System.err.println(cloneBoard);
-
-                System.err.println("d:" + depth + " p: " + ply);
-                System.err.println("thread: " + whichThread);
-                System.err.println("thread: " + Thread.currentThread());
-                System.err.println(board);
-                System.err.println("moves I was searching: ");
-                System.err.println(Arrays.toString(MoveParser.toString(moves)));
-                System.err.println("fresh generated moves: ");
-                System.err.println(Arrays.toString(MoveParser.toString(board.generateLegalMoves())));
-                System.err.println("st:");
-                Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-                System.err.println(Thread.getAllStackTraces());
-                Thread.dumpStack();
-                System.err.println("root moves: ");
-                System.err.println(Arrays.toString(MoveParser.toString(rootMoves[whichThread])));
-                System.err.println("XXXX -> root equal to moves i search? " + (Arrays.equals(rootMoves[whichThread], moves)));
-
-                System.err.println(threadSet);
-                System.err.println(threadSet.size());
-                System.err.println();
-                System.err.println("clone of root board: ");
-                System.err.println(cloneBoard);
-                System.err.println("with moves: ");
-                final int[] moves1 = cloneBoard.generateLegalMoves();
-                System.err.println(Arrays.toString(MoveParser.toString(moves1)));
-                System.err.println("equal to moves i search? " + (Arrays.equals(moves1, moves)));
-
-                System.err.println();
-            }
             Assert.assertEquals(rootMoves[whichThread], moves);
             Assert.assertEquals(board.zobristPawnHash, cloneBoard.zobristPawnHash);
             Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);

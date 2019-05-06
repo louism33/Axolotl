@@ -30,9 +30,8 @@ public class BasicProblemSearchesTest {
         Engine.resetFull();
         final Chessboard board = new Chessboard("5r2/r4p1p/1p3n2/n1pp1NNk/p2P4/P1P3R1/1P5P/5RK1 w - - 1 0");
 
-        engine.receiveSearchSpecs(board, true, 5_000);
-
-        final int move = engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(10_000);
+        final int move = engine.simpleSearch(board);
         Assert.assertEquals(move, MoveParserFromAN.buildMoveFromAN(board, "Ng7+"));
         
     }

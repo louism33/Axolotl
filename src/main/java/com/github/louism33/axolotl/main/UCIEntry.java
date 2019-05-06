@@ -2,6 +2,7 @@ package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.axolotl.search.SearchUtils;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
@@ -49,7 +50,9 @@ public final class UCIEntry {
 
     public UCIEntry() {
         engineThread.start();
+        NUMBER_OF_THREADS = DEFAULT_THREAD_NUMBER;
         Engine.setThreads(DEFAULT_THREAD_NUMBER);
+        Engine.resetFull();
         input = new BufferedReader(new InputStreamReader(System.in));
         output = new PrintStream(System.out);
         this.engine = new Engine();
@@ -57,6 +60,7 @@ public final class UCIEntry {
     }
 
     private void loop() throws IOException {
+        
         while (true) {
             String line = input.readLine();
 
@@ -305,6 +309,7 @@ public final class UCIEntry {
 
                         Assert.assertNotNull(boards);
                         Assert.assertEquals(boards.length, NUMBER_OF_THREADS);
+                        
                         for (int i = 0; i < boards.length; i++) { // todo, cheaper to increment all, or clone all?
                             boards[i] = new Chessboard(board);
                         }
@@ -317,6 +322,8 @@ public final class UCIEntry {
 
                         break;
                     } else if (token.equalsIgnoreCase("go")) {
+                        Engine.resetBetweenMoves();
+                        
                         String[] list = (tokens[1]).split("\\s");
                         final int length = list.length;
 
@@ -394,7 +401,7 @@ public final class UCIEntry {
                         // go movetime 1000 searchmoves e2e4 d2d4 a2a3
                         // go wtime 919 btime 825 winc 50 binc 50
 
-                        MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
+                        SearchSpecs.maxDepth = ABSOLUTE_MAX_DEPTH;
 
                         Engine.quitOnSingleMove = true;
                         if (searchMoves[0] != 0) {
@@ -413,29 +420,32 @@ public final class UCIEntry {
                             }
                         }
 
+                        SearchSpecs.reset();
+                        
                         if (depth != 0) {
-                            engine.receiveSearchSpecs(boards, depth, 0, false, 0, 0, 0, 0);
+                            SearchSpecs.basicDepthSearch(depth);
                         } else if (nodes != 0) {
-//                            engine.receiveSearchSpecs(boards, depth, 0, false, 0, 0, 0, 0);
+                            SearchSpecs.maxNodes = nodes;
+                            SearchSpecs.searchType = SearchSpecs.SEARCH_TYPE.TO_NODES;
                         } else if (mate) {
-                            engine.receiveSearchSpecs(boards, MAX_DEPTH, 0, false, 0, 0, 0, 0);
+                            SearchSpecs.searchType = SearchSpecs.SEARCH_TYPE.TO_MATE;
                         } else if (infinite) {
-                            engine.receiveSearchSpecs(boards, MAX_DEPTH, 0, false, 0, 0, 0, 0);
+                            SearchSpecs.searchType = SearchSpecs.SEARCH_TYPE.INFINITE;
                         } else if (moveTime != 0) {
-                            engine.receiveSearchSpecs(boards, 0, moveTime, false, 0, 0, 0, 0);
+                            SearchSpecs.basicTimeSearch(moveTime);
                         } else {
-                            engine.receiveSearchSpecs(boards, 0, 0, true, myTime, enemyTime, myinc, movestogo);
+                            SearchSpecs.uciSearch(myTime, enemyTime, myinc, myinc, movestogo, board.fullMoveCounter);
                         }
 
                         if (DEBUG) {
                             output.println("info string engine go command for board: ");
                             output.println(board);
                         }
-
+                        
                         sendBestMove = true;
 
                         searching = true;
-//                        engine.go();
+                        engineThread.setBoard(board);
                         synchronized (synchronizedObject) {
                             synchronizedObject.notifyAll();
                         }
@@ -443,10 +453,6 @@ public final class UCIEntry {
                         break;
 
                     } else if (token.equalsIgnoreCase("stop")) {
-//                        int aiMove = Engine.getAiMove();
-//                        if (aiMove != 0) {
-//                            output.println("bestmove " + MoveParser.toString(aiMove)); // + ponder
-//                        }
                         reset();
                         searching = false;
                         Engine.running = false;
@@ -501,7 +507,7 @@ public final class UCIEntry {
         Arrays.fill(searchMoves, 0);
         Engine.quitOnSingleMove = true;
         Engine.computeMoves = true;
-        MAX_DEPTH = ABSOLUTE_MAX_DEPTH;
+        SearchSpecs.reset();
     }
 
     public void sendNoMove() {

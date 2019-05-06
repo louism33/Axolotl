@@ -1,19 +1,14 @@
 package com.github.louism33.axolotl.timemanagement;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.search.SearchSpecs;
 
 public final class TimeAllocator {
 
+    public static long allocateTime(long maxTime, long enemyTime, long increment, Integer movesToGo) {
+        return allocateTime(maxTime, enemyTime, increment, movesToGo, 0);
+    }
     public static long allocateTime(long maxTime, long enemyTime, long increment, Integer movesToGo, int fullMovesCounter) {
-//        if (maxTime < 1000) {
-//            return 100;
-//        }
-//
-//        if (maxTime < 5000) {
-//            return 1000 + (increment / 3);
-//        }
-
         long time;
 
         if (fullMovesCounter <= 40) {
@@ -56,7 +51,7 @@ public final class TimeAllocator {
         }
         
         boolean outOfTime = false;
-        if (!EngineSpecifications.ALLOW_TIME_LIMIT) {
+        if (!SearchSpecs.allowTimeLimit) {
             return false;
         }
 
@@ -74,6 +69,7 @@ public final class TimeAllocator {
 
         if (outOfTime) {
             Engine.stopNow = true;
+            Engine.running = false;
         }
         return outOfTime;
     }

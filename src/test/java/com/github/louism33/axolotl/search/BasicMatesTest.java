@@ -53,8 +53,8 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KRRK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 4_000);
-            engine.simpleSearch();
+            SearchSpecs.basicTimeSearch(4_000);
+            final int move = engine.simpleSearch(board);
             final boolean condition = aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY;
             if (!condition) {
                 System.err.println("fail:");
@@ -81,10 +81,8 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(kqkPositions[i]);
             Assert.assertEquals(KRRK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 20_000);
-
-            Evaluator.eval(board, board.generateLegalMoves());
-            engine.simpleSearch();
+            SearchSpecs.basicTimeSearch(20_000);
+            final int move = engine.simpleSearch(board);
 
             final boolean condition = aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY;
             if (!condition) {
@@ -113,9 +111,8 @@ public class BasicMatesTest {
             Engine.resetFull(); 
             Chessboard board = new Chessboard(kqkPositions[i]);
             Assert.assertEquals(KQK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 20_000);
-
-            engine.simpleSearch();
+            SearchSpecs.basicTimeSearch(20_000);
+            final int move = engine.simpleSearch(board);
 
             final boolean condition = aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY;
             if (!condition) {
@@ -143,10 +140,8 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(kqkPositions[i]);
             Assert.assertEquals(KQK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 20_000);
-
-            Evaluator.eval(board, board.generateLegalMoves());
-            engine.simpleSearch();
+            SearchSpecs.basicTimeSearch(20_000);
+            final int move = engine.simpleSearch(board);
 
             final boolean condition = aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY;
             if (!condition) {
@@ -175,8 +170,8 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KRK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 15_000);
-            engine.simpleSearch();
+            SearchSpecs.basicTimeSearch(15_000);
+            final int move = engine.simpleSearch(board);
             final boolean condition = aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY;
             if (!condition) {
                 System.err.println("fail:");
@@ -206,9 +201,8 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KRK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 14_000);
-
-            engine.simpleSearch();
+            SearchSpecs.basicTimeSearch(14_000);
+            final int move = engine.simpleSearch(board);
             
             final boolean condition = aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY;
             if (!condition) {
@@ -237,9 +231,8 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KBBK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 60_000);
-
-            engine.simpleSearch();
+            SearchSpecs.basicTimeSearch(60_000);
+            final int move = engine.simpleSearch(board);
             final boolean condition = aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY;
             if (!condition) {
                 System.err.println("fail:");
@@ -257,7 +250,7 @@ public class BasicMatesTest {
         String pos = "" +
                 "1k6/8/2K1BN2/8/8/8/8/8 w - - 0 1\n" +
 //                "8/2B4N/8/2k5/8/8/8/K7 w - - 0 1\n" +
-                "8/8/8/8/4n1b1/8/6K1/4k3 b - - 0 1\n" +
+//                "8/8/8/8/4n1b1/8/6K1/4k3 b - - 0 1\n" +
                 "8/5n2/8/7k/8/8/8/3K2b1 b - - 0 1\n" +
                 "";
 
@@ -267,9 +260,8 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KBNK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 60_000);
-
-            engine.simpleSearch();
+            SearchSpecs.basicTimeSearch(90_000);
+            final int move = engine.simpleSearch(board);
             final boolean condition = aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY;
             if (!condition) {
                 System.err.println("fail: ");
@@ -295,9 +287,8 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(positions[i]);
             Assert.assertEquals(KBNK, typeOfEndgame(board));
-            engine.receiveSearchSpecs(board, true, 10_000);
-
-            engine.simpleSearch();
+            SearchSpecs.basicTimeSearch(10_000);
+            final int move = engine.simpleSearch(board);
             final boolean condition = aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY;
             if (!condition) {
                 System.err.println("fail:");
@@ -313,9 +304,9 @@ public class BasicMatesTest {
         // mate in 14
         DEBUG = false;
         Chessboard board = new Chessboard("kq4n1/4p2Q/1P2P3/1K6/8/8/p7/8");
-        engine.receiveSearchSpecs(board, true, 2000);
-        Evaluator.eval(board, board.generateLegalMoves());
-        final int move = engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(6_000);
+        final int move = engine.simpleSearch(board);
+
         Assert.assertTrue(aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
         Assert.assertEquals("h7e4", MoveParser.toString(move));
 
@@ -325,9 +316,9 @@ public class BasicMatesTest {
         Chessboard bboard = new Chessboard("kq4n1/4p2Q/1P2P3/1K6/8/8/p7/8");
         bboard.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(bboard, "h7e4"));
         quitOnSingleMove = false;
-        engine.receiveSearchSpecs(bboard, true, 2000);
-        Evaluator.eval(bboard, bboard.generateLegalMoves());
-        final int bmove = engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(2_000);
+        final int bmove = engine.simpleSearch(bboard);
+        
         Assert.assertTrue(aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY);
         Assert.assertEquals("b8b7", MoveParser.toString(bmove));
 

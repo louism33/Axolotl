@@ -2,6 +2,7 @@ package strategictestsuite;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
@@ -63,8 +64,9 @@ public class STS9abcPAWNS {
         int[] winningMoves = EPDObject.getBestMovesFromComments();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.PRINT_PV = false;
-        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
-        final int move = engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(timeLimit);
+
+        final int move = engine.simpleSearch(EPDObject.getBoard());
 
         System.out.println("my move: " + MoveParser.toString(move));
 

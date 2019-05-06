@@ -35,8 +35,8 @@ public class FamousPositionsTest {
                 ExtendedPositionDescriptionParser.parseEDPPosition(pos);
 //        System.out.println(EPDObject.getBoard());
 //        Engine.setThreads(4);
-        engine.receiveSearchSpecs(EPDObject.getBoard(), true, 1_000);
-        final int move = engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(1_000);
+        final int move = engine.simpleSearch(EPDObject.getBoard());
         MoveParser.printMove(move);
 //        Assert.assertEquals(MoveParser.toString(move), "d5c6");
     }   
@@ -47,8 +47,8 @@ public class FamousPositionsTest {
         String pos = "7K/8/k1P5/7p/8/8/8/8 w - -";
         ExtendedPositionDescriptionParser.EPDObject EPDObject =
                 ExtendedPositionDescriptionParser.parseEDPPosition(pos);
-        engine.receiveSearchSpecs(EPDObject.getBoard(), true, 1_000);
-        final int move = engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(1_000);
+        final int move = engine.simpleSearch(EPDObject.getBoard());
         Assert.assertEquals(MoveParser.toString(move), "h8g7");
         Assert.assertEquals(Engine.aiMoveScore, 0);
     }

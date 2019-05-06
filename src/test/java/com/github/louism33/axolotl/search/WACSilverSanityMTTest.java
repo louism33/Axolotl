@@ -76,8 +76,8 @@ public class WACSilverSanityMTTest {
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
 
-        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
-        final int move = engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(timeLimit);
+        final int move = engine.simpleSearch(EPDObject.getBoard());
 
         if (contains(winningMoves, move) && !contains(losingMoves, move)) {
             System.out.print(". ");

@@ -1,6 +1,7 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
@@ -92,9 +93,9 @@ public class TranspositionTableStressTest {
         Engine.setThreads(numThreads);
 
         Assert.assertEquals(Engine.numberOfMovesMade.length, numThreads);
-        
-        engine.receiveSearchSpecs(board, depth);
-        engine.simpleSearch();
+
+        SearchSpecs.basicDepthSearch(depth);
+        final int bestMove = engine.simpleSearch(board);
 
         System.out.println();
         System.out.println("total adds :           " + totalAdds);

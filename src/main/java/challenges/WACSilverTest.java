@@ -2,6 +2,7 @@ package challenges;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import java.util.List;
 import static challenges.Utils.contains;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.EPDObject;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseEDPPosition;
+
 @RunWith(Parameterized.class)
 public class WACSilverTest {
 
@@ -72,10 +74,12 @@ public class WACSilverTest {
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.PRINT_PV = false;
-        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
-        final int move = engine.simpleSearch();
 
-        Assert.assertTrue(Utils.contains(winningMoves, move) && !Utils.contains(losingMoves, move));
+
+        SearchSpecs.basicTimeSearch(timeLimit);
+        final int move = engine.simpleSearch(EPDObject.getBoard());
+
+        Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
 
     }
 

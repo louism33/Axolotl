@@ -38,8 +38,8 @@ public class BasicMTSearchTest {
     public void testSingleDefault() {
         Engine.resetFull();
         final Chessboard board = new Chessboard();
-        engine.receiveSearchSpecs(board, true, timeLimit);
-        engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(timeLimit);
+        final int move = engine.simpleSearch(board);
     }
 
     @Test
@@ -48,8 +48,8 @@ public class BasicMTSearchTest {
         final Chessboard board = new Chessboard();
         MASTER_DEBUG = true;
         Engine.setThreads(1);
-        engine.receiveSearchSpecs(board, true, timeLimit);
-        engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(timeLimit);
+        final int move = engine.simpleSearch(board);
         nps();
     }
 
@@ -59,8 +59,8 @@ public class BasicMTSearchTest {
         final Chessboard board = new Chessboard();
         int threads = 2;
         Engine.setThreads(threads);
-        engine.receiveSearchSpecs(board, true, timeLimit);
-        engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(timeLimit);
+        final int move = engine.simpleSearch(board);
         nps();
     }
 
@@ -71,9 +71,10 @@ public class BasicMTSearchTest {
         Engine.setThreads(MAX_THREADS);
 //        DEBUG = true;
         MASTER_DEBUG = true;
-        engine.receiveSearchSpecs(board, true, timeLimit);
-        engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(timeLimit);
+        final int move = engine.simpleSearch(board);
         nps();
+        MASTER_DEBUG = false;
     }
 
     @Test
@@ -84,8 +85,8 @@ public class BasicMTSearchTest {
         for (int t = 1; t <= MAX_THREADS; t++) {
             System.out.println(t + " ");
             Engine.setThreads(t);
-            engine.receiveSearchSpecs(board, 10);
-            engine.simpleSearch();
+            SearchSpecs.basicDepthSearch(10);
+            final int move = engine.simpleSearch(board);
             Engine.resetFull();
         }
         System.out.println("\nAll ok.");
