@@ -49,6 +49,7 @@ public final class UCIEntry {
 
     public UCIEntry() {
         engineThread.start();
+        Engine.setThreads(DEFAULT_THREAD_NUMBER);
         input = new BufferedReader(new InputStreamReader(System.in));
         output = new PrintStream(System.out);
         this.engine = new Engine();
@@ -442,11 +443,13 @@ public final class UCIEntry {
                         break;
 
                     } else if (token.equalsIgnoreCase("stop")) {
-                        int aiMove = Engine.getAiMove();
-                        if (aiMove != 0) {
-                            output.println("bestmove " + MoveParser.toString(aiMove)); // + ponder
-                        }
+//                        int aiMove = Engine.getAiMove();
+//                        if (aiMove != 0) {
+//                            output.println("bestmove " + MoveParser.toString(aiMove)); // + ponder
+//                        }
                         reset();
+                        searching = false;
+                        Engine.running = false;
                         Engine.stopNow = true;
                         break;
                     } else if (token.equalsIgnoreCase("ponderhit")) {

@@ -48,6 +48,4 @@ public final class ChessThread extends Thread {
 
     }
     
-    
-    
 }

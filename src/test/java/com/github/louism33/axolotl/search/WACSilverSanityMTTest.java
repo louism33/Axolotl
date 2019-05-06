@@ -18,7 +18,7 @@ import java.util.List;
 import static challenges.Utils.contains;
 
 @RunWith(Parameterized.class)
-@Disabled
+//@Disabled
 public class WACSilverSanityMTTest {
 
     private static final int threads = 4;

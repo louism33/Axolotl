@@ -15,10 +15,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.github.louism33.axolotl.search.EngineSpecifications.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.DEBUG;
+import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
 
 @RunWith(Parameterized.class)
-@Disabled
+//@Disabled
 public class WACSilverSanityMTDebugTest {
 
     private static final int timeLimit = 1_000;
@@ -41,7 +42,7 @@ public class WACSilverSanityMTDebugTest {
     @AfterClass
     public static void finalSuccessTally() {
         ResettingUtils.reset();
-System.out.println();
+        System.out.println();
     }
 
     @Parameters(name = "{index} Test: {1}")

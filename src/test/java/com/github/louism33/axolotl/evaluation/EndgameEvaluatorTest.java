@@ -4,10 +4,10 @@ import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static com.github.louism33.chesscore.MaterialHashUtil.KPK;
 import static com.github.louism33.chesscore.MaterialHashUtil.*;
 
 public class EndgameEvaluatorTest {

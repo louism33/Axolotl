@@ -25,6 +25,7 @@ import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.BitOperations.fileForward;
 import static com.github.louism33.chesscore.BitOperations.*;
 import static com.github.louism33.chesscore.BoardConstants.*;
+import static com.github.louism33.chesscore.MaterialHashUtil.KPK;
 import static com.github.louism33.chesscore.MaterialHashUtil.*;
 import static com.github.louism33.chesscore.PieceMove.*;
 import static java.lang.Long.numberOfTrailingZeros;

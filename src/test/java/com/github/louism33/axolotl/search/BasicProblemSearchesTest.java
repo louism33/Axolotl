@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.MoveParserFromAN;
@@ -8,9 +7,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static com.github.louism33.axolotl.search.Engine.sendBestMove;
-import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
 public class BasicProblemSearchesTest {
 

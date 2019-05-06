@@ -51,7 +51,10 @@ public final class TimeAllocator {
     }
 
     public static boolean outOfTime(long startTime, long timeLimitMillis, boolean manageTime) {
-
+        if (!Engine.running) {
+            return true;
+        }
+        
         boolean outOfTime = false;
         if (!EngineSpecifications.ALLOW_TIME_LIMIT) {
             return false;

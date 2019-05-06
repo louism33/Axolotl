@@ -1,11 +1,9 @@
 package com.github.louism33.axolotl.util;
 
-import com.github.louism33.axolotl.evaluation.PawnTranspositionTable;
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 
-import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.*;
 import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.DEFAULT_PAWN_TABLE_SIZE_MB;
+import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.PAWN_TABLE_SIZE;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 
 public class ResettingUtils {

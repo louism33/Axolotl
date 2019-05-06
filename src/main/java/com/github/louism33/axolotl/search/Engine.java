@@ -54,8 +54,16 @@ public final class Engine {
 
     public static int age = 0;
 
-    public UCIEntry uciEntry = new UCIEntry(this);
+    public UCIEntry uciEntry;// = new UCIEntry(this);
 
+    public Engine() {
+        this.uciEntry = new UCIEntry(this);
+    }
+
+    public Engine(UCIEntry uciEntry) {
+        this.uciEntry = uciEntry;
+    }
+    
     // chess22k / ethereal reduction idea and numbers
     public final static int[][] reductions = new int[64][64];
 
@@ -133,6 +141,9 @@ public final class Engine {
     }
 
     public static void setThreads(int totalThreads) {
+        
+        Assert.assertEquals(0, threadsNumber.get());
+        
         if (totalThreads > MAX_THREADS) {
             totalThreads = MAX_THREADS;
         } else if (totalThreads < 0) {
@@ -230,22 +241,20 @@ public final class Engine {
     // set threads first if you want more than one
     public int simpleSearch() {
         searchFinished = false;
+
+        Assert.assertEquals(0, threadsNumber.get());
+        
         go();
 
-        for (int t = 1; t < NUMBER_OF_THREADS; t++) {
-            threads[t].interrupt();
-            threads[t] = null;
-        }
-        
         searchFinished = true;
         stopNow = true;
-        
+
         return getAiMove();
     }
 
 
     static boolean threadsStarted = false;
-    static boolean running = false;
+    public static boolean running = false;
 
     private static boolean readyToSearch = false;
     static Chessboard cloneBoard;
@@ -330,9 +339,10 @@ public final class Engine {
         }
 
         running = true;
-        
+
         if (NUMBER_OF_THREADS == 1) {
             threads[MASTER_THREAD] = new ChessThread(uciEntry, masterBoard);
+            threadsNumber.incrementAndGet();
             threads[MASTER_THREAD].run();
             running = false;
         } else {
@@ -454,7 +464,7 @@ public final class Engine {
             if (MASTER_DEBUG) {
                 Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
                 Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
-                if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash){
+                if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash) {
                     System.err.println("board");
                     System.err.println(board);
                     System.err.println("clone");
@@ -477,16 +487,6 @@ public final class Engine {
             while (running) {
 
                 if (MASTER_DEBUG) {
-                    if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash){
-                        System.err.println("board");
-                        System.err.println(board);
-                        System.err.println("clone");
-                        System.err.println(cloneBoard);
-                        System.err.println(board.zobristHash == cloneBoard.zobristHash);
-                        System.err.println(board.zobristPawnHash == cloneBoard.zobristPawnHash);
-                        System.err.println();
-                    }
-                    
                     Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
                     Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
                     Assert.assertEquals(board.zobristPawnHash, cloneBoard.zobristPawnHash);
@@ -540,32 +540,9 @@ public final class Engine {
                 if (MASTER_DEBUG) {
                     Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
                     Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
-                    if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash){
-                        System.err.println("board");
-                        System.err.println(board);
-                        System.err.println("clone");
-                        System.err.println(cloneBoard);
-                        System.err.println(board.zobristHash == cloneBoard.zobristHash);
-                        System.err.println(board.zobristPawnHash == cloneBoard.zobristPawnHash);
-                        System.err.println();
-                        System.err.println();
-                        System.err.println("THREADS OVERVIEW");
-                        System.err.println(Arrays.toString(threads));
-                        for (int t = 0; t < threads.length; t++) {
-                            System.err.println(threads[t]);
-                            System.err.println(threads[t].board);
-                        }
-                        System.err.println(threads.length);
-                    }
                     Assert.assertEquals(board.zobristPawnHash, cloneBoard.zobristPawnHash);
                     Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);
                 }
-
-                if (MASTER_DEBUG) {
-                    Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
-                    Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
-                }
-
 
 
                 score = principleVariationSearch(board, depth, 0,
@@ -647,7 +624,7 @@ public final class Engine {
             }
             searchFinished = true;
         }
-        
+
         threadsNumber.decrementAndGet();
     }
 
@@ -664,7 +641,7 @@ public final class Engine {
         int[] moves = ply == 0 ? rootMoves[whichThread] : board.generateLegalMoves();
 
         if (MASTER_DEBUG && ply == 0) {
-            if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash){
+            if (board.zobristHash != cloneBoard.zobristHash || board.zobristPawnHash != cloneBoard.zobristPawnHash) {
                 System.err.println("board");
                 System.err.println(board);
                 System.err.println("clone");
@@ -1073,8 +1050,7 @@ public final class Engine {
                 return 0;
             }
 
-            if (whichThread != MASTER_THREAD && Engine.stopNow) {
-                Thread.currentThread().interrupt();
+            if (whichThread != MASTER_THREAD && Engine.stopNow || !running) {
                 return 0;
             }
 
