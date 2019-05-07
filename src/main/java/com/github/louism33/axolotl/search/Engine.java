@@ -251,12 +251,15 @@ public final class Engine {
             while (threadsNumber.get() != 0) {
                 Thread.yield();
             }
-
-            final int bestMove = rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
-            if (sendBestMove) {
-                uciEntry.sendBestMove(bestMove);
-            }
         }
+
+        Assert.assertTrue(threadsNumber.get() == 0);
+        
+        final int bestMove = rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
+        if (sendBestMove) {
+            uciEntry.sendBestMove(bestMove);
+        }
+        
     }
 
 
@@ -444,6 +447,13 @@ public final class Engine {
                 calculateNPS();
             }
         }
+
+//        if (masterThread) {
+//            final int bestMove = rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
+//            if (sendBestMove) {
+//                uciEntry.sendBestMove(bestMove);
+//            }
+//        }
 
         threadsNumber.decrementAndGet();
     }
