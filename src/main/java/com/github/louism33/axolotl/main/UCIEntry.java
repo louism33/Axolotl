@@ -502,12 +502,13 @@ public final class UCIEntry {
 
     private void reset() {
         searching = false;
-        Arrays.fill(searchMoves, 0);
+        Engine.running = false;
         Engine.quitOnSingleMove = true;
         Engine.computeMoves = true;
-        Engine.running = false;
         Engine.stopNow = true;
         SearchSpecs.reset();
+        Arrays.fill(searchMoves, 0);
+        Assert.assertTrue(Engine.threadsNumber.get() == 0);
     }
 
     public void sendNoMove() {
@@ -527,11 +528,10 @@ public final class UCIEntry {
     }
 
     private static int distanceToMate(int score) {
-        System.out.println(score);
         return score > 0 ? (CHECKMATE_ENEMY_SCORE - score + 1) / 2 : (IN_CHECKMATE_SCORE - score) / 2;
     }
 
-    public void send(Chessboard board, int aiMoveScore, int depth, int seldepth, long time, long nodes) {
+    public void send(Chessboard board, int aiMoveScore, int depth, int seldepth, long time) {
         String infoCommand = "info";
 
         if (depth != 0) {
@@ -549,6 +549,7 @@ public final class UCIEntry {
         }
 
         Engine.calculateNPS();
+
         infoCommand += " nodes " + Engine.totalMovesMade;
         infoCommand += " nps " + Engine.nps;
         infoCommand += " tbhits 0";
@@ -573,5 +574,10 @@ public final class UCIEntry {
         uci.loop();
     }
 
+    /*
+    position startpos moves e2e4 c7c5 g1f3 d7d6 d2d4 c5d4 f3d4 g8f6 b1c3 b8c6 c1g5 e7e6 d1d2 a7a6 e1c1 h7h6 d4c6 b7c6 g5f4 d6d5 c1b1 f8e7 f4e5 e8g8 e4d5 c6d5 f1d3 c8b7 h1e1 b7c6 d2f4 d8d7 a2a3 c6b5 c3b5 a6b5 c2c3 f8c8 h2h4 c8d8 b1c1 a8a4 f4f3 a4h4 e5g3 h4a4 g3e5 d8c8 d3c2 a4c4 c2d3 c4h4 d3c2 h6h5 c2d3 c8a8 f3e2 a8a5 g2g3 h4h3 e2d2 h3h2 e1h1 h2h1 d1h1 g7g6 d2h6 e7f8 h6d2 f6g4 h1h5 f7f6 e5f6 g4f6 h5g5 f8g7 d2f4 a5a8 g5g6 a8f8 f4e5 g8f7 e5g5 f8g8 g5f4 d7c8 g3g4 c8b8 f4f3 f7e7 f3e3 e6e5 e3c5 e7f7 d3f5 b8b7 c5d6 g8e8 c1b1 f6e4 d6b6 e8e7 b6e3 b7a7 f5e4 a7e3 f2e3 d5e4 g6a6 e7e6 a6a7 f7f6 a3a4 b5b4 g4g5 f6g6 c3b4 g7f8 b4b5 f8c5 a7a6 e6a6 b5a6 c5e3 b1c2 g6g5 c2d1 g5f5 b2b4 f5e6 b4b5 e6d6 a4a5 d6c7 d1e2 e3c5 b5b6 c7b8 e2d2 e4e3 d2e2 e5e4 a6a7 b8a8 e2d1 c5b4 d1e2 b4d2 e2d1 d2a5 b6b7 a8a7 b7b8Q a7b8 d1e2 a5b6 e2d1 b8b7 d1e1 b7c6 e1d1 c6d5 d1e1 d5c4
+    
+    go wtime 6085 btime 11729 winc 500 binc 500
+     */
 
 }

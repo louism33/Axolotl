@@ -6,7 +6,6 @@ import com.github.louism33.chesscore.MaterialHashUtil;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.Engine.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.SearchSpecs.*;
@@ -166,7 +165,7 @@ public final class ChessThreadBetter extends Thread {
 
             if (PRINT_PV && masterThread) {
                 long time = System.currentTimeMillis() - startTime;
-                uciEntry.send(board, aiMoveScore, depth, depth, time, numberOfMovesMade[0]);
+                uciEntry.send(board, aiMoveScore, depth, depth, time);
             }
 
             aspirationScore = score;
@@ -178,7 +177,7 @@ public final class ChessThreadBetter extends Thread {
 
         if (PRINT_PV && masterThread) {
             long time = System.currentTimeMillis() - startTime;
-            uciEntry.send(board, aiMoveScore, depth, depth, time, numberOfMovesMade[0]);
+            uciEntry.send(board, aiMoveScore, depth, depth, time);
         }
 
 

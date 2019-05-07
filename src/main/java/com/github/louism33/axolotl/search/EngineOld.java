@@ -412,7 +412,7 @@ public final class EngineOld {
 
             if (PRINT_PV && masterThread) {
                 long time = System.currentTimeMillis() - startTime;
-                uciEntry.send(board, aiMoveScore, depth, depth, time, numberOfMovesMade[0]);
+                uciEntry.send(board, aiMoveScore, depth, depth, time);
             }
 
             aspirationScore = score;
@@ -424,7 +424,7 @@ public final class EngineOld {
 
         if (PRINT_PV && masterThread) {
             long time = System.currentTimeMillis() - startTime;
-            uciEntry.send(board, aiMoveScore, depth, depth, time, numberOfMovesMade[0]);
+            uciEntry.send(board, aiMoveScore, depth, depth, time);
         }
 
 

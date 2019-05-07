@@ -420,7 +420,7 @@ public final class Engine {
 
             if (PRINT_PV && masterThread) {
                 long time = System.currentTimeMillis() - startTime;
-                uciEntry.send(board, aiMoveScore, depth, depth, time, numberOfMovesMade[0]);
+                uciEntry.send(board, aiMoveScore, depth, depth, time);
             }
 
             aspirationScore = score;
@@ -432,28 +432,8 @@ public final class Engine {
 
         if (PRINT_PV && masterThread) {
             long time = System.currentTimeMillis() - startTime;
-            uciEntry.send(board, aiMoveScore, depth, depth, time, numberOfMovesMade[0]);
+            uciEntry.send(board, aiMoveScore, depth, depth, time);
         }
-
-
-        long endTime = System.currentTimeMillis();
-
-        long time = endTime - startTime;
-
-        if (time != 0) {
-            if (time < 1000) {
-                nps = 0;
-            } else {
-                calculateNPS();
-            }
-        }
-
-//        if (masterThread) {
-//            final int bestMove = rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
-//            if (sendBestMove) {
-//                uciEntry.sendBestMove(bestMove);
-//            }
-//        }
 
         threadsNumber.decrementAndGet();
     }
@@ -762,13 +742,14 @@ public final class Engine {
             board.unMakeMoveAndFlipTurn();
 
 
+            if (Engine.stopNow || !running) {
+                return 0;
+            }
+
             if (whichThread == MASTER_THREAD && TimeAllocator.outOfTime(startTime, timeLimitMillis, manageTime)) {
                 return 0;
             }
 
-            if (whichThread != MASTER_THREAD && Engine.stopNow || !running) {
-                return 0;
-            }
 
             if (score > bestScore) {
                 bestScore = score;

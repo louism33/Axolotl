@@ -108,8 +108,12 @@ public final class Evaluator {
             case KBNK:
                 Assert.assertTrue(!isBasicallyDrawn(board));
 
-                Assert.assertTrue(2 == populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
-                        || 2 == populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]));
+                final boolean condition = 2 >= populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
+                        || 2 >= populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]);
+                if (!condition) {
+                    System.out.println(board);
+                }
+                Assert.assertTrue(condition);
                 return evaluateKBNK(board);
                 
  
@@ -151,8 +155,8 @@ public final class Evaluator {
                         return evaluateKPK(board);
                     case KBNK:
                         board.typeOfGameIAmIn = KBNK;
-                        Assert.assertTrue(2 == populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
-                                || 2 == populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]));
+                        Assert.assertTrue(2 >= populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
+                                || 2 >= populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]));
                         return evaluateKBNK(board);
 
                     case UNKNOWN:
