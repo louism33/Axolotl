@@ -88,43 +88,18 @@ public final class Quiescence {
                 Assert.assertTrue(captureMove || promotionMove);
             }
 
-//            board.makeMoveAndFlipTurn(loudMove);
 
             if (MASTER_DEBUG) {
                 Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
                 Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
             }
 
-            if (MASTER_DEBUG) {
-                try {
-                    board.makeMoveAndFlipTurn(loudMove);
-                } catch (Exception | Error e) {
-                    System.err.println("EXCEPTION OR ERROR FOUND");
-                    System.err.println("thread: " + whichThread);
-                    System.err.println(board);
-                    System.err.println("moves I was searching: ");
-                    MoveParser.printMove(moves);
-                    System.err.println("move i was searching:");
-                    System.err.println(MoveParser.toString(move));
-                    System.err.println("fresh generated moves: ");
-                    System.err.println(Arrays.toString(MoveParser.toString(board.generateLegalMoves())));
-                    MoveParser.printMove(board.generateLegalMoves());
-                    System.err.println("threads:");
-                    Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-
-                    System.err.println(threadSet);
-                    System.err.println(threadSet.size());
-                    e.printStackTrace();
-                    System.out.println();
-                }
-            } else {
-                board.makeMoveAndFlipTurn(loudMove);
-            }
+            board.makeMoveAndFlipTurn(loudMove);
 
             Engine.numberOfQMovesMade[whichThread]++;
-            
+
             int score;
-            
+
             if (board.isDrawByInsufficientMaterial()
                     || (!captureMove && !promotionMove &&
                     (board.isDrawByRepetition(1) || board.isDrawByFiftyMoveRule()))) {

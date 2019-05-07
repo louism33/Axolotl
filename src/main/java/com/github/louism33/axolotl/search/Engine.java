@@ -28,6 +28,7 @@ import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocateP
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
+import static com.github.louism33.chesscore.MaterialHashUtil.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_SCORE_MASK;
 import static com.github.louism33.chesscore.MoveParser.*;
@@ -352,8 +353,8 @@ public final class Engine {
             depth++;
 
             if (MASTER_DEBUG) {
-                Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
-                Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
+                Assert.assertEquals(makeMaterialHash(board), board.materialHash);
+                Assert.assertEquals(typeOfEndgame(board), board.typeOfGameIAmIn);
             }
 
             if (!masterThread) {
@@ -380,10 +381,10 @@ public final class Engine {
                 nonTerminalTime = System.currentTimeMillis() - startTime;
                 terminal = true;
             }
-            
+
             if (MASTER_DEBUG) {
-                Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
-                Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
+                Assert.assertEquals(makeMaterialHash(board), board.materialHash);
+                Assert.assertEquals(typeOfEndgame(board), board.typeOfGameIAmIn);
                 Assert.assertEquals(board.zobristPawnHash, cloneBoard.zobristPawnHash);
                 Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);
             }
@@ -391,8 +392,8 @@ public final class Engine {
             while (running) {
 
                 if (MASTER_DEBUG) {
-                    Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
-                    Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
+                    Assert.assertEquals(makeMaterialHash(board), board.materialHash);
+                    Assert.assertEquals(typeOfEndgame(board), board.typeOfGameIAmIn);
                     Assert.assertEquals(board.zobristPawnHash, cloneBoard.zobristPawnHash);
                     Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);
                 }
@@ -635,8 +636,7 @@ public final class Engine {
             }
         }
 
-        if (hashMove == 0
-                && depth >= iidDepth) {
+        if (hashMove == 0 && depth >= iidDepth) {
             int d = thisIsAPrincipleVariationNode ? depth - 2 : depth >> 1;
             principleVariationSearch(board, d, ply, alpha, beta, nullMoveCounter, whichThread); // todo, allow null move?
             hashMove = getMove(retrieveFromTable(board.zobristHash));
@@ -733,49 +733,11 @@ public final class Engine {
             }
 
             if (MASTER_DEBUG) {
-                Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
-                Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
+                Assert.assertEquals(typeOfEndgame(board), board.typeOfGameIAmIn);
+                Assert.assertEquals(makeMaterialHash(board), board.materialHash);
             }
 
-            if (MASTER_DEBUG) {
-                try {
-                    board.makeMoveAndFlipTurn(move);
-                } catch (Exception | Error e) {
-                    System.err.println("EXCEPTION OR ERROR FOUND");
-                    System.err.println("d:" + depth + " p: " + ply);
-                    System.err.println("thread: " + whichThread);
-                    System.err.println(board);
-                    System.err.println("moves I was searching: ");
-                    System.err.println(Arrays.toString(MoveParser.toString(moves)));
-                    System.err.println("move i was searching:");
-                    System.err.println(MoveParser.toString(move));
-                    System.err.println("hash move: ");
-                    System.err.println(MoveParser.toString(hashMove));
-                    System.err.println("fresh generated moves: ");
-                    System.err.println(Arrays.toString(MoveParser.toString(board.generateLegalMoves())));
-                    System.err.println("threads:");
-                    Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-                    System.err.println();
-                    System.err.println("root moves: ");
-                    System.err.println(Arrays.toString(MoveParser.toString(rootMoves[whichThread])));
-                    System.err.println("XXXX -> root equal to moves i search? " + (Arrays.equals(rootMoves[whichThread], moves)));
-
-                    System.err.println(threadSet);
-                    System.err.println(threadSet.size());
-                    e.printStackTrace();
-                    System.out.println();
-                    throw e;
-                }
-            } else {
-                board.makeMoveAndFlipTurn(move);
-            }
-
-            if (whichThread + 1 > numberOfMovesMade.length || whichThread + 1 > numberOfQMovesMade.length) {
-                System.out.println(board);
-                System.out.println(Arrays.toString(threads));
-                System.out.println(Arrays.toString(numberOfMovesMade));
-                System.out.println(numberOfMovesMade.length);
-            }
+            board.makeMoveAndFlipTurn(move);
 
             numberOfMovesMade[whichThread]++;
             numberOfMovesSearched++;
@@ -801,7 +763,6 @@ public final class Engine {
                     }
 
                     int d = Math.max(depth - R - 1, 0);
-//                    System.out.println("lmr, move: " + MoveParser.toString(move));
                     score = -principleVariationSearch(board,
                             d, ply + 1,
                             -alpha - 1, -alpha, nullMoveCounter, whichThread);
@@ -814,54 +775,14 @@ public final class Engine {
                 }
 
                 if (score > alpha) {
-//                    System.out.println("score > alpha, move: " + MoveParser.toString(move));
                     score = -principleVariationSearch(board,
                             depth - 1, ply + 1,
                             -beta, -alpha, 0, whichThread);
                 }
             }
 
-//            board.unMakeMoveAndFlipTurn();
 
-            if (MASTER_DEBUG) {
-                try {
-                    board.unMakeMoveAndFlipTurn();
-                } catch (Exception | Error e) {
-                    System.err.println("EXCEPTION OR ERROR FOUND");
-                    System.err.println("d:" + depth + " p: " + ply);
-                    System.err.println("thread: " + whichThread);
-                    System.err.println(board);
-                    System.err.println("moves I was searching: ");
-                    System.err.println(Arrays.toString(MoveParser.toString(moves)));
-                    System.err.println("move i was searching:");
-                    System.err.println(MoveParser.toString(move));
-                    System.err.println("hash move: ");
-                    System.err.println(MoveParser.toString(hashMove));
-                    System.err.println("fresh generated moves: ");
-                    System.err.println(Arrays.toString(MoveParser.toString(board.generateLegalMoves())));
-                    System.err.println("threads:");
-                    Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-                    System.err.println();
-                    System.err.println("root moves: ");
-                    System.err.println(Arrays.toString(MoveParser.toString(rootMoves[whichThread])));
-                    System.err.println("XXXX -> root equal to moves i search? " + (Arrays.equals(rootMoves[whichThread], moves)));
-
-                    System.err.println(threadSet);
-                    System.err.println(threadSet.size());
-//                    System.err.println();
-//                    System.err.println("clone of root board: ");
-//                    System.err.println(cloneBoard);
-//                    System.err.println("with moves: ");
-//                    final int[] moves1 = cloneBoard.generateLegalMoves();
-//                    System.err.println(Arrays.toString(MoveParser.toString(moves1)));
-//                    System.err.println("equal to moves i search? " + (Arrays.equals(moves1, moves)));
-
-                    e.printStackTrace();
-                    System.out.println();
-                }
-            } else {
-                board.unMakeMoveAndFlipTurn();
-            }
+            board.unMakeMoveAndFlipTurn();
 
 
             if (whichThread == MASTER_THREAD && TimeAllocator.outOfTime(startTime, timeLimitMillis, manageTime)) {

@@ -248,7 +248,7 @@ public class BasicMatesTest {
         System.out.println("\nsearching checkmate for KBNK positions: ");
 
         String pos = "" +
-                "1k6/8/2K1BN2/8/8/8/8/8 w - - 0 1\n" +
+//                "1k6/8/2K1BN2/8/8/8/8/8 w - - 0 1\n" +
 //                "8/2B4N/8/2k5/8/8/8/K7 w - - 0 1\n" +
 //                "8/8/8/8/4n1b1/8/6K1/4k3 b - - 0 1\n" +
                 "8/5n2/8/7k/8/8/8/3K2b1 b - - 0 1\n" +
