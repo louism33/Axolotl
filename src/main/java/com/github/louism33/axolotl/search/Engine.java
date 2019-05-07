@@ -7,13 +7,10 @@ import com.github.louism33.axolotl.evaluation.PawnTranspositionTable;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MaterialHashUtil;
-import com.github.louism33.chesscore.MoveParser;
 import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
 import java.util.Arrays;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
@@ -115,9 +112,6 @@ public final class Engine {
 
         Assert.assertEquals(length, NUMBER_OF_THREADS);
 
-        if (threads == null) {
-            threads = new ChessThread[NUMBER_OF_THREADS];
-        }
         if (numberOfMovesMade == null || numberOfMovesMade.length != NUMBER_OF_THREADS) {
             numberOfMovesMade = new long[NUMBER_OF_THREADS];
         }
@@ -163,10 +157,6 @@ public final class Engine {
 
         NUMBER_OF_THREADS = totalThreads;
 
-        threads = new ChessThread[NUMBER_OF_THREADS];
-
-        threadsStarted = false;
-
         rootMoves = new int[NUMBER_OF_THREADS][];
         for (int i = 0; i < NUMBER_OF_THREADS; i++) {
             rootMoves[i] = new int[Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH];
@@ -185,32 +175,26 @@ public final class Engine {
         return (SearchSpecs.allowTimeLimit && outOfTime(startTime, timeLimitMillis, manageTime));
     }
 
-    private static boolean searchFinished = false;
-
     // set threads first if you want more than one
     public int simpleSearch(Chessboard board) {
-        searchFinished = false;
 
         Assert.assertEquals(0, threadsNumber.get());
 
         go(board);
 
-        searchFinished = true;
         stopNow = true;
 
         return getAiMove();
     }
 
 
-    static boolean threadsStarted = false;
     public static boolean running = false;
 
     private static boolean readyToSearch = false;
     static Chessboard cloneBoard;
     static Chessboard board;
     static Chessboard[] boards;
-    static ChessThread[] threads;
-    static AtomicInteger threadsNumber = new AtomicInteger(0);
+    public static AtomicInteger threadsNumber = new AtomicInteger(0);
 
     public static boolean sendBestMove = true;
 
@@ -232,13 +216,11 @@ public final class Engine {
         int numberOfRealMoves = rootMoves[MASTER_THREAD][rootMoves[MASTER_THREAD].length - 1];
         if (numberOfRealMoves == 0) {
             uciEntry.sendNoMove();
-            searchFinished = true;
             return;
         }
 
         if (numberOfRealMoves == 1 && quitOnSingleMove) {
             uciEntry.sendBestMove(rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK);
-            searchFinished = true;
             return;
         }
 
@@ -258,9 +240,9 @@ public final class Engine {
         }
 
         if (NUMBER_OF_THREADS == 1) {
-            threads[MASTER_THREAD] = new ChessThread(uciEntry, Engine.board);
+            ChessThread thread = new ChessThread(uciEntry, Engine.board);
             threadsNumber.incrementAndGet();
-            threads[MASTER_THREAD].run();
+            thread.run();
             running = false;
         } else {
             final int totalMoves = rootMoves[MASTER_THREAD].length;
@@ -269,13 +251,13 @@ public final class Engine {
                 System.arraycopy(rootMoves[MASTER_THREAD], 0, rootMoves[t], 0, totalMoves);
 
                 boards[t] = new Chessboard(board);
-                threads[t] = new ChessThread(t, boards[t]);
+                ChessThread thread = new ChessThread(t, boards[t]);
                 threadsNumber.incrementAndGet();
-                threads[t].start();
+                thread.start();
             }
-            threads[MASTER_THREAD] = new ChessThread(uciEntry, Engine.board);
+            ChessThread masterThread = new ChessThread(uciEntry, Engine.board);
             threadsNumber.incrementAndGet();
-            threads[MASTER_THREAD].run();
+            masterThread.run();
             running = false;
 
             while (threadsNumber.get() != 0) {
@@ -475,7 +457,6 @@ public final class Engine {
             if (sendBestMove) {
                 uciEntry.sendBestMove(bestMove);
             }
-            searchFinished = true;
         }
 
         threadsNumber.decrementAndGet();
