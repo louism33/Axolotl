@@ -13,7 +13,7 @@ public class ResettingUtils {
         PRINT_PV = false;
         MASTER_DEBUG = false;
         DEBUG = false;
-        Engine.sendBestMove = false;
+        sendBestMove = false;
         TABLE_SIZE = DEFAULT_TABLE_SIZE_MB * TABLE_SIZE_PER_MB;
         TABLE_SIZE_MB = DEFAULT_TABLE_SIZE_MB;
         NUMBER_OF_THREADS = DEFAULT_THREAD_NUMBER;

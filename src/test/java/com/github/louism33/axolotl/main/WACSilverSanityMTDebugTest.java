@@ -1,13 +1,13 @@
 package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -31,7 +31,7 @@ public class WACSilverSanityMTDebugTest {
     public static void setup() {
         ResettingUtils.reset();
         Engine.setThreads(threads);
-        Engine.sendBestMove = false;
+        EngineSpecifications.sendBestMove = false;
 
         DEBUG = false;
         MASTER_DEBUG = true;

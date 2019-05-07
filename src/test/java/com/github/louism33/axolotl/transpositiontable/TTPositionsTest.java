@@ -29,13 +29,13 @@ public class TTPositionsTest {
 
     @AfterAll
     public static void after() {
-        PRINT_PV = false;
+        ResettingUtils.reset();
     }
     
     @Test
     void fine70() {
         Engine.resetFull();
-        PRINT_PV = true;
+//        PRINT_PV = true;
         Chessboard board = new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -");
         SearchSpecs.basicTimeSearch(timeLimit);
         final int move = engine.simpleSearch(board);
@@ -45,7 +45,7 @@ public class TTPositionsTest {
     @Test
     void fine70MT() {
         Engine.resetFull();
-        PRINT_PV = true;
+//        PRINT_PV = true;
         Chessboard board = new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -");
         Engine.setThreads(4);
         SearchSpecs.basicTimeSearch(timeLimit);

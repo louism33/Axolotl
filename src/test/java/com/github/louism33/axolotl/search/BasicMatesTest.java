@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
@@ -8,7 +7,6 @@ import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
@@ -26,14 +24,14 @@ public class BasicMatesTest {
     @BeforeEach
     void setup() {
         ResettingUtils.reset();
-        sendBestMove = false;
+        EngineSpecifications.sendBestMove = false;
     }
 
 
     @AfterEach
     void tearDown() {
         ResettingUtils.reset();
-        sendBestMove = true;
+        EngineSpecifications.sendBestMove = true;
     }
 
     @Test
@@ -251,7 +249,7 @@ public class BasicMatesTest {
 //                "1k6/8/2K1BN2/8/8/8/8/8 w - - 0 1\n" +
 //                "8/2B4N/8/2k5/8/8/8/K7 w - - 0 1\n" +
 //                "8/8/8/8/4n1b1/8/6K1/4k3 b - - 0 1\n" +
-                "8/5n2/8/7k/8/8/8/3K2b1 b - - 0 1\n" +
+//                "8/5n2/8/7k/8/8/8/3K2b1 b - - 0 1\n" +
                 "";
 
         String[] positions = pos.split("\n");
@@ -277,7 +275,7 @@ public class BasicMatesTest {
         System.out.println("\nsearching checkmate for KBNK positions: ");
 
         String pos = "" +
-                "8/8/8/8/1B6/3K4/8/k2N4 b - - 0 1\n" +
+//                "8/8/8/8/1B6/3K4/8/k2N4 b - - 0 1\n" +
 //                "8/2k1bn2/8/8/8/7K/8/8 w - - 0 1\n" +
                 "";
 

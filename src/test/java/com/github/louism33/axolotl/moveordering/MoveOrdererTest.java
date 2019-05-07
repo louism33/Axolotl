@@ -3,6 +3,7 @@ package com.github.louism33.axolotl.moveordering;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.MoveOrderer;
 import com.github.louism33.axolotl.search.MoveOrderingConstants;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.MoveParserFromAN;
@@ -21,13 +22,12 @@ public class MoveOrdererTest {
 
     @BeforeAll
     static void setup() {
-        Engine.resetFull();
+        ResettingUtils.reset();
     }
 
     @AfterAll
     static void reset() {
-        Engine.resetFull();
-
+        ResettingUtils.reset();
     }
 
     @Test

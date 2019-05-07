@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
-import static com.github.louism33.axolotl.search.Engine.sendBestMove;
+import static com.github.louism33.axolotl.search.EngineSpecifications.sendBestMove;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.chesscore.BoardConstants.WHITE;
@@ -454,9 +454,6 @@ public final class UCIEntry {
 
                     } else if (token.equalsIgnoreCase("stop")) {
                         reset();
-                        searching = false;
-                        Engine.running = false;
-                        Engine.stopNow = true;
                         break;
                     } else if (token.equalsIgnoreCase("ponderhit")) {
                         output.println("I don't know how to ponder yet sorry");
@@ -504,18 +501,23 @@ public final class UCIEntry {
     }
 
     private void reset() {
+        searching = false;
         Arrays.fill(searchMoves, 0);
         Engine.quitOnSingleMove = true;
         Engine.computeMoves = true;
+        Engine.running = false;
+        Engine.stopNow = true;
         SearchSpecs.reset();
     }
 
     public void sendNoMove() {
+        Assert.assertTrue("THREADS STILL RUNNING BUT (no)BESTMOVE SEND!", Engine.threadsNumber.get() == 0);
         output.println("bestmove (none)");
         reset();
     }
 
     public void sendBestMove(int aiMove) {
+        Assert.assertTrue("THREADS STILL RUNNING BUT BESTMOVE SEND!", Engine.threadsNumber.get() == 0);
         output.println("bestmove " + MoveParser.toString(aiMove));
         reset();
     }

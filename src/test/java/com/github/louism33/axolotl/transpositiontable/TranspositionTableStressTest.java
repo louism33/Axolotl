@@ -7,7 +7,6 @@ import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.search.Engine.hashTableReturn;
@@ -23,10 +22,8 @@ public class TranspositionTableStressTest {
     
     @BeforeEach
     public void setup() throws InterruptedException {
-        Thread.sleep(sleepBetween);
-        System.gc();
         ResettingUtils.reset();
-        Engine.sendBestMove = false;
+        sendBestMove = false;
     }
 
     @AfterAll

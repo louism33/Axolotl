@@ -23,7 +23,7 @@ public class FamousPositionsTest {
 
     @AfterAll
     public static void after() {
-        PRINT_PV = false;
+        ResettingUtils.reset();
     }
 
 

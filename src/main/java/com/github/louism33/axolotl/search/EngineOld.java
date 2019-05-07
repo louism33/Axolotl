@@ -25,13 +25,14 @@ import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocateP
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
-import static com.github.louism33.chesscore.MaterialHashUtil.*;
+import static com.github.louism33.chesscore.MaterialHashUtil.makeMaterialHash;
+import static com.github.louism33.chesscore.MaterialHashUtil.typeOfEndgame;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_SCORE_MASK;
 import static com.github.louism33.chesscore.MoveParser.*;
 
 @SuppressWarnings("ALL")
-public final class Engine {
+public final class EngineOld {
 
     public UCIEntry uciEntry;
     static Chessboard cloneBoard;
@@ -56,8 +57,8 @@ public final class Engine {
 
     public static int age = 0;
 
-    public Engine() {
-        this.uciEntry = new UCIEntry(this);
+    public EngineOld() {
+//        this.uciEntry = new UCIEntry(this);
     }
 
     // chess22k / ethereal reduction idea and numbers
@@ -207,15 +208,14 @@ public final class Engine {
         }
 
         if (numberOfRealMoves == 1 && quitOnSingleMove) {
-            Assert.assertTrue(Engine.threadsNumber.get() == 0);
             uciEntry.sendBestMove(rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK);
             return;
         }
 
-        scoreMovesAtRoot(rootMoves[MASTER_THREAD], numberOfRealMoves, Engine.board);
+        scoreMovesAtRoot(rootMoves[MASTER_THREAD], numberOfRealMoves, EngineOld.board);
         Ints.sortDescending(rootMoves[MASTER_THREAD], 0, numberOfRealMoves);
 
-        Engine.board = board;
+        EngineOld.board = board;
 
         Assert.assertTrue(running);
 
@@ -228,7 +228,7 @@ public final class Engine {
         }
 
         if (NUMBER_OF_THREADS == 1) {
-            ChessThread thread = new ChessThread(uciEntry, Engine.board);
+            ChessThread thread = new ChessThread(uciEntry, EngineOld.board);
             threadsNumber.incrementAndGet();
             thread.run();
             running = false;
@@ -243,18 +243,13 @@ public final class Engine {
                 threadsNumber.incrementAndGet();
                 thread.start();
             }
-            ChessThread masterThread = new ChessThread(uciEntry, Engine.board);
+            ChessThread masterThread = new ChessThread(uciEntry, EngineOld.board);
             threadsNumber.incrementAndGet();
             masterThread.run();
             running = false;
 
             while (threadsNumber.get() != 0) {
                 Thread.yield();
-            }
-
-            final int bestMove = rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
-            if (sendBestMove) {
-                uciEntry.sendBestMove(bestMove);
             }
         }
     }
@@ -442,6 +437,13 @@ public final class Engine {
                 nps = 0;
             } else {
                 calculateNPS();
+            }
+        }
+
+        if (masterThread) {
+            final int bestMove = rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
+            if (sendBestMove) {
+                uciEntry.sendBestMove(bestMove);
             }
         }
 
@@ -756,7 +758,7 @@ public final class Engine {
                 return 0;
             }
 
-            if (whichThread != MASTER_THREAD && Engine.stopNow || !running) {
+            if (whichThread != MASTER_THREAD && EngineOld.stopNow || !running) {
                 return 0;
             }
 

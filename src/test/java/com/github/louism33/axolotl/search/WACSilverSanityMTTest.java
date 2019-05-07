@@ -6,7 +6,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -31,7 +30,7 @@ public class WACSilverSanityMTTest {
     public static void setup() {
         ResettingUtils.reset();
         EngineSpecifications.PRINT_PV = false;
-        Engine.sendBestMove = false;
+        EngineSpecifications.sendBestMove = false;
         Engine.setThreads(threads);
         final String str = "Testing " + splitUpPositions.length + " WAC silver positions with " + threads + " threads. " +
                 "Time per position: " + timeLimit + " milliseconds."

@@ -1,6 +1,7 @@
 package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
@@ -30,7 +31,7 @@ public class WACSilverSanitySTDebugTest {
     public static void setup() {
         ResettingUtils.reset();
         MASTER_DEBUG = true;
-        Engine.sendBestMove = false;
+        EngineSpecifications.sendBestMove = false;
 
         final String str = "Debug Testing " + splitUpPositions.length + " WAC silver positions with God Debug on one thread. Don't crash!. ";
         System.out.println(str);

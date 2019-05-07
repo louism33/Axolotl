@@ -35,10 +35,11 @@ public final class EngineThread extends Thread {
                     }
                 }
 
-                Assert.assertTrue(searching == false);
+                Assert.assertTrue(searching == true);
                 Assert.assertTrue(Engine.stopNow == false);
                 Assert.assertTrue(SearchSpecs.searchType != SearchSpecs.SEARCH_TYPE.NONE);
                 Assert.assertEquals(0, Engine.threadsNumber.get());
+                Assert.assertTrue(Engine.weHavePanicked == false);
                 
                 if (EngineSpecifications.DEBUG) {
                     System.out.println(this.getName() + " starting engine main search");
