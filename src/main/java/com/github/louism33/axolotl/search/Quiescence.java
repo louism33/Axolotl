@@ -30,7 +30,14 @@ public final class Quiescence {
             if (MASTER_DEBUG) {
                 Assert.assertFalse(board.inCheck(board.isWhiteTurn()));
             }
+            
+            try {
             standPatScore = Evaluator.eval(board, moves);
+            } catch (Exception | Error e) {
+                System.out.println(board);
+                System.out.println(board.toFenString());
+                e.printStackTrace();
+            }
 
             if (standPatScore >= beta) {
                 return standPatScore;

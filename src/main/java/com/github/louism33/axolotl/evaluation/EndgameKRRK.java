@@ -23,13 +23,13 @@ public final class EndgameKRRK {
             8, 4, 4, 2, 2, 4, 4, 8,
             9, 8, 9, 9, 9, 9, 8, 9,
     };
-    
-    
+
+
     public static int manFacRookRook = 0, chebFacRookRook = 1, centreFacRookRook = 2, rookRookNearEnemyKingCheb = 3, rookRookNearEnemyKingMan = 4;
     public static int[] rookRookNumbers = {
             -3, -20, 10, -11, -10
     };
-    
+
     public static int evaluateKRRK(Chessboard board) {
         int score = 0, winningPlayer = -1;
 
@@ -51,7 +51,7 @@ public final class EndgameKRRK {
                 materialScore += populationCount(board.pieces[turn][ROOK]) * material[R];
                 materialScore += populationCount(board.pieces[turn][QUEEN]) * material[Q];
                 score += Score.getScore(materialScore, 0);
-                
+
                 winningPlayer = turn;
                 long myKing = board.pieces[turn][KING];
                 long enemyKing = board.pieces[1 - turn][KING];
@@ -74,6 +74,8 @@ public final class EndgameKRRK {
         }
 
         Assert.assertTrue(winningPlayer != -1);
+
+        Assert.assertTrue(Math.abs(score) < CHECKMATE_ENEMY_SCORE_MAX_PLY);
 
         return board.turn == winningPlayer ? score : -score;
     }

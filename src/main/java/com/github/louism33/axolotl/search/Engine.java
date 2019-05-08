@@ -25,7 +25,8 @@ import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocateP
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
-import static com.github.louism33.chesscore.MaterialHashUtil.*;
+import static com.github.louism33.chesscore.MaterialHashUtil.makeMaterialHash;
+import static com.github.louism33.chesscore.MaterialHashUtil.typeOfEndgame;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_SCORE_MASK;
 import static com.github.louism33.chesscore.MoveParser.*;
@@ -255,12 +256,12 @@ public final class Engine {
         }
 
         Assert.assertTrue(threadsNumber.get() == 0);
-        
+
         final int bestMove = rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
         if (sendBestMove) {
             uciEntry.sendBestMove(bestMove);
         }
-        
+
     }
 
 
@@ -478,7 +479,15 @@ public final class Engine {
             }
 
             if (ply >= MAX_DEPTH_HARD) {
-                return Evaluator.eval(board, moves);
+                try {
+                    return Evaluator.eval(board, moves);
+
+                } catch (Exception | Error e) {
+                    System.out.println(board);
+                    System.out.println(board.toFenString());
+                    e.printStackTrace();
+                }
+
             }
 
             return quiescenceSearch(board, alpha, beta, whichThread);
@@ -543,7 +552,13 @@ public final class Engine {
 
         if (!thisIsAPrincipleVariationNode && !inCheck) {
 
-            staticBoardEval = Evaluator.eval(board, moves);
+            try {
+                staticBoardEval = Evaluator.eval(board, moves);
+            } catch (Exception | Error e) {
+                System.out.println(board);
+                System.out.println(board.toFenString());
+                e.printStackTrace();
+            }
 
             if (isBetaRazoringOkHere(depth, staticBoardEval)) {
                 betaTotal++;
@@ -677,8 +692,15 @@ public final class Engine {
                     futilityTotal++;
 
                     if (staticBoardEval == SHORT_MINIMUM) {
+                        try{
                         staticBoardEval = Evaluator.eval(board,
                                 moves);
+                        } catch (Exception | Error e) {
+                            System.out.println(board);
+                            System.out.println(board.toFenString());
+                            e.printStackTrace();
+                        }
+
                     }
 
                     int futilityScore = staticBoardEval + futilityMargin[depth];

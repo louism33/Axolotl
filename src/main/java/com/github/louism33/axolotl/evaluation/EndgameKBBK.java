@@ -91,7 +91,8 @@ public final class EndgameKBBK {
 
         Assert.assertTrue(winningPlayer != -1);
 
-        return board.turn == winningPlayer ? score : -score;
+        Assert.assertTrue(Math.abs(score) < CHECKMATE_ENEMY_SCORE_MAX_PLY);
+return board.turn == winningPlayer ? score : -score;
     }
 
 
