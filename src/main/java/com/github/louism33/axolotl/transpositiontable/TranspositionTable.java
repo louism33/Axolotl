@@ -14,10 +14,10 @@ import static java.lang.Long.numberOfTrailingZeros;
 
 public final class TranspositionTable {
 
-    public static long[] keys;// = new long[TABLE_SIZE];
-    public static long[] entries;// = new long[TABLE_SIZE];
+    public static long[] keys;
+    public static long[] entries;
     public static boolean tableReady = false;
-    public static int shiftAmount;// = 64 - numberOfTrailingZeros(TABLE_SIZE >> 1); 
+    public static int shiftAmount; 
     static final int bucketSize = 4;
 
 

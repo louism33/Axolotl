@@ -1,7 +1,6 @@
 package com.github.louism33.axolotl.evaluation;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.evaluation.Score.*;

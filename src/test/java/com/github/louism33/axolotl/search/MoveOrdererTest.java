@@ -1,13 +1,11 @@
-package com.github.louism33.axolotl.moveordering;
+package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.MoveOrderer;
 import com.github.louism33.axolotl.search.MoveOrderingConstants;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.MoveParserFromAN;
-import com.google.common.primitives.Ints;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,7 +42,6 @@ public class MoveOrdererTest {
 
         int l = moves[moves.length - 1];
         MoveOrderer.scoreMovesAtRoot(moves, l, board);
-        Ints.sortDescending(moves, 0, l);
 
         for (int m = 0; m < l; m++) {
             int mm = moves[m];
@@ -89,7 +86,6 @@ public class MoveOrdererTest {
 
         int l = moves[moves.length - 1];
         MoveOrderer.scoreMovesAtRoot(moves, l, board);
-        Ints.sortDescending(moves, 0, l);
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, e2e4);
     }
 
@@ -107,7 +103,6 @@ public class MoveOrdererTest {
 
         int l = moves[moves.length - 1];
         MoveOrderer.scoreMovesAtRoot(moves, l, board);
-        Ints.sortDescending(moves, 0, l);
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, m);
     }
 
@@ -125,7 +120,6 @@ public class MoveOrdererTest {
 
         int l = moves[moves.length - 1];
         MoveOrderer.scoreMovesAtRoot(moves, l, board);
-        Ints.sortDescending(moves, 0, l);
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, m);
     }
 
@@ -145,7 +139,6 @@ public class MoveOrdererTest {
 
         int l = moves[moves.length - 1];
         MoveOrderer.scoreMovesAtRoot(moves, l, board);
-        Ints.sortDescending(moves, 0, l);
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, m);
 
         int promQueenMove = MoveParserFromAN.buildMoveFromLAN(board, "a7a8Q");

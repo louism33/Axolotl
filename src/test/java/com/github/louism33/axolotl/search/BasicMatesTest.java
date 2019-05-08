@@ -7,12 +7,12 @@ import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY;
-import static com.github.louism33.axolotl.search.Engine.*;
+import static com.github.louism33.axolotl.search.Engine.aiMoveScore;
+import static com.github.louism33.axolotl.search.Engine.quitOnSingleMove;
 import static com.github.louism33.axolotl.search.EngineSpecifications.DEBUG;
 import static com.github.louism33.chesscore.MaterialHashUtil.*;
 

@@ -1,6 +1,5 @@
 package com.github.louism33.axolotl.timemanagement;
 
-import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;

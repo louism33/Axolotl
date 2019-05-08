@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
-import static com.github.louism33.axolotl.search.EngineSpecifications.sendBestMove;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.chesscore.BoardConstants.WHITE;

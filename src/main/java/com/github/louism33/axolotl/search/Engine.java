@@ -7,7 +7,6 @@ import com.github.louism33.axolotl.evaluation.PawnTranspositionTable;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
 import com.github.louism33.chesscore.Chessboard;
-import com.google.common.primitives.Ints;
 import org.junit.Assert;
 
 import java.util.Arrays;
@@ -215,7 +214,7 @@ public final class Engine {
         }
 
         scoreMovesAtRoot(rootMoves[MASTER_THREAD], numberOfRealMoves, Engine.board);
-        Ints.sortDescending(rootMoves[MASTER_THREAD], 0, numberOfRealMoves);
+//        Ints.sortDescending(rootMoves[MASTER_THREAD], 0, numberOfRealMoves);
 
         Engine.board = board;
 
@@ -629,8 +628,7 @@ public final class Engine {
         int bestMove = 0;
         final int lastMove = moves[moves.length - 1];
         if (ply != 0) {
-            scoreMoves(moves, board, ply, hashMove);
-            Ints.sortDescending(moves, 0, lastMove);
+            scoreMoves(moves, board, ply, hashMove, whichThread);
         }
 
         int numberOfMovesSearched = 0;

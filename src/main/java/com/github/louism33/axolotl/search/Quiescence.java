@@ -4,11 +4,7 @@ import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MaterialHashUtil;
 import com.github.louism33.chesscore.MoveParser;
-import com.google.common.primitives.Ints;
 import org.junit.Assert;
-
-import java.util.Arrays;
-import java.util.Set;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
@@ -48,16 +44,15 @@ public final class Quiescence {
             }
         }
 
-        Assert.assertFalse(standPatScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
+        if (MASTER_DEBUG) {
+            Assert.assertFalse(standPatScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
+
+        }
 
         if (!inCheck) {
             scoreMovesQuiescence(moves, board);
-            final int realMoves = MoveParser.numberOfRealMoves(moves);
-            Ints.sortDescending(moves, 0, realMoves);
         } else {
-            scoreMoves(moves, board, 0, 0);
-            final int realMoves = MoveParser.numberOfRealMoves(moves);
-            Ints.sortDescending(moves, 0, realMoves);
+            scoreMoves(moves, board, 0, 0, whichThread);
         }
 
         for (int i = 0; i < moves.length; i++) {
@@ -81,22 +76,21 @@ public final class Quiescence {
             }
 
             final int loudMove = move & MOVE_MASK_WITH_CHECK;
-            if (!inCheck) {
-                if (i == 0) {
-                    Assert.assertTrue(moves[i] >= moves[i + 1]);
-                } else {
-                    Assert.assertTrue(moves[i] <= moves[i - 1]);
-                    Assert.assertTrue(moves[i] >= moves[i + 1]);
-                }
-                Assert.assertTrue(moves[i] > FIRST_FREE_BIT);
-            }
-
-            if (!inCheck) {
-                Assert.assertTrue(captureMove || promotionMove);
-            }
-
 
             if (MASTER_DEBUG) {
+                if (!inCheck) {
+                    if (i == 0) {
+                        Assert.assertTrue(moves[i] >= moves[i + 1]);
+                    } else {
+                        Assert.assertTrue(moves[i] <= moves[i - 1]);
+                        Assert.assertTrue(moves[i] >= moves[i + 1]);
+                    }
+                    Assert.assertTrue(moves[i] > FIRST_FREE_BIT);
+                }
+
+                if (!inCheck) {
+                    Assert.assertTrue(captureMove || promotionMove);
+                }
                 Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
                 Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
             }

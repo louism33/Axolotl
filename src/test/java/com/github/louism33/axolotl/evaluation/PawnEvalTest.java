@@ -7,7 +7,6 @@ import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

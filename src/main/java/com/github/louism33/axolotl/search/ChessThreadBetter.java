@@ -9,7 +9,6 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.Engine.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.SearchSpecs.*;
-import static com.github.louism33.axolotl.search.SearchSpecs.timeLimitMillis;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.allocatePanicTime;
 import static com.github.louism33.chesscore.MaterialHashUtil.makeMaterialHash;

@@ -8,7 +8,6 @@ import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_PV;
@@ -24,7 +23,6 @@ public class TTPositionsTest {
     public static void setup() {
         ResettingUtils.reset();
         PRINT_PV = false;
-        System.out.println("testing fine 70 with time " + timeLimit);
     }
 
     @AfterAll
@@ -35,7 +33,9 @@ public class TTPositionsTest {
     @Test
     void fine70() {
         ResettingUtils.reset();
-        PRINT_PV = true;
+        System.out.println("\ntesting fine 70 with time " + timeLimit + " and one thread");
+//        EngineSpecifications.DEBUG = true;
+//        PRINT_PV = true;
         Chessboard board = new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -");
         SearchSpecs.basicTimeSearch(timeLimit);
         final int move = engine.simpleSearch(board);
@@ -45,7 +45,9 @@ public class TTPositionsTest {
     @Test
     void fine70MT() {
         ResettingUtils.reset();
-        PRINT_PV = true;
+        System.out.println("\ntesting fine 70 with time " + timeLimit + " and 4 threads");
+//        EngineSpecifications.DEBUG = true;
+//        PRINT_PV = true;
         Chessboard board = new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -");
         Engine.setThreads(4);
         SearchSpecs.basicTimeSearch(timeLimit);

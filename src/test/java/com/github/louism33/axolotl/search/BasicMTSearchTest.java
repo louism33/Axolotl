@@ -5,7 +5,6 @@ import com.github.louism33.chesscore.Chessboard;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 
 import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MAX_THREADS;

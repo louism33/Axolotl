@@ -6,7 +6,7 @@ import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
