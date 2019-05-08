@@ -180,6 +180,7 @@ public final class Engine {
         go(board);
 
         stopNow = true;
+        running = false;
 
         return getAiMove();
     }
@@ -387,7 +388,7 @@ public final class Engine {
 
                 previousAiScore = aiMoveScore;
 
-                if (stopNow || stopSearch(startTime, timeLimitMillis)) {
+                if (stopNow || !running || stopSearch(startTime, timeLimitMillis)) {
                     break everything;
                 }
 
@@ -447,6 +448,10 @@ public final class Engine {
 
         final int originalAlpha = alpha;
         final int turn = board.turn;
+
+        if (!running) {
+            return 0;
+        }
 
         int[] moves = ply == 0 ? rootMoves[whichThread] : board.generateLegalMoves();
 
@@ -796,8 +801,10 @@ public final class Engine {
             flag = EXACT;
         }
 
-        addToTableReplaceByDepth(board.zobristHash,
-                bestMove & MOVE_MASK_WITHOUT_CHECK, bestScore, depth, flag, ply, age);
+        if (running) {
+            addToTableReplaceByDepth(board.zobristHash,
+                    bestMove & MOVE_MASK_WITHOUT_CHECK, bestScore, depth, flag, ply, age);
+        }
 
         return bestScore;
     }

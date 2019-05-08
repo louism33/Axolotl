@@ -42,13 +42,17 @@ public final class EngineThread extends Thread {
                 Assert.assertTrue(Engine.weHavePanicked == false);
                 
                 if (EngineSpecifications.DEBUG) {
-                    System.out.println(this.getName() + " starting engine main search");
+                    System.out.println("--> " + this.getName() + " starting engine main search");
                 }
 
                 uciEntry.engine.go(this.board);
 
+                Assert.assertTrue(searching == false);
+                Assert.assertTrue(Engine.stopNow == true);
+                Assert.assertEquals(0, Engine.threadsNumber.get());
+                
                 if (EngineSpecifications.DEBUG) {
-                    System.out.println(this.getName() + " has completed engine main search");
+                    System.out.println("--> " + this.getName() + " has completed engine main search");
                 }
                 
                 searching = false;

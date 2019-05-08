@@ -132,7 +132,7 @@ public final class ChessThreadBetter extends Thread {
 
                 previousAiScore = aiMoveScore;
 
-                if (stopNow || stopSearch(startTime, timeLimitMillis)) {
+                if (stopNow || !running || stopSearch(startTime, timeLimitMillis)) {
                     break everything;
                 }
 

@@ -1,6 +1,7 @@
 package com.github.louism33.axolotl.timemanagement;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.search.SearchSpecs;
 
 public final class TimeAllocator {
@@ -30,14 +31,25 @@ public final class TimeAllocator {
         if (time > absoluteMaximumTime) {
             time = absoluteMaximumTime;
         }
-
+        
+        if (EngineSpecifications.DEBUG) {
+            System.out.println("allocating time: " + time);
+        }
+        
         return time;
     }
 
     public static long allocatePanicTime(long timeLimitMillis, long absoluteMaxTimeLimit) {
         if (timeLimitMillis > (absoluteMaxTimeLimit >>> 3)) {
-            return timeLimitMillis << 2;
+            final long pt = timeLimitMillis << 2;
+            if (EngineSpecifications.DEBUG) {
+                System.out.println("allocating panic time, remaining time is now: " + pt);
+            }
+            return pt;
         }
+        
+        
+        
         return timeLimitMillis;
     }
 

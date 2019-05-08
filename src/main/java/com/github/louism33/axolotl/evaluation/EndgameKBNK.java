@@ -49,6 +49,7 @@ public final class EndgameKBNK {
         for (int turn = WHITE; turn <= BLACK; turn++) {
             long myBishop = board.pieces[turn][BISHOP];
             if (myBishop != 0) {
+                winningPlayer = turn;
                 score += 5_000;
 
                 final long myKnight = board.pieces[turn][KNIGHT];
@@ -65,7 +66,6 @@ public final class EndgameKBNK {
                 materialScore += populationCount(board.pieces[turn][QUEEN]) * material[Q];
                 score += Score.getScore(materialScore, 0);
 
-                winningPlayer = turn;
                 long myKing = board.pieces[turn][KING];
                 long enemyKing = board.pieces[1 - turn][KING];
                 final int myKingIndex = numberOfTrailingZeros(myKing);
@@ -82,13 +82,16 @@ public final class EndgameKBNK {
                                 weakKingLocationKBNKWhiteBishop[enemyKingIndex]
                                 : weakKingLocationKBNKBlackBishop[enemyKingIndex]);
 
-
-
                 score += (bishopKnightNumbers[bNearEnemyKMan] * manhattanDistance(bi, enemyKingIndex) + bishopKnightNumbers[bNearEnemyKCheb] * chebyshevDistance(bi, enemyKingIndex));
 
                 score += (bishopKnightNumbers[nNearEnemyKMan] * manhattanDistance(kn, enemyKingIndex) + bishopKnightNumbers[nNearEnemyKCheb] * chebyshevDistance(kn, enemyKingIndex));
 
             }
+        }
+
+        if (winningPlayer == -1) {
+            System.out.println(board);
+            System.out.println(board.toFenString());
         }
 
         Assert.assertTrue(winningPlayer != -1);

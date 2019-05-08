@@ -7,6 +7,7 @@ import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
@@ -246,6 +247,7 @@ public class BasicMatesTest {
         System.out.println("\nsearching checkmate for KBNK positions: ");
 
         String pos = "" +
+                "7k/8/3N4/8/7K/6B1/8/8 w - - 0 1" +
 //                "1k6/8/2K1BN2/8/8/8/8/8 w - - 0 1\n" +
 //                "8/2B4N/8/2k5/8/8/8/K7 w - - 0 1\n" +
 //                "8/8/8/8/4n1b1/8/6K1/4k3 b - - 0 1\n" +
@@ -275,6 +277,7 @@ public class BasicMatesTest {
         System.out.println("\nsearching checkmate for KBNK positions: ");
 
         String pos = "" +
+                "7k/8/3N4/8/7K/6B1/8/8 b - - 0 1" +
 //                "8/8/8/8/1B6/3K4/8/k2N4 b - - 0 1\n" +
 //                "8/2k1bn2/8/8/8/7K/8/8 w - - 0 1\n" +
                 "";

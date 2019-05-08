@@ -84,7 +84,7 @@ public class MateMTTest {
             System.out.print(". ");
             successes++;
         } else {
-            System.out.print(EPDObject.getId() + " ");
+            System.out.print("X ");
         }  
 
     }

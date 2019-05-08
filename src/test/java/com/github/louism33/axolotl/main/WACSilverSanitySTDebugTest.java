@@ -24,7 +24,7 @@ import static com.github.louism33.chesscore.MaterialHashUtil.typeOfEndgame;
 @RunWith(Parameterized.class)
 public class WACSilverSanitySTDebugTest {
 
-    private static final int timeLimit = 500;
+    private static final int timeLimit = 200;
     private Engine engine = new Engine();
 
     @BeforeClass

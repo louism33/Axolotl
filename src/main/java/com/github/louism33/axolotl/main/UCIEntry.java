@@ -26,7 +26,7 @@ import static com.github.louism33.utils.MoveParserFromAN.buildMoveFromLAN;
 public final class UCIEntry {
 
     public Chessboard board = new Chessboard();
-    public Chessboard[] boards = {new Chessboard()};
+//    public Chessboard[] boards = {new Chessboard()};
     public Engine engine;
     private int[] searchMoves = new int[8];
 
@@ -184,7 +184,7 @@ public final class UCIEntry {
                             }
 
                             Engine.setThreads(number);
-                            boards = new Chessboard[NUMBER_OF_THREADS];
+//                            boards = new Chessboard[NUMBER_OF_THREADS];
 
                         } else if (SPSA) {
                             if (nameToken.equalsIgnoreCase("futility1")) {
@@ -307,13 +307,13 @@ public final class UCIEntry {
                             }
                         }
 
-                        Assert.assertNotNull(boards);
-                        Assert.assertEquals(boards.length, NUMBER_OF_THREADS);
-                        
-                        for (int i = 0; i < boards.length; i++) { // todo, cheaper to increment all, or clone all?
-                            boards[i] = new Chessboard(board);
-                        }
-
+//                        Assert.assertNotNull(boards);
+//                        Assert.assertEquals(boards.length, NUMBER_OF_THREADS);
+//                        
+//                        for (int i = 0; i < boards.length; i++) { // todo, cheaper to increment all, or clone all?
+//                            boards[i] = new Chessboard(board);
+//                        }
+//
                         if (DEBUG) {
                             output.println("board: ");
                             output.println(board);
@@ -411,14 +411,14 @@ public final class UCIEntry {
                         }
 
                         // hack to avoid needing to type in "position startpos" everytime
-                        if (boards == null) {
-                            boards = new Chessboard[NUMBER_OF_THREADS];
-                        }
-                        if (boards[MASTER_THREAD] == null) {
-                            for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-                                boards[i] = new Chessboard(board);
-                            }
-                        }
+//                        if (boards == null) {
+//                            boards = new Chessboard[NUMBER_OF_THREADS];
+//                        }
+//                        if (boards[MASTER_THREAD] == null) {
+//                            for (int i = 0; i < NUMBER_OF_THREADS; i++) {
+//                                boards[i] = new Chessboard(board);
+//                            }
+//                        }
 
                         SearchSpecs.reset();
                         
@@ -438,8 +438,8 @@ public final class UCIEntry {
                         }
 
                         if (DEBUG) {
-                            output.println("info string engine go command for board: ");
-                            output.println(board);
+//                            output.println("info string engine go command for board: ");
+//                            output.println(board);
                         }
                         
                         sendBestMove = true;
@@ -503,9 +503,9 @@ public final class UCIEntry {
     private void reset() {
         searching = false;
         Engine.running = false;
+        Engine.stopNow = true;
         Engine.quitOnSingleMove = true;
         Engine.computeMoves = true;
-        Engine.stopNow = true;
         SearchSpecs.reset();
         Arrays.fill(searchMoves, 0);
         Assert.assertTrue(Engine.threadsNumber.get() == 0);
@@ -575,9 +575,17 @@ public final class UCIEntry {
     }
 
     /*
-    position startpos moves e2e4 c7c5 g1f3 d7d6 d2d4 c5d4 f3d4 g8f6 b1c3 b8c6 c1g5 e7e6 d1d2 a7a6 e1c1 h7h6 d4c6 b7c6 g5f4 d6d5 c1b1 f8e7 f4e5 e8g8 e4d5 c6d5 f1d3 c8b7 h1e1 b7c6 d2f4 d8d7 a2a3 c6b5 c3b5 a6b5 c2c3 f8c8 h2h4 c8d8 b1c1 a8a4 f4f3 a4h4 e5g3 h4a4 g3e5 d8c8 d3c2 a4c4 c2d3 c4h4 d3c2 h6h5 c2d3 c8a8 f3e2 a8a5 g2g3 h4h3 e2d2 h3h2 e1h1 h2h1 d1h1 g7g6 d2h6 e7f8 h6d2 f6g4 h1h5 f7f6 e5f6 g4f6 h5g5 f8g7 d2f4 a5a8 g5g6 a8f8 f4e5 g8f7 e5g5 f8g8 g5f4 d7c8 g3g4 c8b8 f4f3 f7e7 f3e3 e6e5 e3c5 e7f7 d3f5 b8b7 c5d6 g8e8 c1b1 f6e4 d6b6 e8e7 b6e3 b7a7 f5e4 a7e3 f2e3 d5e4 g6a6 e7e6 a6a7 f7f6 a3a4 b5b4 g4g5 f6g6 c3b4 g7f8 b4b5 f8c5 a7a6 e6a6 b5a6 c5e3 b1c2 g6g5 c2d1 g5f5 b2b4 f5e6 b4b5 e6d6 a4a5 d6c7 d1e2 e3c5 b5b6 c7b8 e2d2 e4e3 d2e2 e5e4 a6a7 b8a8 e2d1 c5b4 d1e2 b4d2 e2d1 d2a5 b6b7 a8a7 b7b8Q a7b8 d1e2 a5b6 e2d1 b8b7 d1e1 b7c6 e1d1 c6d5 d1e1 d5c4
+    position startpos moves e2e4 c7c6 d2d4 d7d5 b1c3 d5e4 c3e4 c8f5 e4g3 f5g6 h2h4 h7h6 g1f3 b8d7 h4h5 g6h7 f1d3 h7d3 d1d3 d8c7 e1g1 g8f6 f1e1 e8c8 g3e2 e7e5 d4e5 d7e5 d3f5 e5d7 c1e3 f8d6 e3a7 b7b6 a1d1 c8b7 f3d4 b7a7 d4c6 c7c6 e2d4 c6c5 d4b5 a7a6 b5d6 c5f5 d6f5 f6h5 f5d6 h8f8 e1e3 b6b5 e3a3 a6b6 a3b3 h5f4 b3b4 f4e6 a2a4 d7f6 c2c3 e6c7 b4d4 d8a8 a4b5 h6h5 d4b4 a8a2 b4c4 c7e6 c4c6 b6a7 b5b6 a7b8 b6b7 e6c7 c3c4 a2b2 d1a1 b2b7 d6b7 b8b7 c6d6 c7e6 a1b1 b7c7 d6a6 f6e4 a6a7 c7c6 b1b5 e4c5 b5b4 c6d6 b4b5 h5h4 b5a5 d6e5 a7d7 e5f6 d7d5 f8c8 g1h2 c8c7 f2f3 c5b3 a5a4 b3d4 c4c5 d4f5 a4a6 g7g5 c5c6 f5d4 d5d6 f6e7 d6d7 c7d7 c6d7 e7d7 a6a7 e6c7 g2g3 d4f3 h2g2 f3e5 g3h4 g5h4 a7b7 d7c6 g2h3 c6b7
     
     go wtime 6085 btime 11729 winc 500 binc 500
+    
+    
+    
+    
+    position startpos moves e2e4 e7e5 g1f3 b8c6 f1b5 a7a6 b5c6 d7c6 d2d4 e5d4 d1d4 d8d4 f3d4 g8f6 b1c3 f8b4 e4e5 f6e4 c1d2 e4d2 e1d2 e8g8 a1d1 c6c5 d4e2 c8g4 f2f3 g4e6 a2a3 b4a5 d2e3 f8d8 h1e1 c5c4 e3e4 a5b6 e2d4 g7g5 d4e6 f7e6 d1d8 a8d8 e1d1 d8d1 c3d1 g8f8 d1e3 b6e3 e4e3 f8e7 e3d4 b7b5 a3a4 e7d7 a4b5 a6b5 d4c5 h7h5 c5b5 h5h4 b5c4 d7c6 c2c3 c6b6 c4b4 b6c6 c3c4 c6b6 c4c5 b6b7 b4b5 c7c6 b5c4 b7a7 b2b4 a7a6 b4b5 a6b7 c4b4 b7c7 b5b6 c7c8 b4a5 c8b7 h2h3 b7a8 a5a6 a8b8 b6b7 b8c7 a6a7 c7d7 b7b8q
+    
+    go wtime 12361 btime 2176 winc 500 binc 500
+    
      */
 
 }
