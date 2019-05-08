@@ -52,7 +52,7 @@ public final class EngineThread extends Thread {
                 Assert.assertEquals(0, Engine.threadsNumber.get());
                 
                 if (EngineSpecifications.DEBUG) {
-                    System.out.println("--> " + this.getName() + " has completed engine main search");
+                    System.out.println("<-- " + this.getName() + " has completed engine main search");
                 }
                 
                 searching = false;
