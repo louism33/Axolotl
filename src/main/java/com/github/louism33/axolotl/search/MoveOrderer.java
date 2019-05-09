@@ -72,7 +72,7 @@ public final class MoveOrderer {
                 moves[i] = buildMoveScore(move, knightPromotionScore);
             } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
                 moves[i] = buildMoveScore(move, uninterestingPromotion);
-            } else if (isCaptureMove(move)) {
+            } else if (isCaptureMove(move) || isEnPassantMove(move)) {
                 moves[i] = buildMoveScore(move, seeScore(board, move));
             } else if (checkingMove(board, moves[i])) { // checking sets flag on move
                 moves[i] = MoveParser.setCheckingMove(moves[i]);
@@ -148,7 +148,7 @@ public final class MoveOrderer {
                 moves[i] = buildMoveScore(move, knightPromotionScore);
             } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
                 moves[i] = buildMoveScore(move, uninterestingPromotion);
-            } else if (captureMove) {
+            } else if (captureMove || isEnPassantMove(move)) {
                 moves[i] = buildMoveScore(move, seeScore(board, move));
             } else if (move == mateKiller) {
                 moves[i] = buildMoveScore(move, mateKillerScore);
@@ -197,7 +197,7 @@ public final class MoveOrderer {
             Assert.assertTrue(move != 0);
         }
         int sourceScore = scoreByPiece(move, getMovingPieceInt(move));
-        int destinationScore = scoreByPiece(move, getVictimPieceInt(move));
+        int destinationScore = isEnPassantMove(move) ? 1 : scoreByPiece(move, getVictimPieceInt(move));
         if (destinationScore > sourceScore) { // straight winning capture
             return neutralCapture + destinationScore - sourceScore;
         }
@@ -250,7 +250,7 @@ public final class MoveOrderer {
                 break;
             }
 
-            if (isCaptureMove(move)) {
+            if (isCaptureMove(move) || isEnPassantMove(move)) {
                 if (isPromotionMove(move) && isPromotionToQueen(move)) {
                     moves[i] = buildMoveScore(move, queenCapturePromotionScore);
                 } else {

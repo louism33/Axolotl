@@ -65,10 +65,11 @@ public final class Quiescence {
             final int loudMoveScore = getMoveScore(move);
 
             final boolean captureMove = MoveParser.isCaptureMove(move);
+            final boolean epMove = MoveParser.isEnPassantMove(move);
             final boolean promotionMove = MoveParser.isPromotionMove(move);
 
             if (!inCheck && loudMoveScore != 0) {
-                Assert.assertTrue(captureMove || promotionMove);
+                Assert.assertTrue(captureMove || promotionMove || epMove);
             }
 
             if (!inCheck && loudMoveScore == 0) {
@@ -89,7 +90,7 @@ public final class Quiescence {
                 }
 
                 if (!inCheck) {
-                    Assert.assertTrue(captureMove || promotionMove);
+                    Assert.assertTrue(captureMove || promotionMove || epMove);
                 }
                 Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
                 Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
@@ -102,7 +103,7 @@ public final class Quiescence {
             int score;
 
             if (board.isDrawByInsufficientMaterial()
-                    || (!captureMove && !promotionMove &&
+                    || (!captureMove && !promotionMove && !epMove &&
                     (board.isDrawByRepetition(1) || board.isDrawByFiftyMoveRule()))) {
                 score = IN_STALEMATE_SCORE;
             } else {

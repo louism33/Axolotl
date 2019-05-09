@@ -20,7 +20,6 @@ public final class SEE {
     private static final int[] scores = {0, 100, 325, 350, 500, 900, 10000, 100, 325, 350, 500, 900, 10000};
 
     // todo, consider special case for pinned pieces
-    // todo, EP moves
     public static final int getSEE(Chessboard board, int move) {
         Assert.assertTrue(isCaptureMove(move) || isEnPassantMove(move));
         final int[] gain = new int[32];

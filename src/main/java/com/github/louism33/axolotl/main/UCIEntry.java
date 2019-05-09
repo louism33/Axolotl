@@ -572,11 +572,6 @@ public final class UCIEntry {
     
     
     
-    
-    position startpos moves e2e4 e7e5 g1f3 b8c6 f1b5 a7a6 b5c6 d7c6 d2d4 e5d4 d1d4 d8d4 f3d4 g8f6 b1c3 f8b4 e4e5 f6e4 c1d2 e4d2 e1d2 e8g8 a1d1 c6c5 d4e2 c8g4 f2f3 g4e6 a2a3 b4a5 d2e3 f8d8 h1e1 c5c4 e3e4 a5b6 e2d4 g7g5 d4e6 f7e6 d1d8 a8d8 e1d1 d8d1 c3d1 g8f8 d1e3 b6e3 e4e3 f8e7 e3d4 b7b5 a3a4 e7d7 a4b5 a6b5 d4c5 h7h5 c5b5 h5h4 b5c4 d7c6 c2c3 c6b6 c4b4 b6c6 c3c4 c6b6 c4c5 b6b7 b4b5 c7c6 b5c4 b7a7 b2b4 a7a6 b4b5 a6b7 c4b4 b7c7 b5b6 c7c8 b4a5 c8b7 h2h3 b7a8 a5a6 a8b8 b6b7 b8c7 a6a7 c7d7 b7b8q
-    
-    go wtime 12361 btime 2176 winc 500 binc 500
-    
      */
 
 }

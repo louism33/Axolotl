@@ -18,6 +18,8 @@ public class ResettingUtils {
         TABLE_SIZE_MB = DEFAULT_TABLE_SIZE_MB;
         NUMBER_OF_THREADS = DEFAULT_THREAD_NUMBER;
 
+        Engine.setThreads(NUMBER_OF_THREADS);
+        
         PAWN_TABLE_SIZE = DEFAULT_PAWN_TABLE_SIZE_MB;
         SearchSpecs.reset();
         Engine.resetFull();
