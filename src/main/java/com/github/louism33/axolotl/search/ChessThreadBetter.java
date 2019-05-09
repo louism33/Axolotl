@@ -20,22 +20,27 @@ public final class ChessThreadBetter extends Thread {
 
     private UCIEntry uciEntry = null;
     private int whichThread;
-    private long startTime;
+    private boolean masterThread = false;
     Chessboard board;
+    private long startTime;
 
     ChessThreadBetter(int whichThread, Chessboard board, long startTime) {
         Assert.assertTrue(whichThread != MASTER_THREAD);
         this.whichThread = whichThread;
         this.board = board;
         this.startTime = startTime;
+        this.setName("T" + whichThread);
     }
 
     ChessThreadBetter(UCIEntry uciEntry, Chessboard board, long startTime) {
         this.uciEntry = uciEntry;
         this.whichThread = MASTER_THREAD;
+        this.masterThread = true;
         this.board = board;
         this.startTime = startTime;
+        this.setName("MasterThread");
     }
+
 
     @Override
     public void run() {
@@ -48,9 +53,6 @@ public final class ChessThreadBetter extends Thread {
             Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
         }
 
-
-
-        final boolean masterThread = whichThread == MASTER_THREAD;
 
         int depth = 0;
         int aspirationScore = 0;
@@ -66,7 +68,7 @@ public final class ChessThreadBetter extends Thread {
         int score = 0;
 
         if (DEBUG) {
-            System.out.println("info string starting main id loop for thread " + whichThread + ", " + Thread.currentThread());
+            System.out.println("info string starting main id loop for thread " + this.getName());
         }
 
         everything:
@@ -82,18 +84,14 @@ public final class ChessThreadBetter extends Thread {
             if (!masterThread) {
                 if (depth % skipLookup[whichThread] == 0) {
                     if (DEBUG) {
-                        System.out.println("info string  -t" + whichThread + " will skip depth " + depth + " and go to depth " + (depth + skipBy[whichThread]));
+                        System.out.println("info string " + this.getName() + " will skip depth " + depth + " and go to depth " + (depth + skipBy[whichThread]));
                     }
                     depth += skipBy[whichThread];
                 }
             }
 
             if (DEBUG) {
-                if (!masterThread) {
-                    System.out.println("info string  -t" + whichThread + " is at depth " + depth);
-                } else {
-                    System.out.println("info string Master Thread is at depth " + depth);
-                }
+                System.out.println("info string " + this.getName() + " is at depth " + depth);
             }
 
             int previousAi = rootMoves[whichThread][0] & MOVE_MASK_WITHOUT_CHECK;
@@ -124,7 +122,7 @@ public final class ChessThreadBetter extends Thread {
                         alpha, beta, 0, whichThread);
 
                 if (masterThread && (manageTime && !weHavePanicked)
-                        && (depth >= 6 && aiMoveScore < previousAiScore - PANIC_SCORE_DELTA)) {
+                        && (depth >= 6 && aiMoveScore < previousAiScore - PANIC_SCORE_DELTA)) { // todo thread specific or not?
                     timeLimitMillis = allocatePanicTime(timeLimitMillis, absoluteMaxTimeLimit);
                     weHavePanicked = true;
                 }
@@ -179,31 +177,11 @@ public final class ChessThreadBetter extends Thread {
             uciEntry.send(board, aiMoveScore, depth, depth, time);
         }
 
-
-        long endTime = System.currentTimeMillis();
-
-        long time = endTime - startTime;
-
-        if (time != 0) {
-            if (time < 1000) {
-                nps = 0;
-            } else {
-                calculateNPS();
-            }
-        }
-
-        if (masterThread) {
-            final int bestMove = rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
-            if (sendBestMove) {
-                uciEntry.sendBestMove(bestMove);
-            }
-        }
-
-        threadsNumber.decrementAndGet();
-
         if (EngineSpecifications.DEBUG) {
             System.out.println("info string     stop run of " + this.getName() + " with thread number " + whichThread);
         }
+
+        threadsNumber.decrementAndGet();
     }
 
 }

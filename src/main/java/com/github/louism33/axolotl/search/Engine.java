@@ -228,7 +228,8 @@ public final class Engine {
         }
 
         if (NUMBER_OF_THREADS == 1) {
-            ChessThread thread = new ChessThread(uciEntry, Engine.board);
+//            ChessThread thread = new ChessThread(uciEntry, Engine.board);
+            ChessThreadBetter thread = new ChessThreadBetter(uciEntry, Engine.board, startTime);
             threadsNumber.incrementAndGet();
             thread.run();
             running = false;
@@ -240,11 +241,13 @@ public final class Engine {
                 System.arraycopy(rootMoves[MASTER_THREAD], 0, rootMoves[t], 0, totalMoves);
 
                 boards[t] = new Chessboard(board);
-                ChessThread thread = new ChessThread(t, boards[t]);
+//                ChessThread thread = new ChessThread(t, boards[t]);
+                ChessThreadBetter thread = new ChessThreadBetter(t, boards[t], startTime);
                 threadsNumber.incrementAndGet();
                 thread.start();
             }
-            ChessThread masterThread = new ChessThread(uciEntry, Engine.board);
+//            ChessThread masterThread = new ChessThread(uciEntry, Engine.board);
+            ChessThreadBetter masterThread = new ChessThreadBetter(uciEntry, Engine.board, startTime);
             threadsNumber.incrementAndGet();
             masterThread.run();
             running = false;
@@ -302,6 +305,9 @@ public final class Engine {
     public static int hashTableReturn = 0;
 
     static void search(Chessboard board, UCIEntry uciEntry, int whichThread) {
+        if (true) {
+            throw new RuntimeException();
+        }
         nonTerminalNodes = 0;
         terminalNodes = 0;
         nonTerminalTime = 0;
