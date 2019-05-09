@@ -33,7 +33,7 @@ public final class SEE {
         long occupancy = friends | enemies;
 
         long attacks = squareDirectlyAttackedBy(board, destinationIndex);
-        System.out.println(getVictimPieceInt(move));
+//        System.out.println(getVictimPieceInt(move));
         gain[d] = scores[getVictimPieceInt(move)];
         int mover;
 

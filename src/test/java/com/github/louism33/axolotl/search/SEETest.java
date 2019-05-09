@@ -88,7 +88,7 @@
 //        final int see = SEE.getSEE(board, MoveParserFromAN.buildMoveFromANWithOO(board, "d5e4"));
 //        Assert.assertEquals(-800, see);
 //    }
-//    
+//
 //    // below tests based on carballo's tests
 //
 //    void testSee(String fen, String m, int seeScore) {
