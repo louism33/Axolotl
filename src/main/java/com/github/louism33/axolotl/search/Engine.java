@@ -835,6 +835,7 @@ public final class Engine {
             flag = EXACT;
         }
 
+        // todo an "incheck" flag for when not generating moves?
         if (running) {
             addToTableReplaceByDepth(board.zobristHash,
                     bestMove & MOVE_MASK_WITHOUT_CHECK, bestScore, depth, flag, ply, age);

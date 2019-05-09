@@ -72,7 +72,7 @@ public final class MoveOrderer {
                 moves[i] = buildMoveScore(move, knightPromotionScore);
             } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
                 moves[i] = buildMoveScore(move, uninterestingPromotion);
-            } else if (isCaptureMove(move) || isEnPassantMove(move)) {
+            } else if (isCaptureMove(move)) {
                 moves[i] = buildMoveScore(move, seeScore(board, move));
             } else if (checkingMove(board, moves[i])) { // checking sets flag on move
                 moves[i] = MoveParser.setCheckingMove(moves[i]);
@@ -148,7 +148,7 @@ public final class MoveOrderer {
                 moves[i] = buildMoveScore(move, knightPromotionScore);
             } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
                 moves[i] = buildMoveScore(move, uninterestingPromotion);
-            } else if (captureMove || isEnPassantMove(move)) {
+            } else if (captureMove) {
                 moves[i] = buildMoveScore(move, seeScore(board, move));
             } else if (move == mateKiller) {
                 moves[i] = buildMoveScore(move, mateKillerScore);
@@ -250,7 +250,7 @@ public final class MoveOrderer {
                 break;
             }
 
-            if (isCaptureMove(move) || isEnPassantMove(move)) {
+            if (isCaptureMove(move)) {
                 if (isPromotionMove(move) && isPromotionToQueen(move)) {
                     moves[i] = buildMoveScore(move, queenCapturePromotionScore);
                 } else {

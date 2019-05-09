@@ -1,9 +1,9 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveParser;
-import org.apache.maven.project.ModelUtils;
 import org.junit.Assert;
+
+import java.util.Arrays;
 
 import static com.github.louism33.chesscore.BitOperations.newPieceOnSquare;
 import static com.github.louism33.chesscore.BoardConstants.*;
@@ -15,14 +15,14 @@ import static java.lang.Long.numberOfTrailingZeros;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public final class SEE {
+public final class SEEEP {
 
     private static final int[] scores = {0, 100, 325, 350, 500, 900, 10000, 100, 325, 350, 500, 900, 10000};
 
     // todo, consider special case for pinned pieces
     // todo, EP moves
     public static final int getSEE(Chessboard board, int move) {
-        Assert.assertTrue(isCaptureMove(move));
+        Assert.assertTrue(isCaptureMove(move) || isEnPassantMove(move));
         final int[] gain = new int[32];
         int d = 0;
         final int destinationIndex = getDestinationIndex(move);
@@ -34,13 +34,22 @@ public final class SEE {
         long occupancy = friends | enemies;
 
         long attacks = squareDirectlyAttackedBy(board, destinationIndex);
-        gain[d] = scores[getVictimPieceInt(move)];
+        if (!isEnPassantMove(move)) {
+            gain[d] = scores[getVictimPieceInt(move)];
+        } else {
+            gain[d] = scores[WHITE_PAWN];
+        }
         int mover;
 
+//        System.out.println(Arrays.toString(gain));
+        
         do {
             d++;
             mover = board.pieceSquareTable[numberOfTrailingZeros(fromSet)];
             gain[d] = scores[mover] - gain[d - 1];
+
+            System.out.println(Arrays.toString(gain));
+            
             if (max(-gain[d - 1], gain[d]) < 0) {
                 break;
             }
@@ -54,6 +63,9 @@ public final class SEE {
             fromSet = getLeastValuablePiece(board.pieceSquareTable, attacks, (d & 1) == 0 ? friends : enemies);
         } while (fromSet != 0);
 
+        System.out.println(Arrays.toString(gain));
+        System.out.println("d is " +d);
+        
         while (--d != 0) {
             gain[d - 1] = -max(-gain[d - 1], gain[d]);
         }

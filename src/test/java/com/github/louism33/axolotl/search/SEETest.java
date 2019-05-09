@@ -1,6 +1,7 @@
 //package com.github.louism33.axolotl.search;
 //
 //import com.github.louism33.chesscore.Chessboard;
+//import com.github.louism33.chesscore.MoveParser;
 //import com.github.louism33.utils.MoveParserFromAN;
 //import org.junit.Assert;
 //import org.junit.jupiter.api.Test;
@@ -95,8 +96,10 @@
 //        Chessboard board = new Chessboard(fen);
 //        board.generateLegalMoves();
 //        System.out.println(board);
-//        final int see = SEE.getSEE(board, MoveParserFromAN.buildMoveFromANWithOO(board, m));
-//        Assert.assertEquals(seeScore, see);
+//        final int move = MoveParserFromAN.buildMoveFromANWithOO(board, m);
+//        MoveParser.printMove(move);
+//        final int see = SEEEP.getSEE(board, move);
+////        Assert.assertEquals(seeScore, see);
 //    }
 //
 //    @Test
