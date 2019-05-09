@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import standalone.ResettingUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,14 +24,16 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 @RunWith(Parameterized.class)
 public class SilentButDeadlyTest {
 
-    private static final int timeLimit = 5_000;
+    private static final int timeLimit = 1_000;
     private static Engine engine = new Engine();
 
     private static final int totalThreads = 4;
 
     @BeforeClass
     public static void setup() {
+        ResettingUtils.reset();
         Engine.setThreads(totalThreads);
+        EngineSpecifications.DEBUG = false;
     }
 
     // 5 sec
@@ -47,8 +50,9 @@ public class SilentButDeadlyTest {
         for (int i = 0; i < splitUpPositions.length; i++) {
 
             if (!contains(difficultPositions, i + 1)) {
-                continue;
+//                continue;
             }
+            
             String splitUpWAC = splitUpPositions[i];
             System.out.println(splitUpWAC);
             Object[] objectAndName = new Object[2];
@@ -69,8 +73,10 @@ public class SilentButDeadlyTest {
     @Test
     public void test() {
         Engine.resetFull();
+        
         System.out.println(EPDObject.getFullString());
-        System.out.println(EPDObject.getBoard());
+//        System.out.println(EPDObject.getBoard());
+        
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
 

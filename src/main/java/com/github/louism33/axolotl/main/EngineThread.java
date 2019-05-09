@@ -8,6 +8,9 @@ import org.junit.Assert;
 
 import static com.github.louism33.axolotl.main.UCIEntry.searching;
 import static com.github.louism33.axolotl.main.UCIEntry.synchronizedObject;
+import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
+import static com.github.louism33.axolotl.search.EngineSpecifications.sendBestMove;
+import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
 @SuppressWarnings("ALL")
 public final class EngineThread extends Thread {
@@ -40,22 +43,30 @@ public final class EngineThread extends Thread {
                 Assert.assertTrue(SearchSpecs.searchType != SearchSpecs.SEARCH_TYPE.NONE);
                 Assert.assertEquals(0, Engine.threadsNumber.get());
                 Assert.assertTrue(Engine.weHavePanicked == false);
-                
+
                 if (EngineSpecifications.DEBUG) {
-                    System.out.println("--> " + this.getName() + " starting engine main search");
+                    System.out.println("info string -----> " + this.getName() + " starting engine main search");
                 }
 
                 uciEntry.engine.go(this.board);
 
-                Assert.assertTrue(searching == false);
-                Assert.assertTrue(Engine.stopNow == true);
-                Assert.assertEquals(0, Engine.threadsNumber.get());
-                
                 if (EngineSpecifications.DEBUG) {
-                    System.out.println("<-- " + this.getName() + " has completed engine main search");
+                    System.out.println("info string <----- " + this.getName() + " has completed engine main search");
                 }
                 
+                Assert.assertTrue(Engine.running == false);
+                Assert.assertTrue(Engine.stopNow == true);
+                Assert.assertEquals(0, Engine.threadsNumber.get());
+
+                final int bestMove = Engine.rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
+                if (sendBestMove) {
+                    uciEntry.sendBestMove(bestMove);
+                }
+                
+                Assert.assertTrue(searching == false);
+
                 searching = false;
+                
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

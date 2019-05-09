@@ -125,7 +125,7 @@ public final class UCIEntry {
                         if (tokens[1].equalsIgnoreCase("on")) {
                             DEBUG = true;
                             if (DEBUG) {
-                                output.println("received debug command with value " + DEBUG);
+                                output.println("info string received debug command with value " + DEBUG);
                             }
                         } else {
                             DEBUG = false;
@@ -155,7 +155,7 @@ public final class UCIEntry {
                             }
 
                             if (DEBUG) {
-                                output.println("received option Hash with parsed value " + size);
+                                output.println("info string received option Hash with parsed value " + size);
                             }
 
                             if (size >= MIN_TABLE_SIZE_MB && size <= MAX_TABLE_SIZE_MB) {
@@ -175,11 +175,11 @@ public final class UCIEntry {
                             try {
                                 number = Integer.parseInt(valueToken);
                             } catch (Exception | Error e) {
-                                output.println("could not read threads value, sticking to " + DEFAULT_THREAD_NUMBER + "mb");
+                                output.println("info string could not read threads value, sticking to " + DEFAULT_THREAD_NUMBER + "mb");
                             }
 
                             if (DEBUG) {
-                                output.println("received option Hash with parsed value " + number);
+                                output.println("info string received option Hash with parsed value " + number);
                             }
 
                             Engine.setThreads(number);
@@ -306,16 +306,9 @@ public final class UCIEntry {
                             }
                         }
 
-//                        Assert.assertNotNull(boards);
-//                        Assert.assertEquals(boards.length, NUMBER_OF_THREADS);
-//                        
-//                        for (int i = 0; i < boards.length; i++) { // todo, cheaper to increment all, or clone all?
-//                            boards[i] = new Chessboard(board);
-//                        }
-//
                         if (DEBUG) {
-                            output.println("board: ");
-                            output.println(board);
+                            output.println("info string board: " + board.toFenString());
+//                            output.println(board);
                         }
 
 
@@ -437,8 +430,7 @@ public final class UCIEntry {
                         }
 
                         if (DEBUG) {
-//                            output.println("info string engine go command for board: ");
-//                            output.println(board);
+                            output.println("info string engine go command for board: " + board.toFenString());
                         }
                         
                         sendBestMove = true;

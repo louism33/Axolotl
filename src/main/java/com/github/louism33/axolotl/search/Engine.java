@@ -73,7 +73,7 @@ public final class Engine {
 
     public static final void resetFull() {
         if (DEBUG) {
-            System.out.println("Full resetting");
+            System.out.println("info string Full resetting");
         }
         numberOfMovesMade = new long[NUMBER_OF_THREADS];
         numberOfQMovesMade = new long[NUMBER_OF_THREADS];
@@ -97,7 +97,7 @@ public final class Engine {
 
     public static void resetBetweenMoves() { // todo
         if (DEBUG) {
-            System.out.println("soft resetting");
+            System.out.println("info string soft resetting");
         }
         //don't reset moves if uci will provide them
         hashTableReturn = 0;
@@ -150,7 +150,7 @@ public final class Engine {
         }
 
         if (DEBUG) {
-            System.out.println("setting threads from " + NUMBER_OF_THREADS + " to " + totalThreads);
+            System.out.println("info string setting threads from " + NUMBER_OF_THREADS + " to " + totalThreads);
         }
 
         NUMBER_OF_THREADS = totalThreads;
@@ -214,7 +214,6 @@ public final class Engine {
         }
 
         scoreMovesAtRoot(rootMoves[MASTER_THREAD], numberOfRealMoves, Engine.board);
-//        Ints.sortDescending(rootMoves[MASTER_THREAD], 0, numberOfRealMoves);
 
         Engine.board = board;
 
@@ -233,6 +232,7 @@ public final class Engine {
             threadsNumber.incrementAndGet();
             thread.run();
             running = false;
+            stopNow = true;
         } else {
             final int totalMoves = rootMoves[MASTER_THREAD].length;
             for (int t = 1; t < NUMBER_OF_THREADS; t++) {
@@ -248,6 +248,7 @@ public final class Engine {
             threadsNumber.incrementAndGet();
             masterThread.run();
             running = false;
+            stopNow = true;
 
             while (threadsNumber.get() != 0) {
                 Thread.yield();
@@ -256,10 +257,10 @@ public final class Engine {
 
         Assert.assertTrue(threadsNumber.get() == 0);
 
-        final int bestMove = rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
-        if (sendBestMove) {
-            uciEntry.sendBestMove(bestMove);
-        }
+//        final int bestMove = rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
+//        if (sendBestMove) {
+//            uciEntry.sendBestMove(bestMove);
+//        }
 
     }
 
@@ -323,7 +324,7 @@ public final class Engine {
         int score = 0;
 
         if (DEBUG) {
-            System.out.println("starting main id loop for thread " + whichThread + ", " + Thread.currentThread());
+            System.out.println("info string starting main id loop for thread " + whichThread + ", " + Thread.currentThread());
         }
 
         everything:
@@ -339,7 +340,7 @@ public final class Engine {
             if (!masterThread) {
                 if (depth % skipLookup[whichThread] == 0) {
                     if (DEBUG) {
-                        System.out.println(" -t" + whichThread + " will skip depth " + depth + " and go to depth " + (depth + skipBy[whichThread]));
+                        System.out.println("info string  -t" + whichThread + " will skip depth " + depth + " and go to depth " + (depth + skipBy[whichThread]));
                     }
                     depth += skipBy[whichThread];
                 }
@@ -347,9 +348,9 @@ public final class Engine {
 
             if (DEBUG) {
                 if (!masterThread) {
-                    System.out.println(" -t" + whichThread + " is at depth " + depth);
+                    System.out.println("info string  -t" + whichThread + " is at depth " + depth);
                 } else {
-                    System.out.println("Master Thread is at depth " + depth);
+                    System.out.println("info string Master Thread is at depth " + depth);
                 }
             }
 
@@ -639,20 +640,24 @@ public final class Engine {
             }
             int moveScore = getMoveScore(moves[i]);
 
-            if (i < lastMove - 1) {
-                if (i == 0) {
-                    Assert.assertTrue(moveScore >= getMoveScore(moves[i + 1]));
-                } else {
-                    Assert.assertTrue(moveScore <= getMoveScore(moves[i - 1]));
+            if (MASTER_DEBUG) {
+                if (i < lastMove - 1) {
+                    if (i == 0) {
+                        Assert.assertTrue(moveScore >= getMoveScore(moves[i + 1]));
+                    } else {
+                        Assert.assertTrue(moveScore <= getMoveScore(moves[i - 1]));
 
-                    Assert.assertTrue(moveScore >= getMoveScore(moves[i + 1]));
+                        Assert.assertTrue(moveScore >= getMoveScore(moves[i + 1]));
+                    }
                 }
             }
 
             int move = moves[i] & MOVE_MASK_WITHOUT_CHECK;
 
-            Assert.assertTrue(moveScore != 0);
-
+            if (MASTER_DEBUG) {
+                Assert.assertTrue(moveScore != 0);
+            }
+            
             final boolean captureMove = isCaptureMove(move);
             final boolean promotionMove = isPromotionMove(move);
             final boolean queenPromotionMove = promotionMove ? isPromotionToQueen(move) : false;
@@ -661,15 +666,18 @@ public final class Engine {
             final boolean pawnToSeven = moveIsPawnPushSeven(turn, move);
             final boolean quietMove = !(captureMove || promotionMove);
 
-            if (captureMove && !promotionMove) {
-                Assert.assertTrue(moveScore >= (neutralCapture - 5));
-            }
+            if (MASTER_DEBUG) {
+                if (captureMove && !promotionMove) {
+                    Assert.assertTrue(moveScore >= (neutralCapture - 5));
+                }
 
-            if (queenPromotionMove) {
-                boolean condition = moveScore >= queenQuietPromotionScore;
-                Assert.assertTrue(condition);
+                if (queenPromotionMove) {
+                    boolean condition = moveScore >= queenQuietPromotionScore;
+                    Assert.assertTrue(condition);
+                }
             }
-
+            
+            
             if (!thisIsAPrincipleVariationNode) {
                 if (bestScore < CHECKMATE_ENEMY_SCORE_MAX_PLY
                         && notJustPawnsLeft(board)) {

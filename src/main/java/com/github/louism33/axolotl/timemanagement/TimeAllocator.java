@@ -33,7 +33,7 @@ public final class TimeAllocator {
         }
         
         if (EngineSpecifications.DEBUG) {
-            System.out.println("allocating time: " + time);
+            System.out.println("info string allocating time: " + time);
         }
         
         return time;
@@ -43,7 +43,7 @@ public final class TimeAllocator {
         if (timeLimitMillis > (absoluteMaxTimeLimit >>> 3)) {
             final long pt = timeLimitMillis << 2;
             if (EngineSpecifications.DEBUG) {
-                System.out.println("allocating panic time, remaining time is now: " + pt);
+                System.out.println("info string allocating panic time, remaining time is now: " + pt);
             }
             return pt;
         }

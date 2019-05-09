@@ -63,7 +63,7 @@ public final class TranspositionTable {
         }
 
         if (DEBUG) {
-            System.out.println("initialising hash table with value " + maxEntries);
+            System.out.println("info string initialising hash table with value " + maxEntries);
         }
 
         int maxSize = maxEntries;

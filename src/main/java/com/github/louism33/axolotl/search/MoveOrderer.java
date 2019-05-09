@@ -267,9 +267,9 @@ public final class MoveOrderer {
     }
 
     private static boolean checkingMove(Chessboard board, int move) { // todo, make cheaper
-        if (true) {
-            return false;
-        }
+//        if (true) {
+//            return false;
+//        }
         boolean checkingMove;
         if (MASTER_DEBUG) {
             Assert.assertTrue(move != 0);

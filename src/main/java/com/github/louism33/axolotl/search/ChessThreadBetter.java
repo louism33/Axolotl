@@ -40,7 +40,7 @@ public final class ChessThreadBetter extends Thread {
     @Override
     public void run() {
         if (EngineSpecifications.DEBUG) {
-            System.out.println("    start run of " + this.getName() + " with thread number " + whichThread);
+            System.out.println("info string     start run of " + this.getName() + " with thread number " + whichThread);
         }
 
         if (MASTER_DEBUG) {
@@ -66,7 +66,7 @@ public final class ChessThreadBetter extends Thread {
         int score = 0;
 
         if (DEBUG) {
-            System.out.println("starting main id loop for thread " + whichThread + ", " + Thread.currentThread());
+            System.out.println("info string starting main id loop for thread " + whichThread + ", " + Thread.currentThread());
         }
 
         everything:
@@ -82,7 +82,7 @@ public final class ChessThreadBetter extends Thread {
             if (!masterThread) {
                 if (depth % skipLookup[whichThread] == 0) {
                     if (DEBUG) {
-                        System.out.println(" -t" + whichThread + " will skip depth " + depth + " and go to depth " + (depth + skipBy[whichThread]));
+                        System.out.println("info string  -t" + whichThread + " will skip depth " + depth + " and go to depth " + (depth + skipBy[whichThread]));
                     }
                     depth += skipBy[whichThread];
                 }
@@ -90,9 +90,9 @@ public final class ChessThreadBetter extends Thread {
 
             if (DEBUG) {
                 if (!masterThread) {
-                    System.out.println(" -t" + whichThread + " is at depth " + depth);
+                    System.out.println("info string  -t" + whichThread + " is at depth " + depth);
                 } else {
-                    System.out.println("Master Thread is at depth " + depth);
+                    System.out.println("info string Master Thread is at depth " + depth);
                 }
             }
 
@@ -202,7 +202,7 @@ public final class ChessThreadBetter extends Thread {
         threadsNumber.decrementAndGet();
 
         if (EngineSpecifications.DEBUG) {
-            System.out.println("    stop run of " + this.getName() + " with thread number " + whichThread);
+            System.out.println("info string     stop run of " + this.getName() + " with thread number " + whichThread);
         }
     }
 
