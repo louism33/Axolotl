@@ -272,8 +272,8 @@ public class DontCrashTest {
                     }
 
                     board.makeMoveAndFlipTurn(move1);
-                    System.out.println(board);
-                    System.out.println(board.toFenString());
+//                    System.out.println(board);
+//                    System.out.println(board.toFenString());
                     SearchSpecs.basicTimeSearch(50);
                     engine.simpleSearch(board);
                     Engine.resetBetweenMoves();
