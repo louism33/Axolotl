@@ -1,6 +1,8 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MoveParser;
+import org.apache.maven.project.ModelUtils;
 import org.junit.Assert;
 
 import static com.github.louism33.chesscore.BitOperations.newPieceOnSquare;
@@ -19,7 +21,7 @@ public final class SEE {
 
     // todo, consider special case for pinned pieces
     public static final int getSEE(Chessboard board, int move) {
-        Assert.assertTrue(isCaptureMove(move));
+        Assert.assertTrue(isCaptureMove(move) || MoveParser.isEnPassantMove(move));
         final int[] gain = new int[32];
         int d = 0;
         final int destinationIndex = getDestinationIndex(move);
@@ -31,6 +33,7 @@ public final class SEE {
         long occupancy = friends | enemies;
 
         long attacks = squareDirectlyAttackedBy(board, destinationIndex);
+        System.out.println(getVictimPieceInt(move));
         gain[d] = scores[getVictimPieceInt(move)];
         int mover;
 
