@@ -1,7 +1,5 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.search.MoveOrderer;
-import com.github.louism33.axolotl.search.MoveOrderingConstants;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;

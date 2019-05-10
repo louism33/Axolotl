@@ -8,7 +8,7 @@ import org.junit.Assert;
 
 import static com.github.louism33.axolotl.main.UCIEntry.searching;
 import static com.github.louism33.axolotl.main.UCIEntry.synchronizedObject;
-import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
+import static com.github.louism33.axolotl.search.ChessThreadBetter.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.EngineSpecifications.sendBestMove;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
@@ -39,7 +39,7 @@ public final class EngineThread extends Thread {
                 }
 
                 Assert.assertTrue(searching == true);
-                Assert.assertTrue(Engine.stopNow == false);
+//                Assert.assertTrue(Engine.stopNow == false);
                 Assert.assertTrue(SearchSpecs.searchType != SearchSpecs.SEARCH_TYPE.NONE);
                 Assert.assertEquals(0, Engine.threadsNumber.get());
                 Assert.assertTrue(Engine.weHavePanicked == false);
@@ -55,7 +55,7 @@ public final class EngineThread extends Thread {
                 }
                 
                 Assert.assertTrue(Engine.running == false);
-                Assert.assertTrue(Engine.stopNow == true);
+//                Assert.assertTrue(Engine.stopNow == true);
                 Assert.assertEquals(0, Engine.threadsNumber.get());
 
                 final int bestMove = Engine.rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;

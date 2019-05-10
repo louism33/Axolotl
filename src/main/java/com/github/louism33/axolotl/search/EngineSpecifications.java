@@ -5,7 +5,7 @@ import com.github.louism33.chesscore.Chessboard;
 public final class EngineSpecifications {
 
     public static boolean SPSA = false;
-    public static boolean MASTER_DEBUG = false;
+    public static boolean MASTER_DEBUG = true;
 
     public static boolean DEBUG = true;
     public static boolean sendBestMove = true;
@@ -13,7 +13,7 @@ public final class EngineSpecifications {
     public static boolean PRINT_EVAL = false;
     
     public static int NUMBER_OF_THREADS = 1;
-    public static final int DEFAULT_THREAD_NUMBER = 2;
+    public static final int DEFAULT_THREAD_NUMBER = 4;
     public static final int MAX_THREADS = 8;
     public final static int ABSOLUTE_MAX_DEPTH = Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH - 2;
     public final static int MAX_DEPTH_HARD = Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH - 2;

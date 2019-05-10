@@ -247,7 +247,9 @@ public final class Evaluator {
     public static int[][] scoresForEPO = new int[2][32];
 
     private final static int evalTurn(Chessboard board, int turn, long[] pawnData,
-                                      long[] turnThreatensSquares, int percentOfStartgame, long myKingSafetyArea, long enemyKingSafetyArea) {
+                                      long[] turnThreatensSquares, int percentOfStartgame, 
+                                      long myKingSafetyArea, long enemyKingSafetyArea) {
+        
         //please generate moves before calling this
         final long[][] pieces = board.pieces;
 
@@ -427,11 +429,15 @@ public final class Evaluator {
                     knightsScore += miscFeatures[PIECE_BEHIND_PAWN];
                 }
 
+                final long pseudoAttackEnemyKingSmall = pseudoMoves & enemyKingSmallArea;
+                if (pseudoAttackEnemyKingSmall != 0) {
+                    kingAttacks += populationCount(pseudoAttackEnemyKingSmall);
+                }
+                
                 final long pseudoAttackEnemyKing = pseudoMoves & enemyKingSafetyArea;
                 if (pseudoAttackEnemyKing != 0) {
                     kingAttackers++;
                     kingAttackersWeights += kingAttacksValues[KNIGHT_ATTACK_KING_UNITS];
-                    kingAttacks += populationCount(pseudoAttackEnemyKing);
                 }
             }
             myKnights &= (myKnights - 1);
@@ -486,11 +492,16 @@ public final class Evaluator {
                             (1 + populationCount(bpscc) / 2 + populationCount(bpsc) / 3));
                 }
 
+                final long pseudoAttackEnemyKingSmall = pseudoMoves & enemyKingSmallArea;
+                if (pseudoAttackEnemyKingSmall != 0) {
+                    kingAttacks += populationCount(pseudoAttackEnemyKingSmall);
+                }
+
+                
                 final long pseudoAttackEnemyKing = pseudoMoves & enemyKingSafetyArea;
                 if (pseudoAttackEnemyKing != 0) {
                     kingAttackers++;
                     kingAttackersWeights += kingAttacksValues[BISHOP_ATTACK_KING_UNITS];
-                    kingAttacks += populationCount(pseudoAttackEnemyKing);
                 }
             }
             myBishops &= (myBishops - 1);
@@ -543,11 +554,15 @@ public final class Evaluator {
                     rooksScore += rookFeatures[ROOK_ON_SEMI_OPEN_FILE_BONUS];
                 }
 
+                final long pseudoAttackEnemyKingSmall = pseudoMoves & enemyKingSmallArea;
+                if (pseudoAttackEnemyKingSmall != 0) {
+                    kingAttacks += populationCount(pseudoAttackEnemyKingSmall);
+                }
+
                 final long pseudoAttackEnemyKing = pseudoMoves & enemyKingSafetyArea;
                 if (pseudoAttackEnemyKing != 0) {
                     kingAttackers++;
                     kingAttackersWeights += kingAttacksValues[ROOK_ATTACK_KING_UNITS];
-                    kingAttacks += populationCount(pseudoAttackEnemyKing);
                 }
             }
             myRooks &= (myRooks - 1);
@@ -575,11 +590,15 @@ public final class Evaluator {
 
                 mobilityScore += mobilityScores[QUEEN - 2][populationCount(table)];
 
+                final long pseudoAttackEnemyKingSmall = pseudoMoves & enemyKingSmallArea;
+                if (pseudoAttackEnemyKingSmall != 0) {
+                    kingAttacks += populationCount(pseudoAttackEnemyKingSmall);
+                }
+
                 final long pseudoAttackEnemyKing = pseudoMoves & enemyKingSafetyArea;
                 if (pseudoAttackEnemyKing != 0) {
                     kingAttackers++;
                     kingAttackersWeights += kingAttacksValues[QUEEN_ATTACK_KING_LOOKUP_UNITS];
-                    kingAttacks += populationCount(pseudoAttackEnemyKing);
                 }
             }
             myQueens &= (myQueens - 1);
@@ -598,11 +617,17 @@ public final class Evaluator {
             myPawns &= myPawns - 1;
         }
 
+        final long pseudoAttackEnemyKingSmall = squaresMyPawnsThreaten & enemyKingSmallArea;
+        if (pseudoAttackEnemyKingSmall != 0) {
+            kingAttacks += populationCount(pseudoAttackEnemyKingSmall);
+        }
+
+
         final long pseudoAttackEnemyKing = squaresMyPawnsThreaten & enemyKingSafetyArea;
         if (pseudoAttackEnemyKing != 0) {
             kingAttackers++;
             kingAttackersWeights += 1;
-            kingAttacks += populationCount(pseudoAttackEnemyKing);
+//            kingAttacks += populationCount(pseudoAttackEnemyKing);
         }
 
         threatsScore += populationCount(squaresMyPawnsThreaten & enemyBigPieces) * PAWN_THREATENS_BIG_THINGS;
@@ -624,13 +649,32 @@ public final class Evaluator {
         int enemyKingDanger = kingSafetyMisc[STARTING_PENALTY]
                 + kingAttackersWeights * kingAttackers
                 + kingSafetyMisc[NUMBER_OF_ATTACKS_FACTOR] * kingAttacks
-                - (populationCount(board.pieces[turn][QUEEN]) == 0 ? kingSafetyMisc[MISSING_QUEEN_KING_SAFETY_UNITS] : 0)
-                + ((myKingSafetyArea & fileWithoutMyPawns) != 0 ? kingSafetyMisc[KING_NEAR_SEMI_OPEN_FILE_LOOKUP] : 0)
+                + ((enemyKingSafetyArea & fileWithoutEnemyPawns) != 0 ? kingSafetyMisc[KING_NEAR_SEMI_OPEN_FILE_LOOKUP] : 0)
                 + (turn == board.turn ? 1 : 0)
                 + (populationCount(pinnedPieces) * kingSafetyMisc[PINNED_PIECES_KING_SAFETY_LOOKUP])
-                - (populationCount(enemies & enemyKingSafetyArea))
-                - (populationCount((enemyPawns & enemyKingSafetyArea) >> 1));
+                
+                - (populationCount(board.pieces[turn][QUEEN]) == 0 ? kingSafetyMisc[MISSING_QUEEN_KING_SAFETY_UNITS] : 0)
+                - (populationCount(enemies & enemyKingSafetyArea)) 
+                - (populationCount((enemyPawns & enemyKingSafetyArea))); //pawns counted twice
 
+
+//        if (enemyKingDanger < 0) {
+//            System.err.println("THE TURN IS WHITE: " + (turn == WHITE));
+//            System.err.println("enemy king in absolutely no danger: " + enemyKingDanger);
+//            System.err.println(board.toFenString());
+//            System.err.println(board);
+//            throw new RuntimeException();
+//        }
+//        if (enemyKingDanger > KING_SAFETY_ARRAY.length) {
+//            System.err.println("enemy king in ridiculous amounts of danger!!! : " + enemyKingDanger);
+//            System.err.println(board.toFenString());
+//            System.err.println(board);
+//            System.err.println("THE TURN IS WHITE: " + (turn == WHITE));
+//            System.err.println("enemy king area");
+//            Art.printLong(enemyKingSafetyArea);
+//            System.err.println();
+////            throw new RuntimeException();
+//        }
 
         enemyKingDanger = Math.max(0, Math.min(enemyKingDanger, KING_SAFETY_ARRAY.length - 1));
 

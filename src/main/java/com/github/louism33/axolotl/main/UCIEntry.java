@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
+import static com.github.louism33.axolotl.search.ChessThreadBetter.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.chesscore.BoardConstants.WHITE;
@@ -25,7 +25,6 @@ import static com.github.louism33.utils.MoveParserFromAN.buildMoveFromLAN;
 public final class UCIEntry {
 
     public Chessboard board = new Chessboard();
-//    public Chessboard[] boards = {new Chessboard()};
     public Engine engine;
     private int[] searchMoves = new int[8];
 
@@ -59,7 +58,7 @@ public final class UCIEntry {
     }
 
     private void loop() throws IOException {
-        
+
         while (true) {
             String line = input.readLine();
 
@@ -314,8 +313,14 @@ public final class UCIEntry {
 
                         break;
                     } else if (token.equalsIgnoreCase("go")) {
-                        Engine.resetBetweenMoves();
                         
+                        Assert.assertTrue("Engine is already searching, but should not be, running: ", Engine.running == false);
+//                        Assert.assertTrue("Engine is already searching, but should not be, stopnow: ", Engine.stopNow == true);
+                        Assert.assertTrue("UCI is already running, but should not be, searching: ", UCIEntry.searching == false);
+                        Assert.assertTrue("thread num is not zero: " + Engine.threadsNumber.get(), 0 == Engine.threadsNumber.get());
+                        
+                        Engine.resetBetweenMoves();
+
                         String[] list = (tokens[1]).split("\\s");
                         final int length = list.length;
 
@@ -402,18 +407,8 @@ public final class UCIEntry {
                             Engine.rootMoves[MASTER_THREAD] = searchMoves;
                         }
 
-                        // hack to avoid needing to type in "position startpos" everytime
-//                        if (boards == null) {
-//                            boards = new Chessboard[NUMBER_OF_THREADS];
-//                        }
-//                        if (boards[MASTER_THREAD] == null) {
-//                            for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-//                                boards[i] = new Chessboard(board);
-//                            }
-//                        }
-
                         SearchSpecs.reset();
-                        
+
                         if (depth != 0) {
                             SearchSpecs.basicDepthSearch(depth);
                         } else if (nodes != 0) {
@@ -432,7 +427,7 @@ public final class UCIEntry {
                         if (DEBUG) {
                             output.println("info string engine go command for board: " + board.toFenString());
                         }
-                        
+
                         sendBestMove = true;
 
                         searching = true;
@@ -494,7 +489,7 @@ public final class UCIEntry {
     private void reset() {
         searching = false;
         Engine.running = false;
-        Engine.stopNow = true;
+//        Engine.stopNow = true;
         Engine.quitOnSingleMove = true;
         Engine.computeMoves = true;
         SearchSpecs.reset();
@@ -533,12 +528,34 @@ public final class UCIEntry {
 
         infoCommand += " multipv 1";
 
-        if (mateFound(aiMoveScore)) {
+
+//        System.out.println("ai move score: " + aiMoveScore);
+//        if (aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY) {
+//
+//            System.out.println(Engine.aspSuccess);
+//            System.out.println(Engine.aspFailA);
+//            System.out.println(Engine.aspFailB);
+//            System.out.println(Engine.aspTotal);
+//
+//            Thread.dumpStack();
+//        }
+
+//        if (aiMoveScore == SHORT_MINIMUM) {
+//            infoCommand += " score cp 0";
+//        } 
+            
+            if (mateFound(aiMoveScore)) {
             infoCommand += " score mate " + distanceToMate(aiMoveScore);
         } else {
             infoCommand += " score cp " + aiMoveScore;
         }
 
+        /*
+        position fen 8/8/8/6k1/8/7K/4q3/8 b - - 17 147
+        go movetime 50
+        
+go wtime 500 btime 500 binc 50 winc 50
+         */
         Engine.calculateNPS();
 
         infoCommand += " nodes " + Engine.totalMovesMade;

@@ -1,8 +1,6 @@
 package com.github.louism33.axolotl.search;
 
 import com.github.louism33.chesscore.Chessboard;
-import com.github.louism33.chesscore.MoveParser;
-import org.apache.maven.project.ModelUtils;
 import org.junit.Assert;
 
 import static com.github.louism33.chesscore.BitOperations.newPieceOnSquare;

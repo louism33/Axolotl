@@ -45,7 +45,7 @@ public final class ChessThreadBetter extends Thread {
     @Override
     public void run() {
         if (EngineSpecifications.DEBUG) {
-            System.out.println("info string     start run of " + this.getName() + " with thread number " + whichThread);
+            System.out.println("info string     start run of " + this.getName());
         }
 
         if (MASTER_DEBUG) {
@@ -119,7 +119,7 @@ public final class ChessThreadBetter extends Thread {
                 }
 
                 score = principleVariationSearch(board, depth, 0,
-                        alpha, beta, 0, whichThread);
+                        alpha, beta, 0, whichThread);   
 
                 if (masterThread && (manageTime && !weHavePanicked)
                         && (depth >= 6 && aiMoveScore < previousAiScore - PANIC_SCORE_DELTA)) { // todo thread specific or not?
@@ -129,11 +129,16 @@ public final class ChessThreadBetter extends Thread {
 
                 previousAiScore = aiMoveScore;
 
-                if (stopNow || !running || stopSearch(startTime, timeLimitMillis)) {
+//                if (stopNow || !running || stopSearch(startTime, timeLimitMillis)) {
+//                    break everything;
+//                }
+
+                if  (!running || stopSearch(startTime, timeLimitMillis)) {
                     break everything;
                 }
 
-                if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+                if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) { // todo, make only main thread?, or remove?
+                    System.out.println(this.getName() + " breaking, mate found with score " + score);
                     break everything;
                 }
 
@@ -160,8 +165,8 @@ public final class ChessThreadBetter extends Thread {
                 }
             }
 
-            if (PRINT_PV && masterThread) {
-                long time = System.currentTimeMillis() - startTime;
+            long time = System.currentTimeMillis() - startTime;
+            if ((time > 500 || depth > 5) && PRINT_PV && masterThread) {
                 uciEntry.send(board, aiMoveScore, depth, depth, time);
             }
 
@@ -178,7 +183,7 @@ public final class ChessThreadBetter extends Thread {
         }
 
         if (EngineSpecifications.DEBUG) {
-            System.out.println("info string     stop run of " + this.getName() + " with thread number " + whichThread);
+            System.out.println("info string     stop run of " + this.getName());
         }
 
         threadsNumber.decrementAndGet();
