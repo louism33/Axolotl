@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static challenges.Utils.contains;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 
 @RunWith(Parameterized.class)
 public class MateMTTest {
@@ -75,12 +76,12 @@ public class MateMTTest {
         Engine.resetFull();
         int[] winningMoves = EPDObject.getBestMoves();
         final Chessboard board = EPDObject.getBoard();
-//        System.out.println(board);
         SearchSpecs.basicTimeSearch(timeLimit);
         final int move = engine.simpleSearch(board);
-//        MoveParser.printMove(move);
 
-        if (contains(winningMoves, move)) {
+        boolean whateverMate = Engine.aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY;
+        
+        if (contains(winningMoves, move) || whateverMate) {
             System.out.print(". ");
             successes++;
         } else {

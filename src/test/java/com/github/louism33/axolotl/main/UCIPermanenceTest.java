@@ -46,7 +46,7 @@ public class UCIPermanenceTest {
 //                String s = MoveParser.toString(EngineBetter.getAiMove());
 //                mmm += genericMoves.get(0) + " " + genericMoves.get(1) + " ";
 //                
-//            } catch (Exception | Error e) {
+//            } catch (Throwable e) {
 //                throw new AssertionError("problem with uci persistence");
 //            }
 //        }

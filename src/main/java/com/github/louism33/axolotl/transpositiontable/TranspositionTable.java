@@ -195,11 +195,13 @@ public final class TranspositionTable {
     }
 
     static boolean isTooOld(int alreadyThere, int goingIn) {
-        Assert.assertTrue(alreadyThere < ageModulo);
-        Assert.assertTrue(goingIn < ageModulo);
+        if (MASTER_DEBUG) {
+            Assert.assertTrue(alreadyThere < ageModulo);
+            Assert.assertTrue(goingIn < ageModulo);
+        }
+
         for (int i = 0; i < acceptableAges; i++) {
             int i1 = (alreadyThere + i) % ageModulo;
-            Assert.assertTrue(i1 >= 0 && i1 < ageModulo);
             if (i1 == goingIn) {
                 return false;
             }
@@ -209,17 +211,17 @@ public final class TranspositionTable {
 
     public static int getIndex(long key) {
         int index = (int) (key >>> shiftAmount);
-        
-        Assert.assertTrue(index >= 0);
-
         return index;
     }
 
     static long buildTableEntry(int move, int score, int depth, int flag, int ply, int age) {
         // move can be 0 if null move?
-//        Assert.assertTrue(move != 0);
-        Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
-        Assert.assertTrue(flag >= 0 && flag < 4);
+        if (MASTER_DEBUG) {
+            //        Assert.assertTrue(move != 0);
+            Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
+            Assert.assertTrue(flag >= 0 && flag < 4);
+        }
+
 
         if (score > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
             score += ply;

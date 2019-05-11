@@ -32,14 +32,11 @@ public final class EngineThread extends Thread {
 
         while (true) {
             try {
-
-                System.out.println("//////////////////////engine thread just before sync: " + synchronizedObject);
                 synchronized (synchronizedObject) {
                     while (!searching) {
                         synchronizedObject.wait();
                     }
                 }
-                System.out.println("//////////////////////engine thread just after sync: " + synchronizedObject);
 
                 Assert.assertTrue(searching == true);
                 Assert.assertTrue(SearchSpecs.searchType != SearchSpecs.SEARCH_TYPE.NONE);
@@ -51,24 +48,22 @@ public final class EngineThread extends Thread {
                 }
 
                 uciEntry.engine.go(this.board);
-                
+
                 searching = false;
-                
+
                 if (EngineSpecifications.DEBUG) {
                     System.out.println("info string <----- " + this.getName() + " has completed engine main search");
                 }
-                
+
                 Assert.assertTrue(Engine.running == false);
                 Assert.assertEquals(0, Engine.threadsNumber.get());
-                
+
                 final int bestMove = Engine.rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK;
-                
+
                 if (sendBestMove) {
                     uciEntry.sendBestMove(bestMove);
                 }
 
-//                Assert.assertTrue(searching == false);
-                
             } catch (Throwable e) {
                 e.printStackTrace();
             }

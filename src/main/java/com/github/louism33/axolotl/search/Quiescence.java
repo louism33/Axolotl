@@ -26,14 +26,8 @@ public final class Quiescence {
             if (MASTER_DEBUG) {
                 Assert.assertFalse(board.inCheck(board.isWhiteTurn()));
             }
-            
-            try {
+
             standPatScore = Evaluator.eval(board, moves);
-            } catch (Exception | Error e) {
-                System.out.println(board);
-                System.out.println(board.toFenString());
-                e.printStackTrace();
-            }
 
             if (standPatScore >= beta) {
                 return standPatScore;
@@ -46,7 +40,6 @@ public final class Quiescence {
 
         if (MASTER_DEBUG) {
             Assert.assertFalse(standPatScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
-
         }
 
         if (!inCheck) {
@@ -68,10 +61,12 @@ public final class Quiescence {
             final boolean epMove = MoveParser.isEnPassantMove(move);
             final boolean promotionMove = MoveParser.isPromotionMove(move);
 
-            if (!inCheck && loudMoveScore != 0) {
-                Assert.assertTrue(captureMove || promotionMove || epMove);
+            if (MASTER_DEBUG) {
+                if (!inCheck && loudMoveScore != 0) {
+                    Assert.assertTrue(captureMove || promotionMove || epMove);
+                }
             }
-
+           
             if (!inCheck && loudMoveScore == 0) {
                 break;
             }

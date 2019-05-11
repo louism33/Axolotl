@@ -375,7 +375,7 @@ public class DontCrashTest {
                     int move1 = 0;
                     try {
                         move1 = MoveParserFromAN.buildMoveFromANWithOO(board, move);
-                    } catch (Exception | Error e) {
+                    } catch (Throwable e) {
                         System.err.println(s);
                         System.err.println(board);
                         System.err.println(board.zobristHash);
@@ -397,7 +397,7 @@ public class DontCrashTest {
                 SearchSpecs.basicTimeSearch(25_000);
                 final int move = engine.simpleSearch(board);
             }
-        } catch (Exception | Error e) {
+        } catch (Throwable e) {
             throw new AssertionError("failed on stress test");
         }
     }
@@ -788,7 +788,7 @@ public class DontCrashTest {
                     int move1 = 0;
                     try {
                         move1 = MoveParserFromAN.buildMoveFromANWithOO(board, move);
-                    } catch (Exception | Error e) {
+                    } catch (Throwable e) {
                         System.out.println(s);
                         System.out.println(board);
                         System.out.println(board.zobristHash);
@@ -801,7 +801,7 @@ public class DontCrashTest {
                 SearchSpecs.basicTimeSearch(5_000);
                 final int move = engine.simpleSearch(board);
             }
-        } catch (Exception | Error e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             throw new AssertionError("failed on stress test");
         }

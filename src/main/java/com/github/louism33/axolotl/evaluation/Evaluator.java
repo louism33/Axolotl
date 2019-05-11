@@ -70,10 +70,6 @@ public final class Evaluator {
             return 0;
         }
 
-//        if (true) {
-//            return evalGeneric(board, moves);
-//        }
-
         if (MASTER_DEBUG) {
             Assert.assertTrue(board.materialHash != 0);
             Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);

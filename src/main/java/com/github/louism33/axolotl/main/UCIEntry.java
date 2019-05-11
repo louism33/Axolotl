@@ -150,7 +150,7 @@ public final class UCIEntry {
 
                             try {
                                 size = Integer.parseInt(valueToken);
-                            } catch (Exception | Error e) {
+                            } catch (Throwable e) {
                                 output.println("could not read hash value, sticking to " + DEFAULT_TABLE_SIZE_MB + "mb");
                             }
 
@@ -174,7 +174,7 @@ public final class UCIEntry {
                             int number = DEFAULT_THREAD_NUMBER;
                             try {
                                 number = Integer.parseInt(valueToken);
-                            } catch (Exception | Error e) {
+                            } catch (Throwable e) {
                                 output.println("info string could not read threads value, sticking to " + DEFAULT_THREAD_NUMBER + "mb");
                             }
 
@@ -183,7 +183,6 @@ public final class UCIEntry {
                             }
 
                             Engine.setThreads(number);
-//                            boards = new Chessboard[NUMBER_OF_THREADS];
 
                         } else if (SPSA) {
                             if (nameToken.equalsIgnoreCase("futility1")) {
@@ -286,21 +285,7 @@ public final class UCIEntry {
                                     if (list[s].trim().equals("")) {
                                         continue;
                                     }
-                                    int move = 0;
-
-                                    try {
-                                        move = buildMoveFromLAN(board, list[s].trim());
-                                    } catch (Exception | Error e) {
-                                        System.err.println("LAN PROBLEM: ");
-                                        System.err.println(board);
-                                        System.err.println("all received: ");
-                                        System.err.println(line);
-                                        System.err.println("and i try to parse");
-                                        System.err.println(Arrays.toString(list));
-                                        System.err.println(list[s]);
-                                        System.err.println(list[s].trim());
-                                    }
-                                    board.makeMoveAndFlipTurn(move);
+                                    board.makeMoveAndFlipTurn(buildMoveFromLAN(board, list[s].trim()));
                                     lastMoveMade++;
                                 }
                             }
@@ -308,7 +293,6 @@ public final class UCIEntry {
 
                         if (DEBUG) {
                             output.println("info string board: " + board.toFenString());
-//                            output.println(board);
                         }
 
 
@@ -316,23 +300,11 @@ public final class UCIEntry {
                     } else if (token.equalsIgnoreCase("go")) {
 
                         reset();
-                        
+
                         Assert.assertTrue("Engine is already searching, but should not be, running: ", Engine.running == false);
                         Assert.assertTrue("UCI is already running, but should not be, searching: ", UCIEntry.searching == false);
                         Assert.assertTrue("thread num is not zero: " + Engine.threadsNumber.get(), 0 == Engine.threadsNumber.get());
 
-//                        output.println();
-//                        output.println("just received go command::");
-//                        output.println("alive? " + engineThread.isAlive());
-//                        output.println("stack? " + Arrays.toString(engineThread.getStackTrace()));
-//                        output.println("state? " + engineThread.getState());
-//                        output.println();
-//                        output.println("current value of searching: " + searching);
-//                        output.println("current value of engineRunning: " + Engine.running);
-//                        output.println();
-//                        
-//                        Assert.assertTrue(engineThread.getState().equals(Thread.State.WAITING));
-                        
                         Engine.resetBetweenMoves();
 
                         String[] list = (tokens[1]).split("\\s");
@@ -440,60 +412,23 @@ public final class UCIEntry {
 
                         if (DEBUG) {
                             output.println("info string engine go command for board: " + board.toFenString());
-
-                            output.println("engine thread:");
-                            output.println("alive? " + engineThread.isAlive());
-                            output.println("stack? " + Arrays.toString(engineThread.getStackTrace()));
-                            output.println("state? " + engineThread.getState());
-                            output.println();
-                            output.println("current value of searching: " + searching);
-                            output.println("current value of engineRunning: " + Engine.running);
-                            output.println();
                         }
-
-//                        Assert.assertTrue(engineThread.getState().equals(Thread.State.WAITING));
 
                         sendBestMove = true;
                         engineThread.setBoard(board);
                         searching = true;
 
-//                        while (!engineThread.getState().equals(Thread.State.WAITING)) {
-//                            try {
-//                                Thread.sleep(10);
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-
-                        System.out.println("+++++++++++++++++++++uci thread just before sync: " + synchronizedObject);
                         synchronized (synchronizedObject) {
                             synchronizedObject.notifyAll();
                         }
 
-                        System.out.println("+++++++++++++++++++++uci thread just after sync: " + synchronizedObject);
                         break;
 
                     } else if (token.equalsIgnoreCase("stop")) {
-
                         if (DEBUG) {
                             output.println("stop received: ");
-                            output.println("engine thread:");
-                            output.println("alive? " + engineThread.isAlive());
-                            output.println("stack? " + Arrays.toString(engineThread.getStackTrace()));
-                            output.println("state? " + engineThread.getState());
-                            output.println();
-                            output.println("current value of searching: " + searching);
-                            output.println("current value of engineRunning: " + Engine.running);
-                            output.println("dumps: ");
-                            final Map<Thread, StackTraceElement[]> allStackTraces = Thread.getAllStackTraces();
-
-                            for (Map.Entry<Thread, StackTraceElement[]> entry : allStackTraces.entrySet()) {
-                                output.println(entry.getKey() + "       " + entry.getValue());
-                            }
-                            
-                            output.println(allStackTraces);
                         }
-                        
+
                         reset();
                         break;
                     } else if (token.equalsIgnoreCase("ponderhit")) {
@@ -522,7 +457,7 @@ public final class UCIEntry {
                                 output.println("Time: " + t + " millis, NPS: " + ((nodes / t) * 1000));
                             }
 
-                        } catch (Exception | Error e) {
+                        } catch (Throwable e) {
                             output.println("didn't understand perft command");
                         }
                     }
@@ -552,26 +487,18 @@ public final class UCIEntry {
     }
 
     public void sendNoMove() {
-        Assert.assertTrue("THREADS STILL RUNNING BUT (no)BESTMOVE SEND!", Engine.threadsNumber.get() == 0);
+        if (MASTER_DEBUG) {
+            Assert.assertTrue("THREADS STILL RUNNING BUT (no)BESTMOVE SEND!", Engine.threadsNumber.get() == 0);
+        }
+
         reset();
         output.println("bestmove (none)");
     }
 
     public void sendBestMove(int aiMove) {
-        Assert.assertTrue("THREADS STILL RUNNING BUT BESTMOVE SEND!", Engine.threadsNumber.get() == 0);
-
-//        if (DEBUG) {
-//            output.println("sending best move:");
-//            output.println("engine thread:");
-//            output.println("alive? " + engineThread.isAlive());
-//            output.println("stack? " + Arrays.toString(engineThread.getStackTrace()));
-//            output.println("state? " + engineThread.getState());
-//            output.println();
-//            output.println("current value of searching: " + searching);
-//            output.println("current value of engineRunning: " + Engine.running);
-//            output.println();
-//        }
-//        reset();
+        if (MASTER_DEBUG) {
+            Assert.assertTrue("THREADS STILL RUNNING BUT BESTMOVE SEND!", Engine.threadsNumber.get() == 0);
+        }
         output.println("bestmove " + MoveParser.toString(aiMove));
     }
 
@@ -594,23 +521,7 @@ public final class UCIEntry {
 
         infoCommand += " multipv 1";
 
-
-//        System.out.println("ai move score: " + aiMoveScore);
-//        if (aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY) {
-//
-//            System.out.println(Engine.aspSuccess);
-//            System.out.println(Engine.aspFailA);
-//            System.out.println(Engine.aspFailB);
-//            System.out.println(Engine.aspTotal);
-//
-//            Thread.dumpStack();
-//        }
-
-//        if (aiMoveScore == SHORT_MINIMUM) {
-//            infoCommand += " score cp 0";
-//        } 
-            
-            if (mateFound(aiMoveScore)) {
+        if (mateFound(aiMoveScore)) {
             infoCommand += " score mate " + distanceToMate(aiMoveScore);
         } else {
             infoCommand += " score cp " + aiMoveScore;
@@ -620,7 +531,7 @@ public final class UCIEntry {
         position fen 8/8/8/6k1/8/7K/4q3/8 b - - 17 147
         go movetime 50
         
-go wtime 500 btime 500 binc 50 winc 50
+        go wtime 500 btime 500 binc 50 winc 50
          */
         Engine.calculateNPS();
 
@@ -647,28 +558,5 @@ go wtime 500 btime 500 binc 50 winc 50
         UCIEntry uci = new UCIEntry();
         uci.loop();
     }
-
-    /*
-    position startpos moves e2e4 c7c6 d2d4 d7d5 b1c3 d5e4 c3e4 c8f5 e4g3 f5g6 h2h4 h7h6 g1f3 b8d7 h4h5 g6h7 f1d3 h7d3 d1d3 d8c7 e1g1 g8f6 f1e1 e8c8 g3e2 e7e5 d4e5 d7e5 d3f5 e5d7 c1e3 f8d6 e3a7 b7b6 a1d1 c8b7 f3d4 b7a7 d4c6 c7c6 e2d4 c6c5 d4b5 a7a6 b5d6 c5f5 d6f5 f6h5 f5d6 h8f8 e1e3 b6b5 e3a3 a6b6 a3b3 h5f4 b3b4 f4e6 a2a4 d7f6 c2c3 e6c7 b4d4 d8a8 a4b5 h6h5 d4b4 a8a2 b4c4 c7e6 c4c6 b6a7 b5b6 a7b8 b6b7 e6c7 c3c4 a2b2 d1a1 b2b7 d6b7 b8b7 c6d6 c7e6 a1b1 b7c7 d6a6 f6e4 a6a7 c7c6 b1b5 e4c5 b5b4 c6d6 b4b5 h5h4 b5a5 d6e5 a7d7 e5f6 d7d5 f8c8 g1h2 c8c7 f2f3 c5b3 a5a4 b3d4 c4c5 d4f5 a4a6 g7g5 c5c6 f5d4 d5d6 f6e7 d6d7 c7d7 c6d7 e7d7 a6a7 e6c7 g2g3 d4f3 h2g2 f3e5 g3h4 g5h4 a7b7 d7c6 g2h3 c6b7
-    
-    go wtime 6085 btime 11729 winc 500 binc 500
-    
-    
-    
-    
-    
-    
-    position startpos moves b2b3 e7e5 c1b2 b8c6 e2e3 d7d5 f1b5 f7f6 g1e2 c8e6 b5c6 b7c6 e1g1 f8d6 f2f4 g8e7 f4e5 f6e5 e2g3 e7g6 d1e2 e6f7 e2a6 d8d7 b1c3 e8g8 g3f5 d6c5 d2d4 f7e6 f5g7 e5d4 c3a4 d7g7 a4c5 g6h4 g2g3 e6h3 a6c6 h3f1 c6d5 g8h8 a1f1 f8f1 g1f1 a8f8 f1e1 h4f3 e1d1 g7g4 d1c1 g4h3 b2d4 f3d4 d5d4 h8g8 d4d5 f8f7 c5d3 c7c6 d5g5 g8h8 g5d8 h8g7 d3f4 h3h6 h2h4 f7b7 g3g4 g7f7 g4g5 h6g7 d8d6 b7e7 d6c6 e7e3 c6c4 f7e8 c1d2 e3e5 c4c8 e8f7 c8b7 e5e7 b7d5 f7e8 f4h5 g7f7 d5a8 e8d7 a8a7 d7c6 a7a8 c6d6 a8a6 d6c5 a6a5 c5c6 a5a4 c6c5 b3b4 c5d4 b4b5 d4c5 h5f4 f7c4 f4d3 c5d4 c2c3 d4d5 a4a8 d5d6 a8d8 e7d7
-    
-    go wtime 13904 btime 16823 winc 500 binc 500
-    
-    
-    
-    
-    position startpos moves b2b3 e7e5 c1b2 b8c6 e2e3 d7d5 f1b5 f7f6 g1e2 c8e6 b5c6 b7c6 e1g1 f8d6 f2f4 g8e7 f4e5 f6e5 e2g3 e7g6 d1e2 e6f7 e2a6 d8d7 b1c3 e8g8 g3f5 d6c5 d2d4 f7e6 f5g7 e5d4 c3a4 d7g7 a4c5 g6h4 g2g3 e6h3 a6c6 h3f1 c6d5 g8h8 a1f1 f8f1 g1f1 a8f8 f1e1 h4f3 e1d1 g7g4 d1c1 g4h3 b2d4 f3d4 d5d4 h8g8 d4d5 f8f7 c5d3 c7c6 d5g5 g8h8 g5d8 h8g7 d3f4 h3h6 h2h4 f7b7 g3g4 g7f7 g4g5 h6g7 d8d6 b7e7 d6c6 e7e3 c6c4 f7e8 c1d2 e3e5 c4c8 e8f7 c8b7 e5e7 b7d5 f7e8 f4h5 g7f7 d5a8 e8d7 a8a7 d7c6 a7a8 c6d6 a8a6 d6c5 a6a5 c5c6 a5a4 c6c5 b3b4 c5d4 b4b5 d4c5 h5f4 f7c4 f4d3 c5d4 c2c3 d4d5 a4a8 d5d6 a8d8 e7d7 d8d7 d6d7
-    
-    go wtime 14000 btime 17323 winc 500 binc 500
-    
-     */
 
 }

@@ -103,12 +103,6 @@ public final class Engine {
         hashTableReturn = 0;
         final int length = rootMoves.length;
 
-        if (length != NUMBER_OF_THREADS) {
-            System.out.println(length);
-            System.out.println(NUMBER_OF_THREADS);
-            Thread.dumpStack();
-        }
-
         Assert.assertEquals(length, NUMBER_OF_THREADS);
 
         if (numberOfMovesMade == null || numberOfMovesMade.length != NUMBER_OF_THREADS) {
@@ -337,15 +331,7 @@ public final class Engine {
             }
 
             if (ply >= MAX_DEPTH_HARD) {
-                try {
-                    return Evaluator.eval(board, moves);
-
-                } catch (Exception | Error e) {
-                    System.out.println(board);
-                    System.out.println(board.toFenString());
-                    e.printStackTrace();
-                }
-
+                return Evaluator.eval(board, moves);
             }
 
             return quiescenceSearch(board, alpha, beta, whichThread);
@@ -410,13 +396,7 @@ public final class Engine {
 
         if (!thisIsAPrincipleVariationNode && !inCheck) {
 
-            try {
-                staticBoardEval = Evaluator.eval(board, moves);
-            } catch (Exception | Error e) {
-                System.out.println(board);
-                System.out.println(board.toFenString());
-                e.printStackTrace();
-            }
+            staticBoardEval = Evaluator.eval(board, moves);
 
             if (isBetaRazoringOkHere(depth, staticBoardEval)) {
                 betaTotal++;
@@ -556,15 +536,7 @@ public final class Engine {
                     futilityTotal++;
 
                     if (staticBoardEval == SHORT_MINIMUM) {
-                        try{
-                            staticBoardEval = Evaluator.eval(board,
-                                    moves);
-                        } catch (Exception | Error e) {
-                            System.out.println(board);
-                            System.out.println(board.toFenString());
-                            e.printStackTrace();
-                        }
-
+                        staticBoardEval = Evaluator.eval(board, moves);
                     }
 
                     int futilityScore = staticBoardEval + futilityMargin[depth];
