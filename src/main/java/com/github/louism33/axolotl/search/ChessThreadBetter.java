@@ -134,7 +134,7 @@ public final class ChessThreadBetter extends Thread {
                 }
 
                 if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) { // todo, make only main thread?, or remove?
-                    System.out.println(this.getName() + " breaking, mate found with score " + score);
+//                    System.out.println(this.getName() + " breaking, mate found with score " + score);
                     break everything;
                 }
 
