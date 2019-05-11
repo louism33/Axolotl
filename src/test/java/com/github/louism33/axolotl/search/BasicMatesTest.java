@@ -139,7 +139,7 @@ public class BasicMatesTest {
             Engine.resetFull();
             Chessboard board = new Chessboard(kqkPositions[i]);
             Assert.assertEquals(KQK, typeOfEndgame(board));
-            SearchSpecs.basicTimeSearch(20_000);
+            SearchSpecs.basicTimeSearch(25_000);
             final int move = engine.simpleSearch(board);
 
             final boolean condition = aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY;
