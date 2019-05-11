@@ -209,7 +209,6 @@ public final class Engine {
 
         if (numberOfRealMoves == 1 && quitOnSingleMove) {
             Assert.assertTrue(Engine.threadsNumber.get() == 0);
-//            uciEntry.sendBestMove(rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK);
             running = false;
             return;
         }
@@ -255,7 +254,7 @@ public final class Engine {
                     System.out.println("THREADS NUMBER BELOW ZERO! ");
                 }
 
-                System.out.print(" - ");
+//                System.out.print(" - ");
                 Thread.yield();
             }
         }
