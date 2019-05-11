@@ -41,7 +41,7 @@ public final class Engine {
     public static int[][] rootMoves;
 
     private static long startTime = 0;
-//    public static boolean stopNow = true;
+    //    public static boolean stopNow = true;
     public static boolean running = false;
     public static boolean quitOnSingleMove = true;
     public static boolean computeMoves = true;
@@ -134,7 +134,6 @@ public final class Engine {
         nps = 0;
         aiMoveScore = SHORT_MINIMUM;
 
-//        stopNow = false;
         running = false;
         resetMoveOrderer();
         age = (age + 1) % ageModulo;
@@ -178,11 +177,8 @@ public final class Engine {
     public int simpleSearch(Chessboard board) {
         Assert.assertEquals(0, threadsNumber.get());
 
-        
-        
         go(board);
 
-//        stopNow = true;
         running = false;
 
         return getAiMove();
@@ -192,7 +188,6 @@ public final class Engine {
     public void go(Chessboard board) {
         this.board = board;
         running = true;
-//        stopNow = false;
 
         searchFixedTime(uciEntry, board);
     }
@@ -208,12 +203,14 @@ public final class Engine {
         int numberOfRealMoves = rootMoves[MASTER_THREAD][rootMoves[MASTER_THREAD].length - 1];
         if (numberOfRealMoves == 0) {
             uciEntry.sendNoMove();
+            running = false;
             return;
         }
 
         if (numberOfRealMoves == 1 && quitOnSingleMove) {
             Assert.assertTrue(Engine.threadsNumber.get() == 0);
-            uciEntry.sendBestMove(rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK);
+//            uciEntry.sendBestMove(rootMoves[MASTER_THREAD][0] & MOVE_MASK_WITHOUT_CHECK);
+            running = false;
             return;
         }
 
@@ -236,7 +233,6 @@ public final class Engine {
             threadsNumber.incrementAndGet();
             thread.run();
             running = false;
-//            stopNow = true;
         } else {
             final int totalMoves = rootMoves[MASTER_THREAD].length;
             for (int t = 1; t < NUMBER_OF_THREADS; t++) {
@@ -252,21 +248,14 @@ public final class Engine {
             threadsNumber.incrementAndGet();
             masterThread.run();
             running = false;
-//            stopNow = true;
 
 
             while (threadsNumber.get() != 0) {
                 if (threadsNumber.get() < 0) {
                     System.out.println("THREADS NUMBER BELOW ZERO! ");
                 }
-                
-//                try {
-//                    System.out.println("yield, sleep for 50 millis, running: " + running + ", stopNow: " + stopNow);
-//                    Thread.sleep(50);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
 
+                System.out.print(" - ");
                 Thread.yield();
             }
         }
@@ -527,7 +516,7 @@ public final class Engine {
             if (MASTER_DEBUG) {
                 Assert.assertTrue(moveScore != 0);
             }
-            
+
             final boolean captureMove = isCaptureMove(move);
             final boolean promotionMove = isPromotionMove(move);
             final boolean queenPromotionMove = promotionMove ? isPromotionToQueen(move) : false;
@@ -546,8 +535,8 @@ public final class Engine {
                     Assert.assertTrue(condition);
                 }
             }
-            
-            
+
+
             if (!thisIsAPrincipleVariationNode) {
                 if (bestScore < CHECKMATE_ENEMY_SCORE_MAX_PLY
                         && notJustPawnsLeft(board)) {
@@ -569,8 +558,8 @@ public final class Engine {
 
                     if (staticBoardEval == SHORT_MINIMUM) {
                         try{
-                        staticBoardEval = Evaluator.eval(board,
-                                moves);
+                            staticBoardEval = Evaluator.eval(board,
+                                    moves);
                         } catch (Exception | Error e) {
                             System.out.println(board);
                             System.out.println(board.toFenString());

@@ -12,6 +12,7 @@ import org.junit.Assert;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -313,11 +314,24 @@ public final class UCIEntry {
 
                         break;
                     } else if (token.equalsIgnoreCase("go")) {
+
+                        reset();
                         
                         Assert.assertTrue("Engine is already searching, but should not be, running: ", Engine.running == false);
-//                        Assert.assertTrue("Engine is already searching, but should not be, stopnow: ", Engine.stopNow == true);
                         Assert.assertTrue("UCI is already running, but should not be, searching: ", UCIEntry.searching == false);
                         Assert.assertTrue("thread num is not zero: " + Engine.threadsNumber.get(), 0 == Engine.threadsNumber.get());
+
+//                        output.println();
+//                        output.println("just received go command::");
+//                        output.println("alive? " + engineThread.isAlive());
+//                        output.println("stack? " + Arrays.toString(engineThread.getStackTrace()));
+//                        output.println("state? " + engineThread.getState());
+//                        output.println();
+//                        output.println("current value of searching: " + searching);
+//                        output.println("current value of engineRunning: " + Engine.running);
+//                        output.println();
+//                        
+//                        Assert.assertTrue(engineThread.getState().equals(Thread.State.WAITING));
                         
                         Engine.resetBetweenMoves();
 
@@ -426,19 +440,60 @@ public final class UCIEntry {
 
                         if (DEBUG) {
                             output.println("info string engine go command for board: " + board.toFenString());
+
+                            output.println("engine thread:");
+                            output.println("alive? " + engineThread.isAlive());
+                            output.println("stack? " + Arrays.toString(engineThread.getStackTrace()));
+                            output.println("state? " + engineThread.getState());
+                            output.println();
+                            output.println("current value of searching: " + searching);
+                            output.println("current value of engineRunning: " + Engine.running);
+                            output.println();
                         }
 
-                        sendBestMove = true;
+//                        Assert.assertTrue(engineThread.getState().equals(Thread.State.WAITING));
 
-                        searching = true;
+                        sendBestMove = true;
                         engineThread.setBoard(board);
+                        searching = true;
+
+//                        while (!engineThread.getState().equals(Thread.State.WAITING)) {
+//                            try {
+//                                Thread.sleep(10);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+
+                        System.out.println("+++++++++++++++++++++uci thread just before sync: " + synchronizedObject);
                         synchronized (synchronizedObject) {
                             synchronizedObject.notifyAll();
                         }
 
+                        System.out.println("+++++++++++++++++++++uci thread just after sync: " + synchronizedObject);
                         break;
 
                     } else if (token.equalsIgnoreCase("stop")) {
+
+                        if (DEBUG) {
+                            output.println("stop received: ");
+                            output.println("engine thread:");
+                            output.println("alive? " + engineThread.isAlive());
+                            output.println("stack? " + Arrays.toString(engineThread.getStackTrace()));
+                            output.println("state? " + engineThread.getState());
+                            output.println();
+                            output.println("current value of searching: " + searching);
+                            output.println("current value of engineRunning: " + Engine.running);
+                            output.println("dumps: ");
+                            final Map<Thread, StackTraceElement[]> allStackTraces = Thread.getAllStackTraces();
+
+                            for (Map.Entry<Thread, StackTraceElement[]> entry : allStackTraces.entrySet()) {
+                                output.println(entry.getKey() + "       " + entry.getValue());
+                            }
+                            
+                            output.println(allStackTraces);
+                        }
+                        
                         reset();
                         break;
                     } else if (token.equalsIgnoreCase("ponderhit")) {
@@ -489,7 +544,6 @@ public final class UCIEntry {
     private void reset() {
         searching = false;
         Engine.running = false;
-//        Engine.stopNow = true;
         Engine.quitOnSingleMove = true;
         Engine.computeMoves = true;
         SearchSpecs.reset();
@@ -499,14 +553,26 @@ public final class UCIEntry {
 
     public void sendNoMove() {
         Assert.assertTrue("THREADS STILL RUNNING BUT (no)BESTMOVE SEND!", Engine.threadsNumber.get() == 0);
-        output.println("bestmove (none)");
         reset();
+        output.println("bestmove (none)");
     }
 
     public void sendBestMove(int aiMove) {
         Assert.assertTrue("THREADS STILL RUNNING BUT BESTMOVE SEND!", Engine.threadsNumber.get() == 0);
+
+//        if (DEBUG) {
+//            output.println("sending best move:");
+//            output.println("engine thread:");
+//            output.println("alive? " + engineThread.isAlive());
+//            output.println("stack? " + Arrays.toString(engineThread.getStackTrace()));
+//            output.println("state? " + engineThread.getState());
+//            output.println();
+//            output.println("current value of searching: " + searching);
+//            output.println("current value of engineRunning: " + Engine.running);
+//            output.println();
+//        }
+//        reset();
         output.println("bestmove " + MoveParser.toString(aiMove));
-        reset();
     }
 
     private static boolean mateFound(int score) {
@@ -571,7 +637,7 @@ go wtime 500 btime 500 binc 50 winc 50
     }
 
 
-    public final static Object synchronizedObject = new Object();
+    public static Object synchronizedObject = new Object();
     public final EngineThread engineThread = new EngineThread(this);
     public static boolean searching = false;
 
@@ -588,6 +654,20 @@ go wtime 500 btime 500 binc 50 winc 50
     go wtime 6085 btime 11729 winc 500 binc 500
     
     
+    
+    
+    
+    
+    position startpos moves b2b3 e7e5 c1b2 b8c6 e2e3 d7d5 f1b5 f7f6 g1e2 c8e6 b5c6 b7c6 e1g1 f8d6 f2f4 g8e7 f4e5 f6e5 e2g3 e7g6 d1e2 e6f7 e2a6 d8d7 b1c3 e8g8 g3f5 d6c5 d2d4 f7e6 f5g7 e5d4 c3a4 d7g7 a4c5 g6h4 g2g3 e6h3 a6c6 h3f1 c6d5 g8h8 a1f1 f8f1 g1f1 a8f8 f1e1 h4f3 e1d1 g7g4 d1c1 g4h3 b2d4 f3d4 d5d4 h8g8 d4d5 f8f7 c5d3 c7c6 d5g5 g8h8 g5d8 h8g7 d3f4 h3h6 h2h4 f7b7 g3g4 g7f7 g4g5 h6g7 d8d6 b7e7 d6c6 e7e3 c6c4 f7e8 c1d2 e3e5 c4c8 e8f7 c8b7 e5e7 b7d5 f7e8 f4h5 g7f7 d5a8 e8d7 a8a7 d7c6 a7a8 c6d6 a8a6 d6c5 a6a5 c5c6 a5a4 c6c5 b3b4 c5d4 b4b5 d4c5 h5f4 f7c4 f4d3 c5d4 c2c3 d4d5 a4a8 d5d6 a8d8 e7d7
+    
+    go wtime 13904 btime 16823 winc 500 binc 500
+    
+    
+    
+    
+    position startpos moves b2b3 e7e5 c1b2 b8c6 e2e3 d7d5 f1b5 f7f6 g1e2 c8e6 b5c6 b7c6 e1g1 f8d6 f2f4 g8e7 f4e5 f6e5 e2g3 e7g6 d1e2 e6f7 e2a6 d8d7 b1c3 e8g8 g3f5 d6c5 d2d4 f7e6 f5g7 e5d4 c3a4 d7g7 a4c5 g6h4 g2g3 e6h3 a6c6 h3f1 c6d5 g8h8 a1f1 f8f1 g1f1 a8f8 f1e1 h4f3 e1d1 g7g4 d1c1 g4h3 b2d4 f3d4 d5d4 h8g8 d4d5 f8f7 c5d3 c7c6 d5g5 g8h8 g5d8 h8g7 d3f4 h3h6 h2h4 f7b7 g3g4 g7f7 g4g5 h6g7 d8d6 b7e7 d6c6 e7e3 c6c4 f7e8 c1d2 e3e5 c4c8 e8f7 c8b7 e5e7 b7d5 f7e8 f4h5 g7f7 d5a8 e8d7 a8a7 d7c6 a7a8 c6d6 a8a6 d6c5 a6a5 c5c6 a5a4 c6c5 b3b4 c5d4 b4b5 d4c5 h5f4 f7c4 f4d3 c5d4 c2c3 d4d5 a4a8 d5d6 a8d8 e7d7 d8d7 d6d7
+    
+    go wtime 14000 btime 17323 winc 500 binc 500
     
      */
 

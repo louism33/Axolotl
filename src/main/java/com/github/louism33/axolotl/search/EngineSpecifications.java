@@ -5,7 +5,7 @@ import com.github.louism33.chesscore.Chessboard;
 public final class EngineSpecifications {
 
     public static boolean SPSA = false;
-    public static boolean MASTER_DEBUG = true;
+    public static boolean MASTER_DEBUG = false;
 
     public static boolean DEBUG = true;
     public static boolean sendBestMove = true;
