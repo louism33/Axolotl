@@ -248,7 +248,6 @@ public final class Engine {
                     System.out.println("THREADS NUMBER BELOW ZERO! ");
                 }
 
-//                System.out.print(" - ");
                 Thread.yield();
             }
         }
