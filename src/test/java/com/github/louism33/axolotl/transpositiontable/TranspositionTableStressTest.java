@@ -58,12 +58,12 @@ public class TranspositionTableStressTest {
 
     
     
-//    @Test
-//    void testDefaultMT() {
-//        System.out.println("default MT: ");
-//        PRINT_PV = true;
-//        stressTestToDepthTest(12, new Chessboard(), DEFAULT_TABLE_SIZE_MB, 4);
-//    }
+    @Test
+    void testDefaultMT() {
+        System.out.println("default MT: ");
+        PRINT_PV = true;
+        stressTestToDepthTest(12, new Chessboard(), DEFAULT_TABLE_SIZE_MB, 4);
+    }
 
 
     @Test
@@ -73,14 +73,14 @@ public class TranspositionTableStressTest {
                 new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -"), DEFAULT_TABLE_SIZE_MB);
     }
 
-//    @Test
-//    void testFine70MT() {
-//        System.out.println("fine 70 tt stats MT: ");
-//        stressTestToDepthTest(32, 
-//                new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -"), DEFAULT_TABLE_SIZE_MB, 4);
-//        ResettingUtils.reset();
-//    }
-//    
+    @Test
+    void testFine70MT() {
+        System.out.println("fine 70 tt stats MT: ");
+        stressTestToDepthTest(32, 
+                new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -"), DEFAULT_TABLE_SIZE_MB, 4);
+        ResettingUtils.reset();
+    }
+
     private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize) {
         stressTestToDepthTest(depth, board, hashSize, 1);
     }

@@ -343,6 +343,10 @@ public final class KPK {
         pkpReady = true;
     }
 
+    static {
+        generateKPKBitbase();
+    }
+
 }
 
 
