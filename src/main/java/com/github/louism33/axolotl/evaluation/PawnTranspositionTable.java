@@ -43,8 +43,8 @@ public final class PawnTranspositionTable {
     one long for weak squares
      */
     public static long[][] keys = new long[NUMBER_OF_THREADS][PAWN_TABLE_SIZE];
-    private static long[][] returnArray = new long[NUMBER_OF_THREADS][ENTRIES_PER_KEY]; 
-    public static long[][] pawnMoveData = new long[NUMBER_OF_THREADS][PAWN_TABLE_SIZE * ENTRIES_PER_KEY]; 
+    private static long[][] returnArray = new long[NUMBER_OF_THREADS][ENTRIES_PER_KEY];
+    public static long[][] pawnMoveData = new long[NUMBER_OF_THREADS][PAWN_TABLE_SIZE * ENTRIES_PER_KEY];
 
     public static void reset() {
         for (int t = 0; t < NUMBER_OF_THREADS; t++) {
@@ -75,10 +75,12 @@ public final class PawnTranspositionTable {
         override = 0;
         totalRequests = 0;
 
-        if (keys != null && keys.length == actualTableSize) {
-            Arrays.fill(keys, 0);
-            Arrays.fill(pawnMoveData, 0);
-            Arrays.fill(returnArray, 0);
+        if (keys != null && keys.length == NUMBER_OF_THREADS && keys[0] != null && keys[0].length == actualTableSize) {
+            for (int t = 0; t < NUMBER_OF_THREADS; t++) {
+                Arrays.fill(keys[t], 0);
+                Arrays.fill(pawnMoveData[t], 0);
+                Arrays.fill(returnArray[t], 0);
+            }
         } else {
             keys = new long[NUMBER_OF_THREADS][actualTableSize];
             pawnMoveData = new long[NUMBER_OF_THREADS][actualTableSize * ENTRIES_PER_KEY];
@@ -164,7 +166,7 @@ public final class PawnTranspositionTable {
     public static long[] getPawnData(Chessboard board, long key, int percentOfStartgame) {
         return getPawnData(board, key, percentOfStartgame, 0);
     }
-    
+
     public static long[] getPawnData(Chessboard board, long key, int percentOfStartgame, int whichThread) {
         if (!tableReady) {
             initPawnTableMegaByte();

@@ -157,6 +157,7 @@ public final class Engine {
         numberOfQMovesMade = new long[NUMBER_OF_THREADS];
 
         setupMoveOrderer();
+        PawnTranspositionTable.initPawnTableMegaByte();
     }
 
     public static int getAiMove() {
