@@ -30,11 +30,11 @@ public class BasicProblemSearchesTest {
 
     @Test
     public void testMate78() {
-        Engine.resetFull();
+        ResettingUtils.reset();
         final Chessboard board = new Chessboard("5r2/r4p1p/1p3n2/n1pp1NNk/p2P4/P1P3R1/1P5P/5RK1 w - - 1 0");
 //        PRINT_PV = true;
         System.out.println(board);
-        SearchSpecs.basicTimeSearch(10_000);
+        SearchSpecs.basicTimeSearch(5_000);
         final int move = engine.simpleSearch(board);
         Assert.assertEquals( "f5g7", MoveParser.toString(move));
         
