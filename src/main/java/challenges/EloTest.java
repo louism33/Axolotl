@@ -8,7 +8,6 @@ import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import standalone.ResettingUtils;
 
 public class EloTest {
 
@@ -22,7 +21,7 @@ public class EloTest {
 
     @BeforeClass
     public static void setUp() {
-        standalone.ResettingUtils.reset();
+        ResettingUtils.reset();
         EngineSpecifications.sendBestMove = true;
         EngineSpecifications.PRINT_PV = true;
     }
