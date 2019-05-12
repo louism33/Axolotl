@@ -27,7 +27,7 @@ public final class Quiescence {
                 Assert.assertFalse(board.inCheck(board.isWhiteTurn()));
             }
 
-            standPatScore = Evaluator.eval(board, moves);
+            standPatScore = Evaluator.eval(board, moves, whichThread);
 
             if (standPatScore >= beta) {
                 return standPatScore;

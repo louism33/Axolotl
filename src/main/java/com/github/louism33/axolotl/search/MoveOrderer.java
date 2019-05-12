@@ -238,10 +238,7 @@ public final class MoveOrderer {
         }
     }
 
-    /*
-    Quiescence Search ordering:
-    order moves by most valuable victim and least valuable aggressor
-     */
+
     static void scoreMovesQuiescence(int[] moves, Chessboard board) {
         final int maxMoves = moves[moves.length - 1];
         for (int i = 0; i < maxMoves; i++) { // todo, set quiets to 0?

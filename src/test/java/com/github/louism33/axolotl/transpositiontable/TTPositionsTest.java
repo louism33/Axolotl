@@ -17,7 +17,7 @@ public class TTPositionsTest {
 
     private Engine engine = new Engine();
     
-    private static final int timeLimit = 30_000;
+    private static final int timeLimit = 20_000;
 
     @BeforeAll
     public static void setup() {
@@ -45,10 +45,10 @@ public class TTPositionsTest {
     @Test
     void fine70MT() {
         ResettingUtils.reset();
-        int threads = 2;
+        int threads = 4;
         System.out.println("\ntesting fine 70 with time " + timeLimit + " and " + threads + " threads");
 //        EngineSpecifications.DEBUG = true;
-//        PRINT_PV = true;
+        PRINT_PV = true;
         Chessboard board = new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -");
         Engine.setThreads(threads);
         SearchSpecs.basicTimeSearch(timeLimit);

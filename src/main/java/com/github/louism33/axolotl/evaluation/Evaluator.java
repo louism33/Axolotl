@@ -47,7 +47,7 @@ public final class Evaluator {
 
     public static EvalPrintObject stringEval(Chessboard board, int turn, int[] moves) {
         PRINT_EVAL = true;
-        eval(board, moves);
+        eval(board, moves, 0);
         EvalPrintObject epo = new EvalPrintObject(scoresForEPO);
         epo.EPOturn = board.turn;
         PRINT_EVAL = false;
@@ -61,10 +61,10 @@ public final class Evaluator {
      */
 
     public static final int eval(final Chessboard board) {
-        return eval(board, board.generateLegalMoves());
+        return eval(board, board.generateLegalMoves(), 0);
     }
 
-    public static final int eval(final Chessboard board, final int[] moves) {
+    public static final int eval(final Chessboard board, final int[] moves, int whichThread) {
         if (board.isDrawByInsufficientMaterial() || board.isDrawByFiftyMoveRule()
                 || board.isDrawByRepetition(1)) {
             return 0;
@@ -161,13 +161,13 @@ public final class Evaluator {
 
                     case UNKNOWN:
                     default:
-                        return evalGeneric(board, moves);
+                        return evalGeneric(board, moves, whichThread);
                 }
 
         }
     }
 
-    public static final int evalGeneric(final Chessboard board, final int[] moves) {
+    public static final int evalGeneric(final Chessboard board, final int[] moves, int whichThread) {
 
         int turn = board.turn;
         if (!EvaluationConstants.ready) {
@@ -197,11 +197,11 @@ public final class Evaluator {
 
         int score = 0;
 
-        long[] pawnData = getPawnData(board, board.zobristPawnHash, percentOfStartgame);
+        long[] pawnData = getPawnData(board, board.zobristPawnHash, percentOfStartgame, whichThread);
 
         if (MASTER_DEBUG && NUMBER_OF_THREADS == 1) {
             // this fails if pawn data is shared between threads
-            Assert.assertArrayEquals(pawnData, getPawnData(board, board.zobristPawnHash, percentOfStartgame));
+            Assert.assertArrayEquals(pawnData, getPawnData(board, board.zobristPawnHash, percentOfStartgame,whichThread));
             Assert.assertArrayEquals(pawnData, PawnEval.calculatePawnData(board, percentOfStartgame));
         }
 

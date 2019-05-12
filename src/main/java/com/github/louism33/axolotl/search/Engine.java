@@ -330,7 +330,7 @@ public final class Engine {
             }
 
             if (ply >= MAX_DEPTH_HARD) {
-                return Evaluator.eval(board, moves);
+                return Evaluator.eval(board, moves, whichThread);
             }
 
             return quiescenceSearch(board, alpha, beta, whichThread);
@@ -395,7 +395,7 @@ public final class Engine {
 
         if (!thisIsAPrincipleVariationNode && !inCheck) {
 
-            staticBoardEval = Evaluator.eval(board, moves);
+            staticBoardEval = Evaluator.eval(board, moves, whichThread);
 
             if (isBetaRazoringOkHere(depth, staticBoardEval)) {
                 betaTotal++;
@@ -535,7 +535,7 @@ public final class Engine {
                     futilityTotal++;
 
                     if (staticBoardEval == SHORT_MINIMUM) {
-                        staticBoardEval = Evaluator.eval(board, moves);
+                        staticBoardEval = Evaluator.eval(board, moves, whichThread);
                     }
 
                     int futilityScore = staticBoardEval + futilityMargin[depth];
@@ -602,12 +602,6 @@ public final class Engine {
 
 
             board.unMakeMoveAndFlipTurn();
-
-
-//            if (Engine.stopNow || !running) {
-//                return 0;
-//            }
-
 
             if (!running) {
                 return 0;
