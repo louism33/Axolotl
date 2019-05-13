@@ -623,7 +623,6 @@ public final class Evaluator {
         if (pseudoAttackEnemyKing != 0) {
             kingAttackers++;
             kingAttackersWeights += 1;
-//            kingAttacks += populationCount(pseudoAttackEnemyKing);
         }
 
         threatsScore += populationCount(squaresMyPawnsThreaten & enemyBigPieces) * PAWN_THREATENS_BIG_THINGS;

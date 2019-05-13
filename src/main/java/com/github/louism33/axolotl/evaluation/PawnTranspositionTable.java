@@ -43,14 +43,14 @@ public final class PawnTranspositionTable {
     one long for weak squares
      */
     public static long[][] keys = new long[NUMBER_OF_THREADS][PAWN_TABLE_SIZE];
-    private static long[][] returnArray = new long[NUMBER_OF_THREADS][ENTRIES_PER_KEY];
+    //    private static long[][] returnArray = new long[NUMBER_OF_THREADS][ENTRIES_PER_KEY];
     public static long[][] pawnMoveData = new long[NUMBER_OF_THREADS][PAWN_TABLE_SIZE * ENTRIES_PER_KEY];
 
     public static void reset() {
         for (int t = 0; t < NUMBER_OF_THREADS; t++) {
             Arrays.fill(keys[t], 0);
             Arrays.fill(pawnMoveData[t], 0);
-            Arrays.fill(returnArray[t], 0);
+//            Arrays.fill(returnArray[t], 0);
         }
     }
 
@@ -79,12 +79,12 @@ public final class PawnTranspositionTable {
             for (int t = 0; t < NUMBER_OF_THREADS; t++) {
                 Arrays.fill(keys[t], 0);
                 Arrays.fill(pawnMoveData[t], 0);
-                Arrays.fill(returnArray[t], 0);
+//                Arrays.fill(returnArray[t], 0);
             }
         } else {
             keys = new long[NUMBER_OF_THREADS][actualTableSize];
             pawnMoveData = new long[NUMBER_OF_THREADS][actualTableSize * ENTRIES_PER_KEY];
-            returnArray = new long[NUMBER_OF_THREADS][ENTRIES_PER_KEY];
+//            returnArray = new long[NUMBER_OF_THREADS][ENTRIES_PER_KEY];
         }
 
         tableReady = true;
@@ -118,11 +118,11 @@ public final class PawnTranspositionTable {
         if (keys != null && keys.length == actualTableSize) {
             Arrays.fill(keys, 0);
             Arrays.fill(pawnMoveData, 0);
-            Arrays.fill(returnArray, 0);
+//            Arrays.fill(returnArray, 0);
         } else {
             keys = new long[NUMBER_OF_THREADS][actualTableSize];
             pawnMoveData = new long[NUMBER_OF_THREADS][actualTableSize * ENTRIES_PER_KEY];
-            returnArray = new long[NUMBER_OF_THREADS][ENTRIES_PER_KEY];
+//            returnArray = new long[NUMBER_OF_THREADS][ENTRIES_PER_KEY];
         }
 
         tableReady = true;
@@ -176,7 +176,7 @@ public final class PawnTranspositionTable {
             return noPawnsData;
         }
 
-        Arrays.fill(returnArray[whichThread], 0);
+        long[] returnArray = new long[ENTRIES_PER_KEY];
 
         totalRequests++;
 
@@ -186,19 +186,19 @@ public final class PawnTranspositionTable {
                 final int entryIndex = i * ENTRIES_PER_KEY;
                 if ((keys[whichThread][i] ^ pawnMoveData[whichThread][entryIndex]) == key) {
 
-                    System.arraycopy(pawnMoveData[whichThread], entryIndex, returnArray[whichThread], 0, ENTRIES_PER_KEY);
+                    System.arraycopy(pawnMoveData[whichThread], entryIndex, returnArray, 0, ENTRIES_PER_KEY);
                     hit++;
 
-                    return returnArray[whichThread];
+                    return returnArray;
                 }
             }
         }
 
-        returnArray[whichThread] = PawnEval.calculatePawnData(board, percentOfStartgame);
-        int pawnFeatureScore = (int) returnArray[whichThread][SCORE];
-        addToTableReplaceArbitrarily(board.zobristPawnHash, returnArray[whichThread], whichThread);
+        returnArray = PawnEval.calculatePawnData(board, percentOfStartgame);
+        int pawnFeatureScore = (int) returnArray[SCORE];
+        addToTableReplaceArbitrarily(board.zobristPawnHash, returnArray, whichThread);
 
-        return returnArray[whichThread];
+        return returnArray;
     }
 
 

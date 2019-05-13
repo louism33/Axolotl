@@ -161,4 +161,36 @@ public class EndgameEvaluatorTest {
         final Chessboard board = new Chessboard("8/7P/8/8/8/8/7K/k7 w");
         Assert.assertTrue(Evaluator.eval(board) > 1000);
     }
+
+
+    // thanks to carballo
+    @Test
+    public void testDrawDetection() {
+        Chessboard board = new Chessboard("7k/8/8/8/8/8/8/7K w - - 0 0");
+        Assert.assertTrue(board.isDrawByInsufficientMaterial());
+
+        board = new Chessboard("7k/8/8/8/8/8/8/6BK b - - 0 0");
+        Assert.assertTrue(board.isDrawByInsufficientMaterial());
+
+        board = new Chessboard("7k/8/8/8/8/8/8/6NK b - - 0 0");
+        Assert.assertTrue(board.isDrawByInsufficientMaterial());
+
+        board = new Chessboard("7k/8/nn6/8/8/8/8/7K b - - 0 0");
+        Assert.assertTrue(board.isDrawByInsufficientMaterial());
+
+        board = new Chessboard("7k/8/Nn6/8/8/8/8/7K b - - 0 0");
+        Assert.assertTrue(!board.isDrawByInsufficientMaterial());
+
+        board = new Chessboard("7k/7p/8/8/8/8/8/6NK b - - 0 0");
+        Assert.assertTrue(!board.isDrawByInsufficientMaterial());
+    }
+
+    @Test
+    public void testKBbkDraw() {
+        Chessboard board = new Chessboard("6bk/8/8/8/8/8/8/5B1K b - - 0 0");
+        Assert.assertTrue(board.isDrawByInsufficientMaterial());        
+        
+        board = new Chessboard("6bk/8/8/8/8/8/8/6BK b - - 0 0");
+        Assert.assertTrue(!board.isDrawByInsufficientMaterial());
+    }
 }

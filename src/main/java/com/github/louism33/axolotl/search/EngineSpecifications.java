@@ -4,7 +4,7 @@ import com.github.louism33.chesscore.Chessboard;
 
 public final class EngineSpecifications {
 
-    public static boolean SPSA = false;
+    public static boolean SPSA = true;
     public static boolean MASTER_DEBUG = false;
 
     public static boolean DEBUG = false;

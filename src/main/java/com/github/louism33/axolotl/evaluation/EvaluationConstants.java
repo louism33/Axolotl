@@ -51,15 +51,17 @@ public final class EvaluationConstants {
     }
 
     // piece values
-    public static final int[] startMaterial = {100, 455, 504, 643, 1393};
-    public static final int[] endMaterial = {100, 296, 322, 576, 1129};
+//    public static final int[] startMaterial = {100, 455, 504, 643, 1393};
+//    public static final int[] endMaterial = {100, 296, 322, 576, 1129};
+    public static final int[] startMaterial = {100, 404, 552, 683, 1409};
+    public static final int[] endMaterial = {100, 244, 331, 647, 1175};
     static int[] material;
 
-    static final int P = 0;
-    static final int K = 1;
-    static final int B = 2;
-    static final int R = 3;
-    static final int Q = 4;
+    public static final int P = 0;
+    public static final int K = 1;
+    public static final int B = 2;
+    public static final int R = 3;
+    public static final int Q = 4;
 
     public static final int[] pinnedPiecesScores = {0, 25, -20, -25, -69, -120, 0};
 

@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.main;
 
+import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.SearchSpecs;
@@ -83,6 +84,19 @@ public final class UCIEntry {
                         output.println("option name Threads type spin default 1 min 1 max " + MAX_THREADS);
 
                         if (SPSA) {
+                            // piece values
+//                            output.println("option name pawnValue type spin default " + SearchUtils.futilityMargin[1]
+//                                    + " min " + (startMaterial) + " max " + (SearchUtils.futilityMargin[1] * 2));
+//                            output.println("option name knightValue type spin default " + SearchUtils.futilityMargin[2]
+//                                    + " min " + (SearchUtils.futilityMargin[2] / 2) + " max " + (SearchUtils.futilityMargin[2] * 2));
+//                            output.println("option name bishopValue type spin default " + SearchUtils.futilityMargin[3]
+//                                    + " min " + (SearchUtils.futilityMargin[3] / 2) + " max " + (SearchUtils.futilityMargin[3] * 2));
+//                            output.println("option name rookValue type spin default " + SearchUtils.futilityMargin[4]
+//                                    + " min " + (SearchUtils.futilityMargin[4] / 2) + " max " + (SearchUtils.futilityMargin[4] * 2));
+//                            output.println("option name queenValue type spin default " + SearchUtils.futilityMargin[5]
+//                                    + " min " + (SearchUtils.futilityMargin[5] / 2) + " max " + (SearchUtils.futilityMargin[5] * 2));
+
+
                             // futility
                             output.println("option name futility1 type spin default " + SearchUtils.futilityMargin[1]
                                     + " min " + (SearchUtils.futilityMargin[1] / 2) + " max " + (SearchUtils.futilityMargin[1] * 2));
@@ -185,7 +199,27 @@ public final class UCIEntry {
                             Engine.setThreads(number);
 
                         } else if (SPSA) {
-                            if (nameToken.equalsIgnoreCase("futility1")) {
+                            if (nameToken.equalsIgnoreCase("kvs")) {
+                                startMaterial[K] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("bvs")) {
+                                startMaterial[B] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("rvs")) {
+                                startMaterial[R] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("qvs")) {
+                                startMaterial[Q] = Integer.parseInt(valueToken);
+
+                            } else if (nameToken.equalsIgnoreCase("kve")) {
+                                endMaterial[K] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("bve")) {
+                                endMaterial[B] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("rve")) {
+                                endMaterial[R] = Integer.parseInt(valueToken);
+                            }else if (nameToken.equalsIgnoreCase("qve")) {
+                                endMaterial[Q] = Integer.parseInt(valueToken);
+                            }
+
+
+                            else if (nameToken.equalsIgnoreCase("futility1")) {
                                 SearchUtils.futilityMargin[1] = Integer.parseInt(valueToken);
                             } else if (nameToken.equalsIgnoreCase("futility2")) {
                                 SearchUtils.futilityMargin[2] = Integer.parseInt(valueToken);
@@ -215,6 +249,7 @@ public final class UCIEntry {
                                 SearchUtils.betaRazorMargin[6] = Integer.parseInt(valueToken);
                             }
                         }
+                        EvaluationConstants.setup();
                         break;
                     } else if (token.equalsIgnoreCase("register")) {
                         break;
