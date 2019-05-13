@@ -51,10 +51,12 @@ public final class EvaluationConstants {
     }
 
     // piece values
-//    public static final int[] startMaterial = {100, 455, 504, 643, 1393};
+//    public static final int[] startMaterial = {100, 455, 504, 643, 1393}; // before
 //    public static final int[] endMaterial = {100, 296, 322, 576, 1129};
-    public static final int[] startMaterial = {100, 404, 552, 683, 1409};
-    public static final int[] endMaterial = {100, 244, 331, 647, 1175};
+//    public static final int[] startMaterial = {100, 404, 552, 683, 1409}; // first spsa
+//    public static final int[] endMaterial = {100, 244, 331, 647, 1175};
+    public static final int[] startMaterial = {100, 371, 511, 674, 1424}; // second spsa
+    public static final int[] endMaterial = {100, 274, 356, 677, 1203};
     static int[] material;
 
     public static final int P = 0;
