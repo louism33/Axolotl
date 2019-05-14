@@ -11,7 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.github.louism33:chesscore:1.66-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="chesscore" />
     <orderEntry type="library" name="Maven: org.apache.maven.plugins:maven-surefire-plugin:2.22.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven.surefire:maven-surefire-common:2.22.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven:maven-plugin-api:2.2.1" level="project" />

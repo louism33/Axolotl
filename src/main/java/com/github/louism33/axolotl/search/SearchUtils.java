@@ -8,8 +8,7 @@ import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
 
 public final class SearchUtils {
-    // most values here tuned with spsa, using zamar's perl script: https://github.com/zamar/spsa
-
+ 
     // idea from Ethereal
     public static final int[] skipLookup = {2, 2, 2, 4, 4, 3, 2, 5}; // thread t will skip depth skipLookup[t] ...
     public static final int[] skipBy =     {1, 1, 2, 2, 3, 2, 1, 3}; // ... by amount skipBy[t]
@@ -17,6 +16,7 @@ public final class SearchUtils {
     public static final int PANIC_SCORE_DELTA = 100;
     static final int iidDepth = 5;
 
+    // most values here tuned with spsa, using zamar's perl script: https://github.com/zamar/spsa
     public static final int[] futilityMargin = {0, 142, 267, 329, 486, 669};
     public static final int futilityBelowThisDepth = futilityMargin.length;
 

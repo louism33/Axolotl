@@ -17,12 +17,13 @@ import java.util.List;
 
 import static challenges.Utils.contains;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseEDPPosition;
+import static strategictestsuite.MasterParamTester.*;
 
 
 @RunWith(Parameterized.class)
 public class STS10Simplification {
 
-    private static final int timeLimit = 10_000;
+    
     private Engine engine = new Engine();
     private static int successes = 0;
 
@@ -58,8 +59,12 @@ public class STS10Simplification {
     @Test
     public void test() {
         Engine.resetFull();
-        System.out.println(EPDObject.getFullString());
-        System.out.println(EPDObject.getBoard());
+        if (printFen) {
+            System.out.println(EPDObject.getFullString());
+        }
+                if (printBoard) {
+            System.out.println(EPDObject.getBoard());
+        }
         int[] winningMoves = EPDObject.getBestMovesFromComments();
         int[] losingMoves = EPDObject.getAvoidMoves();
 

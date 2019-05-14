@@ -13,7 +13,6 @@ import org.junit.Assert;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -214,12 +213,59 @@ public final class UCIEntry {
                                 endMaterial[B] = Integer.parseInt(valueToken);
                             } else if (nameToken.equalsIgnoreCase("rve")) {
                                 endMaterial[R] = Integer.parseInt(valueToken);
-                            }else if (nameToken.equalsIgnoreCase("qve")) {
+                            } else if (nameToken.equalsIgnoreCase("qve")) {
                                 endMaterial[Q] = Integer.parseInt(valueToken);
-                            }
+                                
+                                
+                            } else if (nameToken.equalsIgnoreCase("p0s")) {
+                                startPawnFeatures[0] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p1s")) {
+                                startPawnFeatures[1] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p2s")) {
+                                startPawnFeatures[2] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p3s")) {
+                                startPawnFeatures[3] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p4s")) {
+                                startPawnFeatures[4] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p5s")) {
+                                startPawnFeatures[5] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p6s")) {
+                                startPawnFeatures[6] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p7s")) {
+                                startPawnFeatures[7] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p8s")) {
+                                startPawnFeatures[8] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p9s")) {
+                                startPawnFeatures[9] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p10s")) {
+                                startPawnFeatures[10] = Integer.parseInt(valueToken);
 
+                            } else if (nameToken.equalsIgnoreCase("p0e")) {
+                                endPawnFeatures[0] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p1e")) {
+                                endPawnFeatures[1] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p2e")) {
+                                endPawnFeatures[2] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p3e")) {
+                                endPawnFeatures[3] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p4e")) {
+                                endPawnFeatures[4] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p5e")) {
+                                endPawnFeatures[5] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p6e")) {
+                                endPawnFeatures[6] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p7e")) {
+                                endPawnFeatures[7] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p8e")) {
+                                endPawnFeatures[8] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p9e")) {
+                                endPawnFeatures[9] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p10e")) {
+                                endPawnFeatures[10] = Integer.parseInt(valueToken);
 
-                            else if (nameToken.equalsIgnoreCase("futility1")) {
+                                
+
+                            } else if (nameToken.equalsIgnoreCase("futility1")) {
                                 SearchUtils.futilityMargin[1] = Integer.parseInt(valueToken);
                             } else if (nameToken.equalsIgnoreCase("futility2")) {
                                 SearchUtils.futilityMargin[2] = Integer.parseInt(valueToken);

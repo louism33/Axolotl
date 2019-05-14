@@ -276,7 +276,7 @@
         <dependency>
             <groupId>com.github.louism33</groupId>
             <artifactId>chesscore</artifactId>
-            <version>1.66-SNAPSHOT</version>
+            <version>1.67-SNAPSHOT</version>
         </dependency>
 
         <dependency>

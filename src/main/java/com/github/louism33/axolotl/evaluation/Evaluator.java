@@ -653,24 +653,6 @@ public final class Evaluator {
                 - (populationCount((enemyPawns & enemyKingSafetyArea))); //pawns counted twice
 
 
-//        if (enemyKingDanger < 0) {
-//            System.err.println("THE TURN IS WHITE: " + (turn == WHITE));
-//            System.err.println("enemy king in absolutely no danger: " + enemyKingDanger);
-//            System.err.println(board.toFenString());
-//            System.err.println(board);
-//            throw new RuntimeException();
-//        }
-//        if (enemyKingDanger > KING_SAFETY_ARRAY.length) {
-//            System.err.println("enemy king in ridiculous amounts of danger!!! : " + enemyKingDanger);
-//            System.err.println(board.toFenString());
-//            System.err.println(board);
-//            System.err.println("THE TURN IS WHITE: " + (turn == WHITE));
-//            System.err.println("enemy king area");
-//            Art.printLong(enemyKingSafetyArea);
-//            System.err.println();
-////            throw new RuntimeException();
-//        }
-
         enemyKingDanger = Math.max(0, Math.min(enemyKingDanger, KING_SAFETY_ARRAY.length - 1));
 
         finalScore += KING_SAFETY_ARRAY[enemyKingDanger];

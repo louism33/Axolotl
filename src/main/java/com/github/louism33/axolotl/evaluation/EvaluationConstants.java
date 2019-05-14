@@ -55,8 +55,10 @@ public final class EvaluationConstants {
 //    public static final int[] endMaterial = {100, 296, 322, 576, 1129};
 //    public static final int[] startMaterial = {100, 404, 552, 683, 1409}; // first spsa
 //    public static final int[] endMaterial = {100, 244, 331, 647, 1175};
-    public static final int[] startMaterial = {100, 371, 511, 674, 1424}; // second spsa
-    public static final int[] endMaterial = {100, 274, 356, 677, 1203};
+//    public static final int[] startMaterial = {100, 371, 511, 674, 1424}; // second spsa
+//    public static final int[] endMaterial = {100, 274, 356, 677, 1203};
+    public static final int[] startMaterial = {100, 386, 509, 681, 1478}; // third spsa
+    public static final int[] endMaterial = {100, 271, 350, 681, 1218};
     static int[] material;
 
     public static final int P = 0;
