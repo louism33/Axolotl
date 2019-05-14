@@ -17,13 +17,13 @@ public final class SearchUtils {
     static final int iidDepth = 5;
 
     // most values here tuned with spsa, using zamar's perl script: https://github.com/zamar/spsa
-    public static final int[] futilityMargin = {0, 142, 267, 329, 486, 669};
+    public static final int[] futilityMargin = {0, 157, 257, 367, 497, 607};
     public static final int futilityBelowThisDepth = futilityMargin.length;
 
-    public static final int[] alphaRazorMargin = {0, 297, 491, 593};
+    public static final int[] alphaRazorMargin = {0, 275, 486, 561};
     public static final int alphaRazorBelowThisDepth = alphaRazorMargin.length;
 
-    public static final int[] betaRazorMargin = {0, 243, 345, 462, 555, 755, 1008};
+    public static final int[] betaRazorMargin = {0, 253, 361, 454, 552, 744, 1034};
     public static final int betaRazorBelowThisDepth = betaRazorMargin.length;
 
     static final int[] ASPIRATION_WINDOWS = {25, 50, 100, 200, 1000};

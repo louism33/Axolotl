@@ -92,6 +92,8 @@ public final class EvaluationConstants {
     static final int PAWN_CANDIDATE = 9;
     static final int PAWN_YOUNG_PASSED = 10;
 
+//    public static final int[] startPawnFeatures = {-2, 6, -3, -1, 18, 0, 0, 0, 19, -4, -2};
+//    public static final int[] endPawnFeatures = {1, 34, 1, 1, 14, -3, 0, 0, -20, -5, -1};
     public static final int[] startPawnFeatures = {-2, 6, -3, -1, 18, 0, 0, 0, 19, -4, -2};
     public static final int[] endPawnFeatures = {1, 34, 1, 1, 14, -3, 0, 0, -20, -5, -1};
     static int[] pawnFeatures;
