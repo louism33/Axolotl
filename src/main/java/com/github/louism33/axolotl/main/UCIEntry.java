@@ -369,7 +369,7 @@ public final class UCIEntry {
                     } else if (token.equalsIgnoreCase("quit")) {
                         System.exit(1);
                         break;
-                    } else if (token.equalsIgnoreCase("e")) {
+                    } else if (token.equalsIgnoreCase("eval")) {
                         output.println(Evaluator.stringEval(board, board.turn));
                     } else if (token.equalsIgnoreCase("d")) {
                         output.println(board);
