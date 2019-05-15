@@ -76,7 +76,7 @@ public final class UCIEntry {
                     final String token = tokens[0];
 
                     if (token.equalsIgnoreCase("uci")) {
-                        output.println("id name axolotl_v1.7");
+                        output.println("id name axolotl_v1.8");
                         output.println("id author Louis James Mackenzie-Smith");
                         output.println();
                         output.println("option name Hash type spin default 128 min 1 max 1024");
@@ -486,7 +486,7 @@ public final class UCIEntry {
 
 
     public static void main(String[] args) throws IOException {
-        System.out.println("axolotl v1.7 by Louis James Mackenzie-Smith");
+        System.out.println("axolotl v1.8 by Louis James Mackenzie-Smith");
         UCIEntry uci = new UCIEntry();
         uci.loop();
     }
