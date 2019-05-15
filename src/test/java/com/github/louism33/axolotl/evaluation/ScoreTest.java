@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.evaluation.Score.*;
 
+//@Disabled
 public class ScoreTest {
 
     @Test

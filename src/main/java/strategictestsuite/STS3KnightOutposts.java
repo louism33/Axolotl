@@ -2,6 +2,7 @@ package strategictestsuite;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
 import org.junit.AfterClass;
@@ -16,13 +17,14 @@ import java.util.List;
 
 import static challenges.Utils.contains;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseEDPPosition;
+import static strategictestsuite.MasterParamTester.*;
 
 
 @RunWith(Parameterized.class)
 public class STS3KnightOutposts {
 
 
-    private static final int timeLimit = 10_000;
+    
     private Engine engine = new Engine();
 
     private static int successes = 0;
@@ -61,13 +63,18 @@ public class STS3KnightOutposts {
     @Test
     public void test() {
         Engine.resetFull();
-        System.out.println(EPDObject.getFullString());
-        System.out.println(EPDObject.getBoard());
+        if (printFen) {
+            System.out.println(EPDObject.getFullString());
+        }
+                if (printBoard) {
+            System.out.println(EPDObject.getBoard());
+        }
         int[] winningMoves = EPDObject.getBestMovesFromComments();
         int[] losingMoves = EPDObject.getAvoidMoves();
         EngineSpecifications.PRINT_PV = false;
-        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
-        final int move = engine.simpleSearch();
+        
+        SearchSpecs.basicTimeSearch(timeLimit);
+        final int move = engine.simpleSearch(EPDObject.getBoard());
 
         System.out.println("my move: " + MoveParser.toString(move));
 

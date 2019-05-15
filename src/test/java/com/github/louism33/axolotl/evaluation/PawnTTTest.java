@@ -1,9 +1,10 @@
 package com.github.louism33.axolotl.evaluation;
 
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,11 +21,18 @@ public class PawnTTTest {
 
     @BeforeClass
     public static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
         final String str = "Testing " + splitUpPositions.length + " position for pawn TT test. ";
         System.out.println(str);
     }
 
+
+    @AfterClass
+    public static void finalSuccessTally() {
+        ResettingUtils.reset();
+        System.out.println();
+    }
+    
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>(splitUpPositions.length);
@@ -50,7 +58,7 @@ public class PawnTTTest {
     @Test
     public void test() {
         PawnTranspositionTable.reset();
-        System.out.println(EPDObject.getFullString());
+        System.out.print(EPDObject.getId() + " ");
         Chessboard board = new Chessboard(EPDObject.getBoardFen());
 
         long[] pawnData = PawnTranspositionTable.getPawnData(board, board.zobristPawnHash, 0);

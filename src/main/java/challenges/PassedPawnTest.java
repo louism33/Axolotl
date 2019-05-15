@@ -2,6 +2,7 @@ package challenges;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import java.util.List;
 import static challenges.Utils.contains;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.EPDObject;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseEDPPosition;
+
 
 @RunWith(Parameterized.class)
 public class PassedPawnTest {
@@ -34,6 +36,7 @@ public class PassedPawnTest {
         for (int i = 0; i < splitUpPositions.length; i++) {
 
             if (!contains(infamousIndexes, i + 1)) {
+                
 //                continue;
             }
             String splitUpWAC = splitUpPositions[i];
@@ -60,8 +63,9 @@ public class PassedPawnTest {
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
-        final int move = engine.simpleSearch();
+
+        SearchSpecs.basicTimeSearch(timeLimit);
+        final int move = engine.simpleSearch(EPDObject.getBoard());
         MoveParser.printMove(move);
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }

@@ -19,7 +19,7 @@ public final class SEE {
 
     // todo, consider special case for pinned pieces
     public static final int getSEE(Chessboard board, int move) {
-        Assert.assertTrue(isCaptureMove(move));
+        Assert.assertTrue(isCaptureMove(move) || isEnPassantMove(move));
         final int[] gain = new int[32];
         int d = 0;
         final int destinationIndex = getDestinationIndex(move);
@@ -31,7 +31,11 @@ public final class SEE {
         long occupancy = friends | enemies;
 
         long attacks = squareDirectlyAttackedBy(board, destinationIndex);
-        gain[d] = scores[getVictimPieceInt(move)];
+        if (!isEnPassantMove(move)) {
+            gain[d] = scores[getVictimPieceInt(move)];
+        } else {
+            gain[d] = scores[WHITE_PAWN];
+        }
         int mover;
 
         do {
@@ -39,7 +43,7 @@ public final class SEE {
             mover = board.pieceSquareTable[numberOfTrailingZeros(fromSet)];
             gain[d] = scores[mover] - gain[d - 1];
             if (max(-gain[d - 1], gain[d]) < 0) {
-                break;
+//                break; // this causes incorrect values...
             }
             attacks ^= fromSet;
             occupancy ^= fromSet;

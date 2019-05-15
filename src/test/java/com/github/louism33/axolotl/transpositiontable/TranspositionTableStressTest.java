@@ -1,7 +1,8 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.search.SearchSpecs;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
@@ -12,21 +13,22 @@ import static com.github.louism33.axolotl.search.Engine.hashTableReturn;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 
+//@Disabled
 public class TranspositionTableStressTest {
 
     static final int depth = 12;
     static Engine engine = new Engine();
+    static long sleepBetween = 1000;
     
     @BeforeEach
-    public void setup() {
-        PRINT_PV = false;
-        Util.reset();
+    public void setup() throws InterruptedException {
+        ResettingUtils.reset();
+        sendBestMove = false;
     }
 
     @AfterAll
     public static void reset() {
-        PRINT_PV = false;
-        Util.reset();
+        ResettingUtils.reset();
     }
 
     @Test
@@ -59,24 +61,26 @@ public class TranspositionTableStressTest {
     @Test
     void testDefaultMT() {
         System.out.println("default MT: ");
-        stressTestToDepthTest(16, new Chessboard(), DEFAULT_TABLE_SIZE_MB, 4);
+        PRINT_PV = true;
+        stressTestToDepthTest(12, new Chessboard(), DEFAULT_TABLE_SIZE_MB, 4);
     }
 
 
     @Test
     void testFine70Single() {
-        System.out.println("fine 70 tt stats: ");
+        System.out.println("fine 70 tt stats single: ");
         stressTestToDepthTest(32,
                 new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -"), DEFAULT_TABLE_SIZE_MB);
     }
 
     @Test
     void testFine70MT() {
-        System.out.println("fine 70 tt stats: ");
+        System.out.println("fine 70 tt stats MT: ");
         stressTestToDepthTest(32, 
                 new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -"), DEFAULT_TABLE_SIZE_MB, 4);
+        ResettingUtils.reset();
     }
-    
+
     private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize) {
         stressTestToDepthTest(depth, board, hashSize, 1);
     }
@@ -86,9 +90,9 @@ public class TranspositionTableStressTest {
         Engine.setThreads(numThreads);
 
         Assert.assertEquals(Engine.numberOfMovesMade.length, numThreads);
-        
-        engine.receiveSearchSpecs(board, depth);
-        engine.simpleSearch();
+
+        SearchSpecs.basicDepthSearch(depth);
+        final int bestMove = engine.simpleSearch(board);
 
         System.out.println();
         System.out.println("total adds :           " + totalAdds);

@@ -1,6 +1,6 @@
 package com.github.louism33.axolotl.main;
 
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -8,12 +8,12 @@ public class UCIPermanenceTest {
 
     @BeforeAll
     static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
     }
 
     @AfterAll
     static void reset() {
-        Util.reset();
+        ResettingUtils.reset();
     }
 
 //    @Test
@@ -46,7 +46,7 @@ public class UCIPermanenceTest {
 //                String s = MoveParser.toString(EngineBetter.getAiMove());
 //                mmm += genericMoves.get(0) + " " + genericMoves.get(1) + " ";
 //                
-//            } catch (Exception | Error e) {
+//            } catch (Throwable e) {
 //                throw new AssertionError("problem with uci persistence");
 //            }
 //        }

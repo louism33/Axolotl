@@ -14,10 +14,10 @@ import static java.lang.Long.numberOfTrailingZeros;
 
 public final class TranspositionTable {
 
-    public static long[] keys;// = new long[TABLE_SIZE];
-    public static long[] entries;// = new long[TABLE_SIZE];
+    public static long[] keys;
+    public static long[] entries;
     public static boolean tableReady = false;
-    public static int shiftAmount;// = 64 - numberOfTrailingZeros(TABLE_SIZE >> 1); 
+    public static int shiftAmount; 
     static final int bucketSize = 4;
 
 
@@ -63,7 +63,7 @@ public final class TranspositionTable {
         }
 
         if (DEBUG) {
-            System.out.println("initialising hash table with value " + maxEntries);
+            System.out.println("info string initialising hash table with value " + maxEntries);
         }
 
         int maxSize = maxEntries;
@@ -116,7 +116,8 @@ public final class TranspositionTable {
     public static void addToTableReplaceByDepth(long key, int bestMove,
                                                 int bestScore, int depth, int flag, int ply, int age) {
         if (!tableReady) {
-            initTable(TABLE_SIZE);
+//            initTable(TABLE_SIZE);
+            initTableMegaByte(TABLE_SIZE_MB);
         }
 
         totalAdds++;
@@ -173,7 +174,8 @@ public final class TranspositionTable {
 
     public static long retrieveFromTable(long key) {
         if (!tableReady) {
-            initTable(TABLE_SIZE);
+//            initTable(TABLE_SIZE);
+            initTableMegaByte(TABLE_SIZE_MB);
         }
 
         totalLookup++;
@@ -193,11 +195,13 @@ public final class TranspositionTable {
     }
 
     static boolean isTooOld(int alreadyThere, int goingIn) {
-        Assert.assertTrue(alreadyThere < ageModulo);
-        Assert.assertTrue(goingIn < ageModulo);
+        if (MASTER_DEBUG) {
+            Assert.assertTrue(alreadyThere < ageModulo);
+            Assert.assertTrue(goingIn < ageModulo);
+        }
+
         for (int i = 0; i < acceptableAges; i++) {
             int i1 = (alreadyThere + i) % ageModulo;
-            Assert.assertTrue(i1 >= 0 && i1 < ageModulo);
             if (i1 == goingIn) {
                 return false;
             }
@@ -207,17 +211,17 @@ public final class TranspositionTable {
 
     public static int getIndex(long key) {
         int index = (int) (key >>> shiftAmount);
-        
-        Assert.assertTrue(index >= 0);
-
         return index;
     }
 
     static long buildTableEntry(int move, int score, int depth, int flag, int ply, int age) {
         // move can be 0 if null move?
-//        Assert.assertTrue(move != 0);
-        Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
-        Assert.assertTrue(flag >= 0 && flag < 4);
+        if (MASTER_DEBUG) {
+            //        Assert.assertTrue(move != 0);
+            Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
+            Assert.assertTrue(flag >= 0 && flag < 4);
+        }
+
 
         if (score > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
             score += ply;

@@ -1,10 +1,17 @@
 package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MaterialHashUtil;
 import org.junit.Assert;
 
 import java.util.Arrays;
 
+import static com.github.louism33.axolotl.evaluation.EndgameKBBK.evaluateKBBK;
+import static com.github.louism33.axolotl.evaluation.EndgameKBNK.evaluateKBNK;
+import static com.github.louism33.axolotl.evaluation.EndgameKPK.evaluateKPK;
+import static com.github.louism33.axolotl.evaluation.EndgameKQK.evaluateKQK;
+import static com.github.louism33.axolotl.evaluation.EndgameKRK.evaluateKRK;
+import static com.github.louism33.axolotl.evaluation.EndgameKRRK.evaluateKRRK;
 import static com.github.louism33.axolotl.evaluation.EvalPrintObject.*;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.K;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.Q;
@@ -18,6 +25,8 @@ import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.BitOperations.fileForward;
 import static com.github.louism33.chesscore.BitOperations.*;
 import static com.github.louism33.chesscore.BoardConstants.*;
+import static com.github.louism33.chesscore.MaterialHashUtil.KPK;
+import static com.github.louism33.chesscore.MaterialHashUtil.*;
 import static com.github.louism33.chesscore.PieceMove.*;
 import static java.lang.Long.numberOfTrailingZeros;
 
@@ -38,9 +47,9 @@ public final class Evaluator {
 
     public static EvalPrintObject stringEval(Chessboard board, int turn, int[] moves) {
         PRINT_EVAL = true;
-        eval(board, moves);
+        eval(board, moves, 0);
         EvalPrintObject epo = new EvalPrintObject(scoresForEPO);
-        epo.turn = board.turn;
+        epo.EPOturn = board.turn;
         PRINT_EVAL = false;
         return epo;
     }
@@ -51,8 +60,116 @@ public final class Evaluator {
      * pinned pieces, and to queen
      */
 
+    public static final int eval(final Chessboard board) {
+        return eval(board, board.generateLegalMoves(), 0);
+    }
 
-    public static final int eval(final Chessboard board, final int[] moves) {
+    public static final int eval(final Chessboard board, final int[] moves, int whichThread) {
+        if (board.isDrawByInsufficientMaterial() || board.isDrawByFiftyMoveRule()
+                || board.isDrawByRepetition(1)) {
+            return 0;
+        }
+
+        if (MASTER_DEBUG) {
+            Assert.assertTrue(board.materialHash != 0);
+            Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
+            Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
+        }
+        
+        switch (board.typeOfGameIAmIn) {
+            case CERTAIN_DRAW:
+                Assert.assertTrue(isBasicallyDrawn(board));
+                return 0;
+
+            case KQQK:
+            case KQRK:
+            case KRRK:
+                Assert.assertTrue(!isBasicallyDrawn(board));
+                return evaluateKRRK(board);
+            case KQK:
+                Assert.assertTrue(!isBasicallyDrawn(board));
+
+                return evaluateKQK(board);
+
+            case KRK:
+                Assert.assertTrue(!isBasicallyDrawn(board));
+                return evaluateKRK(board);
+
+            case KBBK:
+                Assert.assertTrue(!isBasicallyDrawn(board));
+                Assert.assertTrue(populationCount(board.pieces[WHITE][BISHOP]) >= 2
+                        || populationCount(board.pieces[BLACK][BISHOP]) >= 2);
+                return evaluateKBBK(board);
+                
+            case KPK:
+                Assert.assertTrue(!isBasicallyDrawn(board));
+                return evaluateKPK(board);
+
+            case KBNK:
+                Assert.assertTrue(!isBasicallyDrawn(board));
+
+                final boolean condition = 2 >= populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
+                        || 2 >= populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]);
+                if (!condition) {
+                    System.out.println(board);
+                }
+                Assert.assertTrue(condition);
+                return evaluateKBNK(board);
+                
+ 
+
+            case UNKNOWN:
+            default:
+                switch (typeOfEndgame(board)) {
+                    case CERTAIN_DRAW:
+                        Assert.assertTrue(isBasicallyDrawn(board));
+                        board.typeOfGameIAmIn = CERTAIN_DRAW;
+                        return 0;
+
+                    case KQQK:
+                        Assert.assertTrue(!isBasicallyDrawn(board));
+                        board.typeOfGameIAmIn = KQQK;
+                        return evaluateKRRK(board);
+                    case KQRK:
+                        Assert.assertTrue(!isBasicallyDrawn(board));
+                        board.typeOfGameIAmIn = KQRK;
+                        return evaluateKRRK(board);
+                    case KRRK:
+                        Assert.assertTrue(!isBasicallyDrawn(board));
+                        board.typeOfGameIAmIn = KRRK;
+                        return evaluateKRRK(board);
+                    case KQK:
+                        Assert.assertTrue(!isBasicallyDrawn(board));
+                        board.typeOfGameIAmIn = KQK;
+                        return evaluateKQK(board);
+                    case KRK:
+                        Assert.assertTrue(!isBasicallyDrawn(board));
+                        board.typeOfGameIAmIn = KRK;
+                        return evaluateKRK(board);
+                    case KBBK:
+                        Assert.assertTrue(!isBasicallyDrawn(board));
+                        board.typeOfGameIAmIn = KBBK;
+                        return evaluateKBBK(board);
+                    case KPK:
+                        board.typeOfGameIAmIn = KPK;
+                        return evaluateKPK(board);
+                    case KBNK:
+                        board.typeOfGameIAmIn = KBNK;
+                        Assert.assertTrue(2 >= populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
+                                || 2 >= populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]));
+                        return evaluateKBNK(board);
+
+                    case UNKNOWN:
+                    default:
+                        return evalGeneric(board, moves, whichThread);
+                }
+
+        }
+    }
+
+    public static final int evalGeneric(final Chessboard board, final int[] moves, int whichThread) {
+
+        int turn = board.turn;
         if (!EvaluationConstants.ready) {
             setup();
         }
@@ -80,20 +197,16 @@ public final class Evaluator {
 
         int score = 0;
 
-        long[] pawnData = getPawnData(board, board.zobristPawnHash, percentOfStartgame);
+        long[] pawnData = getPawnData(board, board.zobristPawnHash, percentOfStartgame, whichThread);
 
         if (MASTER_DEBUG && NUMBER_OF_THREADS == 1) {
             // this fails if pawn data is shared between threads
-            Assert.assertArrayEquals(pawnData, getPawnData(board, board.zobristPawnHash, percentOfStartgame));
+            Assert.assertArrayEquals(pawnData, getPawnData(board, board.zobristPawnHash, percentOfStartgame,whichThread));
             Assert.assertArrayEquals(pawnData, PawnEval.calculatePawnData(board, percentOfStartgame));
         }
-        
-        
+
+
         score += Score.getScore((int) pawnData[SCORE], percentOfStartgame);
-
-        // todo colour has insuf mat to mate
-
-        final int turn = board.turn;
 
         final int myTurnScore = evalTurn(board, turn, pawnData, turnThreatensSquares, percentOfStartgame, myKingSafetyArea, enemyKingSafetyArea);
         final int yourTurnScore = evalTurn(board, 1 - turn, pawnData, turnThreatensSquares, percentOfStartgame, enemyKingSafetyArea, myKingSafetyArea);
@@ -128,7 +241,9 @@ public final class Evaluator {
     public static int[][] scoresForEPO = new int[2][32];
 
     private final static int evalTurn(Chessboard board, int turn, long[] pawnData,
-                                      long[] turnThreatensSquares, int percentOfStartgame, long myKingSafetyArea, long enemyKingSafetyArea) {
+                                      long[] turnThreatensSquares, int percentOfStartgame, 
+                                      long myKingSafetyArea, long enemyKingSafetyArea) {
+        
         //please generate moves before calling this
         final long[][] pieces = board.pieces;
 
@@ -308,11 +423,15 @@ public final class Evaluator {
                     knightsScore += miscFeatures[PIECE_BEHIND_PAWN];
                 }
 
+                final long pseudoAttackEnemyKingSmall = pseudoMoves & enemyKingSmallArea;
+                if (pseudoAttackEnemyKingSmall != 0) {
+                    kingAttacks += populationCount(pseudoAttackEnemyKingSmall);
+                }
+                
                 final long pseudoAttackEnemyKing = pseudoMoves & enemyKingSafetyArea;
                 if (pseudoAttackEnemyKing != 0) {
                     kingAttackers++;
                     kingAttackersWeights += kingAttacksValues[KNIGHT_ATTACK_KING_UNITS];
-                    kingAttacks += populationCount(pseudoAttackEnemyKing);
                 }
             }
             myKnights &= (myKnights - 1);
@@ -367,11 +486,16 @@ public final class Evaluator {
                             (1 + populationCount(bpscc) / 2 + populationCount(bpsc) / 3));
                 }
 
+                final long pseudoAttackEnemyKingSmall = pseudoMoves & enemyKingSmallArea;
+                if (pseudoAttackEnemyKingSmall != 0) {
+                    kingAttacks += populationCount(pseudoAttackEnemyKingSmall);
+                }
+
+                
                 final long pseudoAttackEnemyKing = pseudoMoves & enemyKingSafetyArea;
                 if (pseudoAttackEnemyKing != 0) {
                     kingAttackers++;
                     kingAttackersWeights += kingAttacksValues[BISHOP_ATTACK_KING_UNITS];
-                    kingAttacks += populationCount(pseudoAttackEnemyKing);
                 }
             }
             myBishops &= (myBishops - 1);
@@ -424,11 +548,15 @@ public final class Evaluator {
                     rooksScore += rookFeatures[ROOK_ON_SEMI_OPEN_FILE_BONUS];
                 }
 
+                final long pseudoAttackEnemyKingSmall = pseudoMoves & enemyKingSmallArea;
+                if (pseudoAttackEnemyKingSmall != 0) {
+                    kingAttacks += populationCount(pseudoAttackEnemyKingSmall);
+                }
+
                 final long pseudoAttackEnemyKing = pseudoMoves & enemyKingSafetyArea;
                 if (pseudoAttackEnemyKing != 0) {
                     kingAttackers++;
                     kingAttackersWeights += kingAttacksValues[ROOK_ATTACK_KING_UNITS];
-                    kingAttacks += populationCount(pseudoAttackEnemyKing);
                 }
             }
             myRooks &= (myRooks - 1);
@@ -456,11 +584,15 @@ public final class Evaluator {
 
                 mobilityScore += mobilityScores[QUEEN - 2][populationCount(table)];
 
+                final long pseudoAttackEnemyKingSmall = pseudoMoves & enemyKingSmallArea;
+                if (pseudoAttackEnemyKingSmall != 0) {
+                    kingAttacks += populationCount(pseudoAttackEnemyKingSmall);
+                }
+
                 final long pseudoAttackEnemyKing = pseudoMoves & enemyKingSafetyArea;
                 if (pseudoAttackEnemyKing != 0) {
                     kingAttackers++;
                     kingAttackersWeights += kingAttacksValues[QUEEN_ATTACK_KING_LOOKUP_UNITS];
-                    kingAttacks += populationCount(pseudoAttackEnemyKing);
                 }
             }
             myQueens &= (myQueens - 1);
@@ -479,11 +611,16 @@ public final class Evaluator {
             myPawns &= myPawns - 1;
         }
 
+        final long pseudoAttackEnemyKingSmall = squaresMyPawnsThreaten & enemyKingSmallArea;
+        if (pseudoAttackEnemyKingSmall != 0) {
+            kingAttacks += populationCount(pseudoAttackEnemyKingSmall);
+        }
+
+
         final long pseudoAttackEnemyKing = squaresMyPawnsThreaten & enemyKingSafetyArea;
         if (pseudoAttackEnemyKing != 0) {
             kingAttackers++;
             kingAttackersWeights += 1;
-            kingAttacks += populationCount(pseudoAttackEnemyKing);
         }
 
         threatsScore += populationCount(squaresMyPawnsThreaten & enemyBigPieces) * PAWN_THREATENS_BIG_THINGS;
@@ -505,12 +642,13 @@ public final class Evaluator {
         int enemyKingDanger = kingSafetyMisc[STARTING_PENALTY]
                 + kingAttackersWeights * kingAttackers
                 + kingSafetyMisc[NUMBER_OF_ATTACKS_FACTOR] * kingAttacks
-                - (populationCount(board.pieces[turn][QUEEN]) == 0 ? kingSafetyMisc[MISSING_QUEEN_KING_SAFETY_UNITS] : 0)
-                + ((myKingSafetyArea & fileWithoutMyPawns) != 0 ? kingSafetyMisc[KING_NEAR_SEMI_OPEN_FILE_LOOKUP] : 0)
+                + ((enemyKingSafetyArea & fileWithoutEnemyPawns) != 0 ? kingSafetyMisc[KING_NEAR_SEMI_OPEN_FILE_LOOKUP] : 0)
                 + (turn == board.turn ? 1 : 0)
                 + (populationCount(pinnedPieces) * kingSafetyMisc[PINNED_PIECES_KING_SAFETY_LOOKUP])
-                - (populationCount(enemies & enemyKingSafetyArea))
-                - (populationCount((enemyPawns & enemyKingSafetyArea) >> 1));
+                
+                - (populationCount(board.pieces[turn][QUEEN]) == 0 ? kingSafetyMisc[MISSING_QUEEN_KING_SAFETY_UNITS] : 0)
+                - (populationCount(enemies & enemyKingSafetyArea)) 
+                - (populationCount((enemyPawns & enemyKingSafetyArea))); //pawns counted twice
 
 
         enemyKingDanger = Math.max(0, Math.min(enemyKingDanger, KING_SAFETY_ARRAY.length - 1));

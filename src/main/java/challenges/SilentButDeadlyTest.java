@@ -2,8 +2,10 @@ package challenges;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -17,13 +19,26 @@ import static challenges.Utils.contains;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.EPDObject;
 import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseEDPPosition;
 
+
 @RunWith(Parameterized.class)
 public class SilentButDeadlyTest {
 
-    private static final int timeLimit = 5_000;
+    private static final int timeLimit = 1_000;
     private static Engine engine = new Engine();
-    // tough at 5 sec
-    private static final int[] infamousIndexes = {86, 163, 180, 196, 222, 230, 243, 293};
+
+    private static final int totalThreads = 4;
+
+    @BeforeClass
+    public static void setup() {
+        ResettingUtils.reset();
+        Engine.setThreads(totalThreads);
+        EngineSpecifications.DEBUG = false;
+    }
+
+    // 5 sec
+    private static int[] difficultPositions =
+            {1,8,9,15,17,18,21,26,27,29,48,52,61,64,65,67,82,86,90,93,103,108,112,115,119,124,125,129,131,134};
+
 
     @Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
@@ -33,9 +48,10 @@ public class SilentButDeadlyTest {
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
-            if (!contains(infamousIndexes, i + 1)) {
+            if (!contains(difficultPositions, i + 1)) {
 //                continue;
             }
+            
             String splitUpWAC = splitUpPositions[i];
             System.out.println(splitUpWAC);
             Object[] objectAndName = new Object[2];
@@ -56,12 +72,16 @@ public class SilentButDeadlyTest {
     @Test
     public void test() {
         Engine.resetFull();
+        
         System.out.println(EPDObject.getFullString());
-        System.out.println(EPDObject.getBoard());
+//        System.out.println(EPDObject.getBoard());
+        
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
-        final int move = engine.simpleSearch();
+
+
+        SearchSpecs.basicTimeSearch(timeLimit);
+        final int move = engine.simpleSearch(EPDObject.getBoard());
         MoveParser.printMove(move);
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
     }

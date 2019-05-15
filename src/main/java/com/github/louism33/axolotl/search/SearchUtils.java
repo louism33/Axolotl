@@ -8,17 +8,22 @@ import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
 
 public final class SearchUtils {
+ 
+    // idea from Ethereal
+    public static final int[] skipLookup = {2, 2, 2, 4, 4, 3, 2, 5}; // thread t will skip depth skipLookup[t] ...
+    public static final int[] skipBy =     {1, 1, 2, 2, 3, 2, 1, 3}; // ... by amount skipBy[t]
 
     public static final int PANIC_SCORE_DELTA = 100;
     static final int iidDepth = 5;
 
-    public static final int[] futilityMargin = {0, 180, 250, 350, 450};
+    // most values here tuned with spsa, using zamar's perl script: https://github.com/zamar/spsa
+    public static final int[] futilityMargin = {0, 157, 257, 367, 497, 607};
     public static final int futilityBelowThisDepth = futilityMargin.length;
 
-    static final int[] alphaRazorMargin = {0, 400, 600, 800};
+    public static final int[] alphaRazorMargin = {0, 275, 486, 561};
     public static final int alphaRazorBelowThisDepth = alphaRazorMargin.length;
 
-    static final int[] betaRazorMargin = {0, 250, 350, 450, 550, 750, 1000};
+    public static final int[] betaRazorMargin = {0, 253, 361, 454, 552, 744, 1034};
     public static final int betaRazorBelowThisDepth = betaRazorMargin.length;
 
     static final int[] ASPIRATION_WINDOWS = {25, 50, 100, 200, 1000};
@@ -61,7 +66,7 @@ public final class SearchUtils {
     }
 
     static boolean isNullMoveOkHere(Chessboard board, int nullMoveCounter, int depth, int R) {
-        return nullMoveCounter < 2
+        return nullMoveCounter < 1
                 && depth >= 2
                 && !maybeInEndgame(board)
                 && notJustPawnsLeft(board)

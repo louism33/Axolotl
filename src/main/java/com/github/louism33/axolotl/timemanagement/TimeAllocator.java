@@ -2,18 +2,14 @@ package com.github.louism33.axolotl.timemanagement;
 
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
+import com.github.louism33.axolotl.search.SearchSpecs;
 
 public final class TimeAllocator {
 
+    public static long allocateTime(long maxTime, long enemyTime, long increment, Integer movesToGo) {
+        return allocateTime(maxTime, enemyTime, increment, movesToGo, 0);
+    }
     public static long allocateTime(long maxTime, long enemyTime, long increment, Integer movesToGo, int fullMovesCounter) {
-        if (maxTime < 1000) {
-            return 100;
-        }
-
-        if (maxTime < 5000) {
-            return 1000 + (increment / 3);
-        }
-
         long time;
 
         if (fullMovesCounter <= 40) {
@@ -35,14 +31,25 @@ public final class TimeAllocator {
         if (time > absoluteMaximumTime) {
             time = absoluteMaximumTime;
         }
-
+        
+        if (EngineSpecifications.DEBUG) {
+            System.out.println("info string allocating time: " + time);
+        }
+        
         return time;
     }
 
     public static long allocatePanicTime(long timeLimitMillis, long absoluteMaxTimeLimit) {
         if (timeLimitMillis > (absoluteMaxTimeLimit >>> 3)) {
-            return timeLimitMillis << 2;
+            final long pt = timeLimitMillis << 2;
+            if (EngineSpecifications.DEBUG) {
+                System.out.println("info string allocating panic time, remaining time is now: " + pt);
+            }
+            return pt;
         }
+        
+        
+        
         return timeLimitMillis;
     }
 
@@ -51,9 +58,14 @@ public final class TimeAllocator {
     }
 
     public static boolean outOfTime(long startTime, long timeLimitMillis, boolean manageTime) {
-
+        if (!Engine.running) {
+//            Engine.stopNow = true;
+            return true;
+        }
+        
         boolean outOfTime = false;
-        if (!EngineSpecifications.ALLOW_TIME_LIMIT) {
+        if (!SearchSpecs.allowTimeLimit) {
+//            Engine.stopNow = false;
             return false;
         }
 
@@ -70,7 +82,8 @@ public final class TimeAllocator {
         }
 
         if (outOfTime) {
-            Engine.stopNow = true;
+//            Engine.stopNow = true;
+            Engine.running = false;
         }
         return outOfTime;
     }

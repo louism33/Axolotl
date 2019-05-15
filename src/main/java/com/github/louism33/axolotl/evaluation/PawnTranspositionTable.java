@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY;
+import static com.github.louism33.axolotl.search.EngineSpecifications.NUMBER_OF_THREADS;
 import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_EVAL;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
@@ -41,15 +42,16 @@ public final class PawnTranspositionTable {
     one long for each type of pawn
     one long for weak squares
      */
-    public static long[] keys = new long[PAWN_TABLE_SIZE]; // todo, add to thread
-    private static long[] returnArray = new long[ENTRIES_PER_KEY]; // todo, will become owned by a searchthread
-    public static long[] pawnMoveData = new long[PAWN_TABLE_SIZE * ENTRIES_PER_KEY]; // todo, will become owned by a searchthread
-
+    public static long[][] keys = new long[NUMBER_OF_THREADS][PAWN_TABLE_SIZE];
+    //    private static long[][] returnArray = new long[NUMBER_OF_THREADS][ENTRIES_PER_KEY];
+    public static long[][] pawnMoveData = new long[NUMBER_OF_THREADS][PAWN_TABLE_SIZE * ENTRIES_PER_KEY];
 
     public static void reset() {
-        Arrays.fill(keys, 0);
-        Arrays.fill(pawnMoveData, 0);
-        Arrays.fill(returnArray, 0);
+        for (int t = 0; t < NUMBER_OF_THREADS; t++) {
+            Arrays.fill(keys[t], 0);
+            Arrays.fill(pawnMoveData[t], 0);
+//            Arrays.fill(returnArray[t], 0);
+        }
     }
 
     public static void initPawnTableMegaByte(int mb) {
@@ -73,14 +75,16 @@ public final class PawnTranspositionTable {
         override = 0;
         totalRequests = 0;
 
-        if (keys != null && keys.length == actualTableSize) {
-            Arrays.fill(keys, 0);
-            Arrays.fill(pawnMoveData, 0);
-            Arrays.fill(returnArray, 0);
+        if (keys != null && keys.length == NUMBER_OF_THREADS && keys[0] != null && keys[0].length == actualTableSize) {
+            for (int t = 0; t < NUMBER_OF_THREADS; t++) {
+                Arrays.fill(keys[t], 0);
+                Arrays.fill(pawnMoveData[t], 0);
+//                Arrays.fill(returnArray[t], 0);
+            }
         } else {
-            keys = new long[actualTableSize];
-            pawnMoveData = new long[actualTableSize * ENTRIES_PER_KEY];
-            returnArray = new long[ENTRIES_PER_KEY];
+            keys = new long[NUMBER_OF_THREADS][actualTableSize];
+            pawnMoveData = new long[NUMBER_OF_THREADS][actualTableSize * ENTRIES_PER_KEY];
+//            returnArray = new long[NUMBER_OF_THREADS][ENTRIES_PER_KEY];
         }
 
         tableReady = true;
@@ -114,17 +118,17 @@ public final class PawnTranspositionTable {
         if (keys != null && keys.length == actualTableSize) {
             Arrays.fill(keys, 0);
             Arrays.fill(pawnMoveData, 0);
-            Arrays.fill(returnArray, 0);
+//            Arrays.fill(returnArray, 0);
         } else {
-            keys = new long[actualTableSize];
-            pawnMoveData = new long[actualTableSize * ENTRIES_PER_KEY];
-            returnArray = new long[ENTRIES_PER_KEY];
+            keys = new long[NUMBER_OF_THREADS][actualTableSize];
+            pawnMoveData = new long[NUMBER_OF_THREADS][actualTableSize * ENTRIES_PER_KEY];
+//            returnArray = new long[NUMBER_OF_THREADS][ENTRIES_PER_KEY];
         }
 
         tableReady = true;
     }
 
-    private static void addToTableReplaceArbitrarily(long key, long[] pawnData) {
+    private static void addToTableReplaceArbitrarily(long key, long[] pawnData, int whichThread) {
         Assert.assertTrue(tableReady);
 
         int index = getIndex(key);
@@ -135,8 +139,8 @@ public final class PawnTranspositionTable {
 
         for (int i = index; i < index + bucketSize; i++) {
             final int entryIndex = i * ENTRIES_PER_KEY;
-            final long pawnMoveDatum = pawnMoveData[entryIndex];
-            final long currentKey = (keys[i] ^ pawnMoveDatum);
+            final long pawnMoveDatum = pawnMoveData[whichThread][entryIndex];
+            final long currentKey = (keys[whichThread][i] ^ pawnMoveDatum);
             final long currentEntry = pawnMoveDatum;
 
             if (currentEntry == 0) {
@@ -154,12 +158,16 @@ public final class PawnTranspositionTable {
             override++;
         }
 
-        keys[replaceMeIndex] = key ^ pawnData[XOR_INDEX];
-        System.arraycopy(pawnData, 0, pawnMoveData, replaceMeIndex * ENTRIES_PER_KEY, ENTRIES_PER_KEY);
+        keys[whichThread][replaceMeIndex] = key ^ pawnData[XOR_INDEX];
+        System.arraycopy(pawnData, 0, pawnMoveData[whichThread], replaceMeIndex * ENTRIES_PER_KEY, ENTRIES_PER_KEY);
     }
 
 
     public static long[] getPawnData(Chessboard board, long key, int percentOfStartgame) {
+        return getPawnData(board, key, percentOfStartgame, 0);
+    }
+
+    public static long[] getPawnData(Chessboard board, long key, int percentOfStartgame, int whichThread) {
         if (!tableReady) {
             initPawnTableMegaByte();
         }
@@ -168,7 +176,7 @@ public final class PawnTranspositionTable {
             return noPawnsData;
         }
 
-        Arrays.fill(returnArray, 0);
+        long[] returnArray = new long[ENTRIES_PER_KEY];
 
         totalRequests++;
 
@@ -176,9 +184,9 @@ public final class PawnTranspositionTable {
             int index = getIndex(key);
             for (int i = index; i < index + bucketSize; i++) {
                 final int entryIndex = i * ENTRIES_PER_KEY;
-                if ((keys[i] ^ pawnMoveData[entryIndex]) == key) {
+                if ((keys[whichThread][i] ^ pawnMoveData[whichThread][entryIndex]) == key) {
 
-                    System.arraycopy(pawnMoveData, entryIndex, returnArray, 0, ENTRIES_PER_KEY);
+                    System.arraycopy(pawnMoveData[whichThread], entryIndex, returnArray, 0, ENTRIES_PER_KEY);
                     hit++;
 
                     return returnArray;
@@ -188,7 +196,7 @@ public final class PawnTranspositionTable {
 
         returnArray = PawnEval.calculatePawnData(board, percentOfStartgame);
         int pawnFeatureScore = (int) returnArray[SCORE];
-        PawnTranspositionTable.addToTableReplaceArbitrarily(board.zobristPawnHash, returnArray);
+        addToTableReplaceArbitrarily(board.zobristPawnHash, returnArray, whichThread);
 
         return returnArray;
     }

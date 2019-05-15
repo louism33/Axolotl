@@ -1,7 +1,8 @@
 package com.github.louism33.axolotl.improving;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.util.Util;
+import com.github.louism33.axolotl.search.SearchSpecs;
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -29,7 +30,7 @@ public class WACChallenge {
 
     @BeforeClass
     public static void setup() {
-        Util.reset();
+        ResettingUtils.reset();
         final String str = "Testing " + splitUpPositions.length + " WAC positions. " +
                 "Time per position: " + timeLimit + " milliseconds."
                 + "\nIf more than " + targetSuccesses + " are correct, success.";
@@ -38,7 +39,7 @@ public class WACChallenge {
 
     @AfterClass
     public static void finalSuccessTally() {
-        System.out.println("Successful WAC tests: " + successes + " out of "
+        System.out.println("\nSuccessful WAC tests: " + successes + " out of "
                 + splitUpPositions.length + ". Success starts at " + targetSuccesses);
         Assert.assertTrue(successes >= targetSuccesses);
     }
@@ -73,8 +74,9 @@ public class WACChallenge {
         System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        engine.receiveSearchSpecs(EPDObject.getBoard(), true, timeLimit);
-        int move = engine.simpleSearch();
+        SearchSpecs.basicTimeSearch(timeLimit);
+
+        final int move = engine.simpleSearch(EPDObject.getBoard());
         MoveParser.printMove(move);
 
         if (contains(winningMoves, move) && !contains(losingMoves, move)) {

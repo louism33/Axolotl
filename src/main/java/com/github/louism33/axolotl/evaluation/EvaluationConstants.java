@@ -1,5 +1,7 @@
 package com.github.louism33.axolotl.evaluation;
 
+import com.github.louism33.chesscore.Chessboard;
+
 public final class EvaluationConstants {
 
     // general numbers
@@ -7,7 +9,7 @@ public final class EvaluationConstants {
     public static final int SHORT_MAXIMUM = 31000;
     public static final int IN_CHECKMATE_SCORE = -30000;
     public static final int CHECKMATE_ENEMY_SCORE = -IN_CHECKMATE_SCORE;
-    public static final int IN_CHECKMATE_SCORE_MAX_PLY = IN_CHECKMATE_SCORE + 100;
+    public static final int IN_CHECKMATE_SCORE_MAX_PLY = IN_CHECKMATE_SCORE + Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH;
     public static final int CHECKMATE_ENEMY_SCORE_MAX_PLY = -IN_CHECKMATE_SCORE_MAX_PLY;
     public static final int IN_STALEMATE_SCORE = 0;
 
@@ -49,15 +51,15 @@ public final class EvaluationConstants {
     }
 
     // piece values
-    public static final int[] startMaterial = {100, 455, 504, 643, 1393};
+    public static final int[] startMaterial = {100, 455, 504, 643, 1393}; 
     public static final int[] endMaterial = {100, 296, 322, 576, 1129};
     static int[] material;
 
-    static final int P = 0;
-    static final int K = 1;
-    static final int B = 2;
-    static final int R = 3;
-    static final int Q = 4;
+    public static final int P = 0;
+    public static final int K = 1;
+    public static final int B = 2;
+    public static final int R = 3;
+    public static final int Q = 4;
 
     public static final int[] pinnedPiecesScores = {0, 25, -20, -25, -69, -120, 0};
 
@@ -149,13 +151,13 @@ public final class EvaluationConstants {
 
     public static final int[] KING_SAFETY_ARRAY =
             {
-                    160, 164, 178, 183, 184, 189, 198, 197,
-                    195, 195, 197, 196, 198, 194, 198, 194,
-                    206, 198, 204, 203, 202, 211, 203, 211,
-                    206, 212, 211, 215, 210, 215, 216, 224,
-                    216, 223, 230, 225, 240, 235, 235, 240,
-                    240, 235, 243, 246, 250, 260, 270, 280,
-                    290, 291, 292, 293, 294, 295, 296, 297,
+                    176, 180, 194, 192, 189, 189, 198, 197,
+                    201, 200, 197, 196, 203, 194, 208, 199,
+                    206, 203, 204, 203, 202, 211, 193, 201,
+                    196, 217, 206, 220, 210, 215, 216, 224,
+                    216, 223, 230, 225, 240, 230, 235, 240,
+                    240, 230, 243, 246, 250, 260, 270, 280,
+                    285, 291, 292, 293, 294, 295, 296, 292,
                     298, 299, 300, 301, 302, 303, 304, 304,
             };
 

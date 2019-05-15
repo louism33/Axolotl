@@ -6,7 +6,7 @@
 
     <groupId>com.github.louism33</groupId>
     <artifactId>axolotl</artifactId>
-    <version>1.7-SNAPSHOT</version> 
+    <version>1.8-SNAPSHOT</version> 
     <name>axolotl</name>
     <description>Amphibious Java Chess Engine</description>
     <url>https://github.com/louism33/Axolotl</url>
@@ -242,7 +242,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <finalName>axolotl_v1.7</finalName>
+                        <finalName>axolotl_v1.8</finalName>
                         <appendAssemblyId>false</appendAssemblyId>
                         <outputDirectory>${user.dir}</outputDirectory>
                         <archive>
@@ -276,13 +276,7 @@
         <dependency>
             <groupId>com.github.louism33</groupId>
             <artifactId>chesscore</artifactId>
-            <version>1.51-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>27.0.1-jre</version>
+            <version>1.67-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -294,7 +288,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>RELEASE</version>
+            <version>4.12</version>
             <scope>compile</scope>
         </dependency>
 
@@ -335,6 +329,12 @@
             <artifactId>junit-platform-runner</artifactId>
             <version>1.2.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.5.0-M1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
