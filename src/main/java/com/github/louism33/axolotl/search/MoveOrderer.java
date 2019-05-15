@@ -265,6 +265,7 @@ public final class MoveOrderer {
 //        if (true) {
 //            return false;
 //        }
+        
         boolean checkingMove;
         if (MASTER_DEBUG) {
             Assert.assertTrue(move != 0);

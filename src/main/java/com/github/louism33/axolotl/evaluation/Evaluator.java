@@ -208,8 +208,6 @@ public final class Evaluator {
 
         score += Score.getScore((int) pawnData[SCORE], percentOfStartgame);
 
-        // todo colour has insuf mat to mate
-
         final int myTurnScore = evalTurn(board, turn, pawnData, turnThreatensSquares, percentOfStartgame, myKingSafetyArea, enemyKingSafetyArea);
         final int yourTurnScore = evalTurn(board, 1 - turn, pawnData, turnThreatensSquares, percentOfStartgame, enemyKingSafetyArea, myKingSafetyArea);
 
