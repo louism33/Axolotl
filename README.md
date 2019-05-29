@@ -7,7 +7,9 @@ You will need the latest JRE 11 to run axolotl.
 
 You may use up to 8 threads to run axolotl, the default is one.
 
-Version 1.8 is about 2300 elo. If you run any games with axolotl, I would be very happy to hear the results.
+Version 1.8 is 2456 elo, according to ccrl: http://ccrl.chessdom.com/ccrl/4040/cgi/engine_details.cgi?print=Details&each_game=1&eng=Axolotl%201.8%2064-bit#Axolotl_1_8_64-bit
+
+If you run any games with axolotl, I would be very happy to hear the results.
     
 You are free to use Axolotl however you see fit. If you have any questions, simply open an issue and I will try to get back to you.
 
