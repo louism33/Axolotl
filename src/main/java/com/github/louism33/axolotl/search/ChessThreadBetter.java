@@ -55,16 +55,15 @@ public final class ChessThreadBetter extends Thread {
 
 
         int depth = 0;
-        int aspirationScore = 0;
 
         int alpha;
         int beta;
         int alphaAspirationAttempts = 0;
         int betaAspirationAttempts = 0;
 
-        alpha = aspirationScore - ASPIRATION_WINDOWS[alphaAspirationAttempts];
-        beta = aspirationScore + ASPIRATION_WINDOWS[betaAspirationAttempts];
-
+        alpha = SHORT_MINIMUM;
+        beta = SHORT_MAXIMUM;
+        
         int score = 0;
 
         if (DEBUG) {
@@ -109,6 +108,13 @@ public final class ChessThreadBetter extends Thread {
                 Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);
             }
 
+            if (depth >= 5) {
+                alphaAspirationAttempts = 0;
+                betaAspirationAttempts = 0;
+                alpha = score - ASPIRATION_WINDOWS[alphaAspirationAttempts];
+                beta = score + ASPIRATION_WINDOWS[betaAspirationAttempts];
+            }
+
             while (running) {
 
                 if (MASTER_DEBUG) {
@@ -145,7 +151,7 @@ public final class ChessThreadBetter extends Thread {
                     if (alphaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES) {
                         alpha = SHORT_MINIMUM;
                     } else {
-                        alpha = aspirationScore - ASPIRATION_WINDOWS[alphaAspirationAttempts];
+                        alpha = score - ASPIRATION_WINDOWS[alphaAspirationAttempts];
                     }
                 } else if (score >= beta) {
                     aspFailB++;
@@ -153,7 +159,7 @@ public final class ChessThreadBetter extends Thread {
                     if (betaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES) {
                         beta = SHORT_MAXIMUM;
                     } else {
-                        beta = aspirationScore - ASPIRATION_WINDOWS[betaAspirationAttempts];
+                        beta = score - ASPIRATION_WINDOWS[betaAspirationAttempts];
                     }
                 } else {
                     aspSuccess++;
@@ -166,7 +172,6 @@ public final class ChessThreadBetter extends Thread {
                 uciEntry.send(board, aiMoveScore, depth, depth, time);
             }
 
-            aspirationScore = score;
         }
 
         if (depth == SearchSpecs.maxDepth) {

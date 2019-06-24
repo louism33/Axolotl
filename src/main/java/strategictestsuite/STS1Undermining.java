@@ -22,21 +22,20 @@ import static strategictestsuite.MasterParamTester.*;
 @RunWith(Parameterized.class)
 public class STS1Undermining {
 
-    
     private Engine engine = new Engine();
 
     private static int successes = 0;
 
     @AfterClass
     public static void finalSuccessTally() {
-        System.out.println("Successes: " + successes + " out of " + splitUpPositions.length);
+        System.out.println("STS1Undermining: Successes: " + successes + " out of " + splitUpPositions.length);
+        System.out.println();
     }
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
-
-        EngineSpecifications.PRINT_PV = true;
+        ResettingUtils.reset();
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
@@ -62,13 +61,13 @@ public class STS1Undermining {
         if (printFen) {
             System.out.println(EPDObject.getFullString());
         }
-                if (printBoard) {
+        if (printBoard) {
             System.out.println(EPDObject.getBoard());
         }
         int[] winningMoves = EPDObject.getBestMovesFromComments();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.PRINT_PV = false;
-        
+
+
         SearchSpecs.basicTimeSearch(timeLimit);
         final int move = engine.simpleSearch(EPDObject.getBoard());
 
@@ -76,7 +75,9 @@ public class STS1Undermining {
         if (condition) {
             successes++;
         }
-        Assert.assertTrue(condition);
+        if (enableAssert) {
+            Assert.assertTrue(condition);
+        }
     }
 
     private static final String positions = "" +

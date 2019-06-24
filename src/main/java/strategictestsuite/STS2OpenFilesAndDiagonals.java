@@ -23,21 +23,19 @@ import static strategictestsuite.MasterParamTester.*;
 @RunWith(Parameterized.class)
 public class STS2OpenFilesAndDiagonals {
 
-
-    
     private Engine engine = new Engine();
     private static int successes = 0;
 
     @AfterClass
     public static void finalSuccessTally() {
-        System.out.println("Successes: " + successes + " out of " + splitUpPositions.length);
+        System.out.println("STS2OpenFilesAndDiagonals: Successes: " + successes + " out of " + splitUpPositions.length);
+        System.out.println();
     }
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
-        List<Object[]> answers = new ArrayList<>();
-
-        EngineSpecifications.PRINT_PV = true;
+        ResettingUtils.reset(); 
+List<Object[]> answers = new ArrayList<>();
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
@@ -63,23 +61,27 @@ public class STS2OpenFilesAndDiagonals {
         if (printFen) {
             System.out.println(EPDObject.getFullString());
         }
-                if (printBoard) {
+        if (printBoard) {
             System.out.println(EPDObject.getBoard());
         }
         int[] winningMoves = EPDObject.getBestMovesFromComments();
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.PRINT_PV = false;
+        
         SearchSpecs.basicTimeSearch(timeLimit);
 
         final int move = engine.simpleSearch(EPDObject.getBoard());
 
-        System.out.println("my move: " + MoveParser.toString(move));
+                if (printMyMove) {
+            System.out.println("my move: " + MoveParser.toString(move));
+        }
 
         final boolean condition = contains(winningMoves, move) && !contains(losingMoves, move);
         if (condition) {
             successes++;
         }
-        Assert.assertTrue(condition);
+                if (enableAssert) {
+            Assert.assertTrue(condition);
+        }
     }
 
     private static final String positions = "" +
