@@ -27,7 +27,7 @@ public class STS8fghPAWNS {
 
     @AfterClass
     public static void finalSuccessTally() {
-        System.out.println("STS8fghPAWNS: Successes: " + successes + " out of " + splitUpPositions.length);
+        System.out.println("\nSTS8fghPAWNS: Successes: " + successes + " out of " + splitUpPositions.length);
         System.out.println();
     }
 

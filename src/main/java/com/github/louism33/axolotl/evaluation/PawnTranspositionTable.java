@@ -208,50 +208,50 @@ public final class PawnTranspositionTable {
         return index;
     }
 
-    static long buildTableEntry(int move, int score, int depth, int flag, int ply, int age) {
-        Assert.assertTrue(move != 0);
-        Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
-        Assert.assertTrue(flag >= 0 && flag < 4);
-
-        if (score > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
-            score += ply;
-        } else if (score < IN_CHECKMATE_SCORE_MAX_PLY) {
-            score -= ply;
-        }
-        long entry = 0;
-        entry |= (move & TT_MOVE_MASK);
-        entry |= (((long) score & SCORE_CLEANER) << scoreOffset);
-        entry |= (((long) depth) << depth_offset);
-        entry |= (((long) flag) << flagOffset);
-        entry |= (((long) age) << ageOffset);
-        return entry;
-    }
-
-    public static int getMove(long entry) {
-        return (int) (entry & MOVE_MASK_WITHOUT_CHECK);
-    }
-
-    public static int getScore(long entry, int ply) {
-        long l1 = (entry & SCORE_MASK) >>> scoreOffset;
-        int score = 0; //(int) (l1 > twoFifteen ? l1 - twoSixteen : l1);
-        if (score > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
-            score -= ply;
-        } else if (score < IN_CHECKMATE_SCORE_MAX_PLY) {
-            score += ply;
-        }
-        return score;
-    }
-
-    public static int getDepth(long entry) {
-        return (int) ((entry & DEPTH_MASK) >>> depth_offset);
-    }
-
-    public static int getFlag(long entry) {
-        return (int) ((entry & FLAG_MASK) >>> flagOffset);
-    }
-
-    public static int getAge(long entry) {
-        return (int) ((entry & AGE_MASK) >>> ageOffset);
-    }
+//    static long buildTableEntry(int move, int score, int depth, int flag, int ply, int age) {
+//        Assert.assertTrue(move != 0);
+//        Assert.assertTrue(score > Short.MIN_VALUE && score < Short.MAX_VALUE);
+//        Assert.assertTrue(flag >= 0 && flag < 4);
+//
+//        if (score > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+//            score += ply;
+//        } else if (score < IN_CHECKMATE_SCORE_MAX_PLY) {
+//            score -= ply;
+//        }
+//        long entry = 0;
+//        entry |= (move & TT_MOVE_MASK);
+//        entry |= (((long) score & SCORE_CLEANER) << scoreOffset);
+//        entry |= (((long) depth) << depth_offset);
+//        entry |= (((long) flag) << flagOffset);
+//        entry |= (((long) age) << ageOffset);
+//        return entry;
+//    }
+//
+//    public static int getMove(long entry) {
+//        return (int) (entry & MOVE_MASK_WITHOUT_CHECK);
+//    }
+//
+//    public static int getScore(long entry, int ply) {
+//        long l1 = (entry & SCORE_MASK) >>> scoreOffset;
+//        int score = 0; //(int) (l1 > twoFifteen ? l1 - twoSixteen : l1);
+//        if (score > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
+//            score -= ply;
+//        } else if (score < IN_CHECKMATE_SCORE_MAX_PLY) {
+//            score += ply;
+//        }
+//        return score;
+//    }
+//
+//    public static int getDepth(long entry) {
+//        return (int) ((entry & DEPTH_MASK) >>> depth_offset);
+//    }
+//
+//    public static int getFlag(long entry) {
+//        return (int) ((entry & FLAG_MASK) >>> flagOffset);
+//    }
+//
+//    public static int getAge(long entry) {
+//        return (int) ((entry & AGE_MASK) >>> ageOffset);
+//    }
 
 }

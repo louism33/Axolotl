@@ -49,7 +49,7 @@ List<Object[]> answers = new ArrayList<>();
             objectAndName[1] = EPDObject.getId();
             answers.add(objectAndName);
 
-            MoveParser.printMove(EPDObject.getBestMovesFromComments());
+//            MoveParser.printMove(EPDObject.getBestMovesFromComments());
         }
         return answers;
     }
