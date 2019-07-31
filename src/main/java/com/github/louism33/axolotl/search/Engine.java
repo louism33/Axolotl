@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.search.ChessThreadBetter.MASTER_THREAD;
+import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
@@ -223,7 +223,7 @@ public final class Engine {
         }
 
         if (NUMBER_OF_THREADS == 1) {
-            ChessThreadBetter thread = new ChessThreadBetter(uciEntry, Engine.board, startTime);
+            ChessThread thread = new ChessThread(uciEntry, Engine.board, startTime);
             threadsNumber.incrementAndGet();
             thread.run();
             running = false;
@@ -234,11 +234,11 @@ public final class Engine {
                 System.arraycopy(rootMoves[MASTER_THREAD], 0, rootMoves[t], 0, totalMoves);
 
                 boards[t] = new Chessboard(board);
-                ChessThreadBetter thread = new ChessThreadBetter(t, boards[t], startTime);
+                ChessThread thread = new ChessThread(t, boards[t], startTime);
                 threadsNumber.incrementAndGet();
                 thread.start();
             }
-            ChessThreadBetter masterThread = new ChessThreadBetter(uciEntry, Engine.board, startTime);
+            ChessThread masterThread = new ChessThread(uciEntry, Engine.board, startTime);
             threadsNumber.incrementAndGet();
             masterThread.run();
             running = false;

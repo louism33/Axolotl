@@ -15,7 +15,7 @@ import static com.github.louism33.chesscore.MaterialHashUtil.makeMaterialHash;
 import static com.github.louism33.chesscore.MaterialHashUtil.typeOfEndgame;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
-public final class ChessThreadBetter extends Thread {
+public final class ChessThread extends Thread {
     public static final int MASTER_THREAD = 0;
 
     private UCIEntry uciEntry = null;
@@ -24,7 +24,7 @@ public final class ChessThreadBetter extends Thread {
     Chessboard board;
     private long startTime;
 
-    ChessThreadBetter(int whichThread, Chessboard board, long startTime) {
+    ChessThread(int whichThread, Chessboard board, long startTime) {
         Assert.assertTrue(whichThread != MASTER_THREAD);
         this.whichThread = whichThread;
         this.board = board;
@@ -32,7 +32,7 @@ public final class ChessThreadBetter extends Thread {
         this.setName("T" + whichThread);
     }
 
-    ChessThreadBetter(UCIEntry uciEntry, Chessboard board, long startTime) {
+    ChessThread(UCIEntry uciEntry, Chessboard board, long startTime) {
         this.uciEntry = uciEntry;
         this.whichThread = MASTER_THREAD;
         this.masterThread = true;
@@ -63,7 +63,7 @@ public final class ChessThreadBetter extends Thread {
 
         alpha = SHORT_MINIMUM;
         beta = SHORT_MAXIMUM;
-        
+
         int score = 0;
 
         if (DEBUG) {
@@ -124,8 +124,12 @@ public final class ChessThreadBetter extends Thread {
                     Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);
                 }
 
+
+//                System.out.println("d: " + depth + ", score: " + score + ", a: " + alpha + ", b: " + beta);
+//                System.out.println("aat: " + alphaAspirationAttempts + ", bat: " + betaAspirationAttempts);
+
                 score = principleVariationSearch(board, depth, 0,
-                        alpha, beta, 0, whichThread);   
+                        alpha, beta, 0, whichThread);
 
                 if (masterThread && (manageTime && !weHavePanicked)
                         && (depth >= 6 && aiMoveScore < previousAiScore - PANIC_SCORE_DELTA)) { // todo thread specific or not?
@@ -135,7 +139,7 @@ public final class ChessThreadBetter extends Thread {
 
                 previousAiScore = aiMoveScore;
 
-                if  (!running || stopSearch(startTime, timeLimitMillis)) {
+                if (!running || stopSearch(startTime, timeLimitMillis)) {
                     break everything;
                 }
 
@@ -159,10 +163,11 @@ public final class ChessThreadBetter extends Thread {
                     if (betaAspirationAttempts + 1 >= ASPIRATION_MAX_TRIES) {
                         beta = SHORT_MAXIMUM;
                     } else {
-                        beta = score - ASPIRATION_WINDOWS[betaAspirationAttempts];
+                        beta = score + ASPIRATION_WINDOWS[betaAspirationAttempts];
                     }
                 } else {
                     aspSuccess++;
+//                    System.out.println("depth: " + depth + ", aat: " + alphaAspirationAttempts + ", bat: " + betaAspirationAttempts);
                     break;
                 }
             }

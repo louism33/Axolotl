@@ -1,10 +1,8 @@
 package com.github.louism33.axolotl.main;
 
-import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.SearchSpecs;
-import com.github.louism33.axolotl.search.SearchUtils;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
@@ -17,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.search.ChessThreadBetter.MASTER_THREAD;
+import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.BoardConstants.BLACK;
 import static com.github.louism33.chesscore.BoardConstants.WHITE;
