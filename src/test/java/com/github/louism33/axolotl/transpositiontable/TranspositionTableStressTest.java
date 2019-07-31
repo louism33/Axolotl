@@ -7,13 +7,14 @@ import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.search.Engine.hashTableReturn;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 
-//@Disabled
+@Disabled
 public class TranspositionTableStressTest {
 
     static final int depth = 12;
@@ -61,7 +62,7 @@ public class TranspositionTableStressTest {
     @Test
     void testDefaultMT() {
         System.out.println("default MT: ");
-        PRINT_PV = true;
+//        PRINT_PV = true;
         stressTestToDepthTest(12, new Chessboard(), DEFAULT_TABLE_SIZE_MB, 4);
     }
 
