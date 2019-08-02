@@ -22,7 +22,7 @@ public final class PawnEval {
         if (!EvaluationConstants.ready) {
             setup();
         }
-        if (!EvaluatorPositionConstant.ready) {
+        if (!EvaluatorPositionConstant.readyEPC) {
             EvaluatorPositionConstant.setup();
         }
 

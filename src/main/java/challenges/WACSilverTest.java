@@ -47,6 +47,9 @@ public class WACSilverTest {
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
+            if (i > 10) {
+//                break;
+            }
             if (!contains(difficultIndexes, i)) {
 //                continue;
             }

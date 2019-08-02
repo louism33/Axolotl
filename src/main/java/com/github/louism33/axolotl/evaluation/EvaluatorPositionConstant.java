@@ -5,7 +5,7 @@ import static com.github.louism33.chesscore.BoardConstants.*;
 @SuppressWarnings("ALL")
 public final class EvaluatorPositionConstant {
 
-    public static boolean ready = false;
+    public static boolean readyEPC = false;
 
     public static final int[] PAWN_START_WHITE = {
             0, 0, 0, 0, 0, 0, 0, 0,
@@ -161,7 +161,7 @@ public final class EvaluatorPositionConstant {
             POSITION_SCORES[BLACK][KING][i] = Score.bs(KING_START_WHITE[index], KING_END_WHITE[index]);
         }
 
-        ready = true;
+        readyEPC = true;
     }
 
 

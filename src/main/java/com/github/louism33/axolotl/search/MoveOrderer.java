@@ -75,7 +75,7 @@ public final class MoveOrderer {
             } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
                 moves[i] = buildMoveScore(move, uninterestingPromotion);
             } else if (isCaptureMove(move) || isEnPassantMove(move)) {
-                moves[i] = buildMoveScore(move, seeScore(board, move));
+                moves[i] = buildMoveScore(move, seeScore(board, move, 0));
             } else if (checkingMove(board, moves[i])) { // checking sets flag on move
                 moves[i] = MoveParser.setCheckingMove(moves[i]);
                 if (MASTER_DEBUG) {
@@ -151,7 +151,7 @@ public final class MoveOrderer {
             } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
                 moves[i] = buildMoveScore(move, uninterestingPromotion);
             } else if (captureMove || isEnPassantMove(move)) {
-                moves[i] = buildMoveScore(move, seeScore(board, move));
+                moves[i] = buildMoveScore(move, seeScore(board, move, whichThread));
             } else if (move == mateKiller) {
                 moves[i] = buildMoveScore(move, mateKillerScore);
             } else if (firstKiller == move) {
@@ -194,7 +194,7 @@ public final class MoveOrderer {
         sortMoves(moves, maxMoves);
     }
 
-    private static int seeScore(Chessboard board, int move) {
+    private static int seeScore(Chessboard board, int move, int whichThread) {
         if (MASTER_DEBUG) {
             Assert.assertTrue(move != 0);
         }
@@ -203,7 +203,7 @@ public final class MoveOrderer {
         if (destinationScore > sourceScore) { // straight winning capture
             return neutralCapture + destinationScore - sourceScore;
         }
-        final int see = SEE.getSEE(board, move) / 100;
+        final int see = SEE.getSEE(board, move, whichThread) / 100;
         if (see == 0) {
             return neutralCapture;
         }
@@ -241,7 +241,7 @@ public final class MoveOrderer {
     }
 
 
-    static void scoreMovesQuiescence(int[] moves, Chessboard board) {
+    static void scoreMovesQuiescence(int[] moves, Chessboard board, int whichThread) {
         final int maxMoves = moves[moves.length - 1];
         for (int i = 0; i < maxMoves; i++) { // todo, set quiets to 0?
             int move = moves[i];
@@ -253,7 +253,7 @@ public final class MoveOrderer {
                 if (isPromotionMove(move) && isPromotionToQueen(move)) {
                     moves[i] = buildMoveScore(move, queenCapturePromotionScore);
                 } else {
-                    moves[i] = buildMoveScore(move, seeScore(board, move));
+                    moves[i] = buildMoveScore(move, seeScore(board, move, whichThread));
                 }
             } else if (isPromotionMove(move) && (isPromotionToQueen(move))) {
                 moves[i] = buildMoveScore(move, queenQuietPromotionScore);

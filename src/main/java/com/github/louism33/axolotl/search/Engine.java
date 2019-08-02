@@ -13,11 +13,13 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
+import static com.github.louism33.axolotl.evaluation.Evaluator.readyEvaluator;
 import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.search.Quiescence.quiescenceSearch;
+import static com.github.louism33.axolotl.search.SEE.readySEE;
 import static com.github.louism33.axolotl.search.SearchSpecs.manageTime;
 import static com.github.louism33.axolotl.search.SearchSpecs.timeLimitMillis;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
@@ -41,7 +43,6 @@ public final class Engine {
     public static int[][] rootMoves;
 
     private static long startTime = 0;
-    //    public static boolean stopNow = true;
     public static boolean running = false;
     public static boolean quitOnSingleMove = true;
     public static boolean computeMoves = true;
@@ -90,8 +91,16 @@ public final class Engine {
             EvaluationConstants.setup();
         }
 
-        if (!EvaluatorPositionConstant.ready) {
+        if (!EvaluatorPositionConstant.readyEPC) {
             EvaluatorPositionConstant.setup();
+        }
+
+        if (!readySEE) {
+            SEE.setupSEE();
+        }
+
+        if (!readyEvaluator) {
+            Evaluator.initEvaluator();
         }
     }
 
@@ -158,6 +167,8 @@ public final class Engine {
 
         setupMoveOrderer();
         PawnTranspositionTable.initPawnTableMegaByte();
+        SEE.setupSEE();
+        Evaluator.initEvaluator();
     }
 
     public static int getAiMove() {

@@ -43,7 +43,7 @@ public final class Quiescence {
         }
 
         if (!inCheck) {
-            scoreMovesQuiescence(moves, board);
+            scoreMovesQuiescence(moves, board, whichThread);
         } else {
             scoreMoves(moves, board, 0, 0, whichThread);
         }
