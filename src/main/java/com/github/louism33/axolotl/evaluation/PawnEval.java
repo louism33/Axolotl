@@ -5,6 +5,7 @@ import com.github.louism33.chesscore.Chessboard;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.Evaluator.scoresForEPO;
 import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.NUMBER_OF_THREADS;
 import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_EVAL;
 import static com.github.louism33.chesscore.BitOperations.*;
 import static com.github.louism33.chesscore.BoardConstants.fileForward;
@@ -18,7 +19,15 @@ public final class PawnEval {
     public static final long whiteFilesMask = 0xff;
     public static final long blackFilesMask = 0xff00000000000000L;
 
-    public static long[] calculatePawnData(Chessboard board, int percentOfStart) {
+    public static boolean readyPawnEvaluator = false;
+    private static long[][] pawnMoveDataBackend = new long[NUMBER_OF_THREADS][PawnTranspositionTable.ENTRIES_PER_KEY];
+
+    public static void initPawnEvaluator() {
+        pawnMoveDataBackend = new long[NUMBER_OF_THREADS][PawnTranspositionTable.ENTRIES_PER_KEY];
+        readyPawnEvaluator = true;
+    }
+    
+    public static long[] calculatePawnData(Chessboard board, int percentOfStart, int whichThread) {
         if (!EvaluationConstants.ready) {
             setup();
         }
@@ -26,7 +35,7 @@ public final class PawnEval {
             EvaluatorPositionConstant.setup();
         }
 
-        long[] pawnMoveData = new long[PawnTranspositionTable.ENTRIES_PER_KEY]; // todo, move out
+        final long[] pawnMoveData = pawnMoveDataBackend[whichThread];
         int pawnScore = 0;
 
         long outpostsFilesWeaks = 0;

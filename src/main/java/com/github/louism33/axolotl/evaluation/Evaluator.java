@@ -209,7 +209,7 @@ public final class Evaluator {
         if (MASTER_DEBUG && NUMBER_OF_THREADS == 1) {
             // this fails if pawn data is shared between threads
             Assert.assertArrayEquals(pawnData, getPawnData(board, board.zobristPawnHash, percentOfStartgame, whichThread));
-            Assert.assertArrayEquals(pawnData, PawnEval.calculatePawnData(board, percentOfStartgame));
+            Assert.assertArrayEquals(pawnData, PawnEval.calculatePawnData(board, percentOfStartgame, 0));
         }
 
 

@@ -1,9 +1,6 @@
 package com.github.louism33.axolotl.search;
 
-import com.github.louism33.axolotl.evaluation.EvaluationConstants;
-import com.github.louism33.axolotl.evaluation.Evaluator;
-import com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant;
-import com.github.louism33.axolotl.evaluation.PawnTranspositionTable;
+import com.github.louism33.axolotl.evaluation.*;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
 import com.github.louism33.chesscore.Chessboard;
@@ -14,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.Evaluator.readyEvaluator;
+import static com.github.louism33.axolotl.evaluation.PawnEval.readyPawnEvaluator;
 import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
@@ -102,6 +100,10 @@ public final class Engine {
         if (!readyEvaluator) {
             Evaluator.initEvaluator();
         }
+
+        if (!readyPawnEvaluator) {
+            PawnEval.initPawnEvaluator();
+        }
     }
 
     public static void resetBetweenMoves() { // todo
@@ -169,6 +171,7 @@ public final class Engine {
         PawnTranspositionTable.initPawnTableMegaByte();
         SEE.setupSEE();
         Evaluator.initEvaluator();
+        PawnEval.initPawnEvaluator();
     }
 
     public static int getAiMove() {
@@ -301,6 +304,7 @@ public final class Engine {
 
     public static int lmpTotal = 0;
     public static int aspSuccess = 0, aspFailA = 0, aspFailB = 0, aspTotal = 0;
+    public static int quiescenceFutility = 0, quiescenceDelta = 0, quiescenceSEE = 0;
 
     public static int hashTableReturn = 0;
 

@@ -15,7 +15,7 @@ import static java.lang.Math.min;
 
 public final class SEE {
 
-    private static final int[] scores = {0, 100, 325, 350, 500, 900, 10000, 100, 325, 350, 500, 900, 10000};
+    public static final int[] scores = {0, 100, 325, 350, 500, 900, 10000, 100, 325, 350, 500, 900, 10000};
 
     private static int[][] gainBackend;
     public static boolean readySEE = false;

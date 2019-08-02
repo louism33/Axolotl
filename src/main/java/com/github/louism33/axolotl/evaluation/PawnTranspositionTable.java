@@ -6,12 +6,8 @@ import org.junit.Assert;
 
 import java.util.Arrays;
 
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
-import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.search.EngineSpecifications.NUMBER_OF_THREADS;
 import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_EVAL;
-import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
-import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 import static java.lang.Long.numberOfTrailingZeros;
 
 @SuppressWarnings("ALL")
@@ -194,7 +190,7 @@ public final class PawnTranspositionTable {
             }
         }
 
-        returnArray = PawnEval.calculatePawnData(board, percentOfStartgame);
+        returnArray = PawnEval.calculatePawnData(board, percentOfStartgame, 0);
         int pawnFeatureScore = (int) returnArray[SCORE];
         addToTableReplaceArbitrarily(board.zobristPawnHash, returnArray, whichThread);
 

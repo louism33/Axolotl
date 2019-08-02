@@ -63,7 +63,7 @@ public class PawnTTTest {
 
         long[] pawnData = PawnTranspositionTable.getPawnData(board, board.zobristPawnHash, 0);
         Assert.assertNotNull(pawnData);
-        long[] testPawnData = PawnEval.calculatePawnData(board, 0);
+        long[] testPawnData = PawnEval.calculatePawnData(board, 0, 0);
         Assert.assertNotNull(testPawnData);
         if (!Arrays.equals(testPawnData, pawnData)) {
             System.out.println(board);

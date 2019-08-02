@@ -29,7 +29,7 @@ public class PawnEvalTest {
 
         long[] pawnData = PawnTranspositionTable.getPawnData(board, board.zobristPawnHash, 0);
         Assert.assertNotNull(pawnData);
-        long[] pawnDataTest = PawnEval.calculatePawnData(board, 0);
+        long[] pawnDataTest = PawnEval.calculatePawnData(board, 0, 0);
         Assert.assertNotNull(pawnDataTest);
         Assert.assertArrayEquals(pawnDataTest, pawnData);
     }
@@ -43,7 +43,7 @@ public class PawnEvalTest {
         Assert.assertTrue(board.zobristPawnHash != 0);
         long[] pawnData = PawnTranspositionTable.getPawnData(board, board.zobristPawnHash, 0);
         Assert.assertNotNull(pawnData);
-        long[] testPawnData = PawnEval.calculatePawnData(board, 0);
+        long[] testPawnData = PawnEval.calculatePawnData(board, 0, 0);
         Assert.assertNotNull(testPawnData);
         if (!Arrays.equals(testPawnData, pawnData)) {
             System.out.println(board);
@@ -67,7 +67,7 @@ public class PawnEvalTest {
         Assert.assertTrue(board.zobristPawnHash != 0);
         long[] pawnData = PawnTranspositionTable.getPawnData(board, board.zobristPawnHash, 0);
         Assert.assertNotNull(pawnData);
-        long[] testPawnData = PawnEval.calculatePawnData(board, 0);
+        long[] testPawnData = PawnEval.calculatePawnData(board, 0, 0);
         Assert.assertNotNull(testPawnData);
         if (!Arrays.equals(testPawnData, pawnData)) {
             System.out.println(board);
