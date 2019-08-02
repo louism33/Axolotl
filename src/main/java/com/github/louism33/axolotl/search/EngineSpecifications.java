@@ -7,6 +7,7 @@ public final class EngineSpecifications {
     public static boolean MASTER_DEBUG = false;
 
     public static boolean DEBUG = false;
+    public static boolean SPSA = true;
     public static boolean sendBestMove = true;
     public static boolean PRINT_PV = true;
     public static boolean PRINT_EVAL = false;

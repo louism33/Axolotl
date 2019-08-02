@@ -26,7 +26,7 @@ public final class PawnEval {
             EvaluatorPositionConstant.setup();
         }
 
-        long[] pawnMoveData = new long[PawnTranspositionTable.ENTRIES_PER_KEY];
+        long[] pawnMoveData = new long[PawnTranspositionTable.ENTRIES_PER_KEY]; // todo, move out
         int pawnScore = 0;
 
         long outpostsFilesWeaks = 0;

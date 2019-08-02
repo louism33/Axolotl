@@ -180,7 +180,7 @@ public final class Evaluator {
         int percentOfEndgame;
         int percentOfStartgame;
 
-        long[] turnThreatensSquares = new long[2];
+        long[] turnThreatensSquares = new long[2]; // todo thread specific, move out
 
         Assert.assertTrue(moves != null);
 

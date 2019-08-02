@@ -1,8 +1,10 @@
 package com.github.louism33.axolotl.main;
 
+import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.SearchSpecs;
+import com.github.louism33.axolotl.search.SearchUtils;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
@@ -79,6 +81,8 @@ public final class UCIEntry {
                         output.println();
                         output.println("option name Hash type spin default 128 min 1 max 1024");
                         output.println("option name Threads type spin default 1 min 1 max " + MAX_THREADS);
+
+
                         output.println("uciok");
                         protocolReady = true;
                     } else if (token.equalsIgnoreCase("debug")) {
@@ -144,7 +148,118 @@ public final class UCIEntry {
 
                             Engine.setThreads(number);
 
-                        } 
+                        } else if (SPSA) {
+                            if (nameToken.equalsIgnoreCase("kvs")) {
+                                startMaterial[K] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("bvs")) {
+                                startMaterial[B] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("rvs")) {
+                                startMaterial[R] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("qvs")) {
+                                startMaterial[Q] = Integer.parseInt(valueToken);
+                            //
+                            } else if (nameToken.equalsIgnoreCase("kve")) {
+                                endMaterial[K] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("bve")) {
+                                endMaterial[B] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("rve")) {
+                                endMaterial[R] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("qve")) {
+                                endMaterial[Q] = Integer.parseInt(valueToken);
+                            //
+                            } else if (nameToken.equalsIgnoreCase("p0s")) {
+                                startPawnFeatures[0] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p1s")) {
+                                startPawnFeatures[1] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p2s")) {
+                                startPawnFeatures[2] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p3s")) {
+                                startPawnFeatures[3] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p4s")) {
+                                startPawnFeatures[4] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p5s")) {
+                                startPawnFeatures[5] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p6s")) {
+                                startPawnFeatures[6] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p7s")) {
+                                startPawnFeatures[7] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p8s")) {
+                                startPawnFeatures[8] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p9s")) {
+                                startPawnFeatures[9] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p10s")) {
+                                startPawnFeatures[10] = Integer.parseInt(valueToken);
+                            //
+                            } else if (nameToken.equalsIgnoreCase("p0e")) {
+                                endPawnFeatures[0] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p1e")) {
+                                endPawnFeatures[1] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p2e")) {
+                                endPawnFeatures[2] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p3e")) {
+                                endPawnFeatures[3] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p4e")) {
+                                endPawnFeatures[4] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p5e")) {
+                                endPawnFeatures[5] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p6e")) {
+                                endPawnFeatures[6] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p7e")) {
+                                endPawnFeatures[7] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p8e")) {
+                                endPawnFeatures[8] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p9e")) {
+                                endPawnFeatures[9] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("p10e")) {
+                                endPawnFeatures[10] = Integer.parseInt(valueToken);
+                            // 
+                            } else if (nameToken.equalsIgnoreCase("futility1")) {
+                                SearchUtils.futilityMargin[1] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("futility2")) {
+                                SearchUtils.futilityMargin[2] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("futility3")) {
+                                SearchUtils.futilityMargin[3] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("futility4")) {
+                                SearchUtils.futilityMargin[4] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("futility5")) {
+                                SearchUtils.futilityMargin[5] = Integer.parseInt(valueToken);
+                            }
+                            //
+                            else if (nameToken.equalsIgnoreCase("alphaRazor1")) {
+                                SearchUtils.alphaRazorMargin[1] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("alphaRazor2")) {
+                                SearchUtils.alphaRazorMargin[2] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("alphaRazor3")) {
+                                SearchUtils.alphaRazorMargin[3] = Integer.parseInt(valueToken);
+                            }
+                            //
+                            else if (nameToken.equalsIgnoreCase("betaRazor1")) {
+                                SearchUtils.betaRazorMargin[1] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("betaRazor2")) {
+                                SearchUtils.betaRazorMargin[2] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("betaRazor3")) {
+                                SearchUtils.betaRazorMargin[3] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("betaRazor4")) {
+                                SearchUtils.betaRazorMargin[4] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("betaRazor5")) {
+                                SearchUtils.betaRazorMargin[5] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("betaRazor6")) {
+                                SearchUtils.betaRazorMargin[6] = Integer.parseInt(valueToken);
+                            }
+                            //
+                            else if (nameToken.equalsIgnoreCase("asp1")) {
+                                SearchUtils.ASPIRATION_WINDOWS[0] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("asp2")) {
+                                SearchUtils.ASPIRATION_WINDOWS[1] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("asp3")) {
+                                SearchUtils.ASPIRATION_WINDOWS[2] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("asp4")) {
+                                SearchUtils.ASPIRATION_WINDOWS[3] = Integer.parseInt(valueToken);
+                            } else if (nameToken.equalsIgnoreCase("asp5")) {
+                                SearchUtils.ASPIRATION_WINDOWS[4] = Integer.parseInt(valueToken);
+                            }
+                        }
+                        EvaluationConstants.setup();
                         break;
                     } else if (token.equalsIgnoreCase("register")) {
                         break;

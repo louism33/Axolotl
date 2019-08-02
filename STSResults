@@ -17,21 +17,20 @@ STS14SeventhRank: Successes: 84 out of 100
 STS15PointlessExchange: Successes: 56 out of 100
 
 
-
-
 1000 ms per position:
-STS1Undermining: Successes: 83 out of 100
-STS2OpenFilesAndDiagonals: Successes: 68 out of 100
-STS3KnightOutposts: Successes: 78 out of 100
+
+STS1Undermining: Successes: 87 out of 100
+STS2OpenFilesAndDiagonals: Successes: 73 out of 100
+STS3KnightOutposts: Successes: 76 out of 100
 STS4SquareVacancy: Successes: 75 out of 100
-STS5BishopVKnight: Successes: 84 out of 100
-STS6Recapturing: Successes: 92 out of 100
+STS5BishopVKnight: Successes: 81 out of 100
+STS6Recapturing: Successes: 95 out of 100
 STS7Simplification: Successes: 73 out of 100
-STS8fghPAWNS: Successes: 59 out of 100
-STS9abcPAWNS: Successes: 62 out of 100
-STS10Simplification: Successes: 88 out of 100
-STS11KingActivity: Successes: 62 out of 100
-STS12CenterControl: Successes: 49 out of 100
-STS13PawnCentre: Successes: 67 out of 100
-STS14SeventhRank: Successes: 85 out of 100
+STS8fghPAWNS: Successes: 64 out of 100
+STS9abcPAWNS: Successes: 67 out of 100
+STS10Simplification: Successes: 89 out of 100
+STS11KingActivity: Successes: 65 out of 100
+STS12CenterControl: Successes: 53 out of 100
+STS13PawnCentre: Successes: 77 out of 100
+STS14SeventhRank: Successes: 82 out of 100
 STS15PointlessExchange: Successes: 66 out of 100

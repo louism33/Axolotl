@@ -20,7 +20,7 @@ public final class SEE {
     // todo, consider special case for pinned pieces
     public static final int getSEE(Chessboard board, int move) {
         Assert.assertTrue(isCaptureMove(move) || isEnPassantMove(move));
-        final int[] gain = new int[32];
+        final int[] gain = new int[32]; // todo, move out
         int d = 0;
         final int destinationIndex = getDestinationIndex(move);
         final int sourceIndex = getSourceIndex(move);

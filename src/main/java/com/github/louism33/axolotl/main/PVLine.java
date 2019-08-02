@@ -16,7 +16,7 @@ public final class PVLine {
     public static final int maxPVLength = 10;
 
     public static List<String> retrievePV(Chessboard board) {
-        List<String> pvMoves = new ArrayList<>(maxPVLength);
+        List<String> pvMoves = new ArrayList<>(maxPVLength); // todo, move out
 
         int i = 0;
 

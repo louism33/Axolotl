@@ -407,6 +407,8 @@ public final class Engine {
                 }
                 betaFail++;
             }
+            
+            Assert.assertTrue(depth > 0);
 
             if (isAlphaRazoringMoveOkHere(depth, alpha)) {
                 int specificAlphaRazorMargin = alphaRazorMargin[depth];
@@ -538,6 +540,8 @@ public final class Engine {
                     if (staticBoardEval == SHORT_MINIMUM) {
                         staticBoardEval = Evaluator.eval(board, moves, whichThread);
                     }
+                    
+                    Assert.assertTrue(depth > 0);
 
                     int futilityScore = staticBoardEval + futilityMargin[depth];
 

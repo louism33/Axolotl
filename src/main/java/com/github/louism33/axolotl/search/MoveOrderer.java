@@ -16,6 +16,8 @@ import static com.github.louism33.chesscore.MoveConstants.*;
 import static com.github.louism33.chesscore.MoveParser.*;
 
 public final class MoveOrderer {
+    
+    // todo, history?
 
     private static int[][] mateKillers = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD];
     private static int[][] killerMoves = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD * 2];
