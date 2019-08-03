@@ -7,8 +7,11 @@ import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
+import static com.github.louism33.axolotl.search.Engine.quiescenceDelta;
+import static com.github.louism33.axolotl.search.Engine.quiescenceFutility;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
+import static com.github.louism33.axolotl.search.MoveOrderingConstants.neutralCapture;
 import static com.github.louism33.chesscore.MoveConstants.FIRST_FREE_BIT;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 
@@ -31,6 +34,11 @@ public final class Quiescence {
 
             if (standPatScore >= beta) {
                 return standPatScore;
+            }
+
+            if (standPatScore + 1200 < alpha) {
+                quiescenceFutility++;
+                return alpha;
             }
 
             if (standPatScore > alpha) {
@@ -89,6 +97,16 @@ public final class Quiescence {
                 }
                 Assert.assertEquals(MaterialHashUtil.makeMaterialHash(board), board.materialHash);
                 Assert.assertEquals(MaterialHashUtil.typeOfEndgame(board), board.typeOfGameIAmIn);
+            }
+
+            if (!inCheck) {
+                if (captureMove && standPatScore + 200 + SEE.scores[MoveParser.getVictimPieceInt(move)] < alpha) {
+                    quiescenceDelta++;
+                    continue;
+                }
+                if (loudMoveScore < neutralCapture) {
+                    continue;
+                }
             }
 
             board.makeMoveAndFlipTurn(loudMove);
