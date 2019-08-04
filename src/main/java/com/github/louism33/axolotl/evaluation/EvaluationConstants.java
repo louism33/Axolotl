@@ -13,9 +13,13 @@ public final class EvaluationConstants {
     public static final int CHECKMATE_ENEMY_SCORE_MAX_PLY = -IN_CHECKMATE_SCORE_MAX_PLY;
     public static final int IN_STALEMATE_SCORE = 0;
 
-    public static boolean ready = false;
+    private static boolean readyEvalConst = false;
 
-    public static void setup() {
+    public static void setupEvalConst(boolean force) {
+        if (!force && readyEvalConst) {
+            return;
+        }
+        
         material = new int[startMaterial.length];
         for (int i = 0; i < startMaterial.length; i++) {
             material[i] = Score.bs(startMaterial[i], endMaterial[i]);
@@ -47,7 +51,7 @@ public final class EvaluationConstants {
             miscFeatures[i] = Score.bs(startMiscFeatures[i], endMiscFeatures[i]);
         }
 
-        ready = true;
+        readyEvalConst = true;
     }
 
     // piece values

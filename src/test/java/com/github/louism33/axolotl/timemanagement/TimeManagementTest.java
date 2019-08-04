@@ -22,6 +22,7 @@ public class TimeManagementTest {
 
     @Test
     void dontAllocateBelowZeroTest() {
+        
         for (int i = 0; i < 100_000; i++) {
             Random r = new Random();
 

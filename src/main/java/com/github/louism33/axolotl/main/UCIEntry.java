@@ -2,6 +2,7 @@ package com.github.louism33.axolotl.main;
 
 import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.evaluation.Evaluator;
+import com.github.louism33.axolotl.evaluation.EvaluatorPositionConstant;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.axolotl.search.SearchUtils;
@@ -116,6 +117,7 @@ public final class UCIEntry {
                                 size = Integer.parseInt(valueToken);
                             } catch (Throwable e) {
                                 output.println("could not read hash value, sticking to " + DEFAULT_TABLE_SIZE_MB + "mb");
+                                Assert.assertTrue(size == DEFAULT_TABLE_SIZE_MB);
                             }
 
                             if (DEBUG) {
@@ -130,7 +132,7 @@ public final class UCIEntry {
                                 TABLE_SIZE_MB = MIN_TABLE_SIZE_MB;
                             }
 
-                            TranspositionTable.initTableMegaByte(TABLE_SIZE_MB);
+                            TranspositionTable.initTableMegaByte(TABLE_SIZE_MB, true);
 
                             // setoption name Threads value 2
                         } else if (nameToken.equalsIgnoreCase("Threads")) {
@@ -259,7 +261,8 @@ public final class UCIEntry {
                                 SearchUtils.ASPIRATION_WINDOWS[4] = Integer.parseInt(valueToken);
                             }
                         }
-                        EvaluationConstants.setup();
+                        EvaluationConstants.setupEvalConst(true);
+                        EvaluatorPositionConstant.setupEvalPosConst(true);
                         break;
                     } else if (token.equalsIgnoreCase("register")) {
                         break;

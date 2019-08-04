@@ -87,7 +87,7 @@ public class TranspositionTableStressTest {
     }
     
     private static void stressTestToDepthTest(int depth, Chessboard board, int hashSize, int numThreads) {
-        TranspositionTable.initTableMegaByte(hashSize);
+        TranspositionTable.initTableMegaByte(hashSize, true);
         Engine.setThreads(numThreads);
 
         Assert.assertEquals(Engine.numberOfMovesMade.length, numThreads);

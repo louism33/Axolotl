@@ -16,18 +16,25 @@ public final class TranspositionTable {
 
     public static long[] keys;
     public static long[] entries;
-    public static boolean tableReady = false;
-    public static int shiftAmount; 
+    private static boolean readyTT = false;
+    public static int shiftAmount;
     static final int bucketSize = 4;
 
+    public static void initTableMegaByte(int mb, boolean force) {
+        if (readyTT && !force) {
+            return;
+        }
 
-    public static void initTableMegaByte(int mb) {
         int maxSize = mb * TABLE_SIZE_PER_MB;
         int offset = 1;
 
+        if (BitOperations.populationCount(maxSize) != 1) {
+            maxSize = Integer.highestOneBit(maxSize) << 1;
+        }
+
         TABLE_SIZE = maxSize;
 
-        int actualTableSize = maxSize >> offset;
+        int actualTableSize = maxSize >> offset; // keys[] and entries[] will have this number of elements
         shiftAmount = 64 - numberOfTrailingZeros(actualTableSize);
 
         actualTableSize += bucketSize;
@@ -52,10 +59,10 @@ public final class TranspositionTable {
             entries = new long[actualTableSize];
         }
 
-        tableReady = true;
+        readyTT = true;
     }
 
-
+    // used for testing
     public static void initTable(int maxEntries) {
         if (BitOperations.populationCount(maxEntries) != 1) {
             System.out.println("please select a multiple of two for the hash table size");
@@ -98,7 +105,7 @@ public final class TranspositionTable {
             entries = new long[actualTableSize];
         }
 
-        tableReady = true;
+        readyTT = true;
     }
 
     public static int totalAdds = 0;
@@ -115,21 +122,19 @@ public final class TranspositionTable {
 
     public static void addToTableReplaceByDepth(long key, int bestMove,
                                                 int bestScore, int depth, int flag, int ply, int age) {
-        if (!tableReady) {
-//            initTable(TABLE_SIZE);
-            initTableMegaByte(TABLE_SIZE_MB);
-        }
+        initTableMegaByte(TABLE_SIZE_MB, false);
+        Assert.assertTrue(readyTT);
 
         totalAdds++;
 
-        int index = getIndex(key);
+        final int index = getIndex(key);
 
         int replaceMeIndex = 0;
         int worstDepth = SHORT_MAXIMUM;
 
         for (int i = index; i < index + bucketSize; i++) {
-            long currentKey = (keys[i] ^ entries[i]);
-            long currentEntry = entries[i];
+            final long currentKey = (keys[i] ^ entries[i]);
+            final long currentEntry = entries[i];
 
             if (currentEntry == 0) {
                 newEntries++;
@@ -137,7 +142,7 @@ public final class TranspositionTable {
                 break;
             }
 
-            int currentDepth = getDepth(currentEntry);
+            final int currentDepth = getDepth(currentEntry);
 
             if (key == currentKey) {
                 totalHits++;
@@ -150,7 +155,7 @@ public final class TranspositionTable {
                 break;
             }
 
-            int ageOfEntryInTable = getAge(currentEntry);
+            final int ageOfEntryInTable = getAge(currentEntry);
 
             if (isTooOld(ageOfEntryInTable, age)) {
                 agedOut++;
@@ -166,21 +171,19 @@ public final class TranspositionTable {
             }
         }
 
-        long possibleEntry = buildTableEntry(bestMove & MOVE_MASK_WITH_CHECK, bestScore, depth, flag, ply, age);
+        final long possibleEntry = buildTableEntry(bestMove & MOVE_MASK_WITH_CHECK, bestScore, depth, flag, ply, age);
 
         keys[replaceMeIndex] = key ^ possibleEntry;
         entries[replaceMeIndex] = possibleEntry;
     }
 
     public static long retrieveFromTable(long key) {
-        if (!tableReady) {
-//            initTable(TABLE_SIZE);
-            initTableMegaByte(TABLE_SIZE_MB);
-        }
+        initTableMegaByte(TABLE_SIZE_MB, false);
+        Assert.assertTrue(readyTT);
 
         totalLookup++;
 
-        int index = getIndex(key);
+        final int index = getIndex(key);
 
         for (int i = index; i < index + bucketSize; i++) {
             if ((keys[i] ^ entries[i]) == key) {
@@ -210,8 +213,7 @@ public final class TranspositionTable {
     }
 
     public static int getIndex(long key) {
-        int index = (int) (key >>> shiftAmount);
-        return index;
+        return (int) (key >>> shiftAmount);
     }
 
     static long buildTableEntry(int move, int score, int depth, int flag, int ply, int age) {

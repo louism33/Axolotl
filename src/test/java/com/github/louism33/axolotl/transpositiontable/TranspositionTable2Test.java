@@ -103,7 +103,6 @@ public class TranspositionTable2Test {
     @Test
     void dummyTest() {
         Engine.resetFull();
-        TranspositionTable.initTableMegaByte(DEFAULT_TABLE_SIZE_MB);
         final long basicKey = 1L << shiftAmount;
 
         addToTableReplaceByDepth(basicKey, 1, 666, 10, UPPERBOUND, 10, 1);
@@ -115,7 +114,6 @@ public class TranspositionTable2Test {
     @Test
     void ageOutTest() {
         Engine.resetFull();
-        TranspositionTable.initTableMegaByte(DEFAULT_TABLE_SIZE_MB);
 
         agedOut = 0;
 
@@ -150,9 +148,7 @@ public class TranspositionTable2Test {
 
     @Test
     void ageOut2Test() {
-
         Engine.resetFull();
-        TranspositionTable.initTableMegaByte(DEFAULT_TABLE_SIZE_MB);
 
         agedOut = 0;
 

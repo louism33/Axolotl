@@ -10,14 +10,12 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.evaluation.Evaluator.readyEvaluator;
-import static com.github.louism33.axolotl.evaluation.PawnEval.readyPawnEvaluator;
+import static com.github.louism33.axolotl.evaluation.KPK.generateKPKBitbase;
 import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.search.Quiescence.quiescenceSearch;
-import static com.github.louism33.axolotl.search.SEE.readySEE;
 import static com.github.louism33.axolotl.search.SearchSpecs.manageTime;
 import static com.github.louism33.axolotl.search.SearchSpecs.timeLimitMillis;
 import static com.github.louism33.axolotl.search.SearchUtils.*;
@@ -35,7 +33,7 @@ public final class Engine {
 
     public UCIEntry uciEntry;
     static Chessboard cloneBoard;
-    public static AtomicInteger threadsNumber = new AtomicInteger(0);
+    public static final AtomicInteger threadsNumber = new AtomicInteger(0);
     static Chessboard[] boards;
     static Chessboard board;
     public static int[][] rootMoves;
@@ -70,7 +68,7 @@ public final class Engine {
         }
     }
 
-    public static final void resetFull() {
+    public static final void resetFull() { // todo, should this reset uci options?
         if (DEBUG) {
             System.out.println("info string Full resetting");
         }
@@ -82,28 +80,21 @@ public final class Engine {
         }
         resetBetweenMoves();
         age = 0;
-        initTableMegaByte(TABLE_SIZE_MB);
-        PawnTranspositionTable.initPawnTableMegaByte();
+        initTableMegaByte(TABLE_SIZE_MB, true);
+
+        PawnTranspositionTable.initPawnTableDefault(true);
+
         SearchSpecs.maxDepth = ABSOLUTE_MAX_DEPTH;
-        if (!EvaluationConstants.ready) {
-            EvaluationConstants.setup();
-        }
 
-        if (!EvaluatorPositionConstant.readyEPC) {
-            EvaluatorPositionConstant.setup();
-        }
+        EvaluationConstants.setupEvalConst(false);
 
-        if (!readySEE) {
-            SEE.setupSEE();
-        }
+        EvaluatorPositionConstant.setupEvalPosConst(false);
 
-        if (!readyEvaluator) {
-            Evaluator.initEvaluator();
-        }
+        SEE.setupSEE(false);
 
-        if (!readyPawnEvaluator) {
-            PawnEval.initPawnEvaluator();
-        }
+        Evaluator.initEvaluator(false);
+
+        PawnEval.initPawnEvaluator(false);
     }
 
     public static void resetBetweenMoves() { // todo
@@ -167,11 +158,11 @@ public final class Engine {
         numberOfMovesMade = new long[NUMBER_OF_THREADS];
         numberOfQMovesMade = new long[NUMBER_OF_THREADS];
 
-        setupMoveOrderer();
-        PawnTranspositionTable.initPawnTableMegaByte();
-        SEE.setupSEE();
-        Evaluator.initEvaluator();
-        PawnEval.initPawnEvaluator();
+        setupMoveOrderer(true);
+        PawnTranspositionTable.initPawnTableDefault(true);
+        SEE.setupSEE(true);
+        Evaluator.initEvaluator(true);
+        PawnEval.initPawnEvaluator(true);
     }
 
     public static int getAiMove() {
@@ -197,6 +188,8 @@ public final class Engine {
     public void go(Chessboard board) {
         this.board = board;
         running = true;
+
+        generateKPKBitbase();
 
         searchFixedTime(uciEntry, board);
     }
@@ -267,7 +260,7 @@ public final class Engine {
             }
         }
 
-        Assert.assertTrue("search fixed time ended, but some threads still running! " + threadsNumber.get(),  threadsNumber.get() == 0);
+        Assert.assertTrue("search fixed time ended, but some threads still running! " + threadsNumber.get(), threadsNumber.get() == 0);
     }
 
 
@@ -422,7 +415,7 @@ public final class Engine {
                 }
                 betaFail++;
             }
-            
+
             Assert.assertTrue(depth > 0);
 
             if (isAlphaRazoringMoveOkHere(depth, alpha)) {
@@ -555,7 +548,7 @@ public final class Engine {
                     if (staticBoardEval == SHORT_MINIMUM) {
                         staticBoardEval = Evaluator.eval(board, moves, whichThread);
                     }
-                    
+
                     Assert.assertTrue(depth > 0);
 
                     int futilityScore = staticBoardEval + futilityMargin[depth];

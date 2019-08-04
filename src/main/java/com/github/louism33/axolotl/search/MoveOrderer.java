@@ -22,9 +22,14 @@ public final class MoveOrderer {
     private static int[][] mateKillers = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD];
     private static int[][] killerMoves = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD * 2];
 
-    static void setupMoveOrderer() {
-        mateKillers = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD];
-        killerMoves = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD * 2];
+    private static boolean readyMoveOrderer = false;
+    
+    static void setupMoveOrderer(boolean force) {
+        if (force || !readyMoveOrderer) {
+            mateKillers = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD];
+            killerMoves = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD * 2];
+        }
+        readyMoveOrderer = true;
     }
 
     static void resetMoveOrderer() {
@@ -57,7 +62,7 @@ public final class MoveOrderer {
         }
 
         for (int i = 0; i < numberOfMoves; i++) {
-            int move = moves[i];
+            final int move = moves[i];
             if (move == 0) {
                 break;
             }
@@ -95,7 +100,7 @@ public final class MoveOrderer {
         sortMoves(moves, numberOfMoves);
     }
 
-    static final void sortMoves(int[] moves, int numberOfMoves) {
+    private static final void sortMoves(int[] moves, int numberOfMoves) {
         Arrays.sort(moves, 0, numberOfMoves);
         for (int i = 0, j = numberOfMoves - 1; i < j; i++, j--) {
             int tmp = moves[i];

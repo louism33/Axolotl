@@ -15,18 +15,20 @@ import static java.lang.Math.min;
 
 public final class SEE {
 
-    public static final int[] scores = {0, 100, 325, 350, 500, 900, 10000, 100, 325, 350, 500, 900, 10000};
+    static final int[] scores = {0, 100, 325, 350, 500, 900, 10000, 100, 325, 350, 500, 900, 10000};
 
     private static int[][] gainBackend;
-    public static boolean readySEE = false;
-    
-    public static void setupSEE(){
-        gainBackend = new int[EngineSpecifications.NUMBER_OF_THREADS][32];
+    private static boolean readySEE = false;
+
+    static void setupSEE(boolean force) {
+        if (force || !readySEE) {
+            gainBackend = new int[EngineSpecifications.NUMBER_OF_THREADS][32];
+        }
         readySEE = true;
     }
     
     // todo, consider special case for pinned pieces
-    public static final int getSEE(Chessboard board, int move, int whichThread) {
+    static int getSEE(Chessboard board, int move, int whichThread) {
         Assert.assertTrue(isCaptureMove(move) || isEnPassantMove(move));
         final int[] gain = gainBackend[whichThread]; 
         int d = 0;
@@ -70,7 +72,7 @@ public final class SEE {
         return gain[0];
     }
 
-    private static final long getLeastValuablePiece(int[] pieceSquareTable, long attackTable, long friends) {
+    private static long getLeastValuablePiece(int[] pieceSquareTable, long attackTable, long friends) {
         long myPeople = attackTable & friends;
         int weakestAttackerScore = 999;
         long weakestAttacker = 0;

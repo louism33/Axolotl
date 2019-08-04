@@ -20,20 +20,18 @@ public final class PawnEval {
     public static final long blackFilesMask = 0xff00000000000000L;
 
     public static boolean readyPawnEvaluator = false;
-    private static long[][] pawnMoveDataBackend = new long[NUMBER_OF_THREADS][PawnTranspositionTable.ENTRIES_PER_KEY];
+    private static long[][] pawnMoveDataBackend;
 
-    public static void initPawnEvaluator() {
-        pawnMoveDataBackend = new long[NUMBER_OF_THREADS][PawnTranspositionTable.ENTRIES_PER_KEY];
+    public static void initPawnEvaluator(boolean force) {
+        if (!readyPawnEvaluator || force) {
+            pawnMoveDataBackend = new long[NUMBER_OF_THREADS][PawnTranspositionTable.ROUNDED_ENTRIES_PER_KEY];
+        }
         readyPawnEvaluator = true;
     }
-    
+
     public static long[] calculatePawnData(Chessboard board, int percentOfStart, int whichThread) {
-        if (!EvaluationConstants.ready) {
-            setup();
-        }
-        if (!EvaluatorPositionConstant.readyEPC) {
-            EvaluatorPositionConstant.setup();
-        }
+        setupEvalConst(false);
+        EvaluatorPositionConstant.setupEvalPosConst(false);
 
         final long[] pawnMoveData = pawnMoveDataBackend[whichThread];
         int pawnScore = 0;

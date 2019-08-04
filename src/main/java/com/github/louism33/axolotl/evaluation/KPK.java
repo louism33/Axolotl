@@ -19,6 +19,7 @@ public final class KPK {
         long start = System.currentTimeMillis();
 
         generateKPKBitbase();
+        Assert.assertTrue(pkpReady);
 
         System.out.println();
         System.out.println("time: " + (System.currentTimeMillis() - start));
@@ -35,7 +36,7 @@ public final class KPK {
      * @param board
      * @return
      */
-    public static boolean probe(Chessboard board) {
+    static boolean probe(Chessboard board) {
         int whiteKingIndex = Long.numberOfTrailingZeros(board.pieces[WHITE][KING]);
         int blackKingIndex = Long.numberOfTrailingZeros(board.pieces[BLACK][KING]);
 
@@ -72,9 +73,10 @@ public final class KPK {
         return probe(whiteKingIndex, pawnIndex, blackKingIndex, turn);
     }
 
-    public static boolean probe(int dominantKingIndex, int thePawn, int weakKingIndex, int playerToMove) {
+    private static boolean probe(int dominantKingIndex, int thePawn, int weakKingIndex, int playerToMove) {
         if (!pkpReady) {
             generateKPKBitbase();
+            Assert.assertTrue(pkpReady);
         }
 
         Assert.assertTrue((thePawn & 7) <= 3);
@@ -87,6 +89,7 @@ public final class KPK {
     public static boolean probe(int dominantKingIndex, int thePawn, int weakKingIndex, int playerToMove, int winningPlayer) {
         if (!pkpReady) {
             generateKPKBitbase();
+            Assert.assertTrue(pkpReady);
         }
 
         int whiteKing, whitePawn, blackKing, us;
@@ -118,17 +121,18 @@ public final class KPK {
         return probePKPForWinForWhite(whiteKing, whitePawn, blackKing, us);
     }
 
-    public static int flipCentre(int i) {
+    static int flipCentre(int i) {
         return (i / 8) * 8 + 7 - (i & 7);
     }
 
-    public static int flipUpDown(int i) {
+    static int flipUpDown(int i) {
         return (7 - i / 8) * 8 + (i & 7);
     }
 
-    public static boolean probePKPForWinForWhite(int wksq, int wpsq, int bksq, int us) {
+    private static boolean probePKPForWinForWhite(int wksq, int wpsq, int bksq, int us) {
         if (!pkpReady) {
             generateKPKBitbase();
+            Assert.assertTrue(pkpReady);
         }
         Assert.assertTrue((wpsq & 7) <= 3);
         int idx = index(us, bksq, wksq, wpsq);
@@ -140,10 +144,10 @@ public final class KPK {
 
     // There are 24 possible pawn squares: files A to D and ranks from 2 to 7.
     // Positions with the pawn on files E to H will be mirrored before probing.
-    public final static int MAX_INDEX = 2 * 24 * 64 * 64; // stm * psq * wksq * bksq = 196608
+    private final static int MAX_INDEX = 2 * 24 * 64 * 64; // stm * psq * wksq * bksq = 196608
 
     // Each uint32_t stores results of 32 positions, one per bit
-    public final static int[] KPKBitbase = new int[MAX_INDEX / 32];
+    private final static int[] KPKBitbase = new int[MAX_INDEX / 32];
 
     // A KPK bitbase index is an integer in [0, IndexMax] range
     //
@@ -171,18 +175,18 @@ public final class KPK {
         return (file & 7) + (rank - 1) * 8;
     }
 
-    public static class KPKPosition {
-        public int us;
-        public int[] ksq = new int[2];
-        public int psq;
-        public int result;
+    private static class KPKPosition {
+        int us;
+        int[] ksq = new int[2];
+        int psq;
+        int result;
 
 
         KPKPosition() {
         }
 
 
-        public KPKPosition(int idx) {
+        KPKPosition(int idx) {
             ksq[WHITE] = (int) ((idx >>> 0) & 0x3F);
             ksq[BLACK] = (int) ((idx >>> 6) & 0x3F);
 
@@ -251,7 +255,7 @@ public final class KPK {
             return result;
         }
 
-        public int classify(ArrayList<KPKPosition> db) {
+        int classify(ArrayList<KPKPosition> db) {
             return classify(us, db);
         }
 
@@ -311,9 +315,12 @@ public final class KPK {
     }
 
 
-    static boolean pkpReady = false;
+    private static boolean pkpReady = false;
 
     public static void generateKPKBitbase() {
+        if (pkpReady) {
+            return;
+        }
         ArrayList<KPKPosition> db = new ArrayList<>(MAX_INDEX);
 
         int idx;
@@ -321,14 +328,13 @@ public final class KPK {
 
         // Initialize db with known win / draw positions
         for (idx = 0; idx < MAX_INDEX; ++idx) {
-            final KPKPosition e = new KPKPosition(idx);
-            db.add(e);
+            db.add(new KPKPosition(idx));
         }
 
         // Iterate through the positions until none of the unknown positions can be
         // changed to either wins or draws (15 cycles needed).
         while (repeat) {
-            for (repeat = false, idx = 0; idx < MAX_INDEX; ++idx) {
+            for (repeat = false, idx = 0; idx < MAX_INDEX; ++idx) { 
                 repeat |= ((db.get(idx).result == UNKNOWN) && (db.get(idx).classify(db) != UNKNOWN));
             }
         }
@@ -343,9 +349,10 @@ public final class KPK {
         pkpReady = true;
     }
 
-    static {
-        generateKPKBitbase();
-    }
+//    static {
+//        generateKPKBitbase();
+//        Assert.assertTrue(pkpReady);
+//    }
 
 }
 

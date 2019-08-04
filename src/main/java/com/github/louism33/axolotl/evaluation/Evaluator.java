@@ -35,9 +35,12 @@ public final class Evaluator {
 
     public static boolean readyEvaluator = false;
     private static long[][] turnThreatensSquaresBackend = new long[NUMBER_OF_THREADS][2];
+    public static final int[][] scoresForEPO = new int[2][32];
 
-    public static void initEvaluator() {
-        turnThreatensSquaresBackend = new long[NUMBER_OF_THREADS][2];
+    public static void initEvaluator(boolean force) {
+        if (force || !readyEvaluator) {
+            turnThreatensSquaresBackend = new long[NUMBER_OF_THREADS][2];
+        }
         readyEvaluator = true;
     }
 
@@ -60,6 +63,7 @@ public final class Evaluator {
         epo.EPOturn = board.turn;
         PRINT_EVAL = false;
         return epo;
+//        return null;
     }
 
     /**
@@ -177,12 +181,9 @@ public final class Evaluator {
     public static final int evalGeneric(final Chessboard board, final int[] moves, int whichThread) {
 
         int turn = board.turn;
-        if (!EvaluationConstants.ready) {
-            setup();
-        }
-        if (!EvaluatorPositionConstant.readyEPC) {
-            EvaluatorPositionConstant.setup();
-        }
+        
+        setupEvalConst(false);
+        EvaluatorPositionConstant.setupEvalPosConst(false);
 
         int percentOfEndgame;
         int percentOfStartgame;
@@ -209,7 +210,9 @@ public final class Evaluator {
         if (MASTER_DEBUG && NUMBER_OF_THREADS == 1) {
             // this fails if pawn data is shared between threads
             Assert.assertArrayEquals(pawnData, getPawnData(board, board.zobristPawnHash, percentOfStartgame, whichThread));
-            Assert.assertArrayEquals(pawnData, PawnEval.calculatePawnData(board, percentOfStartgame, 0));
+            if (!Arrays.equals(pawnData, noPawnsData)) {
+                Assert.assertArrayEquals(pawnData, PawnEval.calculatePawnData(board, percentOfStartgame, 0));
+            }
         }
 
 
@@ -244,8 +247,6 @@ public final class Evaluator {
 
         return score;
     }
-
-    public static int[][] scoresForEPO = new int[2][32];
 
     private final static int evalTurn(Chessboard board, int turn, long[] pawnData,
                                       long[] turnThreatensSquares, int percentOfStartgame,

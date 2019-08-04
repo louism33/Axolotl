@@ -2,13 +2,11 @@ package strategictestsuite;
 
 import com.github.louism33.axolotl.evaluation.PawnTranspositionTable;
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.search.SearchSpecs;
 
 import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.DEFAULT_PAWN_TABLE_SIZE_MB;
-import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.PAWN_TABLE_SIZE;
+import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.PAWN_TABLE_SIZE_MB;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
-import static com.github.louism33.axolotl.search.EngineSpecifications.NUMBER_OF_THREADS;
 
 public class ResettingUtils {
 
@@ -23,10 +21,10 @@ public class ResettingUtils {
 
         Engine.setThreads(NUMBER_OF_THREADS);
 
-        PAWN_TABLE_SIZE = DEFAULT_PAWN_TABLE_SIZE_MB;
+        PAWN_TABLE_SIZE_MB = DEFAULT_PAWN_TABLE_SIZE_MB;
         SearchSpecs.reset();
         Engine.resetFull();
-        PawnTranspositionTable.initPawnTableMegaByte();
+        PawnTranspositionTable.initPawnTableDefault(true);
     }
 
 }
