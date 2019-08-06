@@ -9,6 +9,7 @@ import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
+//@Disabled
 public class TranspositionTable2Test {
 
     private Engine engine = new Engine();

@@ -4,6 +4,7 @@ import com.github.louism33.axolotl.evaluation.*;
 import com.github.louism33.axolotl.main.UCIEntry;
 import com.github.louism33.axolotl.timemanagement.TimeAllocator;
 import com.github.louism33.chesscore.Chessboard;
+import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import java.util.Arrays;
@@ -299,6 +300,11 @@ public final class Engine {
     public static int aspSuccess = 0, aspFailA = 0, aspFailB = 0, aspTotal = 0;
     public static int quiescenceFutility = 0, quiescenceDelta = 0, quiescenceSEE = 0;
 
+    public static final int[] indexOfCutoff = new int[128];
+
+    public static int hashCutoff = 0, mateKillerCutoff = 0, killerOneCutoff = 0;
+    public static int killerTwoCutoff = 0, oldKillerScoreOneCutoff = 0, oldKillerScoreTwoCutoff = 0, otherCutoff = 0;
+
     public static int hashTableReturn = 0;
 
     static int principleVariationSearch(Chessboard board,
@@ -309,6 +315,8 @@ public final class Engine {
 
         final int originalAlpha = alpha;
         final int turn = board.turn;
+
+        Assert.assertTrue(alpha < beta);
 
         if (!running) { // todo keep here?
             return 0;
@@ -324,7 +332,7 @@ public final class Engine {
 
         boolean inCheck = board.inCheckRecorder;
 
-        if (ply + depth < MAX_DEPTH_HARD - 2) {
+        if (ply + depth < MAX_DEPTH_HARD - 2) { // consider singular reply only depth 0
             depth += extensions(board, ply, inCheck, moves);
         }
 
@@ -342,7 +350,8 @@ public final class Engine {
                 return Evaluator.eval(board, moves, whichThread);
             }
 
-            return quiescenceSearch(board, alpha, beta, whichThread);
+            Assert.assertEquals(0, depth);
+            return quiescenceSearch(board, alpha, beta, whichThread, ply, depth);
         }
 
         alpha = Math.max(alpha, IN_CHECKMATE_SCORE + ply);
@@ -425,7 +434,7 @@ public final class Engine {
                     int qScore = quiescenceSearch(board,
                             alpha - specificAlphaRazorMargin,
                             alpha - specificAlphaRazorMargin + 1,
-                            whichThread);
+                            whichThread, 0, 0); // we pass 0 here as we are not looking for seldepth info
 
                     if (qScore + specificAlphaRazorMargin <= alpha) {
                         alphaSuccess++;
@@ -464,6 +473,7 @@ public final class Engine {
         if (hashMove == 0 && depth >= iidDepth) {
             int d = thisIsAPrincipleVariationNode ? depth - 2 : depth >> 1;
             principleVariationSearch(board, d, ply, alpha, beta, nullMoveCounter, whichThread); // todo, allow null move?
+            // todo, ply + 1 ?
             hashMove = getMove(retrieveFromTable(board.zobristHash));
             if (hashMove == 0) {
                 iidFail++;
@@ -488,6 +498,7 @@ public final class Engine {
             }
             int moveScore = getMoveScore(moves[i]);
 
+
             if (MASTER_DEBUG) {
                 if (i < lastMove - 1) {
                     if (i == 0) {
@@ -503,7 +514,28 @@ public final class Engine {
             int move = moves[i] & MOVE_MASK_WITHOUT_CHECK;
 
             if (MASTER_DEBUG) {
-                Assert.assertTrue(moveScore != 0);
+                board.makeMoveAndFlipTurn(move);
+                board.generateLegalMoves();
+                final boolean condition = board.inCheckRecorder;
+                board.unMakeMoveAndFlipTurn();
+                if (moveScore == giveCheckMove) {
+                    Assert.assertTrue(condition);
+                } else if (moveScore < giveCheckMove && condition) {
+                    final boolean isSpecialMove = isCaptureMove(move) || isPromotionMove(move)
+                            || isEnPassantMove(move) || isCastlingMove(move) || (move == hashMove);
+                    Assert.assertTrue(isSpecialMove);
+                }
+
+                if (condition) {
+                    final boolean condition1 = moveScore >= giveCheckMove || (MoveParser.isPromotionMove(move) && !MoveParser.isPromotionToQueen(move)) || MoveParser.isCastlingMove(move);
+                    if (!condition1) {
+                        System.out.println(board);
+                        MoveParser.printMove(moves);
+                        MoveParser.printMove(move);
+                        System.out.println(moveScore);
+                    }
+                    Assert.assertTrue(condition1);
+                }
             }
 
             final boolean captureMove = isCaptureMove(move);
@@ -639,6 +671,33 @@ public final class Engine {
             }
 
             if (alpha >= beta) {
+
+                indexOfCutoff[i]++;
+                if (move == hashMove) {
+                    hashCutoff++;
+                }
+                else if (move == mateKillers[whichThread][ply]) {
+                    mateKillerCutoff++;
+                }
+
+                else if (move == killerMoves[whichThread][ply * 2]) {
+                    killerOneCutoff++;
+                }
+
+                else if (move == killerMoves[whichThread][ply * 2 + 1]) {
+                    killerTwoCutoff++;
+                }
+
+                else if (ply >= 2 && move  == killerMoves[whichThread][ply * 2 - 4]) {
+                    oldKillerScoreOneCutoff++;
+                }
+
+                else if (ply >= 2 && move == killerMoves[whichThread][ply * 2 - 4 + 1]) {
+                    oldKillerScoreTwoCutoff++;
+                } else {
+                    otherCutoff++;
+                }
+
                 Assert.assertTrue((move & MOVE_SCORE_MASK) == 0);
                 if (alpha > CHECKMATE_ENEMY_SCORE_MAX_PLY) {
                     updateMateKillerMoves(whichThread, move, ply);
@@ -697,6 +756,10 @@ public final class Engine {
                 break;
             }
         }
+
+
+//        System.out.println("        Set ai move to: " + MoveParser.toString(aiMove));
+//        MoveParser.printMove(rootMoves[0]);
     }
 
 

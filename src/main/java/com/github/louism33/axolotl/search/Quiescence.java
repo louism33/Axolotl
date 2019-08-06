@@ -7,17 +7,30 @@ import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
-import static com.github.louism33.axolotl.search.Engine.quiescenceDelta;
-import static com.github.louism33.axolotl.search.Engine.quiescenceFutility;
+import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
+import static com.github.louism33.axolotl.search.Engine.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.neutralCapture;
+import static com.github.louism33.chesscore.BoardConstants.WHITE_KING;
+import static com.github.louism33.chesscore.BoardConstants.WHITE_PAWN;
 import static com.github.louism33.chesscore.MoveConstants.FIRST_FREE_BIT;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 
 public final class Quiescence {
 
-    public static int quiescenceSearch(Chessboard board, int alpha, int beta, int whichThread) {
+    static int selDepth = 0;
+
+    public static int quiescenceSearch(Chessboard board, int alpha, int beta, int whichThread, int ply, int depth) {
+
+        if (whichThread == MASTER_THREAD) {
+            selDepth = Math.max(selDepth, ply);
+            if (selDepth > 25) {
+//                System.out.println(board);
+//                System.out.println(selDepth);
+//                System.out.println();
+            }
+        }
 
         int[] moves = board.generateLegalMoves();
 
@@ -36,7 +49,7 @@ public final class Quiescence {
                 return standPatScore;
             }
 
-            if (standPatScore + 1200 < alpha) {
+            if (standPatScore + 1400 < alpha) {
                 quiescenceFutility++;
                 return alpha;
             }
@@ -53,8 +66,11 @@ public final class Quiescence {
         if (!inCheck) {
             scoreMovesQuiescence(moves, board, whichThread);
         } else {
-            scoreMoves(moves, board, 0, 0, whichThread);
+            // todo consider tableprobe
+            scoreMoves(moves, board, ply, 0, whichThread); // TODO, replace 0 with ply
         }
+
+        int numberOfQMovesSearched = 0;
 
         for (int i = 0; i < moves.length; i++) {
 
@@ -68,13 +84,14 @@ public final class Quiescence {
             final boolean captureMove = MoveParser.isCaptureMove(move);
             final boolean epMove = MoveParser.isEnPassantMove(move);
             final boolean promotionMove = MoveParser.isPromotionMove(move);
+            final boolean interestingMove = captureMove || epMove || promotionMove;
 
             if (MASTER_DEBUG) {
                 if (!inCheck && loudMoveScore != 0) {
                     Assert.assertTrue(captureMove || promotionMove || epMove);
                 }
             }
-           
+
             if (!inCheck && loudMoveScore == 0) {
                 break;
             }
@@ -100,17 +117,43 @@ public final class Quiescence {
             }
 
             if (!inCheck) {
-                if (captureMove && standPatScore + 200 + SEE.scores[MoveParser.getVictimPieceInt(move)] < alpha) {
+                int victimPiece = MoveParser.getVictimPieceInt(move);
+                if (epMove) {
+                    victimPiece = WHITE_PAWN;
+                }
+                if (victimPiece > WHITE_KING) {
+                    victimPiece -= 6;
+                }
+                if (!promotionMove && standPatScore + 200 + SEE.scores[victimPiece] < alpha) { //todo, don't do this in endgame
+//                if (!promotionMove && standPatScore + 250 + endMaterial[victimPiece - 1] < alpha) { //todo, don't do this in endgame
+//                    if (victimPiece == WHITE_PAWN) {
+//                        Assert.assertEquals(100, endMaterial[victimPiece - 1]);
+//                    }
                     quiescenceDelta++;
+                    Assert.assertTrue(MoveParser.isCaptureMove(move) || MoveParser.isEnPassantMove(move));
                     continue;
                 }
+            }
+
+            // idea from stockfish
+            boolean evasionPrunable = inCheck
+                    && (depth != 0 && numberOfQMovesSearched > 2)
+                    && alpha > IN_CHECKMATE_SCORE_MAX_PLY
+                    && !interestingMove;
+
+            if (!inCheck || evasionPrunable) {
                 if (loudMoveScore < neutralCapture) {
+                    if (inCheck) {
+                        Assert.assertTrue(!interestingMove);
+                        Assert.assertTrue(numberOfQMovesSearched > 0);
+                    }
+                    quiescenceSEE++;
                     continue;
                 }
             }
 
             board.makeMoveAndFlipTurn(loudMove);
-
+            numberOfQMovesSearched++;
             Engine.numberOfQMovesMade[whichThread]++;
 
             int score;
@@ -120,10 +163,12 @@ public final class Quiescence {
                     (board.isDrawByRepetition(1) || board.isDrawByFiftyMoveRule()))) {
                 score = IN_STALEMATE_SCORE;
             } else {
-                score = -quiescenceSearch(board, -beta, -alpha, whichThread);
+                score = -quiescenceSearch(board, -beta, -alpha, whichThread, ply + 1, depth - 1);
             }
 
             board.unMakeMoveAndFlipTurn();
+
+            // todo, timeout?
 
             if (score > alpha) {
                 alpha = score;
@@ -133,6 +178,11 @@ public final class Quiescence {
             }
 
         }
+
+        if (inCheck && numberOfQMovesSearched == 0) {
+            return IN_CHECKMATE_SCORE + ply;
+        }
+
         return alpha;
     }
 

@@ -66,6 +66,7 @@ public final class SearchUtils {
     }
 
     static boolean isNullMoveOkHere(Chessboard board, int nullMoveCounter, int depth, int R) {
+        // todo, make more efficient
         return nullMoveCounter < 1
                 && depth >= 2
                 && !maybeInEndgame(board)
@@ -73,7 +74,7 @@ public final class SearchUtils {
                 && !maybeInZugzwang(board);
     }
 
-    public static boolean maybeInEndgame(Chessboard board) {
+    public static boolean maybeInEndgame(Chessboard board) { // todo, use specific endgame hash
         return populationCount(board.pieces[board.turn][ALL_COLOUR_PIECES] | board.pieces[1 - board.turn][ALL_COLOUR_PIECES]) < 9;
     }
 

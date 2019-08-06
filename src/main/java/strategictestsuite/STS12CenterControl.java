@@ -65,7 +65,10 @@ public class STS12CenterControl {
             System.out.println(EPDObject.getBoard());
         }
         int[] winningMoves = EPDObject.getBestMoves();
+        
         int[] losingMoves = EPDObject.getAvoidMoves();
+
+        final int[] singleBestMove = EPDObject.getBestMoves();
 
 
         SearchSpecs.basicTimeSearch(timeLimit);
@@ -75,7 +78,8 @@ public class STS12CenterControl {
             System.out.println("my move: " + MoveParser.toString(move));
         }
 
-        final boolean condition = contains(winningMoves, move) && !contains(losingMoves, move);
+        final boolean condition = (allBestMoves ? contains(winningMoves, move) : contains(singleBestMove, move)) 
+                && !contains(losingMoves, move);
         if (condition) {
             successes++;
         }

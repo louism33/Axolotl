@@ -7,11 +7,13 @@ import com.github.louism33.utils.MoveParserFromAN;
 import com.github.louism33.utils.PGNParser;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//@Disabled
 @SuppressWarnings("ALL")
 public class DontCrashTest {
     private Engine engine = new Engine();

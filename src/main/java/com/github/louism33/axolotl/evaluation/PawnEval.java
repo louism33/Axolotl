@@ -38,7 +38,7 @@ public final class PawnEval {
 
         long outpostsFilesWeaks = 0;
 
-        final long allPieces = board.allPieces();
+        final long allPieces = board.allPieces(); // todo pass as arg
 
         for (int turn = WHITE; turn <= BLACK; turn++) {
             int myPawnScore = 0;

@@ -8,6 +8,7 @@ import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_PV;

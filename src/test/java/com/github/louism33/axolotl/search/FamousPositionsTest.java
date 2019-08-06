@@ -37,7 +37,7 @@ public class FamousPositionsTest {
 //        Engine.setThreads(4);
         SearchSpecs.basicTimeSearch(1_000);
         final int move = engine.simpleSearch(EPDObject.getBoard());
-        MoveParser.printMove(move);
+//        MoveParser.printMove(move);
 //        Assert.assertEquals(MoveParser.toString(move), "d5c6");
     }   
     

@@ -1,5 +1,6 @@
 50 ms per position:
 
+any best:
 STS1Undermining: Successes: 72 out of 100
 STS2OpenFilesAndDiagonals: Successes: 62 out of 100
 STS3KnightOutposts: Successes: 71 out of 100
@@ -15,6 +16,25 @@ STS12CenterControl: Successes: 47 out of 100
 STS13PawnCentre: Successes: 76 out of 100
 STS14SeventhRank: Successes: 82 out of 100
 STS15PointlessExchange: Successes: 59 out of 100
+
+single best:
+STS1Undermining: Successes: 37 out of 100
+STS2OpenFilesAndDiagonals: Successes: 51 out of 100
+STS3KnightOutposts: Successes: 45 out of 100
+STS4SquareVacancy: Successes: 34 out of 100
+STS5BishopVKnight: Successes: 54 out of 100
+STS6Recapturing: Successes: 55 out of 100
+STS7Simplification: Successes: 28 out of 100
+STS8fghPAWNS: Successes: 23 out of 100
+STS9abcPAWNS: Successes: 33 out of 100
+STS10Simplification: Successes: 62 out of 100
+STS11KingActivity: Successes: 18 out of 100
+STS12CenterControl: Successes: 43 out of 100
+STS14SeventhRank: Successes: 53 out of 100
+STS13PawnCentre: Successes: 53 out of 100
+STS15PointlessExchange: Successes: 20 out of 100
+
+
 
 
 1000 ms per position:

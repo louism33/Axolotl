@@ -36,7 +36,7 @@ public class DTMTest {
 //        MoveParser.printMove(board.generateLegalMoves());
         SearchSpecs.basicTimeSearch(10_000);
         final int move = engine.simpleSearch(board);
-        MoveParser.printMove(move);
+//        MoveParser.printMove(move);
         Assert.assertEquals("f6f7", MoveParser.toString(move));
     }
 }

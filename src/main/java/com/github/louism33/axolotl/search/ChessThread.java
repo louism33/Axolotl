@@ -71,9 +71,10 @@ public final class ChessThread extends Thread {
         }
 
         everything:
-        while (depth < SearchSpecs.maxDepth && running) {
+        while (depth < SearchSpecs.maxDepth && Engine.running) {
 
             depth++;
+            Quiescence.selDepth = 0;
 
             if (MASTER_DEBUG) {
                 Assert.assertEquals(makeMaterialHash(board), board.materialHash);
@@ -144,7 +145,6 @@ public final class ChessThread extends Thread {
                 }
 
                 if (score >= CHECKMATE_ENEMY_SCORE_MAX_PLY) { // todo, make only main thread?, or remove?
-//                    System.out.println(this.getName() + " breaking, mate found with score " + score);
                     break everything;
                 }
 
@@ -167,14 +167,13 @@ public final class ChessThread extends Thread {
                     }
                 } else {
                     aspSuccess++;
-//                    System.out.println("depth: " + depth + ", aat: " + alphaAspirationAttempts + ", bat: " + betaAspirationAttempts);
                     break;
                 }
             }
 
             long time = System.currentTimeMillis() - startTime;
             if ((time > 500 || depth > 5) && PRINT_PV && masterThread) {
-                uciEntry.send(board, aiMoveScore, depth, depth, time);
+                uciEntry.send(board, aiMoveScore, depth, Quiescence.selDepth, time);
             }
 
         }
@@ -185,7 +184,7 @@ public final class ChessThread extends Thread {
 
         if (PRINT_PV && masterThread) {
             long time = System.currentTimeMillis() - startTime;
-            uciEntry.send(board, aiMoveScore, depth, depth, time);
+            uciEntry.send(board, aiMoveScore, depth, Quiescence.selDepth, time);
         }
 
         if (EngineSpecifications.DEBUG) {

@@ -2,11 +2,13 @@ package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.evaluation.Evaluator.getPercentageOfStartGame;
 import static com.github.louism33.chesscore.BoardConstants.*;
 
+//@Disabled
 public class EndgamenessTest {
 
     @Test

@@ -291,6 +291,14 @@ public final class Evaluator {
         final long pinnedPieces = board.pinnedPieces;
         final boolean inCheck = board.inCheckRecorder;
 
+        if (MASTER_DEBUG) {
+            if (inCheck) {
+                Assert.assertTrue(board.inCheck(board.turn == WHITE));
+            } else {
+                Assert.assertTrue(!board.inCheck(board.turn == WHITE));
+            }
+        }
+
         int finalScore = 0, materialScore = 0;
 
         materialScore += populationCount(myPawns) * material[P];

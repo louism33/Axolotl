@@ -50,9 +50,9 @@ public class MateTest {
         System.out.println(EPDObject.getFullString());
 
         int[] winningMoves = EPDObject.getBestMoves();
-        EngineSpecifications.PRINT_PV = false;
+        EngineSpecifications.PRINT_PV = true;
         final Chessboard board = EPDObject.getBoard();
-                
+
         SearchSpecs.basicTimeSearch(timeLimit);
         final int move = engine.simpleSearch(EPDObject.getBoard());
         System.out.println(board);
