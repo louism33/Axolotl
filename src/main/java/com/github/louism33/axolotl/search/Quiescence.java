@@ -40,7 +40,7 @@ public final class Quiescence {
 
         if (!inCheck) {
             if (MASTER_DEBUG) {
-                Assert.assertFalse(board.inCheck(board.isWhiteTurn()));
+                Assert.assertFalse(board.inCheck());
             }
 
             standPatScore = Evaluator.eval(board, moves, whichThread);

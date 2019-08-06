@@ -293,9 +293,9 @@ public final class Evaluator {
 
         if (MASTER_DEBUG) {
             if (inCheck) {
-                Assert.assertTrue(board.inCheck(board.turn == WHITE));
+                Assert.assertTrue(board.inCheck());
             } else {
-                Assert.assertTrue(!board.inCheck(board.turn == WHITE));
+                Assert.assertTrue(!board.inCheck());
             }
         }
 

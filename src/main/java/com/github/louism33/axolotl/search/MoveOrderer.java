@@ -301,7 +301,10 @@ public final class MoveOrderer {
         final long destinationLong = getDestinationLong(move);
         final int movingPiece = getMovingPieceInt(move);
 
-        final boolean possibleDisco = (sourceLong & enemyKingStar) != 0;
+        // notes, pawns can't check and disco check
+        
+        
+        final boolean possibleDisco = (sourceLong & enemyKingStar) != 0; 
         boolean possibleCheck = false;
 
         final long kingMoves = KING_MOVE_TABLE[enemyKingIndex];
@@ -360,7 +363,7 @@ public final class MoveOrderer {
             }
 
             board.makeMoveAndFlipTurn(move);
-            checkingMove = board.inCheck(board.isWhiteTurn());
+            checkingMove = board.inCheck();
             board.unMakeMoveAndFlipTurn();
         }
 

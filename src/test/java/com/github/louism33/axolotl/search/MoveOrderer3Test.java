@@ -150,7 +150,7 @@ public class MoveOrderer3Test {
         final boolean predictedCheckingState = checkingMove(board, move, enemyKingIndex, enemyKingCross, enemyKingX, enemyKingStar);
         boolean isReallyCheck;
         board.makeMoveAndFlipTurn(move);
-        isReallyCheck = board.inCheck(board.turn == WHITE);
+        isReallyCheck = board.inCheck();
         board.unMakeMoveAndFlipTurn();
 
         Assert.assertEquals(isReallyCheck, predictedCheckingState);
