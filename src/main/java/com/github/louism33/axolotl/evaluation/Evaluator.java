@@ -177,7 +177,6 @@ public final class Evaluator {
         }
     }
 
-    // todo , remove moves[]
     public static final int evalGeneric(final Chessboard board, int whichThread) {
 
         int turn = board.turn;
@@ -190,7 +189,7 @@ public final class Evaluator {
 
         long[] turnThreatensSquares = turnThreatensSquaresBackend[whichThread];
 
-//        Assert.assertTrue(board.currentCheckStateKnown);
+//        Assert.assertTrue(board.currentCheckStateKnown);  // todo
 
         if (PRINT_EVAL) {
             Arrays.fill(scoresForEPO[WHITE], 0);

@@ -79,7 +79,9 @@ public final class Quiescence {
             }
 
             final int loudMoveScore = getMoveScore(move);
-
+            if (!inCheck && loudMoveScore == 0) {
+                break;
+            }
             final boolean captureMove = MoveParser.isCaptureMove(move);
             final boolean epMove = MoveParser.isEnPassantMove(move);
             final boolean promotionMove = MoveParser.isPromotionMove(move);
@@ -89,10 +91,6 @@ public final class Quiescence {
                 if (!inCheck && loudMoveScore != 0) {
                     Assert.assertTrue(captureMove || promotionMove || epMove);
                 }
-            }
-
-            if (!inCheck && loudMoveScore == 0) {
-                break;
             }
 
             final int loudMove = move & MOVE_MASK_WITH_CHECK;

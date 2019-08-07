@@ -23,8 +23,7 @@ import static com.github.louism33.axolotl.search.SearchUtils.*;
 import static com.github.louism33.axolotl.timemanagement.TimeAllocator.outOfTime;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
-import static com.github.louism33.chesscore.MaterialHashUtil.makeMaterialHash;
-import static com.github.louism33.chesscore.MaterialHashUtil.typeOfEndgame;
+import static com.github.louism33.chesscore.MaterialHashUtil.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_SCORE_MASK;
 import static com.github.louism33.chesscore.MoveParser.*;
@@ -208,6 +207,7 @@ public final class Engine {
         //UCI can provide root moves if doing searchmoves
         if (rootMoves[MASTER_THREAD] == null || computeMoves) {
             rootMoves[MASTER_THREAD] = board.generateLegalMoves();
+            Assert.assertTrue(board.currentCheckStateKnown);
         }
 
         knownCheckStateRoot = true;
@@ -348,7 +348,12 @@ public final class Engine {
             checkers = board.getCheckers();
         }
 
-
+        if (!rootNode && !board.currentCheckStateKnown) {
+            System.out.println(board);
+            System.out.println(rootNode);
+            Assert.assertTrue(board.currentCheckStateKnown);
+        }
+        
         if (MASTER_DEBUG && rootNode) {
             Assert.assertEquals(rootMoves[whichThread], moves);
             Assert.assertEquals(board.zobristPawnHash, cloneBoard.zobristPawnHash);
@@ -572,6 +577,13 @@ public final class Engine {
                     moveScore = hashScore;
                     PHASE++;
                     hashAlreadyTried = true;
+
+                    if (MASTER_DEBUG) {
+                        Chessboard clone = new Chessboard(board.toFenString());
+                        final int[] cloneMoves = clone.generateLegalMoves();
+                        Assert.assertTrue(contains(cloneMoves, hashMove));
+                    }
+                    
                     break;
                 case PHASE_KILLER_ONE:
                     PHASE++;
@@ -646,10 +658,6 @@ public final class Engine {
                     }
                 }
             }
-
-//            move = moves[i] & MOVE_MASK_WITHOUT_CHECK;
-
-//            MoveParser.printMove(move);
 
             if (MASTER_DEBUG) {
                 board.makeMoveAndFlipTurn(move);
