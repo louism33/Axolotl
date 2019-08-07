@@ -316,7 +316,10 @@ public final class Engine {
     public static int killerTwoCutoff = 0, oldKillerScoreOneCutoff = 0, oldKillerScoreTwoCutoff = 0, otherCutoff = 0;
     public static int noMovesAndHash = 0, noMovesAndNoHash = 0;
     public static int yesMovesAndHash = 0, yesMovesAndNoHash = 0;
+    public static int cutoffWithoutMoveGenPossible = 0;
     public static int cutoffWithoutMoveGen = 0;
+    public static int cutoffWithMoveGen = 0;
+    public static int cutoffWithoutMoveGenOTHER = 0;
 
     public static int hashTableReturn = 0;
 
@@ -338,8 +341,6 @@ public final class Engine {
         int[] moves = null;
         long checkers;
         final boolean rootNode = ply == 0;
-//        final boolean trunkNode = !rootNode && depth != 0;
-//        final boolean leafNode = !rootNode && depth == 0;
         if (rootNode) {
             checkers = board.checkingPieces;
             moves = rootMoves[whichThread];
@@ -363,16 +364,8 @@ public final class Engine {
         final boolean trunkNode = !rootNode && depth != 0;
         final boolean leafNode = !rootNode && depth == 0;
         if (rootNode) {
-//            checkers = board.checkingPieces;
             moves = rootMoves[whichThread];
-        } else if (leafNode) {
-//            checkers = board.getCheckers();
-            moves = board.generateLegalMoves(checkers);
-        } else {
-//            checkers = board.getCheckers();
-//            moves = board.generateLegalMoves(checkers);
-        }
-        
+        } 
 
         Assert.assertTrue(depth >= 0);
 
@@ -385,7 +378,8 @@ public final class Engine {
             }
 
             if (ply >= MAX_DEPTH_HARD) {
-                return Evaluator.eval(board, moves, whichThread);
+                Assert.assertTrue(moves != null);
+                return Evaluator.eval(board, whichThread);
             }
 
             Assert.assertEquals(0, depth);
@@ -451,10 +445,7 @@ public final class Engine {
 
         if (!thisIsAPrincipleVariationNode && !inCheck) {
 
-            if (moves == null) {
-                moves = board.generateLegalMoves(checkers);
-            }
-            staticBoardEval = Evaluator.eval(board, moves, whichThread);
+            staticBoardEval = Evaluator.eval(board, whichThread);
 
             if (isBetaRazoringOkHere(depth, staticBoardEval)) {
                 betaTotal++;
@@ -529,78 +520,122 @@ public final class Engine {
 
         int PHASE = PHASE_HASH;
 
-        if (moves == null) {
-            
-//            moves = board.generateLegalMoves(checkers);
-            
+        if (rootNode) {
             if (hashMove != 0) {
-//                PHASE = PHASE_HASH;
+                PHASE = PHASE_HASH;
+            } else {
+                PHASE = PHASE_REG_MOVES;
+            }
+        }
+        else if (moves == null) {
+            Assert.assertTrue(!rootNode);
+
+            if (hashMove != 0) {
+                Assert.assertTrue(PHASE == PHASE_HASH);
+                PHASE = PHASE_HASH;
                 noMovesAndHash++;
-            } else{
+            } else {
 //                PHASE++;
                 noMovesAndNoHash++;
-            } 
-            
-            PHASE = PHASE_GEN_MOVES; // todo
-        } else {
-            if (hashMove != 0) {
-                yesMovesAndHash++;
-            } else{
-//                PHASE++;
-                yesMovesAndNoHash++;
+                PHASE = PHASE_GEN_MOVES; // todo, cap then killers
             }
 
-            PHASE = PHASE_ORDER_MOVES; // todo
+        } else {
+            if (hashMove != 0) {
+                PHASE = PHASE_HASH;
+                yesMovesAndHash++;
+            } else {
+                PHASE++;
+                yesMovesAndNoHash++;
+                PHASE = PHASE_ORDER_MOVES; // todo
+            }
+
         }
-        
-        
-        
+
+
         int lastMove = 2;
 
         int numberOfMovesSearched = 0;
 
         // prob need while loop + int Phase
-        int moveScore;
+        int moveScore = -1;
         int i = 0;
-        int move;
+        int move = -1;
+        boolean hashAlreadyTried = false;
+
+        everything:
         while (i < lastMove) {
-
             switch (PHASE) {
-//                case PHASE_HASH:
-//                    Assert.assertTrue(hashMove != 0);
-//                case PHASE_KILLER_ONE:
-//                case PHASE_KILLER_TWO:
+                case PHASE_HASH:
+                    Assert.assertTrue(hashMove != 0);
+                    move = hashMove;
+                    moveScore = hashScore;
+                    PHASE++;
+                    hashAlreadyTried = true;
+                    break;
+                case PHASE_KILLER_ONE:
+                    PHASE++;
+                case PHASE_KILLER_TWO:
+                    PHASE++;
                 case PHASE_GEN_MOVES:
-                    Assert.assertTrue(moves == null);
 
-                    moves = board.generateLegalMoves(checkers);
+                    if (moves == null) {
+                        Assert.assertTrue(!rootNode);
+                        moves = board.generateLegalMoves(checkers);
+                    }
 
                     PHASE++;
 
                 case PHASE_ORDER_MOVES:
+                    Assert.assertTrue(moves != null);
+
                     lastMove = moves[moves.length - 1];
-                    if (ply != 0) {
-                        scoreMoves(moves, board, ply, hashMove, whichThread, false);
+                    if (!rootNode) {
+
+                        if (MASTER_DEBUG) {
+                            for (int j = 0; j < lastMove; j++) {
+                                Assert.assertTrue(MoveOrderer.getMoveScore(moves[j]) == 0);
+                            }
+                        }
+                        
+                        scoreMoves(moves, board, ply, hashMove, whichThread, hashAlreadyTried);
                     }
                     PHASE++;
-                    
+
                 case PHASE_REG_MOVES:
                     final boolean condition = moves != null;
                     if (!condition) {
                         System.out.println();
                     }
                     Assert.assertTrue(condition);
+
+                    if (moves[i] == 0) {
+                        break everything;
+                    }
+
+
+                    move = moves[i] & MOVE_MASK_WITHOUT_CHECK;
+                    moveScore = getMoveScore(moves[i]);
+
+                    if (hashAlreadyTried && i == 0) {
+                        Assert.assertTrue(moveScore == hashScore);
+                        i++;
+                        continue;
+                    }
+
             }
 
-//            System.out.println("phase: " + PHASE+ ", i: " + i);
-            
-            if (moves[i] == 0) {
-                break;
+            Assert.assertTrue(PHASE <= PHASE_REG_MOVES);
+            Assert.assertTrue(PHASE >= PHASE_HASH);
+
+            Assert.assertTrue(move != -1);
+            Assert.assertTrue(moveScore != -1);
+
+            if (PHASE - 1 == PHASE_HASH) {
+                Assert.assertTrue(i == 0);
             }
-            moveScore = getMoveScore(moves[i]);
 
-
-            if (MASTER_DEBUG) {
+            if (MASTER_DEBUG && PHASE >= PHASE_REG_MOVES) {
                 if (i < lastMove - 1) {
                     if (i == 0) {
                         Assert.assertTrue(moveScore >= getMoveScore(moves[i + 1]));
@@ -612,10 +647,10 @@ public final class Engine {
                 }
             }
 
-            move = moves[i] & MOVE_MASK_WITHOUT_CHECK;
+//            move = moves[i] & MOVE_MASK_WITHOUT_CHECK;
 
 //            MoveParser.printMove(move);
-            
+
             if (MASTER_DEBUG) {
                 board.makeMoveAndFlipTurn(move);
                 board.generateLegalMoves();
@@ -644,7 +679,8 @@ public final class Engine {
             final boolean captureMove = isCaptureMove(move);
             final boolean promotionMove = isPromotionMove(move);
             final boolean queenPromotionMove = promotionMove ? isPromotionToQueen(move) : false;
-            final boolean givesCheckMove = isCheckingMove(moves[i]); // keep moves[i] here
+            // keep moves[i] here
+            final boolean givesCheckMove = PHASE < PHASE_REG_MOVES ? false : isCheckingMove(moves[i]);
             final boolean pawnToSix = moveIsPawnPushSix(turn, move);
             final boolean pawnToSeven = moveIsPawnPushSeven(turn, move);
             final boolean quietMove = !(captureMove || promotionMove);
@@ -658,6 +694,8 @@ public final class Engine {
                         System.out.println(trunkNode);
                         System.out.println(depth);
                         System.out.println(ply);
+                        System.out.println();
+                        System.out.println(PHASE);
                         Assert.assertTrue(moveScore >= (neutralCapture - 5));
                     }
                     Assert.assertTrue(moveScore >= (neutralCapture - 5));
@@ -691,7 +729,8 @@ public final class Engine {
                     futilityTotal++;
 
                     if (staticBoardEval == SHORT_MINIMUM) {
-                        staticBoardEval = Evaluator.eval(board, moves, whichThread);
+                        Assert.assertTrue(moves != null);
+                        staticBoardEval = Evaluator.eval(board, whichThread);
                     }
 
                     Assert.assertTrue(depth > 0);
@@ -786,9 +825,24 @@ public final class Engine {
 
             if (alpha >= beta) {
 
+                if (PHASE - 1 == PHASE_HASH) { // phase +1 because we increment phase straight away
+                    cutoffWithoutMoveGenPossible++;
+                    if (moves == null) {
+                        cutoffWithoutMoveGen++;
+                    }
+                } else {
+                    cutoffWithMoveGen++;
+                    if (moves != null) {
+                        cutoffWithoutMoveGenOTHER++;
+                    }
+                }
+
                 indexOfCutoff[i]++;
                 if (move == hashMove) {
                     hashCutoff++;
+//                    if (MASTER_DEBUG) {
+//                        Assert.assertTrue(move == moves[0]);
+//                    }
                 } else if (move == mateKillers[whichThread][ply]) {
                     mateKillerCutoff++;
                 } else if (move == killerMoves[whichThread][ply * 2]) {

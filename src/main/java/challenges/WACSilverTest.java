@@ -83,7 +83,7 @@ public class WACSilverTest {
         SearchSpecs.basicTimeSearch(timeLimit);
         final int move = engine.simpleSearch(EPDObject.getBoard());
 
-        MoveParser.printMove(move);
+//        MoveParser.printMove(move);
         
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
 

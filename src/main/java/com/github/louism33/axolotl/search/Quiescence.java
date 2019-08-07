@@ -25,14 +25,11 @@ public final class Quiescence {
 
         if (whichThread == MASTER_THREAD) {
             selDepth = Math.max(selDepth, ply);
-            if (selDepth > 25) {
-//                System.out.println(board);
-//                System.out.println(selDepth);
-//                System.out.println();
-            }
         }
 
-        int[] moves = board.generateLegalMoves();
+        long checkers = board.getCheckers();
+
+//        int[] moves = board.generateLegalMoves(checkers);
 
         int standPatScore = SHORT_MINIMUM;
 
@@ -43,7 +40,7 @@ public final class Quiescence {
                 Assert.assertFalse(board.inCheck());
             }
 
-            standPatScore = Evaluator.eval(board, moves, whichThread);
+            standPatScore = Evaluator.eval(board, whichThread);
 
             if (standPatScore >= beta) {
                 return standPatScore;
@@ -63,11 +60,13 @@ public final class Quiescence {
             Assert.assertFalse(standPatScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
         }
 
+        int[] moves = board.generateLegalMoves(checkers);
+        
         if (!inCheck) {
             scoreMovesQuiescence(moves, board, whichThread);
         } else {
             // todo consider tableprobe
-            scoreMoves(moves, board, ply, 0, whichThread, false); // TODO, replace 0 with ply
+            scoreMoves(moves, board, ply, 0, whichThread, false);
         }
 
         int numberOfQMovesSearched = 0;

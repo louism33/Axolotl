@@ -58,7 +58,7 @@ public final class Evaluator {
 
     public static EvalPrintObject stringEval(Chessboard board, int turn, int[] moves) {
         PRINT_EVAL = true;
-        eval(board, moves, 0);
+        eval(board, 0);
         EvalPrintObject epo = new EvalPrintObject(scoresForEPO);
         epo.EPOturn = board.turn;
         PRINT_EVAL = false;
@@ -71,12 +71,11 @@ public final class Evaluator {
      * trapped pieces
      * pinned pieces, and to queen
      */
-
+    /**
+     * Don't call if in check
+     */
     public static final int eval(final Chessboard board, int whichThread) {
-        return eval(board, board.generateLegalMoves(), whichThread);
-    }
-
-    public static final int eval(final Chessboard board, final int[] moves, int whichThread) {
+        
         if (board.isDrawByInsufficientMaterial() || board.isDrawByFiftyMoveRule()
                 || board.isDrawByRepetition(1)) {
             return 0;
@@ -172,14 +171,14 @@ public final class Evaluator {
 
                     case UNKNOWN:
                     default:
-                        return evalGeneric(board, moves, whichThread);
+                        return evalGeneric(board, whichThread);
                 }
 
         }
     }
 
     // todo , remove moves[]
-    public static final int evalGeneric(final Chessboard board, final int[] moves, int whichThread) {
+    public static final int evalGeneric(final Chessboard board, int whichThread) {
 
         int turn = board.turn;
         
@@ -192,7 +191,6 @@ public final class Evaluator {
         long[] turnThreatensSquares = turnThreatensSquaresBackend[whichThread];
 
 //        Assert.assertTrue(board.currentCheckStateKnown);
-        Assert.assertTrue(moves != null);
 
         if (PRINT_EVAL) {
             Arrays.fill(scoresForEPO[WHITE], 0);
