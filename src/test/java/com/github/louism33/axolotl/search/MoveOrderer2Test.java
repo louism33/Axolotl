@@ -6,7 +6,6 @@ import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
@@ -110,7 +109,7 @@ public class MoveOrderer2Test {
     private static void countFinalNodesAtDepthHelper(Chessboard board, int depth, boolean useQSort, boolean useRSort, boolean useRegSort) {
         int[] moves = board.generateLegalMoves();
         if (useRegSort) {
-            scoreMoves(moves, board, 0, 0, 0);
+            scoreMoves(moves, board, 0, 0, 0, false);
         } else if (useRSort) {
             scoreMovesAtRoot(moves, moves[moves.length - 1], board);
         } else if (useQSort) {

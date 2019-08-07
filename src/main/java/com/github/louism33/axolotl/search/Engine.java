@@ -56,6 +56,8 @@ public final class Engine {
 
     public static int age = 0;
 
+    private static final int PHASE_HASH = 0, PHASE_KILLER_ONE = 1, PHASE_KILLER_TWO = 2, PHASE_GEN_MOVES = 3, PHASE_ORDER_MOVES = 4, PHASE_REG_MOVES = 5;
+
     public Engine() {
         this.uciEntry = new UCIEntry(this);
     }
@@ -314,6 +316,7 @@ public final class Engine {
     public static int killerTwoCutoff = 0, oldKillerScoreOneCutoff = 0, oldKillerScoreTwoCutoff = 0, otherCutoff = 0;
     public static int noMovesAndHash = 0, noMovesAndNoHash = 0;
     public static int yesMovesAndHash = 0, yesMovesAndNoHash = 0;
+    public static int cutoffWithoutMoveGen = 0;
 
     public static int hashTableReturn = 0;
 
@@ -523,38 +526,78 @@ public final class Engine {
 
         int bestScore = SHORT_MINIMUM;
         int bestMove = 0;
+
+        int PHASE = PHASE_HASH;
+
         if (moves == null) {
             
-            moves = board.generateLegalMoves(checkers);
+//            moves = board.generateLegalMoves(checkers);
+            
             if (hashMove != 0) {
+//                PHASE = PHASE_HASH;
                 noMovesAndHash++;
             } else{
+//                PHASE++;
                 noMovesAndNoHash++;
-            }
+            } 
+            
+            PHASE = PHASE_GEN_MOVES; // todo
         } else {
             if (hashMove != 0) {
                 yesMovesAndHash++;
             } else{
+//                PHASE++;
                 yesMovesAndNoHash++;
             }
+
+            PHASE = PHASE_ORDER_MOVES; // todo
         }
         
         
         
-        final int lastMove = moves[moves.length - 1];
-        if (ply != 0) {
-            scoreMoves(moves, board, ply, hashMove, whichThread);
-        }
+        int lastMove = 2;
 
         int numberOfMovesSearched = 0;
 
-        
         // prob need while loop + int Phase
-        for (int i = 0; i < lastMove; i++) {
+        int moveScore;
+        int i = 0;
+        int move;
+        while (i < lastMove) {
+
+            switch (PHASE) {
+//                case PHASE_HASH:
+//                    Assert.assertTrue(hashMove != 0);
+//                case PHASE_KILLER_ONE:
+//                case PHASE_KILLER_TWO:
+                case PHASE_GEN_MOVES:
+                    Assert.assertTrue(moves == null);
+
+                    moves = board.generateLegalMoves(checkers);
+
+                    PHASE++;
+
+                case PHASE_ORDER_MOVES:
+                    lastMove = moves[moves.length - 1];
+                    if (ply != 0) {
+                        scoreMoves(moves, board, ply, hashMove, whichThread, false);
+                    }
+                    PHASE++;
+                    
+                case PHASE_REG_MOVES:
+                    final boolean condition = moves != null;
+                    if (!condition) {
+                        System.out.println();
+                    }
+                    Assert.assertTrue(condition);
+            }
+
+//            System.out.println("phase: " + PHASE+ ", i: " + i);
+            
             if (moves[i] == 0) {
                 break;
             }
-            int moveScore = getMoveScore(moves[i]);
+            moveScore = getMoveScore(moves[i]);
 
 
             if (MASTER_DEBUG) {
@@ -569,8 +612,10 @@ public final class Engine {
                 }
             }
 
-            int move = moves[i] & MOVE_MASK_WITHOUT_CHECK;
+            move = moves[i] & MOVE_MASK_WITHOUT_CHECK;
 
+//            MoveParser.printMove(move);
+            
             if (MASTER_DEBUG) {
                 board.makeMoveAndFlipTurn(move);
                 board.generateLegalMoves();
@@ -635,6 +680,7 @@ public final class Engine {
                             && depth <= 4
                             && numberOfMovesSearched >= depth * 3 + 3) {
                         lmpTotal++;
+                        i++;
                         continue;
                     }
                 }
@@ -657,6 +703,7 @@ public final class Engine {
                         if (futilityScore > bestScore) {
                             bestScore = futilityScore;
                         }
+                        i++;
                         continue;
                     }
                     futilityFail++;
@@ -766,6 +813,7 @@ public final class Engine {
                 }
                 break;
             }
+            i++;
         }
 
         if (numberOfMovesSearched == 0) {

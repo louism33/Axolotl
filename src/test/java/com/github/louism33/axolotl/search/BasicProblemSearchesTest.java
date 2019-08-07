@@ -4,15 +4,10 @@ import com.github.louism33.axolotl.evaluation.EvaluationConstants;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveParser;
-import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
-
-import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_PV;
-import static com.github.louism33.axolotl.search.MoveOrderer.scoreMoves;
 
 public class BasicProblemSearchesTest {
 

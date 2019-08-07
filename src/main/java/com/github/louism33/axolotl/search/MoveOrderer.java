@@ -120,7 +120,7 @@ public final class MoveOrderer {
     }
 
     public static final void scoreMoves(final int[] moves, final Chessboard board, int ply,
-                                 int hashMove, int whichThread) {
+                                        int hashMove, int whichThread, boolean hashAlreadyTried) {
         int maxMoves = moves[moves.length - 1];
         int turn = board.turn;
 
@@ -161,6 +161,11 @@ public final class MoveOrderer {
             final boolean captureMove = isCaptureMove(move);
 
             if (move == hashMove) {
+//                if (hashAlreadyTried) {
+//                    moves[i] = move;
+//                } else {
+//                    moves[i] = buildMoveScore(move, hashScore);
+//                }
                 moves[i] = buildMoveScore(move, hashScore);
             } else if (isPromotionToQueen(move)) {
                 if (captureMove) {
