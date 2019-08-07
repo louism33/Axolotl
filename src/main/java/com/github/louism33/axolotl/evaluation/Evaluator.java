@@ -72,8 +72,8 @@ public final class Evaluator {
      * pinned pieces, and to queen
      */
 
-    public static final int eval(final Chessboard board) {
-        return eval(board, board.generateLegalMoves(), 0);
+    public static final int eval(final Chessboard board, int whichThread) {
+        return eval(board, board.generateLegalMoves(), whichThread);
     }
 
     public static final int eval(final Chessboard board, final int[] moves, int whichThread) {
@@ -178,6 +178,7 @@ public final class Evaluator {
         }
     }
 
+    // todo , remove moves[]
     public static final int evalGeneric(final Chessboard board, final int[] moves, int whichThread) {
 
         int turn = board.turn;
@@ -190,6 +191,7 @@ public final class Evaluator {
 
         long[] turnThreatensSquares = turnThreatensSquaresBackend[whichThread];
 
+//        Assert.assertTrue(board.currentCheckStateKnown);
         Assert.assertTrue(moves != null);
 
         if (PRINT_EVAL) {

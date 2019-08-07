@@ -116,12 +116,12 @@ public class EndgameEvaluatorTest {
     void compareValuesOfEndgames() {
         // longest dtm
 
-        int krrk = Evaluator.eval(new Chessboard("rr6/8/8/8/8/8/7K/k7 b")); // 7
-        int kqk = Evaluator.eval(new Chessboard("8/7q/8/8/8/8/7k/4K3 b"));  // 10
-        int krk = Evaluator.eval(new Chessboard("8/8/8/8/8/8/6Rk/4K3 w"));  // 16
-        int kbbk = Evaluator.eval(new Chessboard("6bb/8/8/8/8/8/7k/K7 b")); // 19
-        int kpk = Evaluator.eval(new Chessboard("8/8/8/8/8/8/6Pk/4K3 w"));  // 28
-        int kbnk = Evaluator.eval(new Chessboard("8/6bn/8/8/8/8/7k/4K3 b"));// 33
+        int krrk = Evaluator.eval(new Chessboard("rr6/8/8/8/8/8/7K/k7 b"), 0); // 7
+        int kqk = Evaluator.eval(new Chessboard("8/7q/8/8/8/8/7k/4K3 b"), 0);  // 10
+        int krk = Evaluator.eval(new Chessboard("8/8/8/8/8/8/6Rk/4K3 w"), 0);  // 16
+        int kbbk = Evaluator.eval(new Chessboard("6bb/8/8/8/8/8/7k/K7 b"), 0); // 19
+        int kpk = Evaluator.eval(new Chessboard("8/8/8/8/8/8/6Pk/4K3 w"), 0);  // 28
+        int kbnk = Evaluator.eval(new Chessboard("8/6bn/8/8/8/8/7k/4K3 b"), 0);// 33
         
         Assert.assertTrue(krrk > kqk);
         Assert.assertTrue(kqk > krk);
@@ -134,8 +134,8 @@ public class EndgameEvaluatorTest {
 
     @Test
     void comparePureEndgameToEndgamePlusMaterialKRRK() {
-        int krrkPure = Evaluator.eval(new Chessboard("rr6/8/8/8/8/8/7K/k7 b"));
-        int krrkExtra = Evaluator.eval(new Chessboard("rrr5/8/8/8/8/8/7K/k7 b"));
+        int krrkPure = Evaluator.eval(new Chessboard("rr6/8/8/8/8/8/7K/k7 b"), 0);
+        int krrkExtra = Evaluator.eval(new Chessboard("rrr5/8/8/8/8/8/7K/k7 b"), 0);
 
         Assert.assertTrue(krrkExtra > krrkPure);
     }
@@ -144,8 +144,8 @@ public class EndgameEvaluatorTest {
     void KBNKCompareCorrectCornerBadCorner() {
         final Chessboard boardGood = new Chessboard("n7/8/8/8/8/7K/8/1B5k w");
         final Chessboard boardBad = new Chessboard("n7/8/8/8/8/7K/8/B6k w");
-        int g = Evaluator.eval(boardGood);
-        int b = Evaluator.eval(boardBad);
+        int g = Evaluator.eval(boardGood, 0);
+        int b = Evaluator.eval(boardBad, 0);
         Assert.assertTrue(g > b);
     }
 
@@ -159,7 +159,7 @@ public class EndgameEvaluatorTest {
     @Test
     void kpkeval() {
         final Chessboard board = new Chessboard("8/7P/8/8/8/8/7K/k7 w");
-        Assert.assertTrue(Evaluator.eval(board) > 1000);
+        Assert.assertTrue(Evaluator.eval(board, 0) > 1000);
     }
 
 

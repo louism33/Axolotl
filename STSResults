@@ -54,3 +54,23 @@ STS12CenterControl: Successes: 57 out of 100
 STS13PawnCentre: Successes: 78 out of 100
 STS14SeventhRank: Successes: 84 out of 100
 STS15PointlessExchange: Successes: 74 out of 100
+
+
+
+
+
+
+
+
+
+  29,53%  stockfish  stockfish            [.] Eval::evaluate                                                                                                     
+  27,86%  stockfish  stockfish            [.] (anonymous namespace)::search<((anonymous namespace)::NodeType)0>                                                  
+  19,63%  stockfish  stockfish            [.] MovePicker::next_move                                                                                              
+   9,97%  stockfish  stockfish            [.] (anonymous namespace)::qsearch<((anonymous namespace)::NodeType)0>                                                 
+   3,51%  stockfish  stockfish            [.] Position::see_ge                                                                                                   
+   1,52%  stockfish  stockfish            [.] generate<(GenType)5>                                                                                               
+   1,50%  stockfish  [unknown]            [k] 0xffffffff81600a17                                                                                                 
+   1,23%  stockfish  stockfish            [.] Pawns::Entry::do_king_safety<(Color)0>                                                                             
+   1,10%  stockfish  stockfish            [.] Pawns::Entry::do_king_safety<(Color)1>                                                                             
+   0,71%  stockfish  stockfish            [.] Position::pseudo_legal                                                                                             
+   0,60%  stockfish  stockfish            [.] Material::probe

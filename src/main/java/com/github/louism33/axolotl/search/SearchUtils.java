@@ -46,7 +46,7 @@ public final class SearchUtils {
             return 1;
         }
 
-        if (MoveParser.numberOfRealMoves(moves) == 1) {
+        if (moves != null && MoveParser.numberOfRealMoves(moves) == 1) {
             return 1;
         }
 

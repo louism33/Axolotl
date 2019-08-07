@@ -38,9 +38,11 @@ public final class Engine {
     static Chessboard[] boards;
     static Chessboard board;
     public static int[][] rootMoves;
+    public static boolean inCheckAtRoot = false;
+    public static boolean knownCheckStateRoot = false;
 
     private static long startTime = 0;
-    public static boolean running = false;
+    public static boolean running = false; // todo consider replacing booleans with int(as enum)
     public static boolean quitOnSingleMove = true;
     public static boolean computeMoves = true;
 
@@ -102,6 +104,9 @@ public final class Engine {
         if (DEBUG) {
             System.out.println("info string soft resetting");
         }
+
+        knownCheckStateRoot = false;
+        inCheckAtRoot = false;
         //don't reset moves if uci will provide them
         hashTableReturn = 0;
         final int length = rootMoves.length;
@@ -202,6 +207,9 @@ public final class Engine {
         if (rootMoves[MASTER_THREAD] == null || computeMoves) {
             rootMoves[MASTER_THREAD] = board.generateLegalMoves();
         }
+
+        knownCheckStateRoot = true;
+        inCheckAtRoot = board.inCheckRecorder;
 
         int numberOfRealMoves = rootMoves[MASTER_THREAD][rootMoves[MASTER_THREAD].length - 1];
         if (numberOfRealMoves == 0) {
@@ -304,6 +312,8 @@ public final class Engine {
 
     public static int hashCutoff = 0, mateKillerCutoff = 0, killerOneCutoff = 0;
     public static int killerTwoCutoff = 0, oldKillerScoreOneCutoff = 0, oldKillerScoreTwoCutoff = 0, otherCutoff = 0;
+    public static int noMovesAndHash = 0, noMovesAndNoHash = 0;
+    public static int yesMovesAndHash = 0, yesMovesAndNoHash = 0;
 
     public static int hashTableReturn = 0;
 
@@ -322,9 +332,20 @@ public final class Engine {
             return 0;
         }
 
-        int[] moves = ply == 0 ? rootMoves[whichThread] : board.generateLegalMoves();
+        int[] moves = null;
+        long checkers;
+        final boolean rootNode = ply == 0;
+//        final boolean trunkNode = !rootNode && depth != 0;
+//        final boolean leafNode = !rootNode && depth == 0;
+        if (rootNode) {
+            checkers = board.checkingPieces;
+            moves = rootMoves[whichThread];
+        } else {
+            checkers = board.getCheckers();
+        }
 
-        if (MASTER_DEBUG && ply == 0) {
+
+        if (MASTER_DEBUG && rootNode) {
             Assert.assertEquals(rootMoves[whichThread], moves);
             Assert.assertEquals(board.zobristPawnHash, cloneBoard.zobristPawnHash);
             Assert.assertEquals(board.zobristHash, cloneBoard.zobristHash);
@@ -333,8 +354,22 @@ public final class Engine {
         boolean inCheck = board.inCheckRecorder;
 
         if (ply + depth < MAX_DEPTH_HARD - 2) { // consider singular reply only depth 0
-            depth += extensions(board, ply, inCheck, moves);
+            depth += extensions(board, ply, inCheck, moves); // todo, move to parent node
         }
+
+        final boolean trunkNode = !rootNode && depth != 0;
+        final boolean leafNode = !rootNode && depth == 0;
+        if (rootNode) {
+//            checkers = board.checkingPieces;
+            moves = rootMoves[whichThread];
+        } else if (leafNode) {
+//            checkers = board.getCheckers();
+            moves = board.generateLegalMoves(checkers);
+        } else {
+//            checkers = board.getCheckers();
+//            moves = board.generateLegalMoves(checkers);
+        }
+        
 
         Assert.assertTrue(depth >= 0);
 
@@ -372,7 +407,7 @@ public final class Engine {
             if (getDepth(previousTableData) >= depth) {
                 int flag = getFlag(previousTableData);
                 if (flag == EXACT) {
-                    if (ply == 0) {
+                    if (rootNode) {
                         putAIMoveFirst(hashMove, whichThread);
                         if (whichThread == 0) {
                             aiMoveScore = score;
@@ -382,7 +417,7 @@ public final class Engine {
                     return score;
                 } else if (flag == LOWERBOUND) {
                     if (score >= beta) {
-                        if (ply == 0) {
+                        if (rootNode) {
                             putAIMoveFirst(hashMove, whichThread);
                             if (whichThread == 0) {
                                 aiMoveScore = score;
@@ -393,7 +428,7 @@ public final class Engine {
                     }
                 } else if (flag == UPPERBOUND) {
                     if (score <= alpha) {
-                        if (ply == 0) {
+                        if (rootNode) {
                             putAIMoveFirst(hashMove, whichThread);
                             if (whichThread == 0) {
                                 aiMoveScore = score;
@@ -413,6 +448,9 @@ public final class Engine {
 
         if (!thisIsAPrincipleVariationNode && !inCheck) {
 
+            if (moves == null) {
+                moves = board.generateLegalMoves(checkers);
+            }
             staticBoardEval = Evaluator.eval(board, moves, whichThread);
 
             if (isBetaRazoringOkHere(depth, staticBoardEval)) {
@@ -485,6 +523,24 @@ public final class Engine {
 
         int bestScore = SHORT_MINIMUM;
         int bestMove = 0;
+        if (moves == null) {
+            
+            moves = board.generateLegalMoves(checkers);
+            if (hashMove != 0) {
+                noMovesAndHash++;
+            } else{
+                noMovesAndNoHash++;
+            }
+        } else {
+            if (hashMove != 0) {
+                yesMovesAndHash++;
+            } else{
+                yesMovesAndNoHash++;
+            }
+        }
+        
+        
+        
         final int lastMove = moves[moves.length - 1];
         if (ply != 0) {
             scoreMoves(moves, board, ply, hashMove, whichThread);
@@ -492,6 +548,8 @@ public final class Engine {
 
         int numberOfMovesSearched = 0;
 
+        
+        // prob need while loop + int Phase
         for (int i = 0; i < lastMove; i++) {
             if (moves[i] == 0) {
                 break;
@@ -548,6 +606,15 @@ public final class Engine {
 
             if (MASTER_DEBUG) {
                 if (captureMove && !promotionMove) {
+                    if (!(moveScore >= (neutralCapture - 5))) {
+                        System.out.println();
+                        System.out.println(rootNode);
+                        System.out.println(leafNode);
+                        System.out.println(trunkNode);
+                        System.out.println(depth);
+                        System.out.println(ply);
+                        Assert.assertTrue(moveScore >= (neutralCapture - 5));
+                    }
                     Assert.assertTrue(moveScore >= (neutralCapture - 5));
                 }
 
@@ -662,7 +729,7 @@ public final class Engine {
                 bestMove = move;
                 alpha = Math.max(alpha, score);
 
-                if (ply == 0) {
+                if (rootNode) {
                     putAIMoveFirst(bestMove, whichThread);
                     if (whichThread == 0) {
                         aiMoveScore = score;
@@ -675,24 +742,15 @@ public final class Engine {
                 indexOfCutoff[i]++;
                 if (move == hashMove) {
                     hashCutoff++;
-                }
-                else if (move == mateKillers[whichThread][ply]) {
+                } else if (move == mateKillers[whichThread][ply]) {
                     mateKillerCutoff++;
-                }
-
-                else if (move == killerMoves[whichThread][ply * 2]) {
+                } else if (move == killerMoves[whichThread][ply * 2]) {
                     killerOneCutoff++;
-                }
-
-                else if (move == killerMoves[whichThread][ply * 2 + 1]) {
+                } else if (move == killerMoves[whichThread][ply * 2 + 1]) {
                     killerTwoCutoff++;
-                }
-
-                else if (ply >= 2 && move  == killerMoves[whichThread][ply * 2 - 4]) {
+                } else if (ply >= 2 && move == killerMoves[whichThread][ply * 2 - 4]) {
                     oldKillerScoreOneCutoff++;
-                }
-
-                else if (ply >= 2 && move == killerMoves[whichThread][ply * 2 - 4 + 1]) {
+                } else if (ply >= 2 && move == killerMoves[whichThread][ply * 2 - 4 + 1]) {
                     oldKillerScoreTwoCutoff++;
                 } else {
                     otherCutoff++;
