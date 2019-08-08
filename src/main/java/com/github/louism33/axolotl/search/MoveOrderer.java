@@ -160,6 +160,13 @@ public final class MoveOrderer {
 
             final boolean captureMove = isCaptureMove(move);
 
+
+            /**
+             *  todo
+             *  properly do mvv lva
+             *  move see out of here, into Q or engine search
+             */
+
             if (move == hashMove) {
 //                if (hashAlreadyTried) {
 //                    moves[i] = move;
@@ -297,6 +304,10 @@ public final class MoveOrderer {
     static boolean checkingMove(Chessboard board, int move,
                                        int enemyKingIndex, long enemyKingCross, long enemyKingX, long enemyKingStar) {
 
+        if (true) {
+            return board.moveGivesCheck(move);
+        }
+        
         // only determines if quiet moves are checking moves
         Assert.assertTrue(!isCaptureMove(move));
         Assert.assertTrue(!isEnPassantMove(move));
