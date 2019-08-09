@@ -52,9 +52,7 @@ public class StaticEvalChallenge {
 
         System.out.println(board);
 
-//        System.out.println(Evaluator.eval(board, board.generateLegalMoves()));
-
-        Evaluator.printEval(board, board.turn, board.generateLegalMoves());
+        Evaluator.printEval(board);
 
     }
 
