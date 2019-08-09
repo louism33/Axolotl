@@ -486,7 +486,7 @@ public final class UCIEntry {
                         System.exit(1);
                         break;
                     } else if (token.equalsIgnoreCase("eval")) {
-                        output.println(Evaluator.stringEval(board, board.turn));
+                        output.println(Evaluator.stringEval(board));
                     } else if (token.equalsIgnoreCase("d")) {
                         output.println(board);
                     } else if (token.equalsIgnoreCase("tofen")) {
