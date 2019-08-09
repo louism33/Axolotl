@@ -30,12 +30,12 @@ import static com.github.louism33.chesscore.MaterialHashUtil.*;
 import static com.github.louism33.chesscore.PieceMove.*;
 import static java.lang.Long.numberOfTrailingZeros;
 
-@SuppressWarnings("ALL")
+//@SuppressWarnings("ALL")
 public final class Evaluator {
 
-    public static boolean readyEvaluator = false;
+    private static boolean readyEvaluator = false;
     private static long[][] turnThreatensSquaresBackend = new long[NUMBER_OF_THREADS][2];
-    public static final int[][] scoresForEPO = new int[2][32];
+    static final int[][] scoresForEPO = new int[2][32];
 
     public static void initEvaluator(boolean force) {
         if (force || !readyEvaluator) {
@@ -44,38 +44,29 @@ public final class Evaluator {
         readyEvaluator = true;
     }
 
-    public static void printEval(Chessboard board, int turn) {
-        printEval(board, turn, board.generateLegalMoves());
+    public static void printEval(Chessboard board) {
+        System.out.println(stringEval(board));
     }
 
-    public static void printEval(Chessboard board, int turn, int[] moves) {
-        System.out.println(stringEval(board, turn, moves));
-    }
-
-    public static EvalPrintObject stringEval(Chessboard board, int turn) {
-        return stringEval(board, turn, board.generateLegalMoves());
-    }
-
-    public static EvalPrintObject stringEval(Chessboard board, int turn, int[] moves) {
+    public static EvalPrintObject stringEval(Chessboard board) {
+        board.getCheckers();
         PRINT_EVAL = true;
         eval(board, 0);
         EvalPrintObject epo = new EvalPrintObject(scoresForEPO);
-        epo.EPOturn = board.turn;
+        EPOturn = board.turn;
         PRINT_EVAL = false;
         return epo;
-//        return null;
     }
 
     /**
      * todo:
      * trapped pieces
-     * pinned pieces, and to queen
      */
     /**
      * Don't call if in check
      */
     public static final int eval(final Chessboard board, int whichThread) {
-        
+
         if (board.isDrawByInsufficientMaterial() || board.isDrawByFiftyMoveRule()
                 || board.isDrawByRepetition(1)) {
             return 0;
@@ -177,10 +168,10 @@ public final class Evaluator {
         }
     }
 
-    public static final int evalGeneric(final Chessboard board, int whichThread) {
+    private static int evalGeneric(final Chessboard board, int whichThread) {
 
         int turn = board.turn;
-        
+
         setupEvalConst(false);
         EvaluatorPositionConstant.setupEvalPosConst(false);
 
@@ -189,7 +180,16 @@ public final class Evaluator {
 
         long[] turnThreatensSquares = turnThreatensSquaresBackend[whichThread];
 
-//        Assert.assertTrue(board.currentCheckStateKnown);  // todo
+//        if (MASTER_DEBUG) {
+//            final boolean condition = board.getCheckers() == 0;
+//            if (!condition) {
+//                System.out.println(board);
+//                Assert.assertTrue(condition);
+//            }
+//            Assert.assertTrue(condition);
+//        }
+        
+//        Assert.assertTrue(board.getCheckers() == 0);
 
         if (PRINT_EVAL) {
             Arrays.fill(scoresForEPO[WHITE], 0);
@@ -247,14 +247,11 @@ public final class Evaluator {
         return score;
     }
 
-    private final static int evalTurn(Chessboard board, int turn, long[] pawnData,
+    private static int evalTurn(Chessboard board, int turn, long[] pawnData,
                                       long[] turnThreatensSquares, int percentOfStartgame,
                                       long myKingSafetyArea, long enemyKingSafetyArea) {
 
-        //please generate moves before calling this
         final long[][] pieces = board.pieces;
-
-        // todo consider xray instead of real attacks for brq
 
         int kingAttackers = 0;
         int kingAttacks = 0;
@@ -286,17 +283,42 @@ public final class Evaluator {
         Assert.assertTrue(friends != 0);
         Assert.assertTrue(enemies != 0);
 
-        final long allPieces = friends | enemies;
-        final long pinnedPieces = board.pinnedPieces;
-        final boolean inCheck = board.inCheckRecorder;
+        final boolean itIsMyTurn = turn == board.turn;
 
-        if (MASTER_DEBUG) {
-            if (inCheck) {
-                Assert.assertTrue(board.inCheck());
-            } else {
-                Assert.assertTrue(!board.inCheck());
-            }
+        final long allPieces = friends | enemies;
+
+        final long pinnedPieces = board.pinnedPieces;
+
+        if (!itIsMyTurn) {
+            Assert.assertTrue((pinnedPieces & friends) == 0);
         }
+        
+        final boolean inCheck = board.inCheckRecorder;
+        
+//        final long myPinnedPieces = board.pinnedPieces[turn];
+//        final long enemyPiecesThatPinMyPieces = board.pinningPieces[turn];
+//        final long enemyPinnedPieces = board.pinnedPieces[1 - turn];
+//        final long myPiecesThatPinEnemies = board.pinningPieces[1 - turn];
+//        //todo disco possibility and check to queen
+//        final boolean turnToPlayInCheck = board.inCheckRecorder;
+//        Assert.assertTrue(!turnToPlayInCheck);
+//        Assert.assertEquals(myPinnedPieces == 0, enemyPiecesThatPinMyPieces == 0);
+//        Assert.assertEquals(myPinnedPieces != 0, enemyPiecesThatPinMyPieces != 0);
+//        Assert.assertEquals(myPiecesThatPinEnemies != 0, enemyPinnedPieces != 0);
+//        Assert.assertEquals(myPiecesThatPinEnemies == 0, enemyPinnedPieces == 0);
+//        Assert.assertTrue(myPinnedPieces == 0 || (myPinnedPieces & enemies) == 0);
+//        Assert.assertTrue(myPinnedPieces == 0 || (myPinnedPieces & friends) != 0);
+//        Assert.assertTrue(enemyPinnedPieces == 0 || (enemyPinnedPieces & friends) == 0);
+//        Assert.assertTrue(enemyPinnedPieces == 0 || (enemyPinnedPieces & enemies) != 0);
+//        Assert.assertTrue(enemyPiecesThatPinMyPieces == 0 || (enemyPiecesThatPinMyPieces & enemies) != 0);
+//        Assert.assertTrue(myPiecesThatPinEnemies == 0 || (myPiecesThatPinEnemies & friends) != 0);
+
+        
+        
+        
+        
+        //todo, use king vision to get enemies that could move to make a disco check (but not pawns?)
+        //this should be in chessboard
 
         int finalScore = 0, materialScore = 0;
 
@@ -316,6 +338,7 @@ public final class Evaluator {
         int threatsScore = 0;
 
         if (turn == board.turn) {
+//            long pins = myPinnedPieces;
             long pins = pinnedPieces;
             while (pins != 0) {
                 final int i = numberOfTrailingZeros(pins);
@@ -325,7 +348,7 @@ public final class Evaluator {
                 pins &= pins - 1;
             }
         }
-
+        
         final long squaresMyPawnsThreaten = pawnData[CAPTURES + turn];
         final long squaresEnemyPawnsThreaten = pawnData[CAPTURES + 1 - turn];
 
@@ -464,6 +487,7 @@ public final class Evaluator {
                 final int bishopIndex = numberOfTrailingZeros(bishop);
                 positionScore += POSITION_SCORES[turn][BISHOP][63 - bishopIndex];
 
+                // todo, as with queen, also consider xrays
                 final long pseudoMoves = singleBishopTable(allPieces, bishopIndex, UNIVERSE);
                 final long table = pseudoMoves & safeMobSquares;
 
@@ -523,7 +547,7 @@ public final class Evaluator {
             if ((rook & ignoreThesePieces) == 0) {
                 final int rookIndex = numberOfTrailingZeros(rook);
                 positionScore += POSITION_SCORES[turn][ROOK][63 - rookIndex];
-
+                // todo, as with queen, also consider xrays 
                 final long pseudoMoves = singleRookTable(allPieces, rookIndex, UNIVERSE);
                 final long table = pseudoMoves & safeMobSquares;
 
@@ -581,6 +605,99 @@ public final class Evaluator {
 
         long defendedByMyQueen = 0;
 
+//        while (myQueens != 0) {
+//            final long queen = getFirstPiece(myQueens);
+//            if ((queen & ignoreThesePieces) == 0) {
+////                final int queenIndex = numberOfTrailingZeros(queen);
+////                positionScore += POSITION_SCORES[turn][QUEEN][63 - queenIndex];
+////
+////                final long rookMoves = singleRookTable(allPieces, queenIndex, UNIVERSE);
+////                final long bishopMoves = singleBishopTable(allPieces, queenIndex, UNIVERSE);
+////                
+////                Assert.assertEquals(rookMoves | bishopMoves, singleQueenTable(allPieces, queenIndex, UNIVERSE));
+////                
+////                final long pseudoMoves = rookMoves | bishopMoves;
+////                
+////                final long rookXRay = rookMoves ^ singleRookTable(allPieces ^ (allPieces & rookMoves), queenIndex, UNIVERSE);
+////                final long bishopXRay = bishopMoves ^ singleBishopTable(allPieces ^ (allPieces & bishopMoves), queenIndex, UNIVERSE);
+////                final long pseudoXRayMoves = rookXRay | bishopXRay;
+////
+////                final long friendliesPinnedToQueenRook = rookMoves ^ 
+////                        singleRookTable(allPieces ^ (myPawns & rookMoves), queenIndex, UNIVERSE);
+////                final long friendliesPinnedToQueenBishop = bishopMoves ^ 
+////                        singleBishopTable(allPieces ^ (myPawns & bishopMoves), queenIndex, UNIVERSE);
+////                queensScore += populationCount(friendliesPinnedToQueenBishop & (enemyBishops))
+////                        * queenFeatures[FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_BISHOP];
+////                queensScore += populationCount(friendliesPinnedToQueenRook & (enemyRooks)) 
+////                        * queenFeatures[FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_ROOK];
+////                queensScore += populationCount((friendliesPinnedToQueenRook | friendliesPinnedToQueenBishop) & (enemyQueens))
+////                        * queenFeatures[FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_QUEEN];
+////
+////                Assert.assertEquals(xrayQueenAttacks(allPieces, allPieces, queen), pseudoXRayMoves);
+////                
+////                final long table = pseudoMoves & safeMobSquares;
+////
+////                squaresIThreatenWithPieces |= pseudoMoves;
+////
+////                defendedByMyQueen |= pseudoMoves;
+////
+////                mobilityScore += mobilityScores[QUEEN - 2][populationCount(table)];
+////
+////                final long pseudoAttackEnemyKingSmall = pseudoMoves & enemyKingSmallArea;
+////                if (pseudoAttackEnemyKingSmall != 0) {
+////                    kingAttacks += populationCount(pseudoAttackEnemyKingSmall);
+////                }
+////
+////                final long pseudoAttackEnemyKingX = pseudoXRayMoves & enemyKingSafetyArea;
+////                final long pseudoAttackEnemyKing = pseudoMoves & enemyKingSafetyArea;
+////
+////                if (pseudoAttackEnemyKing != 0) {
+////                    kingAttackers++;
+////                    kingAttackersWeights += kingAttacksValues[QUEEN_ATTACK_KING_LOOKUP_UNITS];
+////                } 
+////                else if (pseudoAttackEnemyKingX != 0) {
+////                    Assert.assertTrue(pseudoAttackEnemyKing == 0);
+////                    kingAttackers++;
+////                    kingAttackersWeights += kingAttacksValues[QUEEN_ATTACK_KING_X_LOOKUP_UNITS];
+////                }
+//
+//                final int queenIndex = numberOfTrailingZeros(queen);
+//                positionScore += POSITION_SCORES[turn][QUEEN][63 - queenIndex];
+//
+//                long pseudoMoves = singleQueenTable(allPieces, queenIndex, UNIVERSE);
+//                //todo pins to queen
+//                long pseudoXRayMoves = xrayQueenAttacks(allPieces, allPieces, queen);
+//
+//                final long table = pseudoMoves & safeMobSquares;
+//
+//                squaresIThreatenWithPieces |= pseudoMoves;
+//
+//                defendedByMyQueen |= pseudoMoves;
+//
+//                mobilityScore += mobilityScores[QUEEN - 2][populationCount(table)];
+//
+//                final long pseudoAttackEnemyKingSmall = pseudoMoves & enemyKingSmallArea;
+//                if (pseudoAttackEnemyKingSmall != 0) {
+//                    kingAttacks += populationCount(pseudoAttackEnemyKingSmall);
+//                }
+//
+//                final long pseudoAttackEnemyKing = pseudoXRayMoves & enemyKingSafetyArea;
+////                final long pseudoAttackEnemyKing = pseudoMoves & enemyKingSafetyArea;
+//                if (pseudoAttackEnemyKing != 0) {
+//                    kingAttackers++;
+//                    kingAttackersWeights += kingAttacksValues[QUEEN_ATTACK_KING_LOOKUP_UNITS];
+//                }
+//            }
+//            myQueens &= (myQueens - 1);
+//        }
+
+        
+        
+        
+        
+        
+        
+        // todo copy pasted from older version
         while (myQueens != 0) {
             final long queen = getFirstPiece(myQueens);
             if ((queen & ignoreThesePieces) == 0) {
@@ -613,12 +730,12 @@ public final class Evaluator {
             }
             myQueens &= (myQueens - 1);
         }
+        
+        
 
         myPawns = pieces[turn][PAWN] & ~ignoreThesePieces;
 
-        /*
-        regular pawns
-         */
+//        regular pawns
         while (myPawns != 0) {
             final long pawn = getFirstPiece(myPawns);
             final int pawnIndex = numberOfTrailingZeros(pawn);
@@ -644,9 +761,7 @@ public final class Evaluator {
         Assert.assertTrue(percentOfStartgame >= 0 && percentOfStartgame <= 100);
 
        
-        /*
-        king
-         */
+//        king
         int kingIndex = numberOfTrailingZeros(myKing);
         long kingPseudoMoves = KING_MOVE_TABLE[kingIndex];
 
@@ -655,12 +770,15 @@ public final class Evaluator {
         positionScore += POSITION_SCORES[turn][KING][63 - kingIndex];
 
 
+//        Assert.assertTrue((enemyPinnedPieces & friends) == 0);
+        
         int enemyKingDanger = kingSafetyMisc[STARTING_PENALTY]
                 + kingAttackersWeights * kingAttackers
                 + kingSafetyMisc[NUMBER_OF_ATTACKS_FACTOR] * kingAttacks
                 + ((enemyKingSafetyArea & fileWithoutEnemyPawns) != 0 ? kingSafetyMisc[KING_NEAR_SEMI_OPEN_FILE_LOOKUP] : 0)
                 + (turn == board.turn ? 1 : 0)
-                + (populationCount(pinnedPieces) * kingSafetyMisc[PINNED_PIECES_KING_SAFETY_LOOKUP])
+//                + (populationCount(enemyPinnedPieces) * kingSafetyMisc[PINNED_PIECES_KING_SAFETY_LOOKUP])
+                + (turn == board.turn ? (populationCount(pinnedPieces) * kingSafetyMisc[PINNED_PIECES_KING_SAFETY_LOOKUP]) : 0)
 
                 - (populationCount(board.pieces[turn][QUEEN]) == 0 ? kingSafetyMisc[MISSING_QUEEN_KING_SAFETY_UNITS] : 0)
                 - (populationCount(enemies & enemyKingSafetyArea))
@@ -717,3 +835,4 @@ public final class Evaluator {
         return Math.min((answer * 100) / 32, 100);
     }
 }
+

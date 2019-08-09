@@ -52,7 +52,7 @@ public class StaticEvalChallenge {
 
         System.out.println(board);
 
-        Evaluator.printEval(board);
+//        Evaluator.printEval(board);
 
     }
 
