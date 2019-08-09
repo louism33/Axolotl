@@ -17,7 +17,7 @@ import static com.github.louism33.axolotl.search.Engine.quitOnSingleMove;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.MaterialHashUtil.*;
 
-//@Disabled
+@Disabled
 public class BasicMatesTest {
 
     // thanks to guido for many of these positions  http://kirill-kryukov.com/chess/discussion-board/viewtopic.php?f=6&t=920
