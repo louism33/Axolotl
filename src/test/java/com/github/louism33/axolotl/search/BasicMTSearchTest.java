@@ -55,7 +55,7 @@ public class BasicMTSearchTest {
     }
 
     @Test
-    public void testTwo() {
+    public void testTwo() { // todo, weird count here
         Engine.resetFull();
         System.out.println("Testing simple search with two threads");
         final Chessboard board = new Chessboard();

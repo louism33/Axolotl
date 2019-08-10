@@ -180,16 +180,8 @@ public final class Evaluator {
 
         long[] turnThreatensSquares = turnThreatensSquaresBackend[whichThread];
 
-//        if (MASTER_DEBUG) {
-//            final boolean condition = board.getCheckers() == 0;
-//            if (!condition) {
-//                System.out.println(board);
-//                Assert.assertTrue(condition);
-//            }
-//            Assert.assertTrue(condition);
-//        }
-        
-//        Assert.assertTrue(board.getCheckers() == 0);
+        Assert.assertTrue(!board.inCheckRecorder);
+        Assert.assertTrue(board.getCheckers() == 0);
 
         if (PRINT_EVAL) {
             Arrays.fill(scoresForEPO[WHITE], 0);
