@@ -287,7 +287,8 @@ public final class Evaluator {
 
         final long allPieces = friends | enemies;
 
-        final long pinnedPieces = board.pinnedPieces;
+//        final long pinnedPieces = board.pinnedPieces;
+        final long pinnedPieces = board.pinnedPieces[turn];
 
         if (!itIsMyTurn) {
             Assert.assertTrue((pinnedPieces & friends) == 0);
