@@ -44,6 +44,7 @@ public class BasicMTSearchTest {
 
     @Test
     public void testSingleSet() {
+        Engine.resetFull();
         System.out.println("Testing simple search with one thread");
         final Chessboard board = new Chessboard();
         MASTER_DEBUG = true;
@@ -55,6 +56,7 @@ public class BasicMTSearchTest {
 
     @Test
     public void testTwo() {
+        Engine.resetFull();
         System.out.println("Testing simple search with two threads");
         final Chessboard board = new Chessboard();
         int threads = 2;
@@ -66,6 +68,7 @@ public class BasicMTSearchTest {
 
     @Test
     public void testMax() {
+        Engine.resetFull();
         System.out.println("Testing simple search with " + MAX_THREADS + " threads");
         final Chessboard board = new Chessboard();
         Engine.setThreads(MAX_THREADS);
@@ -79,6 +82,7 @@ public class BasicMTSearchTest {
 
     @Test
     public void testAll() {
+        Engine.resetFull();
         MASTER_DEBUG = true;
         final Chessboard board = new Chessboard();
         System.out.println("Testing search with number of Threads: ");
