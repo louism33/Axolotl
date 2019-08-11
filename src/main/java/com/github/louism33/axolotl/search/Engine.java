@@ -704,7 +704,9 @@ public final class Engine {
             final boolean promotionMove = isPromotionMove(move);
             final boolean queenPromotionMove = promotionMove ? isPromotionToQueen(move) : false;
             // keep moves[i] here
-            final boolean givesCheckMove = PHASE < PHASE_REG_MOVES ? false : isCheckingMove(moves[i]);
+//            final boolean givesCheckMove = PHASE < PHASE_REG_MOVES ? false : isCheckingMove(moves[i]);
+            final boolean givesCheckMove = PHASE == PHASE_REG_MOVES ? board.moveGivesCheck(move) : false; // todo, when passing to make move, be careful
+            //isCheckingMove(moves[i]);
             final boolean pawnToSix = moveIsPawnPushSix(turn, move);
             final boolean pawnToSeven = moveIsPawnPushSeven(turn, move);
             final boolean quietMove = !(captureMove || promotionMove);
