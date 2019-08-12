@@ -687,29 +687,19 @@ public final class Engine {
                 }
             }
 
-//            final boolean captureMove = isCaptureMove(move);
-//            final boolean promotionMove = isPromotionMove(move);
-//            final boolean queenPromotionMove = promotionMove ? isPromotionToQueen(move) : false;
-//            
-//            final boolean checkMoveFlagSet = false; //PHASE == PHASE_REG_MOVES ? isCheckingMove(moves[i]) : false; 
-////            Assert.assertTrue(!isCheckingMove(move));
-//            final boolean givesCheckMove = checkMoveFlagSet;// PHASE == PHASE_REG_MOVES ? board.moveGivesCheck(move) : false; // todo todo, currently called twice for quiet move
-//            final boolean pawnToSix = moveIsPawnPushSix(turn, move);
-//            final boolean pawnToSeven = moveIsPawnPushSeven(turn, move);
-//            final boolean quietMove = !(captureMove || promotionMove);
-//            final int movingPiece = getMovingPieceInt(move);
-//            final boolean fiftyMoveBreaker = !(captureMove || promotionMove || movingPiece == WHITE_PAWN || movingPiece == BLACK_PAWN);
 
             final boolean captureMove = isCaptureMove(move);
             final boolean promotionMove = isPromotionMove(move);
             final boolean queenPromotionMove = promotionMove ? isPromotionToQueen(move) : false;
-            // keep moves[i] here
-//            final boolean givesCheckMove = PHASE < PHASE_REG_MOVES ? false : isCheckingMove(moves[i]);
-            final boolean givesCheckMove = PHASE == PHASE_REG_MOVES ? board.moveGivesCheck(move) : false; // todo, when passing to make move, be careful
-            //isCheckingMove(moves[i]);
+            
+            final boolean checkMoveFlagSet = PHASE == PHASE_REG_MOVES ? MoveParser.isCheckingMove(moves[i]) : false;
+            final boolean givesCheckMove = checkMoveFlagSet ? checkMoveFlagSet : board.moveGivesCheck(move, PHASE != PHASE_REG_MOVES);
+
             final boolean pawnToSix = moveIsPawnPushSix(turn, move);
             final boolean pawnToSeven = moveIsPawnPushSeven(turn, move);
             final boolean quietMove = !(captureMove || promotionMove);
+            final int movingPiece = getMovingPieceInt(move);
+            final boolean fiftyMoveBreaker = !(captureMove || promotionMove || movingPiece == WHITE_PAWN || movingPiece == BLACK_PAWN);
             
             
             
@@ -750,21 +740,21 @@ public final class Engine {
                         final boolean b = board.moveGivesCheck(move);
                         board.makeMoveAndFlipTurn(move);
                         final boolean actual = board.getCheckers() != 0;
-//                        if (b != actual) {
-//                            System.out.println("before");
-//                            System.out.println(clone);
-//                            System.out.println(clone.toFenString());
-//                            System.out.println(board);
-//                            MoveParser.printMove(move);
-//                            MoveParser.printMove(moves);
-//                            MoveOrderer.printMovesAndScores(moves);
-//                            System.out.println();
-//                        }
-//                        Assert.assertEquals(b, actual);
+                        if (b != actual) {
+                            System.out.println("before");
+                            System.out.println(clone);
+                            System.out.println(clone.toFenString());
+                            System.out.println(board);
+                            MoveParser.printMove(move);
+                            MoveParser.printMove(moves);
+                            MoveOrderer.printMovesAndScores(moves);
+                            System.out.println();
+                        }
+                        Assert.assertEquals(b, actual);
                         
-//                        Assert.assertEquals(b, givesCheckMove);
-//                        Assert.assertEquals(givesCheckMove, actual);
-//                        Assert.assertEquals(givesCheckMove, board.inCheck());
+                        Assert.assertEquals(b, givesCheckMove);
+                        Assert.assertEquals(givesCheckMove, actual);
+                        Assert.assertEquals(givesCheckMove, board.inCheck());
                         
                         board.unMakeMoveAndFlipTurn();
                     }
@@ -799,7 +789,7 @@ public final class Engine {
                 Assert.assertEquals(makeMaterialHash(board), board.materialHash);
             }
 
-            board.makeMoveAndFlipTurn(move); // todo, add givesCheckFlag
+            board.makeMoveAndFlipTurn(move, givesCheckMove); // todo, add givesCheckFlag
 
             numberOfMovesMade[whichThread]++;
             numberOfMovesSearched++;
