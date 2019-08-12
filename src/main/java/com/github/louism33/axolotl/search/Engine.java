@@ -779,7 +779,7 @@ public final class Engine {
                 Assert.assertEquals(makeMaterialHash(board), board.materialHash);
             }
 
-            board.makeMoveAndFlipTurn(move, givesCheckMove); // todo, add givesCheckFlag
+            board.makeMoveAndFlipTurn(move, givesCheckMove); 
 
             numberOfMovesMade[whichThread]++;
             numberOfMovesSearched++;
