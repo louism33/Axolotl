@@ -147,7 +147,7 @@ public class MoveOrderer3Test {
         if (interestingMove) {
             return;
         }
-        final boolean predictedCheckingState = checkingMove(board, move, enemyKingIndex, enemyKingCross, enemyKingX, enemyKingStar);
+        final boolean predictedCheckingState =board.moveGivesCheck(move);
         boolean isReallyCheck;
         board.makeMoveAndFlipTurn(move);
         isReallyCheck = board.inCheck();

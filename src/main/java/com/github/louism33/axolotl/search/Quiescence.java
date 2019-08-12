@@ -64,7 +64,7 @@ public final class Quiescence {
             scoreMovesQuiescence(moves, board, whichThread);
         } else {
             // todo consider tableprobe
-            scoreMoves(moves, board, ply, 0, whichThread, false);
+            scoreMoves(moves, board, ply, 0, whichThread);
         }
 
         int numberOfQMovesSearched = 0;

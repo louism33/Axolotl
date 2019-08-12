@@ -109,7 +109,7 @@ public class MoveOrderer2Test {
     private static void countFinalNodesAtDepthHelper(Chessboard board, int depth, boolean useQSort, boolean useRSort, boolean useRegSort) {
         int[] moves = board.generateLegalMoves();
         if (useRegSort) {
-            scoreMoves(moves, board, 0, 0, 0, false);
+            scoreMoves(moves, board, 0, 0, 0);
         } else if (useRSort) {
             scoreMovesAtRoot(moves, moves[moves.length - 1], board);
         } else if (useQSort) {

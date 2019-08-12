@@ -602,7 +602,7 @@ public final class Engine {
 
                     PHASE_BACKEND++;
 
-                case PHASE_ORDER_MOVES:
+                case PHASE_ORDER_MOVES: // todo, render this obsolete by using a selection sort instead of full sort, i.e. getNext()
                     Assert.assertTrue(moves != null);
 
                     lastMove = moves[moves.length - 1];
@@ -614,10 +614,9 @@ public final class Engine {
                             }
                         }
                         
-                        scoreMoves(moves, board, ply, hashMove, whichThread, hashAlreadyTried);
+                        scoreMoves(moves, board, ply, hashMove, whichThread);
                     }
                     PHASE_BACKEND++;
-
                 case PHASE_REG_MOVES + 1:
                 case PHASE_REG_MOVES:
                     PHASE_BACKEND = PHASE_REG_MOVES + 1;
@@ -628,7 +627,7 @@ public final class Engine {
                         break everything;
                     }
 
-                    move = moves[i] & MOVE_MASK_WITHOUT_CHECK; // todo find a solution for limitd size of move
+                    move = moves[i] & MOVE_MASK_WITHOUT_CHECK; // todo find a solution for limited size of move
                     moveScore = getMoveScore(moves[i]);
 
                     if (hashAlreadyTried && i == 0) {
@@ -699,8 +698,8 @@ public final class Engine {
             final boolean pawnToSeven = moveIsPawnPushSeven(turn, move);
             final boolean quietMove = !(captureMove || promotionMove);
             final int movingPiece = getMovingPieceInt(move);
+            final boolean enPassantMove = isEnPassantMove(move);
             final boolean fiftyMoveBreaker = !(captureMove || promotionMove || movingPiece == WHITE_PAWN || movingPiece == BLACK_PAWN);
-            
             
             
             if (MASTER_DEBUG) {
@@ -718,7 +717,8 @@ public final class Engine {
             if (!thisIsAPrincipleVariationNode && PHASE == PHASE_REG_MOVES && !inCheck) {
                 if (bestScore < CHECKMATE_ENEMY_SCORE_MAX_PLY
                         && notJustPawnsLeft(board)) {
-                    if (!queenPromotionMove
+                    if (!captureMove &&
+                            !queenPromotionMove
                             && !givesCheckMove
                             && !pawnToSix
                             && !pawnToSeven
@@ -740,16 +740,6 @@ public final class Engine {
                         final boolean b = board.moveGivesCheck(move);
                         board.makeMoveAndFlipTurn(move);
                         final boolean actual = board.getCheckers() != 0;
-                        if (b != actual) {
-                            System.out.println("before");
-                            System.out.println(clone);
-                            System.out.println(clone.toFenString());
-                            System.out.println(board);
-                            MoveParser.printMove(move);
-                            MoveParser.printMove(moves);
-                            MoveOrderer.printMovesAndScores(moves);
-                            System.out.println();
-                        }
                         Assert.assertEquals(b, actual);
                         
                         Assert.assertEquals(b, givesCheckMove);
@@ -795,8 +785,9 @@ public final class Engine {
             numberOfMovesSearched++;
 
             if (board.isDrawByInsufficientMaterial()
-                    || (!captureMove && !promotionMove &&
+                    || (fiftyMoveBreaker &&
                     (board.isDrawByRepetition(1) || board.isDrawByFiftyMoveRule()))) {
+                Assert.assertTrue(!enPassantMove);
                 score = IN_STALEMATE_SCORE;
             } else {
                 score = alpha + 1;
