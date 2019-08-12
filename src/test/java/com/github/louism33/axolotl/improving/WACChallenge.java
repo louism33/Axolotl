@@ -71,7 +71,7 @@ public class WACChallenge {
     public void test() {
         Engine.resetFull();
         System.out.println(EPDObject.getFullString());
-        System.out.println(EPDObject.getBoard());
+//        System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
         SearchSpecs.basicTimeSearch(timeLimit);
