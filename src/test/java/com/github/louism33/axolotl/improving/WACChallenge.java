@@ -51,6 +51,9 @@ public class WACChallenge {
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
+            if (i < 108) {
+//                continue;
+            }
             String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             EPDObject EPDObject = parseEDPPosition(splitUpWAC);
