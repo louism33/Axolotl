@@ -144,8 +144,8 @@ public final class EvaluationConstants {
     static final int FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_QUEEN = 2;
     
     
-    public static final int[] startQueenFeatures = {-30, -20, -10};
-    public static final int[] endQueenFeatures = {-30, -20, -10};
+    public static final int[] startQueenFeatures = {-10, -8, -5};
+    public static final int[] endQueenFeatures = {-10, -8, -5};
     public static int[] queenFeatures;
 
     //safety

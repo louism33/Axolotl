@@ -613,12 +613,12 @@ public final class Evaluator {
                 final long bishopXRay = bishopMoves ^ singleBishopTable(allPieces ^ (allPieces & bishopMoves), queenIndex, UNIVERSE);
                 final long pseudoXRayMoves = rookXRay | bishopXRay;
 
-                final long friendliesPinnedToQueenRook = (rookMoves ^
+                final long crossPinnersToMyQueen = (rookMoves ^
                         singleRookTable(allPieces ^ (myPawns | rookMoves), queenIndex, UNIVERSE))
                         & (enemyRooks | enemyQueens);
 
-                Assert.assertTrue((friendliesPinnedToQueenRook & friends) == 0);
-                Assert.assertTrue(friendliesPinnedToQueenRook == 0 || (friendliesPinnedToQueenRook & enemies) != 0);
+                Assert.assertTrue((crossPinnersToMyQueen & friends) == 0);
+                Assert.assertTrue(crossPinnersToMyQueen == 0 || (crossPinnersToMyQueen & enemies) != 0);
 
                 final long diagonalPinnersToMyQueen = (bishopMoves ^
                         (singleBishopTable(allPieces ^ (myPawns | bishopMoves), queenIndex, UNIVERSE)))
@@ -627,12 +627,12 @@ public final class Evaluator {
                 Assert.assertTrue((diagonalPinnersToMyQueen & friends) == 0);
                 Assert.assertTrue(diagonalPinnersToMyQueen == 0 || (diagonalPinnersToMyQueen & enemies) != 0);
 
-//                queensScore += populationCount(friendliesPinnedToQueenBishop & (enemyBishops))
-//                        * queenFeatures[FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_BISHOP];
-//                queensScore += populationCount(friendliesPinnedToQueenRook & (enemyRooks)) 
-//                        * queenFeatures[FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_ROOK];
-//                queensScore += populationCount((friendliesPinnedToQueenRook | friendliesPinnedToQueenBishop) & (enemyQueens))
-//                        * queenFeatures[FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_QUEEN];
+                queensScore += populationCount(diagonalPinnersToMyQueen & (enemyBishops))
+                        * queenFeatures[FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_BISHOP];
+                queensScore += populationCount(crossPinnersToMyQueen & (enemyRooks)) 
+                        * queenFeatures[FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_ROOK];
+                queensScore += populationCount((crossPinnersToMyQueen | diagonalPinnersToMyQueen) & (enemyQueens))
+                        * queenFeatures[FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_QUEEN];
 
                 Assert.assertEquals(xrayQueenAttacks(allPieces, allPieces, queen), pseudoXRayMoves);
 
