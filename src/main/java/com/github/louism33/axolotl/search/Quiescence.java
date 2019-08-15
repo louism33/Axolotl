@@ -6,11 +6,14 @@ import com.github.louism33.chesscore.MaterialHashUtil;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
+import java.util.Arrays;
+
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.Engine.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
+import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.neutralCapture;
 import static com.github.louism33.chesscore.BoardConstants.WHITE_KING;
 import static com.github.louism33.chesscore.BoardConstants.WHITE_PAWN;
@@ -61,23 +64,39 @@ public final class Quiescence {
         int[] moves = board.generateLegalMoves(checkers);
         
         if (!inCheck) {
-            scoreMovesQuiescence(moves, board, whichThread);
+            scoreMovesQuiescenceNew(moves, board, ply, whichThread);
         } else {
             // todo consider tableprobe
-            scoreMoves(moves, board, ply, 0, whichThread);
+//            scoreMoves(moves, board, ply, 0, whichThread);
+            scoreMovesNew(moves, board, ply, 0, whichThread);
         }
 
         int numberOfQMovesSearched = 0;
-
+        int[] nextBestMoveIndexAndScore;
+        int move;
+        int moveScore;
+        
         for (int i = 0; i < moves.length; i++) {
 
-            final int move = moves[i];
-            if (move == 0) {
+            nextBestMoveIndexAndScore = getNextBestMoveIndexAndScore(whichThread, ply);
+
+            Assert.assertEquals(moves[moves.length - 1], scores[whichThread][ply][scores[whichThread][ply].length - 1]);
+
+            move = moves[nextBestMoveIndexAndScore[INDEX]];
+            moveScore = nextBestMoveIndexAndScore[SCORE];
+
+            if (!inCheck && (moveScore == dontSearchMeScore || moveScore == iHaveBeenSearchScore)) {
+                break;
+            }
+            
+//            final int move = moves[i];
+            if (move == 0 || moveScore == dontSearchMeScore || moveScore == iHaveBeenSearchScore) {
                 break;
             }
 
-            final int loudMoveScore = getMoveScore(move);
-            if (!inCheck && loudMoveScore == 0) {
+//            final int moveScore = getMoveScore(move);
+            
+            if (!inCheck && moveScore == 0) {
                 break;
             }
             final boolean captureMove = MoveParser.isCaptureMove(move);
@@ -88,23 +107,33 @@ public final class Quiescence {
             // todo, checking move?
             
             if (MASTER_DEBUG) {
-                if (!inCheck && loudMoveScore != 0) {
-                    Assert.assertTrue(captureMove || promotionMove || epMove);
+                if (!inCheck && moveScore != 0) {
+                    final boolean condition = captureMove || promotionMove || epMove;
+                    if (!condition) {
+                        System.out.println(board);
+                        MoveParser.printMove(move);
+                        MoveParser.printMove(moves);
+                        System.out.println(Arrays.toString(scores[whichThread][ply]));
+                        System.out.println("moveScore: " + moveScore);
+                        System.out.println("index: " + nextBestMoveIndexAndScore[INDEX]);
+                        System.out.println();
+                    }
+                    Assert.assertTrue(condition);
                 }
             }
 
             final int loudMove = move & MOVE_MASK_WITH_CHECK;
 
             if (MASTER_DEBUG) {
-                if (!inCheck) {
-                    if (i == 0) {
-                        Assert.assertTrue(moves[i] >= moves[i + 1]);
-                    } else {
-                        Assert.assertTrue(moves[i] <= moves[i - 1]);
-                        Assert.assertTrue(moves[i] >= moves[i + 1]);
-                    }
-                    Assert.assertTrue(moves[i] > FIRST_FREE_BIT);
-                }
+//                if (!inCheck) {
+//                    if (i == 0) {
+//                        Assert.assertTrue(moves[i] >= moves[i + 1]);
+//                    } else {
+//                        Assert.assertTrue(moves[i] <= moves[i - 1]);
+//                        Assert.assertTrue(moves[i] >= moves[i + 1]);
+//                    }
+//                    Assert.assertTrue(moves[i] > FIRST_FREE_BIT);
+//                }
 
                 if (!inCheck) {
                     Assert.assertTrue(captureMove || promotionMove || epMove);
@@ -127,7 +156,14 @@ public final class Quiescence {
 //                        Assert.assertEquals(100, endMaterial[victimPiece - 1]);
 //                    }
                     quiescenceDelta++;
-                    Assert.assertTrue(MoveParser.isCaptureMove(move) || MoveParser.isEnPassantMove(move));
+                    final boolean condition = MoveParser.isCaptureMove(move) || MoveParser.isEnPassantMove(move);
+                    if (!condition) {
+                        System.out.println(board);
+                        MoveParser.printMove(move);
+                        System.out.println("moveScore: " + moveScore);
+                        System.out.println();
+                    }
+                    Assert.assertTrue(condition);
                     continue;
                 }
             }
@@ -139,7 +175,7 @@ public final class Quiescence {
                     && !interestingMove;
 
             if (!inCheck || evasionPrunable) {
-                if (loudMoveScore < neutralCapture) {
+                if (moveScore < neutralCapture) {
                     if (inCheck) {
                         Assert.assertTrue(!interestingMove);
                         Assert.assertTrue(numberOfQMovesSearched > 0);

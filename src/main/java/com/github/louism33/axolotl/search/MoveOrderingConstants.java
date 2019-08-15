@@ -4,27 +4,48 @@ import static com.github.louism33.chesscore.BoardConstants.*;
 
 public final class MoveOrderingConstants {
 
-    public static final int captureBiasOfLastMovedPiece = 1;
+//    public static final int hashScore = 31;
+//    public static final int queenCapturePromotionScore = 30;
+//    public static final int queenQuietPromotionScore = 29;
+//    public static final int mateKillerScore = 25;
+//    public static final int neutralCapture = 24; // between 19 and 29
+//    public static final int captureBaseScore = 10; // between 18 and 29
+//    public static final int killerOneScore = 24;
+//    public static final int killerTwoScore = 23;
+//    public static final int pawnPushToSeven = 23;
+//    public static final int giveCheckMove = 22;
+//    public static final int castlingMove = 21;
+//    public static final int pawnPushToSix = 21;
+//    public static final int oldKillerScoreOne = 20;
+//    public static final int maxRootQuietScore = 20;
+//    public static final int oldKillerScoreTwo = 19;
+//    public static final int maxNodeQuietScore = 18;
+//    public static final int knightPromotionScore = 1;
+//    public static final int uninterestingMove = 0;
+//    public static final int uninterestingPromotion = 0;
 
     public static final int hashScore = 31;
     public static final int queenCapturePromotionScore = 30;
     public static final int queenQuietPromotionScore = 29;
-    public static final int mateKillerScore = 25;
+    public static final int mateKillerScore = 28;
     public static final int neutralCapture = 24; // between 19 and 29
-    public static final int killerOneScore = 24;
-    public static final int killerTwoScore = 23;
-    public static final int pawnPushToSeven = 23;
-    public static final int giveCheckMove = 22;
-    public static final int castlingMove = 21;
-    public static final int pawnPushToSix = 21;
-    public static final int oldKillerScoreOne = 20;
-    public static final int maxRootQuietScore = 20;
-    public static final int oldKillerScoreTwo = 19;
-    public static final int maxNodeQuietScore = 18;
+    public static final int captureBaseScore = 10; // between 18 and 29
+    public static final int killerOneScore = 17;
+    public static final int killerTwoScore = 16;
+    public static final int pawnPushToSeven = 15;
+    public static final int giveCheckMove = 15;
+    public static final int castlingMove = 15;
+    public static final int pawnPushToSix = 14;
+    public static final int oldKillerScoreOne = 15;
+    public static final int maxRootQuietScore = 14;
+    public static final int oldKillerScoreTwo = 14;
+    public static final int maxNodeQuietScore = 14;
     public static final int knightPromotionScore = 1;
     public static final int uninterestingMove = 0;
     public static final int uninterestingPromotion = 0;
-
+    public static final int iHaveBeenSearchScore = -1;
+    public static final int dontSearchMeScore = -2;
+    
     static int[][] goodQuietDestinations = new int[2][64];
 
     //todo consider minusing the source from the score

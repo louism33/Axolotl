@@ -113,7 +113,7 @@ public class MoveOrderer2Test {
         } else if (useRSort) {
             scoreMovesAtRoot(moves, moves[moves.length - 1], board);
         } else if (useQSort) {
-            scoreMovesQuiescence(moves, board, 0);
+            scoreMovesQuiescenceNew(moves, board, 0, 0);
         }
         
         checkThatKingMovesAreLast(board, moves, useQSort);
