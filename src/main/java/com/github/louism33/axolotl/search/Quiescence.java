@@ -8,16 +8,15 @@ import org.junit.Assert;
 
 import java.util.Arrays;
 
+import static challenges.Utils.contains;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.Engine.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
-import static com.github.louism33.axolotl.search.MoveOrderingConstants.neutralCapture;
 import static com.github.louism33.chesscore.BoardConstants.WHITE_KING;
 import static com.github.louism33.chesscore.BoardConstants.WHITE_PAWN;
-import static com.github.louism33.chesscore.MoveConstants.FIRST_FREE_BIT;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 
 public final class Quiescence {
@@ -67,8 +66,8 @@ public final class Quiescence {
             scoreMovesQuiescenceNew(moves, board, ply, whichThread);
         } else {
             // todo consider tableprobe
-//            scoreMoves(moves, board, ply, 0, whichThread);
             scoreMovesNew(moves, board, ply, 0, whichThread);
+            // todo consider simply throwing back to pvs
         }
 
         int numberOfQMovesSearched = 0;
@@ -78,19 +77,19 @@ public final class Quiescence {
         
         for (int i = 0; i < moves.length; i++) {
 
-            nextBestMoveIndexAndScore = getNextBestMoveIndexAndScore(whichThread, ply);
+            nextBestMoveIndexAndScore = getNextBestMoveIndexAndScore(whichThread, ply, false);
 
             Assert.assertEquals(moves[moves.length - 1], scores[whichThread][ply][scores[whichThread][ply].length - 1]);
 
             move = moves[nextBestMoveIndexAndScore[INDEX]];
             moveScore = nextBestMoveIndexAndScore[SCORE];
 
-            if (!inCheck && (moveScore == dontSearchMeScore || moveScore == iHaveBeenSearchScore)) {
+            if (!inCheck && (moveScore == dontSearchMeScore || moveScore == previouslySearchedScore)) {
                 break;
             }
             
 //            final int move = moves[i];
-            if (move == 0 || moveScore == dontSearchMeScore || moveScore == iHaveBeenSearchScore) {
+            if (move == 0 || moveScore == dontSearchMeScore || moveScore == previouslySearchedScore) {
                 break;
             }
 
@@ -191,6 +190,18 @@ public final class Quiescence {
 
             int score;
 
+            int[] movesCopyForDebug = null;
+            int[] scoresCopyForDebug = null;
+            if (MASTER_DEBUG) {
+                movesCopyForDebug = new int[moves.length];
+                final int[] myScores = scores[whichThread][ply];
+                scoresCopyForDebug = new int[myScores.length];
+                System.arraycopy(moves, 0, movesCopyForDebug, 0, moves.length);
+                System.arraycopy(myScores, 0, scoresCopyForDebug, 0, myScores.length);
+            }
+
+
+            
             if (board.isDrawByInsufficientMaterial() // todo , optimise here
                     || (!captureMove && !promotionMove && !epMove &&
                     (board.isDrawByRepetition(1) || board.isDrawByFiftyMoveRule()))) {
@@ -198,6 +209,17 @@ public final class Quiescence {
             } else {
                 score = -quiescenceSearch(board, -beta, -alpha, whichThread, ply + 1, depth - 1);
             }
+            
+            if (MASTER_DEBUG) {
+                final int[] myScores = scores[whichThread][ply];
+                for (int index = 0; index < moves.length; index++) {
+                    Assert.assertTrue(contains(moves, movesCopyForDebug[index]));
+                    Assert.assertTrue(contains(myScores, scoresCopyForDebug[index]));
+                    Assert.assertTrue(contains(movesCopyForDebug, moves[index]));
+                    Assert.assertTrue(contains(scoresCopyForDebug, myScores[index]));
+                }
+            }
+            
 
             board.unMakeMoveAndFlipTurn();
 

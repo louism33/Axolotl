@@ -321,6 +321,7 @@ public final class KPK {
         if (pkpReady) {
             return;
         }
+
         ArrayList<KPKPosition> db = new ArrayList<>(MAX_INDEX);
 
         int idx;
@@ -349,10 +350,10 @@ public final class KPK {
         pkpReady = true;
     }
 
-//    static {
-//        generateKPKBitbase();
-//        Assert.assertTrue(pkpReady);
-//    }
+    static {
+        generateKPKBitbase();
+        Assert.assertTrue(pkpReady);
+    }
 
 }
 

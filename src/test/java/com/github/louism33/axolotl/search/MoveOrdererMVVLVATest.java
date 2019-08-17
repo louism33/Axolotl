@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.maxNodeQuietScore;
+import static com.github.louism33.axolotl.search.MoveOrderingConstants.queenQuietPromotionScore;
 import static com.github.louism33.chesscore.BoardConstants.BLACK_KING;
 import static com.github.louism33.chesscore.BoardConstants.WHITE_KING;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
@@ -78,5 +79,36 @@ public class MoveOrdererMVVLVATest {
         Assert.assertTrue(
                 (getMVVLVAScore(MoveParserFromAN.buildMoveFromLAN(board, "b3b8")) ==
                         getMVVLVAScore(MoveParserFromAN.buildMoveFromLAN(board, "a8b8"))));
+    }
+
+
+    @Test
+    void orderPromotionRootTest() {
+        Chessboard board = new Chessboard("1Qq5/2P1p1kp/3r1pp1/8/8/7P/p4PP1/2R3K1 b - - 0 0");
+
+        final int[] moves = board.generateLegalMoves();
+        MoveOrderer.scoreMovesAtRoot(moves, MoveParser.numberOfRealMoves(moves), board);
+        
+//        MoveOrderer.printMovesAndScores(moves, 0, 0);
+
+        final int[] nextBestMoveIndexAndScore = getNextBestMoveIndexAndScore(0, 0, true);
+        Assert.assertTrue(moves[nextBestMoveIndexAndScore[INDEX]] == MoveParserFromAN.buildMoveFromLAN(board, "a2a1Q"));
+        Assert.assertTrue(nextBestMoveIndexAndScore[SCORE] == queenQuietPromotionScore);
+    }
+
+    @Test
+    void orderPromotionTest() {
+        Chessboard board = new Chessboard("1Qq5/2P1p1kp/3r1pp1/8/8/7P/p4PP1/2R3K1 b - - 0 0");
+
+        final int[] moves = board.generateLegalMoves();
+        int ply = 1;
+        
+        MoveOrderer.scoreMovesNew(moves, board, ply, 0, 0);
+
+//        MoveOrderer.printMovesAndScores(moves, 0, ply);
+
+        final int[] nextBestMoveIndexAndScore = getNextBestMoveIndexAndScore(0, ply, false);
+        Assert.assertTrue(moves[nextBestMoveIndexAndScore[INDEX]] == MoveParserFromAN.buildMoveFromLAN(board, "a2a1Q"));
+        Assert.assertTrue(nextBestMoveIndexAndScore[SCORE] == queenQuietPromotionScore);
     }
 }

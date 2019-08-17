@@ -29,6 +29,7 @@ public class EloTest {
     @Test
     public void testElo() {
         int elo1 = 1000;
+        // info depth 16 seldepth 35 multipv 1 score cp 140 nodes 4332001 nps 310337 tbhits 0 time 13959 pv f6f3 g2f3 c5d4 a1c1 d4c3 b2c3 b4c5 c1d1 c8a6 e2a6
         String move1 = search("r1b3k1/6p1/P1n1pr1p/q1p5/1b1P4/2N2N2/PP1QBPPP/R3K2R b");
         if ("f6f3".equals(move1)) {
             elo1 = 2600;

@@ -143,43 +143,43 @@ public class MoveOrdererTest {
         Assert.assertEquals(moves[1] & MOVE_MASK_WITHOUT_CHECK, promQueenMove);
     }
 
-    @Test
-    public void moveScoreTest() {
-        Chessboard board = new Chessboard();
-        int[] ints = board.generateLegalMoves();
-        int move = ints[0];
+//    @Test
+//    public void moveScoreTest() {
+//        Chessboard board = new Chessboard();
+//        int[] ints = board.generateLegalMoves();
+//        int move = ints[0];
+//
+//        int max = MoveOrderingConstants.hashScore;
+//        for (int s = 1; s < max; s++) {
+//            int moveScore = buildMoveScore(move, s);
+//            int scoreFromMove = getMoveScore(moveScore);
+//
+//            Assert.assertEquals(MoveParser.toString(move), MoveParser.toString(moveScore));
+//            Assert.assertEquals(scoreFromMove, s);
+//        }
+//    }
 
-        int max = MoveOrderingConstants.hashScore;
-        for (int s = 1; s < max; s++) {
-            int moveScore = buildMoveScore(move, s);
-            int scoreFromMove = getMoveScore(moveScore);
 
-            Assert.assertEquals(MoveParser.toString(move), MoveParser.toString(moveScore));
-            Assert.assertEquals(scoreFromMove, s);
-        }
-    }
-
-
-    @Test
-    public void positiveMovesTest() {
-        Chessboard board = new Chessboard("r2r2k1/pp2bppp/2p1p3/4qb1P/8/1BP1BQ2/PP3PP1/2KR3R b - - 0 1");
-
-        int[] moves = board.generateLegalMoves();
-        for (int m = 0; m < moves.length; m++) {
-            int move = moves[m];
-            if (move == 0) {
-                break;
-            }
-            int max = MoveOrderingConstants.hashScore;
-            for (int s = 1; s < max; s++) {
-                int moveScore = buildMoveScore(move, s);
-                int scoreFromMove = getMoveScore(moveScore);
-
-                Assert.assertTrue(moveScore > 0);
-                Assert.assertEquals(MoveParser.toString(move), MoveParser.toString(moveScore));
-                Assert.assertEquals(scoreFromMove, s);
-            }
-        }
-    }
+//    @Test
+//    public void positiveMovesTest() {
+//        Chessboard board = new Chessboard("r2r2k1/pp2bppp/2p1p3/4qb1P/8/1BP1BQ2/PP3PP1/2KR3R b - - 0 1");
+//
+//        int[] moves = board.generateLegalMoves();
+//        for (int m = 0; m < moves.length; m++) {
+//            int move = moves[m];
+//            if (move == 0) {
+//                break;
+//            }
+//            int max = MoveOrderingConstants.hashScore;
+//            for (int s = 1; s < max; s++) {
+//                int moveScore = buildMoveScore(move, s);
+//                int scoreFromMove = getMoveScore(moveScore);
+//
+//                Assert.assertTrue(moveScore > 0);
+//                Assert.assertEquals(MoveParser.toString(move), MoveParser.toString(moveScore));
+//                Assert.assertEquals(scoreFromMove, s);
+//            }
+//        }
+//    }
 
 }
