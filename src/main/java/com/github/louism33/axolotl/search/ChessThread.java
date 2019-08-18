@@ -126,9 +126,6 @@ public final class ChessThread extends Thread {
                 }
 
 
-//                System.out.println("d: " + depth + ", score: " + score + ", a: " + alpha + ", b: " + beta);
-//                System.out.println("aat: " + alphaAspirationAttempts + ", bat: " + betaAspirationAttempts);
-
                 score = principleVariationSearch(board, depth, 0,
                         alpha, beta, 0, whichThread);
 

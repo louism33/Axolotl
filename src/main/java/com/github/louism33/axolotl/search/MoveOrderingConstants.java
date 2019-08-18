@@ -43,8 +43,30 @@ public final class MoveOrderingConstants {
     public static final int knightPromotionScore = 1;
     public static final int uninterestingMove = 0;
     public static final int uninterestingPromotion = 0;
-    public static final int iHaveBeenSearchScore = -1;
+
+
+    public static final int hashScoreNew = 3100;
+    public static final int queenCapturePromotionScoreNew = 30;
+    public static final int queenQuietPromotionScoreNew = 29;
+    public static final int mateKillerScoreNew = 28;
+    public static final int neutralCaptureNew = 24; // between 19 and 29
+    public static final int captureBaseScoreNew = 10; // between 18 and 29
+    public static final int killerOneScoreNew = 17;
+    public static final int killerTwoScoreNew = 16;
+    public static final int pawnPushToSevenNew = 15;
+    public static final int giveCheckMoveNew = 15;
+    public static final int castlingMoveNew = 15;
+    public static final int pawnPushToSixNew = 14;
+    public static final int oldKillerScoreOneNew = 15;
+    public static final int maxRootQuietScoreNew = 14;
+    public static final int oldKillerScoreTwoNew = 14;
+    public static final int maxNodeQuietScoreNew = 14;
+    public static final int knightPromotionScoreNew = 1;
+    public static final int uninterestingMoveNew = 0;
+    public static final int uninterestingPromotionNew = 0;
+    public static final int previouslySearchedScore = -1;
     public static final int dontSearchMeScore = -2;
+    public static final int notALegalMoveScore = -3;
     
     static int[][] goodQuietDestinations = new int[2][64];
 

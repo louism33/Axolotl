@@ -321,6 +321,7 @@ public final class KPK {
         if (pkpReady) {
             return;
         }
+
         ArrayList<KPKPosition> db = new ArrayList<>(MAX_INDEX);
 
         int idx;

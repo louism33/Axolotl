@@ -17,7 +17,6 @@ import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.neutralCapture;
 import static com.github.louism33.chesscore.BoardConstants.WHITE_KING;
 import static com.github.louism33.chesscore.BoardConstants.WHITE_PAWN;
-import static com.github.louism33.chesscore.MoveConstants.FIRST_FREE_BIT;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 
 public final class Quiescence {
@@ -26,6 +25,8 @@ public final class Quiescence {
 
     public static int quiescenceSearch(Chessboard board, int alpha, int beta, int whichThread, int ply, int depth) {
 
+        Assert.assertTrue(ply != 0);
+        
         if (whichThread == MASTER_THREAD) {
             selDepth = Math.max(selDepth, ply);
         }
@@ -67,14 +68,13 @@ public final class Quiescence {
             scoreMovesQuiescenceNew(moves, board, ply, whichThread);
         } else {
             // todo consider tableprobe
-//            scoreMoves(moves, board, ply, 0, whichThread);
             scoreMovesNew(moves, board, ply, 0, whichThread);
         }
 
         int numberOfQMovesSearched = 0;
         int[] nextBestMoveIndexAndScore;
-        int move;
-        int moveScore;
+        int move = -1;
+        int moveScore = notALegalMoveScore;
         
         for (int i = 0; i < moves.length; i++) {
 
@@ -82,23 +82,26 @@ public final class Quiescence {
 
             Assert.assertEquals(moves[moves.length - 1], scores[whichThread][ply][scores[whichThread][ply].length - 1]);
 
-            move = moves[nextBestMoveIndexAndScore[INDEX]];
+            Assert.assertTrue(moveScore == notALegalMoveScore || moveScore >= nextBestMoveIndexAndScore[SCORE]);
+            
             moveScore = nextBestMoveIndexAndScore[SCORE];
 
-            if (!inCheck && (moveScore == dontSearchMeScore || moveScore == iHaveBeenSearchScore)) {
+            Assert.assertTrue(moveScore == previouslySearchedScore || move != moves[nextBestMoveIndexAndScore[INDEX]]);
+            
+            move = moves[nextBestMoveIndexAndScore[INDEX]];
+
+            if (!inCheck && (moveScore == dontSearchMeScore || moveScore == previouslySearchedScore)) {
                 break;
             }
             
-//            final int move = moves[i];
-            if (move == 0 || moveScore == dontSearchMeScore || moveScore == iHaveBeenSearchScore) {
+            if (move == 0 || moveScore == dontSearchMeScore || moveScore == previouslySearchedScore) {
                 break;
             }
 
-//            final int moveScore = getMoveScore(move);
-            
             if (!inCheck && moveScore == 0) {
                 break;
             }
+            
             final boolean captureMove = MoveParser.isCaptureMove(move);
             final boolean epMove = MoveParser.isEnPassantMove(move);
             final boolean promotionMove = MoveParser.isPromotionMove(move);
@@ -125,16 +128,6 @@ public final class Quiescence {
             final int loudMove = move & MOVE_MASK_WITH_CHECK;
 
             if (MASTER_DEBUG) {
-//                if (!inCheck) {
-//                    if (i == 0) {
-//                        Assert.assertTrue(moves[i] >= moves[i + 1]);
-//                    } else {
-//                        Assert.assertTrue(moves[i] <= moves[i - 1]);
-//                        Assert.assertTrue(moves[i] >= moves[i + 1]);
-//                    }
-//                    Assert.assertTrue(moves[i] > FIRST_FREE_BIT);
-//                }
-
                 if (!inCheck) {
                     Assert.assertTrue(captureMove || promotionMove || epMove);
                 }
@@ -184,6 +177,11 @@ public final class Quiescence {
                     continue;
                 }
             }
+            
+            // todo
+//            if (depth != 0 && SEE.getSEE(board, move, whichThread) < 0) {
+//                continue;
+//            }
 
             board.makeMoveAndFlipTurn(loudMove);
             numberOfQMovesSearched++;
