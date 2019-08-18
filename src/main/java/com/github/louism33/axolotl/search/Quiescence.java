@@ -37,6 +37,11 @@ public final class Quiescence {
 
         boolean inCheck = board.inCheckRecorder;
 
+        //todo
+//        if (inCheck) {
+//            return principleVariationSearch(board, 1, ply, alpha, beta, 1, whichThread);
+//        }
+        
         if (!inCheck) {
             if (MASTER_DEBUG) {
                 Assert.assertFalse(board.inCheck());

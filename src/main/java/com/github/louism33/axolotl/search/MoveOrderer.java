@@ -99,7 +99,7 @@ public final class MoveOrderer {
             } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
                 moves[i] = buildMoveScore(move, uninterestingPromotion);
             } else if (isCaptureMove(move) || isEnPassantMove(move)) {
-                moves[i] = buildMoveScore(move, seeScore(board, move, 0));
+                moves[i] = buildMoveScore(move, seeScoreRoot(board, move, 0));
             } else if (board.moveGivesCheck(move)) {
                 // checking sets flag on move
                 moves[i] = MoveParser.setCheckingMove(moves[i]);
@@ -442,6 +442,32 @@ public final class MoveOrderer {
         return captureBaseScore + getMVVLVAScore(move);
     }
 
+    private static int seeScoreRoot(Chessboard board, int move, int whichThread) {
+        if (MASTER_DEBUG) {
+            Assert.assertTrue(move != 0);
+        }
+
+//        if (true) {
+//            return captureBaseScore + getMVVLVAScore(move);
+//        }
+
+        int sourceScore = scoreByPiece(move, getMovingPieceInt(move));
+        int destinationScore = isEnPassantMove(move) ? 1 : scoreByPiece(move, getVictimPieceInt(move));
+        if (destinationScore > sourceScore) { // straight winning capture
+            return neutralCaptureNew + destinationScore - sourceScore;
+        }
+
+        final int see = SEE.getSEE(board, move, whichThread) / 100;
+        if (see == 0) {
+            return neutralCaptureNew;
+        }
+        if (see > 0) {
+            Assert.assertTrue(neutralCaptureNew + 1 + (see / 200) < neutralCaptureNew + 5);
+            return neutralCaptureNew + 1 + (see / 200);
+        }
+
+        return neutralCaptureNew - 1 + (see / 200);
+    }
 
     private static int seeScore(Chessboard board, int move, int whichThread) {
         if (MASTER_DEBUG) {
