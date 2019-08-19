@@ -557,43 +557,18 @@ public final class MoveOrderer {
                 if (isPromotionMove(move) && isPromotionToQueen(move)) {
                     scores[whichThread][ply][i] = queenCapturePromotionScoreNew;
                 } else {
-                    final int score = seeScore(board, move, whichThread);
-//                    final int score = seeScoreNew(move);
+//                    final int score = seeScore(board, move, whichThread);
+                    final int score = seeScoreNew(move);
                     scores[whichThread][ply][i] = score;
                 }
             } else if (isPromotionMove(move) && (isPromotionToQueen(move))) {
                 scores[whichThread][ply][i] = queenQuietPromotionScoreNew;
             } else if (MASTER_DEBUG) {
                 Assert.assertEquals(0, getMoveScore(move));
-//                scores[whichThread][ply][i] = dontSearchMeScore;
             }
         }
     }
 
-
-//    static void scoreMovesQuiescence(int[] moves, Chessboard board, int whichThread) {
-//        final int maxMoves = moves[moves.length - 1];
-//        for (int i = 0; i < maxMoves; i++) { // todo, set quiets to 0?
-//            int move = moves[i];
-//            if (move == 0) {
-//                break;
-//            }
-//
-//            if (isCaptureMove(move) || isEnPassantMove(move)) {
-//                if (isPromotionMove(move) && isPromotionToQueen(move)) {
-//                    moves[i] = buildMoveScore(move, queenCapturePromotionScore);
-//                } else {
-//                    moves[i] = buildMoveScore(move, seeScore(board, move, whichThread));
-//                }
-//            } else if (isPromotionMove(move) && (isPromotionToQueen(move))) {
-//                moves[i] = buildMoveScore(move, queenQuietPromotionScore);
-//            } else if (MASTER_DEBUG) {
-//                Assert.assertEquals(0, getMoveScore(move));
-//            }
-//        }
-//
-//        sortMoves(moves, maxMoves);
-//    }
 
     static void updateKillerMoves(int whichThread, int move, int ply) {
         ply = ply * 2; // we store two killers per ply, at pos ply and ply+1
