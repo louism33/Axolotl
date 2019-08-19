@@ -57,8 +57,8 @@ public class MoveOrdererMVVLVATest {
                 (getMVVLVAScore(MoveParserFromAN.buildMoveFromLAN(board, "b3b8")) >
                         getMVVLVAScore(MoveParserFromAN.buildMoveFromLAN(board, "f6g7"))));
 
-        Assert.assertTrue(MoveParserFromAN.buildMoveFromLAN(board, "e4d5") >
-                getMVVLVAScore(MoveParserFromAN.buildMoveFromLAN(board, "f3e5")));
+        Assert.assertTrue(MoveParserFromAN.buildMoveFromLAN(board, "f6g7") >
+                getMVVLVAScore(MoveParserFromAN.buildMoveFromLAN(board, "b3a3")));
 
         Assert.assertTrue(MoveParserFromAN.buildMoveFromLAN(board, "b3a3") >
                 getMVVLVAScore(MoveParserFromAN.buildMoveFromLAN(board, "f6e6")));
