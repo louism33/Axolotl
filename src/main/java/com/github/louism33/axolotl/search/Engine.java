@@ -649,7 +649,7 @@ public final class Engine {
                 case PHASE_HASH:
                     Assert.assertTrue(hashMove != 0);
                     move = hashMove;
-                    moveScore = hashScore;
+                    moveScore = rootNode ? hashScore : hashScoreNew;
                     PHASE_BACKEND++;
                     hashAlreadyTried = true;
 
@@ -688,13 +688,16 @@ public final class Engine {
 
                         scoreMovesNew(moves, board, ply, hashMove, whichThread);
                         if (hashAlreadyTried) {
-                            MoveOrderer.invalidateHashMove(whichThread, hashMove, moves, ply);
+                            MoveOrderer.invalidateHashMove(moves, hashMove, whichThread, ply);
                         }
                     }
                     PHASE_BACKEND++;
 
                 case PHASE_REG_MOVES + 1:
                 case PHASE_REG_MOVES:
+                    
+                    // todo, use See(), get score, then if smaller than 0 set the move score to this new number, should end up being searched later
+                    
                     PHASE_BACKEND = PHASE_REG_MOVES + 1;
                     final boolean condition = moves != null;
                     Assert.assertTrue(condition);
@@ -716,21 +719,49 @@ public final class Engine {
 
                         Assert.assertEquals(moves[moves.length - 1], scores[whichThread][ply][scores[whichThread][ply].length - 1]);
                         Assert.assertTrue(move != moves[nextBestMoveIndexAndScore[INDEX]]);
+                        if (!(moveScore == notALegalMoveScore || moveScore >= nextBestMoveIndexAndScore[SCORE])) {
+                            System.out.println(board);
+                            MoveOrderer.printMovesAndScores(moves, whichThread, ply);
+                            MoveParser.printMove(move);
+                            System.out.println(moveScore);
+                            System.out.println(rootNode);
+                            System.out.println(ply);
+                            System.out.println();
+                        }
                         Assert.assertTrue(moveScore == notALegalMoveScore || moveScore >= nextBestMoveIndexAndScore[SCORE]);
 
                         move = moves[nextBestMoveIndexAndScore[INDEX]];
                         moveScore = nextBestMoveIndexAndScore[SCORE];
 
+                        
+                        
+                        
+//                        // todo todo
+//                        if (!rootNode && (isCaptureMove(move) || isEnPassantMove(move))) {
+//                            final int seeScore = SEE.getSEE(board, move, whichThread);
+//                            if (seeScore < 0) {
+//                                MoveOrderer.setCaptureToLosingCapture(moves, move, seeScore, whichThread, ply);
+//                                Assert.assertTrue(moveScore > seeScore);
+//                                Assert.assertTrue(moveScore > seeScore);
+//                                continue;
+//                            }
+//                        }
+                        
+                        
+                        
                         if (moveScore == previouslySearchedScore) {
-//                            System.out.println(board);
-//                            System.out.println();
                             System.out.println("break");
                             break everything;
                         }
                     }
 
                     if (hashAlreadyTried && i == 0) {
-                        Assert.assertTrue(moveScore == hashScore);
+                        if (rootNode) {
+                            Assert.assertTrue(moveScore == hashScore);
+                        } else {
+                            Assert.assertTrue(moveScore == hashScoreNew);
+                        }
+                        
                         Assert.assertTrue(move == hashMove || move == (hashMove & MOVE_MASK_WITHOUT_CHECK));
                         i++;
                         continue;

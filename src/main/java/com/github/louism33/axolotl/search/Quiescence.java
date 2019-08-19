@@ -113,6 +113,10 @@ public final class Quiescence {
             final boolean interestingMove = captureMove || epMove || promotionMove;
 
             // todo, checking move?
+
+            if (!inCheck) {
+                Assert.assertTrue(interestingMove);
+            }
             
             if (MASTER_DEBUG) {
                 if (!inCheck && moveScore != 0) {
@@ -184,9 +188,9 @@ public final class Quiescence {
             }
             
             // todo
-//            if (depth != 0 && SEE.getSEE(board, move, whichThread) < 0) {
-//                continue;
-//            }
+            if (depth != 0 && !inCheck && !promotionMove && SEE.getSEE(board, move, whichThread) < 0) {
+                continue;
+            }
 
             board.makeMoveAndFlipTurn(loudMove);
             numberOfQMovesSearched++;

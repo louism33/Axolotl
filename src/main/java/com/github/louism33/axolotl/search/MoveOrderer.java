@@ -125,99 +125,99 @@ public final class MoveOrderer {
         }
     }
 
-    static void scoreMoves(final int[] moves, final Chessboard board, int ply,
-                           int hashMove, int whichThread) {
-        int maxMoves = moves[moves.length - 1];
-        int turn = board.turn;
-
-        int mateKiller = 0;
-        int firstKiller = 0;
-        int secondKiller = 0;
-        int firstOldKiller = 0;
-        int secondOldKiller = 0;
-
-        if (ply < MAX_DEPTH_HARD) {
-            mateKiller = mateKillers[whichThread][ply];
-            firstKiller = killerMoves[whichThread][ply * 2];
-            secondKiller = killerMoves[whichThread][ply * 2 + 1];
-            firstOldKiller = ply >= 2 ? killerMoves[whichThread][ply * 2 - 4] : 0;
-            secondOldKiller = ply >= 2 ? killerMoves[whichThread][ply * 2 - 4 + 1] : 0;
-        }
-
-        int move;
-        for (int i = 0; i < maxMoves; i++) {
-            moves[i] = moves[i] & MOVE_MASK_WITH_CHECK;
-            move = moves[i];
-
-            if (move == 0) {
-                break;
-            }
-            if (MASTER_DEBUG) {
-                Assert.assertTrue(move != 0);
-                Assert.assertTrue(move < MoveConstants.FIRST_FREE_BIT);
-                Assert.assertTrue(hashMove < MoveConstants.FIRST_FREE_BIT);
-            }
-
-            final boolean captureMove = isCaptureMove(move);
-
-
-//             *  todo
-//             *  properly do mvv lva
-//             *  move see out of here, into Q or engine search
-
-            if (move == hashMove) {
-                moves[i] = buildMoveScore(move, hashScore);
-            } else if (isPromotionToQueen(move)) {
-                if (captureMove) {
-                    moves[i] = buildMoveScore(move, queenCapturePromotionScore);
-                } else {
-                    moves[i] = buildMoveScore(move, queenQuietPromotionScore);
-                }
-            } else if (isPromotionToKnight(move)) {
-                moves[i] = buildMoveScore(move, knightPromotionScore);
-            } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
-                moves[i] = buildMoveScore(move, uninterestingPromotion);
-            } else if (captureMove || isEnPassantMove(move)) {
-                moves[i] = buildMoveScore(move, seeScore(board, move, whichThread));
-            } else if (move == mateKiller) {
-                moves[i] = buildMoveScore(move, mateKillerScore);
-            } else if (firstKiller == move) {
-                moves[i] = buildMoveScore(move, killerOneScore);
-            } else if (secondKiller == move) {
-                moves[i] = buildMoveScore(move, killerTwoScore);
-            } else if (board.moveGivesCheck(move)) {
-                moves[i] = MoveParser.setCheckingMove(moves[i]);
-                Assert.assertTrue(MoveParser.isCheckingMove(moves[i]));
-                moves[i] = buildMoveScore(moves[i], giveCheckMove);
-            } else if (isCastlingMove(move)) {
-                moves[i] = buildMoveScore(move, castlingMove);
-            } else if (firstOldKiller == move) {
-                moves[i] = buildMoveScore(move, oldKillerScoreOne);
-            } else if (secondOldKiller == move) {
-                moves[i] = buildMoveScore(move, oldKillerScoreTwo);
-            } else {
-                boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(turn, move);
-                if (pawnToSeven) {
-                    moves[i] = buildMoveScore(move, pawnPushToSeven);
-                    continue;
-                }
-
-                boolean pawnToSix = MoveParser.moveIsPawnPushSix(turn, move);
-                if (pawnToSix) {
-                    moves[i] = buildMoveScore(move, pawnPushToSix);
-                    continue;
-                }
-
-                moves[i] = buildMoveScore(move, quietHeuristicMoveScore(move, turn, maxNodeQuietScore));
-            }
-
-            if (MASTER_DEBUG) {
-                Assert.assertTrue(moves[i] != 0);
-            }
-        }
-
-        sortMoves(moves, maxMoves);
-    }
+//    static void scoreMoves(final int[] moves, final Chessboard board, int ply,
+//                           int hashMove, int whichThread) {
+//        int maxMoves = moves[moves.length - 1];
+//        int turn = board.turn;
+//
+//        int mateKiller = 0;
+//        int firstKiller = 0;
+//        int secondKiller = 0;
+//        int firstOldKiller = 0;
+//        int secondOldKiller = 0;
+//
+//        if (ply < MAX_DEPTH_HARD) {
+//            mateKiller = mateKillers[whichThread][ply];
+//            firstKiller = killerMoves[whichThread][ply * 2];
+//            secondKiller = killerMoves[whichThread][ply * 2 + 1];
+//            firstOldKiller = ply >= 2 ? killerMoves[whichThread][ply * 2 - 4] : 0;
+//            secondOldKiller = ply >= 2 ? killerMoves[whichThread][ply * 2 - 4 + 1] : 0;
+//        }
+//
+//        int move;
+//        for (int i = 0; i < maxMoves; i++) {
+//            moves[i] = moves[i] & MOVE_MASK_WITH_CHECK;
+//            move = moves[i];
+//
+//            if (move == 0) {
+//                break;
+//            }
+//            if (MASTER_DEBUG) {
+//                Assert.assertTrue(move != 0);
+//                Assert.assertTrue(move < MoveConstants.FIRST_FREE_BIT);
+//                Assert.assertTrue(hashMove < MoveConstants.FIRST_FREE_BIT);
+//            }
+//
+//            final boolean captureMove = isCaptureMove(move);
+//
+//
+////             *  todo
+////             *  properly do mvv lva
+////             *  move see out of here, into Q or engine search
+//
+//            if (move == hashMove) {
+//                moves[i] = buildMoveScore(move, hashScore);
+//            } else if (isPromotionToQueen(move)) {
+//                if (captureMove) {
+//                    moves[i] = buildMoveScore(move, queenCapturePromotionScore);
+//                } else {
+//                    moves[i] = buildMoveScore(move, queenQuietPromotionScore);
+//                }
+//            } else if (isPromotionToKnight(move)) {
+//                moves[i] = buildMoveScore(move, knightPromotionScore);
+//            } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
+//                moves[i] = buildMoveScore(move, uninterestingPromotion);
+//            } else if (captureMove || isEnPassantMove(move)) {
+//                moves[i] = buildMoveScore(move, seeScore(board, move, whichThread));
+//            } else if (move == mateKiller) {
+//                moves[i] = buildMoveScore(move, mateKillerScore);
+//            } else if (firstKiller == move) {
+//                moves[i] = buildMoveScore(move, killerOneScore);
+//            } else if (secondKiller == move) {
+//                moves[i] = buildMoveScore(move, killerTwoScore);
+//            } else if (board.moveGivesCheck(move)) {
+//                moves[i] = MoveParser.setCheckingMove(moves[i]);
+//                Assert.assertTrue(MoveParser.isCheckingMove(moves[i]));
+//                moves[i] = buildMoveScore(moves[i], giveCheckMove);
+//            } else if (isCastlingMove(move)) {
+//                moves[i] = buildMoveScore(move, castlingMove);
+//            } else if (firstOldKiller == move) {
+//                moves[i] = buildMoveScore(move, oldKillerScoreOne);
+//            } else if (secondOldKiller == move) {
+//                moves[i] = buildMoveScore(move, oldKillerScoreTwo);
+//            } else {
+//                boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(turn, move);
+//                if (pawnToSeven) {
+//                    moves[i] = buildMoveScore(move, pawnPushToSeven);
+//                    continue;
+//                }
+//
+//                boolean pawnToSix = MoveParser.moveIsPawnPushSix(turn, move);
+//                if (pawnToSix) {
+//                    moves[i] = buildMoveScore(move, pawnPushToSix);
+//                    continue;
+//                }
+//
+//                moves[i] = buildMoveScore(move, quietHeuristicMoveScore(move, turn, maxNodeQuietScore));
+//            }
+//
+//            if (MASTER_DEBUG) {
+//                Assert.assertTrue(moves[i] != 0);
+//            }
+//        }
+//
+//        sortMoves(moves, maxMoves);
+//    }
 
 
     static int[][][] scores = new int[NUMBER_OF_THREADS][Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH][128];
@@ -316,7 +316,7 @@ public final class MoveOrderer {
     static final int INDEX = 0, SCORE = 1;
     private static int[][] returnArray = new int[NUMBER_OF_THREADS][2];
     
-    static void invalidateHashMove(int whichThread, int hashMove, int[] moves, int ply) {
+    static void invalidateHashMove(int[] moves, int hashMove, int whichThread, int ply) {
         for (int i = 0; i < moves[moves.length - 1]; i++) {
             if (moves[i] == hashMove) {
                 scores[whichThread][ply][i] = previouslySearchedScore;
@@ -324,8 +324,22 @@ public final class MoveOrderer {
             }
         }
     }
+
+    static void setCaptureToLosingCapture(int[] moves, int losingCapture, int seeScore, int whichThread, int ply) {
+        for (int i = 0; i < moves[moves.length - 1]; i++) {
+            if (moves[i] == losingCapture) {
+                // previouslySearchedScore because we have just retrieved it from getNextBestMoveIndexAndScore()
+                Assert.assertTrue(scores[whichThread][ply][i] == previouslySearchedScore);
+                scores[whichThread][ply][i] = seeScore;
+                return;
+            }
+        }
+    }
     
     static int[] getNextBestMoveIndexAndScore(int whichThread, int ply) {
+        // remove when rootsort is better
+        Assert.assertTrue(ply != 0);
+        
         final int[] myScores = scores[whichThread][ply];
         int max = myScores[0];
         int index = 0;
@@ -366,35 +380,36 @@ public final class MoveOrderer {
     static int getMVVLVAScore(int move) {
         final int victimPiece = getVictimPieceInt(move);
         if (victimPiece == NO_PIECE) {
-            return 0;
+            Assert.assertTrue(MoveParser.isEnPassantMove(move));
+            return 100;
         }
-        return scoreVictimForMVVLVA(victimPiece) + scoreAggressorForMVVLVA(getMovingPieceInt(move));
+//        return scoreVictimForMVVLVA(victimPiece) - getMovingPieceInt(move);
+        return scoreVictimForMVVLVA(victimPiece) - scoreAggressorForMVVLVA(getMovingPieceInt(move));
     }
 
-    @SuppressWarnings("PointlessArithmeticExpression")
     private static int scoreVictimForMVVLVA(int piece) {
         Assert.assertTrue(piece != NO_PIECE);
 
         switch (piece) {
             case WHITE_QUEEN:
             case BLACK_QUEEN:
-                return 4 + 8;
+                return 1000;
 
             case WHITE_ROOK:
             case BLACK_ROOK:
-                return 3 + 8;
+                return 500;
 
             case WHITE_BISHOP:
             case BLACK_BISHOP:
-                return 2 + 8;
+                return 300;
 
             case WHITE_KNIGHT:
             case BLACK_KNIGHT:
-                return 1 + 8;
+                return 300;
 
             case WHITE_PAWN:
             case BLACK_PAWN:
-                return 0 + 8;
+                return 100;
 
             default:
                 throw new RuntimeException("couldn't understand piece");
@@ -407,15 +422,15 @@ public final class MoveOrderer {
         switch (piece) {
             case WHITE_KING:
             case BLACK_KING:
-                return 0;
+                return 6;
 
             case WHITE_QUEEN:
             case BLACK_QUEEN:
-                return 1;
+                return 5;
 
             case WHITE_ROOK:
             case BLACK_ROOK:
-                return 2;
+                return 4;
 
             case WHITE_BISHOP:
             case BLACK_BISHOP:
@@ -423,53 +438,28 @@ public final class MoveOrderer {
 
             case WHITE_KNIGHT:
             case BLACK_KNIGHT:
-                return 4;
+                return 2;
 
             case WHITE_PAWN:
             case BLACK_PAWN:
-                return 5;
+                return 1;
 
             default:
                 throw new RuntimeException("couldn't understand piece");
         }
     }
 
-    private static int seeScoreNew(Chessboard board, int move, int whichThread) {
+    private static int seeScoreNew(int move) {
         if (MASTER_DEBUG) {
             Assert.assertTrue(move != 0);
         }
 
-        return captureBaseScore + getMVVLVAScore(move);
+        Assert.assertTrue(getMVVLVAScore(move) > 0);
+        
+        return captureBaseScoreNew + getMVVLVAScore(move);
     }
 
     private static int seeScoreRoot(Chessboard board, int move, int whichThread) {
-        if (MASTER_DEBUG) {
-            Assert.assertTrue(move != 0);
-        }
-
-//        if (true) {
-//            return captureBaseScore + getMVVLVAScore(move);
-//        }
-
-        int sourceScore = scoreByPiece(move, getMovingPieceInt(move));
-        int destinationScore = isEnPassantMove(move) ? 1 : scoreByPiece(move, getVictimPieceInt(move));
-        if (destinationScore > sourceScore) { // straight winning capture
-            return neutralCaptureNew + destinationScore - sourceScore;
-        }
-
-        final int see = SEE.getSEE(board, move, whichThread) / 100;
-        if (see == 0) {
-            return neutralCaptureNew;
-        }
-        if (see > 0) {
-            Assert.assertTrue(neutralCaptureNew + 1 + (see / 200) < neutralCaptureNew + 5);
-            return neutralCaptureNew + 1 + (see / 200);
-        }
-
-        return neutralCaptureNew - 1 + (see / 200);
-    }
-
-    private static int seeScore(Chessboard board, int move, int whichThread) {
         if (MASTER_DEBUG) {
             Assert.assertTrue(move != 0);
         }
@@ -494,6 +484,33 @@ public final class MoveOrderer {
         }
 
         return neutralCapture - 1 + (see / 200);
+    }
+
+    private static int seeScore(Chessboard board, int move, int whichThread) {
+        if (MASTER_DEBUG) {
+            Assert.assertTrue(move != 0);
+        }
+
+//        if (true) {
+//            return captureBaseScore + getMVVLVAScore(move);
+//        }
+
+        int sourceScore = scoreByPiece(move, getMovingPieceInt(move));
+        int destinationScore = isEnPassantMove(move) ? 1 : scoreByPiece(move, getVictimPieceInt(move));
+        if (destinationScore > sourceScore) { // straight winning capture
+            return neutralCaptureNew + destinationScore - sourceScore;
+        }
+
+        final int see = SEE.getSEE(board, move, whichThread) / 100;
+        if (see == 0) {
+            return neutralCaptureNew;
+        }
+        if (see > 0) {
+            Assert.assertTrue(neutralCaptureNew + 1 + (see / 200) < neutralCaptureNew + 5);
+            return neutralCaptureNew + 1 + (see / 200);
+        }
+
+        return neutralCaptureNew - 1 + (see / 200);
     }
 
 
@@ -527,7 +544,8 @@ public final class MoveOrderer {
     static void scoreMovesQuiescenceNew(int[] moves, Chessboard board, int ply, int whichThread) {
         final int maxMoves = moves[moves.length - 1];
 
-        Arrays.fill(scores[whichThread][ply], 0);
+//        Arrays.fill(scores[whichThread][ply], 0);
+        Arrays.fill(scores[whichThread][ply], dontSearchMeScore);
         scores[whichThread][ply][scores[whichThread][ply].length - 1] = maxMoves;
         for (int i = 0; i < maxMoves; i++) { // todo, set quiets to 0?
             int move = moves[i];
@@ -537,44 +555,45 @@ public final class MoveOrderer {
 
             if (isCaptureMove(move) || isEnPassantMove(move)) {
                 if (isPromotionMove(move) && isPromotionToQueen(move)) {
-                    scores[whichThread][ply][i] = queenCapturePromotionScore;
+                    scores[whichThread][ply][i] = queenCapturePromotionScoreNew;
                 } else {
                     final int score = seeScore(board, move, whichThread);
+//                    final int score = seeScoreNew(move);
                     scores[whichThread][ply][i] = score;
                 }
             } else if (isPromotionMove(move) && (isPromotionToQueen(move))) {
-                scores[whichThread][ply][i] = queenQuietPromotionScore;
+                scores[whichThread][ply][i] = queenQuietPromotionScoreNew;
             } else if (MASTER_DEBUG) {
                 Assert.assertEquals(0, getMoveScore(move));
-                scores[whichThread][ply][i] = dontSearchMeScore;
+//                scores[whichThread][ply][i] = dontSearchMeScore;
             }
         }
     }
 
 
-    static void scoreMovesQuiescence(int[] moves, Chessboard board, int whichThread) {
-        final int maxMoves = moves[moves.length - 1];
-        for (int i = 0; i < maxMoves; i++) { // todo, set quiets to 0?
-            int move = moves[i];
-            if (move == 0) {
-                break;
-            }
-
-            if (isCaptureMove(move) || isEnPassantMove(move)) {
-                if (isPromotionMove(move) && isPromotionToQueen(move)) {
-                    moves[i] = buildMoveScore(move, queenCapturePromotionScore);
-                } else {
-                    moves[i] = buildMoveScore(move, seeScore(board, move, whichThread));
-                }
-            } else if (isPromotionMove(move) && (isPromotionToQueen(move))) {
-                moves[i] = buildMoveScore(move, queenQuietPromotionScore);
-            } else if (MASTER_DEBUG) {
-                Assert.assertEquals(0, getMoveScore(move));
-            }
-        }
-
-        sortMoves(moves, maxMoves);
-    }
+//    static void scoreMovesQuiescence(int[] moves, Chessboard board, int whichThread) {
+//        final int maxMoves = moves[moves.length - 1];
+//        for (int i = 0; i < maxMoves; i++) { // todo, set quiets to 0?
+//            int move = moves[i];
+//            if (move == 0) {
+//                break;
+//            }
+//
+//            if (isCaptureMove(move) || isEnPassantMove(move)) {
+//                if (isPromotionMove(move) && isPromotionToQueen(move)) {
+//                    moves[i] = buildMoveScore(move, queenCapturePromotionScore);
+//                } else {
+//                    moves[i] = buildMoveScore(move, seeScore(board, move, whichThread));
+//                }
+//            } else if (isPromotionMove(move) && (isPromotionToQueen(move))) {
+//                moves[i] = buildMoveScore(move, queenQuietPromotionScore);
+//            } else if (MASTER_DEBUG) {
+//                Assert.assertEquals(0, getMoveScore(move));
+//            }
+//        }
+//
+//        sortMoves(moves, maxMoves);
+//    }
 
     static void updateKillerMoves(int whichThread, int move, int ply) {
         ply = ply * 2; // we store two killers per ply, at pos ply and ply+1
