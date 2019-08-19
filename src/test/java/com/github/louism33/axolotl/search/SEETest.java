@@ -1,12 +1,25 @@
 package com.github.louism33.axolotl.search;
 
+import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class SEETest {
 
+    @BeforeAll
+    static void setup() {
+        ResettingUtils.reset();
+    }
+
+    @AfterAll
+    static void reset() {
+        ResettingUtils.reset();
+    }
+    
     @Test
     public void simpleTest() {
         Chessboard board = new Chessboard("4k3/8/5n2/8/6N1/5P2/8/4K3 b - - 0 1");
