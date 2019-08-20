@@ -242,7 +242,8 @@ public final class MoveOrderer {
         }
 
         int move;
-        Arrays.fill(scores[whichThread][ply], 0);
+//        Arrays.fill(scores[whichThread][ply], 0);
+        Arrays.fill(scores[whichThread][ply], dontSearchMeScore);
         scores[whichThread][ply][scores[whichThread][ply].length - 1] = maxMoves;
         for (int i = 0; i < maxMoves; i++) {
             moves[i] = moves[i] & MOVE_MASK_WITH_CHECK;
@@ -277,7 +278,10 @@ public final class MoveOrderer {
             } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
                 scores[whichThread][ply][i] = uninterestingPromotionNew;
             } else if (captureMove || isEnPassantMove(move)) {
-                final int score = seeScore(board, move, whichThread);
+//                final int score = seeScore(board, move, whichThread);
+                // todo
+                final int score = seeScoreNew(move);
+
                 scores[whichThread][ply][i] = score;
             } else if (move == mateKiller) {
                 scores[whichThread][ply][i] = mateKillerScoreNew;
@@ -315,7 +319,7 @@ public final class MoveOrderer {
 
     static final int INDEX = 0, SCORE = 1;
     private static int[][] returnArray = new int[NUMBER_OF_THREADS][2];
-    
+
     static void invalidateHashMove(int[] moves, int hashMove, int whichThread, int ply) {
         for (int i = 0; i < moves[moves.length - 1]; i++) {
             if (moves[i] == hashMove) {
@@ -325,21 +329,26 @@ public final class MoveOrderer {
         }
     }
 
-    static void setCaptureToLosingCapture(int[] moves, int losingCapture, int seeScore, int whichThread, int ply) {
-        for (int i = 0; i < moves[moves.length - 1]; i++) {
-            if (moves[i] == losingCapture) {
-                // previouslySearchedScore because we have just retrieved it from getNextBestMoveIndexAndScore()
-                Assert.assertTrue(scores[whichThread][ply][i] == previouslySearchedScore);
-                scores[whichThread][ply][i] = seeScore;
-                return;
+    static void setCaptureToLosingCapture(int moveIndex, int seeScore, int whichThread, int ply) {
+        Assert.assertTrue(seeScore < 0);
+        // previouslySearchedScore because we have just retrieved it from getNextBestMoveIndexAndScore()
+        Assert.assertTrue(scores[whichThread][ply][moveIndex] == previouslySearchedScore);
+        scores[whichThread][ply][moveIndex] = captureBaseScoreSEE + seeScore;
+    }
+
+    public static int getScoreOfMove(int[] moves, int move, int whichThread, int ply) {
+        for (int i = 0; i < moves.length; i++) {
+            if (moves[i] == move) {
+                return scores[whichThread][ply][i];
             }
         }
+        throw new RuntimeException(MoveParser.toString(move) + " is not in the moves provided: " + MoveParser.toString(moves));
     }
     
     static int[] getNextBestMoveIndexAndScore(int whichThread, int ply) {
         // remove when rootsort is better
         Assert.assertTrue(ply != 0);
-        
+
         final int[] myScores = scores[whichThread][ply];
         int max = myScores[0];
         int index = 0;
@@ -352,9 +361,9 @@ public final class MoveOrderer {
             myReturn[SCORE] = dontSearchMeScore;
             return myReturn;
         }
-        
+
         Assert.assertTrue(totalScores > 0);
-        
+
         for (int i = 1; i < totalScores; i++) {
             final int myScore = myScores[i];
             if (myScore == hashScore) {
@@ -371,7 +380,7 @@ public final class MoveOrderer {
         myReturn[INDEX] = index;
         myReturn[SCORE] = myScores[index];
         myScores[index] = previouslySearchedScore;
-        
+
         return myReturn;
     }
 
@@ -455,8 +464,8 @@ public final class MoveOrderer {
         }
 
         Assert.assertTrue(getMVVLVAScore(move) > 0);
-        
-        return captureBaseScoreNew + getMVVLVAScore(move);
+
+        return captureBaseScoreMVVLVA + getMVVLVAScore(move);
     }
 
     private static int seeScoreRoot(Chessboard board, int move, int whichThread) {
@@ -486,32 +495,28 @@ public final class MoveOrderer {
         return neutralCapture - 1 + (see / 200);
     }
 
-    private static int seeScore(Chessboard board, int move, int whichThread) {
-        if (MASTER_DEBUG) {
-            Assert.assertTrue(move != 0);
-        }
-
-//        if (true) {
-//            return captureBaseScore + getMVVLVAScore(move);
+//    private static int seeScore(Chessboard board, int move, int whichThread) {
+//        if (MASTER_DEBUG) {
+//            Assert.assertTrue(move != 0);
 //        }
-
-        int sourceScore = scoreByPiece(move, getMovingPieceInt(move));
-        int destinationScore = isEnPassantMove(move) ? 1 : scoreByPiece(move, getVictimPieceInt(move));
-        if (destinationScore > sourceScore) { // straight winning capture
-            return neutralCaptureNew + destinationScore - sourceScore;
-        }
-
-        final int see = SEE.getSEE(board, move, whichThread) / 100;
-        if (see == 0) {
-            return neutralCaptureNew;
-        }
-        if (see > 0) {
-            Assert.assertTrue(neutralCaptureNew + 1 + (see / 200) < neutralCaptureNew + 5);
-            return neutralCaptureNew + 1 + (see / 200);
-        }
-
-        return neutralCaptureNew - 1 + (see / 200);
-    }
+//
+//        int sourceScore = scoreByPiece(move, getMovingPieceInt(move));
+//        int destinationScore = isEnPassantMove(move) ? 1 : scoreByPiece(move, getVictimPieceInt(move));
+//        if (destinationScore > sourceScore) { // straight winning capture
+//            return neutralCaptureNew + destinationScore - sourceScore;
+//        }
+//
+//        final int see = SEE.getSEE(board, move, whichThread) / 100;
+//        if (see == 0) {
+//            return neutralCaptureNew;
+//        }
+//        if (see > 0) {
+//            Assert.assertTrue(neutralCaptureNew + 1 + (see / 200) < neutralCaptureNew + 5);
+//            return neutralCaptureNew + 1 + (see / 200);
+//        }
+//
+//        return neutralCaptureNew - 1 + (see / 200);
+//    }
 
 
     private static int scoreByPiece(int move, int piece) {
@@ -622,7 +627,7 @@ public final class MoveOrderer {
             scores[i + 1] = score;
         }
     }
-    
+
     public static void printMovesAndScores(int[] moves, int whichThread, int ply) {
         printMovesAndScores(moves, scores, whichThread, ply);
     }
@@ -634,7 +639,7 @@ public final class MoveOrderer {
             System.out.println(MoveParser.toString(moves[i]) + ", move number: " + i + ", score: " + (scores[whichThread][ply][i]));
         }
     }
-    
+
     public static void printMovesAndScores(int[] moves) {
         MoveParser.printMove(moves);
         for (int i = 0; i < numberOfRealMoves(moves); i++) {

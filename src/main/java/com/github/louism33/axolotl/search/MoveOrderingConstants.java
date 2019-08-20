@@ -47,9 +47,10 @@ public final class MoveOrderingConstants {
     public static final int hashScoreNew = 31_000;
     public static final int queenCapturePromotionScoreNew = 30000;
     public static final int queenQuietPromotionScoreNew = 29000;
-    public static final int mateKillerScoreNew = 28000;
     public static final int neutralCaptureNew = 20024; // between 19 and 29
-    public static final int captureBaseScoreNew = 20010; // between 18 and 29
+    public static final int captureBaseScoreMVVLVA = 21010; // between 18 and 29
+    public static final int captureBaseScoreSEE = 18000; // between 18 and 29
+    public static final int mateKillerScoreNew = 20018;
     public static final int killerOneScoreNew = 20017;
     public static final int killerTwoScoreNew = 20016;
     public static final int pawnPushToSevenNew = 15;
@@ -72,7 +73,7 @@ public final class MoveOrderingConstants {
 //    public static final int queenQuietPromotionScoreNew = 29;
 //    public static final int mateKillerScoreNew = 28;
 //    public static final int neutralCaptureNew = 24; // between 19 and 29
-//    public static final int captureBaseScoreNew = 10; // between 18 and 29
+//    public static final int captureBaseScoreMVVLVA = 10; // between 18 and 29
 //    public static final int killerOneScoreNew = 17;
 //    public static final int killerTwoScoreNew = 16;
 //    public static final int pawnPushToSevenNew = 15;
