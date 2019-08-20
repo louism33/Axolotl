@@ -125,99 +125,6 @@ public final class MoveOrderer {
         }
     }
 
-//    static void scoreMoves(final int[] moves, final Chessboard board, int ply,
-//                           int hashMove, int whichThread) {
-//        int maxMoves = moves[moves.length - 1];
-//        int turn = board.turn;
-//
-//        int mateKiller = 0;
-//        int firstKiller = 0;
-//        int secondKiller = 0;
-//        int firstOldKiller = 0;
-//        int secondOldKiller = 0;
-//
-//        if (ply < MAX_DEPTH_HARD) {
-//            mateKiller = mateKillers[whichThread][ply];
-//            firstKiller = killerMoves[whichThread][ply * 2];
-//            secondKiller = killerMoves[whichThread][ply * 2 + 1];
-//            firstOldKiller = ply >= 2 ? killerMoves[whichThread][ply * 2 - 4] : 0;
-//            secondOldKiller = ply >= 2 ? killerMoves[whichThread][ply * 2 - 4 + 1] : 0;
-//        }
-//
-//        int move;
-//        for (int i = 0; i < maxMoves; i++) {
-//            moves[i] = moves[i] & MOVE_MASK_WITH_CHECK;
-//            move = moves[i];
-//
-//            if (move == 0) {
-//                break;
-//            }
-//            if (MASTER_DEBUG) {
-//                Assert.assertTrue(move != 0);
-//                Assert.assertTrue(move < MoveConstants.FIRST_FREE_BIT);
-//                Assert.assertTrue(hashMove < MoveConstants.FIRST_FREE_BIT);
-//            }
-//
-//            final boolean captureMove = isCaptureMove(move);
-//
-//
-////             *  todo
-////             *  properly do mvv lva
-////             *  move see out of here, into Q or engine search
-//
-//            if (move == hashMove) {
-//                moves[i] = buildMoveScore(move, hashScore);
-//            } else if (isPromotionToQueen(move)) {
-//                if (captureMove) {
-//                    moves[i] = buildMoveScore(move, queenCapturePromotionScore);
-//                } else {
-//                    moves[i] = buildMoveScore(move, queenQuietPromotionScore);
-//                }
-//            } else if (isPromotionToKnight(move)) {
-//                moves[i] = buildMoveScore(move, knightPromotionScore);
-//            } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
-//                moves[i] = buildMoveScore(move, uninterestingPromotion);
-//            } else if (captureMove || isEnPassantMove(move)) {
-//                moves[i] = buildMoveScore(move, seeScore(board, move, whichThread));
-//            } else if (move == mateKiller) {
-//                moves[i] = buildMoveScore(move, mateKillerScore);
-//            } else if (firstKiller == move) {
-//                moves[i] = buildMoveScore(move, killerOneScore);
-//            } else if (secondKiller == move) {
-//                moves[i] = buildMoveScore(move, killerTwoScore);
-//            } else if (board.moveGivesCheck(move)) {
-//                moves[i] = MoveParser.setCheckingMove(moves[i]);
-//                Assert.assertTrue(MoveParser.isCheckingMove(moves[i]));
-//                moves[i] = buildMoveScore(moves[i], giveCheckMove);
-//            } else if (isCastlingMove(move)) {
-//                moves[i] = buildMoveScore(move, castlingMove);
-//            } else if (firstOldKiller == move) {
-//                moves[i] = buildMoveScore(move, oldKillerScoreOne);
-//            } else if (secondOldKiller == move) {
-//                moves[i] = buildMoveScore(move, oldKillerScoreTwo);
-//            } else {
-//                boolean pawnToSeven = MoveParser.moveIsPawnPushSeven(turn, move);
-//                if (pawnToSeven) {
-//                    moves[i] = buildMoveScore(move, pawnPushToSeven);
-//                    continue;
-//                }
-//
-//                boolean pawnToSix = MoveParser.moveIsPawnPushSix(turn, move);
-//                if (pawnToSix) {
-//                    moves[i] = buildMoveScore(move, pawnPushToSix);
-//                    continue;
-//                }
-//
-//                moves[i] = buildMoveScore(move, quietHeuristicMoveScore(move, turn, maxNodeQuietScore));
-//            }
-//
-//            if (MASTER_DEBUG) {
-//                Assert.assertTrue(moves[i] != 0);
-//            }
-//        }
-//
-//        sortMoves(moves, maxMoves);
-//    }
 
 
     static int[][][] scores = new int[NUMBER_OF_THREADS][Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH][128];
@@ -284,7 +191,7 @@ public final class MoveOrderer {
 
                 scores[whichThread][ply][i] = score;
             } else if (move == mateKiller) {
-                scores[whichThread][ply][i] = mateKillerScoreNew;
+                scores[whichThread][ply][i] = mateKillerScoreNew; // todo, as we try these and killers at specific time, we don't really need to score them
             } else if (firstKiller == move) {
                 scores[whichThread][ply][i] = killerOneScoreNew;
             } else if (secondKiller == move) {
@@ -334,6 +241,12 @@ public final class MoveOrderer {
         // previouslySearchedScore because we have just retrieved it from getNextBestMoveIndexAndScore()
         Assert.assertTrue(scores[whichThread][ply][moveIndex] == previouslySearchedScore);
         scores[whichThread][ply][moveIndex] = captureBaseScoreSEE + seeScore;
+    } 
+    
+    static void setCaptureToEqualCapture(int moveIndex, int whichThread, int ply) {
+        // previouslySearchedScore because we have just retrieved it from getNextBestMoveIndexAndScore()
+        Assert.assertTrue(scores[whichThread][ply][moveIndex] == previouslySearchedScore);
+        scores[whichThread][ply][moveIndex] = evenCaptureScore;
     }
 
     public static int getScoreOfMove(int[] moves, int move, int whichThread, int ply) {
@@ -640,7 +553,7 @@ public final class MoveOrderer {
         }
     }
 
-    public static void printMovesAndScores(int[] moves) {
+    public static void printMovesAndScoresRoot(int[] moves) {
         MoveParser.printMove(moves);
         for (int i = 0; i < numberOfRealMoves(moves); i++) {
             System.out.println(MoveParser.toString(moves[i]) + ", move number: " + i + ", score: " + getMoveScore(moves[i]));
