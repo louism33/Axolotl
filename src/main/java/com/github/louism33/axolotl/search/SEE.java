@@ -53,7 +53,7 @@ public final class SEE {
             mover = board.pieceSquareTable[numberOfTrailingZeros(fromSet)];
             gain[d] = scores[mover] - gain[d - 1];
             if (max(-gain[d - 1], gain[d]) < 0) {
-//                break; // this causes incorrect values...
+//                break; // this causes incorrect values... // todo
             }
             attacks ^= fromSet;
             occupancy ^= fromSet;
