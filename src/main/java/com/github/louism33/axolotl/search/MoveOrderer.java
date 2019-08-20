@@ -215,7 +215,7 @@ public final class MoveOrderer {
                     continue;
                 }
 
-                scores[whichThread][ply][i] = quietHeuristicMoveScore(move, turn, maxNodeQuietScoreNew);
+                scores[whichThread][ply][i] = quietHeuristicMoveScoreNew(move, turn, maxNodeQuietScoreNew);
             }
 
             if (MASTER_DEBUG) {
@@ -245,6 +245,7 @@ public final class MoveOrderer {
     
     static void setCaptureToEqualCapture(int moveIndex, int whichThread, int ply) {
         // previouslySearchedScore because we have just retrieved it from getNextBestMoveIndexAndScore()
+        Assert.assertTrue(evenCaptureScore > captureBaseScoreSEE);
         Assert.assertTrue(scores[whichThread][ply][moveIndex] == previouslySearchedScore);
         scores[whichThread][ply][moveIndex] = evenCaptureScore;
     }
@@ -509,6 +510,29 @@ public final class MoveOrderer {
     }
 
     static int quietHeuristicMoveScore(int move, int turn, int maxScore) {
+        int d = getDestinationIndex(move);
+        int piece = getMovingPieceInt(move);
+        if (piece > WHITE_KING) {
+            piece -= 6;
+        }
+        int score = quietsILikeToMove[piece] * goodQuietDestinations[turn][63 - d];
+        if (score > maxScore) {
+            return maxScore;
+        }
+
+        if (score < uninterestingMove) {
+            return uninterestingMove;
+        }
+
+        return score;
+    }
+
+
+    static int quietHeuristicMoveScoreNew(int move, int turn, int maxScore) {
+        return quietMoveBias + quietHeuristicMoveScoreNewHelper(move, turn, maxScore);
+    }
+    
+    static int quietHeuristicMoveScoreNewHelper(int move, int turn, int maxScore) {
         int d = getDestinationIndex(move);
         int piece = getMovingPieceInt(move);
         if (piece > WHITE_KING) {
