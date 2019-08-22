@@ -17,11 +17,12 @@ import static com.github.louism33.chesscore.MoveParser.*;
 
 public final class MoveOrderer {
 
-    // todo, history?
 
     static int[][] mateKillers = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD];
     static int[][] killerMoves = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD * 2];
-
+    
+    private static int[][][] historyMoveScores = new int[2][64][64];
+    
     private static boolean readyMoveOrderer = false;
 
     static void setupMoveOrderer(boolean force) {
@@ -30,6 +31,7 @@ public final class MoveOrderer {
             killerMoves = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD * 2];
             scores = new int[NUMBER_OF_THREADS][Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH][128];
             returnArray = new int[NUMBER_OF_THREADS][2];
+            historyMoveScores = new int[2][64][64];
         }
         readyMoveOrderer = true;
     }
@@ -42,6 +44,10 @@ public final class MoveOrderer {
             for (int j = 0; j < scores[i].length; j++) {
                 Arrays.fill(scores[i][j], 0);
             }
+        }
+        for (int i = 0; i < 64; i++) {
+            Arrays.fill(historyMoveScores[BLACK][i], uninterestingMoveScoreNew);
+            Arrays.fill(historyMoveScores[WHITE][i], uninterestingMoveScoreNew);
         }
     }
 
@@ -215,7 +221,8 @@ public final class MoveOrderer {
                     continue;
                 }
 
-                scores[whichThread][ply][i] = quietHeuristicMoveScoreNew(move, turn, maxNodeQuietScoreNew);
+//                scores[whichThread][ply][i] = quietHeuristicMoveScoreNew(move, turn, maxNodeQuietScoreNew);
+                scores[whichThread][ply][i] = getHistoryScore(move, turn); 
             }
 
             if (MASTER_DEBUG) {
@@ -238,14 +245,16 @@ public final class MoveOrderer {
 
     static void setCaptureToLosingCapture(int moveIndex, int seeScore, int whichThread, int ply) {
         Assert.assertTrue(seeScore < 0);
+        Assert.assertTrue(seeScore >= -1000);
+        Assert.assertTrue(seeScore >= -900);
         // alreadySearchedScore because we have just retrieved it from getNextBestMoveIndexAndScore()
         Assert.assertTrue(scores[whichThread][ply][moveIndex] == alreadySearchedScore);
-        scores[whichThread][ply][moveIndex] = captureBaseScoreSEE + seeScore;
+        scores[whichThread][ply][moveIndex] = captureMaxScoreSEE + seeScore;
     } 
     
     static void setCaptureToEqualCapture(int moveIndex, int whichThread, int ply) {
         // alreadySearchedScore because we have just retrieved it from getNextBestMoveIndexAndScore()
-        Assert.assertTrue(evenCaptureScore > captureBaseScoreSEE);
+        Assert.assertTrue(evenCaptureScore > captureMaxScoreSEE);
         Assert.assertTrue(scores[whichThread][ply][moveIndex] == alreadySearchedScore);
         scores[whichThread][ply][moveIndex] = evenCaptureScore;
     }
@@ -304,9 +313,8 @@ public final class MoveOrderer {
         final int victimPiece = getVictimPieceInt(move);
         if (victimPiece == NO_PIECE) {
             Assert.assertTrue(MoveParser.isEnPassantMove(move));
-            return 100;
+            return 99;
         }
-//        return scoreVictimForMVVLVA(victimPiece) - getMovingPieceInt(move);
         return scoreVictimForMVVLVA(victimPiece) - scoreAggressorForMVVLVA(getMovingPieceInt(move));
     }
 
@@ -378,6 +386,8 @@ public final class MoveOrderer {
         }
 
         Assert.assertTrue(getMVVLVAScore(move) > 0);
+        Assert.assertTrue(getMVVLVAScore(move) >= 100 - 6);
+        Assert.assertTrue(getMVVLVAScore(move) <= 1000 - 1);
 
         return captureBaseScoreMVVLVA + getMVVLVAScore(move);
     }
@@ -408,30 +418,6 @@ public final class MoveOrderer {
 
         return neutralCapture - 1 + (see / 200);
     }
-
-//    private static int seeScore(Chessboard board, int move, int whichThread) {
-//        if (MASTER_DEBUG) {
-//            Assert.assertTrue(move != 0);
-//        }
-//
-//        int sourceScore = scoreByPiece(move, getMovingPieceInt(move));
-//        int destinationScore = isEnPassantMove(move) ? 1 : scoreByPiece(move, getVictimPieceInt(move));
-//        if (destinationScore > sourceScore) { // straight winning capture
-//            return neutralCaptureNew + destinationScore - sourceScore;
-//        }
-//
-//        final int see = SEE.getSEE(board, move, whichThread) / 100;
-//        if (see == 0) {
-//            return neutralCaptureNew;
-//        }
-//        if (see > 0) {
-//            Assert.assertTrue(neutralCaptureNew + 1 + (see / 200) < neutralCaptureNew + 5);
-//            return neutralCaptureNew + 1 + (see / 200);
-//        }
-//
-//        return neutralCaptureNew - 1 + (see / 200);
-//    }
-
 
     private static int scoreByPiece(int move, int piece) {
         switch (piece) {
@@ -509,6 +495,20 @@ public final class MoveOrderer {
         mateKillers[whichThread][ply] = move;
     }
 
+    static void updateHistoryMoves(int move, int depth, int turn) {
+        final int[] history = historyMoveScores[turn][getSourceIndex(move)];
+        final int destinationIndex = getDestinationIndex(move);
+        Assert.assertTrue(history[destinationIndex] >= uninterestingMoveScoreNew);
+        history[destinationIndex] = Math.min(maxNodeQuietScoreNew, history[destinationIndex] + (depth << 1)  );
+    }
+    
+    private static int getHistoryScore(int move, int turn) {
+        Assert.assertTrue(historyMoveScores[turn][getSourceIndex(move)][MoveParser.getDestinationIndex(move)] >= uninterestingMoveScoreNew);
+        Assert.assertTrue(historyMoveScores[turn][getSourceIndex(move)][MoveParser.getDestinationIndex(move)] <= maxNodeQuietScoreNew);
+        return historyMoveScores[turn][getSourceIndex(move)][MoveParser.getDestinationIndex(move)];
+    }
+
+
     static int quietHeuristicMoveScore(int move, int turn, int maxScore) {
         int d = getDestinationIndex(move);
         int piece = getMovingPieceInt(move);
@@ -520,8 +520,8 @@ public final class MoveOrderer {
             return maxScore;
         }
 
-        if (score < uninterestingMove) {
-            return uninterestingMove;
+        if (score < uninterestingMoveScore) {
+            return uninterestingMoveScore;
         }
 
         return score;
@@ -543,8 +543,8 @@ public final class MoveOrderer {
             return maxScore;
         }
 
-        if (score < uninterestingMove) {
-            return uninterestingMove;
+        if (score < uninterestingMoveScoreNew) {
+            return uninterestingMoveScoreNew;
         }
 
         return score;

@@ -69,6 +69,8 @@ public final class SEE {
             gain[d - 1] = -max(-gain[d - 1], gain[d]);
         }
 
+        Assert.assertTrue(gain[0] < 1000 && gain[0] > -1000);
+        
         return gain[0];
     }
 
