@@ -33,6 +33,7 @@ public final class MoveOrderer {
             returnArray = new int[NUMBER_OF_THREADS][2];
             historyMoveScores = new int[2][64][64];
         }
+        resetMoveOrderer();
         readyMoveOrderer = true;
     }
 
@@ -503,6 +504,11 @@ public final class MoveOrderer {
     }
     
     private static int getHistoryScore(int move, int turn) {
+        if (!(historyMoveScores[turn][getSourceIndex(move)][MoveParser.getDestinationIndex(move)] >= uninterestingMoveScoreNew)) {
+            MoveParser.printMove(move);
+            System.out.println(turn);
+            System.out.println(turn);
+        }
         Assert.assertTrue(historyMoveScores[turn][getSourceIndex(move)][MoveParser.getDestinationIndex(move)] >= uninterestingMoveScoreNew);
         Assert.assertTrue(historyMoveScores[turn][getSourceIndex(move)][MoveParser.getDestinationIndex(move)] <= maxNodeQuietScoreNew);
         return historyMoveScores[turn][getSourceIndex(move)][MoveParser.getDestinationIndex(move)];
