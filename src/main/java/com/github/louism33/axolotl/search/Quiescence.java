@@ -70,7 +70,7 @@ public final class Quiescence {
         int[] moves = board.generateLegalMoves(checkers);
         
         if (!inCheck) {
-            scoreMovesQuiescenceNew(moves, board, ply, whichThread);
+            scoreMovesQuiescenceNew(moves, ply, whichThread);
         } else {
             // todo consider tableprobe
             scoreMovesNew(moves, board, ply, 0, whichThread);
