@@ -22,7 +22,7 @@ public final class MoveOrderer {
     static int[][] mateKillers = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD];
     static int[][] killerMoves = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD * 2];
 
-    private static int[][][] historyMoveScores = new int[2][64][64];
+    private static int[][][] historyMoveScores = new int[2][64][64]; // todo, make thread specific?
 
     static final int INDEX = 0, SCORE = 1;
     private static int[][] returnArray = new int[NUMBER_OF_THREADS][2];
