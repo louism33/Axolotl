@@ -1,6 +1,7 @@
 package com.github.louism33.axolotl.transpositiontable;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Chessboard;
@@ -43,6 +44,7 @@ public class TTPositionsTest {
         Assert.assertEquals(MoveParser.toString(move), "a1b1");
     }
 
+    @Disabled
     @Test
     void fine70MT() {
         ResettingUtils.reset();
