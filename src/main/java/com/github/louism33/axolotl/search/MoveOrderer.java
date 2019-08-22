@@ -230,7 +230,7 @@ public final class MoveOrderer {
     static void invalidateHashMove(int[] moves, int hashMove, int whichThread, int ply) {
         for (int i = 0; i < moves[moves.length - 1]; i++) {
             if (moves[i] == hashMove) {
-                scores[whichThread][ply][i] = previouslySearchedScore;
+                scores[whichThread][ply][i] = alreadySearchedScore;
                 return;
             }
         }
@@ -238,15 +238,15 @@ public final class MoveOrderer {
 
     static void setCaptureToLosingCapture(int moveIndex, int seeScore, int whichThread, int ply) {
         Assert.assertTrue(seeScore < 0);
-        // previouslySearchedScore because we have just retrieved it from getNextBestMoveIndexAndScore()
-        Assert.assertTrue(scores[whichThread][ply][moveIndex] == previouslySearchedScore);
+        // alreadySearchedScore because we have just retrieved it from getNextBestMoveIndexAndScore()
+        Assert.assertTrue(scores[whichThread][ply][moveIndex] == alreadySearchedScore);
         scores[whichThread][ply][moveIndex] = captureBaseScoreSEE + seeScore;
     } 
     
     static void setCaptureToEqualCapture(int moveIndex, int whichThread, int ply) {
-        // previouslySearchedScore because we have just retrieved it from getNextBestMoveIndexAndScore()
+        // alreadySearchedScore because we have just retrieved it from getNextBestMoveIndexAndScore()
         Assert.assertTrue(evenCaptureScore > captureBaseScoreSEE);
-        Assert.assertTrue(scores[whichThread][ply][moveIndex] == previouslySearchedScore);
+        Assert.assertTrue(scores[whichThread][ply][moveIndex] == alreadySearchedScore);
         scores[whichThread][ply][moveIndex] = evenCaptureScore;
     }
 
@@ -281,7 +281,7 @@ public final class MoveOrderer {
         for (int i = 1; i < totalScores; i++) {
             final int myScore = myScores[i];
             if (myScore == hashScore) {
-                myScores[i] = previouslySearchedScore;
+                myScores[i] = alreadySearchedScore;
                 Assert.fail();
                 continue;
             }
@@ -293,7 +293,7 @@ public final class MoveOrderer {
         final int[] myReturn = returnArray[whichThread];
         myReturn[INDEX] = index;
         myReturn[SCORE] = myScores[index];
-        myScores[index] = previouslySearchedScore;
+        myScores[index] = alreadySearchedScore;
 
         return myReturn;
     }

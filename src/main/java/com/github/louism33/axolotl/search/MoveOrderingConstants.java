@@ -46,7 +46,7 @@ public final class MoveOrderingConstants {
     public static final int uninterestingMoveNew = 0;
     public static final int quietMoveBias = 0;
     public static final int uninterestingPromotionNew = 0;
-    public static final int previouslySearchedScore = -1;
+    public static final int alreadySearchedScore = -1;
     public static final int dontSearchMeScore = -2;
     public static final int notALegalMoveScore = -3;
 

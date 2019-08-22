@@ -91,15 +91,15 @@ public final class Quiescence {
             
             moveScore = nextBestMoveIndexAndScore[SCORE];
 
-            Assert.assertTrue(moveScore == previouslySearchedScore || move != moves[nextBestMoveIndexAndScore[INDEX]]);
+            Assert.assertTrue(moveScore == alreadySearchedScore || move != moves[nextBestMoveIndexAndScore[INDEX]]);
             
             move = moves[nextBestMoveIndexAndScore[INDEX]];
 
-            if (!inCheck && (moveScore == dontSearchMeScore || moveScore == previouslySearchedScore)) {
+            if (!inCheck && (moveScore == dontSearchMeScore || moveScore == alreadySearchedScore)) {
                 break;
             }
             
-            if (move == 0 || moveScore == dontSearchMeScore || moveScore == previouslySearchedScore) {
+            if (move == 0 || moveScore == dontSearchMeScore || moveScore == alreadySearchedScore) {
                 break;
             }
 
