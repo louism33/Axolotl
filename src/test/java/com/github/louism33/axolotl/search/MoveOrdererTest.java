@@ -39,7 +39,7 @@ public class MoveOrdererTest {
         int[] moves = board.generateLegalMoves();
 
         int l = moves[moves.length - 1];
-        MoveOrderer.scoreMovesAtRoot(moves, l, board);
+        MoveOrderer.scoreMovesAtRootNew(moves, l, board);
 
         for (int m = 0; m < l; m++) {
             int mm = moves[m];
@@ -83,7 +83,7 @@ public class MoveOrdererTest {
         int[] moves = board.generateLegalMoves();
 
         int l = moves[moves.length - 1];
-        MoveOrderer.scoreMovesAtRoot(moves, l, board);
+        MoveOrderer.scoreMovesAtRootNew(moves, l, board );
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, e2e4);
     }
 
@@ -100,7 +100,7 @@ public class MoveOrdererTest {
         int[] moves = board.generateLegalMoves();
 
         int l = moves[moves.length - 1];
-        MoveOrderer.scoreMovesAtRoot(moves, l, board);
+        MoveOrderer.scoreMovesAtRootNew(moves, l, board );
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, m);
     }
 
@@ -117,7 +117,7 @@ public class MoveOrdererTest {
         int[] moves = board.generateLegalMoves();
 
         int l = moves[moves.length - 1];
-        MoveOrderer.scoreMovesAtRoot(moves, l, board);
+        MoveOrderer.scoreMovesAtRootNew(moves, l, board );
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, m);
     }
 
@@ -136,7 +136,7 @@ public class MoveOrdererTest {
         int[] moves = board.generateLegalMoves();
 
         int l = moves[moves.length - 1];
-        MoveOrderer.scoreMovesAtRoot(moves, l, board);
+        MoveOrderer.scoreMovesAtRootNew(moves, l, board );
         Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, m);
 
         int promQueenMove = MoveParserFromAN.buildMoveFromLAN(board, "a7a8Q");

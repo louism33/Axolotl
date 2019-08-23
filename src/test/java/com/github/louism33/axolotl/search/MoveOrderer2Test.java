@@ -112,7 +112,7 @@ public class MoveOrderer2Test {
 //            scoreMoves(moves, board, 0, 0, 0);
             scoreMovesNew(moves, board, 1, 0, 0);
         } else if (useRSort) {
-            scoreMovesAtRoot(moves, moves[moves.length - 1], board);
+            scoreMovesAtRootNew(moves, moves[moves.length - 1], board);
         } else if (useQSort) {
             scoreMovesQuiescenceNew(moves, 0, 0);
         }

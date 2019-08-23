@@ -49,6 +49,7 @@ public final class MoveOrderingConstants {
     public static final int alreadySearchedScore = -1;
     public static final int dontSearchMeScore = -2;
     public static final int notALegalMoveScore = -3;
+    public static final int specialRootMoveScore = -4;
 
     static int[][] goodQuietDestinations = new int[2][64];
 
