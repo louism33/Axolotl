@@ -333,6 +333,7 @@ public final class Engine {
     public static int numberOfAIMoveFlipsAfterSearch = 0;
     public static int numberOfAIMoveFlips = 0;
     public static int aiMoveConfirmedAsBest = 0;
+    public static int newAiMove = 0;
 
     public static int hashCutoff = 0, mateKillerCutoff = 0, killerOneCutoff = 0;
     public static int killerTwoCutoff = 0, oldKillerScoreOneCutoff = 0, oldKillerScoreTwoCutoff = 0, otherCutoff = 0;
@@ -1161,7 +1162,7 @@ public final class Engine {
                 if (rootNode) {
                     rootBestMoveIndex[i]++;
                     numberOfAIMoveFlipsAfterSearch++;
-                    
+
                     putAIMoveFirst(bestMove, whichThread);
                     if (whichThread == 0) {
                         aiMoveScore = score;
@@ -1250,10 +1251,14 @@ public final class Engine {
         numberOfAIMoveFlips++;
         final int aiMoveMask = aiMove & MOVE_MASK_WITHOUT_CHECK;
         if ((rootMoves[whichThread][0] & MOVE_MASK_WITHOUT_CHECK) == aiMoveMask) { // todo, get rid of the need for these masks if possible
-            
+
             aiMoveConfirmedAsBest++;
             return;
         }
+
+        newAiMove++;
+
+//        System.out.println("aiMove was " + MoveParser.toString(rootMoves[whichThread][0]) + ", is now " + MoveParser.toString(aiMove));
 
         final int maxMoves = rootMoves[whichThread].length - 1;
         for (int i = 0; i < maxMoves; i++) {
