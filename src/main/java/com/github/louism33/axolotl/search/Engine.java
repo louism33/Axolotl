@@ -243,7 +243,7 @@ public final class Engine {
             return;
         }
 
-        scoreMovesAtRootNew(rootMoves[MASTER_THREAD], numberOfRealMoves, Engine.board);
+        scoreMovesAtRootNewFirst(rootMoves[MASTER_THREAD], numberOfRealMoves, Engine.board);
 
         Engine.board = board; // todo, move before move order?
 
@@ -366,6 +366,9 @@ public final class Engine {
         // todo, consider using inCheck() instead of getCheckers(), as this can be shortcut by making a move we know is checking. 
         //todo  But then must recalc pinners later, so see if tradeoff worth it
         final boolean rootNode = ply == 0;
+        final boolean firstIteration = rootNode && depth == 1;
+        Assert.assertTrue(!firstIteration || (alpha == SHORT_MINIMUM && beta == SHORT_MAXIMUM));
+        
         if (rootNode) {
             checkers = board.checkingPieces;
             moves = rootMoves[whichThread];
@@ -581,7 +584,7 @@ public final class Engine {
             if (hashMove != 0) {
                 PHASE_BACKEND = PHASE_HASH;
             } else {
-                PHASE_BACKEND = PHASE_REST_OF_MOVES_ROOT; // keep until we move root off of modifying moves
+                PHASE_BACKEND = firstIteration ? PHASE_REST_OF_MOVES_ROOT : PHASE_SCORE_MOVES;
             }
         } else if (moves == null) {
             Assert.assertTrue(!rootNode);
@@ -628,7 +631,7 @@ public final class Engine {
                         if (rootNode) {
                             Assert.assertTrue(moves != null);
                             lastMove = moves[moves.length - 1];
-                            PHASE_BACKEND = PHASE_REST_OF_MOVES_ROOT;
+                            PHASE_BACKEND = firstIteration ? PHASE_REST_OF_MOVES_ROOT : PHASE_SCORE_MOVES; 
                             continue;
                         }
                     } else {
@@ -669,8 +672,6 @@ public final class Engine {
                     PHASE_BACKEND++;
 
                 case PHASE_SCORE_MOVES:
-                    Assert.assertTrue(!rootNode);
-
                     Assert.assertTrue(moves != null);
 
                     lastMove = moves[moves.length - 1];
@@ -689,6 +690,7 @@ public final class Engine {
                     PHASE_BACKEND++;
 
                     if (rootNode) {
+                        MoveOrderer.scoreMovesAtRootNewInNode(moves, whichThread, lastMove);
                         PHASE_BACKEND = PHASE_REST_OF_MOVES_ROOT;
                         continue;
                     }
@@ -1088,6 +1090,7 @@ public final class Engine {
 
             board.makeMoveAndFlipTurn(move, givesCheckMove);
 
+            rootCount[whichThread][i]++;
             numberOfMovesMade[whichThread]++;
             numberOfMovesSearched++;
 
@@ -1251,7 +1254,6 @@ public final class Engine {
         numberOfAIMoveFlips++;
         final int aiMoveMask = aiMove & MOVE_MASK_WITHOUT_CHECK;
         if ((rootMoves[whichThread][0] & MOVE_MASK_WITHOUT_CHECK) == aiMoveMask) { // todo, get rid of the need for these masks if possible
-
             aiMoveConfirmedAsBest++;
             return;
         }
@@ -1265,11 +1267,18 @@ public final class Engine {
             final int rootMove = rootMoves[whichThread][i] & MOVE_MASK_WITHOUT_CHECK;
             if (rootMove == aiMove || rootMove == aiMoveMask) {
                 Assert.assertTrue(i != 0);
+                
                 System.arraycopy(rootMoves[whichThread], 0,
                         rootMoves[whichThread], 1, i);
 
-//                rootMoves[whichThread][0] = buildMoveScore(aiMoveMask, hashScore); // todo
-                rootMoves[whichThread][0] = aiMoveMask; // todo
+                rootMoves[whichThread][0] = aiMoveMask;
+                
+                final int count = rootCount[whichThread][i];
+                System.arraycopy(rootCount[whichThread], 0,
+                        rootCount[whichThread], 1, i);
+
+                rootCount[whichThread][0] = count;
+                
                 return;
             }
         }

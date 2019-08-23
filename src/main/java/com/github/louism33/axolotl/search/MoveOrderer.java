@@ -1,5 +1,6 @@
 package com.github.louism33.axolotl.search;
 
+import com.github.louism33.axolotl.evaluation.Evaluator;
 import com.github.louism33.axolotl.transpositiontable.TranspositionTable;
 import com.github.louism33.chesscore.Chessboard;
 import com.github.louism33.chesscore.MoveConstants;
@@ -8,6 +9,8 @@ import org.junit.Assert;
 
 import java.util.Arrays;
 
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.SHORT_MAXIMUM;
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.SHORT_MINIMUM;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.retrieveFromTable;
@@ -18,8 +21,10 @@ import static com.github.louism33.chesscore.MoveParser.*;
 public final class MoveOrderer {
     
     static int[][][] scores = new int[NUMBER_OF_THREADS][Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH][128];
-    static int[][] rootScores = new int[NUMBER_OF_THREADS][128];
-
+    static int[] rootScores = new int[128];
+    static int[][] rootCount = new int[NUMBER_OF_THREADS][128];
+    static final int rootHashCount = 0x7fffffff;
+    
     static int[][] mateKillers = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD];
     static int[][] killerMoves = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD * 2];
 
@@ -37,7 +42,8 @@ public final class MoveOrderer {
             scores = new int[NUMBER_OF_THREADS][Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH][128];
             returnArray = new int[NUMBER_OF_THREADS][2];
             historyMoveScores = new int[2][64][64];
-            rootScores = new int[NUMBER_OF_THREADS][128];
+            rootScores = new int[128];
+            rootCount = new int[NUMBER_OF_THREADS][128];
         }
         resetMoveOrderer();
         readyMoveOrderer = true;
@@ -47,7 +53,7 @@ public final class MoveOrderer {
         for (int i = 0; i < NUMBER_OF_THREADS; i++) {
             Arrays.fill(mateKillers[i], 0);
             Arrays.fill(killerMoves[i], 0);
-            Arrays.fill(rootScores[i], 0);
+            Arrays.fill(rootCount[i], 0);
             
             for (int j = 0; j < scores[i].length; j++) {
                 Arrays.fill(scores[i][j], 0);
@@ -59,6 +65,38 @@ public final class MoveOrderer {
         }
     }
 
+
+    static void scoreMovesAtRootNewFirst(int[] moves, int numberOfMoves, Chessboard board) {
+        if (MASTER_DEBUG) {
+            Assert.assertTrue(killerMoves[0][0] == 0);
+            Assert.assertTrue(killerMoves[0][1] == 0);
+            Assert.assertTrue(mateKillers[0][1] == 0);
+        }
+
+        Arrays.fill(rootScores, 0);
+        rootScores[rootScores.length - 1] = numberOfMoves;
+
+        for (int i = 0; i < numberOfMoves; i++) {
+            final int move = moves[i];
+            if (move == 0) {
+                break;
+            }
+            rootScores[i] = Quiescence.quiescenceSearch(board, SHORT_MINIMUM, SHORT_MAXIMUM, 0, 1, 0);
+        }
+        reverseInsertionSort(moves, rootScores, numberOfMoves);
+        Arrays.fill(rootScores, 0); // we do not use movescores at root outside of this method
+    }
+
+    // todo, consider getting total moves made from here
+    // sorts root moves by how many makeMoves they had in the last iteration (size of sub-tree)
+    static void scoreMovesAtRootNewInNode(int[] moves, int whichThread, int numberOfMoves) {
+        final int[] count = rootCount[whichThread];
+        count[0] = rootHashCount;
+        reverseInsertionSort(moves, count, numberOfMoves);
+        Arrays.fill(count, 0); // reset this for each iteration
+    }
+    
+    
     static void scoreMovesAtRootNew(int[] moves, int numberOfMoves, Chessboard board) {
         // todo, check every move for givesCheck()
         // todo, see on every move / cap
@@ -74,9 +112,8 @@ public final class MoveOrderer {
             Assert.assertTrue(mateKillers[0][1] == 0);
         }
 
-        final int[] rootScoreMasterThread = rootScores[0];
-        Arrays.fill(rootScoreMasterThread, 0);
-        rootScoreMasterThread[rootScoreMasterThread.length - 1] = numberOfMoves;
+        Arrays.fill(rootScores, 0);
+        rootScores[rootScores.length - 1] = numberOfMoves;
 
         for (int i = 0; i < numberOfMoves; i++) {
             final int move = moves[i];
@@ -85,102 +122,47 @@ public final class MoveOrderer {
             }
 
             if (move == hashMove) {
-                rootScoreMasterThread[i] = hashScoreNew;
+                rootScores[i] = hashScoreNew;
             } else if (isPromotionToQueen(move)) {
                 if (isCaptureMove(move)) {
-                    rootScoreMasterThread[i] = queenCapturePromotionScoreNew;
+                    rootScores[i] = queenCapturePromotionScoreNew;
                 } else {
-                    rootScoreMasterThread[i] = queenQuietPromotionScoreNew;
+                    rootScores[i] = queenQuietPromotionScoreNew;
                 }
             } else if (isPromotionToKnight(move)) {
-                rootScoreMasterThread[i] = knightPromotionScoreNew;
+                rootScores[i] = knightPromotionScoreNew;
             } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
-                rootScoreMasterThread[i] = uninterestingPromotionNew;
+                rootScores[i] = uninterestingPromotionNew;
             } else if (isCaptureMove(move) || isEnPassantMove(move)) {
                 final int score = seeScoreRoot(board, move, 0);
-                rootScoreMasterThread[i] = score;
+                rootScores[i] = score;
             } else if (board.moveGivesCheck(move)) {
 //                moves[i] = MoveParser.setCheckingMove(moves[i]);
-                rootScoreMasterThread[i] = giveCheckMoveNew;
+                rootScores[i] = giveCheckMoveNew;
             } else if (isCastlingMove(move)) {
-                rootScoreMasterThread[i] = castlingMoveNew;
+                rootScores[i] = castlingMoveNew;
             } else {
 
                 if (MoveParser.moveIsPawnPushSeven(board.turn, move)) {
-                    rootScoreMasterThread[i] = pawnPushToSevenNew;
+                    rootScores[i] = pawnPushToSevenNew;
                     continue;
                 }
 
                 if (MoveParser.moveIsPawnPushSix(board.turn, move)) {
-                    rootScoreMasterThread[i] = pawnPushToSixNew;
+                    rootScores[i] = pawnPushToSixNew;
                     continue;
                 }
 
 //                final int score = quietHeuristicMoveScore(move, board.turn, maxRootQuietScore);
                 final int score = quietHeuristicMoveScore(move, board.turn, absoluteMaxQuietScore);
-                rootScoreMasterThread[i] = score;
+                rootScores[i] = score;
             }
         }
 
-        reverseInsertionSort(moves, rootScoreMasterThread, numberOfMoves);
-        Arrays.fill(rootScoreMasterThread, 0); // we do not use movescores at root outside of this method
+        reverseInsertionSort(moves, rootScores, numberOfMoves);
+        Arrays.fill(rootScores, 0); // we do not use movescores at root outside of this method
     }
 
-//    static void scoreMovesAtRootNew(int[] moves, int numberOfMoves, Chessboard board) { 
-//        // todo, check every move for givesCheck()
-//        // todo, see on every move / cap
-//        long entry = retrieveFromTable(board.zobristHash);
-//        int hashMove = 0;
-//        if (entry != 0) {
-//            hashMove = TranspositionTable.getMove(entry);
-//        }
-//
-//        if (MASTER_DEBUG) {
-//            Assert.assertTrue(killerMoves[0][0] == 0);
-//            Assert.assertTrue(killerMoves[0][1] == 0);
-//            Assert.assertTrue(mateKillers[0][1] == 0);
-//        }
-//
-//        final int[] rootScoreMasterThread = rootScores[0];
-//        Arrays.fill(rootScoreMasterThread, 0);
-//        rootScoreMasterThread[rootScoreMasterThread.length - 1] = numberOfMoves;
-//
-//        for (int i = 0; i < numberOfMoves; i++) {
-//            final int move = moves[i];
-//            if (move == 0) {
-//                break;
-//            }
-//
-//            if (move == hashMove) {
-//                rootScoreMasterThread[i] = hashScore;
-//            } else if (isPromotionToQueen(move)) {
-//                if (isCaptureMove(move)) {
-//                    rootScoreMasterThread[i] = queenCapturePromotionScore;
-//                } else {
-//                    rootScoreMasterThread[i] = queenQuietPromotionScore;
-//                }
-//            } else if (isPromotionToKnight(move)) {
-//                rootScoreMasterThread[i] = knightPromotionScore;
-//            } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
-//                rootScoreMasterThread[i] = uninterestingPromotion;
-//            } else if (isCaptureMove(move) || isEnPassantMove(move)) {
-//                final int score = seeScoreRoot(board, move, 0);
-//                rootScoreMasterThread[i] = score;
-//            } else if (board.moveGivesCheck(move)) {
-////                moves[i] = MoveParser.setCheckingMove(moves[i]);
-//                rootScoreMasterThread[i] = giveCheckMove;
-//            } else if (isCastlingMove(move)) {
-//                rootScoreMasterThread[i] = castlingMove;
-//            } else {
-//                
-//                final int score = quietHeuristicMoveScore(move, board.turn, maxRootQuietScore);
-//                rootScoreMasterThread[i] = score;
-//            }
-//        }
-//
-//        reverseInsertionSort(moves, rootScoreMasterThread, numberOfMoves);
-//        Arrays.fill(rootScoreMasterThread, 0); // we do not use movescores at root outside of this method
-//    }
 
 
     static void scoreMovesNew(final int[] moves, final Chessboard board, int ply,
@@ -356,8 +338,7 @@ public final class MoveOrderer {
 
         for (int i = 1; i < totalScores; i++) {
             final int myScore = myScores[i];
-            if (myScore == hashScore) {
-                myScores[i] = alreadySearchedScore;
+            if (myScore == hashScoreNew) {
                 Assert.fail();
                 continue;
             }
