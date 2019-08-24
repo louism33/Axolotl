@@ -81,8 +81,9 @@ public final class Quiescence {
         int move = -1;
         int moveScore = notALegalMoveScore;
         
-        for (int i = 0; i < moves.length; i++) {
-
+        int lastMove = moves[moves.length - 1];
+        
+        for (int i = 0; i < lastMove; i++) {
             nextBestMoveIndexAndScore = getNextBestMoveIndexAndScore(whichThread, ply);
 
             Assert.assertEquals(moves[moves.length - 1], scores[whichThread][ply][scores[whichThread][ply].length - 1]);
