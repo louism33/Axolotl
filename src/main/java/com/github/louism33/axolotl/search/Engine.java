@@ -270,7 +270,7 @@ public final class Engine {
                 System.arraycopy(rootMoves[MASTER_THREAD], 0, rootMoves[t], 0, totalMoves);
 
                 Assert.assertTrue(rootMoves[t][rootMoves[t].length - 1] == rootMoves[MASTER_THREAD][rootMoves[MASTER_THREAD].length - 1]);
-                
+
                 boards[t] = new Chessboard(board);
                 ChessThread thread = new ChessThread(t, boards[t], startTime);
                 threadsNumber.incrementAndGet();
@@ -476,6 +476,7 @@ public final class Engine {
         int staticBoardEval = SHORT_MINIMUM;
 
         if (!thisIsAPrincipleVariationNode && !inCheck) {
+            Assert.assertTrue(depth > 0);
 
             staticBoardEval = Evaluator.eval(board, whichThread);
 
@@ -487,50 +488,6 @@ public final class Engine {
                     return staticBoardEval;
                 }
                 betaFail++;
-            }
-
-            Assert.assertTrue(depth > 0);
-
-            if (false && isAlphaRazoringMoveOkHere(depth, alpha)) {
-
-                int[] movesCopyForDebug = null;
-                int[] scoresCopyForDebug = null;
-                if (MASTER_DEBUG) {
-                    moves = moves != null ? moves : board.generateLegalMoves();
-                    movesCopyForDebug = new int[moves.length];
-                    final int[] myScores = scores[whichThread][ply];
-                    scoresCopyForDebug = new int[myScores.length];
-                    System.arraycopy(moves, 0, movesCopyForDebug, 0, moves.length);
-                    System.arraycopy(myScores, 0, scoresCopyForDebug, 0, myScores.length);
-                }
-
-
-                int specificAlphaRazorMargin = alphaRazorMargin[depth];
-                if (staticBoardEval + specificAlphaRazorMargin < alpha) {
-                    alphaTotal++;
-                    int qScore = quiescenceSearch(board,
-                            alpha - specificAlphaRazorMargin,
-                            alpha - specificAlphaRazorMargin + 1,
-                            whichThread, ply + 1, 0); // we pass 0 here as we are not looking for seldepth info
-
-
-                    if (MASTER_DEBUG && moves != null) {
-                        final int[] myScores = scores[whichThread][ply];
-                        for (int index = 0; index < moves.length; index++) {
-                            Assert.assertTrue(contains(moves, movesCopyForDebug[index]));
-                            Assert.assertTrue(contains(myScores, scoresCopyForDebug[index]));
-                            Assert.assertTrue(contains(movesCopyForDebug, moves[index]));
-                            Assert.assertTrue(contains(scoresCopyForDebug, myScores[index]));
-                        }
-                    }
-
-
-                    if (qScore + specificAlphaRazorMargin <= alpha) {
-                        alphaSuccess++;
-                        return qScore;
-                    }
-                    alphaFail++;
-                }
             }
 
             int R = depth > 6 ? 3 : 2;
@@ -564,7 +521,6 @@ public final class Engine {
 
             int d = thisIsAPrincipleVariationNode ? depth - 2 : depth >> 1;
             principleVariationSearch(board, d, ply + 1, alpha, beta, nullMoveCounter, whichThread); // todo, allow null move?
-            // todo, ply + 1 ? or just ply?
             hashMove = getMove(retrieveFromTable(board.zobristHash));
             if (hashMove == 0) {
                 iidFail++;
@@ -602,7 +558,7 @@ public final class Engine {
                 PHASE_BACKEND = PHASE_HASH;
             } else {
                 yesMovesAndNoHash++;
-                PHASE_BACKEND = PHASE_SCORE_MOVES; // todo
+                PHASE_BACKEND = PHASE_SCORE_MOVES;
             }
         }
 
@@ -614,7 +570,6 @@ public final class Engine {
         int i = 0;
         int move = -1;
         int debugLastMoveSearched = -1;
-//        List<String> debugAllMovesSearched = new ArrayList<>();
         int debugLastMoveScoreSearched = Integer.MAX_VALUE;
         int indexOfNextBestMove = -1;
         boolean hashAlreadyTried = false;
@@ -634,14 +589,14 @@ public final class Engine {
                     if (hashAlreadyTried) {
                         PHASE_BACKEND++;
                         if (rootNode) {
-                         
+
                             Assert.assertTrue(moves != null);
                             lastMove = moves[moves.length - 1];
                             PHASE_BACKEND = firstIteration ? PHASE_REST_OF_MOVES_ROOT : PHASE_SCORE_MOVES;
                             continue;
                         }
-                    } else {   
-                        
+                    } else {
+
                         Assert.assertTrue(!hashAlreadyTried);
                         Assert.assertTrue(hashMove != 0);
 
@@ -659,7 +614,8 @@ public final class Engine {
                         break;
                     }
 
-                case PHASE_GEN_CAPTURE_MOVES: // currently not implemented
+                // currently not implemented
+                case PHASE_GEN_CAPTURE_MOVES: 
                     Assert.assertTrue(!rootNode);
 
                     PHASE_BACKEND++;
@@ -673,7 +629,7 @@ public final class Engine {
                     }
 
                     if (numberOfRealMoves(moves) == 0) {
-                        break everything; //todo
+                        break everything;
                     }
 
                     PHASE_BACKEND++;
@@ -703,7 +659,6 @@ public final class Engine {
                     }
 
 
-                    
                 case PHASE_PROMOTION_MOVES:
                     Assert.assertTrue(nextBestMoveIndexAndScore == null);
                     nextBestMoveIndexAndScore = getNextBestMoveIndexAndScoreNoChange(whichThread, ply);
@@ -728,7 +683,7 @@ public final class Engine {
                     if (nextBestMoveIndexAndScore == null) {
                         nextBestMoveIndexAndScore = getNextBestMoveIndexAndScoreNoChange(whichThread, ply);
 
-                        Assert.assertTrue(move != moves[nextBestMoveIndexAndScore[INDEX]] || nextBestMoveIndexAndScore[SCORE] <= evenCaptureScore); 
+                        Assert.assertTrue(move != moves[nextBestMoveIndexAndScore[INDEX]] || nextBestMoveIndexAndScore[SCORE] <= evenCaptureScore);
                         Assert.assertTrue(moveScore == notALegalMoveScore || moveScore >= nextBestMoveIndexAndScore[SCORE]);
 
                         move = moves[nextBestMoveIndexAndScore[INDEX]];
@@ -736,7 +691,7 @@ public final class Engine {
 
                     }
 
-                    if (moveScore > captureBaseScoreMVVLVA) { 
+                    if (moveScore > captureBaseScoreMVVLVA) {
 
                         Assert.assertTrue(moveScore != evenCaptureScore);
                         Assert.assertTrue((isCaptureMove(move) || isEnPassantMove(move)));
@@ -779,7 +734,7 @@ public final class Engine {
                     if (nextBestMoveIndexAndScore == null) {
                         nextBestMoveIndexAndScore = getNextBestMoveIndexAndScoreNoChange(whichThread, ply);
 
-                        Assert.assertTrue(move != moves[nextBestMoveIndexAndScore[INDEX]] || nextBestMoveIndexAndScore[SCORE] < evenCaptureScore); 
+                        Assert.assertTrue(move != moves[nextBestMoveIndexAndScore[INDEX]] || nextBestMoveIndexAndScore[SCORE] < evenCaptureScore);
                         Assert.assertTrue(moveScore == notALegalMoveScore || moveScore >= nextBestMoveIndexAndScore[SCORE]);
 
                         move = moves[nextBestMoveIndexAndScore[INDEX]];
@@ -805,14 +760,7 @@ public final class Engine {
 
                 case PHASE_MATE_KILLER:
                     Assert.assertTrue(!rootNode);
-
                     // todo, move verification instead of linear search
-//                    move = mateKillers[whichThread][ply];
-//                    Assert.assertTrue(contains(board.generateLegalMoves(), move));
-//                    if (move != 0) {
-//                        moveScore = mateKillerScoreNew;
-//                        break;
-//                    }
 
                     if (nextBestMoveIndexAndScore == null) {
                         nextBestMoveIndexAndScore = getNextBestMoveIndexAndScoreNoChange(whichThread, ply);
@@ -888,52 +836,27 @@ public final class Engine {
 
                     scoreQuietMoves(moves, board, ply, whichThread);
 
-                    
-                    
-                    if (badCaptureMove || nextBestMoveIndexAndScore == null) {
-//                        System.out.println(board);
-//                        MoveParser.printMove(move);
-//                        System.out.println(moveScore);
-//                        MoveOrderer.printMovesAndScores(moves, whichThread, ply);
-//                        System.out.println();
-                    }
-                    
-                        nextBestMoveIndexAndScore = getNextBestMoveIndexAndScoreNoChange(whichThread, ply);
-                        move = moves[nextBestMoveIndexAndScore[INDEX]];
-                        moveScore = nextBestMoveIndexAndScore[SCORE];
-                        
-                        
-//                    }
+                    nextBestMoveIndexAndScore = getNextBestMoveIndexAndScoreNoChange(whichThread, ply);
                     // we get a new move here, as the one we have till this point has not been scored
+                    move = moves[nextBestMoveIndexAndScore[INDEX]];
+                    moveScore = nextBestMoveIndexAndScore[SCORE];
 
                     if (isPromotionMove(move)) {
                         Assert.assertTrue(!isPromotionToQueen(move));
                     }
 
                     if (moveScore >= uninterestingMoveScoreNew) {
-
+                        Assert.assertTrue(!isCaptureMove(move));
+                        Assert.assertTrue(!isEnPassantMove(move));
+                        Assert.assertTrue(!isPromotionMove(move));
                         final boolean unevenMoveScoreIndicatesGivesCheck = (moveScore & 1) != 0;
 
-                        // we do not ask if it is a checking move for underpromotions
-                        moveCheckStateKnown = !isPromotionMove(move);
-                        givesCheckMove = moveCheckStateKnown
-                                ? unevenMoveScoreIndicatesGivesCheck
-                                : false;
+                        moveCheckStateKnown = true;
+                        givesCheckMove = unevenMoveScoreIndicatesGivesCheck;
 
                         if (MASTER_DEBUG && moveCheckStateKnown) {
                             board.makeMoveAndFlipTurn(move);
                             board.getCheckers();
-
-                            if (board.inCheckRecorder != givesCheckMove) {
-                                System.out.println(board);
-                                board.unMakeMoveAndFlipTurn();
-                                System.out.println(board);
-                                MoveParser.printMove(move);
-                                System.out.println(moveScore);
-                                System.out.println(board.inCheckRecorder);
-                                System.out.println(givesCheckMove);
-                                System.out.println();
-                            }
                             Assert.assertTrue(board.inCheckRecorder == givesCheckMove);
                             board.unMakeMoveAndFlipTurn();
                         }
@@ -941,12 +864,11 @@ public final class Engine {
 
                     PHASE_BACKEND++;
 
-                    
+
                 case PHASE_QUIET_MOVES:
                     Assert.assertTrue(!rootNode);
                     Assert.assertTrue(moves != null);
 
-//                    Assert.assertTrue((!isCaptureMove(move) && !isEnPassantMove(move)) || (isPromotionMove(move) && !isPromotionToQueen(move)));
                     Assert.assertEquals(moves[moves.length - 1], scores[whichThread][ply][scores[whichThread][ply].length - 1]);
 
                     if (nextBestMoveIndexAndScore == null) {
@@ -983,17 +905,11 @@ public final class Engine {
                         PHASE_BACKEND++;
                     }
                     final boolean condition = isPromotionMove(move) || (((isCaptureMove(move) || isEnPassantMove(move)) && moveScore <= captureMaxScoreSEE));
-                    if (!condition) {
-                        System.out.println(board);
-                        MoveParser.printMove(move);
-                        System.out.println(moveScore);
-                        System.out.println();
-                    }
                     Assert.assertTrue(condition);
                     Assert.assertTrue(!isPromotionToQueen(move));
 
 
-                case PHASE_BAD_CAP_MOVES: // todo, switch this and quiet moves
+                case PHASE_BAD_CAP_MOVES: 
 
                     Assert.assertTrue(!rootNode);
                     Assert.assertTrue(moves != null);
@@ -1008,13 +924,6 @@ public final class Engine {
                         moveScore = nextBestMoveIndexAndScore[SCORE];
                     }
 
-                    if (!(moveScore <= captureMaxScoreSEE)) {
-                        System.out.println(board);
-                        MoveParser.printMove(move);
-                        System.out.println(moveScore);
-                        System.out.println();
-                    }
-                    
                     Assert.assertTrue(moveScore <= captureMaxScoreSEE);
 
                     if ((isCaptureMove(move) || isEnPassantMove(move)) && !isPromotionMove(move)) {
@@ -1026,18 +935,13 @@ public final class Engine {
                         PHASE_BACKEND++;
                     }
                     Assert.assertTrue(!isPromotionToQueen(move));
-                    
-                    
-                case PHASE_UNDERPROMOTIONS:
 
-//                    System.out.println(board);
-//                    MoveParser.printMove(move);
-//                    System.out.println(moveScore);
+
+                case PHASE_UNDERPROMOTIONS:
 
                     Assert.assertTrue(!rootNode);
                     Assert.assertTrue(isPromotionMove(move));
                     Assert.assertTrue(!isPromotionToQueen(move));
-
 
                     if (nextBestMoveIndexAndScore == null) {
                         nextBestMoveIndexAndScore = getNextBestMoveIndexAndScoreNoChange(whichThread, ply);
@@ -1050,11 +954,11 @@ public final class Engine {
 
                         Assert.assertTrue(moveScore <= knightPromotionScoreNew);
                     }
-                    
+
                     setMoveScoreToSearched(whichThread, ply, nextBestMoveIndexAndScore[INDEX]);
- 
+
                     break;
-                    
+
                 case PHASE_REST_OF_MOVES_ROOT:
                     Assert.assertTrue(moves != null);
                     Assert.assertTrue(rootNode);
@@ -1073,9 +977,6 @@ public final class Engine {
 
             debugLastMoveSearched = move;
             debugLastMoveScoreSearched = moveScore;
-
-//            Assert.assertTrue(!debugAllMovesSearched.contains(MoveParser.toString(move)));
-//            debugAllMovesSearched.add(MoveParser.toString(move));
 
             Assert.assertTrue(PHASE_BACKEND != PHASE_GEN_CAPTURE_MOVES);
             Assert.assertTrue(PHASE_BACKEND != PHASE_GEN_MOVES);
@@ -1106,14 +1007,14 @@ public final class Engine {
                 Assert.assertTrue(!(MoveParser.isCheckingMove(moves[i])));
             }
 
-            // in scoreQuietMoves() we already see if a (non under-promotion) move gives check, so no need to recalculate
+            // in scoreQuietMoves() we already see if a move gives check, so no need to recalculate
             // we have not generated moves in PHASE_HASH, and so do not have up to date attack information, which we must therefore force recalculate
             givesCheckMove = moveCheckStateKnown
                     ? givesCheckMove
                     : board.moveGivesCheck(move, PHASE_BACKEND == PHASE_HASH);
 
             moveCheckStateKnown = true;
-            
+
             if (MASTER_DEBUG) {
                 board.makeMoveAndFlipTurn(move);
                 board.getCheckers();
@@ -1207,9 +1108,9 @@ public final class Engine {
             Assert.assertTrue(move != 0);
 
             Assert.assertTrue(moveCheckStateKnown);
-            
+
             rootCount[whichThread][i]++;
-            
+
             Assert.assertTrue(!rootNode || PHASE_BACKEND == PHASE_HASH || move == rootMoves[whichThread][i]);
             board.makeMoveAndFlipTurn(move, givesCheckMove);
 
@@ -1368,8 +1269,6 @@ public final class Engine {
         }
 
         newAiMove++;
-//todo remove maxMoves to totalRealMoves
-//        final int maxMoves = rootMoves[whichThread].length - 1;
         final int maxMoves = rootMoves[whichThread][rootMoves[whichThread].length - 1];
         for (int i = 0; i < maxMoves; i++) {
             final int rootMove = rootMoves[whichThread][i] & MOVE_MASK_WITHOUT_CHECK;
