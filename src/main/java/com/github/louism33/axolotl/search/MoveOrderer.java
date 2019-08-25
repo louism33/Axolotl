@@ -176,7 +176,7 @@ public final class MoveOrderer {
         Arrays.fill(rootScores, 0); // we do not use movescores at root outside of this method
     }
 
-    static void scoreMovesNewWithoutQuiets(final int[] moves, final Chessboard board, int ply,
+    static void scoreMovesNewWithoutQuiets(final int[] moves, int ply,
                                            int hashMove, int whichThread) {
         int maxMoves = moves[moves.length - 1];
 
@@ -259,6 +259,11 @@ public final class MoveOrderer {
             }
 
             if (scores[whichThread][ply][i] == alreadySearchedScore) {
+                continue;
+            }
+            
+            if (scores[whichThread][ply][i] <= captureMaxScoreSEE && scores[whichThread][ply][i] >= 0) { // represents a bad capture
+                Assert.assertTrue(isCaptureMove(move) || isEnPassantMove(move));
                 continue;
             }
 
