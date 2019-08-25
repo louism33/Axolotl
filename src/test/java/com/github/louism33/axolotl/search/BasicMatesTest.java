@@ -12,12 +12,11 @@ import org.junit.jupiter.api.Test;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.IN_CHECKMATE_SCORE_MAX_PLY;
-import static com.github.louism33.axolotl.search.Engine.aiMoveScore;
-import static com.github.louism33.axolotl.search.Engine.quitOnSingleMove;
+import static com.github.louism33.axolotl.search.Engine.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.*;
 import static com.github.louism33.chesscore.MaterialHashUtil.*;
 
-@Disabled
+//@Disabled
 public class BasicMatesTest {
 
     // thanks to guido for many of these positions  http://kirill-kryukov.com/chess/discussion-board/viewtopic.php?f=6&t=920
@@ -304,7 +303,7 @@ public class BasicMatesTest {
     @Test
     void mate14() {
         // mate in 14
-        DEBUG = false;
+//        DEBUG = false;
 //        PRINT_PV = true;
 //        sendBestMove = true;
         
@@ -320,10 +319,10 @@ public class BasicMatesTest {
         // now from black pov, in order to check if uci dtm is correct
         Chessboard bboard = new Chessboard("kq4n1/4p2Q/1P2P3/1K6/8/8/p7/8");
         bboard.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(bboard, "h7e4"));
-        quitOnSingleMove = false;
+//        quitOnSingleMove = false; // todo, if this is on it bugs with Engine::lastMove = 2
         SearchSpecs.basicTimeSearch(2_000);
         final int bmove = engine.simpleSearch(bboard);
-        
+
         Assert.assertTrue(aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY);
         Assert.assertEquals("b8b7", MoveParser.toString(bmove));
 

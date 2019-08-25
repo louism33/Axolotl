@@ -20,15 +20,14 @@ import static com.github.louism33.chesscore.MoveParser.*;
 public final class MoveOrderer {
 
     static int[][][] scores = new int[NUMBER_OF_THREADS][Chessboard.MAX_DEPTH_AND_ARRAY_LENGTH][128];
-    static int[] rootScores = new int[128];
+    private static int[] rootScores = new int[128];
     static int[][] rootCount = new int[NUMBER_OF_THREADS][128];
-    static final int rootHashCount = 0x7fffffff;
+    private static final int rootHashCount = 0x7fffffff;
 
     static int[][] mateKillers = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD];
     static int[][] killerMoves = new int[NUMBER_OF_THREADS][MAX_DEPTH_HARD * 2];
 
-    //    private static int[][][] historyMoveScores = new int[2][64][64]; // todo, make thread specific?
-    private static int[][][][] historyMoveScores = new int[NUMBER_OF_THREADS][2][64][64]; // todo, make thread specific?
+    private static int[][][][] historyMoveScores = new int[NUMBER_OF_THREADS][2][64][64]; 
 
     static final int INDEX = 0, SCORE = 1;
     private static int[][] returnArray = new int[NUMBER_OF_THREADS][2];

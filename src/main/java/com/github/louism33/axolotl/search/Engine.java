@@ -562,6 +562,7 @@ public final class Engine {
         }
 
         int lastMove = 2;
+//        int lastMove = !rootNode && moves == null ? 2 : moves[moves.length - 1];
 
         int numberOfMovesSearched = 0;
 
