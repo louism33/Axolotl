@@ -6,8 +6,6 @@ import com.github.louism33.chesscore.MaterialHashUtil;
 import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
-import java.util.Arrays;
-
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.Engine.*;
@@ -73,7 +71,7 @@ public final class Quiescence {
             scoreMovesQuiescenceNew(moves, ply, whichThread);
         } else {
             // todo consider tableprobe
-            scoreMovesNew(moves, board, ply, 0, whichThread);
+            MoveOrderer.scoreMovesQuiescenceNew(moves, board, ply, 0, whichThread);
         }
 
         int numberOfQMovesSearched = 0;

@@ -614,15 +614,14 @@ public final class Engine {
                         break;
                     }
 
-                // currently not implemented
-                case PHASE_GEN_CAPTURE_MOVES: 
+                    // currently not implemented
+                case PHASE_GEN_CAPTURE_MOVES:
                     Assert.assertTrue(!rootNode);
-
                     PHASE_BACKEND++;
+
 
                 case PHASE_GEN_MOVES:
                     Assert.assertTrue(!rootNode);
-
                     if (moves == null) {
                         Assert.assertTrue(!rootNode);
                         moves = board.generateLegalMoves(checkers);
@@ -634,17 +633,12 @@ public final class Engine {
 
                     PHASE_BACKEND++;
 
+
                 case PHASE_SCORE_MOVES:
                     Assert.assertTrue(moves != null);
-
                     lastMove = moves[moves.length - 1];
-                    if (!rootNode) {
-                        if (MASTER_DEBUG) {
-                            for (int j = 0; j < lastMove; j++) {
-                                Assert.assertTrue(MoveOrderer.getMoveScore(moves[j]) == 0);
-                            }
-                        }
 
+                    if (!rootNode) {
                         scoreMovesNewWithoutQuiets(moves, ply, hashMove, whichThread);
                         if (hashAlreadyTried) {
                             MoveOrderer.invalidateHashMove(moves, hashMove, whichThread, ply);
@@ -909,7 +903,7 @@ public final class Engine {
                     Assert.assertTrue(!isPromotionToQueen(move));
 
 
-                case PHASE_BAD_CAP_MOVES: 
+                case PHASE_BAD_CAP_MOVES:
 
                     Assert.assertTrue(!rootNode);
                     Assert.assertTrue(moves != null);
@@ -1033,7 +1027,7 @@ public final class Engine {
 
             if (MASTER_DEBUG) {
                 if (!rootNode && queenPromotionMove) {
-                    boolean condition = moveScore >= queenQuietPromotionScore;
+                    boolean condition = moveScore >= queenQuietPromotionScoreNew;
                     Assert.assertTrue(condition);
                 }
             }
@@ -1106,14 +1100,15 @@ public final class Engine {
 
 
             Assert.assertTrue(move != 0);
-
             Assert.assertTrue(moveCheckStateKnown);
 
             rootCount[whichThread][i]++;
 
+            Assert.assertTrue(PHASE_BACKEND != PHASE_HASH || move == hashMove);
+            Assert.assertTrue(move != hashMove || PHASE_BACKEND == PHASE_HASH);
             Assert.assertTrue(!rootNode || PHASE_BACKEND == PHASE_HASH || move == rootMoves[whichThread][i]);
-            board.makeMoveAndFlipTurn(move, givesCheckMove);
 
+            board.makeMoveAndFlipTurn(move, givesCheckMove);
 
             numberOfMovesMade[whichThread]++;
             numberOfMovesSearched++;
@@ -1223,7 +1218,7 @@ public final class Engine {
                 }
                 if (!captureMove && !isPromotionToQueen(move)) {
                     updateKillerMoves(whichThread, move, ply);
-                    updateHistoryMoves(move, depth, turn);
+                    updateHistoryMoves(move, depth, turn, whichThread);
                 }
                 break;
             }
