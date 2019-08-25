@@ -37,7 +37,7 @@ public class TTPositionsTest {
         ResettingUtils.reset();
         System.out.println("\ntesting fine 70 with time " + timeLimit + " and one thread");
 //        EngineSpecifications.DEBUG = true;
-        PRINT_PV = true;
+//        PRINT_PV = true;
         Chessboard board = new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -");
         SearchSpecs.basicTimeSearch(timeLimit);
         final int move = engine.simpleSearch(board);
@@ -51,7 +51,7 @@ public class TTPositionsTest {
         int threads = 4;
         System.out.println("\ntesting fine 70 with time " + timeLimit + " and " + threads + " threads");
 //        EngineSpecifications.DEBUG = true;
-        PRINT_PV = true;
+//        PRINT_PV = true;
         Chessboard board = new Chessboard("8/k7/3p4/p2P1p2/P2P1P2/8/8/K7 w - -");
         Engine.setThreads(threads);
         SearchSpecs.basicTimeSearch(timeLimit);
