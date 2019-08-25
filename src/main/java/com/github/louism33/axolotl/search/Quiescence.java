@@ -12,7 +12,6 @@ import static com.github.louism33.axolotl.search.Engine.*;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
 import static com.github.louism33.axolotl.search.MoveOrderer.*;
 import static com.github.louism33.axolotl.search.MoveOrderingConstants.*;
-import static com.github.louism33.axolotl.search.MoveOrderingConstants.neutralCapture;
 import static com.github.louism33.chesscore.BoardConstants.WHITE_KING;
 import static com.github.louism33.chesscore.BoardConstants.WHITE_PAWN;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
@@ -85,7 +84,6 @@ public final class Quiescence {
             nextBestMoveIndexAndScore = getNextBestMoveIndexAndScore(whichThread, ply);
 
             Assert.assertEquals(moves[moves.length - 1], scores[whichThread][ply][scores[whichThread][ply].length - 1]);
-
             Assert.assertTrue(moveScore == notALegalMoveScore || moveScore >= nextBestMoveIndexAndScore[SCORE]);
             
             moveScore = nextBestMoveIndexAndScore[SCORE];
@@ -151,26 +149,12 @@ public final class Quiescence {
                 }
             }
 
-            // idea from stockfish
-            boolean evasionPrunable = inCheck
-                    && (depth != 0 && numberOfQMovesSearched > 2)
-                    && alpha > IN_CHECKMATE_SCORE_MAX_PLY
-                    && !interestingMove;
-
-            if (!inCheck || evasionPrunable) {
-                if (moveScore < neutralCapture) {
-                    if (inCheck) {
-                        Assert.assertTrue(!interestingMove);
-                        Assert.assertTrue(numberOfQMovesSearched > 0);
-                    }
+            if (!inCheck && captureMove && !promotionMove) {
+                final int seeScore = SEE.getSEE(board, move, whichThread);
+                if (depth != 0 && seeScore < 0) {
                     quiescenceSEE++;
                     continue;
                 }
-            }
-            
-            // todo
-            if (depth != 0 && !inCheck && !promotionMove && SEE.getSEE(board, move, whichThread) < 0) {
-                continue;
             }
 
             board.makeMoveAndFlipTurn(loudMove);

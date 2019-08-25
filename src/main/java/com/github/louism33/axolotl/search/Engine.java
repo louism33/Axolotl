@@ -468,9 +468,8 @@ public final class Engine {
                     }
                 }
             }
-
         }
-
+        
         final boolean thisIsAPrincipleVariationNode = (beta - alpha != 1);
 
         int staticBoardEval = SHORT_MINIMUM;
@@ -1130,7 +1129,7 @@ public final class Engine {
                     if (!thisIsAPrincipleVariationNode) {
                         R++;
                     }
-                    if (moveScore >= killerTwoScore) {
+                    if (moveScore >= killerTwoScoreNew) {
                         R--;
                     }
 

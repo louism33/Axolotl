@@ -1,14 +1,6 @@
 package com.github.louism33.axolotl.search;
 
-import static com.github.louism33.chesscore.BoardConstants.*;
-
 public final class MoveOrderingConstants {
-
-    public static final int hashScore = 31;
-    public static final int neutralCapture = 24; // between 19 and 29
-    public static final int killerTwoScore = 16;
-    public static final int maxRootQuietScore = 14;
-    public static final int maxNodeQuietScore = 14;
 
     public static final int hashScoreNew = 31_003;
     public static final int queenCapturePromotionScoreNew = 31_002;

@@ -8,11 +8,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.github.louism33.axolotl.search.MoveOrderer.*;
-import static com.github.louism33.axolotl.search.MoveOrderingConstants.maxNodeQuietScore;
 import static com.github.louism33.chesscore.BoardConstants.*;
-import static com.github.louism33.chesscore.BoardConstants.STAR;
-import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 
 public class MoveOrderer3Test {
 
