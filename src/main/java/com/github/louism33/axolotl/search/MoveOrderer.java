@@ -95,11 +95,12 @@ public final class MoveOrderer {
             board.makeMoveAndFlipTurn(move);
             rootScores[i] = Quiescence.quiescenceSearch(board, SHORT_MINIMUM, SHORT_MAXIMUM, 0, 1, 0);
             board.unMakeMoveAndFlipTurn();
-//            System.out.println(MoveParser.toString(move ) + ",  " + rootScores[i]);
             
         }
         reverseInsertionSort(moves, rootScores, numberOfMoves);
-        Arrays.fill(rootScores, 0); // we do not use movescores at root outside of this method
+        
+        // we do not use movescores at root outside of this method
+        Arrays.fill(rootScores, 0);
     }
 
     // todo, consider getting total moves made from here
@@ -111,70 +112,6 @@ public final class MoveOrderer {
         Arrays.fill(count, 0); // reset this for each iteration
     }
 
-
-    static void scoreMovesAtRootNew(int[] moves, int numberOfMoves, Chessboard board) {
-        // todo, check every move for givesCheck()
-        // todo, see on every move / cap
-        long entry = retrieveFromTable(board.zobristHash);
-        int hashMove = 0;
-        if (entry != 0) {
-            hashMove = TranspositionTable.getMove(entry);
-        }
-
-        if (MASTER_DEBUG) {
-            Assert.assertTrue(killerMoves[0][0] == 0);
-            Assert.assertTrue(killerMoves[0][1] == 0);
-            Assert.assertTrue(mateKillers[0][1] == 0);
-        }
-
-        Arrays.fill(rootScores, 0);
-        rootScores[rootScores.length - 1] = numberOfMoves;
-
-        for (int i = 0; i < numberOfMoves; i++) {
-            final int move = moves[i];
-            if (move == 0) {
-                break;
-            }
-
-            if (move == hashMove) {
-                rootScores[i] = hashScoreNew;
-            } else if (isPromotionToQueen(move)) {
-                if (isCaptureMove(move)) {
-                    rootScores[i] = queenCapturePromotionScoreNew;
-                } else {
-                    rootScores[i] = queenQuietPromotionScoreNew;
-                }
-            } else if (isPromotionToKnight(move)) {
-                rootScores[i] = knightPromotionScoreNew;
-            } else if (isPromotionToBishop(move) || isPromotionToRook(move)) {
-                rootScores[i] = uninterestingPromotionNew;
-            } else if (isCaptureMove(move) || isEnPassantMove(move)) {
-                final int score = seeScoreRoot(board, move, 0);
-                rootScores[i] = score;
-            } else if (board.moveGivesCheck(move)) {
-                rootScores[i] = giveCheckMoveNew;
-            } else if (isCastlingMove(move)) {
-                rootScores[i] = castlingMoveNew;
-            } else {
-
-                if (MoveParser.moveIsPawnPushSeven(board.turn, move)) {
-                    rootScores[i] = pawnPushToSevenNew;
-                    continue;
-                }
-
-                if (MoveParser.moveIsPawnPushSix(board.turn, move)) {
-                    rootScores[i] = pawnPushToSixNew;
-                    continue;
-                }
-
-                final int score = quietHeuristicMoveScore(move, board.turn, absoluteMaxQuietScore);
-                rootScores[i] = score;
-            }
-        }
-
-        reverseInsertionSort(moves, rootScores, numberOfMoves);
-        Arrays.fill(rootScores, 0); // we do not use movescores at root outside of this method
-    }
 
     static void scoreMovesNewWithoutQuiets(final int[] moves, int ply,
                                            int hashMove, int whichThread) {
@@ -611,19 +548,6 @@ public final class MoveOrderer {
         Assert.assertTrue(getMVVLVAScoreHelper(move) <= 1000 - 1);
 
         return captureBaseScoreMVVLVA + getMVVLVAScoreHelper(move);
-    }
-
-    private static int seeScoreRoot(Chessboard board, int move, int whichThread) {
-        if (MASTER_DEBUG) {
-            Assert.assertTrue(move != 0);
-        }
-
-        final int see = SEE.getSEE(board, move, whichThread);
-        if (see >= 0) {
-            return captureBaseScoreMVVLVA + see;
-        }
-
-        return captureMaxScoreSEE + see;
     }
 
 

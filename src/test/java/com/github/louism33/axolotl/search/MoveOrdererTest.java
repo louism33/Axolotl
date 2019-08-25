@@ -27,31 +27,6 @@ public class MoveOrdererTest {
     }
 
     @Test
-    public void moveOrdererRootTest() {
-        Chessboard board = new Chessboard();
-
-        int move = MoveParserFromAN.buildMoveFromLAN(board, "e2e4");
-
-        addToTableReplaceByDepth(board.zobristHash,
-                move & MOVE_MASK_WITHOUT_CHECK,
-                123, 1, 1, 1, 1);
-
-        int[] moves = board.generateLegalMoves();
-
-        int l = moves[moves.length - 1];
-        MoveOrderer.scoreMovesAtRootNew(moves, l, board);
-
-        for (int m = 0; m < l; m++) {
-            int mm = moves[m];
-            int moveScore = getMoveScore(mm);
-            String s = MoveParser.toString(mm);
-        }
-
-        Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, move);
-    }
-
-
-    @Test
     public void moveOrdererQuietHeuristicTest() {
         try {
             for (int piece = WHITE_PAWN; piece <= BLACK_KING; piece++) {
@@ -69,79 +44,6 @@ public class MoveOrdererTest {
     }
 
 
-    @Test
-    public void moveOrderer1RootTest() {
-        Chessboard board = new Chessboard();
-
-
-        int e2e4 = MoveParserFromAN.buildMoveFromLAN(board, "e2e4");
-
-        addToTableReplaceByDepth(board.zobristHash,
-                e2e4 & MOVE_MASK_WITHOUT_CHECK,
-                123, 1, 1, 1, 1);
-
-        int[] moves = board.generateLegalMoves();
-
-        int l = moves[moves.length - 1];
-        MoveOrderer.scoreMovesAtRootNew(moves, l, board );
-        Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, e2e4);
-    }
-
-    @Test
-    public void moveOrdererRoot2Test() {
-        Chessboard board = new Chessboard();
-
-        int m = MoveParserFromAN.buildMoveFromLAN(board, "a2a3");
-
-        addToTableReplaceByDepth(board.zobristHash,
-                m & MOVE_MASK_WITHOUT_CHECK,
-                123, 1, 1, 1, 1);
-
-        int[] moves = board.generateLegalMoves();
-
-        int l = moves[moves.length - 1];
-        MoveOrderer.scoreMovesAtRootNew(moves, l, board );
-        Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, m);
-    }
-
-    @Test
-    public void moveOrdererRoot3Test() {
-        Chessboard board = new Chessboard();
-
-        int m = MoveParserFromAN.buildMoveFromLAN(board, "g1f3");
-
-        addToTableReplaceByDepth(board.zobristHash,
-                m & MOVE_MASK_WITHOUT_CHECK,
-                123, 1, 1, 1, 1);
-
-        int[] moves = board.generateLegalMoves();
-
-        int l = moves[moves.length - 1];
-        MoveOrderer.scoreMovesAtRootNew(moves, l, board );
-        Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, m);
-    }
-
-
-    @Test
-    public void moveOrdererRoot4Test() {
-        String fen = "8/P7/8/8/8/8/8/k6K";
-        Chessboard board = new Chessboard(fen);
-
-        int m = MoveParserFromAN.buildMoveFromLAN(board, "h1g1");
-
-        addToTableReplaceByDepth(board.zobristHash,
-                m & MOVE_MASK_WITHOUT_CHECK,
-                123, 1, 1, 1, 1);
-
-        int[] moves = board.generateLegalMoves();
-
-        int l = moves[moves.length - 1];
-        MoveOrderer.scoreMovesAtRootNew(moves, l, board );
-        Assert.assertEquals(moves[0] & MOVE_MASK_WITHOUT_CHECK, m);
-
-        int promQueenMove = MoveParserFromAN.buildMoveFromLAN(board, "a7a8Q");
-        Assert.assertEquals(moves[1] & MOVE_MASK_WITHOUT_CHECK, promQueenMove);
-    }
 
     @Test
     public void moveScoreTest() {

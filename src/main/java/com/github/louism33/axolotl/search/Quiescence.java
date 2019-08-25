@@ -122,15 +122,6 @@ public final class Quiescence {
             if (MASTER_DEBUG) {
                 if (!inCheck && moveScore != 0) {
                     final boolean condition = captureMove || promotionMove || epMove;
-                    if (!condition) {
-                        System.out.println(board);
-                        MoveParser.printMove(move);
-                        MoveParser.printMove(moves);
-                        System.out.println(Arrays.toString(scores[whichThread][ply]));
-                        System.out.println("moveScore: " + moveScore);
-                        System.out.println("index: " + nextBestMoveIndexAndScore[INDEX]);
-                        System.out.println();
-                    }
                     Assert.assertTrue(condition);
                 }
             }
@@ -153,19 +144,10 @@ public final class Quiescence {
                 if (victimPiece > WHITE_KING) {
                     victimPiece -= 6;
                 }
-                if (!promotionMove && standPatScore + 200 + SEE.scores[victimPiece] < alpha) { //todo, don't do this in endgame
-//                if (!promotionMove && standPatScore + 250 + endMaterial[victimPiece - 1] < alpha) { //todo, don't do this in endgame
-//                    if (victimPiece == WHITE_PAWN) {
-//                        Assert.assertEquals(100, endMaterial[victimPiece - 1]);
-//                    }
+                //todo, don't do this in endgame
+                if (!promotionMove && standPatScore + 200 + SEE.scores[victimPiece] < alpha) { 
                     quiescenceDelta++;
                     final boolean condition = MoveParser.isCaptureMove(move) || MoveParser.isEnPassantMove(move);
-                    if (!condition) {
-                        System.out.println(board);
-                        MoveParser.printMove(move);
-                        System.out.println("moveScore: " + moveScore);
-                        System.out.println();
-                    }
                     Assert.assertTrue(condition);
                     continue;
                 }
