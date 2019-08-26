@@ -565,7 +565,7 @@ public final class UCIEntry {
             infoCommand += " depth " + depth;
         }
 
-        infoCommand += " seldepth " + seldepth;
+        infoCommand += " seldepth " + Math.max(seldepth, depth);
 
         infoCommand += " multipv 1";
 
