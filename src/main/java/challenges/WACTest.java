@@ -22,7 +22,7 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 @RunWith(Parameterized.class)
 public class WACTest {
 
-    private static final int timeLimit = 5_000;
+    private static final int timeLimit = 1_000;
     private static Engine engine = new Engine();
     // tough at 5 sec
     private static final int[] infamousIndexes = {86, 163, 180, 196, 222, 230, 243, 293};
@@ -42,7 +42,7 @@ public class WACTest {
     public static Collection<Object[]> data() {
         List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.PRINT_PV = true;
+        EngineSpecifications.PRINT_PV = false;
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 

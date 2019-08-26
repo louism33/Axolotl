@@ -310,17 +310,15 @@ public class BasicMatesTest {
         Chessboard board = new Chessboard("kq4n1/4p2Q/1P2P3/1K6/8/8/p7/8");
         SearchSpecs.basicTimeSearch(3_000);
         final int move = engine.simpleSearch(board);
-
         Assert.assertTrue(aiMoveScore > CHECKMATE_ENEMY_SCORE_MAX_PLY);
         Assert.assertEquals("h7e4", MoveParser.toString(move));
-
         Engine.resetFull();
 
         // now from black pov, in order to check if uci dtm is correct
         Chessboard bboard = new Chessboard("kq4n1/4p2Q/1P2P3/1K6/8/8/p7/8");
         bboard.makeMoveAndFlipTurn(MoveParserFromAN.buildMoveFromLAN(bboard, "h7e4"));
-//        quitOnSingleMove = false; // todo, if this is on it bugs with Engine::lastMove = 2
-        SearchSpecs.basicTimeSearch(2_000);
+        quitOnSingleMove = false; // todo, if this is on it bugs with Engine::lastMove = 2
+        SearchSpecs.basicTimeSearch(3_000);
         final int bmove = engine.simpleSearch(bboard);
 
         Assert.assertTrue(aiMoveScore < IN_CHECKMATE_SCORE_MAX_PLY);

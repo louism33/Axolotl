@@ -960,7 +960,7 @@ public final class Engine {
                     Assert.assertTrue(move != (moves[i] & MOVE_MASK_WITHOUT_CHECK));
                     move = moves[i] & MOVE_MASK_WITHOUT_CHECK;
 
-                    if (moveScore == alreadySearchedScore) {
+                    if (moveScore == alreadySearchedScore || move == 0) {
                         break everything;
                     }
 
