@@ -44,7 +44,7 @@ public class TTPositionsTest {
         Assert.assertEquals(MoveParser.toString(move), "a1b1");
     }
 
-//    @Disabled
+    @Disabled
     @Test
     void fine70MT() {
         ResettingUtils.reset();
