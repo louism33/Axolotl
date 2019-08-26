@@ -50,9 +50,6 @@ public class WACSilverSanitySTDebugTest {
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
-            if (i > 48 || i< 43) {
-//                continue;
-            }
             String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             ExtendedPositionDescriptionParser.EPDObject EPDObject = ExtendedPositionDescriptionParser.parseEDPPosition(splitUpWAC);

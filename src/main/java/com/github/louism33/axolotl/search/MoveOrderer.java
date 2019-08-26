@@ -7,6 +7,7 @@ import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.SHORT_MAXIMUM;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.SHORT_MINIMUM;
@@ -103,6 +104,27 @@ public final class MoveOrderer {
         Arrays.fill(rootScores, 0);
     }
 
+    private static final Random r = new Random();
+    
+    static void randomiseMoveOrder(int[] moves, int numberOfMoves) {
+
+        Arrays.fill(rootScores, 0);
+        rootScores[rootScores.length - 1] = numberOfMoves;
+
+        for (int i = 0; i < numberOfMoves; i++) {
+            final int move = moves[i];
+            if (move == 0) {
+                break;
+            }
+
+            rootScores[i] = r.nextInt(10_000) + 1;
+        }
+        reverseInsertionSort(moves, rootScores, numberOfMoves);
+
+        // we do not use movescores at root outside of this method
+        Arrays.fill(rootScores, 0);
+    }
+    
     // todo, consider getting total moves made from here
     // sorts root moves by how many makeMoves they had in the last iteration (size of sub-tree)
     static void scoreMovesAtRootNewInNode(int[] moves, int whichThread, int numberOfMoves) {

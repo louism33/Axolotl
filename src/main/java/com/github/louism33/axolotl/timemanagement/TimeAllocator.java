@@ -59,13 +59,11 @@ public final class TimeAllocator {
 
     public static boolean outOfTime(long startTime, long timeLimitMillis, boolean manageTime) {
         if (!Engine.running) {
-//            Engine.stopNow = true;
             return true;
         }
         
         boolean outOfTime = false;
         if (!SearchSpecs.allowTimeLimit) {
-//            Engine.stopNow = false;
             return false;
         }
 
@@ -82,7 +80,6 @@ public final class TimeAllocator {
         }
 
         if (outOfTime) {
-//            Engine.stopNow = true;
             Engine.running = false;
         }
         return outOfTime;

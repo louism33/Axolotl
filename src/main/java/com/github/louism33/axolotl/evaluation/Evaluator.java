@@ -112,12 +112,8 @@ public final class Evaluator {
 
                 final boolean condition = 2 >= populationCount(board.pieces[WHITE][BISHOP] | board.pieces[WHITE][KNIGHT])
                         || 2 >= populationCount(board.pieces[BLACK][BISHOP] | board.pieces[BLACK][KNIGHT]);
-                if (!condition) {
-                    System.out.println(board);
-                }
                 Assert.assertTrue(condition);
                 return evaluateKBNK(board);
-
 
             case UNKNOWN:
             default:
@@ -172,7 +168,7 @@ public final class Evaluator {
 
         int turn = board.turn;
 
-        setupEvalConst(false);
+        EvaluationConstants.setupEvalConst(false);
         EvaluatorPositionConstant.setupEvalPosConst(false);
 
         int percentOfEndgame;
@@ -194,24 +190,32 @@ public final class Evaluator {
         percentOfStartgame = getPercentageOfStartGame(board);
         percentOfEndgame = 100 - percentOfStartgame;
 
+        Assert.assertTrue(percentOfStartgame >= 0);
+        Assert.assertTrue(percentOfEndgame >= 0);
+        Assert.assertTrue(percentOfStartgame <= 100);
+        Assert.assertTrue(percentOfEndgame <= 100);
+        
         int score = 0;
 
         long[] pawnData = getPawnData(board, board.zobristPawnHash, percentOfStartgame, whichThread);
 
-        if (MASTER_DEBUG && NUMBER_OF_THREADS == 1) {
-            // this fails if pawn data is shared between threads
+        if (MASTER_DEBUG) {
             Assert.assertArrayEquals(pawnData, getPawnData(board, board.zobristPawnHash, percentOfStartgame, whichThread));
             if (!Arrays.equals(pawnData, noPawnsData)) {
-                Assert.assertArrayEquals(pawnData, PawnEval.calculatePawnData(board, percentOfStartgame, 0));
+                Assert.assertArrayEquals(pawnData, PawnEval.calculatePawnData(board, percentOfStartgame, whichThread));
             }
         }
-
 
         score += Score.getScore((int) pawnData[SCORE], percentOfStartgame);
 
         final int myTurnScore = evalTurn(board, turn, pawnData, turnThreatensSquares, percentOfStartgame, myKingSafetyArea, enemyKingSafetyArea);
         final int yourTurnScore = evalTurn(board, 1 - turn, pawnData, turnThreatensSquares, percentOfStartgame, enemyKingSafetyArea, myKingSafetyArea);
 
+        Assert.assertTrue(myTurnScore < CHECKMATE_ENEMY_SCORE_MAX_PLY);
+        Assert.assertTrue(myTurnScore > IN_CHECKMATE_SCORE_MAX_PLY);
+        Assert.assertTrue(yourTurnScore < CHECKMATE_ENEMY_SCORE_MAX_PLY);
+        Assert.assertTrue(yourTurnScore > IN_CHECKMATE_SCORE_MAX_PLY);
+        
         // todo bring together?
         int myPassedPawnScore = Score.getScore(evalPassedPawnsByTurn(board, turn, pawnData, turnThreatensSquares), percentOfStartgame);
         int enemyPassedPawnScore = Score.getScore(evalPassedPawnsByTurn(board, 1 - turn, pawnData, turnThreatensSquares), percentOfStartgame);
@@ -298,12 +302,9 @@ public final class Evaluator {
         Assert.assertEquals(myPiecesThatPinEnemies != 0, enemyPinnedPieces != 0);
         Assert.assertEquals(myPiecesThatPinEnemies == 0, enemyPinnedPieces == 0);
         
-
-      
         //todo disco possibility and check to queen
 
-        //todo, use king vision to get enemies that could move to make a disco check (but not pawns?)
-        //this should be in chessboard
+        //todo, use king vision ( enemies that could move to make a disco check (but not pawns?) )
 
         int finalScore = 0, materialScore = 0;
 

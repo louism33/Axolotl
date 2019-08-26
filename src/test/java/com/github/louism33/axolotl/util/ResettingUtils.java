@@ -19,15 +19,20 @@ public class ResettingUtils {
         sendBestMove = false;
         TABLE_SIZE = DEFAULT_TABLE_SIZE_MB * TABLE_SIZE_PER_MB;
         TABLE_SIZE_MB = DEFAULT_TABLE_SIZE_MB;
+//        System.out.println(NUMBER_OF_THREADS);
+//        System.out.println(DEFAULT_THREAD_NUMBER);
         NUMBER_OF_THREADS = DEFAULT_THREAD_NUMBER;
-
+//        System.out.println(DEFAULT_THREAD_NUMBER);
         Engine.setThreads(NUMBER_OF_THREADS);
 
+//        System.out.println(NUMBER_OF_THREADS);
         PAWN_TABLE_SIZE_MB = DEFAULT_PAWN_TABLE_SIZE_MB;
         SearchSpecs.reset();
         Engine.resetFull();
         PawnTranspositionTable.initPawnTableDefault(true);
 
+        Assert.assertEquals(NUMBER_OF_THREADS, DEFAULT_THREAD_NUMBER);
+        
         for (int i = 0; i < TranspositionTable.keys.length; i++) {
             Assert.assertEquals(TranspositionTable.keys[i], 0);
             Assert.assertEquals(TranspositionTable.entries[i], 0);

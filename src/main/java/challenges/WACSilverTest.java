@@ -22,7 +22,7 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 @RunWith(Parameterized.class)
 public class WACSilverTest {
 
-    private static final int timeLimit = 1_000;
+    private static final int timeLimit = 2_000;
     private static Engine engine = new Engine();
     private static final int totalThreads = 1;
     
@@ -31,13 +31,9 @@ public class WACSilverTest {
         Engine.setThreads(totalThreads);
     }
 
-    // 1 sec
-//    private static int[] difficultIndexes = 
-//            {16,18,43,53,56,63,110,121,124,134,140,144,147,156,162,167,174,178,190,195,199};
-
     // 2 sec
     private static int[] difficultIndexes =
-            {16,18,43,53,56,63,110,121,124,134,140,144,147,156,162,167,174,178,190,195,199};
+            {56,63,68,71,107,124,144,174,195};
     
     
     @Parameters(name = "{index} Test: {1}")
@@ -48,11 +44,8 @@ public class WACSilverTest {
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
-            if (i > 10) {
-//                break;
-            }
             if (!contains(difficultIndexes, i)) {
-//                continue;
+                continue;
             }
 
             String splitUpWAC = splitUpPositions[i];

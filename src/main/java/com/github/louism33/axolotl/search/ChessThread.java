@@ -74,7 +74,9 @@ public final class ChessThread extends Thread {
         while (depth < SearchSpecs.maxDepth && Engine.running) {
 
             depth++;
-            Quiescence.selDepth = 0;
+            if (masterThread) {
+                Quiescence.selDepth = 0;
+            }
 
             if (MASTER_DEBUG) {
                 Assert.assertEquals(makeMaterialHash(board), board.materialHash);
@@ -82,12 +84,12 @@ public final class ChessThread extends Thread {
             }
 
             if (!masterThread) {
-                if (depth % skipLookup[whichThread] == 0) {
-                    if (DEBUG) {
-                        System.out.println("info string " + this.getName() + " will skip depth " + depth + " and go to depth " + (depth + skipBy[whichThread]));
-                    }
-                    depth += skipBy[whichThread];
-                }
+//                if (depth % skipLookup[whichThread] == 0) {
+//                    if (DEBUG) {
+//                        System.out.println("info string " + this.getName() + " will skip depth " + depth + " and go to depth " + (depth + skipBy[whichThread]));
+//                    }
+//                    depth += skipBy[whichThread];
+//                }
             }
 
             if (DEBUG) {
@@ -134,8 +136,9 @@ public final class ChessThread extends Thread {
                     timeLimitMillis = allocatePanicTime(timeLimitMillis, absoluteMaxTimeLimit);
                     weHavePanicked = true;
                 }
-
-                previousAiScore = aiMoveScore;
+                if (masterThread) {
+                    previousAiScore = aiMoveScore;
+                }
 
                 if (!running || stopSearch(startTime, timeLimitMillis)) {
                     break everything;

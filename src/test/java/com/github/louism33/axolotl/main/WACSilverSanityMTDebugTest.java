@@ -25,7 +25,7 @@ import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEB
 public class WACSilverSanityMTDebugTest {
 
     private static final int timeLimit = 200;
-    private static final int threads = 4;
+    private static final int threads = 2;
     private static Engine engine = new Engine();
 
     @BeforeClass

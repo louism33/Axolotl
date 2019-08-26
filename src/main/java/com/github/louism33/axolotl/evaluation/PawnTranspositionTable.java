@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import static com.github.louism33.axolotl.search.EngineSpecifications.NUMBER_OF_THREADS;
 import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_EVAL;
+import static com.github.louism33.chesscore.BoardConstants.*;
 import static java.lang.Long.numberOfTrailingZeros;
 
 @SuppressWarnings("ALL")
@@ -140,9 +141,10 @@ public final class PawnTranspositionTable {
         }
 
         if (key == 0) {
+            Assert.assertTrue((board.pieces[WHITE][PAWN] | board.pieces[BLACK][PAWN]) == 0);
             return noPawnsData;
         }
-
+        
         long[] returnArray = returnArrayBackend[whichThread];
 
         totalRequests++;
@@ -161,7 +163,7 @@ public final class PawnTranspositionTable {
             }
         }
 
-        returnArray = PawnEval.calculatePawnData(board, percentOfStartgame, 0);
+        returnArray = PawnEval.calculatePawnData(board, percentOfStartgame, whichThread);
         int pawnFeatureScore = (int) returnArray[SCORE];
         addToTableReplaceArbitrarily(board.zobristPawnHash, returnArray, whichThread);
 

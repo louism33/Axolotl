@@ -265,13 +265,18 @@ public final class Engine {
             running = false;
         } else {
             final int totalMoves = rootMoves[MASTER_THREAD].length;
+            final int totalRealMoves = rootMoves[MASTER_THREAD][rootMoves[MASTER_THREAD].length - 1];
+            
             for (int t = 1; t < NUMBER_OF_THREADS; t++) {
+                boards[0] = board;
                 // to avoid regenerating and rescoring root moves
                 System.arraycopy(rootMoves[MASTER_THREAD], 0, rootMoves[t], 0, totalMoves);
-
+                randomiseMoveOrder(rootMoves[t], totalRealMoves);
+                
                 Assert.assertTrue(rootMoves[t][rootMoves[t].length - 1] == rootMoves[MASTER_THREAD][rootMoves[MASTER_THREAD].length - 1]);
 
                 boards[t] = new Chessboard(board);
+                Assert.assertTrue(!MASTER_DEBUG || boards[t].equals(boards[0]));
                 ChessThread thread = new ChessThread(t, boards[t], startTime);
                 threadsNumber.incrementAndGet();
                 thread.start();
