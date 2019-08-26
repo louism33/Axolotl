@@ -1,0 +1,76 @@
+50 ms per position:
+
+any best:
+STS1Undermining: Successes: 72 out of 100
+STS2OpenFilesAndDiagonals: Successes: 62 out of 100
+STS3KnightOutposts: Successes: 71 out of 100
+STS4SquareVacancy: Successes: 59 out of 100
+STS5BishopVKnight: Successes: 79 out of 100
+STS6Recapturing: Successes: 90 out of 100
+STS7Simplification: Successes: 64 out of 100
+STS8fghPAWNS: Successes: 57 out of 100
+STS9abcPAWNS: Successes: 57 out of 100
+STS10Simplification: Successes: 89 out of 100
+STS11KingActivity: Successes: 50 out of 100
+STS12CenterControl: Successes: 47 out of 100
+STS13PawnCentre: Successes: 76 out of 100
+STS14SeventhRank: Successes: 82 out of 100
+STS15PointlessExchange: Successes: 59 out of 100
+
+single best:
+STS1Undermining: Successes: 37 out of 100
+STS2OpenFilesAndDiagonals: Successes: 51 out of 100
+STS3KnightOutposts: Successes: 45 out of 100
+STS4SquareVacancy: Successes: 34 out of 100
+STS5BishopVKnight: Successes: 54 out of 100
+STS6Recapturing: Successes: 55 out of 100
+STS7Simplification: Successes: 28 out of 100
+STS8fghPAWNS: Successes: 23 out of 100
+STS9abcPAWNS: Successes: 33 out of 100
+STS10Simplification: Successes: 62 out of 100
+STS11KingActivity: Successes: 18 out of 100
+STS12CenterControl: Successes: 43 out of 100
+STS14SeventhRank: Successes: 53 out of 100
+STS13PawnCentre: Successes: 53 out of 100
+STS15PointlessExchange: Successes: 20 out of 100
+
+
+
+
+1000 ms per position:
+
+STS1Undermining: Successes: 84 out of 100
+STS2OpenFilesAndDiagonals: Successes: 75 out of 100
+STS3KnightOutposts: Successes: 79 out of 100
+STS4SquareVacancy: Successes: 72 out of 100
+STS5BishopVKnight: Successes: 83 out of 100
+STS7Simplification: Successes: 75 out of 100
+STS6Recapturing: Successes: 95 out of 100
+STS8fghPAWNS: Successes: 64 out of 100
+STS9abcPAWNS: Successes: 61 out of 100
+STS10Simplification: Successes: 87 out of 100
+STS11KingActivity: Successes: 66 out of 100
+STS12CenterControl: Successes: 57 out of 100
+STS13PawnCentre: Successes: 78 out of 100
+STS14SeventhRank: Successes: 84 out of 100
+STS15PointlessExchange: Successes: 74 out of 100
+
+
+
+
+
+
+
+
+
+  29,53%  stockfish  stockfish            [.] Eval::evaluate                                                                                                     
+  27,86%  stockfish  stockfish            [.] (anonymous namespace)::search<((anonymous namespace)::NodeType)0>                                                  
+  19,63%  stockfish  stockfish            [.] MovePicker::next_move                                                                                              
+   9,97%  stockfish  stockfish            [.] (anonymous namespace)::qsearch<((anonymous namespace)::NodeType)0>                                                 
+   3,51%  stockfish  stockfish            [.] Position::see_ge                                                                                                   
+   1,52%  stockfish  stockfish            [.] generate<(GenType)5>                                                                                               
+   1,50%  stockfish  [unknown]            [k] 0xffffffff81600a17                                                                                                 
+   1,23%  stockfish  stockfish            [.] Pawns::Entry::do_king_safety<(Color)0>                                                                             
+   1,10%  stockfish  stockfish            [.] Pawns::Entry::do_king_safety<(Color)1>                                                                             
+   0,71%  stockfish  stockfish            [.] Position::pseudo_legal                                                                                             
+   0,60%  stockfish  stockfish            [.] Material::probe

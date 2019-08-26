@@ -13,9 +13,13 @@ public final class EvaluationConstants {
     public static final int CHECKMATE_ENEMY_SCORE_MAX_PLY = -IN_CHECKMATE_SCORE_MAX_PLY;
     public static final int IN_STALEMATE_SCORE = 0;
 
-    public static boolean ready = false;
+    private static boolean readyEvalConst = false;
 
-    public static void setup() {
+    public static void setupEvalConst(boolean force) {
+        if (!force && readyEvalConst) {
+            return;
+        }
+        
         material = new int[startMaterial.length];
         for (int i = 0; i < startMaterial.length; i++) {
             material[i] = Score.bs(startMaterial[i], endMaterial[i]);
@@ -41,13 +45,17 @@ public final class EvaluationConstants {
             rookFeatures[i] = Score.bs(startRookFeatures[i], endRookFeatures[i]);
         }
 
+        queenFeatures = new int[startQueenFeatures.length];
+        for (int i = 0; i < startQueenFeatures.length; i++) {
+            queenFeatures[i] = Score.bs(startQueenFeatures[i], endQueenFeatures[i]);
+        }
 
         miscFeatures = new int[startMiscFeatures.length];
         for (int i = 0; i < startMiscFeatures.length; i++) {
             miscFeatures[i] = Score.bs(startMiscFeatures[i], endMiscFeatures[i]);
         }
 
-        ready = true;
+        readyEvalConst = true;
     }
 
     // piece values
@@ -130,8 +138,14 @@ public final class EvaluationConstants {
     public static final int[] endRookFeatures = {10, 12, 22, 10, -45, 7, 8};
     public static int[] rookFeatures;
 
-    public static final int[] startQueenFeatures = {};
-    public static final int[] endQueenFeatures = {};
+    // queen valuation
+    static final int FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_BISHOP = 0;
+    static final int FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_ROOK = 1;
+    static final int FRIENDLY_PIECE_PINNED_TO_QUEEN_BY_QUEEN = 2;
+    
+    
+    public static final int[] startQueenFeatures = {-10, -8, -5};
+    public static final int[] endQueenFeatures = {-10, -8, -5};
     public static int[] queenFeatures;
 
     //safety
@@ -146,8 +160,9 @@ public final class EvaluationConstants {
     static final int KNIGHT_ATTACK_KING_UNITS = 0;
     static final int BISHOP_ATTACK_KING_UNITS = 1;
     static final int ROOK_ATTACK_KING_UNITS = 2;
-    static final int QUEEN_ATTACK_KING_LOOKUP_UNITS = 3;
-    public static final int[] kingAttacksValues = {3, 3, 4, 5};
+    static final int QUEEN_ATTACK_KING_X_LOOKUP_UNITS = 3;
+    static final int QUEEN_ATTACK_KING_LOOKUP_UNITS = 4;
+    public static final int[] kingAttacksValues = {3, 3, 4, 4, 5};
 
     public static final int[] KING_SAFETY_ARRAY =
             {

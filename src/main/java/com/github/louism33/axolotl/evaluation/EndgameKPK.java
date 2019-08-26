@@ -9,9 +9,9 @@ import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.chesscore.BitOperations.populationCount;
 import static com.github.louism33.chesscore.BoardConstants.*;
 
-public final class EndgameKPK {
+final class EndgameKPK {
 
-    public static int evaluateKPK(Chessboard board) {
+    static int evaluateKPK(Chessboard board) {
         // if a draw
         if (!KPK.probe(board)) {
             return 0;
@@ -34,17 +34,17 @@ public final class EndgameKPK {
                 materialScore += populationCount(board.pieces[turn][ROOK]) * material[R];
                 materialScore += populationCount(board.pieces[turn][QUEEN]) * material[Q];
                 score += Score.getScore(materialScore, 0);
-                
+
                 if (turn == WHITE) {
                     score += Long.numberOfTrailingZeros(pawn);
                 }
-                
+
             }
         }
 
         Assert.assertTrue(winningPlayer != -1);
         Assert.assertTrue(Math.abs(score) < CHECKMATE_ENEMY_SCORE_MAX_PLY);
-return board.turn == winningPlayer ? score : -score;
+        return board.turn == winningPlayer ? score : -score;
     }
 
 

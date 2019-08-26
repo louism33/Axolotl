@@ -51,6 +51,9 @@ public class WACChallenge {
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
+            if (i < 108) {
+//                continue;
+            }
             String splitUpWAC = splitUpPositions[i];
             Object[] objectAndName = new Object[2];
             EPDObject EPDObject = parseEDPPosition(splitUpWAC);
@@ -71,7 +74,7 @@ public class WACChallenge {
     public void test() {
         Engine.resetFull();
         System.out.println(EPDObject.getFullString());
-        System.out.println(EPDObject.getBoard());
+//        System.out.println(EPDObject.getBoard());
         int[] winningMoves = EPDObject.getBestMoves();
         int[] losingMoves = EPDObject.getAvoidMoves();
         SearchSpecs.basicTimeSearch(timeLimit);

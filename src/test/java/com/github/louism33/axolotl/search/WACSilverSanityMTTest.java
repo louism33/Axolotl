@@ -6,6 +6,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -23,7 +24,7 @@ public class WACSilverSanityMTTest {
     private static final int threads = 4;
     private static final int timeLimit = 1_000;
     private static int successes = 0;
-    private static final int targetSuccesses = 170;
+    private static final int targetSuccesses = 180;
     private static Engine engine = new Engine();
 
     @BeforeClass

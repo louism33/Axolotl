@@ -6,7 +6,7 @@ import static com.github.louism33.chesscore.BoardConstants.WHITE;
 @SuppressWarnings("ALL")
 public final class EvalPrintObject {
 
-    int[][] scores = new int[2][32];
+    private final int[][] scores = new int[2][32];
 
     static final int totalScore = 0;
     static final int materialScore = 1;

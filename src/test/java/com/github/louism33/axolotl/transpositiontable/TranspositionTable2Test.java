@@ -9,6 +9,7 @@ import com.github.louism33.utils.MoveParserFromAN;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import static com.github.louism33.axolotl.transpositiontable.TranspositionTable.
 import static com.github.louism33.axolotl.transpositiontable.TranspositionTableConstants.*;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;
 
+//@Disabled
 public class TranspositionTable2Test {
 
     private Engine engine = new Engine();
@@ -103,7 +105,6 @@ public class TranspositionTable2Test {
     @Test
     void dummyTest() {
         Engine.resetFull();
-        TranspositionTable.initTableMegaByte(DEFAULT_TABLE_SIZE_MB);
         final long basicKey = 1L << shiftAmount;
 
         addToTableReplaceByDepth(basicKey, 1, 666, 10, UPPERBOUND, 10, 1);
@@ -115,7 +116,6 @@ public class TranspositionTable2Test {
     @Test
     void ageOutTest() {
         Engine.resetFull();
-        TranspositionTable.initTableMegaByte(DEFAULT_TABLE_SIZE_MB);
 
         agedOut = 0;
 
@@ -150,9 +150,7 @@ public class TranspositionTable2Test {
 
     @Test
     void ageOut2Test() {
-
         Engine.resetFull();
-        TranspositionTable.initTableMegaByte(DEFAULT_TABLE_SIZE_MB);
 
         agedOut = 0;
 

@@ -5,6 +5,7 @@ import com.github.louism33.chesscore.Chessboard;
 import static com.github.louism33.axolotl.evaluation.EvaluationConstants.*;
 import static com.github.louism33.axolotl.evaluation.Evaluator.scoresForEPO;
 import static com.github.louism33.axolotl.evaluation.PawnTranspositionTable.*;
+import static com.github.louism33.axolotl.search.EngineSpecifications.NUMBER_OF_THREADS;
 import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_EVAL;
 import static com.github.louism33.chesscore.BitOperations.*;
 import static com.github.louism33.chesscore.BoardConstants.fileForward;
@@ -18,20 +19,26 @@ public final class PawnEval {
     public static final long whiteFilesMask = 0xff;
     public static final long blackFilesMask = 0xff00000000000000L;
 
-    public static long[] calculatePawnData(Chessboard board, int percentOfStart) {
-        if (!EvaluationConstants.ready) {
-            setup();
-        }
-        if (!EvaluatorPositionConstant.ready) {
-            EvaluatorPositionConstant.setup();
-        }
+    public static boolean readyPawnEvaluator = false;
+    private static long[][] pawnMoveDataBackend;
 
-        long[] pawnMoveData = new long[PawnTranspositionTable.ENTRIES_PER_KEY];
+    public static void initPawnEvaluator(boolean force) {
+        if (!readyPawnEvaluator || force) {
+            pawnMoveDataBackend = new long[NUMBER_OF_THREADS][PawnTranspositionTable.ROUNDED_ENTRIES_PER_KEY];
+        }
+        readyPawnEvaluator = true;
+    }
+
+    public static long[] calculatePawnData(Chessboard board, int percentOfStart, int whichThread) {
+        setupEvalConst(false);
+        EvaluatorPositionConstant.setupEvalPosConst(false);
+
+        final long[] pawnMoveData = pawnMoveDataBackend[whichThread];
         int pawnScore = 0;
 
         long outpostsFilesWeaks = 0;
 
-        final long allPieces = board.allPieces();
+        final long allPieces = board.allPieces(); // todo pass as arg
 
         for (int turn = WHITE; turn <= BLACK; turn++) {
             int myPawnScore = 0;

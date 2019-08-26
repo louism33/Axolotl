@@ -17,6 +17,7 @@ public final class SearchSpecs {
         TO_NODES
     }
 
+    // todo replace with int
     public static SEARCH_TYPE searchType;
 
     public static long timeLimitMillis;

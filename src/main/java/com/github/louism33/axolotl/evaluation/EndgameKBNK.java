@@ -19,7 +19,7 @@ public final class EndgameKBNK {
         }
     }
 
-    private static int[] weakKingLocationKBNKBlackBishop = new int[64];
+    private final static int[] weakKingLocationKBNKBlackBishop = new int[64];
 
     public static final int[] weakKingLocationKBNKWhiteBishop = {
             14, 6, 5, 1, 4, 5, 1, 0,

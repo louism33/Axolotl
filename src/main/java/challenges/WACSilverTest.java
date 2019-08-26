@@ -3,6 +3,7 @@ package challenges;
 import com.github.louism33.axolotl.search.Engine;
 import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.search.SearchSpecs;
+import com.github.louism33.chesscore.MoveParser;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,9 +22,9 @@ import static com.github.louism33.utils.ExtendedPositionDescriptionParser.parseE
 @RunWith(Parameterized.class)
 public class WACSilverTest {
 
-    private static final int timeLimit = 2_000;
+    private static final int timeLimit = 1_000;
     private static Engine engine = new Engine();
-    private static final int totalThreads = 4;
+    private static final int totalThreads = 1;
     
     @BeforeClass
     public static void setup() {
@@ -47,8 +48,11 @@ public class WACSilverTest {
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
+            if (i > 10) {
+//                break;
+            }
             if (!contains(difficultIndexes, i)) {
-                continue;
+//                continue;
             }
 
             String splitUpWAC = splitUpPositions[i];
@@ -79,6 +83,8 @@ public class WACSilverTest {
         SearchSpecs.basicTimeSearch(timeLimit);
         final int move = engine.simpleSearch(EPDObject.getBoard());
 
+//        MoveParser.printMove(move);
+        
         Assert.assertTrue(contains(winningMoves, move) && !contains(losingMoves, move));
 
     }

@@ -1,7 +1,6 @@
 package strategictestsuite;
 
 import com.github.louism33.axolotl.search.Engine;
-import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.chesscore.MoveParser;
 import com.github.louism33.utils.ExtendedPositionDescriptionParser;
@@ -23,22 +22,22 @@ import static strategictestsuite.MasterParamTester.*;
 @RunWith(Parameterized.class)
 public class STS15PointlessExchange {
 
-
-    
     private Engine engine = new Engine();
 
     private static int successes = 0;
 
     @AfterClass
     public static void finalSuccessTally() {
-        System.out.println("Successes: " + successes + " out of " + splitUpPositions.length);
+        System.out.println("STS15PointlessExchange: Successes: " + successes + " out of " + splitUpPositions.length);
+        System.out.println();
     }
 
     @Parameterized.Parameters(name = "{index} Test: {1}")
     public static Collection<Object[]> data() {
-        List<Object[]> answers = new ArrayList<>();
+        ResettingUtils.reset(); 
+List<Object[]> answers = new ArrayList<>();
 
-        EngineSpecifications.PRINT_PV = true;
+        
 
         for (int i = 0; i < splitUpPositions.length; i++) {
 
@@ -64,23 +63,31 @@ public class STS15PointlessExchange {
         if (printFen) {
             System.out.println(EPDObject.getFullString());
         }
-                if (printBoard) {
+        if (printBoard) {
             System.out.println(EPDObject.getBoard());
         }
         int[] winningMoves = EPDObject.getBestMovesFromComments();
+        
         int[] losingMoves = EPDObject.getAvoidMoves();
-        EngineSpecifications.PRINT_PV = false;
+
+        final int[] singleBestMove = EPDObject.getBestMoves();
+        
         SearchSpecs.basicTimeSearch(timeLimit);
 
         final int move = engine.simpleSearch(EPDObject.getBoard());
 
-        System.out.println("my move: " + MoveParser.toString(move));
+                if (printMyMove) {
+            System.out.println("my move: " + MoveParser.toString(move));
+        }
 
-        final boolean condition = contains(winningMoves, move) && !contains(losingMoves, move);
+        final boolean condition = (allBestMoves ? contains(winningMoves, move) : contains(singleBestMove, move)) 
+                && !contains(losingMoves, move);
         if (condition) {
             successes++;
         }
-        Assert.assertTrue(condition);
+                if (enableAssert) {
+            Assert.assertTrue(condition);
+        }
     }
 
     private static final String positions = "" +

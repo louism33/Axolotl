@@ -169,7 +169,7 @@ public class EloTest {
         }
         System.out.println(move6 + " Elo6 = " + elo6);
 
-        int elo7 = 1000;
+        int elo7 = 1000; // 1000, b7b6
         String move7 = search("r1b1qrk1/1ppn1pb1/p2p1npp/3Pp3/2P1P2B/2N5/PP1NBPPP/R2Q1RK1 b");
         if ("f6h7".equals(move7)) {
             elo7 = 2500;
@@ -217,7 +217,7 @@ public class EloTest {
         }
         System.out.println(move9 + " Elo9 = " + elo9);
 
-        int elo10 = 1000;
+        int elo10 = 1000; // 1000, c8d7
         String move10 = search("r1bq1rk1/p4ppp/1pnp1n2/2p5/2PPpP2/1NP1P3/P3B1PP/R1BQ1RK1 b");
         if ("d8d7".equals(move10)) {
             elo10 = 2000;
@@ -258,6 +258,7 @@ public class EloTest {
         final int move = engine.simpleSearch(board);
         final String s = MoveParser.toString(move);
         ResettingUtils.reset();
+        EngineSpecifications.PRINT_PV = true;
         return s;
     }
 }

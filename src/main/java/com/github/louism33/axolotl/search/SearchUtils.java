@@ -17,7 +17,7 @@ public final class SearchUtils {
     static final int iidDepth = 5;
 
     // most values here tuned with spsa, using zamar's perl script: https://github.com/zamar/spsa
-    public static final int[] futilityMargin = {0, 157, 257, 367, 497, 607};
+    public static final int[] futilityMargin = {0, 157, 257, 367, 497, 607};        
     public static final int futilityBelowThisDepth = futilityMargin.length;
 
     public static final int[] alphaRazorMargin = {0, 275, 486, 561};
@@ -26,7 +26,7 @@ public final class SearchUtils {
     public static final int[] betaRazorMargin = {0, 253, 361, 454, 552, 744, 1034};
     public static final int betaRazorBelowThisDepth = betaRazorMargin.length;
 
-    static final int[] ASPIRATION_WINDOWS = {25, 50, 100, 200, 1000};
+    public static final int[] ASPIRATION_WINDOWS = {25, 50, 100, 200, 1000};
     static final int ASPIRATION_MAX_TRIES = ASPIRATION_WINDOWS.length;
 
     static int extensions(Chessboard board, int ply, boolean boardInCheck, int[] moves) {
@@ -46,7 +46,7 @@ public final class SearchUtils {
             return 1;
         }
 
-        if (MoveParser.numberOfRealMoves(moves) == 1) {
+        if (moves != null && MoveParser.numberOfRealMoves(moves) == 1) {
             return 1;
         }
 
@@ -66,6 +66,7 @@ public final class SearchUtils {
     }
 
     static boolean isNullMoveOkHere(Chessboard board, int nullMoveCounter, int depth, int R) {
+        // todo, make more efficient
         return nullMoveCounter < 1
                 && depth >= 2
                 && !maybeInEndgame(board)
@@ -73,7 +74,7 @@ public final class SearchUtils {
                 && !maybeInZugzwang(board);
     }
 
-    public static boolean maybeInEndgame(Chessboard board) {
+    public static boolean maybeInEndgame(Chessboard board) { // todo, use specific endgame hash
         return populationCount(board.pieces[board.turn][ALL_COLOUR_PIECES] | board.pieces[1 - board.turn][ALL_COLOUR_PIECES]) < 9;
     }
 

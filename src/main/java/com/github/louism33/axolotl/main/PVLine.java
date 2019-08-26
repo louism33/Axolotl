@@ -14,9 +14,11 @@ import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITH_CHECK;
 public final class PVLine {
 
     public static final int maxPVLength = 10;
-
+    private static final int[] pv = new int[maxPVLength + 1];
+    
+    // used for testing
     public static List<String> retrievePV(Chessboard board) {
-        List<String> pvMoves = new ArrayList<>(maxPVLength);
+        List<String> pvMoves = new ArrayList<>(maxPVLength); 
 
         int i = 0;
 
@@ -40,8 +42,6 @@ public final class PVLine {
 
         return pvMoves;
     }
-
-    private static int[] pv = new int[maxPVLength + 1];
 
     public static int[] getPV(Chessboard board) {
         Arrays.fill(pv, 0);

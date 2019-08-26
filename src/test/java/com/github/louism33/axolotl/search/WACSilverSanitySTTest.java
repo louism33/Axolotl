@@ -21,7 +21,7 @@ public class WACSilverSanitySTTest {
 
     private static final int timeLimit = 1_000;
     private static int successes = 0;
-    private static final int targetSuccesses = 170;
+    private static final int targetSuccesses = 180;
     private static Engine engine = new Engine();
 
     @BeforeClass

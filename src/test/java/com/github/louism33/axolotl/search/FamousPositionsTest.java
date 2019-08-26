@@ -8,6 +8,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static com.github.louism33.axolotl.evaluation.EvaluationConstants.CHECKMATE_ENEMY_SCORE_MAX_PLY;
+import static com.github.louism33.axolotl.search.Engine.aiMoveScore;
 import static com.github.louism33.axolotl.search.EngineSpecifications.PRINT_PV;
 
 public class FamousPositionsTest {
@@ -37,10 +39,24 @@ public class FamousPositionsTest {
 //        Engine.setThreads(4);
         SearchSpecs.basicTimeSearch(1_000);
         final int move = engine.simpleSearch(EPDObject.getBoard());
-        MoveParser.printMove(move);
+//        MoveParser.printMove(move);
 //        Assert.assertEquals(MoveParser.toString(move), "d5c6");
-    }   
-    
+    }
+
+    @Test
+    void saavedraTest() {
+        // amazing position requiring underpromotion to win
+        String pos = "8/8/1KP5/3r4/8/8/8/k7 w - - ; bm c7";
+        ExtendedPositionDescriptionParser.EPDObject EPDObject =
+                ExtendedPositionDescriptionParser.parseEDPPosition(pos);
+//        System.out.println(EPDObject.getBoard());
+//        PRINT_PV = true;
+        SearchSpecs.basicTimeSearch(5_000);
+        final int move = engine.simpleSearch(EPDObject.getBoard());
+        Assert.assertEquals(MoveParser.toString(move), "c6c7");
+//        Assert.assertTrue(aiMoveScore >= CHECKMATE_ENEMY_SCORE_MAX_PLY);
+    }
+
     @Test
     void retiTest() {
         System.out.println("testing reti position to see if engine finds the draw");
@@ -50,6 +66,6 @@ public class FamousPositionsTest {
         SearchSpecs.basicTimeSearch(1_000);
         final int move = engine.simpleSearch(EPDObject.getBoard());
         Assert.assertEquals(MoveParser.toString(move), "h8g7");
-        Assert.assertEquals(Engine.aiMoveScore, 0);
+        Assert.assertEquals(aiMoveScore, 0);
     }
 }

@@ -1,12 +1,14 @@
 package com.github.louism33.axolotl.evaluation;
 
 import com.github.louism33.axolotl.search.Engine;
+import com.github.louism33.axolotl.search.EngineSpecifications;
 import com.github.louism33.axolotl.search.SearchSpecs;
 import com.github.louism33.axolotl.util.ResettingUtils;
 import com.github.louism33.chesscore.Art;
 import com.github.louism33.chesscore.Chessboard;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -29,7 +31,7 @@ public class PawnEvalTest {
 
         long[] pawnData = PawnTranspositionTable.getPawnData(board, board.zobristPawnHash, 0);
         Assert.assertNotNull(pawnData);
-        long[] pawnDataTest = PawnEval.calculatePawnData(board, 0);
+        long[] pawnDataTest = PawnEval.calculatePawnData(board, 0, 0);
         Assert.assertNotNull(pawnDataTest);
         Assert.assertArrayEquals(pawnDataTest, pawnData);
     }
@@ -43,7 +45,7 @@ public class PawnEvalTest {
         Assert.assertTrue(board.zobristPawnHash != 0);
         long[] pawnData = PawnTranspositionTable.getPawnData(board, board.zobristPawnHash, 0);
         Assert.assertNotNull(pawnData);
-        long[] testPawnData = PawnEval.calculatePawnData(board, 0);
+        long[] testPawnData = PawnEval.calculatePawnData(board, 0, 0);
         Assert.assertNotNull(testPawnData);
         if (!Arrays.equals(testPawnData, pawnData)) {
             System.out.println(board);
@@ -67,7 +69,7 @@ public class PawnEvalTest {
         Assert.assertTrue(board.zobristPawnHash != 0);
         long[] pawnData = PawnTranspositionTable.getPawnData(board, board.zobristPawnHash, 0);
         Assert.assertNotNull(pawnData);
-        long[] testPawnData = PawnEval.calculatePawnData(board, 0);
+        long[] testPawnData = PawnEval.calculatePawnData(board, 0, 0);
         Assert.assertNotNull(testPawnData);
         if (!Arrays.equals(testPawnData, pawnData)) {
             System.out.println(board);
@@ -100,11 +102,12 @@ public class PawnEvalTest {
         Engine engine = new Engine();
         System.out.println();
         SearchSpecs.basicDepthSearch(16);
+//        EngineSpecifications.PRINT_PV = true;
         final int move = engine.simpleSearch(board);
 
         System.out.println("size of pawn table in mb: " + DEFAULT_PAWN_TABLE_SIZE_MB);
-        System.out.println("entries in pawnMoveData : " + pawnMoveData.length);
-        System.out.println("total keys              : " + keys.length);
+        System.out.println("entries in pawnMoveData : " + pawnMoveData[0].length);
+        System.out.println("total keys              : " + keys[0].length);
         System.out.println();
         System.out.println("total requests          : " + totalRequests);
         System.out.println("newEntries              : " + newEntries);

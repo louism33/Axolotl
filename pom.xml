@@ -6,7 +6,7 @@
 
     <groupId>com.github.louism33</groupId>
     <artifactId>axolotl</artifactId>
-    <version>1.8-SNAPSHOT</version> 
+    <version>1.9-SNAPSHOT</version>
     <name>axolotl</name>
     <description>Amphibious Java Chess Engine</description>
     <url>https://github.com/louism33/Axolotl</url>
@@ -18,12 +18,12 @@
     <distributionManagement>
 
         <!--<repository>-->
-            <!--<uniqueVersion>true</uniqueVersion>-->
-            <!--<id>ossrh</id>-->
-            <!--<url>-->
-                <!--https://oss.sonatype.org/content/repositories/releases-->
-            <!--</url>-->
-            <!--<layout>default</layout>-->
+        <!--<uniqueVersion>true</uniqueVersion>-->
+        <!--<id>ossrh</id>-->
+        <!--<url>-->
+        <!--https://oss.sonatype.org/content/repositories/releases-->
+        <!--</url>-->
+        <!--<layout>default</layout>-->
         <!--</repository>-->
 
         <snapshotRepository>
@@ -32,7 +32,7 @@
                 https://oss.sonatype.org/content/repositories/snapshots
             </url>
         </snapshotRepository>
-        
+
     </distributionManagement>
 
     <licenses>
@@ -137,6 +137,13 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
+
+                    <configuration>
+                        <argLine>-disableassertions</argLine>
+                        <enableAssertions>false</enableAssertions>
+                    </configuration>
+
+
                     <version>2.22.0</version>
                     <dependencies>
                         <dependency>
@@ -150,7 +157,7 @@
                             <version>5.2.0</version>
                         </dependency>
                     </dependencies>
-                </plugin> 
+                </plugin>
                 <plugin>
                     <groupId>com.github.github</groupId>
                     <artifactId>downloads-maven-plugin</artifactId>
@@ -242,7 +249,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <finalName>axolotl_v1.8</finalName>
+                        <finalName>axolotl_v1.9</finalName>
                         <appendAssemblyId>false</appendAssemblyId>
                         <outputDirectory>${user.dir}</outputDirectory>
                         <archive>
@@ -261,8 +268,8 @@
 
     <repositories>
         <!--<repository>-->
-            <!--<id>com.github.louism33</id>-->
-            <!--<url>https://oss.sonatype.org/content/repositories/releases/com/github/louism33/chesscore/1.6</url>-->
+        <!--<id>com.github.louism33</id>-->
+        <!--<url>https://oss.sonatype.org/content/repositories/releases/com/github/louism33/chesscore/1.6</url>-->
         <!--</repository>-->
 
         <repository>
@@ -276,7 +283,7 @@
         <dependency>
             <groupId>com.github.louism33</groupId>
             <artifactId>chesscore</artifactId>
-            <version>1.67-SNAPSHOT</version>
+            <version>1.75-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -291,7 +298,6 @@
             <version>4.12</version>
             <scope>compile</scope>
         </dependency>
-
 
 
         <dependency>

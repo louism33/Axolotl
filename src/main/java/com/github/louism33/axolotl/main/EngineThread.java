@@ -8,7 +8,7 @@ import org.junit.Assert;
 
 import static com.github.louism33.axolotl.main.UCIEntry.searching;
 import static com.github.louism33.axolotl.main.UCIEntry.synchronizedObject;
-import static com.github.louism33.axolotl.search.ChessThreadBetter.MASTER_THREAD;
+import static com.github.louism33.axolotl.search.ChessThread.MASTER_THREAD;
 import static com.github.louism33.axolotl.search.EngineSpecifications.MASTER_DEBUG;
 import static com.github.louism33.axolotl.search.EngineSpecifications.sendBestMove;
 import static com.github.louism33.chesscore.MoveConstants.MOVE_MASK_WITHOUT_CHECK;

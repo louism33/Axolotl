@@ -5,7 +5,7 @@ import static com.github.louism33.chesscore.BoardConstants.*;
 @SuppressWarnings("ALL")
 public final class EvaluatorPositionConstant {
 
-    public static boolean ready = false;
+    public static boolean readyEPC = false;
 
     public static final int[] PAWN_START_WHITE = {
             0, 0, 0, 0, 0, 0, 0, 0,
@@ -142,26 +142,28 @@ public final class EvaluatorPositionConstant {
 
     public static int[][][] POSITION_SCORES;
 
-    public static void setup() {
-        POSITION_SCORES = new int[2][7][64];
-        for (int i = 0; i < 64; i++) {
-            int index = (7 - i / 8) * 8 + (i & 7);
-            POSITION_SCORES[WHITE][PAWN][i] = Score.bs(PAWN_START_WHITE[i], PAWN_END_WHITE[i]);
-            POSITION_SCORES[WHITE][KNIGHT][i] = Score.bs(KNIGHT_START_WHITE[i], KNIGHT_END_WHITE[i]);
-            POSITION_SCORES[WHITE][BISHOP][i] = Score.bs(BISHOP_START_WHITE[i], BISHOP_END_WHITE[i]);
-            POSITION_SCORES[WHITE][ROOK][i] = Score.bs(ROOK_START_WHITE[i], ROOK_END_WHITE[i]);
-            POSITION_SCORES[WHITE][QUEEN][i] = Score.bs(QUEEN_START_WHITE[i], QUEEN_END_WHITE[i]);
-            POSITION_SCORES[WHITE][KING][i] = Score.bs(KING_START_WHITE[i], KING_END_WHITE[i]);
+    public static void setupEvalPosConst(boolean force) {
+        if (force || !readyEPC) {
+            POSITION_SCORES = new int[2][7][64];
+            for (int i = 0; i < 64; i++) {
+                int index = (7 - i / 8) * 8 + (i & 7);
+                POSITION_SCORES[WHITE][PAWN][i] = Score.bs(PAWN_START_WHITE[i], PAWN_END_WHITE[i]);
+                POSITION_SCORES[WHITE][KNIGHT][i] = Score.bs(KNIGHT_START_WHITE[i], KNIGHT_END_WHITE[i]);
+                POSITION_SCORES[WHITE][BISHOP][i] = Score.bs(BISHOP_START_WHITE[i], BISHOP_END_WHITE[i]);
+                POSITION_SCORES[WHITE][ROOK][i] = Score.bs(ROOK_START_WHITE[i], ROOK_END_WHITE[i]);
+                POSITION_SCORES[WHITE][QUEEN][i] = Score.bs(QUEEN_START_WHITE[i], QUEEN_END_WHITE[i]);
+                POSITION_SCORES[WHITE][KING][i] = Score.bs(KING_START_WHITE[i], KING_END_WHITE[i]);
 
-            POSITION_SCORES[BLACK][PAWN][i] = Score.bs(PAWN_START_WHITE[index], PAWN_END_WHITE[index]);
-            POSITION_SCORES[BLACK][KNIGHT][i] = Score.bs(KNIGHT_START_WHITE[index], KNIGHT_END_WHITE[index]);
-            POSITION_SCORES[BLACK][BISHOP][i] = Score.bs(BISHOP_START_WHITE[index], BISHOP_END_WHITE[index]);
-            POSITION_SCORES[BLACK][ROOK][i] = Score.bs(ROOK_START_WHITE[index], ROOK_END_WHITE[index]);
-            POSITION_SCORES[BLACK][QUEEN][i] = Score.bs(QUEEN_START_WHITE[index], QUEEN_END_WHITE[index]);
-            POSITION_SCORES[BLACK][KING][i] = Score.bs(KING_START_WHITE[index], KING_END_WHITE[index]);
+                POSITION_SCORES[BLACK][PAWN][i] = Score.bs(PAWN_START_WHITE[index], PAWN_END_WHITE[index]);
+                POSITION_SCORES[BLACK][KNIGHT][i] = Score.bs(KNIGHT_START_WHITE[index], KNIGHT_END_WHITE[index]);
+                POSITION_SCORES[BLACK][BISHOP][i] = Score.bs(BISHOP_START_WHITE[index], BISHOP_END_WHITE[index]);
+                POSITION_SCORES[BLACK][ROOK][i] = Score.bs(ROOK_START_WHITE[index], ROOK_END_WHITE[index]);
+                POSITION_SCORES[BLACK][QUEEN][i] = Score.bs(QUEEN_START_WHITE[index], QUEEN_END_WHITE[index]);
+                POSITION_SCORES[BLACK][KING][i] = Score.bs(KING_START_WHITE[index], KING_END_WHITE[index]);
+            }
         }
 
-        ready = true;
+        readyEPC = true;
     }
 
 
